@@ -241,10 +241,13 @@ function loadModule(name, argv) {
   }
 
   // Declare a variable to store the module's API
-  let self = { name };
-  
+  let self;
+
   // Evaluate the module's script
   eval(script);
+
+  // Attach the module's name to its API
+  self.name = name;
 
   // Adapt the provided arguments to the module
   self.argv = adaptArgv(argv, self.arguments);
