@@ -36,8 +36,22 @@ function here(...str) {
     return path.join(ROOT_PATH, str);
 }
 
+/**
+ * Check if a folder exists
+ * @param {...string} p The path to check
+ * @returns {boolean} `true` if the path is a folder, `false` else
+ */
+function folderExists(p) {
+  // Format the path to avoid doing it twice
+  p = here(p);
+
+  // Perform the check and return the result
+  return fs.existsSync(p) && fs.lstatSync(p).isDirectory();
+}
+
 // Load some built-in modules
-const path = require('path');
+const path = require('path'),
+      fs = require('fs');
 
 // Load some Yarn modules
 const chalk = require('chalk'),
