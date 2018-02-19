@@ -255,5 +255,19 @@ self = {
       summary,
       sections
     });
+
+    // Determine the output path
+    const output_path = `build/books/${name}.book.html`;
+
+    // Try to write the result in a file
+    try {
+      writeFile(output_path, html);
+    } catch (e) {
+      // ERROR
+      error(`Failed to write output to the disk (attempted to write at: "${output_path}")`, 15);
+    }
+
+    // All went good :)
+    success(`Book "${name}" was successfully built in "${output_path}".`);
   }
 };
