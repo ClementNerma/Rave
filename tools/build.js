@@ -49,9 +49,19 @@ function folderExists(p) {
   return fs.existsSync(p) && fs.lstatSync(p).isDirectory();
 }
 
+/**
+ * Make a folder, recursively
+ * @param {string} p The path of the folder to make
+ * @returns {void}
+ */
+function mkdir(p) {
+  // Make the folder, recursively
+  fs.mkdirpSync(here(p));
+}
+
 // Load some built-in modules
 const path = require('path'),
-      fs = require('fs');
+      fs = require('fs-extra');
 
 // Load some Yarn modules
 const chalk = require('chalk'),
