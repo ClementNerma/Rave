@@ -103,6 +103,16 @@ function mkdir(p) {
 }
 
 /**
+ * Remove a folder, recursively
+ * @param {string} p The path of the folder to remove
+ * @returns {void}
+ */
+function rmdir(p) {
+  // Remove the folder, recursively
+  rimraf.sync(here(p));
+}
+
+/**
  * Check if a file exists
  * @param {string} p The path to check
  * @returns {boolean} `true` if the path is a file, `false` else
@@ -327,7 +337,8 @@ const path = require('path'),
 
 // Load some Yarn modules
 const chalk = require('chalk'),
-      minimist = require('minimist');
+      minimist = require('minimist'),
+      rimraf = require('rimraf');
 
 // Extract colors and styling functions from the "chalk" module
 const {
