@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "chalk": "^2.3.1",
+    "clean-css": "^4.1.9",
     "fs-extra": "^5.0.0",
     "handlebars": "^4.0.11",
     "markdown-it": "^8.4.1",

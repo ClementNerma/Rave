@@ -248,6 +248,9 @@ self = {
       error(`Failed to read template file`, 14, e);
     }
 
+    // Load the CSS minifier
+    const cleanCSS = new (require('clean-css'));
+
     // Set up wrappers for the resources
     const wrappers = {
       // JavaScript
@@ -259,7 +262,8 @@ self = {
       // CSS
       css: {
         left: '<style type="text/css">',
-        right: '</style>'
+        right: '</style>',
+        release: str => cleanCSS.minify(str).styles
       }
     };
 
@@ -292,9 +296,16 @@ self = {
       const ext = (file.match(/\.([^\.]+)$/) || [''])[1].toLocaleLowerCase();
 
       // If a wrapper is found for this extension...
-      if (wrappers.hasOwnProperty(ext))
+      if (wrappers.hasOwnProperty(ext)) {
+        // If the release flag was provided
+        // and if the wrapper has a release mode...
+        if (RELEASE && wrappers[ext].release)
+          // Prepare the resource for release
+          resource = wrappers[ext].release(resource);
+
         // Wrap
         resource = wrappers[ext].left + resource + wrappers[ext].right;
+      }
 
       // Return the resource file's content
       return resource;
