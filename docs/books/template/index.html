@@ -5,6 +5,16 @@
   <title>{{title.text}}</title>
 </head>
 <body>
-  <p><em>Nothing to see here.</em></p>
+  <article>
+    <h{{title.depth}}>{{{title.text}}}</h{{title.depth}}>
+  
+    {{#each sections}}
+    <section data-slug="{{slug}}">
+      {{#each content}} {{#if _TITLE}}
+      <h{{depth}} id="{{slug}}">{{{text}}}</h{{depth}}>
+      {{else}} {{{html}}} {{/if}} {{/each}}
+    </section>
+    {{/each}}
+  </article>
 </body>
 </html>
