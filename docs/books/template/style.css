@@ -59,3 +59,19 @@ nav ul li:first-child {
 nav a:hover, nav a.active {
   color: rgb(0, 140, 255);
 }
+
+article {
+  position: absolute;
+  top: 0;
+  left: 300px;
+  right: 0;
+  bottom: 0;
+  padding-left: 15%;
+  padding-right: 15%;
+  line-height: 22px;
+  color: rgb(51, 51, 51);
+}
+
+section {
+  padding-bottom: 20px;
+}
