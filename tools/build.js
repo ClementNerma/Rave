@@ -132,8 +132,18 @@ function readFile(p) {
  * @returns {void}
  */
 function writeFile(p, str) {
+  // Make the path absolute
+  p = here(p);
+  // Determine its parent folder
+  const parent = path.dirname(p);
+
+  // If its parent folder does not exist...
+  if (! folderExists(parent))
+    // Make it
+    mkdir(parent);
+
   // Read the file and return its content
-  return fs.writeFileSync(here(p), str, 'utf8');
+  return fs.writeFileSync(p, str, 'utf8');
 }
 
 /**
