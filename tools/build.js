@@ -217,17 +217,17 @@ function loadModule(name, argv) {
     error(`Failed to read module's file "${mod_path}"`, 5, e);
   }
 
-  // Prepare a module object
-  let _module = { exports: null };
-
+  // Declare a variable to store the module's API
+  let self;
+  
   // Evaluate the module's script
   eval(script);
 
   // Adapt the provided arguments to the module
-  _module.exports.argv = adaptArgv(argv, _module.exports.arguments);
+  self.argv = adaptArgv(argv, self.arguments);
 
   // Return the module's exported data
-  return _module.exports;
+  return self;
 }
 
 // Load some built-in modules
