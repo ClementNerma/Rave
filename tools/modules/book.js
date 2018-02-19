@@ -32,6 +32,12 @@ self = {
   ],
 
   /**
+   * Clean function
+   * @returns {void}
+   */
+  clean: () => rmdir('build/books'),
+
+  /**
    * Build function
    * @returns {void}
    */
