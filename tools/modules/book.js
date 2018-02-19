@@ -248,9 +248,60 @@ self = {
       error(`Failed to read template file`, 14, e);
     }
 
-    // Load the `handlebars` module ;
-    // then transpile the template to HTML
-    let html = require('handlebars').compile(template)({
+    // Set up wrappers for the resources
+    const wrappers = {
+      // JavaScript
+      js: {
+        left: '<script type="text/javascript">',
+        right: '</script>'
+      },
+
+      // CSS
+      css: {
+        left: '<style type="text/css">',
+        right: '</style>'
+      }
+    };
+
+    // Load the `handlebars` module
+    const handlebars = require('handlebars');
+
+    // Set up an helper to require files from the template
+    handlebars.registerHelper('include', file => {
+      // Determine the file's path
+      const file_path = tpl_folder_path + '/' + file;
+
+      // If the file is not found...
+      if (! fileExists(file_path))
+        // ERROR
+        error(`Template's resource file "${file}" was not found`, 15);
+
+      // Prepare a variable
+      let resource;
+
+      try {
+        // Try to read the resource file
+        resource = readFile(file_path);
+      } catch (e) {
+        // ERROR
+        console.error(e);
+        error(`Failed to read template's resource file "${file}"`, 16);
+      }
+
+      // Get the file extension
+      const ext = (file.match(/\.([^\.]+)$/) || [''])[1].toLocaleLowerCase();
+
+      // If a wrapper is found for this extension...
+      if (wrappers.hasOwnProperty(ext))
+        // Wrap
+        resource = wrappers[ext].left + resource + wrappers[ext].right;
+
+      // Return the resource file's content
+      return resource;
+    });
+
+    // Transpile the template to HTML
+    let html = handlebars.compile(template)({
       title: mainTitle,
       summary,
       sections
