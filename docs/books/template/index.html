@@ -5,6 +5,17 @@
   <title>{{title.text}}</title>
 </head>
 <body>
+  <nav>
+    <ul>
+      {{#each summary}}
+      <li data-depth="{{depth_dec}}">
+        <a href="#{{slug}}">
+          <span class="index">{{prettydepth}}</span> {{{text}}}</a>
+      </li>
+      {{/each}}
+    </ul>
+  </nav>
+
   <article>
     <h{{title.depth}}>{{{title.text}}}</h{{title.depth}}>
   
