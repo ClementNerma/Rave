@@ -14,6 +14,31 @@ function error (message, errcode = 1) {
   process.exit(errcode);
 }
 
+/**
+ * Make paths relative to the `ROOT` folder
+ * Paths that are already absolute won't be affected
+ * @example
+ * here('relative/path') === path.join(ROOT_PATH, 'relative/path')
+ * here('/my/absolute/path') === '/my/absolute/path'
+ * @param {...string} str The path to adapt
+ * @returns {string} The adapted path
+ */
+function here(...str) {
+  // Join the strings
+  str = path.join(...str);
+
+  // If the path is absolute...
+  if (path.isAbsolute(str))
+    // Return it without any modification
+    return str;
+  else
+    // Return the given path relatively to the ROOT
+    return path.join(ROOT_PATH, str);
+}
+
+// Load some built-in modules
+const path = require('path');
+
 // Load some Yarn modules
 const chalk = require('chalk'),
       minimist = require('minimist');
@@ -24,6 +49,12 @@ const modules = {
   // This slug is also the module's filename (without its extension)
   book: 'Build the books'
 };
+
+// Get the tools' path
+const TOOLS_PATH = __dirname;
+
+// Get the repository's root path
+const ROOT_PATH = path.join(TOOLS_PATH, '..');
 
 // Parse the command-line arguments
 const argv = minimist(process.argv.slice(2) /* Ignore Node.js call arguments */);
