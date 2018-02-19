@@ -248,6 +248,9 @@ self = {
       error(`Failed to read template file`, 14, e);
     }
 
+    // Load the JavaScript minifier
+    const babel = require('babel-core');
+
     // Load the CSS minifier
     const cleanCSS = new (require('clean-css'));
 
@@ -256,7 +259,19 @@ self = {
       // JavaScript
       js: {
         left: '<script type="text/javascript">',
-        right: '</script>'
+        right: '</script>',
+        release: str => babel.transform(str, {
+          presets: [
+            [
+              'env',
+              {
+                targets: {
+                  browsers: ['last 5 versions']
+                }
+              }
+            ]
+          ]
+        }).code
       },
 
       // CSS
