@@ -66,5 +66,8 @@ self = {
       // ERROR
       error(`Failed to read file for book "${name}"`, 7, e);
     }
+
+    // Remove all comments from the source
+    source = source.replace(/<!--((.|\r\n|\r|\n)*?)-->/g, '');
   }
 };
