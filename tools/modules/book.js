@@ -341,6 +341,15 @@ self = {
       sections
     });
 
+    // If release mode is enabled...
+    if (RELEASE)
+      // Minify HTML
+      html = require('html-minifier').minify(html, {
+        removeComments: true,
+        removeTagWhitespace: true,
+        collapseWhitespace: true
+      });
+
     // Determine the output path
     const output_path = `build/books/${name}.book.html`;
 
