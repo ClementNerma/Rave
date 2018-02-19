@@ -1,6 +1,8 @@
 
 // Set up a list of available books
-const books = {};
+const books = {
+  'hybrid': { title: 'The Hybrid Book', skill: 'advanced users' }
+};
 
 // Export API
 self = {
