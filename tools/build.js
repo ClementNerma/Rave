@@ -72,6 +72,16 @@ function fileExists(p) {
   return fs.existsSync(p) && fs.lstatSync(p).isFile();
 }
 
+/**
+ * Read a file
+ * @param {string} p The file's path
+ * @returns {string} The file's content
+ */
+function readFile(p) {
+  // Read the file and return its content
+  return fs.readFileSync(here(p), 'utf8');
+}
+
 // Load some built-in modules
 const path = require('path'),
       fs = require('fs-extra');
