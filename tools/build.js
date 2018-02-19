@@ -93,6 +93,94 @@ function writeFile(p, str) {
   return fs.writeFileSync(here(p), str, 'utf8');
 }
 
+/**
+ * Adapt a `minimist` arguments object
+ * @param {Object} argv The `minimist` arguments object
+ * @param {Array.<Object>} args List of arguments to format the object
+ * @returns {Object} The adapted object
+ */
+function adaptArgv(argv, args) {
+  // Prepare an arguments object
+  let fargv = {}; // Final argv
+
+  // For each argument the module can have...
+  for (let arg of args) {
+    // The argument's value
+    let value;
+
+    // If it has both a long and a short version...
+    if (arg.long && arg.short)
+      // Get its value considering this
+      value = typeof argv[arg.long] !== 'undefined' ? argv[arg.long] : argv[arg.short];
+    // Else, if it has only a long version...
+    else if (arg.long)
+      // Get its value from it
+      value = argv[arg.long];
+    // Else, if it has only a short version...
+    else if (argv.short)
+      // Get its value from it
+      value = argv[arg.short];
+
+    // If no value was retrieved but the argument can be provided inline...
+    if (typeof value === 'undefined' && arg.inline)
+      // Get the first inline value
+      value = argv._.shift();
+
+    // If there is still no value retrieved but this argument has a default value...
+    if (typeof value === 'undefined' && typeof arg.default !== 'undefined')
+      // Use its default value
+      value = arg.default;
+
+    // If there is still no value retrieved...
+    if (typeof value === 'undefined')
+      // Ignore this argument
+      continue;
+
+    // If the argument is a boolean and the value is not...
+    if (arg.type === 'boolean' && typeof value !== 'boolean') {
+      // If it's a stringified boolean...
+      if (value === 'true' || value === 'false')
+        // Convert it
+        value = (value === 'true' ? true : false);
+      // Else...
+      else
+        // Convert the current value to a boolean
+        value = Boolean(value);
+    }
+
+    // If the argument is a number and the value is not...
+    if (arg.type === 'number' && typeof value !== 'number') {
+      // Try to parse it as a number...
+      let num = parseFloat(value);
+
+      // If it worked...
+      if (!Number.isNaN(num))
+        // Save it
+        value = num;
+      // Else...
+      else
+        // Convert the current value to a number
+        value = Number(value);
+    }
+
+    // If it has a long version...
+    if (arg.long)
+      // Save its value
+      fargv[arg.long] = value;
+
+    // If it has a short version...
+    if (arg.short)
+      // Save its value
+      fargv[arg.short] = value;
+  }
+
+  // Add unused inline arguments
+  fargv._ = argv._.slice(0) /* Clone the array */;
+
+  // Return final arguments
+  return fargv;
+}
+
 // Load some built-in modules
 const path = require('path'),
       fs = require('fs-extra');
