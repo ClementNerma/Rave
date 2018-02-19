@@ -247,5 +247,13 @@ self = {
       // ERROR
       error(`Failed to read template file`, 14, e);
     }
+
+    // Load the `handlebars` module ;
+    // then transpile the template to HTML
+    let html = require('handlebars').compile(template)({
+      title: mainTitle,
+      summary,
+      sections
+    });
   }
 };
