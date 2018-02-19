@@ -269,7 +269,9 @@ self = {
                   browsers: ['last 5 versions']
                 }
               }
-            ]
+            ],
+
+            'minify'
           ]
         }).code
       },
