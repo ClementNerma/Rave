@@ -82,6 +82,17 @@ function readFile(p) {
   return fs.readFileSync(here(p), 'utf8');
 }
 
+/**
+ * Write a file
+ * @param {string} p The file's path
+ * @param {string} str The content to write in the file
+ * @returns {void}
+ */
+function writeFile(p, str) {
+  // Read the file and return its content
+  return fs.writeFileSync(here(p), str, 'utf8');
+}
+
 // Load some built-in modules
 const path = require('path'),
       fs = require('fs-extra');
