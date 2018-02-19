@@ -237,5 +237,15 @@ self = {
     if (! fileExists(tpl_path))
       // ERROR
       error(`Template file was not found (expecting file at "${tpl_path}")`, 13);
+
+    // Try to open the template
+    let template;
+
+    try {
+      template = readFile(tpl_path);
+    } catch (e) {
+      // ERROR
+      error(`Failed to read template file`, 14, e);
+    }
   }
 };
