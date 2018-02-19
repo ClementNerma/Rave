@@ -181,6 +181,29 @@ function adaptArgv(argv, args) {
   return fargv;
 }
 
+/**
+ * Load a module from the disk
+ * @param {string} name Module's name
+ * @param {Object} argv `minimist` arguments object
+ * @returns {Object} Module's API
+ */
+function loadModule(name, argv) {
+  // If the specified module is unknown...
+  if (!modules.hasOwnProperty(modname))
+    // ERROR
+    error(`Unknown build module "${modname}"`, 3);
+
+  // Get the path of the module's script
+  const mod_path = `tools/modules/${name}.js`;
+
+  // If the target's file is not found...
+  if (!fileExists(mod_path))
+    // ERROR
+    error(`Build script was not found for target "${name}" (expecting to find file "${mod_path}")`, 4);
+  
+  return {};
+}
+
 // Load some built-in modules
 const path = require('path'),
       fs = require('fs-extra');
