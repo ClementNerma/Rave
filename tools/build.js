@@ -222,7 +222,7 @@ function loadModule(name, argv) {
 
   // Evaluate the module's script
   eval(script);
-  
+
   // Return the module's exported data
   return _module.exports;
 }
@@ -249,20 +249,30 @@ const TOOLS_PATH = __dirname;
 const ROOT_PATH = path.join(TOOLS_PATH, '..');
 
 // Parse the command-line arguments
-const argv = minimist(process.argv.slice(2) /* Ignore Node.js call arguments */);
+let m_argv = minimist(process.argv.slice(2) /* Ignore Node.js call arguments */);
 
-// Get the module's name to run
-const modname = argv.module || argv._[0];
+// Set up the arguments for this main module and parse the provided arguments using them
+const argv = adaptArgv(m_argv, [
+  { long: 'module', inline: true, value: 'name', help: 'The build module to use' }
+]);
+
+// For each adapted argument...
+for (let arg of Reflect.ownKeys(argv))
+  // Excepted the inline arguments...
+  // NOTE: Used inline arguments are automatically removed by the adaptArgv() function
+  if (arg !== '_')
+    // Remove it from the original arguments
+    delete m_argv[arg];
 
 // If no module was specified...
-if (typeof modname !== 'string')
+if (typeof argv.module !== 'string')
   // ERROR
   error('No build module specified', 2);
 
 // If the specified module is unknown...
-if (! modules.hasOwnProperty(modname))
+if (! modules.hasOwnProperty(argv.module))
   // ERROR
-  error(`Unknown build module "${modname}"`, 3);
+  error(`Unknown build module "${argv.module}"`, 3);
 
-// Exit with an error
-error('Build tools are not ready yet');
+// Load the specified module and run the build function
+loadModule(argv.module, m_argv).build();
