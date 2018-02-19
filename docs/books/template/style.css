@@ -41,3 +41,8 @@ nav li[data-depth="2"] {
 nav li[data-depth="3"] {
   margin-left: 40px;
 }
+
+/* Hide the first title in the summary */
+nav ul li:first-child {
+  display: none;
+}
