@@ -42,7 +42,20 @@ nav li[data-depth="3"] {
   margin-left: 40px;
 }
 
+nav a {
+  text-decoration: none;
+  color: black;
+}
+
+nav a:hover {
+  cursor: pointer;
+}
+
 /* Hide the first title in the summary */
 nav ul li:first-child {
   display: none;
+}
+
+nav a:hover, nav a.active {
+  color: rgb(0, 140, 255);
 }
