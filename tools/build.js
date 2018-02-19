@@ -381,7 +381,8 @@ const argv = adaptArgv(m_argv, [
   { long: 'verbose', type: 'boolean', help: 'Display verbose messages' },
   { long: 'quiet', short: 'q',  type: 'boolean', help: 'Reduce console outputs' },
   { long: 'release', short: 'r', type: 'boolean', default: true, help: 'Optimize and improve the compatibility of the build' },
-  { long: 'fast', short: 'f', type: 'boolean', help: 'Produce an unoptimized code - speed up the build' }
+  { long: 'fast', short: 'f', type: 'boolean', help: 'Produce an unoptimized code - speed up the build' },
+  { long: 'clean', short: 'c', type: 'boolean', help: 'Clean module\'s data' }
 ]);
 
 // Set up constants for the modules
@@ -414,7 +415,12 @@ if (argv.help)
   // Display help about the specified module
   console.log(getHelp(mod));
 
+// If clean is asked...
+if (argv.clean)
+  // Run the module's clean function
+  mod.clean();
+
 // If no special argument was used to call this program...
 else
-  // Load the specified module and run the build function
+  // Run the module's build function
   mod.build();
