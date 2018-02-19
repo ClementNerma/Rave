@@ -22,6 +22,18 @@ function error (message, errcode = 1, error = null) {
 }
 
 /**
+ * Display a message in verbose mode
+ * @param {string} message The message to display
+ * @returns {void}
+ */
+function verbose(message) {
+  // If the verbose mode is enabled...
+  if (argv.verbose)
+    // Display the message in the console
+    console.log(message);
+}
+
+/**
  * Make paths relative to the `ROOT` folder
  * Paths that are already absolute won't be affected
  * @example
@@ -320,7 +332,8 @@ let m_argv = minimist(process.argv.slice(2) /* Ignore Node.js call arguments */)
 // Set up the arguments for this main module and parse the provided arguments using them
 const argv = adaptArgv(m_argv, [
   { long: 'module', inline: true, value: 'name', help: 'The build module to use' },
-  { long: 'help', type: 'boolean', help: 'Display help about a module' }
+  { long: 'help', type: 'boolean', help: 'Display help about a module' },
+  { long: 'verbose', type: 'boolean', help: 'Display verbose messages' }
 ]);
 
 // For each adapted argument...
