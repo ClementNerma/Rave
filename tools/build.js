@@ -351,6 +351,10 @@ const argv = adaptArgv(m_argv, [
   { long: 'fast', short: 'f', type: 'boolean', help: 'Produce an unoptimized code - speed up the build' }
 ]);
 
+// Set up constants for the modules
+const RELEASE = argv.release && ! argv.fast;
+const FAST = argv.fast;
+
 // For each adapted argument...
 for (let arg of Reflect.ownKeys(argv))
   // Excepted the inline arguments...
