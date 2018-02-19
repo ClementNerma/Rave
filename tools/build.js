@@ -22,6 +22,18 @@ function error (message, errcode = 1, error = null) {
 }
 
 /**
+ * Exit the build successfully
+ * @param {string} message The success message to display
+ * @returns {void}
+ */
+function success(message) {
+  // Display the success message
+  say(chalk.green(message));
+  // Exit safely and without an error code
+  process.exit(0);
+}
+
+/**
  * Display a message in the console
  * @param {string} message The message to display
  * @returns {void}
