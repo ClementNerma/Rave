@@ -59,6 +59,19 @@ function mkdir(p) {
   fs.mkdirpSync(here(p));
 }
 
+/**
+ * Check if a file exists
+ * @param {string} p The path to check
+ * @returns {boolean} `true` if the path is a file, `false` else
+ */
+function fileExists(p) {
+  // Format the path to avoid doing it twice
+  p = here(p);
+
+  // Perform the check and return the result
+  return fs.existsSync(p) && fs.lstatSync(p).isFile();
+}
+
 // Load some built-in modules
 const path = require('path'),
       fs = require('fs-extra');
