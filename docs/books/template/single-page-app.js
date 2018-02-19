@@ -26,3 +26,222 @@ function qa(selector) {
   // Make the query, convert its result to an array and return it
   return Array.from(document.querySelectorAll(selector));
 }
+
+/**
+ * Refresh the active link in the summary
+ * @returns {void}
+ */
+function refreshActive() {
+  // Get the current active link
+  let active = q('nav .active');
+
+  // If there is one...
+  if (active)
+    // Remove its special class
+    active.classList.remove('active');
+
+  // For each title in the current section (reversed order to start from the bottom of the section)...
+  for (let title of Array.from(currentSection.querySelectorAll('h1, h2, h3, h4, h5, h6')).reverse())
+    // If this title is visible
+    // and if this one is located below the current scroll's position...
+    if (title.offsetTop > 0 && window.scrollY > title.offsetTop - title.offsetHeight) {
+      // Mark this title as active in the summary
+      q(`nav [href="#${title.getAttribute('data-id')}"]`).classList.add('active');
+      // Exit the function (break the loop)
+      return;
+    }
+
+  // If the code below is ran, then there is no active link currently
+  // Make the section's title link active
+  q(`nav [href="#${currentSection.getAttribute('data-slug')}"]`).classList.add('active');
+}
+
+/**
+ * Display a section
+ * @param {string|number|HTMLElement} id The section's name, ID or DOM element
+ * @returns {void}
+ */
+function showSection(id) {
+  // If an ID was gave...
+  if (typeof id === 'number') {
+    // Get its name
+    id = sections[id];
+
+    // If no section has this ID...
+    if (!id)
+      // Exit the function
+      return;
+  }
+
+  // If there is a current section...
+  if (currentSection) {
+    // If this is the current section...
+    if (id instanceof HTMLElement ? id === currentSection : id === currentSection.getAttribute('data-slug'))
+      // Go to the top of the window and ignore the request
+      return void (window.scrollTo(0, 0));
+
+    // Hide the current section
+    currentSection.style.display = 'none';
+  }
+
+  // Set the new current section
+  currentSection = (id instanceof HTMLElement) ? id : q(`section[data-slug="${id}"]`);
+  // Show this one
+  currentSection.style.display = 'block';
+
+  // Save its number
+  currentSectionID = sections.indexOf(currentSection);
+
+  // If this is the first section...
+  if (currentSectionID === 0)
+    // Hide the "Previous" link
+    previous.style.display = 'none';
+  // Else...
+  else
+    // Show it
+    previous.style.display = 'block';
+
+  // If this is the last section...
+  if (currentSectionID === sections.length - 1)
+    // Hide the "Next" link
+    next.style.display = 'none';
+  // Else...
+  else
+    // Show it
+    next.style.display = 'block';
+
+  // Set the window's hash
+  window.location.hash = '#' + currentSection.getAttribute('data-slug');
+
+  // Go to the beginning of this section
+  window.scrollTo(0, 0);
+
+  // Refresh the active link in the summary
+  refreshActive();
+}
+
+// For each title in the page...
+for (let title of qa('h1, h2, h3, h4, h5, h6'))
+  // If it has an ID...
+  if (title.hasAttribute('id')) {
+    // Backup it
+    let id = title.getAttribute('id');
+    // Remove it
+    title.removeAttribute('id');
+    // Give it a "data-id" attribute instead
+    title.setAttribute('data-id', id);
+  }
+
+// Get the list of all sections
+const sections = qa('body > article section');
+
+// For each section of the book...
+for (let section of sections)
+  // Hide it
+  section.style.display = 'none';
+
+// For each link in the summary...
+for (let link of qa('nav a').slice(1) /* Ignore the main title */) {
+  // Get its target
+  let target = link.getAttribute('href').substr(1) /* Remove the '#' symbol */;
+
+  // Get its depth
+  let depth = parseInt(link.parentElement.getAttribute('data-depth'));
+
+  // Get the section's name it belongs to
+  let parent;
+
+  // Link to its parent (moved here to avoid bugs due to minification)
+  let el;
+
+  // If it is points to a section...
+  if (depth === 1)
+    // Set it
+    parent = target;
+  // Else...
+  else {
+    // Get its parent element
+    el = link.parentElement;
+
+    // While the element does not point to a section...
+    while (el.getAttribute('data-depth') !== '1')
+      // Get its parent
+      el = el.previousElementSibling;
+
+    // Set the section it points to
+    parent = el.querySelector('a').getAttribute('href').substr(1);
+  }
+
+  // When it is clicked...
+  link.addEventListener('click', e => {
+    // If possible...
+    if (typeof e.preventDefault === 'function')
+      // Cancel the click
+      e.preventDefault();
+
+    // Show the section it points to
+    showSection(parent);
+
+    // If its target is not the section...
+    if (target !== parent)
+      // Get its target and scroll to it
+      window.scrollTo(0, q(`[data-id="${target}"]`).offsetTop);
+
+    // Another way to ignore the click
+    return false;
+  });
+}
+
+// Make a variable to store the current section
+let currentSection;
+
+// Make a variable to store the current section's number
+let currentSectionID;
+
+// Create a "previous" link
+let previous = document.createElement('a');
+// Set its ID
+previous.setAttribute('id', 'previous');
+// Set its content
+previous.innerHTML = '❮';
+// When it is clicked, go to the previous section
+previous.addEventListener('click', () => showSection(currentSectionID - 1));
+// Append it to the page's body
+document.body.appendChild(previous);
+
+// Create a "next" link
+let next = document.createElement('a');
+// Set its ID
+next.setAttribute('id', 'next');
+// Set its content
+next.innerHTML = '❯';
+// When it is clicked, go to the next section
+next.addEventListener('click', () => showSection(currentSectionID + 1));
+// Append it to the page's body
+document.body.appendChild(next);
+
+// If a hash was specified in the URL
+// and if it targets an existing section...
+if (window.location.hash && q(`[data-slug="${window.location.hash.substr(1)}"]`))
+  // Show this section
+  showSection(window.location.hash.substr(1) /* Ignore the '#' symbol */);
+// Else...
+else
+  // Show the first section
+  showSection(sections[0].getAttribute('data-slug'));
+
+// When the page is scrolled...
+window.addEventListener('scroll', () => refreshActive());
+
+// When a key is pressed...
+window.addEventListener('keydown', e => {
+  // If the "arrow left" key was pressed...
+  if (e.keyCode === 37)
+    // Go to the previous section
+    showSection(currentSectionID - 1);
+
+  // If the "arrow right" key was pressed...
+  if (e.keyCode === 39)
+    // Go to the next section
+    showSection(currentSectionID + 1);
+});
