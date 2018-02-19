@@ -69,5 +69,8 @@ self = {
 
     // Remove all comments from the source
     source = source.replace(/<!--((.|\r\n|\r|\n)*?)-->/g, '');
+
+    // Load the "markdown-it" module
+    const mdIt = require('markdown-it')({});
   }
 };
