@@ -216,8 +216,15 @@ function loadModule(name, argv) {
   } catch (e) {
     error(`Failed to read module's file "${mod_path}"`, 5, e);
   }
+
+  // Prepare a module object
+  let _module = { exports: null };
+
+  // Evaluate the module's script
+  eval(script);
   
-  return {};
+  // Return the module's exported data
+  return _module.exports;
 }
 
 // Load some built-in modules
