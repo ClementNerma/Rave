@@ -212,6 +212,25 @@ function getArgumentsHelp (args) {
 }
 
 /**
+ * Generate a stylized help text about a module
+ * @param {Object} mod The module to get help about
+ * @returns {string} The help text
+ */
+function getHelp (mod) {
+  // Generate a help text and return it
+  return cyan(
+    // Introduction
+    'Help for module ' + green(`"${mod.name}"`) + cyan(':') + green('\n> ') + mod.help[0] +
+    // Arguments section
+    yellow('\n\nArguments\n=========\n\n') +
+    // Get help for each argument
+    '  ' + getArgumentsHelp(mod.arguments).map(arg => arg.join('\n  ')).join('\n').replace(/\n/g, '\n  ') +
+    // Optional additional help
+    '\n\n\n' + cyan(mod.help[1])
+  );
+}
+
+/**
  * Load a module from the disk
  * @param {string} name Module's name
  * @param {Object} argv `minimist` arguments object
