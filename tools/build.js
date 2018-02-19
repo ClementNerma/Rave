@@ -189,6 +189,29 @@ function adaptArgv(argv, args) {
 }
 
 /**
+ * Get a help text from an array of arguments
+ * @param {Array<Object>} args Array of arguments
+ * @returns {Array<Array<string>>} Generated help text (two lines per argument)
+ */
+function getArgumentsHelp (args) {
+  // Treat each argument individually and return the global result
+  return args.map(arg =>
+    [
+      // Argument's name
+      yellow((arg.long && arg.short) ? `[--${arg.long}|-${arg.short}]` : (arg.long ? '--' + arg.long : '-' + arg.short)) +
+      // Argument's value
+      yellow('=') + green('<' + (arg.value || (arg.type === 'boolean' ? 'true|false' : 'value')) + '>') +
+      // Argument's default value
+      (arg.default ? blue(` [default: ${String(arg.default)}]`) : '') +
+      // Argument's alternative syntax
+      (typeof arg.inline === 'number' ? blue(' (works as inline argument too)') : ''),
+      // Argument's help
+      cyan(arg.help || chalk.italic('No help provided for this argument'))
+    ]
+  );
+}
+
+/**
  * Load a module from the disk
  * @param {string} name Module's name
  * @param {Object} argv `minimist` arguments object
