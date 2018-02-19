@@ -23,5 +23,11 @@
   },
   "engines": {
     "node": ">=6.12.3"
+  },
+  "scripts": {
+    "build": "node tools/build.js"
+  },
+  "dependencies": {
+    "chalk": "^2.3.1"
   }
 }
