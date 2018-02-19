@@ -196,9 +196,9 @@ function adaptArgv(argv, args) {
  */
 function loadModule(name, argv) {
   // If the specified module is unknown...
-  if (!modules.hasOwnProperty(modname))
+  if (!modules.hasOwnProperty(name))
     // ERROR
-    error(`Unknown build module "${modname}"`, 3);
+    error(`Unknown build module "${name}"`, 3);
 
   // Get the path of the module's script
   const mod_path = `tools/modules/${name}.js`;
