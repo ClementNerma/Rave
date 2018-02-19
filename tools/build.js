@@ -22,13 +22,25 @@ function error (message, errcode = 1, error = null) {
 }
 
 /**
+ * Display a message in the console
+ * @param {string} message The message to display
+ * @returns {void}
+ */
+function say(message) {
+  // If the quiet mode is not enabled...
+  if (! argv.quiet)
+    // Display the message in the console
+    console.log(message);
+}
+
+/**
  * Display a message in verbose mode
  * @param {string} message The message to display
  * @returns {void}
  */
 function verbose(message) {
   // If the verbose mode is enabled...
-  if (argv.verbose)
+  if (argv.verbose && ! argv.quiet) // The quiet mode is prior to the verbose mode
     // Display the message in the console
     console.log(message);
 }
@@ -333,7 +345,8 @@ let m_argv = minimist(process.argv.slice(2) /* Ignore Node.js call arguments */)
 const argv = adaptArgv(m_argv, [
   { long: 'module', inline: true, value: 'name', help: 'The build module to use' },
   { long: 'help', type: 'boolean', help: 'Display help about a module' },
-  { long: 'verbose', type: 'boolean', help: 'Display verbose messages' }
+  { long: 'verbose', type: 'boolean', help: 'Display verbose messages' },
+  { long: 'quiet', short: 'q',  type: 'boolean', help: 'Reduce console outputs' }
 ]);
 
 // For each adapted argument...
