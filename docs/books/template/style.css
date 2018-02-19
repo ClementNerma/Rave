@@ -92,3 +92,12 @@ h3 {
   color: rgb(51, 51, 51);
   margin-top: 50px;
 }
+
+article a {
+  text-decoration: none;
+  color: #4183c4;
+}
+
+article a:hover {
+  text-decoration: underline;
+}
