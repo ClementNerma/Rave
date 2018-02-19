@@ -416,7 +416,7 @@ if (argv.help)
   console.log(getHelp(mod));
 
 // If clean is asked...
-if (argv.clean)
+else if (argv.clean)
   // Run the module's clean function
   mod.clean();
 
