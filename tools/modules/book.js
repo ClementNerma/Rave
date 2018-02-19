@@ -76,6 +76,9 @@ self = {
     // Is a section opened?
     let opened = false;
 
+    // Generate the summary
+    let summary = [];
+
     // Generate the sections
     let sections = [];
 
@@ -116,6 +119,18 @@ self = {
           .replace(/ /g, '-')
           // Remove special characters
           .replace(/[^a-z0-9-_]/g, '');
+
+        // If this is the first title...
+        if (!summary.length) {
+          // If this is not the main title...
+          if (depth !== 1)
+            // ERROR
+            error(`Main title was not found in book "${name}"`, 24);
+        }
+        // If this is the main title
+        else if (depth === 1)
+          // ERROR
+          error(`Duplicate main title detected for book "${name}"`, 25);
 
         // If this is not the main title
         // and if the buffer is not empty...
@@ -178,6 +193,9 @@ self = {
           prettydepth: (depth === 1) ? '0.' : counter.filter(c => c > 0).join('.') + '.'
         };
 
+        // Push it to the summary
+        summary.push(title_obj);
+
         // If this is the main title...
         if (depth === 1)
           // Set it as the main title's object
@@ -187,10 +205,21 @@ self = {
           sectionBuff.push(title_obj);
       }
 
+      // Else, if this line is outside a section...
+      else if (summary.length <= 1) {
+        // If this line is not empty...
+        if (line.trim())
+          // ERROR
+          error('Content not allowed outside sections (below ## titles and deeper)', 26);
+      }
+
       // Else...
       else
         // Push it to the buffer
         titleBuff.push(line);
     }
+
+    // Remove the 'END OF LINE' title from the summary
+    summary.pop();
   }
 };
