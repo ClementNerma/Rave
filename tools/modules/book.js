@@ -56,5 +56,15 @@ self = {
     if (! fileExists(book_path))
       // ERROR
       error(`File not found for book "${name}" (expecting file at "${book_path}")`, 6);
+    
+    // Try to read the book's file
+    let source;
+
+    try {
+      source = readFile(book_path);
+    } catch (e) {
+      // ERROR
+      error(`Failed to read file for book "${name}"`, 7, e);
+    }
   }
 };
