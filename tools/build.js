@@ -346,7 +346,9 @@ const argv = adaptArgv(m_argv, [
   { long: 'module', inline: true, value: 'name', help: 'The build module to use' },
   { long: 'help', type: 'boolean', help: 'Display help about a module' },
   { long: 'verbose', type: 'boolean', help: 'Display verbose messages' },
-  { long: 'quiet', short: 'q',  type: 'boolean', help: 'Reduce console outputs' }
+  { long: 'quiet', short: 'q',  type: 'boolean', help: 'Reduce console outputs' },
+  { long: 'release', short: 'r', type: 'boolean', default: true, help: 'Optimize and improve the compatibility of the build' },
+  { long: 'fast', short: 'f', type: 'boolean', help: 'Produce an unoptimized code - speed up the build' }
 ]);
 
 // For each adapted argument...
