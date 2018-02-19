@@ -221,5 +221,21 @@ self = {
 
     // Remove the 'END OF LINE' title from the summary
     summary.pop();
+
+    // Determine the template folder path
+    const tpl_folder_path = 'docs/books/template';
+
+    // If the template folder is not found...
+    if (! folderExists(tpl_folder_path))
+      // ERROR
+      error(`Template folder was not found (expecting folder at "${tpl_folder_path}")`, 12);
+
+    // Determine the template's path
+    const tpl_path = tpl_folder_path + '/index.html';
+
+    // If the template file is not found...
+    if (! fileExists(tpl_path))
+      // ERROR
+      error(`Template file was not found (expecting file at "${tpl_path}")`, 13);
   }
 };
