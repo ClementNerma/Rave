@@ -75,3 +75,20 @@ article {
 section {
   padding-bottom: 20px;
 }
+
+h1 {
+  display: none;
+}
+
+h2 {
+  font-size: 32px;
+  color: rgb(0, 0, 0);
+  padding-bottom: 10px;
+  border-bottom: 1px solid gray;
+}
+
+h3 {
+  font-size: 22px;
+  color: rgb(51, 51, 51);
+  margin-top: 50px;
+}
