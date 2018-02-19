@@ -5,9 +5,16 @@
  * Exit with an error code
  * @param {string} message An error message
  * @param {number} [errcode] The error code (default: 1)
+ * @param {Error} [error] An error object (displays only in verbose mode)
  * @returns {void}
  */
-function error (message, errcode = 1) {
+function error (message, errcode = 1, error = null) {
+  // If an error was provided...
+  // and if verbose mode is enabled...
+  if (error && argv.verbose)
+    // Display the error
+    console.error(chalk.red(error.toString()));
+
   // Display the error in the console
   console.error(chalk.red(`ERROR: `) + chalk.yellow(message));
   // Exit the process safely with this error code
@@ -200,6 +207,15 @@ function loadModule(name, argv) {
   if (!fileExists(mod_path))
     // ERROR
     error(`Build script was not found for target "${name}" (expecting to find file "${mod_path}")`, 4);
+  
+  // Try to read the module's script
+  let script;
+
+  try {
+    script = readFile(mod_path);
+  } catch (e) {
+    error(`Failed to read module's file "${mod_path}"`, 5, e);
+  }
   
   return {};
 }
