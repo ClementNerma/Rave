@@ -55,7 +55,7 @@ self = {
     // If the file does not exist...
     if (! fileExists(book_path))
       // ERROR
-      error(`File not found for book "${name}" (expecting file at "${book_path}")`, 6);
+      error(`File not found for book "${name}" (expecting file at "${book_path}")`, 8);
     
     // Try to read the book's file
     let source;
@@ -125,12 +125,12 @@ self = {
           // If this is not the main title...
           if (depth !== 1)
             // ERROR
-            error(`Main title was not found in book "${name}"`, 24);
+            error(`Main title was not found in book "${name}"`, 9);
         }
         // If this is the main title
         else if (depth === 1)
           // ERROR
-          error(`Duplicate main title detected for book "${name}"`, 25);
+          error(`Duplicate main title detected for book "${name}"`, 10);
 
         // If this is not the main title
         // and if the buffer is not empty...
@@ -210,7 +210,7 @@ self = {
         // If this line is not empty...
         if (line.trim())
           // ERROR
-          error('Content not allowed outside sections (below ## titles and deeper)', 26);
+          error('Content not allowed outside sections (below ## titles and deeper)', 11);
       }
 
       // Else...
