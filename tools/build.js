@@ -13,10 +13,10 @@ function error (message, errcode = 1, error = null) {
   // and if verbose mode is enabled...
   if (error && argv.verbose)
     // Display the error
-    console.error(chalk.red(error.toString()));
+    console.error(red(error.toString()));
 
   // Display the error in the console
-  console.error(chalk.red(`ERROR: `) + chalk.yellow(message));
+  console.error(red(`ERROR: `) + yellow(message));
   // Exit the process safely with this error code
   process.exit(errcode);
 }
@@ -237,6 +237,24 @@ const path = require('path'),
 // Load some Yarn modules
 const chalk = require('chalk'),
       minimist = require('minimist');
+
+// Extract colors and styling functions from the "chalk" module
+const {
+  // Style
+  bold,
+  underline,
+
+  // Colors
+  black,
+  red,
+  green,
+  yellow,
+  blue,
+  magenta,
+  cyan,
+  white,
+  gray
+} = chalk;
 
 // Set up a list of modules with their respective folders
 const modules = {
