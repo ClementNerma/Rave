@@ -36,6 +36,25 @@ self = {
    * @returns {void}
    */
   build: () => {
-    error(`"book" build module is not ready yet`, 6);
+    // Get the book's name
+    const name = self.argv.book;
+
+    // If no book was specified...
+    if (! name)
+      // ERROR
+      error('No book name provided', 6);
+   
+    // If the book is unknown...
+    if (! books.hasOwnProperty(name))
+      // ERROR
+      error(`Unknown book "${name}"`, 7);
+
+    // Determine its path
+    let book_path = `docs/books/${name}.md`;
+
+    // If the file does not exist...
+    if (! fileExists(book_path))
+      // ERROR
+      error(`File not found for book "${name}" (expecting file at "${book_path}")`, 6);
   }
 };
