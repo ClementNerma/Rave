@@ -7,3 +7,37 @@ body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
 }
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 275px;
+  bottom: 0;
+  background-color: rgb(250, 250, 250);
+  padding: 1%;
+  overflow: auto;
+  font-size: 14px;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav li {
+  padding: 10px;
+}
+
+nav li .index {
+  font-weight: bold;
+}
+
+nav li[data-depth="2"] {
+  margin-left: 20px;
+}
+
+nav li[data-depth="3"] {
+  margin-left: 40px;
+}
