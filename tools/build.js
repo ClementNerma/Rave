@@ -319,7 +319,8 @@ let m_argv = minimist(process.argv.slice(2) /* Ignore Node.js call arguments */)
 
 // Set up the arguments for this main module and parse the provided arguments using them
 const argv = adaptArgv(m_argv, [
-  { long: 'module', inline: true, value: 'name', help: 'The build module to use' }
+  { long: 'module', inline: true, value: 'name', help: 'The build module to use' },
+  { long: 'help', type: 'boolean', help: 'Display help about a module' }
 ]);
 
 // For each adapted argument...
@@ -340,5 +341,15 @@ if (! modules.hasOwnProperty(argv.module))
   // ERROR
   error(`Unknown build module "${argv.module}"`, 3);
 
-// Load the specified module and run the build function
-loadModule(argv.module, m_argv).build();
+// Retrieve the module's API
+let mod = loadModule(argv.module, m_argv);
+
+// If help is asked...
+if (argv.help)
+  // Display help about the specified module
+  console.log(getHelp(mod));
+
+// If no special argument was used to call this program...
+else
+  // Load the specified module and run the build function
+  mod.build();
