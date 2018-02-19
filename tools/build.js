@@ -241,7 +241,7 @@ function loadModule(name, argv) {
   }
 
   // Declare a variable to store the module's API
-  let self;
+  let self = { name };
   
   // Evaluate the module's script
   eval(script);
