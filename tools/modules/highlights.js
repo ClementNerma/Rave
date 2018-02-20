@@ -20,7 +20,7 @@ self = {
    */
   arguments: [
     { long: 'target', short: 't', placeholder: 'editor', inline: true, help: 'The editor to build an extension for' },
-    { long: 'output', short: 'o', placeholder: 'folder', help: 'Output path for the package' }
+    { long: 'output', short: 'o', placeholder: 'folder', help: 'Extension output path' }
   ],
 
   /**
