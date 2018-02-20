@@ -258,8 +258,7 @@ function staticServe (folder, port = 80, verbmsg) {
   app.use(express.static(here(folder)));
 
   // Listen on the provided port
-  verb(`Server listening on port ${port}`);
-  app.listen(port);
+  app.listen(port, () => void say(`Server listening on port ${port}...`));
 }
 
 /**
