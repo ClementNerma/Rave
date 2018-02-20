@@ -19,7 +19,8 @@ self = {
    * @type {Array<Object>}
    */
   arguments: [
-    { long: 'target', short: 't', placeholder: 'editor', inline: true, help: 'The editor to build an extension for' }
+    { long: 'target', short: 't', placeholder: 'editor', inline: true, help: 'The editor to build an extension for' },
+    { long: 'output', short: 'o', placeholder: 'folder', help: 'Output path for the package' }
   ],
 
   /**
@@ -128,7 +129,9 @@ self = {
     );
 
     // Determine the output path
-    const output_path = `build/highlights/${name}-${BUILD_CONSTANTS.VERSION}`;
+    const output_path = self.argv.output
+      ? path.normalize(self.argv.output)
+      : `build/highlights/${name}-${BUILD_CONSTANTS.VERSION}`;
 
     // If this folder exists...
     if (folderExists(output_path))
