@@ -307,6 +307,11 @@ scheme = {
       // Extensions and aliases
       /\b(extends|implements|from|as)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.]*)*)\b/,
       'purple', 'green', 'green'
+    ],
+    [
+      // IMPORT statement
+      /\b(import)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$]*)*)\b/,
+      'purple', 'green', 'green'
     ]
   ]
 };
