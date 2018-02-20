@@ -240,6 +240,13 @@ function adaptArgv(argv, args) {
       fargv[arg.short] = value;
   }
 
+  // For each given argument...
+  for (let name of Reflect.ownKeys(argv))
+    // If it's a "must-be-kept" argument...
+    if (name.startsWith('SYS_'))
+      // Keep it
+      fargv[name] = argv[name];
+
   // Add unused inline arguments
   fargv._ = argv._.slice(0) /* Clone the array */;
 
