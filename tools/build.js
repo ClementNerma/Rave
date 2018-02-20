@@ -292,7 +292,7 @@ function getHelp (mod) {
     // Get help for each argument
     '  ' + getArgumentsHelp(mod.arguments).map(arg => arg.join('\n    ')).join('\n\n  ') +
     // Optional additional help
-    '\n\n\n' + cyan(mod.help[1])
+    (mod.help[1] ? '\n\n\n' + cyan(mod.help[1]) : '')
   );
 }
 
