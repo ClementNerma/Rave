@@ -35,6 +35,12 @@ self = {
   ],
 
   /**
+   * Clean function
+   * @returns {void}
+   */
+  clean: () => rmdir('build/highlights'),
+
+  /**
    * Build function
    */
   build: () => {
