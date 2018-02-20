@@ -275,12 +275,22 @@ self = {
             // Insert patterns if asked to
             .replace(/\$INSERT_PATTERNS\$|"\$INSERT_PATTERNS_Q\$"/g, () => JSON.stringify(patterns));
 
-          // Write it
-          writeFile(path.join(dest, newName), build[newName]);
+          // Try to write it
+          try {
+            writeFile(path.join(dest, newName), build[newName]);
+          } catch (e) {
+            // ERROR
+            error('Failed to write a package file', 26, e);
+          }
         } else {
           // Else, it's a folder
           // Create a (real) folder
-          mkdir(path.join(dest, newName));
+          try {
+            mkdir(path.join(dest, newName));
+          } catch (e) {
+            // ERROR
+            error('Failed to make a package folder', 27, e);
+          }
           // Treat it
           build[newName] = execBuild(path.join(dest, newName), build[newName].files, patterns);
         }
