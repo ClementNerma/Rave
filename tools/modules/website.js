@@ -33,8 +33,14 @@ self = {
    * Build function
    */
   build: () => {
+    // Determine the website's path
+    const website_path = 'src/website';
+
     // Determine the map file's path
-    let map_path = `src/website/map.json`;
+    const map_file = 'map.json';
+
+    // Determine the map file's path
+    const map_path = website_path + '/' + map_file;
 
     // If the file does not exist...
     if (!fileExists(map_path))
@@ -66,6 +72,13 @@ self = {
     if (folderExists(output_folder))
       // Remove it
       rmdir(output_folder);
+
+    // For each existing item at the root of the website's source folder...
+    for (let item of readFolder(website_path))
+      // If this is not the map file
+      if (item !== map_file)
+        // Copy the item
+        copy(website_path + '/' + item, output_folder + '/' + item);
 
     // Determine the temporary build folder's path
     const tmp_build_folder = output_folder + '/' + map.buildPath;
