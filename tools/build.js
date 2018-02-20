@@ -491,7 +491,7 @@ const main_mod = {
     { long: 'release', short: 'r', type: 'boolean', default: true, help: 'Optimize and improve the compatibility of the build' },
     { long: 'fast', short: 'f', type: 'boolean', help: 'Produce an unoptimized code - speed up the build' },
     { long: 'clean', short: 'c', type: 'boolean', help: 'Clean module\'s data' },
-    { long: 'serve', type: 'number', help: 'Run a web server to deliver statically the output folder' }
+    { long: 'serve', type: 'number', default: process.env.PORT || 80, help: 'Run a web server to deliver statically the output folder' }
   ]
 };
 
