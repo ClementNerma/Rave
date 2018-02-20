@@ -1,3 +1,5 @@
+// Enable strict mode
+"use strict";
 
 // Set up a list of available books
 const books = {
