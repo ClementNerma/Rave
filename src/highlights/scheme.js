@@ -312,6 +312,11 @@ scheme = {
       // IMPORT statement
       /\b(import)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$]*)*)\b/,
       'purple', 'green', 'green'
+    ],
+    [
+      // Native types and classes
+      /\b(bool|Boolean|Number|FloatNumber|(u?int|(Unsigned)?Integer)(|1|8|16|32|64|128)|u?byte|(Unsigned|Signed)Byte|float|[Ff]loat|[Dd]ouble|[Ss]tring|StringConvertible|Stringifyable|IntegerConvertible|FloatConvertible|BoolConvertible|Primitivable|Collection|Dictionary|Symbol|Promise|ResolvePL|RejectPL|Vector|Array|List|Buffer|Error|ErrorStack|Timer|RegExp|NativeRegExp|RegExpMatch|Stream|InputStream|OutputStream|console)\b/,
+      'yellow'
     ]
   ]
 };
