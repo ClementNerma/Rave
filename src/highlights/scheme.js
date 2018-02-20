@@ -257,6 +257,11 @@ scheme = {
       // Function's or declaration's special type (not caught by the previous expressions)
       /(:)\s*((?:&\s*)*)(void|self|Any|class_ref|func_ref|var_ref|macro_ref|T|X|Y|Z|K|V)(?=\s*[\{\);=]|\s*->)/,
       'white', 'cyan', 'purple'
+    ],
+    [
+      // Function's or declaration's (other) type
+      /(:)\s*((?:&\s*)*)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*[\{\);=]|\s*->)/,
+      'white', 'cyan', 'yellow'
     ]
   ]
 };
