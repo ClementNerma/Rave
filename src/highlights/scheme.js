@@ -292,6 +292,11 @@ scheme = {
       // Math operators
       /(\+|-|\/|\*|%|\^|\*\*|<<|>>)/,
       'cyan'
+    ],
+    [
+      // Pointer's symbol
+      /&/,
+      'cyan'
     ]
   ]
 };
