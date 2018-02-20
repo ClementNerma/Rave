@@ -67,5 +67,13 @@ self = {
       // ERROR
       error(`Failed to read file for editor "${name}"`, 21, e);
     }
+
+    // Try to parse it as JSON
+    try {
+      source = JSON.parse(source);
+    } catch (e) {
+      // ERROR
+      error(`Failed to parse editor's scheme file as JSON`, 22, e);
+    }
   }
 };
