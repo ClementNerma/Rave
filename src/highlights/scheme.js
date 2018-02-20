@@ -222,6 +222,11 @@ scheme = {
       // Entity's name
       /(?<!\.)\b(struct|class|type|dict|namespace|package|trait|interface)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'yellow'
+    ],
+    [
+      // Match variable (_)
+      /(?<!\.)_\b/,
+      'purple'
     ]
   ]
 };
