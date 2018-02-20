@@ -182,6 +182,11 @@ scheme = {
       end: /`/,
       patterns: [],
       name: '${green}'
-    }
+    },
+    [
+      // Declaration of variables
+      /(?<!\.)\b(let)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      'purple', 'red', 'cyan'
+    ]
   ]
 };
