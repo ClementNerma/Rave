@@ -159,6 +159,11 @@ scheme = {
       // Constant binary numbers
       /(?<!\.)\b0_*b_*(([01]_*)+)(\._*([01]_*)+)?\b/,
       'orange'
+    ],
+    [
+      // Constant octal numbers
+      /(?<!\.)\b0_*o_*(([0-7]_*)+)(\._*([0-7]_*)+)?\b/,
+      'orange'
     ]
   ]
 };
