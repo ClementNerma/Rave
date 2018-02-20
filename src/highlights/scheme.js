@@ -392,6 +392,11 @@ scheme = {
       // Object's property
       /(\.)([a-zA-Z_\$][a-zA-Z0-9_\$]*)/,
       'white', 'red'
+    ],
+    [
+      // Object's function's call
+      /(@)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*\()/,
+      'red', 'blue'
     ]
   ]
 };
