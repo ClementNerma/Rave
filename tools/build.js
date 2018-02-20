@@ -379,9 +379,10 @@ function loadModule(name, argv) {
   if (!fileExists(mod_path))
     // ERROR
     error(`Build script was not found for target "${name}" (expecting to find file "${mod_path}")`, 4);
-  
+
   // Try to read the module's script
   let script;
+  verb(`Trying to read module's file "${mod_path}"...`);
 
   try {
     script = readFile(mod_path);
@@ -393,12 +394,14 @@ function loadModule(name, argv) {
   let self;
 
   // Evaluate the module's script
+  verb(`Attempting to evaluate the module's script...`);
   eval(script);
 
   // Attach the module's name to its API
   self.name = name;
 
   // Adapt the provided arguments to the module
+  verb(`Parsing module's arguments...`);
   self.argv = adaptArgv(argv, self.arguments);
 
   // Return the module's exported data
@@ -517,6 +520,7 @@ if (typeof argv.module !== 'string') {
     error(`Unknown build module "${argv.module}"`, 3);
 
   // Retrieve the module's API
+  verb(`Loading module "${argv.module}" (command-line: ${process.argv.slice(2).join(' ')})...`)
   let mod = loadModule(argv.module, m_argv);
 
   // If help is asked...
