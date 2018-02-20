@@ -71,7 +71,7 @@ function verb(message, p) {
   // If the verbose mode is enabled...
   if (argv.verbose && ! argv.quiet) // The quiet mode is prior to the verbose mode
     // Display the message in the console
-    console.log(`[${Date.now()}] ` + (p ? `${message} (at path "${p}")` : message));
+    console.log(`[${Date.now()}] ` + (p ? `${message} (| "${p}")` : message));
 }
 
 /**
@@ -99,11 +99,12 @@ function here(...str) {
 /**
  * Check if a folder exists
  * @param {...string} p The path to check
+ * @param {string} verbmsg A message for the verbose mode
  * @returns {boolean} `true` if the path is a folder, `false` else
  */
-function folderExists(p) {
+function folderExists(p, verbmsg) {
   // Verbose
-  verb(`Checking folder existence`, p);
+  verb(`Checking folder existence` + (verbmsg ? ` (${verbmsg})` : ''), p);
 
   // Format the path to avoid doing it twice
   p = here(p);
@@ -115,11 +116,12 @@ function folderExists(p) {
 /**
  * Make a folder, recursively
  * @param {string} p The path of the folder to make
+ * @param {string} verbmsg A message for the verbose mode
  * @returns {void}
  */
-function mkdir(p) {
+function mkdir(p, verbmsg) {
   // Verbose
-  verb(`Making folder recursively`, p);
+  verb(`Making folder recursively` + (verbmsg ? ` (${verbmsg})` : ''), p);
 
   // Make the folder, recursively
   fs.mkdirpSync(here(p));
@@ -128,11 +130,12 @@ function mkdir(p) {
 /**
  * Get the list of items in a folder's root
  * @param {string} p The path of the folder to read from
+ * @param {string} verbmsg A message for the verbose mode
  * @returns {Array<string>}
  */
-function readFolder(p) {
+function readFolder(p, verbmsg) {
   // Verbose
-  verb(`Reading folder's root`, p);
+  verb(`Reading folder's root` + (verbmsg ? ` (${verbmsg})` : ''), p);
 
   // Read the folder and return the result
   return fs.readdirSync(here(p));
@@ -141,11 +144,12 @@ function readFolder(p) {
 /**
  * Remove a folder, recursively
  * @param {string} p The path of the folder to remove
+ * @param {string} verbmsg A message for the verbose mode
  * @returns {void}
  */
-function rmdir(p) {
+function rmdir(p, verbmsg) {
   // Verbose
-  verb(`Removing folder recursively`, p);
+  verb(`Removing folder recursively` + (verbmsg ? ` (${verbmsg})` : ''), p);
 
   // Remove the folder, recursively
   fs.removeSync(here(p));
@@ -154,11 +158,12 @@ function rmdir(p) {
 /**
  * Check if a file exists
  * @param {string} p The path to check
+ * @param {string} verbmsg A message for the verbose mode
  * @returns {boolean} `true` if the path is a file, `false` else
  */
-function fileExists(p) {
+function fileExists(p, verbmsg) {
   // Verbose
-  verb(`Checking file existence`, p);
+  verb(`Checking file existence` + (verbmsg ? ` (${verbmsg})` : ''), p);
 
   // Format the path to avoid doing it twice
   p = here(p);
@@ -170,11 +175,12 @@ function fileExists(p) {
 /**
  * Read a file
  * @param {string} p The file's path
+ * @param {string} verbmsg A message for the verbose mode
  * @returns {string} The file's content
  */
-function readFile(p) {
+function readFile(p, verbmsg) {
   // Verbose
-  verb(`Reading file`, p);
+  verb(`Reading file` + (verbmsg ? ` (${verbmsg})` : ''), p);
 
   // Read the file and return its content
   return fs.readFileSync(here(p), 'utf8');
@@ -184,11 +190,12 @@ function readFile(p) {
  * Write a file
  * @param {string} p The file's path
  * @param {string} str The content to write in the file
+ * @param {string} verbmsg A message for the verbose mode
  * @returns {void}
  */
-function writeFile(p, str) {
+function writeFile(p, str, verbmsg) {
   // Verbose
-  verb(`Writing file with ${(str.length / 1024).toFixed(2)} Kb of data`, p);
+  verb(`Writing file with ${(str.length / 1024).toFixed(2)} Kb of data` + (verbmsg ? ` (${verbmsg})` : ''), p);
 
   // Make the path absolute
   p = here(p);
@@ -209,11 +216,12 @@ function writeFile(p, str) {
  * @param {string} src The source item
  * @param {string} dest The destination item
  * @param {boolean} [copyroot] Don't make a sub-folder to copy source folder's content
+ * @param {string} verbmsg A message for the verbose mode
  * @returns {void}
  */
-function copy (src, dest, copyroot = false) {
+function copy (src, dest, copyroot = false, verbmsg) {
   // Verbose
-  verb(`Copying from "${src}" (${copyroot ? 'copying root' : 'making a sub-folder if needed'})`, dest);
+  verb(`Copying from "${src}" (${copyroot ? 'copying root' : 'making a sub-folder if needed'})` + (verbmsg ? ` (${verbmsg})` : ''), dest);
 
   // Adapt the source path
   src = here(src);
@@ -237,15 +245,16 @@ function copy (src, dest, copyroot = false) {
  * Make a static web server
  * @param {string} folder The web server's static folder
  * @param {number} port The port number to deliver the folder on
+ * @param {string} verbmsg A message for the verbose mode
  * @returns {void}
  */
-function staticServe (folder, port = 80) {
+function staticServe (folder, port = 80, verbmsg) {
     // Create an Express application
   verb('Creating an Express application');
   const app = express();
 
   // Serve static files
-  verb(`Preparing to serve statically a folder`, folder);
+  verb(`Preparing to serve statically a folder` + (verbmsg ? ` (${verbmsg})` : ''), folder);
   app.use(express.static(here(folder)));
 
   // Listen on the provided port
