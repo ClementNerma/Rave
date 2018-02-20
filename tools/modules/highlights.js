@@ -75,5 +75,23 @@ self = {
       // ERROR
       error(`Failed to parse editor's scheme file as JSON`, 22, e);
     }
+
+    // Determine its path
+    let scheme_path = `src/highlights/scheme.js`;
+
+    // If the file does not exist...
+    if (!fileExists(scheme_path))
+      // ERROR
+      error(`Scheme file not found (expecting file at "${scheme_path}")`, 23);
+
+    // Try to read the book's file
+    let scheme;
+
+    try {
+      scheme = readFile(scheme_path);
+    } catch (e) {
+      // ERROR
+      error(`Failed to read scheme file "${name}"`, 24, e);
+    }
   }
 };
