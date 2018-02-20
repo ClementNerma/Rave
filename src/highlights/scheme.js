@@ -175,6 +175,13 @@ scheme = {
       // Taken from: http://blog.stevenlevithan.com/archives/match-quoted-string
       /(["'])(?:(?=(\\?))\2.)*?\1/,
       "green"
-    ]
+    ],
+    {
+      // Multi-line strings
+      begin: /`/,
+      end: /`/,
+      patterns: [],
+      name: '${green}'
+    }
   ]
 };
