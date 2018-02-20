@@ -93,5 +93,13 @@ self = {
       // ERROR
       error(`Failed to read scheme file "${name}"`, 24, e);
     }
+
+    // Try to evaluate it as an object
+    try {
+      scheme = eval(scheme);
+    } catch (e) {
+      // ERROR
+      error(`Failed to evaluate scheme file`, 25, e);
+    }
   }
 };
