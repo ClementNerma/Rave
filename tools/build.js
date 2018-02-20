@@ -166,6 +166,9 @@ function adaptArgv(argv, args) {
   // Prepare an arguments object
   let fargv = {}; // Final argv
 
+  // By security, assume the '_' field is present
+  argv._ = argv._ || [];
+
   // For each argument the module can have...
   for (let arg of args) {
     // The argument's value
