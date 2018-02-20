@@ -69,7 +69,7 @@ self = {
     let source;
 
     try {
-      source = readFile(target_path);
+      source = readFile(target_path, `"${name}" editor's package file`);
     } catch (e) {
       // ERROR
       error(`Failed to read file for editor "${name}"`, 21, e);
@@ -95,13 +95,15 @@ self = {
     let scheme;
 
     try {
-      scheme = readFile(scheme_path);
+      scheme = readFile(scheme_path, 'scheme file');
     } catch (e) {
       // ERROR
       error(`Failed to read scheme file "${name}"`, 24, e);
     }
 
     // Try to evaluate it as an object
+    verb('Evaluating it as a script...');
+
     try {
       scheme = eval(scheme);
     } catch (e) {
@@ -116,9 +118,11 @@ self = {
     let patterns = scheme.patterns;
 
     // Stringify RegExps and treat colors in all patterns
+    verb('Treating regular expressions and colors in patterns...');
     patterns = regexpAndColors(patterns);
 
     // Format patterns
+    verb('Treating patterns...');
     patterns = patterns.map(
       // Given a pattern...
       pattern =>
@@ -242,6 +246,8 @@ self = {
      * @returns {Object} The build object, formatted
      */
     function execBuild(dest, build, patterns) {
+      verb(`Executing the build() function inside "${dest}"...`);
+
       // Declare a variable for formatted items' name
       let newName;
 

@@ -70,7 +70,7 @@ self = {
     let source;
 
     try {
-      source = readFile(book_path);
+      source = readFile(book_path, `book "${name}"`);
     } catch (e) {
       // ERROR
       error(`Failed to read file for book "${name}"`, 7, e);
@@ -86,6 +86,8 @@ self = {
     const highlights_path = output_folder + '/syntax-package';
 
     // Build the syntax highlighting package
+    say('Loading the syntax highlighting package...');
+
     loadModule('highlights', {
       target: 'atom',
       output: highlights_path,
@@ -96,6 +98,8 @@ self = {
     const highlighter = new (require('highlights'));
 
     // Load the built syntax package in it
+    verb('Loading the grammars package in the syntax highlighter...');
+
     highlighter.requireGrammarsSync({
       modulePath: here(highlights_path)
     });
@@ -103,10 +107,14 @@ self = {
     // Load the "markdown-it" module
     const mdIt = require('markdown-it')({
       // Custom syntax highlighting callback
-      highlight: (str, lang) => highlighter.highlightSync({
-        fileContents: str,
-        scopeName: 'source.' + lang.toLocaleLowerCase()
-      })
+      highlight: (str, lang) => {
+        verb(`Highlighting ${(str.length / 1024).toFixed(2)} Kb of language "${lang}"...`); 
+
+        return highlighter.highlightSync({
+          fileContents: str,
+          scopeName: 'source.' + lang.toLocaleLowerCase()
+        });
+      }
     });
 
     // Is a section opened?
@@ -135,6 +143,8 @@ self = {
 
     // Is this the first section?
     let firstSection = true;
+
+    verb('Generating summary and sections...');
 
     // For each line in the source code...
     for (let line of source.split(/\r\n|\r|\n/g).concat('## END OF FILE') /* To close the last section */) {
@@ -281,7 +291,7 @@ self = {
     let template;
 
     try {
-      template = readFile(tpl_path);
+      template = readFile(tpl_path, `template file`);
     } catch (e) {
       // ERROR
       error(`Failed to read template file`, 14, e);
@@ -341,7 +351,7 @@ self = {
 
       try {
         // Try to read the resource file
-        resource = readFile(file_path);
+        resource = readFile(file_path, `Template's resource file`);
       } catch (e) {
         // ERROR
         console.error(e);
@@ -357,9 +367,11 @@ self = {
       if (wrappers.hasOwnProperty(ext)) {
         // If the release flag was provided
         // and if the wrapper has a release mode...
-        if (RELEASE && wrappers[ext].release)
+        if (RELEASE && wrappers[ext].release) {
           // Prepare the resource for release
+          verb(`Preparing ${(resource.length / 1024).toFixed(2)} Kb of "${ext}" resource for release...`);
           resource = wrappers[ext].release(resource);
+        }
 
         // Wrap
         resource = wrappers[ext].left + resource + wrappers[ext].right;
@@ -370,6 +382,8 @@ self = {
     });
 
     // Transpile the template to HTML
+    say('Transpiling template to HTML...');
+
     let html = handlebars.compile(template)({
       title: mainTitle,
       summary,
@@ -377,20 +391,23 @@ self = {
     });
 
     // If release mode is enabled...
-    if (RELEASE)
+    if (RELEASE) {
       // Minify HTML
+      say('Minifying HTML...');
+
       html = require('html-minifier').minify(html, {
         removeComments: true,
         removeTagWhitespace: true,
         collapseWhitespace: true
       });
+    }
 
     // Determine the output path
     const output_path = output_folder + `/${name}.book.html`;
 
     // Try to write the result in a file
     try {
-      writeFile(output_path, html);
+      writeFile(output_path, html, `template's output HTML`);
     } catch (e) {
       // ERROR
       error(`Failed to write output to the disk (attempted to write at: "${output_path}")`, 15);

@@ -51,7 +51,7 @@ self = {
     let map;
 
     try {
-      map = readFile(map_path);
+      map = readFile(map_path, `website's map`);
     } catch (e) {
       // ERROR
       error(`Failed to read website's map file`, 30, e);
@@ -76,16 +76,19 @@ self = {
     // For each existing item at the root of the website's source folder...
     for (let item of readFolder(website_path))
       // If this is not the map file
-      if (item !== map_file)
+      if (item !== map_file) {
         // Copy the item
-        copy(website_path + '/' + item, output_folder + '/' + item);
+        copy(website_path + '/' + item, output_folder + '/' + item, false, `keeping original website files`);
+      }
 
     // Determine the temporary build folder's path
     const tmp_build_folder = output_folder + '/' + map.buildPath;
 
     // For each build to do...
-    for (let build of map.build)
+    for (let build of map.build) {
       // Do the build
+      verb(`Running build with module "${build.module}"...`);
+
       loadModule(
         build.module,
         Object.assign(
@@ -93,11 +96,12 @@ self = {
           build.arguments
         )
       ).build();
+    }
 
     // For each map...
     for (let item of Reflect.ownKeys(map.map))
       // Copy the item
-      copy(output_folder + '/' + map.map[item], output_folder + '/' + item, true);
+      copy(output_folder + '/' + map.map[item], output_folder + '/' + item, true, `rule in the website's map`);
     
     // If the build folder must be removed...
     if (map.removeBuild)
