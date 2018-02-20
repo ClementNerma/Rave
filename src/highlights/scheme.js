@@ -337,6 +337,11 @@ scheme = {
       // Types and classes from oftenly-used packages
       /\b(DOM|document|window|Element)\b/,
       'yellow'
+    ],
+    [
+      // Macros call
+      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)\!(?=\s*\()/,
+      'cyan'
     ]
   ]
 };
