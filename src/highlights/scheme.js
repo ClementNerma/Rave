@@ -144,6 +144,11 @@ scheme = {
           name: '${purple}'
         }
       ]
-    }
+    },
+    [
+      // Booleans
+      /\b(true|false)\b/,
+      'orange'
+    ]
   ]
 };
