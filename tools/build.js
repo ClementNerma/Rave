@@ -307,6 +307,13 @@ function adaptArgv(argv, args) {
       // Ignore this argument
       continue;
 
+    // If the argument is not the same type than the provided value...
+    // and if the value is `true`...
+    // and if a specific default value exists for this argument...
+    if (arg.type !== typeof value && value === true && arg.defaultIfTrue)
+      // Use this value instead
+      value = arg.defaultIfTrue;
+
     // If the argument is a boolean and the value is not...
     if (arg.type === 'boolean' && typeof value !== 'boolean') {
       // If it's a stringified boolean...
@@ -321,23 +328,17 @@ function adaptArgv(argv, args) {
 
     // If the argument is a number and the value is not...
     if (arg.type === 'number' && typeof value !== 'number') {
-      // If it's `true` and it has a default value...
-      if (value === true && arg.default)
-        // Use this default value
-        value = arg.default;
-      else {
-        // Try to parse it as a number...
-        let num = parseFloat(value);
+      // Try to parse it as a number...
+      let num = parseFloat(value);
 
-        // If it worked...
-        if (!Number.isNaN(num))
-          // Save it
-          value = num;
-        // Else...
-        else
-          // Convert the current value to a number
-          value = Number(value);
-      }
+      // If it worked...
+      if (!Number.isNaN(num))
+        // Save it
+        value = num;
+      // Else...
+      else
+        // Convert the current value to a number
+        value = Number(value);
     }
 
     // If it has a long version...
@@ -497,7 +498,7 @@ const main_mod = {
     { long: 'release', short: 'r', type: 'boolean', default: true, help: 'Optimize and improve the compatibility of the build' },
     { long: 'fast', short: 'f', type: 'boolean', help: 'Produce an unoptimized code - speed up the build' },
     { long: 'clean', short: 'c', type: 'boolean', help: 'Clean module\'s data' },
-    { long: 'serve', type: 'number', default: process.env.PORT || 80, help: 'Run a web server to deliver statically the output folder' }
+    { long: 'serve', type: 'number', defaultIfTrue: process.env.PORT || 80, help: 'Run a web server to deliver statically the output folder' }
   ]
 };
 
