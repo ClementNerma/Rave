@@ -31,5 +31,23 @@ scheme = {
     workspaceRoot: '${workspaceRoot}'
   },
 
-  patterns: []
+  patterns: [
+    {
+      // Single-line comments
+      begin: /\/\//,
+      beginCaptures: {
+        '0': {
+          name: 'punctuation.definition.comment.begin.sn'
+        }
+      },
+      end: /$/,
+      name: 'comment.line.double-slash.sn',
+      patterns: [
+        {
+          match: /\b(NOTE|TODO|FIXME|BUG)\b/,
+          name: '${purple}'
+        }
+      ]
+    }
+  ]
 };
