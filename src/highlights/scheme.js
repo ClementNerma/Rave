@@ -277,6 +277,11 @@ scheme = {
       // Declaration conditionnal operator
       /\?\?/,
       'cyan'
+    ],
+    [
+      // Alphabetic logical operators
+      /\b(is|isnt|and|or|nor|xor|not|nand|nor)\b/,
+      'purple'
     ]
   ]
 };
