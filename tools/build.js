@@ -280,7 +280,7 @@ function getHelp (mod) {
     // Arguments section
     yellow('\n\nArguments\n=========\n\n') +
     // Get help for each argument
-    '  ' + getArgumentsHelp(mod.arguments).map(arg => arg.join('\n  ')).join('\n').replace(/\n/g, '\n  ') +
+    '  ' + getArgumentsHelp(mod.arguments).map(arg => arg.join('\n    ')).join('\n\n  ') +
     // Optional additional help
     '\n\n\n' + cyan(mod.help[1])
   );
