@@ -56,7 +56,7 @@ self = {
       error(`Unknown book "${name}"`, 7);
 
     // Determine its path
-    let book_path = `docs/books/${name}.md`;
+    let book_path = `src/docs/books/${name}.md`;
 
     // If the file does not exist...
     if (! fileExists(book_path))
@@ -229,7 +229,7 @@ self = {
     summary.pop();
 
     // Determine the template folder path
-    const tpl_folder_path = 'docs/books/template';
+    const tpl_folder_path = 'src/docs/books/template';
 
     // If the template folder is not found...
     if (! folderExists(tpl_folder_path))
