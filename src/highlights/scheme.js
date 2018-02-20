@@ -217,6 +217,11 @@ scheme = {
       // Declaration statement in classes
       /(?<!\.)\b(public|protected|private)(?!\s+(?:func|getter|setter|static|struct)\s+)\s+(readonly\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'purple', 'red', 'cyan'
+    ],
+    [
+      // Entity's name
+      /(?<!\.)\b(struct|class|type|dict|namespace|package|trait|interface)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      'purple', 'yellow'
     ]
   ]
 };
