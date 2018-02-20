@@ -262,6 +262,11 @@ scheme = {
       // Function's or declaration's (other) type
       /(:)\s*((?:&\s*)*)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*[\{\);=]|\s*->)/,
       'white', 'cyan', 'yellow'
+    ],
+    [
+      // Arrow function
+      /(->)/,
+      'purple'
     ]
   ]
 };
