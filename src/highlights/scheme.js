@@ -297,6 +297,11 @@ scheme = {
       // Pointer's symbol
       /&/,
       'cyan'
+    ],
+    [
+      // Instanciation
+      /\b(new)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      'purple', 'yellow'
     ]
   ]
 };
