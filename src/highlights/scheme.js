@@ -327,6 +327,11 @@ scheme = {
       // Keywords
       /(?<!\.)\b(let|pln|val|frozen|frozen|func|lambda|public|protected|private|auto|friend|static|abstract|final|unique|virtual|extern|readonly|do|if|else|finally|for|foreach|in|of|break|continue|unless|until|when|default|export|return|throw|die|try|catch|while|with|new|include|await|native)(?!\s*:)\b/,
       'purple'
+    ],
+    [
+      // Already specified keywords, written here to have partial syntax highlighting
+      /(?<!\.)\b(struct|class|type|dict|namespace|package|trait|interface|implements|extends|import|from)(?!\s*:)\b/,
+      'purple'
     ]
   ]
 };
