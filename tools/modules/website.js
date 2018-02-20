@@ -80,5 +80,10 @@ self = {
           build.arguments
         )
       ).build();
+    
+    // If the build folder must be removed...
+    if (map.removeBuild)
+      // Remove it
+      rmdir(tmp_build_folder);
   }
 };
