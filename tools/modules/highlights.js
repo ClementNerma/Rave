@@ -276,11 +276,11 @@ self = {
             .replace(/\$INSERT_PATTERNS\$|"\$INSERT_PATTERNS_Q\$"/g, () => JSON.stringify(patterns));
 
           // Write it
-          fs.writeFileSync(path.join(dest, newName), build[newName], 'utf8');
+          writeFile(path.join(dest, newName), build[newName]);
         } else {
           // Else, it's a folder
           // Create a (real) folder
-          fs.mkdirpSync(path.join(dest, newName));
+          mkdir(path.join(dest, newName));
           // Treat it
           build[newName] = execBuild(path.join(dest, newName), build[newName].files, patterns);
         }
