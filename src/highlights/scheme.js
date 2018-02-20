@@ -237,6 +237,11 @@ scheme = {
       // Template usage
       /(?<!\.)\b(Cell)(?=<[^;]+>)/,
       'yellow'
+    ],
+    [
+      // Plain data
+      /(val)\s*(?=<[^;]+>)/,
+      'purple'
     ]
   ]
 };
