@@ -472,6 +472,11 @@ scheme = {
       // Invalid flying lambdas typing modes
       /(#flying\s*\()(.*?)(\)\s*;?)/,
       'orange', 'invalid', 'orange'
+    ],
+    [
+      // All other directives
+      /#([a-zA-Z_\$][a-zA-Z0-9_\$]+)( +;)?/,
+      'invalid'
     ]
   ]
 };
