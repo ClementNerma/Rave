@@ -169,6 +169,12 @@ scheme = {
       // Constant hexadecimal numbers
       /(?<!\.)\b0_*x_*(([a-zA-Z0-9]_*)+)(\._*([a-zA-Z0-9]_*)+)?\b/,
       'orange'
+    ],
+    [
+      // Single-line strings
+      // Taken from: http://blog.stevenlevithan.com/archives/match-quoted-string
+      /(["'])(?:(?=(\\?))\2.)*?\1/,
+      "green"
     ]
   ]
 };
