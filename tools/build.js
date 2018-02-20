@@ -71,7 +71,7 @@ function verb(message, p) {
   // If the verbose mode is enabled...
   if (argv.verbose && ! argv.quiet) // The quiet mode is prior to the verbose mode
     // Display the message in the console
-    console.log(`[${Date.now()}] ` + (p ? `${message} (| "${p}")` : message));
+    console.log(`[${Date.now()}] ` + (p ? `${message} | \`${p}\`` : message));
 }
 
 /**
