@@ -382,6 +382,11 @@ scheme = {
       // Object's function's call with a template
       /(\.)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*<(.*?)>\s*\s*\()/,
       'white', 'blue'
+    ],
+    [
+      // Object's *constant* property
+      /(\.)([A-Z_\$][A-Z0-9_\$]*)(?=\b)/,
+      'white', 'orange'
     ]
   ]
 };
