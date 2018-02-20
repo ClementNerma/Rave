@@ -407,6 +407,11 @@ scheme = {
       // Object's *constant* property
       /(@)([A-Z_\$][A-Z0-9_\$]*)(?=\s*[[\.]|@]\b)/,
       'red', 'orange'
+    ],
+    [
+      // Object's property
+      /(@)([a-zA-Z_\$][a-zA-Z0-9_\$]*)/,
+      'red'
     ]
   ]
 };
