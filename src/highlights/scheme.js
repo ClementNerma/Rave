@@ -154,6 +154,11 @@ scheme = {
       // Constant numbers
       /(?<!\.)\b(0_*d_*)?(\d_*)+(\._*(\d_*)+)?\b/,
       'orange'
+    ],
+    [
+      // Constant binary numbers
+      /(?<!\.)\b0_*b_*(([01]_*)+)(\._*([01]_*)+)?\b/,
+      'orange'
     ]
   ]
 };
