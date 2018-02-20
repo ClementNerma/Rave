@@ -462,6 +462,11 @@ scheme = {
       // Invalid typing modes
       /(#typing\s*\()(.*?)(\)\s*;?)/,
       'orange', 'invalid', 'orange'
+    ],
+    [
+      // Flying lambdas typing mode directive
+      /(#flying\s*\()(explicit|inferred)(\)\s*;?)/,
+      'orange', 'cyan', 'orange'
     ]
   ]
 };
