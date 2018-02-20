@@ -49,5 +49,23 @@ self = {
     if (! editors.hasOwnProperty(name))
       // ERROR
       error(`Unknown editor "${name}"`, 19);
+
+    // Determine its path
+    let target_path = `src/highlights/${name}.json`;
+
+    // If the file does not exist...
+    if (!fileExists(target_path))
+      // ERROR
+      error(`File not found for editor "${name}" (expecting file at "${target_path}")`, 20);
+
+    // Try to read the book's file
+    let source;
+
+    try {
+      source = readFile(target_path);
+    } catch (e) {
+      // ERROR
+      error(`Failed to read file for editor "${name}"`, 21, e);
+    }
   }
 };
