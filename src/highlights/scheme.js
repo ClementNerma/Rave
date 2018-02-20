@@ -442,6 +442,11 @@ scheme = {
       // MACRO declarations
       /(#macro)\s+([a-z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'orange'
+    ],
+    [
+      // Generic known directives
+      /#(Dynamic|alias|samedef|bind|makebindings|declarative|auto|declare|process|ref|raw_indent|if|else|end)( +;)?/,
+      'orange'
     ]
   ]
 };
