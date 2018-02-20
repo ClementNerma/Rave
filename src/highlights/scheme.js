@@ -267,6 +267,11 @@ scheme = {
       // Arrow function
       /(->)/,
       'purple'
+    ],
+    [
+      // Logical operators
+      /(<=|>=|<|>|==|!=|&&|\|\|)/,
+      'cyan'
     ]
   ]
 };
