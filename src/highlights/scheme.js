@@ -332,6 +332,11 @@ scheme = {
       // Already specified keywords, written here to have partial syntax highlighting
       /(?<!\.)\b(struct|class|type|dict|namespace|package|trait|interface|implements|extends|import|from)(?!\s*:)\b/,
       'purple'
+    ],
+    [
+      // Types and classes from oftenly-used packages
+      /\b(DOM|document|window|Element)\b/,
+      'yellow'
     ]
   ]
 };
