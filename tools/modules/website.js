@@ -50,5 +50,13 @@ self = {
       // ERROR
       error(`Failed to read website's map file`, 30, e);
     }
+
+    // Try to parse it as JSON
+    try {
+      map = JSON.parse(map);
+    } catch (e) {
+      // ERROR
+      error(`Failed to parse website's map file as JSON`, 31, e);
+    }
   }
 };
