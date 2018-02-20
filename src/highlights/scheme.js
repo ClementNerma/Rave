@@ -457,6 +457,11 @@ scheme = {
       // Typing mode directive
       /(#typing\s*\()(flexible|explicit|inferred)(\)\s*;?)/,
       'orange', 'cyan', 'orange'
+    ],
+    [
+      // Invalid typing modes
+      /(#typing\s*\()(.*?)(\)\s*;?)/,
+      'orange', 'invalid', 'orange'
     ]
   ]
 };
