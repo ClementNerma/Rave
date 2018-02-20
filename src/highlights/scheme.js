@@ -227,6 +227,11 @@ scheme = {
       // Match variable (_)
       /(?<!\.)_\b/,
       'purple'
+    ],
+    [
+      // Function declaration with template
+      /\b(func|lambda)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*<)/,
+      'purple', 'blue'
     ]
   ]
 };
