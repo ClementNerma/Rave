@@ -452,6 +452,11 @@ scheme = {
       // Typed directives
       /#(pln|name)(?=[^a-zA-Z_\$])/,
       'purple'
+    ],
+    [
+      // Typing mode directive
+      /(#typing\s*\()(flexible|explicit|inferred)(\)\s*;?)/,
+      'orange', 'cyan', 'orange'
     ]
   ]
 };
