@@ -437,6 +437,11 @@ scheme = {
       // Array generation from two numerical bounds
       /\[[a-zA-Z0-9_\$]+\s*\.\.\s*[a-zA-Z0-9_\$]+\]/,
       'orange'
+    ],
+    [
+      // MACRO declarations
+      /(#macro)\s+([a-z_\$][a-zA-Z0-9_\$]*)\b/,
+      'purple', 'orange'
     ]
   ]
 };
