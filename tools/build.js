@@ -157,6 +157,32 @@ function writeFile(p, str) {
 }
 
 /**
+ * Copy an item (file or folder) to another location
+ * @param {string} src The source item
+ * @param {string} dest The destination item
+ * @param {boolean} [copyroot] Don't make a sub-folder to copy source folder's content
+ * @returns {void}
+ */
+function copy (src, dest, copyroot = false) {
+  // Adapt the source path
+  src = here(src);
+  // Adapt the destination path
+  dest = here(dest);
+
+  // If the source is a folder...
+  if (! copyroot && folderExists(src)) {    
+    // Add its basename to the destination
+    // NOTE: See https://github.com/jprichardson/node-fs-extra/issues/537
+    dest += path.sep + path.basename(src);
+    // Make the destination sub-folder
+    mkdir(dest);
+  }
+
+  // Copy the source item to its destination
+  fs.copySync(src, dest);
+}
+
+/**
  * Adapt a `minimist` arguments object
  * @param {Object} argv The `minimist` arguments object
  * @param {Array.<Object>} args List of arguments to format the object
