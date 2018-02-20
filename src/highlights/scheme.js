@@ -447,6 +447,11 @@ scheme = {
       // Generic known directives
       /#(Dynamic|alias|samedef|bind|makebindings|declarative|auto|declare|process|ref|raw_indent|if|else|end)( +;)?/,
       'orange'
+    ],
+    [
+      // Typed directives
+      /#(pln|name)(?=[^a-zA-Z_\$])/,
+      'purple'
     ]
   ]
 };
