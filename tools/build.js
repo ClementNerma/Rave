@@ -103,6 +103,16 @@ function mkdir(p) {
 }
 
 /**
+ * Get the list of items in a folder's root
+ * @param {string} p The path of the folder to read from
+ * @returns {Array<string>}
+ */
+function readFolder(p) {
+  // Read the folder and return the result
+  return fs.readdirSync(here(p));
+}
+
+/**
  * Remove a folder, recursively
  * @param {string} p The path of the folder to remove
  * @returns {void}
