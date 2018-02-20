@@ -78,6 +78,19 @@ self = {
     // Remove all comments from the source
     source = source.replace(/<!--((.|\r\n|\r|\n)*?)-->/g, '');
 
+    // Determine the output folder
+    const output_folder = 'build/books';
+
+    // Determine the highlights folder
+    const highlights_path = output_folder + '/syntax-package';
+
+    // Build the syntax highlighting package
+    loadModule('highlights', {
+      target: 'atom',
+      output: highlights_path,
+      SYS_NO_EXIT: true
+    }, true).build();
+
     // Load the "markdown-it" module
     const mdIt = require('markdown-it')({});
 
@@ -230,6 +243,9 @@ self = {
     // Remove the 'END OF LINE' title from the summary
     summary.pop();
 
+    // Remove the syntax package
+    rmdir(highlights_path);
+
     // Determine the template folder path
     const tpl_folder_path = 'src/docs/books/template';
 
@@ -355,7 +371,7 @@ self = {
       });
 
     // Determine the output path
-    const output_path = `build/books/${name}.book.html`;
+    const output_path = output_folder + `/${name}.book.html`;
 
     // Try to write the result in a file
     try {
