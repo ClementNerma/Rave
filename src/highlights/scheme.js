@@ -132,6 +132,18 @@ scheme = {
         }
       ],
       name: 'comment.block.sn'
+    },
+    {
+      // Multi-line comments
+      begin: /\/\*/,
+      end: /\*\//,
+      name: '${gray}',
+      patterns: [
+        {
+          match: /\b(NOTE|TODO|FIXME|BUG)\b/,
+          name: '${purple}'
+        }
+      ]
     }
   ]
 };
