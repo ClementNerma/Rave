@@ -58,5 +58,27 @@ self = {
       // ERROR
       error(`Failed to parse website's map file as JSON`, 31, e);
     }
+
+    // Determine the output folder
+    const output_folder = 'build/website';
+
+    // If this folder already exists...
+    if (folderExists(output_folder))
+      // Remove it
+      rmdir(output_folder);
+
+    // Determine the temporary build folder's path
+    const tmp_build_folder = output_folder + '/' + map.buildPath;
+
+    // For each build to do...
+    for (let build of map.build)
+      // Do the build
+      loadModule(
+        build.module,
+        Object.assign(
+          { output: tmp_build_folder + '/' + build.module },
+          build.arguments
+        )
+      ).build();
   }
 };
