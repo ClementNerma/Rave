@@ -64,13 +64,14 @@ function say(message) {
 /**
  * Display a message in verbose mode
  * @param {string} message The message to display
+ * @param {string} p A path related to the message
  * @returns {void}
  */
-function verb(message) {
+function verb(message, p) {
   // If the verbose mode is enabled...
   if (argv.verbose && ! argv.quiet) // The quiet mode is prior to the verbose mode
     // Display the message in the console
-    console.log(message);
+    console.log(p ? `${message} (at path "${p}")` : message);
 }
 
 /**
@@ -101,6 +102,9 @@ function here(...str) {
  * @returns {boolean} `true` if the path is a folder, `false` else
  */
 function folderExists(p) {
+  // Verbose
+  verb(`Checking folder existence`, p);
+
   // Format the path to avoid doing it twice
   p = here(p);
 
@@ -114,6 +118,9 @@ function folderExists(p) {
  * @returns {void}
  */
 function mkdir(p) {
+  // Verbose
+  verb(`Making folder recursively`, p);
+
   // Make the folder, recursively
   fs.mkdirpSync(here(p));
 }
@@ -124,6 +131,9 @@ function mkdir(p) {
  * @returns {Array<string>}
  */
 function readFolder(p) {
+  // Verbose
+  verb(`Reading folder's root`, p);
+
   // Read the folder and return the result
   return fs.readdirSync(here(p));
 }
@@ -134,6 +144,9 @@ function readFolder(p) {
  * @returns {void}
  */
 function rmdir(p) {
+  // Verbose
+  verb(`Removing folder recursively`, p);
+
   // Remove the folder, recursively
   fs.removeSync(here(p));
 }
@@ -144,6 +157,9 @@ function rmdir(p) {
  * @returns {boolean} `true` if the path is a file, `false` else
  */
 function fileExists(p) {
+  // Verbose
+  verb(`Checking file existence`, p);
+
   // Format the path to avoid doing it twice
   p = here(p);
 
@@ -157,6 +173,9 @@ function fileExists(p) {
  * @returns {string} The file's content
  */
 function readFile(p) {
+  // Verbose
+  verb(`Reading file`, p);
+
   // Read the file and return its content
   return fs.readFileSync(here(p), 'utf8');
 }
@@ -168,6 +187,9 @@ function readFile(p) {
  * @returns {void}
  */
 function writeFile(p, str) {
+  // Verbose
+  verb(`Writing file with ${(str.length / 1024).toFixed(2)} Kb of data`, p);
+
   // Make the path absolute
   p = here(p);
   // Determine its parent folder
@@ -190,6 +212,9 @@ function writeFile(p, str) {
  * @returns {void}
  */
 function copy (src, dest, copyroot = false) {
+  // Verbose
+  verb(`Copying from "${src}" (${copyroot ? 'copying root' : 'making a sub-folder if needed'})`, dest);
+
   // Adapt the source path
   src = here(src);
   // Adapt the destination path
@@ -215,13 +240,16 @@ function copy (src, dest, copyroot = false) {
  * @returns {void}
  */
 function staticServe (folder, port = 80) {
-  // Create an Express application
+    // Create an Express application
+  verb('Creating an Express application');
   const app = express();
 
   // Serve static files
+  verb(`Preparing to serve statically a folder`, folder);
   app.use(express.static(here(folder)));
 
   // Listen on the provided port
+  verb(`Server listening on port ${port}`);
   app.listen(port);
 }
 
