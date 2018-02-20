@@ -5,6 +5,10 @@ It can be transpiled to JavaScript for the web, to Rust for thread-safe desktop 
 
 **Please note this language is not finished yet ; some features could be added, modified or removed at anytime. Be careful about this.**
 
+## Documentation
+
+You can take a look at the language's syntax and its current state by reading [The Hybrid Book](https://silvernight.herokuapp.com/docs/book/hybrid.html).
+
 ## Contribute
 
 You can contribute by [submitting bugs](https://github.com/SilverNight/issues) and helping me tracking them or by [proposing some improvements](https://github.com/SilverNight/issues) for the language.
