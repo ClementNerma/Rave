@@ -109,7 +109,7 @@ function mkdir(p) {
  */
 function rmdir(p) {
   // Remove the folder, recursively
-  rimraf.sync(here(p));
+  fs.removeSync(here(p));
 }
 
 /**
@@ -368,8 +368,7 @@ const path = require('path'),
 
 // Load some Yarn modules
 const chalk = require('chalk'),
-      minimist = require('minimist'),
-      rimraf = require('rimraf');
+      minimist = require('minimist');
 
 // Extract colors and styling functions from the "chalk" module
 const {
