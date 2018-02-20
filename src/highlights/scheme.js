@@ -342,6 +342,11 @@ scheme = {
       // Macros call
       /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)\!(?=\s*\()/,
       'cyan'
+    ],
+    [
+      // Functions call
+      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*\()/,
+      'blue'
     ]
   ]
 };
