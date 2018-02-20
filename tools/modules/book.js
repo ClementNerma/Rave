@@ -397,6 +397,7 @@ self = {
     }
 
     // All went good :)
-    success(`Book "${name}" was successfully built in "${output_path}".`);
+    if (! self.argv.SYS_NO_EXIT)
+      success(`Book "${name}" was successfully built in "${output_path}".`);
   }
 };
