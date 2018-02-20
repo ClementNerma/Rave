@@ -321,17 +321,23 @@ function adaptArgv(argv, args) {
 
     // If the argument is a number and the value is not...
     if (arg.type === 'number' && typeof value !== 'number') {
-      // Try to parse it as a number...
-      let num = parseFloat(value);
+      // If it's `true` and it has a default value...
+      if (value === true && arg.default)
+        // Use this default value
+        value = arg.default;
+      else {
+        // Try to parse it as a number...
+        let num = parseFloat(value);
 
-      // If it worked...
-      if (!Number.isNaN(num))
-        // Save it
-        value = num;
-      // Else...
-      else
-        // Convert the current value to a number
-        value = Number(value);
+        // If it worked...
+        if (!Number.isNaN(num))
+          // Save it
+          value = num;
+        // Else...
+        else
+          // Convert the current value to a number
+          value = Number(value);
+      }
     }
 
     // If it has a long version...
