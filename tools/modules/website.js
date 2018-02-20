@@ -76,10 +76,15 @@ self = {
       loadModule(
         build.module,
         Object.assign(
-          { output: tmp_build_folder + '/' + build.module },
+          { output: tmp_build_folder + '/' + build.module, SYS_NO_EXIT: true },
           build.arguments
         )
       ).build();
+
+    // For each map...
+    for (let item of Reflect.ownKeys(map.map))
+      // Copy the item
+      copy(output_folder + '/' + map.map[item], output_folder + '/' + item, true);
     
     // If the build folder must be removed...
     if (map.removeBuild)
