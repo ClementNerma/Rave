@@ -347,6 +347,11 @@ scheme = {
       // Functions call
       /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*\()/,
       'blue'
+    ],
+    [
+      // Functions call, with template
+      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*<(.*?)>\s*\()/,
+      'blue'
     ]
   ]
 };
