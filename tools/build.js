@@ -303,11 +303,6 @@ function getHelp (mod) {
  * @returns {Object} Module's API
  */
 function loadModule(name, argv) {
-  // If the specified module is unknown...
-  if (!modules.hasOwnProperty(name))
-    // ERROR
-    error(`Unknown build module "${name}"`, 3);
-
   // Get the path of the module's script
   const mod_path = `tools/modules/${name}.js`;
 
@@ -368,14 +363,6 @@ const {
   gray
 } = chalk;
 
-// Set up a list of modules with their respective folders
-const modules = {
-  // Module's slug (used in the CLI) associated to its purpose
-  // This slug is also the module's filename (without its extension)
-  book: 'Build the books',
-  highlights: 'Implementation of syntax highlighting for code editors'
-};
-
 // Get the tools' path
 const TOOLS_PATH = __dirname;
 
@@ -396,13 +383,6 @@ const main_mod = {
     { long: 'release', short: 'r', type: 'boolean', default: true, help: 'Optimize and improve the compatibility of the build' },
     { long: 'fast', short: 'f', type: 'boolean', help: 'Produce an unoptimized code - speed up the build' },
     { long: 'clean', short: 'c', type: 'boolean', help: 'Clean module\'s data' }
-  ],
-  help: [
-    'Build the sources through modules',
-    yellow('List of available modules:\n========================\n\n') +
-    Reflect.ownKeys(modules)
-      .map(name => green(` * ${name} - ${modules[name]}`))
-      .join('\n')
   ]
 };
 
@@ -424,9 +404,24 @@ for (let arg of Reflect.ownKeys(argv))
 // If no module was specified...
 if (typeof argv.module !== 'string') {
   // If help is asked...
-  if (argv.help)
+  if (argv.help) {
+    // Attach a help text to the module object
+    main_mod.help = [
+      'Build the sources through modules',
+      yellow('List of available modules:\n========================\n\n') +
+      fs.readdirSync(here('tools/modules'))
+        .map(name => {
+          // Remove the extension from the filename
+          name = path.basename(name, path.extname(name));
+          // Load the module ; get its help ; generate an item for the list and return it
+          return green(` * ${name} - ${loadModule(name, m_argv).help[0]}`);
+        })
+        .join('\n')
+    ]
+
     // Display the help
     console.log(getHelp(main_mod));
+  }
 
     // If clean operation is asked...
   else if (argv.clean) {
@@ -447,7 +442,7 @@ if (typeof argv.module !== 'string') {
     console.log('Syntax:\n  yarn build <module> <...options>\n  npm run build -- <module> <...options>\n\nTo see more help, write "yarn build --help" / "npm run build -- --help"');
 } else {
   // If the specified module is unknown...
-  if (! modules.hasOwnProperty(argv.module))
+  if (!fileExists('tools/modules/' + argv.module + '.js'))
     // ERROR
     error(`Unknown build module "${argv.module}"`, 3);
 
