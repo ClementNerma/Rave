@@ -193,6 +193,23 @@ function copy (src, dest, copyroot = false) {
 }
 
 /**
+ * Make a static web server
+ * @param {string} folder The web server's static folder
+ * @param {number} port The port number to deliver the folder on
+ * @returns {void}
+ */
+function staticServe (folder, port = 80) {
+  // Create an Express application
+  const app = express();
+
+  // Serve static files
+  app.use(express.static(here(folder)));
+
+  // Listen on the provided port
+  app.listen(port);
+}
+
+/**
  * Adapt a `minimist` arguments object
  * @param {Object} argv The `minimist` arguments object
  * @param {Array.<Object>} args List of arguments to format the object
@@ -373,12 +390,13 @@ function loadModule(name, argv) {
 }
 
 // Load some built-in modules
-const path = require('path'),
-      fs = require('fs-extra');
+const path = require('path');
 
 // Load some Yarn modules
 const chalk = require('chalk'),
-      minimist = require('minimist');
+      minimist = require('minimist'),
+      fs = require('fs-extra'),
+      express = require('express');
 
 // Extract colors and styling functions from the "chalk" module
 const {
