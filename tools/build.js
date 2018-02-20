@@ -429,6 +429,11 @@ if (typeof argv.module !== 'string') {
     // Success
     success('Build data cleaned.');
   }
+
+  // For everything else...
+  else
+    // Display a short help text
+    console.log('Syntax:\n  yarn build <module> <...options>\n  npm run build -- <module> <...options>\n\nTo see more help, write "yarn build --help" / "npm run build -- --help"');
 } else {
   // If the specified module is unknown...
   if (! modules.hasOwnProperty(argv.module))
