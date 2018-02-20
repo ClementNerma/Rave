@@ -422,6 +422,11 @@ scheme = {
       // Object assignment symbol
       /:/,
       'cyan'
+    ],
+    [
+      // Array concatenation from the left
+      /\.\.\.([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      'red'
     ]
   ]
 };
