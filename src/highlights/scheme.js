@@ -362,6 +362,11 @@ scheme = {
       // Static operator for classes
       /(?<!\.)\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(::)(?=[a-zA-Z_\$])/,
       'yellow', 'white'
+    ],
+    [
+      // Object followed by a child property
+      /(@?[a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=[\.\[])/,
+      'red'
     ]
   ]
 };
