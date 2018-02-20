@@ -91,8 +91,22 @@ self = {
       SYS_NO_EXIT: true
     }, true).build();
 
+    // Load the syntax highlighting module
+    const highlighter = new (require('highlights'));
+
+    // Load the built syntax package in it
+    highlighter.requireGrammarsSync({
+      modulePath: here(highlights_path)
+    });
+
     // Load the "markdown-it" module
-    const mdIt = require('markdown-it')({});
+    const mdIt = require('markdown-it')({
+      // Custom syntax highlighting callback
+      highlight: (str, lang) => highlighter.highlightSync({
+        fileContents: str,
+        scopeName: 'source.' + lang.toLocaleLowerCase()
+      })
+    });
 
     // Is a section opened?
     let opened = false;
