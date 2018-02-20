@@ -388,7 +388,7 @@ const main_mod = {
   ],
   help: [
     'Build the sources through modules',
-    yellow('List of available books:\n========================\n\n') +
+    yellow('List of available modules:\n========================\n\n') +
     Reflect.ownKeys(modules)
       .map(name => green(` * ${name} - ${modules[name]}`))
       .join('\n')
