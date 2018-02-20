@@ -18,7 +18,8 @@ self = {
    * @type {Array<Object>}
    */
   arguments: [
-    { long: 'book', short: 'b', placeholder: 'name', inline: true, help: 'The book to build' }
+    { long: 'book', short: 'b', placeholder: 'name', inline: true, help: 'The book to build' },
+    { long: 'output', short: 'o', placeholder: 'folder', help: 'Output path for the package' }
   ],
 
   /**
@@ -79,7 +80,7 @@ self = {
     source = source.replace(/<!--((.|\r\n|\r|\n)*?)-->/g, '');
 
     // Determine the output folder
-    const output_folder = 'build/books';
+    const output_folder = argv.output || 'build/books';
 
     // Determine the highlights folder
     const highlights_path = output_folder + '/syntax-package';
