@@ -467,6 +467,11 @@ scheme = {
       // Flying lambdas typing mode directive
       /(#flying\s*\()(explicit|inferred)(\)\s*;?)/,
       'orange', 'cyan', 'orange'
+    ],
+    [
+      // Invalid flying lambdas typing modes
+      /(#flying\s*\()(.*?)(\)\s*;?)/,
+      'orange', 'invalid', 'orange'
     ]
   ]
 };
