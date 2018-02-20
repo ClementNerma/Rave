@@ -416,6 +416,19 @@ if (typeof argv.module !== 'string') {
   if (argv.help)
     // Display the help
     console.log(getHelp(main_mod));
+
+    // If clean operation is asked...
+  else if (argv.clean) {
+    // For each module...
+    for (let name of Reflect.ownKeys(modules)) {
+      say(cyan('* Starting clean operation for module ' + green(`"${name}"`) + '...'));
+      // Load the module, then run its clean function
+      loadModule(name, m_argv).clean();
+    }
+
+    // Success
+    success('Build data cleaned.');
+  }
 } else {
   // If the specified module is unknown...
   if (! modules.hasOwnProperty(argv.module))
