@@ -322,6 +322,11 @@ scheme = {
       // Special native types
       /(?<!\.)\b(void|self|Any|class_ref|func_ref|var_ref|macro_ref|T|X|Y|Z|K|V)(?!\s*:)\b/,
       'purple'
+    ],
+    [
+      // Keywords
+      /(?<!\.)\b(let|pln|val|frozen|frozen|func|lambda|public|protected|private|auto|friend|static|abstract|final|unique|virtual|extern|readonly|do|if|else|finally|for|foreach|in|of|break|continue|unless|until|when|default|export|return|throw|die|try|catch|while|with|new|include|await|native)(?!\s*:)\b/,
+      'purple'
     ]
   ]
 };
