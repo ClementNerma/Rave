@@ -33,7 +33,22 @@ self = {
    * Build function
    */
   build: () => {
-    // Exit with an error
-    error('Website module is not ready yet', 28);
+    // Determine the map file's path
+    let map_path = `src/website/map.json`;
+
+    // If the file does not exist...
+    if (!fileExists(map_path))
+      // ERROR
+      error(`Website's map file not found (expecting file at "${map_path}")`, 29);
+
+    // Try to read the book's file
+    let map;
+
+    try {
+      map = readFile(map_path);
+    } catch (e) {
+      // ERROR
+      error(`Failed to read website's map file`, 30, e);
+    }
   }
 };
