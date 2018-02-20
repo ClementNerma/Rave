@@ -103,5 +103,9 @@ self = {
     if (map.removeBuild)
       // Remove it
       rmdir(tmp_build_folder);
+
+    // All went good :)
+    if (! self.argv.SYS_NO_EXIT)
+      success(`Website was successfully built in "${output_folder}".`);
   }
 };
