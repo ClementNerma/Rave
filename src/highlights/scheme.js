@@ -207,6 +207,11 @@ scheme = {
       // DECLARE
       /(?<!\.)\b(decl)(\s+(?:public|protected|private))?\s+(let)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'purple', 'purple', 'red', 'cyan'
+    ],
+    [
+      // Declaration statement in classes for constants and frozens (plain or not)
+      /(?<!\.)\b(public|protected|private)(?!\s+(?:func|getter|setter|static|struct)\s+)\s+(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      'purple', 'purple', 'red', 'orange'
     ]
   ]
 };
