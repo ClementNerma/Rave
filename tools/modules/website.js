@@ -106,6 +106,6 @@ self = {
 
     // All went good :)
     if (! self.argv.SYS_NO_EXIT)
-      success(`Website was successfully built in "${output_folder}".`);
+      success(`Website was successfully built in "${output_folder}".`, output_folder);
   }
 };

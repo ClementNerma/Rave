@@ -24,13 +24,29 @@ function error (message, errcode = 1, error = null) {
 /**
  * Exit the build successfully
  * @param {string} message The success message to display
+ * @param {string} [output_folder] The module's build folder
  * @returns {void}
  */
-function success(message) {
+function success(message, output_folder) {
   // Display the success message
   say(chalk.green(message));
-  // Exit safely and without an error code
-  process.exit(0);
+
+  // If files must be served...
+  if (argv.serve) {
+    // If an output folder was provided...
+    if (output_folder) {
+      // Display a message
+      say(cyan('Statically delivering output folder on port ' + yellow(argv.serve) + '...'));
+
+      // Serve it
+      staticServe(output_folder, argv.serve);
+    } else
+      // Else, display an error message
+      console.error(chalk.error('Cannot serve files: the module did not provide an output folder'));
+  }
+  else
+    // If not, exit safely and without an error code
+    process.exit(0);
 }
 
 /**
@@ -435,7 +451,8 @@ const main_mod = {
     { long: 'quiet', short: 'q', type: 'boolean', help: 'Reduce console outputs' },
     { long: 'release', short: 'r', type: 'boolean', default: true, help: 'Optimize and improve the compatibility of the build' },
     { long: 'fast', short: 'f', type: 'boolean', help: 'Produce an unoptimized code - speed up the build' },
-    { long: 'clean', short: 'c', type: 'boolean', help: 'Clean module\'s data' }
+    { long: 'clean', short: 'c', type: 'boolean', help: 'Clean module\'s data' },
+    { long: 'serve', type: 'number', help: 'Run a web server to deliver statically the output folder' }
   ]
 };
 

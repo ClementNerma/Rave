@@ -305,6 +305,6 @@ self = {
 
     // All went good :)
     if (! self.argv.SYS_NO_EXIT)
-      success(`Extension successfully built for editor "${name}" in "${output_path}".`);
+      success(`Extension successfully built for editor "${name}" in "${output_path}".`, output_path);
   }
 };
