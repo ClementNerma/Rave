@@ -302,6 +302,11 @@ scheme = {
       // Instanciation
       /\b(new)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'yellow'
+    ],
+    [
+      // Extensions and aliases
+      /\b(extends|implements|from|as)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.]*)*)\b/,
+      'purple', 'green', 'green'
     ]
   ]
 };
