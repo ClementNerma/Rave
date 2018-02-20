@@ -149,6 +149,11 @@ scheme = {
       // Booleans
       /\b(true|false)\b/,
       'orange'
+    ],
+    [
+      // Constant numbers
+      /(?<!\.)\b(0_*d_*)?(\d_*)+(\._*(\d_*)+)?\b/,
+      'orange'
     ]
   ]
 };
