@@ -1,1 +1,1 @@
-web: npm run build -- website --serve=80
+web: npm run build -- website --serve=80 --verbose
