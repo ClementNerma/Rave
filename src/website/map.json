@@ -1,0 +1,15 @@
+{
+  "build": [
+    {
+      "module": "book",
+      "arguments": {
+        "book": "hybrid"
+      }
+    }
+  ],
+  "buildPath": "tmp",
+  "removeBuild": true,
+  "map": {
+    "books/hybrid.html": "tmp/book/hybrid.book.html"
+  }
+}
