@@ -37,7 +37,17 @@ self = {
    * Build function
    */
   build: () => {
-    // Exit with an error
-    error('Highlights module is not ready yet', 17);
+    // Get the editor's name
+    const name = self.argv.target;
+
+    // If no editor was specified...
+    if (! name)
+      // ERROR
+      error('No editor name provided', 18);
+
+    // If the editor is unknown...
+    if (! editors.hasOwnProperty(name))
+      // ERROR
+      error(`Unknown editor "${name}"`, 19);
   }
 };
