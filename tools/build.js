@@ -374,16 +374,29 @@ const ROOT_PATH = path.join(TOOLS_PATH, '..');
 // Parse the command-line arguments
 let m_argv = minimist(process.argv.slice(2) /* Ignore Node.js call arguments */);
 
+// Set up a module object
+const main_mod = {
+  name: 'main',
+  arguments: [
+    { long: 'module', inline: true, value: 'name', help: 'The build module to use' },
+    { long: 'help', type: 'boolean', help: 'Display help about a module' },
+    { long: 'verbose', type: 'boolean', help: 'Display verbose messages' },
+    { long: 'quiet', short: 'q', type: 'boolean', help: 'Reduce console outputs' },
+    { long: 'release', short: 'r', type: 'boolean', default: true, help: 'Optimize and improve the compatibility of the build' },
+    { long: 'fast', short: 'f', type: 'boolean', help: 'Produce an unoptimized code - speed up the build' },
+    { long: 'clean', short: 'c', type: 'boolean', help: 'Clean module\'s data' }
+  ],
+  help: [
+    'Build the sources through modules',
+    yellow('List of available books:\n========================\n\n') +
+    Reflect.ownKeys(modules)
+      .map(name => green(` * ${name} - ${modules[name]}`))
+      .join('\n')
+  ]
+};
+
 // Set up the arguments for this main module and parse the provided arguments using them
-const argv = adaptArgv(m_argv, [
-  { long: 'module', inline: true, value: 'name', help: 'The build module to use' },
-  { long: 'help', type: 'boolean', help: 'Display help about a module' },
-  { long: 'verbose', type: 'boolean', help: 'Display verbose messages' },
-  { long: 'quiet', short: 'q',  type: 'boolean', help: 'Reduce console outputs' },
-  { long: 'release', short: 'r', type: 'boolean', default: true, help: 'Optimize and improve the compatibility of the build' },
-  { long: 'fast', short: 'f', type: 'boolean', help: 'Produce an unoptimized code - speed up the build' },
-  { long: 'clean', short: 'c', type: 'boolean', help: 'Clean module\'s data' }
-]);
+const argv = main_mod.argv = adaptArgv(m_argv, main_mod.arguments);
 
 // Set up constants for the modules
 const RELEASE = argv.release && ! argv.fast;
@@ -398,29 +411,32 @@ for (let arg of Reflect.ownKeys(argv))
     delete m_argv[arg];
 
 // If no module was specified...
-if (typeof argv.module !== 'string')
-  // ERROR
-  error('No build module specified', 2);
+if (typeof argv.module !== 'string') {
+  // If help is asked...
+  if (argv.help)
+    // Display the help
+    console.log(getHelp(main_mod));
+} else {
+  // If the specified module is unknown...
+  if (! modules.hasOwnProperty(argv.module))
+    // ERROR
+    error(`Unknown build module "${argv.module}"`, 3);
 
-// If the specified module is unknown...
-if (! modules.hasOwnProperty(argv.module))
-  // ERROR
-  error(`Unknown build module "${argv.module}"`, 3);
+  // Retrieve the module's API
+  let mod = loadModule(argv.module, m_argv);
 
-// Retrieve the module's API
-let mod = loadModule(argv.module, m_argv);
+  // If help is asked...
+  if (argv.help)
+    // Display help about the specified module
+    console.log(getHelp(mod));
 
-// If help is asked...
-if (argv.help)
-  // Display help about the specified module
-  console.log(getHelp(mod));
+  // If clean is asked...
+  else if (argv.clean)
+    // Run the module's clean function
+    mod.clean();
 
-// If clean is asked...
-else if (argv.clean)
-  // Run the module's clean function
-  mod.clean();
-
-// If no special argument was used to call this program...
-else
-  // Run the module's build function
-  mod.build();
+  // If no special argument was used to call this program...
+  else
+    // Run the module's build function
+    mod.build();
+}
