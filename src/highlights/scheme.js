@@ -427,6 +427,11 @@ scheme = {
       // Array concatenation from the left
       /\.\.\.([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'red'
+    ],
+    [
+      // Array concatenation from the right
+      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)\.\.\./,
+      'red'
     ]
   ]
 };
