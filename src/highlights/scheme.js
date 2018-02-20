@@ -164,6 +164,11 @@ scheme = {
       // Constant octal numbers
       /(?<!\.)\b0_*o_*(([0-7]_*)+)(\._*([0-7]_*)+)?\b/,
       'orange'
+    ],
+    [
+      // Constant hexadecimal numbers
+      /(?<!\.)\b0_*x_*(([a-zA-Z0-9]_*)+)(\._*([a-zA-Z0-9]_*)+)?\b/,
+      'orange'
     ]
   ]
 };
