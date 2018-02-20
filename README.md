@@ -5,6 +5,12 @@ It can be transpiled to JavaScript for the web, to Rust for thread-safe desktop 
 
 **Please note this language is not finished yet ; some features could be added, modified or removed at anytime. Be careful about this.**
 
+## Contribute
+
+You can contribute by [submitting bugs](https://github.com/SilverNight/issues) and helping me tracking them or by [proposing some improvements](https://github.com/SilverNight/issues) for the language.
+
+You can also [contact me by e-mail](mailto:clement.nerma@gmail.com) if you want to talk about something not covered here or for major changes to the language/compiler/doc.
+
 ## License
 
 This project is released under the [Apache 2.0 license](LICENSE.md) terms.
