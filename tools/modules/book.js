@@ -316,7 +316,9 @@ self = {
       }
 
       // Get the file extension
-      const ext = (file.match(/\.([^\.]+)$/) || [''])[1].toLocaleLowerCase();
+      const ext = path.extname(file)
+                      .substr(1) /* Remove the '.' symbol */
+                      .toLocaleLowerCase();
 
       // If a wrapper is found for this extension...
       if (wrappers.hasOwnProperty(ext)) {
