@@ -192,6 +192,11 @@ scheme = {
       // Declaration of constants, frozens and values
       /(frozen|val|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'red', 'orange'
+    ],
+    [
+      // DECLARE function, interface or class
+      /(?<!\.)\b(decl)\s+(func|interface|class)\b/,
+      'purple'
     ]
   ]
 };
