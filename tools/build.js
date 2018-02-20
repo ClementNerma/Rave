@@ -362,7 +362,8 @@ const {
 const modules = {
   // Module's slug (used in the CLI) associated to its purpose
   // This slug is also the module's filename (without its extension)
-  book: 'Build the books'
+  book: 'Build the books',
+  highlights: 'Implementation of syntax highlighting for code editors'
 };
 
 // Get the tools' path
