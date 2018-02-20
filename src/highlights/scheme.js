@@ -357,6 +357,11 @@ scheme = {
       // Constants
       /\b([A-Z_\$][A-Z0-9_\$]*)\b/,
       'orange'
+    ],
+    [
+      // Static operator for classes
+      /(?<!\.)\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(::)(?=[a-zA-Z_\$])/,
+      'yellow', 'white'
     ]
   ]
 };
