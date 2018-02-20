@@ -48,6 +48,90 @@ scheme = {
           name: '${purple}'
         }
       ]
+    },
+    {
+      // Documentation comments
+      begin: /\/\*\*/,
+      end: /\*\//,
+      name: '${gray}',
+      patterns: [
+        {
+          match: /\b(NOTE|TODO|FIXME|BUG)\b/,
+          name: '${purple}'
+        },
+        {
+          match: /(@(?:param|template))\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s+/,
+          captures: {
+            '1': {
+              name: '${purple}'
+            },
+            '2': {
+              name: '${red}'
+            }
+          }
+        },
+        {
+          match: /@(note|same)\s+/,
+          name: '${purple}'
+        },
+        {
+          match: /(@returns)\s+/,
+          name: '${purple}'
+        },
+        {
+          match: /(@(?:condition|example))\s+(.*)$/,
+          captures: {
+            '1': {
+              name: '${purple}'
+            },
+            '2': {
+              name: '${cyan}'
+            }
+          }
+        },
+        {
+          match: /(@file)\s+(.*)$/,
+          captures: {
+            '1': {
+              name: '${purple}'
+            },
+            '2': {
+              name: '${cyan}'
+            }
+          }
+        },
+        {
+          match: /(@author)\s+(.*)$/,
+          captures: {
+            '1': {
+              name: '${purple}'
+            },
+            '2': {
+              name: '${red}'
+            }
+          }
+        },
+        {
+          match: /(@license)\s+(.*)$/,
+          captures: {
+            '1': {
+              name: '${purple}'
+            },
+            '2': {
+              name: '${yellow}'
+            }
+          }
+        },
+        {
+          match: /\*((?:\s*>)+)/,
+          captures: {
+            '1': {
+              name: '${blue}'
+            }
+          }
+        }
+      ],
+      name: 'comment.block.sn'
     }
   ]
 };
