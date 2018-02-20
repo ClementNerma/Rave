@@ -397,6 +397,11 @@ scheme = {
       // Object's function's call
       /(@)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*\()/,
       'red', 'blue'
+    ],
+    [
+      // Object's function's call with a template
+      /(@)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*<(.*?)>\s*\s*\()/,
+      'red', 'blue'
     ]
   ]
 };
