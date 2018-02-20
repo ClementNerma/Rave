@@ -272,6 +272,11 @@ scheme = {
       // Logical operators
       /(<=|>=|<|>|==|!=|&&|\|\|)/,
       'cyan'
+    ],
+    [
+      // Declaration conditionnal operator
+      /\?\?/,
+      'cyan'
     ]
   ]
 };
