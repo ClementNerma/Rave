@@ -10,6 +10,6 @@
   "buildPath": "tmp",
   "removeBuild": true,
   "map": {
-    "books/hybrid.html": "tmp/book/hybrid.book.html"
+    "doc/book/hybrid.html": "tmp/book/hybrid.book.html"
   }
 }
