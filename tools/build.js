@@ -572,7 +572,7 @@ if (typeof argv.module !== 'string') {
     // If clean operation is asked...
   else if (argv.clean) {
     // For each module...
-    for (let name of Reflect.ownKeys(modules)) {
+    for (let name of listModules()) {
       say(cyan('* Starting clean operation for module ' + green(`"${name}"`) + '...'));
       // Load the module, then run its clean function
       loadModule(name, m_argv).clean();
