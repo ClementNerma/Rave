@@ -1430,3 +1430,198 @@ Here we are. We will now talk about the most important concept in SilverNight, w
 Like we saw before, everything in SilverNight is an object. Though primitive types like `string` or `int` are special ones, they follow a strict behavior rules by their _type_.
 
 To introduce the OOP concept, let's see the concept of _class_. Think to classes like advanced structures: they are a set of properties that can be functions. But were classes are brillant is where structures are limited.
+
+### I need a hero!
+
+Let's imagine we want to represent a hero like we saw before.
+
+> We now want to represent a video game hero. It has a name, Health Points (HP), Magic Points (MP), attack and defense points. How could we describe this?
+
+The first option we saw was to make a list, but that was not very convenient (both not readable and poorly maintanable). So we chose to make a structure, and here is the result we obtained:
+
+```sn
+struct Hero {
+  name: string;
+  hp: int;
+  mp: int;
+  atk: int;
+  def: int;
+}
+```
+
+That was fine. Now let's say we don't want anyone to change the hero's values. The good way to do this is to make constant properties:
+
+```sn
+struct Hero {
+  val name: string;
+  val hp: int;
+  val mp: int;
+  val atk: int;
+  val def: int;
+}
+```
+
+But now imagine we want to make a function that allows a hero to fight another. This is impossible. Why? Because we can't both make the structure's properties constant **and** change them from inside a function. That's where structures suck.
+
+So, what can we do? Well, we do classes. Here is the syntax:
+
+```sn
+class Hero {
+  private name: string;
+  private hp: int;
+  private mp: int;
+  private atk: int;
+  private def: int;
+}
+```
+
+First, we _declare_ the class with `class Hero {`. This creates a _type_ named `Hello` (that's the first verity about types, every type outside structures is in reality a class). Then, we set up its _members_, an equivalent to structures' properties. But look at the `private` keyword. This indicates that this members are available only from _the inside_ of the class ; that means no one will be able to access these members outside the class. So, how can we do our fight function?
+
+Well, here is how it goes:
+
+```sn
+class Hero {
+  private name: string;
+  private hp: int;
+  private mp: int;
+  private atk: int;
+  private def: int;
+
+  public func @construct(name: string, hp: int, mp: int, atk: int, def: int) {
+    this.name = name;
+    this.hp = hp;
+    this.mp = mp;
+    this.atk = attack;
+    this.def = defense;
+  }
+}
+```
+
+That becomes a little more complicated here. We start by declaring the `@construct` function which is called a _constructor_. This function is called when a resource (variable, constant or frozen) is created with the `Hero` type. Because any return value would be lost from it there is an exception in the language's rules that allow us to not give it a return type (it will implicitly be `void`), without any directive.
+
+The constructor will take as an argument a name, an amount of HP and MP, an attack and a defense. Then, it will assign these given values to its _members_, which are not available from outside the class.
+
+```sn
+  // ...
+  public func getAttack() : int {
+    return this.atk;
+  }
+
+  public func beAttacked(ennemy: Hero) : void {
+    this.hp -= ennemy.getAttack();
+  }
+  // ...
+```
+
+Here, we define a `getAttack(à` and a `beAttacked()` functions publicly, which means everyone can access it, even outside the class. `getAttack()` returns the `attack` member from the current class, while `beAttacked()` runs `getAttack()` from the provided ennemy and decreases its own HP depending on it.
+
+Here is how we instanciate our heroes:
+
+```sn
+val jack = new Hero(); // ERROR: Expecting 5 arguments, found 0
+val jack = new Hero("Jack", 100, 5, 50, 10); // Let's declare a warrior
+```
+
+If we want to consider the defense now:
+
+```sn
+  // ...
+  public func beAttacked(ennemy: Hero) : void {
+    this.hp -= ennemy.getAttack() - this.def;
+  }
+  // ...
+```
+
+Here we consider our defense. But now we have to assure HP loss is not negative. That would be weird to win HP while _being attacked_ by an ennemy.
+
+```sn
+  // ...
+  public func beAttacked(ennemy: Hero) : void {
+    // Calculate the loss
+    val loss = ennemy.getAttack() - this.def;
+    // Decrease HP
+    this.hp -= loss;
+  }
+  // ...
+```
+
+Here we are! Now, let's write a `fight()` function!
+
+```sn
+  // ...
+  public func beAttacked(ennemy: Hero) : void {
+    // Calculate the loss
+    val loss = ennemy.getAttack() - this.def;
+    // Decrease HP
+    this.hp -= loss;
+  }
+
+  public func fight(ennemy: Hero) : void {
+    // Damage the ennemy
+    this.beAttacked(ennemy);
+    // Get damages from the ennemy
+    ennemy.beAttacked(this);
+  }
+  // ...
+```
+
+We did it! Here is our whole code with the display of names:
+
+```sn
+class Hero {
+  private name: string;
+  private hp: int;
+  private mp: int;
+  private atk: int;
+  private def: int;
+
+  public func @construct(name: string, hp: int, mp: int, atk: int, def: int) {
+    this.name = name;
+    this.hp = hp;
+    this.mp = mp;
+    this.atk = attack;
+    this.def = defense;
+  }
+
+  public func getName() : string {
+    return this.name;
+  }
+
+  public func getAttack() : int {
+    return this.atk;
+  }
+
+  public func beAttacked(ennemy: Hero) : void {
+    // Calculate the loss
+    val loss = ennemy.getAttack() - this.def;
+    // Tell what happens
+    println!(`${this.name} is attack by ${ennemy.name} and loses ${loss} HP!`);
+    // Decrease HP
+    this.hp -= loss;
+  }
+
+  public func fight(ennemy: Hero) : void {
+    // Tell what happens
+    println!("${this.name} is going to fight ${ennemy.name}!");
+    // Damage the ennemy
+    this.beAttacked(ennemy);
+    // Get damages from the ennemy
+    ennemy.beAttacked(this);
+  }
+}
+```
+
+To test it:
+
+```sn
+// Make two warriors
+val jack = new Hero("Jack", 100, 5, 50, 10);
+val john = new John("John", 50, 5, 80, 5);
+
+// Make them fight
+jack.fight(john);
+
+// Show their remaining HP
+println!(`Jack's HP: ${jack.hp}`);
+println!(`John's HP: ${john.hp}`);
+```
