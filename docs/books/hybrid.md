@@ -1420,3 +1420,13 @@ Also, note this will only work with lambdas that are directly given as arguments
 While we have inferred typing without looking at any prototype for data structure, you may be wondering why functions can't have an inferred typing for their arguments and return type too based on their body. For example, if a function only returns booleans, its return type could be inferred.
 
 To answer this question, there is a directive that allows inferred typing for anything, from variables to functions, even to more complex data structures (like interfaces or classes). But like we'll see later, this has some (really) serious downsides and considerably slows down the compilation. Global inferred typing is only useful when some conditions are met, so for now let's put it aside and only consider inferred typing is supported for variables/constants/frozens/plain values, on-the-fly structures and flying lambdas.
+
+## Oriented-Object Programming
+
+### The concept of class
+
+Here we are. We will now talk about the most important concept in SilverNight, which is also the most complex one: **Oriented-Object Programming**.
+
+Like we saw before, everything in SilverNight is an object. Though primitive types like `string` or `int` are special ones, they follow a strict behavior rules by their _type_.
+
+To introduce the OOP concept, let's see the concept of _class_. Think to classes like advanced structures: they are a set of properties that can be functions. But were classes are brillant is where structures are limited.
