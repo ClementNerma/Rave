@@ -40,6 +40,7 @@
     "highlights": "^3.1.1",
     "html-minifier": "^3.5.9",
     "markdown-it": "^8.4.1",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "opn": "^5.2.0"
   }
 }

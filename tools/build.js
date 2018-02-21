@@ -242,6 +242,20 @@ function copy (src, dest, copyroot = false, verbmsg) {
 }
 
 /**
+ * Open an item in the browser
+ * @param {string} p The path to open
+ * @param {Function} [callback] A function to call when the browser is opened
+ * @returns {void}
+ */
+function openBrowser (p, callback) {
+  // Verbose
+  verb('Opening item in the browser', p);
+
+  // Open the item in the browser
+  opn(here(p), callback);
+}
+
+/**
  * Make a static web server
  * @param {string} folder The web server's static folder
  * @param {number} port The port number to deliver the folder on
@@ -458,7 +472,8 @@ const path = require('path');
 const chalk = require('chalk'),
       minimist = require('minimist'),
       fs = require('fs-extra'),
-      express = require('express');
+      express = require('express'),
+      opn = require('opn');
 
 // Extract colors and styling functions from the "chalk" module
 const {
