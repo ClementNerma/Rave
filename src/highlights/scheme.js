@@ -180,7 +180,13 @@ scheme = {
       // Multi-line strings
       begin: /`/,
       end: /`/,
-      patterns: [],
+      patterns: [
+        {
+          begin: /\${/,
+          end: /}/,
+          name: '${red}'
+        }
+      ],
       name: '${green}'
     },
     [
