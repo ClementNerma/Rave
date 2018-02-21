@@ -601,7 +601,22 @@ To:
   // ...
 ```
 
-And the property will be constant! Be aware though, we won't be able to initialize the structure after its declaration anymore, we will have to give all the informations when the structure is made.
+And the property will be constant! Be aware though, we absolutely need to initialize `jack`'s declaration. Else, an error will be thrown by the compiler, saying the object was not initialized.
+
+But we can still make some properties optionals, so we won't have to specify them when initializing the structure:
+
+```sn
+struct Identity {
+  val name: string;
+  adult: bool = false;
+}
+
+val jack: Identity = {
+  name: "Jack"
+};
+
+println!(jack.adult); // Prints: "false"
+```
 
 ### Dictionaries
 
@@ -1405,30 +1420,3 @@ Also, note this will only work with lambdas that are directly given as arguments
 While we have inferred typing without looking at any prototype for data structure, you may be wondering why functions can't have an inferred typing for their arguments and return type too based on their body. For example, if a function only returns booleans, its return type could be inferred.
 
 To answer this question, there is a directive that allows inferred typing for anything, from variables to functions, even to more complex data structures (like interfaces or classes). But like we'll see later, this has some (really) serious downsides and considerably slows down the compilation. Global inferred typing is only useful when some conditions are met, so for now let's put it aside and only consider inferred typing is supported for variables/constants/frozens/plain values, on-the-fly structures and flying lambdas.
-
-### Bindings
-
-A useful concepts when using libraries with a lot of resources is the _bindings_. It consists in applying an alias object on a function to extract resources in the local scope.
-
-Let's imagine we have a function, `gameEngine`, which takes as an argument a function. This game engine runs the function but it also wants to provide a huge number of functions to manage the scene, the collisions, the geometry, the physics, etc.
-
-A first solution would be to provide them each one after another as an argument. We this would result in a lambda with thousands of arguments, so that's not a good idea, even with the `#auto` lambda (because we still have to write the argument's name and order).
-
-Another solution would be to make a structure with functions in it, like:
-
-```sn
-struct EngineFunctions {
-  init = engine.init,
-  createScene = engine.createScene,
-  getScene = engine.getScene
-  /* ... and so on */
-}
-
-val functions: EngineFunctions;
-```
-
-This works but involves to create a large structure, and then make an object with it, then give it as an argument. Putting aside the fact it is really heavy, all the functions would need to be called with `functions.init()`, `functions.createScene()` etc. which is long to write and heavy too if we call them multiple times.
-
-That's where we use bindings.
-
-_This part is still being written_.
