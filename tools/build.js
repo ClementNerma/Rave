@@ -423,6 +423,19 @@ function getHelp (mod) {
 }
 
 /**
+ * Get the list of available build modules
+ * @returns {Array<string>} A list of available build modules
+ */
+function listModules() {
+  // Read the folder
+  return readFolder('tools/modules')
+    // Keep only JavaScript files
+    .filter(filename => filename.endsWith('.js'))
+    // Remove file extension
+    .map(filename => path.basename(filename, path.extname(filename)));
+}
+
+/**
  * Load a module from the disk
  * @param {string} name Module's name
  * @param {Object} argv `minimist` arguments object
@@ -531,6 +544,8 @@ for (let arg of Reflect.ownKeys(argv))
   if (arg !== '_')
     // Remove it from the original arguments
     delete m_argv[arg];
+
+    console.log(listModules());
 
 // If no module was specified...
 if (typeof argv.module !== 'string') {
