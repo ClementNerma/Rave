@@ -19,7 +19,8 @@ self = {
    */
   arguments: [
     { long: 'book', short: 'b', placeholder: 'name', inline: true, help: 'The book to build' },
-    { long: 'output', short: 'o', placeholder: 'folder', help: 'Output path for the package' }
+    { long: 'output', short: 'o', placeholder: 'folder', help: 'Output path for the package' },
+    { long: 'open-browser', type: 'boolean', help: 'Open the book in the browser' }
   ],
 
   /**
@@ -413,8 +414,19 @@ self = {
       error(`Failed to write output to the disk (attempted to write at: "${output_path}")`, 15);
     }
 
-    // All went good :)
-    if (! self.argv.SYS_NO_EXIT)
-      success(`Book "${name}" was successfully built in "${output_path}".`, output_path);
+    // Declare the end function
+    const end = () => {
+      // All went good :)
+      if (!self.argv.SYS_NO_EXIT)
+        success(`Book "${name}" was successfully built in "${output_path}".`, output_path);
+    };
+
+    // If output must be opened in the browser...
+    if (self.argv['open-browser'])
+      // Open it
+      openBrowser(output_path, end, 'Opening book in the browser...');
+    else
+      // Exit
+      end();
   }
 };
