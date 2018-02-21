@@ -560,8 +560,8 @@ struct Hero {
   name: string;
   hp: int;
   mp: int;
-  attack: int;
-  defense: int;
+  atk: int;
+  def: int;
 }
 ```
 
@@ -580,8 +580,8 @@ let jack: Hero = {
   name: "Jack",
   hp: 80,
   mp: 10,
-  attack: 20,
-  defense: 5
+  atk: 20,
+  def: 5
 };
 ```
 
