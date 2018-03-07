@@ -1595,18 +1595,18 @@ class Hero {
     // Calculate the loss
     val loss = ennemy.getAttack() - this.def;
     // Tell what happens
-    println!(`${this.name} is attack by ${ennemy.name} and loses ${loss} HP!`);
+    println!(`${this.name} is attacked by ${ennemy.getName()} and loses ${loss} HP!`);
     // Decrease HP
     this.hp -= loss;
   }
 
   public func fight(ennemy: Hero) : void {
     // Tell what happens
-    println!("${this.name} is going to fight ${ennemy.name}!");
+    println!(`${this.name} is going to fight ${ennemy.getName()}!`);
     // Damage the ennemy
-    this.beAttacked(ennemy);
-    // Get damages from the ennemy
     ennemy.beAttacked(this);
+    // Get damages from the ennemy
+    this.beAttacked(ennemy);
   }
 }
 ```
@@ -1616,12 +1616,10 @@ To test it:
 ```sn
 // Make two warriors
 val jack = new Hero("Jack", 100, 5, 50, 10);
-val john = new John("John", 50, 5, 80, 5);
+val john = new Hero("John", 50, 5, 80, 5);
 
 // Make them fight
-jack.fight(john);
-
-// Show their remaining HP
-println!(`Jack's HP: ${jack.hp}`);
-println!(`John's HP: ${john.hp}`);
+jack.fight(john); // Prints: "Jack is going to fight John!"
+                  //         "John is attacked by Jack and loses 45 HP!"
+                  //         "Jack is attacked by John and loses 70 HP!"
 ```
