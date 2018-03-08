@@ -1707,3 +1707,32 @@ val something = new Superthing("Gamepad");
 ```
 
 This will work fine and the constructor will get the `"Gamepad"` value in `theThingName`.
+
+### Methods
+
+Let's now see the _methods_ more in details. This will be pretty simple in fact: methods in classes act like simple lambdas in structures, but they can also access the classes' private attributes and use a few keywords, like `this` which refers to the current class.
+
+Note that all attributes and methods of a class (called its _members_) can be accessed only through the `this` keyword or the instance name. For example:
+
+```sn
+class Superthing {
+  private name: string;
+
+  public func @construct(theThingName: string) {
+    this.name = theThingName;
+  }
+
+  public func getName() {
+    return this.name;
+  }
+}
+```
+
+Here, the `getName()` function will return the thing's name. To use it, we simply have to do:
+
+```sn
+val something = new Superthing("cake");
+
+println!(`The thing's name is ${something.getName()}.`);
+  // Prints: "The thing's name is cake."
+```
