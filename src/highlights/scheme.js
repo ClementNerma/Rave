@@ -190,6 +190,11 @@ scheme = {
       name: '${green}'
     },
     [
+      // Class references
+      /\b(this|self|parent)\b/,
+      'yellow'
+    ],
+    [
       // Declaration of variables
       /(?<!\.)\b(let)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'red', 'cyan'
