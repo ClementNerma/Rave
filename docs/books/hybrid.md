@@ -1463,6 +1463,32 @@ While we have inferred typing without looking at any signature for data structur
 
 To answer this question, there is a directive that allows inferred typing for anything, from variables to functions, even to more complex data structures (like interfaces or classes). But like we'll see later, this has some (really) serious downsides and considerably slows down the compilation. Global inferred typing is only useful when some conditions are met, so for now let's put it aside and only consider inferred typing is supported for variables/constants/frozens/plain values, on-the-fly structures and flying lambdas.
 
+### Polymorphism
+
+When declaring a method, we sometimes want to make them callable by several ways. For example, let's say we want to give the coordinates, as a string, of a point. A point is a couple of floating-point numbers, the first one representing X, the second one Y. But, we also want to support the `Point` structure, which has two members `x` and `y`, which the same function name. How could we do that?
+
+The answer to this problem is called _polymorphism_: we declare several functions with the same name, but with different signatures.
+
+Here is it how it works:
+
+```sn
+// Make the 'Point' structure
+struct Point {
+  x: float;
+  y: float;
+}
+
+// Declare the two functions with polymorphism
+func pointStr (x: float, y: float) : string -> `(${x}, ${y})`;
+func pointStr (pt: Point) -> `(${Point.x}, ${Point.y})`;
+
+// Let's try them!
+pointStr(2, 5); // Prints: "(2, 5)"
+pointStr({ x: 2, y: 5 }); // Prints: "(2, 5)"
+```
+
+They work as expected and print the same result.
+
 ## Oriented-Object Programming
 
 ### The concept of class
