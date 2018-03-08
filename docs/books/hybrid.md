@@ -1301,6 +1301,26 @@ val num = 2;
 i_need_a_plain(num); // ERROR
 ```
 
+### Optional arguments
+
+Optional arguments are... optional. Well, that's pretty explicit, at least. When declaring a function's arguments, we list them with their respective types. But, we can also make some of them _omittable_ by giving them a _default value_. Let's try it:
+
+```sn
+func sayHello (name: string, justTheName: bool = false) : void {
+  if (justTheName)
+    println!(name);
+  else
+    println!(`Hello, ${name}!`);
+}
+
+sayHello("John", false); // "Hello, John!"
+sayHello("John", true); // "John"
+
+sayHello("John"); // "Hello, John!"
+```
+
+This is useful when we don't want to give a default value to arguments. Note that default values can be absolutely anything, even expressions.
+
 ### Lambdas and callbacks
 
 We saw that functions can be declared with a name, a list of arguments, a return type and a body. But there are some functions that omit the name, called _lambdas_.
