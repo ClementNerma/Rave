@@ -1264,7 +1264,7 @@ Now we want to print it:
 ```sn
 func triangle_area (base: float, height: float) : float {
   val area = 0.5 * base * height;
-  println!("The triangle's area is: " + area);
+  println!(`The triangle's area is: ${area}`);
 }
 ```
 
@@ -1275,7 +1275,7 @@ There's a simple way to achieve this called the _return statement_. It uses the 
 ```sn
 func triangle_area (base: float, height: float) : float {
   val area = 0.5 * base * height;
-  println!("The triangle's area is: " + area);
+  println!(`The triangle's area is: ${area}`);
   return area;
 }
 
