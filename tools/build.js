@@ -545,8 +545,6 @@ for (let arg of Reflect.ownKeys(argv))
     // Remove it from the original arguments
     delete m_argv[arg];
 
-    console.log(listModules());
-
 // If no module was specified...
 if (typeof argv.module !== 'string') {
   // If help is asked...
