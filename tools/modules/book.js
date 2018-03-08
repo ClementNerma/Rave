@@ -20,7 +20,7 @@ self = {
   arguments: [
     { long: 'book', short: 'b', placeholder: 'name', inline: true, help: 'The book to build' },
     { long: 'output', short: 'o', placeholder: 'folder', help: 'Output path for the package' },
-    { long: 'open-browser', type: 'boolean', help: 'Open the book in the browser' }
+    { long: 'open', type: 'boolean', help: 'Open the book in the browser' }
   ],
 
   /**
@@ -422,7 +422,7 @@ self = {
     };
 
     // If output must be opened in the browser...
-    if (self.argv['open-browser'])
+    if (self.argv['open'])
       // Open it
       openBrowser(output_path, end, 'Opening book in the browser...');
     else
