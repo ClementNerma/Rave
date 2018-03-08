@@ -1736,3 +1736,17 @@ val something = new Superthing("cake");
 println!(`The thing's name is ${something.getName()}.`);
   // Prints: "The thing's name is cake."
 ```
+
+Another trick to use a member from the inside of the class is to use the `@` symbol:
+
+```sn
+class Superthing {
+  // ...
+  
+  public func getName() {
+    return @name;
+  }
+}
+```
+
+`@` is a strict equivalent to `this.`, so we can use it to access the members of the current class.
