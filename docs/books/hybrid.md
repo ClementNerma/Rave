@@ -1249,7 +1249,7 @@ func triangle_area (base: float, height: float) : float {
 }
 ```
 
-The very first line (without the `{` symbol) is called the function's _prototype_. It declares what the function's name is, what are its arguments, and the type of value it returns.
+The very first line (without the `{` symbol) is called the function's _prototype_. It declares what the function's name is, what are its arguments, and the type of value it returns. We commonly say that the _prototype_ (the line we saw) _declares_ the function's _signature_ (its name, arguments, their types, and the return type).
 
 We want to first calculate the triangle's area. Let's do this:
 
@@ -1367,7 +1367,7 @@ Also, why do we need the `key` argument while we don't use it? It's simply becau
 
 Let's just concentrate on the function's only argument: called `callback`, it is described as a function that takes a `value` and a `key` argument, then returns a boolean. That's why we gave these specific types to our lambda. If we had specificied a `string` for the `key` argument for example, an error would have been throw at compilation.
 
-Note that, while the argument's number, type and the lambda's return type is declared in the function's prototype and cannot be changed, you can still change their names to take your own ones. We could have called them `num` and `k` if we wanted to.
+Note that, while the argument's number, type and the lambda's return type is declared in the function's signature and cannot be changed, you can still change their names to take your own ones. We could have called them `num` and `k` if we wanted to.
 
 There's another way to apply this filter on our list: declaring the function, and then using it as an argument. Because an example will be more clear than a big explanation:
 
@@ -1438,9 +1438,9 @@ But even with the arrow syntax, this is still heavy as we have to write the argu
 
 ### ICT (Inferred Callback Typing)
 
-ICT works like IST but for functions. Instead of inferring a data's structure, it will infer a function's arugments and return type based on a prototype.
+ICT works like IST but for functions. Instead of inferring a data's structure, it will infer a function's arugments and return type based on a signature.
 
-This may be appear complex, but let's take a simple example. Remember the `.filter` function we can apply on any `List<T>` value? We gave it a lambda and we had to declare the lambda's arguments' type as well as a return type. But because these types are already specified in the `.filter` function's prototype, we know that we'll have _exactly_ the sames types in our lambda's prototype.
+This may be appear complex, but let's take a simple example. Remember the `.filter` function we can apply on any `List<T>` value? We gave it a lambda and we had to declare the lambda's arguments' type as well as a return type. But because these types are already specified in the `.filter` function's signature, we know that we'll have _exactly_ the sames types in our lambda's signature.
 
 So there is a directive that provides a way to perform inferred typing on a lambda, for both its arguments' type and its return type. This directive is `#auto`.
 
@@ -1455,11 +1455,11 @@ val posArr = arr.filter((value: int, key: int) : bool -> value >= 0);
 val posArr = arr.filter(#auto (value, key) -> value >= 0);
 ```
 
-This last syntax is clearly lighter as it avoids to declare the types. But be careful though to read carefully the prototype of the function you are giving this lambda to ; else you could have some... surprises, at compilation time.
+This last syntax is clearly lighter as it avoids to declare the types. But be careful though to read carefully the signature of the function you are giving this lambda to ; else you could have some... surprises, at compilation time.
 
-Also, note this will only work with lambdas that are directly given as arguments. These are known as _"flying lambdas"_ in reference to the fact they are declared before being used. That means you can't use the `#auto` directive if you declare a constant that contains this lambda, and then use this constant as an argument for a function. This is simply because this directive guesses the function's type based on the prototype of the function it is gave to, so it wouldn't work with anything that is not a flying lambda.
+Also, note this will only work with lambdas that are directly given as arguments. These are known as _"flying lambdas"_ in reference to the fact they are declared before being used. That means you can't use the `#auto` directive if you declare a constant that contains this lambda, and then use this constant as an argument for a function. This is simply because this directive guesses the function's type based on the signature of the function it is gave to, so it wouldn't work with anything that is not a flying lambda.
 
-While we have inferred typing without looking at any prototype for data structure, you may be wondering why functions can't have an inferred typing for their arguments and return type too based on their body. For example, if a function only returns booleans, its return type could be inferred.
+While we have inferred typing without looking at any signature for data structure, you may be wondering why functions can't have an inferred typing for their arguments and return type too based on their body. For example, if a function only returns booleans, its return type could be inferred.
 
 To answer this question, there is a directive that allows inferred typing for anything, from variables to functions, even to more complex data structures (like interfaces or classes). But like we'll see later, this has some (really) serious downsides and considerably slows down the compilation. Global inferred typing is only useful when some conditions are met, so for now let's put it aside and only consider inferred typing is supported for variables/constants/frozens/plain values, on-the-fly structures and flying lambdas.
 
