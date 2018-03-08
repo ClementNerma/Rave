@@ -414,6 +414,28 @@ println!("The area is: " + area);
 
 Here, the compiler will understand you want to do a concatenation because the first entity is a string, and the second one a number. So it will perform the concatenation.
 
+### Bonus: String expressions
+
+Here is a useful trick when using strings: you can _evaluate an expression_ from the inside of a string and get its result directly. Let's try it:
+
+```sn
+val area = 8.5;
+println!("The area is: " + area); // "The area is: 8.5"
+println!(`The area is: ${area}`); // "The area is: 8.5"
+```
+
+As you can see, here we use backquotes to delimit the string. In the last `println!` statement, `${...}` indicates an expression that must be evaluated and returned in the string. Here, `area` is evaluated as `8.5`, converted to a string, then returned.
+
+The code above would also work fine:
+
+```sn
+println!(`This is ${'go' + 'od'}`); // "This is 'good'"
+```
+
+Because the `'go' + 'od'` expression is evaluated and its result (`good`) returned in the string.
+
+Think about this feature when using strings with dynamic values!
+
 ## Understanding types
 
 ### Vectors
