@@ -1475,7 +1475,7 @@ class Hero {
 }
 ```
 
-First, we _declare_ the class with `class Hero {`. This creates a _type_ named `Hello` (that's the first verity about types, every type outside structures is in reality a class). Then, we set up its _members_, an equivalent to structures' properties. But look at the `private` keyword. This indicates that this members are available only from _the inside_ of the class ; that means no one will be able to access these members outside the class. So, how can we do our fight function?
+First, we _declare_ the class with `class Hero`. This creates a _type_ named `Hero` (that's the first verity about types, every type outside structures is in reality a class). Then, we set up its _members_, an equivalent to structures' properties. But look at the `private` keyword. This indicates that this members are available only from _the inside_ of the class ; that means no one will be able to access these members outside the class. So, how can we do our fight function?
 
 Well, here is how it goes:
 
@@ -1497,7 +1497,7 @@ class Hero {
 }
 ```
 
-That becomes a little more complicated here. We start by declaring the `@construct` function which is called a _constructor_. This function is called when a resource (variable, constant or frozen) is created with the `Hero` type. Because any return value would be lost from it there is an exception in the language's rules that allow us to not give it a return type (it will implicitly be `void`), without any directive.
+That becomes a little more complicated here. We start by declaring the `@construct` function which is called the _constructor_. This function is called when a resource (variable, constant or frozen) is created with the `Hero` type. Because any return value would be lost from it there is an exception in the language's rules that allow us to not give it a return type (it will implicitly be `void`), without any directive.
 
 The constructor will take as an argument a name, an amount of HP and MP, an attack and a defense. Then, it will assign these given values to its _members_, which are not available from outside the class.
 
@@ -1513,7 +1513,7 @@ The constructor will take as an argument a name, an amount of HP and MP, an atta
   // ...
 ```
 
-Here, we define a `getAttack(à` and a `beAttacked()` functions publicly, which means everyone can access it, even outside the class. `getAttack()` returns the `attack` member from the current class, while `beAttacked()` runs `getAttack()` from the provided ennemy and decreases its own HP depending on it.
+Here, we define a `getAttack()` and a `beAttacked()` functions publicly, which means everyone can access it, even outside the class. `getAttack()` returns the `attack` member from the current class, while `beAttacked()` runs `getAttack()` from the provided ennemy and decreases its own HP depending on it.
 
 Here is how we instanciate our heroes:
 
