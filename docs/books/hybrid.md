@@ -1623,3 +1623,45 @@ jack.fight(john); // Prints: "Jack is going to fight John!"
                   //         "John is attacked by Jack and loses 45 HP!"
                   //         "Jack is attacked by John and loses 70 HP!"
 ```
+
+### The constructor
+
+Let's see, more in details, how the constructor works.
+
+Declaring a variable with a class as a type is called an _instanciation_. For example, if we do:
+
+```sn
+val something = new Superthing();
+// OR
+val something: Superthing;
+// OR
+val something: Superthing = new Superthing();
+```
+
+We _instanciate_ each time the `Superthing` class, and `something` is called an _instance_ of the class. As we saw, a class is a bunch of _attributes_, which can be public or private (though we'll see more modes later) and _methods_ which are basically functions inside the class. Only the methods can access the private attributes, while the public attributes are available to any piece of code that can access the instance.
+
+Because we want some attributes to be initialized before the developer uses them, we can declare a method that will be ran when the class is instanciated. This is called the _constructor_.
+
+```sn
+class Superthing {
+  private name: string;
+
+  public func @construct(theThingName: string) {
+    this.name = theThingName;
+  }
+}
+```
+
+Here, the arguments took by the constructor are the ones given when instanciating the class. Here:
+
+```sn
+val something = new Superthing(/* Arguments for the constructor */);
+```
+
+Will fail, because we gave no argument instead of the one the constructor expected. But if we write:
+
+```sn
+val something = new Superthing("Gamepad");
+```
+
+This will work fine and the constructor will get the `"Gamepad"` value in `theThingName`.
