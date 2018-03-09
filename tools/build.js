@@ -2,6 +2,25 @@
 "use strict";
 
 /**
+ * Write a message in the log file
+ * @param {string} message The message to write
+ * @param {boolean} [verbose] Is is a verbose message? (default: false)
+ * @returns {string} The input message
+ */
+function log (message, verbose) {
+  // If log file is enabled,
+  // and if verbose logging is enabled if it's a verbose message...
+  if (argv.logfile && (! verbose || (verbose && argv.logverbose)))
+    // Log the message
+    fs.appendFileSync(
+      argv.logfile,
+      // The message, without ANSI characters (like colors) and a timestamp + new line symbol
+      `[${Date.now()}] ` + message.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '') + '\r\n',
+      'utf8'
+    );
+}
+
+/**
  * Exit with an error code
  * @param {string} message An error message
  * @param {number} [errcode] The error code (default: 1)
@@ -13,10 +32,10 @@ function error (message, errcode = 1, error = null) {
   // and if verbose mode is enabled...
   if (error && argv.verbose)
     // Display the error
-    console.error(red(error.toString()));
+    console.error(log(red(error.toString())));
 
   // Display the error in the console
-  console.error(red(`ERROR: `) + yellow(message));
+  console.error(log(red(`ERROR: `) + yellow(message)));
   // Exit the process safely with this error code
   process.exit(errcode);
 }
@@ -42,7 +61,7 @@ function success(message, output_folder) {
       staticServe(output_folder, argv.serve);
     } else
       // Else, display an error message
-      console.error(chalk.error('Cannot serve files: the module did not provide an output folder'));
+      console.error(log(chalk.error('Cannot serve files: the module did not provide an output folder')));
   }
   else
     // If not, exit safely and without an error code
@@ -59,6 +78,9 @@ function say(message) {
   if (! argv.quiet)
     // Display the message in the console
     console.log(message);
+
+  // Log it anyway
+  log(message);
 }
 
 /**
@@ -68,10 +90,16 @@ function say(message) {
  * @returns {void}
  */
 function verb(message, p) {
+  // Prepare the message (do not put the timestamp here because the log function add ones anyway)
+  message = (p ? `${message} | \`${p}\`` : message);
+
   // If the verbose mode is enabled...
   if (argv.verbose && ! argv.quiet) // The quiet mode is prior to the verbose mode
     // Display the message in the console
-    console.log(`[${Date.now()}] ` + (p ? `${message} | \`${p}\`` : message));
+    console.log(`[${Date.now()}] ` + message);
+  
+  // Log it anyway
+  log(message, true);
 }
 
 /**
@@ -528,7 +556,9 @@ const main_mod = {
     { long: 'fast', short: 'f', type: 'boolean', help: 'Produce an unoptimized code - speed up the build' },
     { long: 'clean', short: 'c', type: 'boolean', help: 'Clean module\'s data' },
     { long: 'serve', type: 'number', defaultIfTrue: process.env.PORT || 80, help: 'Run a web server to deliver statically the output folder' },
-    { long: 'watch', short: 'w', value: 'folders', defaultIfTrue: '.', help: 'Build each time a file is changed in the folders (folders are separated by a comma)' }
+    { long: 'watch', short: 'w', value: 'folders', defaultIfTrue: '.', help: 'Build each time a file is changed in the folders (folders are separated by a comma)' },
+    { long: 'logfile', short: 'l', value: 'file', help: 'Write all log messages in a file' },
+    { long: 'logverbose', type: 'boolean', default: false, help: 'If `--logfile` is enabled, log all verbose messages (can be heavy)' }
   ]
 };
 
@@ -546,6 +576,11 @@ for (let arg of Reflect.ownKeys(argv))
   if (arg !== '_')
     // Remove it from the original arguments
     delete m_argv[arg];
+
+// If a log file was provided...
+if (argv.logfile)
+  // Resolve it to save time (avoiding doing it each time we path is used)
+  argv.logfile = path.resolve(argv.logfile);
 
 // If a watch order was emitted,
 // and if this is not a child process created by the watcher...
