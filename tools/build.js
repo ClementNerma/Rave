@@ -479,7 +479,8 @@ function loadModule(name, argv) {
 }
 
 // Load some built-in modules
-const path = require('path');
+const path = require('path'),
+      child_process = require('child_process');
 
 // Load some Yarn modules
 const chalk = require('chalk'),
@@ -526,7 +527,8 @@ const main_mod = {
     { long: 'release', short: 'r', type: 'boolean', default: true, help: 'Optimize and improve the compatibility of the build' },
     { long: 'fast', short: 'f', type: 'boolean', help: 'Produce an unoptimized code - speed up the build' },
     { long: 'clean', short: 'c', type: 'boolean', help: 'Clean module\'s data' },
-    { long: 'serve', type: 'number', defaultIfTrue: process.env.PORT || 80, help: 'Run a web server to deliver statically the output folder' }
+    { long: 'serve', type: 'number', defaultIfTrue: process.env.PORT || 80, help: 'Run a web server to deliver statically the output folder' },
+    { long: 'watch', short: 'w', value: 'folders', defaultIfTrue: '.', help: 'Build each time a file is changed in the folders (folders are separated by a comma)' }
   ]
 };
 
@@ -545,8 +547,110 @@ for (let arg of Reflect.ownKeys(argv))
     // Remove it from the original arguments
     delete m_argv[arg];
 
-// If no module was specified...
-if (typeof argv.module !== 'string') {
+// If a watch order was emitted,
+// and if this is not a child process created by the watcher...
+if (argv.watch && ! process.argv.slice(2).includes('--ignore-watch-order')) {
+  // Get the list of folders by splitting the ',' folder (ignore espaced ones)
+  const folders = argv.watch.split(/(?<!\\),/);
+
+  // Moment where the watch listener was triggered
+  // This is useful to avoid duplicate watch events (e.g. on Windows)
+  let last = Date.now();
+
+  // Is a build process already running?
+  let building = false;
+
+  // Has a file changed during the build?
+  let waiting = null;
+
+  /**
+   * Start a new build process
+   * @returns {void}
+   */
+  function buildNow () {
+    // Remember there is a build process running
+    building = true;
+
+    // Run a new build process
+    let p = child_process.fork(
+      // This module's path
+      process.argv[1],
+      // The arguments, plus a 'ignore watch' order.
+      // A new process is started with exactly the same arguments as this one to keep all the
+      //  provided options, so the '--watch' option needs to be ignored.
+      process.argv.slice(2).concat('--ignore-watch-order'),
+      {
+        cwd: process.cwd(),
+        stdio: [ 0, 1, 2, 'ipc' ]
+      }
+    );
+
+    // When the process ends...
+    p.on('exit', () => {
+      // No process is running anymore
+      building = false;
+
+      // If a file was waiting...
+      if (waiting) {
+        // Tell it
+        say(yellow('>') + ' Running delayed build for file ' + cyan(waiting) + '.');
+        // It's not waiting anymore
+        waiting = null;
+        // Start a new build process
+        buildNow();
+      }
+    });
+  }
+
+  // For each folder...
+  for (let folder of folders) {
+    // Replace escaped commas by simple commas in the folder's path
+    folder = folder.replace(/\\,/g, ',');
+
+    // Watch this folder
+    fs.watch(here(folder), { recursive: true }, (eventType, filename) => {
+      // If the file is under the ".git", "build" or "node_modules" directory...
+      if (path.resolve(filename).startsWith(here('.git')) ||
+          path.resolve(filename).startsWith(here('build')) ||
+          path.resolve(filename).startsWith(here('node_modules')))
+        // Ignore it
+        return ;
+
+      // If less than 30ms passed since the last change...
+      if (Date.now() - last < 30)
+        // Ignore this call
+        return ;
+
+      // Memorize the current timestamp
+      last = Date.now();
+
+      // If a build is running...
+      if (building) {
+        // Tell it
+        say(yellow('>') + ` File ${cyan(filename)} has changed | ${yellow('DELAYED')} because a build is already running`);
+        // Remember a new build must be done
+        waiting = filename;
+        // Exit the listener
+        return ;
+      }
+     
+      // Else, do the build!
+      say(yellow('>') + ` File ${cyan(filename)} has changed.`);
+
+      // Start a new build process
+      buildNow();
+    });
+
+    // Verbose
+    verb(`Now watching folder`, folder);
+  }
+
+  // Ready!
+  say('Now watching.');
+}
+
+// Else, if no module was specified...
+else if (typeof argv.module !== 'string') {
   // If help is asked...
   if (argv.help) {
     // Attach a help text to the module object
@@ -567,7 +671,7 @@ if (typeof argv.module !== 'string') {
     console.log(getHelp(main_mod));
   }
 
-    // If clean operation is asked...
+  // If clean operation is asked...
   else if (argv.clean) {
     // For each module...
     for (let name of listModules()) {
