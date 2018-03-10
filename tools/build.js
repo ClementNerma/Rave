@@ -61,7 +61,7 @@ function success(message, output_folder) {
       staticServe(output_folder, argv.serve);
     } else
       // Else, display an error message
-      console.error(log(chalk.error('Cannot serve files: the module did not provide an output folder')));
+      console.error(log(red('Cannot serve files: the module did not provide an output folder')));
   }
   else
     // If not, exit safely and without an error code
