@@ -417,8 +417,7 @@ self = {
     // Declare the end function
     const end = () => {
       // All went good :)
-      if (!self.argv.SYS_NO_EXIT)
-        success(`Book "${name}" was successfully built in "${output_path}".`, output_path);
+      success(`Book "${name}" was successfully built in "${output_path}".`, output_path, self.argv.SYS_NO_EXIT);
     };
 
     // If output must be opened in the browser...

@@ -109,7 +109,6 @@ self = {
       rmdir(tmp_build_folder);
 
     // All went good :)
-    if (! self.argv.SYS_NO_EXIT)
-      success(`Website was successfully built in "${output_folder}".`, output_folder);
+    success(`Website was successfully built in "${output_folder}".`, output_folder, self.argv.SYS_NO_EXIT);
   }
 };

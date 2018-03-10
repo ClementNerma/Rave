@@ -47,9 +47,10 @@ function error (message, errcode = 1, error = null) {
  * Exit the build successfully
  * @param {string} message The success message to display
  * @param {string} [output_folder] The module's build folder
+ * @param {boolean} [dontExit] Do not exit the process (default: false)
  * @returns {void}
  */
-function success(message, output_folder) {
+function success(message, output_folder, dontExit = false) {
   // Display the success message
   say(chalk.green(message));
 
@@ -66,8 +67,8 @@ function success(message, output_folder) {
       // Else, display an error message
       console.error(log(red('Cannot serve files: the module did not provide an output folder')));
   }
-  else
-    // If not, exit safely and without an error code
+  else if (! dontExit)
+    // If not, and if exiting is not forbidden, exit safely and without an error code
     process.exit(0);
 }
 

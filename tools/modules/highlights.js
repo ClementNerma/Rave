@@ -310,7 +310,6 @@ self = {
     execBuild(output_path, source, patterns);
 
     // All went good :)
-    if (! self.argv.SYS_NO_EXIT)
-      success(`Extension successfully built for editor "${name}" in "${output_path}".`, output_path);
+    success(`Extension successfully built for editor "${name}" in "${output_path}".`, output_path, self.argv.SYS_NO_EXIT);
   }
 };
