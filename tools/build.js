@@ -18,6 +18,9 @@ function log (message, verbose) {
       `[${Date.now()}] ` + message.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '') + '\r\n',
       'utf8'
     );
+  
+  // Return the original message
+  return message;
 }
 
 /**
