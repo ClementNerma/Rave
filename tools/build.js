@@ -720,9 +720,11 @@ else if (typeof argv.module !== 'string') {
   else if (argv.all) {
     // For each module...
     for (let name of listModules()) {
-      say(cyan('* Starting build operation for module ' + green(`"${name}"`) + '...'));
+      say(yellow('* Building with module ' + `"${name}"` + '...'));
       // Load the module, then run its clean function
       loadModule(name, m_argv).buildAll();
+      // Put a blank line
+      console.log('');
     }
 
     // Success
