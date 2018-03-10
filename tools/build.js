@@ -91,7 +91,7 @@ function say(message) {
  */
 function verb(message, p) {
   // Prepare the message (do not put the timestamp here because the log function add ones anyway)
-  message = (p ? `${message} | \`${p}\`` : message);
+  message = (p ? `${message} | \`${path.normalize(p)}\`` : message);
 
   // If the verbose mode is enabled...
   if (argv.verbose && ! argv.quiet) // The quiet mode is prior to the verbose mode
