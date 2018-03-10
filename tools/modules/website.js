@@ -110,5 +110,13 @@ self = {
 
     // All went good :)
     success(`Website was successfully built in "${output_folder}".`, output_folder, self.argv.SYS_NO_EXIT);
-  }
+  },
+
+  /**
+   * Build everything
+   * @returns {void}
+   */
+  buildAll: () =>
+    // Do a simple build
+    self.build()
 };

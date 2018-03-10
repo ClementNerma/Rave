@@ -553,6 +553,7 @@ const main_mod = {
   name: 'main',
   arguments: [
     { long: 'module', inline: true, value: 'name', help: 'The build module to use' },
+    { long: 'all', type: 'boolean', help: 'Build everything. If specified with a module\'s name, will build everything for this module only.' },
     { long: 'help', type: 'boolean', help: 'Display help about a module' },
     { long: 'verbose', type: 'boolean', help: 'Display verbose messages' },
     { long: 'quiet', short: 'q', type: 'boolean', help: 'Reduce console outputs' },
@@ -580,6 +581,11 @@ for (let arg of Reflect.ownKeys(argv))
   if (arg !== '_')
     // Remove it from the original arguments
     delete m_argv[arg];
+
+// If a "build everything" order has been gave...
+if (argv.all)
+  // Add a "NO_EXIT" order
+  m_argv.SYS_NO_EXIT = true;
 
 // If a log file was provided...
 if (argv.logfile)
@@ -710,6 +716,19 @@ else if (typeof argv.module !== 'string') {
     console.log(getHelp(main_mod));
   }
 
+  // If all modules are asked to run...
+  else if (argv.all) {
+    // For each module...
+    for (let name of listModules()) {
+      say(cyan('* Starting build operation for module ' + green(`"${name}"`) + '...'));
+      // Load the module, then run its clean function
+      loadModule(name, m_argv).buildAll();
+    }
+
+    // Success
+    success('All builds were done successfully.');
+  }
+
   // If clean operation is asked...
   else if (argv.clean) {
     // For each module...
@@ -750,5 +769,5 @@ else if (typeof argv.module !== 'string') {
   // If no special argument was used to call this program...
   else
     // Run the module's build function
-    mod.build();
+    mod[argv.all ? 'buildAll' : 'build']();
 }

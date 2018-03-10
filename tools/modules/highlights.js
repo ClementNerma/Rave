@@ -311,5 +311,20 @@ self = {
 
     // All went good :)
     success(`Extension successfully built for editor "${name}" in "${output_path}".`, output_path, self.argv.SYS_NO_EXIT);
+  },
+
+  /**
+   * Build everything
+   * @returns {void}
+   */
+  buildAll: () => {
+    // For each editor...
+    for (let editor of Reflect.ownKeys(editors)) {
+      say(yellow('>>') + cyan(' Building extension for ' + green(`"${editor}"`) + ' editor...'));
+      // Set this editor as the current one
+      self.argv.target = editor;
+      // Build it
+      self.build();
+    }
   }
 };

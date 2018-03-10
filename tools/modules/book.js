@@ -427,5 +427,20 @@ self = {
     else
       // Exit
       end();
+  },
+
+  /**
+   * Build everything
+   * @returns {void}
+   */
+  buildAll: () => {
+    // For each book...
+    for (let book of Reflect.ownKeys(books)) {
+      say(yellow('>>') + cyan(' Building book ' + green(`"${book}"`) + '...'));
+      // Set this book as the current one
+      self.argv.book = book;
+      // Build it
+      self.build();
+    }
   }
 };
