@@ -29,7 +29,8 @@
     "clean": "node tools/build.js --clean",
     "build-all": "node tools/build.js --all",
     "read-book": "node tools/build.js --module book --open --book",
-    "install-extension": "node tools/build.js --module highlights --install-help --target"
+    "install-extension": "node tools/build.js --module highlights --install-help --target",
+    "available-editors": "node tools/build.js --module highlights --list"
   },
   "dependencies": {
     "babel-core": "^6.26.0",
