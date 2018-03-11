@@ -25,6 +25,7 @@
     "node": ">=6.12.3"
   },
   "scripts": {
+    "test": "node tools/build.js --test",
     "build": "node tools/build.js",
     "clean": "node tools/build.js --clean",
     "build-test": "node tools/build.js --test",
