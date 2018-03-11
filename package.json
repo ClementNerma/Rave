@@ -27,6 +27,7 @@
   "scripts": {
     "build": "node tools/build.js",
     "clean": "node tools/build.js --clean",
+    "build-test": "node tools/build.js --test",
     "build-all": "node tools/build.js --all",
     "read-book": "node tools/build.js --module book --open --book",
     "install-extension": "node tools/build.js --module highlights --install-help --target",
