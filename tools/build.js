@@ -52,7 +52,7 @@ function error (message, errcode = 1, error = null) {
  */
 function success(message, output_folder, dontExit = false) {
   // Display the success message
-  say(chalk.green(message));
+  say(chalk.green(message), ! CHILD /* Force displaying, even in quiet mode, for the main process */);
 
   // If files must be served,
   // and if this is not a child process created by the watcher
@@ -77,11 +77,13 @@ function success(message, output_folder, dontExit = false) {
 /**
  * Display a message in the console
  * @param {string} message The message to display
+ * @param {boolean} [evenIfQuiet] Display the message even in quiet mode (default: false)
  * @returns {void}
  */
-function say(message) {
-  // If the quiet mode is not enabled...
-  if (! argv.quiet)
+function say(message, evenIfQuiet = false) {
+  // If the quiet mode is not enabled,
+  // or if the message must be displayed even in quiet mode...
+  if (! argv.quiet || evenIfQuiet)
     // Display the message in the console
     console.log(message);
 
