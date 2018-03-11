@@ -1927,7 +1927,7 @@ Now we've acquired the basis of classes, this part will teach you more complex f
 
 ### The destructor
 
-#### A word about overloads
+A word about overloads:
 
 We saw before the constructor, a special method called when the instance is created. This method can't be ran the normal way, meaning you can't do `myInstance.construct()` for example. Such a method, and every method we will see beginning by the `@` symbol, are called _overloads_.
 
@@ -1935,7 +1935,7 @@ By default, when we instanciate a class, nothing is done (excepted creating the 
 
 The destructor is a special function you probably won't use very often, but it is still useful in some cases. Like the constructor, it's an overload, and is written `@destruct`. It takes no argument and must be `void`-typed, so its return type can also be omitted.
 
-### A word about freeing
+Now, a word about freeing:
 
 When dealing with heavy objects, or simply when using a low-level languages, developers often _free_ their variables themselves. Freeing a variable means its value is definitely removed, so it doesn't take memory anymore. Of course, after a resource is freed, using it will result in an error.
 
