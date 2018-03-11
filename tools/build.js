@@ -752,7 +752,7 @@ else if (typeof argv.module !== 'string') {
     ]
 
     // Display the help
-    console.log(getHelp(main_mod));
+    say(getHelp(main_mod));
   }
 
   // If all modules are asked to run...
@@ -789,7 +789,7 @@ else if (typeof argv.module !== 'string') {
   // For everything else...
   else
     // Display a short help text
-    console.log('Syntax:\n  yarn build <module> <...options>\n  npm run build -- <module> <...options>\n\nTo see more help, write "yarn build --help" / "npm run build -- --help"');
+    say('Syntax:\n  yarn build <module> <...options>\n  npm run build -- <module> <...options>\n\nTo see more help, write "yarn build --help" / "npm run build -- --help"');
 } else {
   // If the specified module is unknown...
   if (!fileExists('tools/modules/' + argv.module + '.js'))
@@ -803,14 +803,14 @@ else if (typeof argv.module !== 'string') {
   // If help is asked...
   if (argv.help)
     // Display help about the specified module
-    console.log(getHelp(mod));
+    say(getHelp(mod));
 
   // If the list of available targets is asked...
   if (argv.list) {
     // If such a list exists...
     if (mod.help[1])
       // Display it
-      console.log(mod.help[1]);
+      say(mod.help[1]);
     else
       // ERROR
       error('There is no list of available targets for this module', 28);
