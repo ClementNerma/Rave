@@ -1801,6 +1801,47 @@ class SomeClass {
 
 This will do the same thing as the previous syntax, excepted we won't access the attribute with `instance.getMyAttribute()` from the outside, but simply with `instance.myAttribute`.
 
+### Static attributes
+
+This is another type of members. Static members are not available from the instances, but only from the class itself. Let's see an example to be more clear:
+
+```sn
+class Product {
+  static private unique_id = 0;
+  static public func increaseCounter() : int -> ++ self::unique_id;
+}
+```
+
+Here, `increaseCounter()` can only be accessed by using the `::` operator on the class itself, so we would write `CounterClass::increaseCounter()`. This will increase the private static attribute `counter`.
+
+The `self` word refers to the current class, in a static context. This provides a way to access its static attributes. Let's populate the class with attributes for instances:
+
+```sn
+class Product {
+  // The global counter for unique identnfiers
+  static private counter = 0;
+
+  // Increase the global counter
+  static public func increaseCounter() : int -> ++ self::counter;
+
+  // The product's unique identifier
+  private readable unique_id: int;
+  // The product's name
+  private readable name: string;
+
+  // Initialize the instance
+  public func @construct(name: string) {
+    @name = name;
+    // Generate a unique identifier from the static function
+    @unique_id = self::increaseCounter();
+  }
+}
+```
+
+Be aware though, writing `self` is not like writing the class' name (`Product` here). `self` is a reference that can only be used inside of a class, and which provides a way to access its private static members. If we had specified the class' name instead, we wouldn't have been able to access the `counter` attribute.
+
+When static members are private, that means they can only accessed through the `self` keyword, so from the inside of the class only. When they are public, they are available from the outisde of the class thanks to its name, followed by the static operator `::` and the attribute's name.
+
 ### Practice: Let's make a map!
 
 Let's now practice with a little exercice. We want to represent a RPG map with a class. Each cell has a number referring to an empty cell (0), a rock (1) or a trap (2). The map is given at its creation, as a double array of integers. The map is a rectangle and has a fixed width and heigh deducted from the double array.
@@ -1815,6 +1856,12 @@ Here is the solution:
 
 ```sn
 class Map {
+  // Cell types
+  static private readable EMPTY = 0;
+  static private readable BLOCK = 1;
+  static private readable TRAP  = 2;
+
+  // Private attributes
   private readable playerX: int;
   private readable playerY: int;
   private readable trapped: bool = false;
@@ -1842,7 +1889,7 @@ class Map {
       println!("Cannot move outside the map.");
     
     // Check if the cell we are going to is a rock
-    else if (cells[y][x] is 1)
+    else if (cells[y][x] is self::BLOCK)
       println!("There's a rock on your way.");
 
     // Else, move the player    
@@ -1852,7 +1899,7 @@ class Map {
       @playerY = y;
 
       // If we fell in a trap, game over!
-      if (cells[y][x] is 2) {
+      if (cells[y][x] is self::TRAP) {
         println!("You've been trapped!");
         @trapped = true;
       }
