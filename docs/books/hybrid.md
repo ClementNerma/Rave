@@ -1469,7 +1469,7 @@ When declaring a method, we sometimes want to make them callable by several ways
 
 The answer to this problem is called _polymorphism_: we declare several functions with the same name, but with different signatures.
 
-Here is it how it works:
+Here is how it works:
 
 ```sn
 // Make the 'Point' structure
@@ -1870,6 +1870,6 @@ class Map {
 }
 ```
 
-Here is it! This code answers to the problem.
+Here it is! This code answers to the problem.
 
 Of course, your solution could be different, as there are many ways to solve it. This anwser is well optimized and relatively short. Try to compare you own solution to this one and see the differences.
