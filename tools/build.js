@@ -54,8 +54,10 @@ function success(message, output_folder, dontExit = false) {
   // Display the success message
   say(chalk.green(message));
 
-  // If files must be served...
-  if (argv.serve) {
+  // If files must be served,
+  // and if this is not a child process created by the watcher
+  // and if no "NO_EXIT" order has been gave...
+  if (argv.serve && ! CHILD && ! dontExit) {
     // If an output folder was provided...
     if (output_folder) {
       // Display a message
@@ -545,6 +547,9 @@ const TOOLS_PATH = __dirname;
 // Get the repository's root path
 const ROOT_PATH = path.join(TOOLS_PATH, '..');
 
+// Remember if this process is a child created by a main build process
+const CHILD = process.argv.slice(2).includes('--child');
+
 // Parse the command-line arguments
 let m_argv = minimist(process.argv.slice(2) /* Ignore Node.js call arguments */);
 
@@ -595,7 +600,7 @@ if (argv.logfile)
 
 // If a watch order was emitted,
 // and if this is not a child process created by the watcher...
-if (argv.watch && ! process.argv.slice(2).includes('--ignore-watch-order')) {
+if (argv.watch && ! CHILD) {
   // Get the list of folders by splitting the ',' folder (ignore espaced ones)
   const folders = argv.watch.split(/(?<!\\),/);
 
@@ -621,10 +626,10 @@ if (argv.watch && ! process.argv.slice(2).includes('--ignore-watch-order')) {
     let p = child_process.fork(
       // This module's path
       process.argv[1],
-      // The arguments, plus a 'ignore watch' order.
+      // The arguments, plus a 'ignore orders' order.
       // A new process is started with exactly the same arguments as this one to keep all the
       //  provided options, so the '--watch' option needs to be ignored.
-      process.argv.slice(2).concat('--ignore-watch-order'),
+      process.argv.slice(2).concat('--child'),
       {
         cwd: process.cwd(),
         stdio: [ 0, 1, 2, 'ipc' ]
