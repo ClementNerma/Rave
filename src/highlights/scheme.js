@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.8.2',
+    VERSION: '0.8.3',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -461,7 +461,7 @@ scheme = {
     ],
     [
       // Typed directives
-      /#(pln|name)(?=[^a-zA-Z_\$])/,
+      /#(pln|name|mustbe)(?=[^a-zA-Z_\$])/,
       'purple'
     ],
     [
