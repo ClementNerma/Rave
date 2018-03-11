@@ -1873,3 +1873,46 @@ class Map {
 Here it is! This code answers to the problem.
 
 Of course, your solution could be different, as there are many ways to solve it. This anwser is well optimized and relatively short. Try to compare you own solution to this one and see the differences.
+
+## Classes in depth
+
+Now we've acquired the basis of classes, this part will teach you more complex features of OOP like templates, inheritance or stated classes.
+
+### The destructor
+
+#### A word about overloads
+
+We saw before the constructor, a special method called when the instance is created. This method can't be ran the normal way, meaning you can't do `myInstance.construct()` for example. Such a method, and every method we will see beginning by the `@` symbol, are called _overloads_.
+
+By default, when we instanciate a class, nothing is done (excepted creating the object itself). The constructor overwrites this behavior by running its own code.
+
+The destructor is a special function you probably won't use very often, but it is still useful in some cases. Like the constructor, it's an overload, and is written `@destruct`. It takes no argument and must be `void`-typed, so its return type can also be omitted.
+
+### A word about freeing
+
+When dealing with heavy objects, or simply when using a low-level languages, developers often _free_ their variables themselves. Freeing a variable means its value is definitely removed, so it doesn't take memory anymore. Of course, after a resource is freed, using it will result in an error.
+
+A resource can be freed several ways. The first one is with the _garbage collector_, a little tool that detects what resource isn't used anymore and free it because it knows it won't be used anymore. This is done automatically in JavaScript or Python for example, two interpreted high-level languages. Languages such as Rust have other tools instead that does the same thing, but that insert a piece of code to free the resource when compiling the source code. Some other languages, finally, like C or C++, doesn't have this feature and resources must be freed manually.
+
+In our case, the destructor is called when the instance is manually freed, using the `free!` macro. Here is how it looks like:
+
+```sn
+class IntList {
+  private data: int[];
+
+  public func @destruct() {
+    println!("I will be freed.");
+  }
+
+  public func add(value: int) : void -> @data.push(value);
+  public func pop() : bool -> @data.pop();
+}
+
+let list = new IntList();
+list.push(2);
+list.push(4);
+list.push(3);
+free!(list); // Prints: "I will be freed."
+```
+
+This overloads aims to provide a way to run a specific code when the developer explicitly says it doesn't need the instance anymore. After the destructor is ran, the instance is freed and any usage of it will result in an error.
