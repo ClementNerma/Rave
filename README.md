@@ -9,6 +9,23 @@ It can be transpiled to JavaScript for the web, to Rust for thread-safe desktop 
 
 You can take a look at the language's syntax and its current state by reading [The Hybrid Book](https://silvernight.herokuapp.com/docs/book/hybrid.html).
 
+## Syntax highlighting support
+
+You can install an extension to grant support syntax highlighting to your favorite code editor.
+
+*NOTE :* Only a few code editors are supported for now. You can list them with `yarn available-editors`.
+
+Run the following commands:
+
+```bash
+git clone https://github.com/ClementNerma/SilverNight.git # Download the repository
+cd SilverNight # Go to the downloaded folder
+yarn # Install dependencies
+yarn install-extension <editor> # Run `yarn available-editors` to get the list
+```
+
+And follow the instructions that appears in your terminal.
+
 ## Contribute
 
 You can contribute by [submitting bugs](https://github.com/SilverNight/issues) and helping me tracking them or by [proposing some improvements](https://github.com/SilverNight/issues) for the language.
