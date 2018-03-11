@@ -1800,3 +1800,76 @@ class SomeClass {
 ```
 
 This will do the same thing as the previous syntax, excepted we won't access the attribute with `instance.getMyAttribute()` from the outside, but simply with `instance.myAttribute`.
+
+### Practice: Let's make a map!
+
+Let's now practice with a little exercice. We want to represent a RPG map with a class. Each cell has a number referring to an empty cell (0), a rock (1) or a trap (2). The map is given at its creation, as a double array of integers. The map is a rectangle and has a fixed width and heigh deducted from the double array.
+
+We can move on this map a player, starting from a location given at the map's creation. The player can move up, down, left and right. It can't go on rock cells, and going to a trap will display a message "You're trapped!" and make the player unable to move.
+
+We have to represent it with a single class, with only private attributes (they can be readable, though). At anytime, we should be able to access to current player's position, to get any cell's value, or to check if the player has been trapped already.
+
+The problem seems to be complex but it is mostly simple to achieve. Read the solution below when you're ready. If you can't solve it, try to read again what we saw before and think about the structure of the class.
+
+Here is the solution:
+
+```sn
+class Map {
+  private readable playerX: int;
+  private readable playerY: int;
+  private readable trapped: bool = false;
+  // Not readable because sub-arrays could be written from the outside
+  private cells: int[][];
+
+  // Create the map
+  public func @construct(cells: int[][], startX: int, startY: int) {
+    // Initialize attributes
+    @cells = cells;
+    @playerX = startX;
+    @playerY = startY;
+  }
+
+  // Move the hero
+  private func move(x: int, y: int) : void {
+    // If we fall in a trap before...
+    if (@trapped)
+      // Move is forbidden
+      println("You can't move because you're trapped.");
+
+    // Check if we are outside the map
+    else if (x < 0 || x > @cells[0].size - 1 ||
+        y < 0 || y > @cells.size - 1)
+      println!("Cannot move outside the map.");
+    
+    // Check if the cell we are going to is a rock
+    else if (cells[y][x] is 1)
+      println!("There's a rock on your way.");
+
+    // Else, move the player    
+    else {
+      // Save the new player's location
+      @playerX = x;
+      @playerY = y;
+
+      // If we fell in a trap, game over!
+      if (cells[y][x] is 2) {
+        println!("You've been trapped!");
+        @trapped = true;
+      }
+    }
+  }
+
+  // Move up
+  public func moveUp() : void -> @move(@playerX, @playerY - 1);
+  // Move down
+  public func moveDown() : void -> @move(@playerX, @playerY + 1);
+  // Move to the left
+  public func moveLeft() : void -> @move(@playerX - 1, @playerY);
+  // Move to the right
+  public func moveRight() : void -> @move(@playerX + 1, @playerY);
+}
+```
+
+Here is it! This code answers to the problem.
+
+Of course, your solution could be different, as there are many ways to solve it. This anwser is well optimized and relatively short. Try to compare you own solution to this one and see the differences.
