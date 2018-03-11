@@ -41,7 +41,7 @@ And follow the instructions that appears in your terminal.
 
 ## Contribute
 
-You can contribute by [submitting bugs](https://github.com/SilverNight/issues) and helping me tracking them or by [proposing some improvements](https://github.com/SilverNight/issues) for the language.
+You can contribute by [submitting bugs](https://github.com/ClementNerma/SilverNight/issues) and helping me tracking them or by [proposing some improvements](https://github.com/ClementNerma/SilverNight/issues) for the language.
 
 You can also [contact me by e-mail](mailto:clement.nerma@gmail.com) if you want to talk about something not covered here or for major changes to the language/compiler/doc.
 
