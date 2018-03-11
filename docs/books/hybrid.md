@@ -2017,3 +2017,89 @@ Also, conventionnally, freezing cannot be undone, so we don't have to implement 
 A last advice about freezing is that **all** native types support freezing, so you don't have to worry when dealing with them, from `int` to `Dictionary<string, List<string>>`.
 
 The notion of freezing is complex, so don't hesitate to read it again, until you understand. That's an important feature because declaring an instance as frozen or freezing it manually will throw an error if the overload is not implemented in the class.
+
+### Cloning
+
+Let's imagine we have a list of integers. We make a function that calculate, for each number, its square, and return a final list with these numbers. Here is how we would implement it:
+
+```sn
+func squareList (list: List<int>) : List<int> {
+  for (let i = 0; i < list.size; i ++)
+    list[i] *= list[i];
+
+  return list;
+}
+```
+
+This works fine, but let's now try the following code:
+
+```sn
+val list = [ 2, 7, 8 ];
+val squares = squareList(list);
+
+println!(squares[1]); // Prints: "49"
+println!(list[1]); // Prints: "49"
+```
+
+Did you understand what just happened? When we modified the values of the list in our `squareList` function, this also affected the original list. So the original and the result are exactly the same ones.
+
+This behaviour is due to the fact SilverNight doesn't clone objects each time, because it would be way too long. We can also observe the problem on objects:
+
+```sn
+// Define a first hero
+val jack = {
+  hp: 100,
+  atk: 20,
+  name: "Jack"
+};
+
+// John is a hero, just like Jack is
+val john = jack;
+
+// Set John's name
+john.name = "John";
+
+// Surprise!
+println!(john.name); // Prints: "John"
+println!(jack.name); // Prints: "John"
+```
+
+The same thing applies for any object, so for any non-primitive values (anything that is not a `void`, a boolean, a number or a string). This is a big problem, but which has a very simple answer: cloning.
+
+To solve our first problem, we simply have to do this:
+
+```sn
+val list = [ 2, 7, 8 ];
+val squares = squareList(clone!(list));
+
+println!(squares[1]); // Prints: "49"
+println!(list[1]); // Prints: "7"
+```
+
+This works perfectly fine. We simply added a `clone!` instruction, and our problem is solved because we explicitly tell we want to make a brand _new_ list with the same values than the first one.
+
+But cloning is not magic. We can't simply clone data like this. Imagine a class contains an `unique_id` attribute that aims to be a unique number. Cloning it like that would throw this rule away. This is why, by default, instances can't be cloned until they implement the `@clone` overload.
+
+This one has no argument, but must return an instance of the current class, with omittable return type. But, it can be empty. Let's see an example:
+
+```sn
+class Product {
+  private readable unique_id: int;
+  private readable name: string;
+  private readable price: int;
+  static private counter: int = 0;
+
+  public @construct(name: string, price: int) {
+    @name = name;
+    @price = price;
+    @unique_id = self::counter ++;
+  }
+
+  // The cloning function returns a new product, with the same name
+  //  and price, but implicitly with a different UID because the
+  //  constructor will generate a new one for this new instance.
+  public @clone() -> new Product(@name, @price);
+}
+```
+
+Pretty simple, isn't it? Though, don't forget to clone arrays if you give some to the new instance from the current one (same with objects and instances from other classes).
