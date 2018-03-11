@@ -5,6 +5,20 @@ It can be transpiled to JavaScript for the web, to Rust for thread-safe desktop 
 
 **Please note this language is not finished yet ; some features could be added, modified or removed at anytime. Be careful about this.**
 
+## Installation
+
+The compiler isn't ready yet, so there is no way currently to install it.
+
+Though, you can still clone this repository to access the documentation or the build tools, by doing:
+
+```bash
+git clone https://github.com/ClementNerma/SilverNight.git # Download the repository
+cd SilverNight # Go to the downloaded folder
+yarn # Install dependencies
+```
+
+The repository's folder is now set up.
+
 ## Documentation
 
 You can take a look at the language's syntax and its current state by reading [The Hybrid Book](https://silvernight.herokuapp.com/docs/book/hybrid.html).
@@ -15,13 +29,10 @@ You can install an extension to grant support syntax highlighting to your favori
 
 *NOTE :* Only a few code editors are supported for now. You can list them with `yarn available-editors`.
 
-Run the following commands:
+Run the following commands in the repository's set up folder:
 
 ```bash
-git clone https://github.com/ClementNerma/SilverNight.git # Download the repository
-cd SilverNight # Go to the downloaded folder
-yarn # Install dependencies
-yarn install-extension <editor> # Run `yarn available-editors` to get the list
+yarn install-extension <editor>
 ```
 
 And follow the instructions that appears in your terminal.
