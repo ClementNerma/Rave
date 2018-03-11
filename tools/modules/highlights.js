@@ -20,7 +20,8 @@ self = {
    */
   arguments: [
     { long: 'target', short: 't', placeholder: 'editor', inline: true, help: 'The editor to build an extension for' },
-    { long: 'output', short: 'o', placeholder: 'folder', help: 'Extension output path' }
+    { long: 'output', short: 'o', placeholder: 'folder', help: 'Extension output path' },
+    { long: 'install-help', help: 'Display a help text about how to install the extension' }
   ],
 
   /**
@@ -307,7 +308,22 @@ self = {
     }
 
     // Format the build file and write it to the output
-    execBuild(output_path, source, patterns);
+    execBuild(output_path, source.tree, patterns);
+
+    // If asked to...
+    if (self.argv['install-help']) {
+      // Add a new constant
+      BUILD_CONSTANTS.OUTPUT = output_path;
+
+      // Display a help text
+      say(
+        cyan('Extension was successfully built.\n' + 
+        'To install it, follow these steps and run the specified commands in your terminal:\n') +
+        '\n' +
+        yellow(' ' + source.install.map(i => formatConstants(i)).join('\n ')) +
+        '\n'
+      );
+    }
 
     // All went good :)
     success(`Extension successfully built for editor "${name}" in "${output_path}".`, output_path, self.argv.SYS_NO_EXIT);
