@@ -19,8 +19,7 @@ self = {
    * @type {Array<string>}
    */
   help: [
-    `Build the SilverNight's website`,
-    ''
+    `Build the SilverNight's website`
   ],
 
   /**
