@@ -555,6 +555,7 @@ const main_mod = {
     { long: 'module', inline: true, value: 'name', help: 'The build module to use' },
     { long: 'all', type: 'boolean', help: 'Build everything. If specified with a module\'s name, will build everything for this module only.' },
     { long: 'help', type: 'boolean', help: 'Display help about a module' },
+    { long: 'list', type: 'boolean', help: 'List available targets for the provided module' },
     { long: 'verbose', type: 'boolean', help: 'Display verbose messages' },
     { long: 'quiet', short: 'q', type: 'boolean', help: 'Reduce console outputs' },
     { long: 'release', short: 'r', type: 'boolean', default: true, help: 'Optimize and improve the compatibility of the build' },
@@ -762,6 +763,18 @@ else if (typeof argv.module !== 'string') {
   if (argv.help)
     // Display help about the specified module
     console.log(getHelp(mod));
+
+  // If the list of available targets is asked...
+  if (argv.list) {
+    // If such a list exists...
+    if (mod.help[1])
+      // Display it
+      console.log(mod.help[1]);
+    else
+      // ERROR
+      error('There is no list of available targets for this module', 28);
+  }
+
 
   // If clean is asked...
   else if (argv.clean)
