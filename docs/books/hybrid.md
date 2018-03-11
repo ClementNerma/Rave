@@ -1897,7 +1897,7 @@ A resource can be freed several ways. The first one is with the _garbage collect
 In our case, the destructor is called when the instance is manually freed, using the `free!` macro. Here is how it looks like:
 
 ```sn
-class IntList {
+class IntArray {
   private data: int[];
 
   public func @destruct() {
@@ -1908,11 +1908,11 @@ class IntList {
   public func pop() : bool -> @data.pop();
 }
 
-let list = new IntList();
-list.push(2);
-list.push(4);
-list.push(3);
-free!(list); // Prints: "I will be freed."
+let arr = new IntArray();
+arr.push(2);
+arr.push(4);
+arr.push(3);
+free!(arr); // Prints: "I will be freed."
 ```
 
 This overloads aims to provide a way to run a specific code when the developer explicitly says it doesn't need the instance anymore. After the destructor is ran, the instance is freed and any usage of it will result in an error.
