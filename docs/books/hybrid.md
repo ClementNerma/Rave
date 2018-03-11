@@ -1776,3 +1776,27 @@ class Superthing {
 ```
 
 `@` is a strict equivalent to `this.`, so we can use it to access the members of the current class.
+
+### Private readable attributes
+
+When declaring class' attributes, we sometimes want to make it private because we don't want anyone to change it without control, but we also want a developer to read it. So, this would be a read-only attributes from the class' outside, and a classic attribute from the inside (both readable and writable). Here is how we could implement it:
+
+```sn
+class SomeClass {
+  private myAttribute: string;
+
+  public func getMyAttribute() : string {
+    return @myAttribute;
+  }
+}
+```
+
+This is perfectly valid and works as expected. But doing this can be heavy to write, especially if we have several attributes like this one. So, there is a lighter syntax to achieve this:
+
+```sn
+class SomeClass {
+  private readable myAttribute: string;
+}
+```
+
+This will do the same thing as the previous syntax, excepted we won't access the attribute with `instance.getMyAttribute()` from the outside, but simply with `instance.myAttribute`.
