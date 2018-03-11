@@ -1916,3 +1916,57 @@ free!(arr); // Prints: "I will be freed."
 ```
 
 This overloads aims to provide a way to run a specific code when the developer explicitly says it doesn't need the instance anymore. After the destructor is ran, the instance is freed and any usage of it will result in an error.
+
+### Freezing
+
+Remember the frozens? We saw they were deep constants where even attributes, sub-structures etc. were completly frozen.
+
+Frozens have a second use, though. Their real aim is not to deeply freeze an object's values, but to freeze it in its behavior. This is not really clear, so let's see how it goes.
+
+Let's imagine we have a class representing a list of integers. We have a method, `add`, to add a number to a private list and `pop` to get the last value from it, plus a `sum` function to calculate its sum.
+
+If we simply declared an instance of this class as a frozen, it will freeze its public attributes. But this won't prevent from adding numbers to the private list thanks to the `add` function, for example.
+
+That's why an overload exists to implement the 'frozen' state in a class, called `@freeze`. It takes no argument and is `void`-typed, so its return type can be omitted. It this method is implemented, the instance is considered as being able to be frozen.
+
+```sn
+class IntArray {
+  private readable data: int[];
+
+  public func @freeze() {}
+
+  public func add(value: int) : void {
+    // Check if the instance is frozen
+    if (is_frozen!())
+      println!("The class is frozen, can't append anything.");
+    else
+      @data.push(value);
+  }
+
+  public func pop() : bool {
+    // Check if the instance is frozen
+    if (is_frozen!())
+      println!("The class is frozen, can't pop the top value.");
+    else
+      @data.pop();
+  }
+
+  public func sum() : int -> @data.reduce((acc: int, value: int) : int -> acc + value);
+}
+```
+
+As you can see, the overload's body is empty. It's simply because when declaring this overload, we explicitly tell that our class can be frozen, so it will freeze every single attributes, even the private ones. It will also turn a hidden boolean, the _frozen flag_ to `true`, meaning the instance has been frozen. Then, the `is_frozen!` macro returns it. We could also have put a `println!("I'm now frozen");` code in the overload, but that's totally optional, and most of the time this overload will be empty. Now we know what is does, let's see the process more in details:
+
+When freezing the class, we aim to make the instance and its data immutable. But there is a problem here. In fact, even if `data` can't be written from the outside, its sub-values can. For example, doing `arr.data = [1, 2]` won't work, but `arr.data[1] = 5` will. This is due to the fact `arr.data[1]` is independent of `arr.data` because it's its own single value, while `arr.data` is a list of values, not the values themselves.
+
+Because of this behaviour, our instance is not _fully_ frozen. That's why implementing the `@freeze` overload will automatically freeze all attributes, even private ones, and their own attributes if they are objects are instances of classes, and so on. Even though freezing all of this could take a bit of time, it's done because declaring is frozen is always done intentionnally. If we simply wanted to make `add` and `pop` unable to act, we would have implemented a `makeImmutable` method or something.
+
+Thanks to this behaviour, we don't take the risk to forget freezing an attribute, a problem that can occur especially when adding new attributes to a class and forgetting to freeze them. Hopefully, we don't have to think about that.
+
+Note that any instance of the `IntArray` can still be frozen after being declared, using the `freeze!` macro, which permits to freeze the data after manipulating its data.
+
+Also, conventionnally, freezing cannot be undone, so we don't have to implement an `unfreeze` method or anything.
+
+A last advice about freezing is that **all** native types support freezing, so you don't have to worry when dealing with them, from `int` to `Dictionary<string, List<string>>`.
+
+The notion of freezing is complex, so don't hesitate to read it again, until you understand. That's an important feature because declaring an instance as frozen or freezing it manually will throw an error if the overload is not implemented in the class.
