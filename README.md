@@ -23,6 +23,8 @@ The repository's folder is now set up.
 
 You can take a look at the language's syntax and its current state by reading [The Hybrid Book](https://silvernight.herokuapp.com/docs/book/hybrid.html).
 
+You can also get the book locally to read it at anytime by running `yarn read-book hybrid`. This way, you can read it without an access to the web.
+
 ## Syntax highlighting support
 
 You can install an extension to grant support syntax highlighting to your favorite code editor.
