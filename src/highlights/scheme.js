@@ -245,9 +245,14 @@ scheme = {
       'purple', 'blue'
     ],
     [
+      // Template usage (with reserved template names)
+      /(?<!\.)\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(<)(T|X|Y|Z|K|V)(?=>)/,
+      'yellow', 'cyan', 'purple'
+    ],
+    [
       // Template usage
-      /(?<!\.)\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=<[^;]+>)/,
-      'yellow'
+      /(?<!\.)\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(<)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=[^;]*>)/,
+      'yellow', 'cyan', 'yellow'
     ],
     [
       // Plain data
