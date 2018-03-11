@@ -71,7 +71,7 @@ scheme = {
           }
         },
         {
-          match: /@(note|same)\s+/,
+          match: /@(note|samedef)\s+/,
           name: '${purple}'
         },
         {
