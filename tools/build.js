@@ -569,7 +569,8 @@ const main_mod = {
     { long: 'serve', type: 'number', defaultIfTrue: process.env.PORT || 80, help: 'Run a web server to deliver statically the output folder' },
     { long: 'watch', short: 'w', value: 'folders', defaultIfTrue: '.', help: 'Build each time a file is changed in the folders (folders are separated by a comma)' },
     { long: 'logfile', short: 'l', value: 'file', help: 'Write all log messages in a file' },
-    { long: 'logverbose', type: 'boolean', default: false, help: 'If `--logfile` is enabled, log all verbose messages (can be heavy)' }
+    { long: 'logverbose', type: 'boolean', default: false, help: 'If `--logfile` is enabled, log all verbose messages (can be heavy)' },
+    { long: 'test', type: 'boolean', default: false, help: 'Run the test (build everything and clean)' }
   ]
 };
 
@@ -598,9 +599,41 @@ if (argv.logfile)
   // Resolve it to save time (avoiding doing it each time we path is used)
   argv.logfile = path.resolve(argv.logfile);
 
+// If a test order has been gave,
+// and if this is not a child process...
+if (argv.test && ! CHILD) {
+  // Set up the processes options
+  const options = {
+    cwd: process.cwd(),
+    stdio: [0, 1, 2, 'ipc']
+  };
+
+  // Tell the test will start
+  say('Starting the test...');
+
+  // Start a "build everything" process
+  child_process.fork(process.argv[1], [ '--all', '--child' ].concat(process.argv.slice(2)), options).on('exit', code => {
+    // If an error occured...
+    if (code)
+      // ERROR
+      error(`Test failed while building everything. Process exited with code ${code}`, 29);
+
+    // Start a "clean" process
+    child_process.fork(process.argv[1], [ '--clean', '--child' ].concat(process.argv.slice(2)), options).on('exit', code => {
+      // If an error occured...
+      if (code)
+        // ERROR
+        error(`Test failed while cleaning. Process exited with code ${code}`, 30);
+      else
+        // Success!
+        success(yellow('Test result: finished successfully.'));
+    });
+  });
+}
+
 // If a watch order was emitted,
 // and if this is not a child process created by the watcher...
-if (argv.watch && ! CHILD) {
+else if (argv.watch && ! CHILD) {
   // Get the list of folders by splitting the ',' folder (ignore espaced ones)
   const folders = argv.watch.split(/(?<!\\),/);
 
