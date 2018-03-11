@@ -50,7 +50,7 @@ self = {
     const name = self.argv.book;
 
     // If no book was specified...
-    if (! name)
+    if (! name || name === true)
       // ERROR
       error('No book name provided', 6);
    

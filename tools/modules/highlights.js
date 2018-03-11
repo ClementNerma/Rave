@@ -48,7 +48,7 @@ self = {
     const name = self.argv.target;
 
     // If no editor was specified...
-    if (! name)
+    if (! name || name === true)
       // ERROR
       error('No editor name provided', 18);
 
