@@ -762,8 +762,11 @@ else if (typeof argv.module !== 'string') {
       say(yellow('* Building with module ' + `"${name}"` + '...'));
       // Load the module, then run its clean function
       loadModule(name, m_argv).buildAll();
-      // Put a blank line
-      console.log('');
+      
+      // If not in quiet mode...
+      if (! argv.quiet)
+        // Put a blank line
+        console.log('');
     }
 
     // Success
