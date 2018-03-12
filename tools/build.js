@@ -303,9 +303,21 @@ function staticServe (folder, port = 80, verbmsg) {
   verb('Creating an Express application');
   const app = express();
 
+  // Make the path absolute
+  folder = here(folder);
+
   // Serve static files
   verb(`Preparing to serve statically a folder` + (verbmsg ? ` (${verbmsg})` : ''), folder);
-  app.use(express.static(here(folder)));
+
+  // If the given path is a folder...
+  if (folderExists(folder))
+    // Deliver it statically
+    app.use(express.static(folder));
+  else
+    // Else, it's a file
+    // Deliver it as a single file
+    // NOTE: The file is read each time the server's root path is requested
+    app.get('/', (req, res) => res.send(readFile(folder)));
 
   // Listen on the provided port
   app.listen(port, () => void say(`Server listening on port ${port}...`));
