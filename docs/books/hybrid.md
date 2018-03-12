@@ -2078,9 +2078,7 @@ println!(list[1]); // Prints: "7"
 
 This works perfectly fine. We simply added a `clone!` instruction, and our problem is solved because we explicitly tell we want to make a brand _new_ list with the same values than the first one.
 
-But cloning is not magic. We can't simply clone data like this. Imagine a class contains an `unique_id` attribute that aims to be a unique number. Cloning it like that would throw this rule away. This is why, by default, instances can't be cloned until they implement the `@clone` overload.
-
-This one has no argument, but must return an instance of the current class, with omittable return type. But, it can be empty. Let's see an example:
+But cloning is not magic. We can't simply clone data like this. Imagine a class contains an `unique_id` attribute that aims to be a unique number. Cloning it like that would throw this rule away. This is why, by default, instances can't be cloned until they implement the `@clone` overload. Let's consider this class:
 
 ```sn
 class Product {
@@ -2094,12 +2092,33 @@ class Product {
     @price = price;
     @unique_id = self::counter ++;
   }
-
-  // The cloning function returns a new product, with the same name
-  //  and price, but implicitly with a different UID because the
-  //  constructor will generate a new one for this new instance.
-  public @clone() -> new Product(@name, @price);
 }
+````
+
+It can't be cloned because the cloning overload is not present in the class.
+
+For this one we can choose between three signatures: a function which takes no argument, and is `void`-typed (with omittable return type), which can be empty. In this case, the program will automatically clone the instance by creating a new object with the same methods and attributes, and assign the values to the new instance's attributes (even private ones) by cloning the original's ones. Note that the constructor is not called when the instance is automatically cloned.
+
+```sn
+  // ...
+  public func @clone() -> println!("I'm being cloned!");
+  // ...
 ```
 
-Pretty simple, isn't it? Though, don't forget to clone arrays if you give some to the new instance from the current one (same with objects and instances from other classes).
+The second signature is the same than the first one excepted it takes one argument (let's call it `target`), which is the cloned object. It will be return whatever happens, but it can be manipulated in order to assign datas to it (for example, unique identifiers).
+
+```sn
+  // ...
+  public func @clone(target: self) -> println!(`Going to clone a ${target.name}`);
+  // ...
+```
+
+The third signature takes no argument, and must manually return an instance of the current class (type is not omittable).
+
+```sn
+  // ...
+  public func @clone() : self -> new Product(@name, @price);
+  // ...
+```
+
+Pretty simple, isn't it? Though, in the case you manually create an instance, don't forget to clone arrays if you give some to the new instance from the current one (same with objects and instances from other classes). Conceptually, the goal of a clone is to have the same behaviour than the original (same values...) but to be independant from it.
