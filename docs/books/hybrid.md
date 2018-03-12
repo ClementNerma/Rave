@@ -695,7 +695,7 @@ println!(ages[index]); // Prints: "21"
 
 But a new trap comes here. If you try to omit the type in the declaration above, you will have some surprise at compilation time because `ages` would now be a structure with three properties, `Jack` `Lucy` and `Thomas`! Why does this happen? Because Inferred Structured Typing (IST) we will see now.
 
-### IST (Inferred Structured Typing)
+### Inferred Structured Typing
 
 IST is a feature of the SilverNight language that aims to simplify data typing.
 
@@ -1197,7 +1197,7 @@ println!(i) for (let i : 1 -> 10)
 
 Nothing will be generated. Also, nothing will be generated if you don't give the result to a function or assign it to a variable.
 
-### Loop's `break` and `continue`
+### `break` and `continue` loops
 
 When dealing with a loop, you can want to exit it if a specific even happens. For example, if we have an `hadError` function that returns a boolean to indicate an error happened, we could want to exit the loop.
 
@@ -1436,7 +1436,7 @@ val returnTrue = () : bool -> true;
 
 But even with the arrow syntax, this is still heavy as we have to write the arguments' type as well as the lambda's return type. So there is a last feature called **ICT** for **I**nferred **C**allback **T**yping we will see now.
 
-### ICT (Inferred Callback Typing)
+### Inferred Callback Typing
 
 ICT works like IST but for functions. Instead of inferring a data's structure, it will infer a function's arugments and return type based on a signature.
 
