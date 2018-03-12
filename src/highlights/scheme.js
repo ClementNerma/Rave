@@ -226,7 +226,7 @@ scheme = {
     ],
     [
       // Declaration statement in classes
-      /(?<!\.)\b(public|protected|private)(?!\s+(?:func|getter|setter|static|struct)\s+)\s+(readonly\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      /(?<!\.)\b(public|protected|private)(?!\s+(?:func|getter|setter|static|struct)\s+)\s+(readable\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'purple', 'red', 'cyan'
     ],
     [
@@ -271,12 +271,12 @@ scheme = {
     ],
     [
       // Function's or declaration's special type (not caught by the previous expressions)
-      /(:)\s*((?:&\s*)*)(void|self|Any|class_ref|func_ref|var_ref|macro_ref|T|X|Y|Z|K|V)(?=\s*[\{\);=]|\s*->)/,
+      /(?<!:)(:)\s*((?:&\s*)*)(void|self|Any|class_ref|func_ref|var_ref|macro_ref|T|X|Y|Z|K|V)(?=\s*[\{\);=]|\s*->)/,
       'white', 'cyan', 'purple'
     ],
     [
       // Function's or declaration's (other) type
-      /(:)\s*((?:&\s*)*)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*[\{\);=]|\s*->)/,
+      /(?<!:)(:)\s*((?:&\s*)*)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*[\{\);=]|\s*->)/,
       'white', 'cyan', 'yellow'
     ],
     [
@@ -341,7 +341,7 @@ scheme = {
     ],
     [
       // Keywords
-      /(?<!\.)\b(let|pln|val|frozen|frozen|func|lambda|public|protected|private|auto|friend|static|abstract|final|unique|virtual|extern|readonly|do|if|else|finally|for|foreach|in|of|break|continue|unless|until|when|default|export|return|throw|die|try|catch|while|with|new|include|await|native)(?!\s*:)\b/,
+      /(?<!\.)\b(let|pln|val|frozen|frozen|func|lambda|public|protected|private|auto|friend|static|abstract|final|unique|virtual|extern|readable|do|if|else|finally|for|foreach|in|of|break|continue|unless|until|when|default|export|return|throw|die|try|catch|while|with|new|include|await|native)(?!\s*:)\b/,
       'purple'
     ],
     [
