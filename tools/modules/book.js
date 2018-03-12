@@ -273,7 +273,7 @@ self = {
     rmdir(highlights_path);
 
     // Determine the template folder path
-    const tpl_folder_path = 'docs/books/template';
+    const tpl_folder_path = 'src/book-template';
 
     // If the template folder is not found...
     if (! folderExists(tpl_folder_path))
