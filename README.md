@@ -19,6 +19,14 @@ yarn # Install dependencies
 
 The repository's folder is now set up.
 
+**NOTE :** Due to known issues with some dependencies, you may have to install the build tools package in order to make the SilverNight build tools work, by running:
+
+```bash
+npm install --global --production windows-build-tools
+```
+
+In a terminal with `sudo` / Administrator rights.
+
 ## Documentation
 
 You can take a look at the language's syntax and its current state by reading [The Hybrid Book](https://silvernight.herokuapp.com/docs/book/hybrid.html).
