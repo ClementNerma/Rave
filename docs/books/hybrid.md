@@ -2109,7 +2109,7 @@ The second signature is the same than the first one excepted it takes one argume
 
 ```sn
   // ...
-  public func @clone(target: self) -> println!(`Going to clone a ${target.name}`);
+  public func @clone(target: self) -> println!(`Cloning a ${target.name}`);
   // ...
 ```
 
