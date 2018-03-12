@@ -1885,7 +1885,7 @@ class Map {
 
     // Check if we are outside the map
     else if (x < 0 || x > @cells[0].size - 1 ||
-        y < 0 || y > @cells.size - 1)
+             y < 0 || y > @cells.size - 1)
       println!("Cannot move outside the map.");
     
     // Check if the cell we are going to is a rock
