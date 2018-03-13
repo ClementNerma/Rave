@@ -765,6 +765,12 @@ else if (argv.watch && ! CHILD) {
     verb(`Now watching folder`, folder);
   }
 
+  // Log
+  say('Triggering a first build...');
+
+  // Build a first time
+  buildNow();
+
   // Ready!
   say('Now watching.');
 }
