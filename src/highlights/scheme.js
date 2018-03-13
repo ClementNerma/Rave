@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.9.0',
+    VERSION: '0.9.1',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -190,20 +190,22 @@ scheme = {
       name: '${green}'
     },
     {
-      // Regular expressions
-      begin: /(?<!\/)\//,
+      begin: '(?<=[\\[=(?:+,!]|^|return|=>|&&|\\|\\|)\\s*(/)(?![/*+?])(?=.*/)',
       beginCaptures: {
-        '0': {
+        '1': {
           name: '${green}'
         }
       },
-      end: /(?<!\/)\//,
+      end: '(/)([gimsuy]*)',
       endCaptures: {
-        '0': {
+        '1': {
           name: '${green}'
+        },
+        '2': {
+          name: '${purple}'
         }
       },
-      name: '${cyan}',
+      name: '${red}', // Pointless since the color is decided by #regexp
       patterns: [
         {
           include: '#regexp'
