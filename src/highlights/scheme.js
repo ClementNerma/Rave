@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.8.3',
+    VERSION: '0.9.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -188,6 +188,27 @@ scheme = {
         }
       ],
       name: '${green}'
+    },
+    {
+      // Regular expressions
+      begin: /(?<!\/)\//,
+      beginCaptures: {
+        '0': {
+          name: '${green}'
+        }
+      },
+      end: /(?<!\/)\//,
+      endCaptures: {
+        '0': {
+          name: '${green}'
+        }
+      },
+      name: '${cyan}',
+      patterns: [
+        {
+          include: '#regexp'
+        }
+      ]
     },
     [
       // Class references
@@ -494,5 +515,153 @@ scheme = {
       /#([a-zA-Z_\$][a-zA-Z0-9_\$]+)( +;)?/,
       'invalid'
     ]
-  ]
+  ],
+
+  repository: {
+    // Regular expressions patterns
+    // Taken from: https://github.com/atom/language-javascript/blob/master/grammars/regular%20expressions%20(javascript).cson
+    'regex-character-class': {
+      patterns: [
+        {
+          match: /\\[wWsSdDtrnvf]|\./,
+          name: '${red}'
+        },
+        {
+          match: /\\([0-7]{3}|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4})/,
+          name: '${orange}'
+        },
+        {
+          match: /\\c[A-Z]/,
+          name: '${orange}'
+        },
+        {
+          match: /\\./,
+          name: '${cyan}'
+        }
+      ]
+    },
+
+    regexp: {
+      patterns: [
+        {
+          match: /\\[bB]|\^|\$/,
+          name: '${purple}'
+        },
+        {
+          match: /\\[1-9]\d*|\\k<[a-zA-Z_$][\w$]*>/,
+          name: '${purple}'
+        },
+        {
+          match: /[?+*]|\{(\d+,\d+|\d+,|,\d+|\d+)\}\??/,
+          name: '${orange}'
+        },
+        {
+          match: /\|/,
+          name: '${white}'
+        },
+        {
+          begin: /(\()(?:(\?=)|(\?!)|(\?<=)|(\?<!))/,
+          beginCaptures: {
+            '1': {
+              name: '${cyan}'
+            },
+            '2': {
+              name: '${cyan}'
+            },
+            '3': {
+              name: '${cyan}'
+            },
+            '4': {
+              name: '${cyan}'
+            },
+            '5': {
+              name: '${cyan}'
+            }
+          },
+          end: /(\))/,
+          endCaptures: {
+            '1': {
+              name: '${cyan}'
+            }
+          },
+          name: '${cyan}',
+          patterns: [
+            {
+              include: '#regexp'
+            }
+          ]
+        },
+        {
+          begin: /\(((\?:)|(\?<[a-zA-Z_$][\w$]*>))?/,
+          beginCaptures: {
+            '0': {
+              name: '${cyan}'
+            }
+          },
+          end: /\)/,
+          endCaptures: {
+            '0': {
+              name: '${cyan}'
+            }
+          },
+          name: '${cyan}',
+          patterns: [
+            {
+              include: '#regexp'
+            }
+          ]
+        },
+        {
+          begin: /(\[)(\^)?/,
+          beginCaptures: {
+            '1': {
+              name: '${orange}'
+            },
+            '2': {
+              name: '${white}'
+            }
+          },
+          end: /(\])/,
+          endCaptures: {
+            '1': {
+              name: '${orange}'
+            }
+          },
+          name: '${orange}',
+          patterns: [
+            {
+              'captures': {
+                '1': {
+                  name: '${orange}'
+                },
+                '2': {
+                  name: '${orange}'
+                },
+                '3': {
+                  name: '${orange}'
+                },
+                '4': {
+                  name: '${orange}'
+                },
+                '5': {
+                  name: '${orange}'
+                },
+                '6': {
+                  name: '${orange}'
+                }
+              },
+              match: /(?:.|(\\(?:[0-7]{3}|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}))|(\\c[A-Z])|(\\.))\-(?:[^\]\\]|(\\(?:[0-7]{3}|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}))|(\\c[A-Z])|(\\.))/,
+              name: '${orange}'
+            },
+            {
+              include: '#regex-character-class'
+            }
+          ]
+        },
+        {
+          include: '#regex-character-class'
+        }
+      ]
+    }
+  }
 };
