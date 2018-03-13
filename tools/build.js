@@ -320,7 +320,7 @@ function staticServe (folder, port = 80, verbmsg) {
     app.get('/', (req, res) => res.send(readFile(folder)));
 
   // Listen on the provided port
-  app.listen(port, () => void say(`Server listening on port ${port}...`));
+  server = app.listen(port, () => void say(`Server listening on port ${port}...`));
 }
 
 /**
@@ -582,6 +582,7 @@ const main_mod = {
     { long: 'clean', short: 'c', type: 'boolean', help: 'Clean module\'s data' },
     { long: 'serve', type: 'number', defaultIfTrue: process.env.PORT || 80, help: 'Run a web server to deliver statically the output folder' },
     { long: 'watch', short: 'w', value: 'folders', defaultIfTrue: '.', help: 'Build each time a file is changed in the folders (folders are separated by a comma)' },
+    { long: 'live-reload', short: 'r', type: 'number', defaultIfTrue: process.env.PORT || 80, help: 'Serve the output each time the build is triggerd (requires `--watch`)' },
     { long: 'logfile', short: 'l', value: 'file', help: 'Write all log messages in a file' },
     { long: 'logverbose', type: 'boolean', default: false, help: 'If `--logfile` is enabled, log all verbose messages (can be heavy)' },
     { long: 'test', type: 'boolean', default: false, help: 'Run the test (build everything and clean)' }
@@ -594,6 +595,9 @@ const argv = main_mod.argv = adaptArgv(m_argv, main_mod.arguments);
 // Set up constants for the modules
 const RELEASE = argv.release && ! argv.fast;
 const FAST = argv.fast;
+
+// The running Express server
+let server = null;
 
 // For each adapted argument...
 for (let arg of Reflect.ownKeys(argv))
@@ -687,6 +691,24 @@ else if (argv.watch && ! CHILD) {
     p.on('exit', () => {
       // No process is running anymore
       building = false;
+
+      // If the "live reload" option has been provided...
+      if (argv['live-reload']) {
+        // If a server was already running...
+        if (server) {
+          // Verbose
+          verb('Closing server to prepare live reload...');
+
+          // Stop the server
+          server.close();
+        }
+        
+        // Verbose
+        verb('Going to serve the build folder locally...');
+
+        // Serve the build folder locally
+        staticServe('build');
+      }
 
       // If a file was waiting...
       if (waiting) {
