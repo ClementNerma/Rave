@@ -288,7 +288,7 @@ function openBrowser (p, callback) {
   verb('Opening item in the browser', p);
 
   // Open the item in the browser
-  opn(here(p), callback);
+  opn(here(p)).then(callback);
 }
 
 /**
