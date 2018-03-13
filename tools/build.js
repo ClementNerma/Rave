@@ -848,7 +848,7 @@ else if (typeof argv.module !== 'string') {
     say(getHelp(mod));
 
   // If the list of available targets is asked...
-  if (argv.list) {
+  else if (argv.list) {
     // If such a list exists...
     if (mod.help[1])
       // Display it
