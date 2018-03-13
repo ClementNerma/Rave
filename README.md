@@ -19,13 +19,27 @@ yarn # Install dependencies
 
 The repository's folder is now set up.
 
-**NOTE :** Due to known issues with some dependencies, you may have to install the build tools package in order to make the SilverNight build tools work, by running:
+### Troubleshooting
+
+Due to known issues with some dependencies, you may have to install the build tools package in order to make the SilverNight build tools work, by running:
 
 ```bash
 npm install --global --production windows-build-tools
 ```
 
 In a terminal with `sudo` / Administrator rights.
+
+## Build
+
+Here are the build commands for the project (to run in the set-up repository folder):
+
+```bash
+yarn test # Run the tests
+yarn build-all # Build everything
+yarn build-test # Run the tests for the build tools
+yarn clean # Clean build data
+yarn build website # Build the website locally
+```
 
 ## Documentation
 
@@ -42,7 +56,8 @@ You can install an extension to grant support syntax highlighting to your favori
 Run the following commands in the repository's set up folder:
 
 ```bash
-yarn install-extension <editor>
+yarn install-extension atom # For Atom
+yarn install-extension vscode # For Visual Studio Code
 ```
 
 And follow the instructions that appears in your terminal.
