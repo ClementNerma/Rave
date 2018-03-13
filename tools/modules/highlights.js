@@ -4,7 +4,8 @@
 // Set up a list of available editors
 const editors = {
   atom: 'Atom',
-  vscode: 'Visual Studio Code'
+  vscode: 'Visual Studio Code',
+  sublime: 'Sublime Text'
 };
 
 // Export API
