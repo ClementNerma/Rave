@@ -582,7 +582,7 @@ const main_mod = {
     { long: 'clean', short: 'c', type: 'boolean', help: 'Clean module\'s data' },
     { long: 'serve', type: 'number', defaultIfTrue: process.env.PORT || 80, help: 'Run a web server to deliver statically the output folder' },
     { long: 'watch', short: 'w', value: 'folders', defaultIfTrue: '.', help: 'Build each time a file is changed in the folders (folders are separated by a comma)' },
-    { long: 'live-reload', short: 'r', type: 'number', defaultIfTrue: process.env.PORT || 80, help: 'Serve the output each time the build is triggerd (requires `--watch`)' },
+    { long: 'live-reload', short: 'r', type: 'boolean', help: 'Serve the output each time the build is triggerd (requires `--watch`)' },
     { long: 'logfile', short: 'l', value: 'file', help: 'Write all log messages in a file' },
     { long: 'logverbose', type: 'boolean', default: false, help: 'If `--logfile` is enabled, log all verbose messages (can be heavy)' },
     { long: 'test', type: 'boolean', default: false, help: 'Run the test (build everything and clean)' }
