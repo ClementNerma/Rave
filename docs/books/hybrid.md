@@ -1846,7 +1846,7 @@ When static members are private, that means they can only accessed through the `
 
 Let's now practice with a little exercice. We want to represent a RPG map with a class. Each cell has a number referring to an empty cell (0), a rock (1) or a trap (2). The map is given at its creation, as a double array of integers. The map is a rectangle and has a fixed width and heigh deducted from the double array.
 
-We can move on this map a player, starting from a location given at the map's creation. The player can move up, down, left and right. It can't go on rock cells, and going to a trap will display a message "You're trapped!" and make the player unable to move.
+We can move on this map a player, starting from a location given at the map's creation. The player can move up, down, left and right. It can't go on rock cells, and going to a trap will display a message "You've been trapped!" and make the player unable to move.
 
 We have to represent it with a single class, with only private attributes (they can be readable, though). At anytime, we should be able to access to current player's position, to get any cell's value, or to check if the player has been trapped already.
 
