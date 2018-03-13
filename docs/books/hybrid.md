@@ -1442,7 +1442,7 @@ ICT works like IST but for functions. Instead of inferring a data's structure, i
 
 This may be appear complex, but let's take a simple example. Remember the `.filter` function we can apply on any `List<T>` value? We gave it a lambda and we had to declare the lambda's arguments' type as well as a return type. But because these types are already specified in the `.filter` function's signature, we know that we'll have _exactly_ the sames types in our lambda's signature.
 
-So there is a directive that provides a way to perform inferred typing on a lambda, for both its arguments' type and its return type. This directive is `#auto`.
+So there is a way to perform inferred typing on a lambda, for both its arguments' type and its return type. Here is it:
 
 ```sn
 // Classic lambda
@@ -1452,7 +1452,7 @@ val posArr = arr.filter(func (value: int, key: int) : bool { return value >= 0; 
 val posArr = arr.filter((value: int, key: int) : bool -> value >= 0);
 
 // Inferred callback typing
-val posArr = arr.filter(#auto (value, key) -> value >= 0);
+val posArr = arr.filter((value, key) -> value >= 0);
 ```
 
 This last syntax is clearly lighter as it avoids to declare the types. But be careful though to read carefully the signature of the function you are giving this lambda to ; else you could have some... surprises, at compilation time.
