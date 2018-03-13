@@ -220,6 +220,42 @@ next.addEventListener('click', () => showSection(currentSectionID + 1));
 // Append it to the page's body
 document.body.appendChild(next);
 
+// For every code block in the page...
+for (let block of qa('pre')) {
+  // Create a link
+  let link = document.createElement('a');
+  // Give it a class
+  link.className = 'copy';
+  // When is it clicked...
+  link.addEventListener('click', () => {
+    // Create a fake textearea
+    let fake = document.createElement('textarea');
+    // As a content give it the codeblock's one
+    fake.value = link.parentElement.innerText;
+    // Make it invisible
+    fake.style.zIndex = -1;
+    // Append it to the DOM
+    document.body.appendChild(fake);
+    // Select
+    fake.select();
+    // Copy to the clipboard
+    document.execCommand('copy');
+    // Remove the fake element from the DOM
+    fake.remove();
+    
+    // Update the link's legend
+    link.classList.add('triggered');
+
+    // After 2 seconds...
+    setTimeout(() =>
+      // Go back to its original legend
+      link.classList.remove('triggered')
+    , 2000);
+  });
+  // Append the link to the codeblock
+  block.appendChild(link);
+}
+
 // If a hash was specified in the URL
 // and if it targets an existing section...
 if (window.location.hash && q(`[data-slug="${window.location.hash.substr(1)}"]`))

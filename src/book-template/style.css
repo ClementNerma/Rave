@@ -6,6 +6,8 @@ script {
 body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
+  background-color: white;
+  z-index: 0;
 }
 
 nav {
@@ -111,6 +113,26 @@ pre {
   /* Prevent overflow */
   word-wrap: break-word;
   white-space: pre-line;
+  position: relative;
+}
+
+pre a.copy {
+  position: absolute;
+  top: 0px;
+  right: 0px;  
+}
+
+pre a.copy:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+pre a.copy:after {
+  content: "Copy";
+}
+
+pre a.copy.triggered:after {
+  content: "Copied!";
 }
 
 blockquote {
