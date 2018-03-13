@@ -56,8 +56,9 @@ You can install an extension to grant support syntax highlighting to your favori
 Run the following commands in the repository's set up folder:
 
 ```bash
-yarn install-extension atom # For Atom
-yarn install-extension vscode # For Visual Studio Code
+yarn install-extension atom    # For Atom
+yarn install-extension vscode  # For Visual Studio Code
+yarn install-extension sublime # For Sublime Text
 ```
 
 And follow the instructions that appears in your terminal.
