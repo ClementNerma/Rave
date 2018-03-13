@@ -3,8 +3,8 @@
 
 // Set up a list of available editors
 const editors = {
-  atom: 'Atom (from GitHub)',
-  vscode: 'Visual Studio Code (from Microsoft)'
+  atom: 'Atom',
+  vscode: 'Visual Studio Code'
 };
 
 // Export API
