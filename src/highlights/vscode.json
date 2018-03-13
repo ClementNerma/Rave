@@ -118,7 +118,8 @@
             "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
             "name": "${LANGUAGE}",
             "scopeName": "source.${EXTENSION}",
-            "patterns": "$INSERT_PATTERNS_Q$"
+            "patterns": "$INSERT_PATTERNS_Q$",
+            "repository": "$INSERT_REPOSITORY_Q$"
           }
         },
         "codeblock.json": {

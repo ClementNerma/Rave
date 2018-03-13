@@ -14,7 +14,8 @@
             "fileTypes": [
               "${EXTENSION}"
             ],
-            "patterns": "$INSERT_PATTERNS_Q$"
+            "patterns": "$INSERT_PATTERNS_Q$",
+            "repository": "$INSERT_REPOSITORY_Q$"
           }
         }
       }

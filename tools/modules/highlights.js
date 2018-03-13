@@ -115,29 +115,45 @@ self = {
     // Extract constants
     const BUILD_CONSTANTS = scheme.constants;
 
-    // Extract patterns
-    let patterns = scheme.patterns;
+    /**
+     * Treat a group of patterns
+     * @param {Array.<Object>} patterns The patterns to treat
+     * @param {string} group The patterns group's name
+     * @returns {Array.<Object>} The patterns, treated
+     */
+    function treatPatterns(patterns, group) {
+      // Stringify RegExps and treat colors in all patterns
+      verb(`Treating regular expressions and colors in ${group}...`);
+      patterns = regexpAndColors(patterns);
 
-    // Stringify RegExps and treat colors in all patterns
-    verb('Treating regular expressions and colors in patterns...');
-    patterns = regexpAndColors(patterns);
+      // Format patterns
+      verb(`Treating ${group}...`);
+      patterns = patterns.map(
+        // Given a pattern...
+        pattern =>
+          // If a simple pattern is provided...
+          Array.isArray(pattern) ?
+            // Make a single-level match object
+            merge(
+              { match: pattern[0] },
+              // Convert all colors in this pattern
+              buildColors(pattern.slice(1))
+            ) :
+            // Else, let the pattern as it is
+            pattern
+      );
 
-    // Format patterns
-    verb('Treating patterns...');
-    patterns = patterns.map(
-      // Given a pattern...
-      pattern =>
-        // If a simple pattern is provided...
-        Array.isArray(pattern) ?
-          // Make a single-level match object
-          merge(
-            { match: pattern[0] },
-            // Convert all colors in this pattern
-            buildColors(pattern.slice(1))
-          ) :
-          // Else, let the pattern as it is
-          pattern
-    );
+      // Return the treated patterns
+      return patterns;
+    }
+
+    // Treat native patterns
+    scheme.patterns = treatPatterns(scheme.patterns, 'patterns');
+
+    // For each group in the repository...
+    for (let group of Reflect.ownKeys(scheme.repository))
+      // Treat it too
+      scheme.repository[group].patterns = treatPatterns(scheme.repository[group].patterns, `group of patterns "${group}"`)
 
     // Determine the output path
     const output_path = self.argv.output
@@ -244,9 +260,10 @@ self = {
      * @param {string} dest The build folder
      * @param {Object} build The build object
      * @param {Array<Object>} patterns The patterns object
+     * @param {Object} repository The repository object
      * @returns {Object} The build object, formatted
      */
-    function execBuild(dest, build, patterns) {
+    function execBuild(dest, build, patterns, repository) {
       verb(`Executing the build() function inside "${dest}"...`);
 
       // Declare a variable for formatted items' name
@@ -280,7 +297,9 @@ self = {
           // Format all constants in it
           build[newName] = formatConstants(build[newName].content)
             // Insert patterns if asked to
-            .replace(/\$INSERT_PATTERNS\$|"\$INSERT_PATTERNS_Q\$"/g, () => JSON.stringify(patterns));
+            .replace(/\$INSERT_PATTERNS\$|"\$INSERT_PATTERNS_Q\$"/g, () => JSON.stringify(patterns))
+            // Insert the repository if asked to
+            .replace(/\$INSERT_REPOSITORY\$|"\$INSERT_REPOSITORY_Q\$"/g, () => JSON.stringify(repository));
 
           // Try to write it
           try {
@@ -299,7 +318,7 @@ self = {
             error('Failed to make a package folder', 27, e);
           }
           // Treat it
-          build[newName] = execBuild(path.join(dest, newName), build[newName].files, patterns);
+          build[newName] = execBuild(path.join(dest, newName), build[newName].files, patterns, repository);
         }
       }
 
@@ -308,7 +327,7 @@ self = {
     }
 
     // Format the build file and write it to the output
-    execBuild(output_path, source.tree, patterns);
+    execBuild(output_path, source.tree, scheme.patterns, scheme.repository);
 
     // If asked to...
     if (self.argv['install-help']) {
