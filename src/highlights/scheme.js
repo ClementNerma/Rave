@@ -269,7 +269,7 @@ scheme = {
     ],
     [
       // Match variable (_)
-      /(?<!\.)_\b/,
+      /\b_\b/,
       'purple'
     ],
     [
