@@ -2137,3 +2137,99 @@ There is a third and last way to grant cloning support to your class. It's calle
 ```
 
 If we write that, instances of the class will support cloning but we won't be able to do anything when this happen, or even be notified of that. All the attributes of the original instance will automatically be cloned to be assigned to the new one (like the first `@clone` we saw before). This is perfect for classes that don't have to worry about duplicate instances.
+
+### Serialization
+
+Serialization is a concept you probably won't use very often, but which can help you in some cases. Basically, serialization consists in converting a value to a string. It goes with the unserialization process, which converts a string to a value.
+
+For instance, we could imagine we have the same `Product` class as we saw before. Here is its source code at this point of the book:
+
+```sn
+class Product {
+  private readable unique_id: int;
+  private readable name: string;
+  private readable price: int;
+  static private counter: int = 0;
+
+  public pln @lazy_clone = true;
+
+  public @construct(name: string, price: int) {
+    @name = name;
+    @price = price;
+    @unique_id = self::counter ++;
+  }
+}
+```
+
+We could now imagine we want to transmit a product over the network, or simply save it to a file. This requires to convert the instance as a string, or at least as a list of bits (because all informations in a computer are written with bits). We also want to be able to make an instance from the transmitted/saved string in order to use the product. So we need to _serialize_ the instance and then _unserialize_ the produced string.
+
+For that, we'll implement two overloads in our class. They are `@serialize` and `@unserialize`, which is pretty explicit, and use the following signature:
+
+```sn
+  public func @serialize() : string;
+  static public func @unserialize(serial: string) : self;
+```
+
+Now let's implement them! First, how to implement serialization? We could produce a human-friendly string, like that:
+
+```sn
+  // ...
+  public func @serialize() : string {
+    return `uid: ${@unique_id} ; name: ${@name} ; price: ${@price}`;
+  }
+  // ...
+```
+
+But there is a problem here: first, the string is not optimized. One of the goal of serializing instances is to produce a small string to fit in a small disk space / be fast to transfer over a network. The second one, which is more annoying, is that'll be complicated to make an instance from these strings. So we can use a trick that is serializing a structure:
+
+```sn
+  // ...
+  public struct Serialized {
+    val name: string;
+    val price: int;
+  }
+
+  public func @serialize() : string ->
+    // Make an object containing the data we want to serialize
+    // (thanks to IST)
+    // Then serialize it and return the result
+    serialize!({
+      name: @name,
+      price: @price
+    });
+
+  static public func @unserialize(serial: string) : self {
+    // Unserialize the serialized structure
+    val obj: Serialized = unserialize!(serial, Serialized);
+    // Make a new product instance and return it
+    return new Product(@name, @price);
+  }
+  // ...
+```
+
+#### The lazy way (again)
+
+Exactly like cloning, there is a lazy overload for serialization. More exactly, there are two lazy overloads: one for serializing, and another for unserializing.
+
+If we use lazy serialization, all the members (even private ones) of our class will be put in a structure that will be converted to a string. If we use lazy unserialization, it will attempt to unserialize the given string as a structure made of all the class' members (even private ones), and make a new instance from it before returning it.
+
+Here is the syntax:
+
+```sn
+  // ...
+  // Implement lazy serialization
+  public pln @lazy_serialize = true;
+  // Implement lazy serialization
+  public pln @lazy_unserialize = true;
+  // ...
+```
+
+It's also possible to customize the fields that have to be serialized and unserialized. This way, we can avoid to put in a string that would go over the network or be written on a hard drive some confidential informations contained in the private members - or simply to remove some useless informations. It must be a list of strings, like this one:
+
+```sn
+  // ...
+  public pln @lazy_serial_fields = [ "name", "price" ];
+  // ...
+```
+
+You now know everything about serialization!
