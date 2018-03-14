@@ -1998,7 +1998,7 @@ class IntArray {
       @data.pop();
   }
 
-  public func sum() : int -> @data.reduce((acc: int, value: int) : int -> acc + value);
+  public func sum() : int -> @data.reduce((acc, value) -> acc + value);
 }
 ```
 
