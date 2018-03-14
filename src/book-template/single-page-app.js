@@ -230,8 +230,10 @@ for (let block of qa('pre')) {
   link.addEventListener('click', () => {
     // Create a fake textearea
     let fake = document.createElement('textarea');
-    // As a content give it the codeblock's one
-    fake.value = link.parentElement.innerText;
+    // Get the code block's content
+    const code = link.parentElement.innerText;
+    // As a content give to the textarea the codeblock's one
+    fake.value = code.substr(0, code.length - 1) /* Remove a useless newline symbol */;
     // Make it invisible
     fake.style.zIndex = -1;
     // Append it to the DOM
