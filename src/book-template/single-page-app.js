@@ -36,9 +36,37 @@ function refreshActive() {
   let active = q('nav .active');
 
   // If there is one...
-  if (active)
+  if (active) {
     // Remove its special class
     active.classList.remove('active');
+
+    // Remove the current section's special class
+    q('nav .current').classList.remove('current');
+  }
+
+  /**
+   * Set the active link
+   * @param {HTMLElement} target The target of the link to set active
+   * @returns {void}
+   */
+  function setActive (target) {
+    // Get the link
+    let link = q(`nav [href="#${target}"]`);
+
+    // Give to the link a specific class
+    link.classList.add('active');
+
+    // Get the link's parent
+    link = link.parentElement;
+
+    // While the element is not a section link...
+    while (link.getAttribute('data-depth') !== '1')
+      // Get the previous element
+      link = link.previousElementSibling;
+
+    // Give it a specific class
+    link.classList.add('current');
+  }
 
   // For each title in the current section (reversed order to start from the bottom of the section)...
   for (let title of Array.from(currentSection.querySelectorAll('h1, h2, h3, h4, h5, h6')).reverse())
@@ -46,14 +74,14 @@ function refreshActive() {
     // and if this one is located below the current scroll's position...
     if (title.offsetTop > 0 && window.scrollY > title.offsetTop - title.offsetHeight) {
       // Mark this title as active in the summary
-      q(`nav [href="#${title.getAttribute('data-id')}"]`).classList.add('active');
+      setActive(title.getAttribute('data-id'));
       // Exit the function (break the loop)
       return;
     }
 
   // If the code below is ran, then there is no active link currently
   // Make the section's title link active
-  q(`nav [href="#${currentSection.getAttribute('data-slug')}"]`).classList.add('active');
+  setActive(currentSection.getAttribute('data-slug'));
 }
 
 /**
