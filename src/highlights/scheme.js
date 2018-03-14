@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.9.2',
+    VERSION: '0.9.3',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -234,13 +234,13 @@ scheme = {
     ],
     [
       // DECLARE constants and frozens (plain or not)
-      /(?<!\.)\b(decl)(\s+(?:public|protected|private))?\s+(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-      'purple', 'purple', 'purple', 'red', 'orange'
+      /(?<!\.)\b(decl)(\s+(?:public|protected|private))?\s+(static\s+)?(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      'purple', 'purple', 'purple', 'purple', 'red', 'orange'
     ],
     [
       // DECLARE
-      /(?<!\.)\b(decl)(\s+(?:public|protected|private))?\s+(let)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-      'purple', 'purple', 'purple', 'red', 'cyan'
+      /(?<!\.)\b(decl)(\s+(?:public|protected|private))?\s+(static\s+)?(let)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      'purple', 'purple', 'purple', 'purple', 'red', 'cyan'
     ],
     [
       // Lazy overloads
@@ -248,14 +248,19 @@ scheme = {
       'purple', 'purple', 'red', 'cyan'
     ],
     [
+      // Declaration statement in classes for some static resources
+      /(?<!\.)\b(public|protected|private)\s+(static)(?=\s+(?:func|getter|setter|struct))/,
+      'purple', 'purple'
+    ],
+    [
       // Declaration statement in classes for constants and frozens (plain or not)
-      /(?<!\.)\b(public|protected|private)(?!\s+(?:func|getter|setter|static|struct)\s+)\s+(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-      'purple', 'purple', 'red', 'orange'
+      /(?<!\.)\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      'purple', 'purple', 'purple', 'red', 'orange'
     ],
     [
       // Declaration statement in classes
-      /(?<!\.)\b(public|protected|private)(?!\s+(?:func|getter|setter|static|struct)\s+)\s+(readable\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-      'purple', 'purple', 'red', 'cyan'
+      /(?<!\.)\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readable\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      'purple', 'purple', 'purple', 'red', 'cyan'
     ],
     [
       // Entity's name
@@ -294,8 +299,8 @@ scheme = {
     ],
     [
       // Setter/getter declaration
-      /(public|protected|private)\s+(getter|setter)\s+([a-zA-Z_][a-zA-Z0-9_]+)\b/,
-      'purple', 'purple', 'cyan'
+      /(public|protected|private)\s+(static\s+)?(getter|setter)\s+([a-zA-Z_][a-zA-Z0-9_]+)\b/,
+      'purple', 'purple', 'purple', 'cyan'
     ],
     [
       // Function's or declaration's special type (not caught by the previous expressions)
