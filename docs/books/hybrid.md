@@ -998,7 +998,7 @@ for (let i = 0; i < 5; i ++) println!(i);
 There is an alternative syntax made to replace the one we saw above. This is called the _range syntax_:
 
 ```sn
-for (let i : 0 -> 5)
+for (let i of 0 => 5)
   println!(i);
 
 // Equivalent to
@@ -1009,7 +1009,7 @@ for (let i: int = 0; i <= 5; i ++)
 Be aware here, the end value is applied to the set of expressions. So, this code will print: `0` `1` `2` `3` `4` `5`.
 
 ```sn
-for (let i : 5 -> 0)
+for (let i of 5 => 0)
   println!(i);
 ```
 
@@ -1171,20 +1171,20 @@ Inline generation is a useful feature when coming to generate a list of data. Fo
 ```sn
 let cubes: int[10]; // List<int>
 
-for (let i : 1 -> 10)
+for (let i of 1 => 10)
   cubes.push(i * i * i);
 ```
 
 But there is another, simplier way to generate this list.
 
 ```sn
-let cubes: int[10] = (i * i * i) for (let i : 1 -> 10);
+let cubes: int[10] = (i * i * i) for (let i of 1 => 10);
 ```
 
 This will do exactly the same thing. Because the compiler has a great support of inferred typing, you can also omit the `cubes`' explicit type:
 
 ```sn
-let cubes = (i * i * i) for (let i : 1 -> 10);
+let cubes = (i * i * i) for (let i of 1 => 10);
 ```
 
 This is also why we told you should be careful when using inline loops. All inline loops generate a vector (`List` for explicit `for` loops like ranges or simple incremental / decremental expressions, `Array` for anything else).
@@ -1192,7 +1192,7 @@ This is also why we told you should be careful when using inline loops. All inli
 Note that inline loops will not perform a generation if a `void` is returned (not any NIL value, only this one). So, if you do:
 
 ```sn
-println!(i) for (let i : 1 -> 10)
+println!(i) for (let i of 1 => 10)
 ```
 
 Nothing will be generated. Also, nothing will be generated if you don't give the result to a function or assign it to a variable.
@@ -1204,7 +1204,7 @@ When dealing with a loop, you can want to exit it if a specific even happens. Fo
 Let's try it:
 
 ```sn
-for (let i : 1 -> 10) {
+for (let i of 1 => 10) {
   println!(i);
 
   if (hadError())
@@ -1217,7 +1217,7 @@ This will work as expected: if `hadError` returns `true`, the `break` instructio
 Another keyword is `continue` that provides a way to ignore all instructions below it but only one time.
 
 ```sn
-for (let i : 1 -> 10) {
+for (let i of 1 => 10) {
   if (hadError())
     continue;
 
