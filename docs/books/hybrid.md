@@ -1768,7 +1768,7 @@ Another trick to use a member from the inside of the class is to use the `@` sym
 ```sn
 class Superthing {
   // ...
-  
+
   public func getName() {
     return @name;
   }
@@ -1887,7 +1887,7 @@ class Map {
     else if (x < 0 || x > @cells[0].size - 1 ||
              y < 0 || y > @cells.size - 1)
       println!("Cannot move outside the map.");
-    
+
     // Check if the cell we are going to is a rock
     else if (cells[y][x] is self::BLOCK)
       println!("There's a rock on your way.");
@@ -2093,32 +2093,47 @@ class Product {
     @unique_id = self::counter ++;
   }
 }
-````
+```
 
 It can't be cloned because the cloning overload is not present in the class.
 
-For this one we can choose between three signatures: a function which takes no argument, and is `void`-typed (with omittable return type), which can be empty. In this case, the program will automatically clone the instance by creating a new object with the same methods and attributes, and assign the values to the new instance's attributes (even private ones) by cloning the original's ones. Note that the constructor is not called when the instance is automatically cloned.
+For this one we can choose between two signatures: a function which takes ones argument (let's call it `target`), and must return an instance of the current class (return type is omittable). In this case, the program will automatically clone the instance by creating a new object with the same methods and attributes, and assign the values to the new instance's attributes (even private ones) by cloning the original's ones. Note that the constructor is not called when the instance is automatically cloned.
+
+The overload will then be able to manipulate the target before returning it, in order for example to change unique identifiers or other things. Here is how it could look like:
 
 ```sn
   // ...
-  public func @clone() -> println!("I'm being cloned!");
+  public func @clone(target: self) : self {
+    // Print a simple message
+    println!(`Cloning a ${target.name}`);
+
+    // Set a new unique identifier
+    target.uid = self::counter ++;
+
+    // Return the target
+    return target;
+  }
   // ...
 ```
 
-The second signature is the same than the first one excepted it takes one argument (let's call it `target`), which is the cloned object. It will be return whatever happens, but it can be manipulated in order to assign datas to it (for example, unique identifiers).
+The second signature takes no argument, and must manually return an instance of the current class (return type is omittable). That's especially useful when two objects with the same attributes can't exist both at the same time, for example. That's more specific but will be needed in some cases.
 
 ```sn
   // ...
-  public func @clone(target: self) -> println!(`Cloning a ${target.name}`);
+  public func @clone() -> new Product(@name, @price);
   // ...
 ```
 
-The third signature takes no argument, and must manually return an instance of the current class (type is not omittable).
+Be aware, in the case you manually create an instance, don't forget to clone arrays if you give some to the new instance from the current one (same with objects and instances from other classes) - else you could encounter some unexpected behaviour like modifying an instance changes an other too. Conceptually, the goal of a clone is to have the same behaviour than the original (same values...) but to be independant from it.
+
+#### The lazy way
+
+There is a third and last way to grant cloning support to your class. It's called a _lazy_ overload and works, instead of a function, with a single attribute. Here is how it goes:
 
 ```sn
   // ...
-  public func @clone() : self -> new Product(@name, @price);
+  public pln @lazy_clone = true;
   // ...
 ```
 
-Pretty simple, isn't it? Though, in the case you manually create an instance, don't forget to clone arrays if you give some to the new instance from the current one (same with objects and instances from other classes). Conceptually, the goal of a clone is to have the same behaviour than the original (same values...) but to be independant from it.
+If we write that, instances of the class will support cloning but we won't be able to do anything when this happen, or even be notified of that. All the attributes of the original instance will automatically be cloned to be assigned to the new one (like the first `@clone` we saw before). This is perfect for classes that don't have to worry about duplicate instances.
