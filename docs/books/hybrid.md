@@ -1807,8 +1807,8 @@ This is another type of members. Static members are not available from the insta
 
 ```sn
 class Product {
-  static private unique_id = 0;
-  static public func increaseCounter() : int -> ++ self::unique_id;
+  private static unique_id = 0;
+  public static func increaseCounter() : int -> ++ self::unique_id;
 }
 ```
 
@@ -1819,10 +1819,10 @@ The `self` word refers to the current class, in a static context. This provides 
 ```sn
 class Product {
   // The global counter for unique identnfiers
-  static private counter = 0;
+  private static counter = 0;
 
   // Increase the global counter
-  static public func increaseCounter() : int -> ++ self::counter;
+  public static func increaseCounter() : int -> ++ self::counter;
 
   // The product's unique identifier
   private readable unique_id: int;
@@ -1857,9 +1857,9 @@ Here is the solution:
 ```sn
 class Map {
   // Cell types
-  static private readable EMPTY = 0;
-  static private readable BLOCK = 1;
-  static private readable TRAP  = 2;
+  private static readable EMPTY = 0;
+  private static readable BLOCK = 1;
+  private static readable TRAP  = 2;
 
   // Private attributes
   private readable playerX: int;
@@ -2085,7 +2085,7 @@ class Product {
   private readable unique_id: int;
   private readable name: string;
   private readable price: int;
-  static private counter: int = 0;
+  private static counter: int = 0;
 
   public @construct(name: string, price: int) {
     @name = name;
@@ -2149,7 +2149,7 @@ class Product {
   private readable unique_id: int;
   private readable name: string;
   private readable price: int;
-  static private counter: int = 0;
+  private static counter: int = 0;
 
   public pln @lazy_clone = true;
 
@@ -2167,7 +2167,7 @@ For that, we'll implement two overloads in our class. They are `@serialize` and 
 
 ```sn
   public func @serialize() : string;
-  static public func @unserialize(serial: string) : self;
+  public static func @unserialize(serial: string) : self;
 ```
 
 Now let's implement them! First, how to implement serialization? We could produce a human-friendly string, like that:
@@ -2198,7 +2198,7 @@ But there is a problem here: first, the string is not optimized. One of the goal
       price: @price
     });
 
-  static public func @unserialize(serial: string) : self {
+  public static func @unserialize(serial: string) : self {
     // Unserialize the serialized structure
     val obj: Serialized = unserialize!(serial, Serialized);
     // Make a new product instance and return it
