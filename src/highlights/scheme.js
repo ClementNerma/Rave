@@ -219,7 +219,7 @@ scheme = {
     ],
     [
       // Declaration of variables
-      /(?<!\.)\b(let)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      /\b(let)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'red', 'cyan'
     ],
     [
@@ -229,42 +229,42 @@ scheme = {
     ],
     [
       // DECLARE function, interface or class
-      /(?<!\.)\b(decl)\s+(func|interface|class)\b/,
+      /\b(decl)\s+(func|interface|class)\b/,
       'purple'
     ],
     [
       // DECLARE constants and frozens (plain or not)
-      /(?<!\.)\b(decl)(\s+(?:public|protected|private))?\s+(static\s+)?(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      /\b(decl)(\s+(?:public|protected|private))?\s+(static\s+)?(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'purple', 'purple', 'purple', 'red', 'orange'
     ],
     [
       // DECLARE
-      /(?<!\.)\b(decl)(\s+(?:public|protected|private))?\s+(static\s+)?(let)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      /\b(decl)(\s+(?:public|protected|private))?\s+(static\s+)?(let)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'purple', 'purple', 'purple', 'red', 'cyan'
     ],
     [
       // Lazy overloads
-      /(?<!\.)\b(public)\s+(pln)\s+(@)(lazy_(?:clone|serialize|unserialize|serial_fields))(?=\s*=)/,
+      /\b(public)\s+(pln)\s+(@)(lazy_(?:clone|serialize|unserialize|serial_fields))(?=\s*=)/,
       'purple', 'purple', 'red', 'cyan'
     ],
     [
       // Declaration statement in classes for some static resources
-      /(?<!\.)\b(public|protected|private)\s+(static)(?=\s+(?:func|getter|setter|struct))/,
+      /\b(public|protected|private)\s+(static)(?=\s+(?:func|getter|setter|struct))/,
       'purple', 'purple'
     ],
     [
       // Declaration statement in classes for constants and frozens (plain or not)
-      /(?<!\.)\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'purple', 'purple', 'red', 'orange'
     ],
     [
       // Declaration statement in classes
-      /(?<!\.)\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readable\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readable\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'purple', 'purple', 'red', 'cyan'
     ],
     [
       // Entity's name
-      /(?<!\.)\b(struct|class|type|dict|namespace|package|trait|interface)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      /\b(struct|class|type|dict|namespace|package|trait|interface)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'yellow'
     ],
     [
@@ -279,12 +279,12 @@ scheme = {
     ],
     [
       // Template usage (with reserved template names)
-      /(?<!\.)\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(<)(T|X|Y|Z|K|V)(?=>)/,
+      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(<)(T|X|Y|Z|K|V)(?=>)/,
       'yellow', 'cyan', 'purple'
     ],
     [
       // Template usage
-      /(?<!\.)\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(<)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=[^;]*>)/,
+      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(<)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=[^;]*>)/,
       'yellow', 'cyan', 'yellow'
     ],
     [
@@ -294,7 +294,7 @@ scheme = {
     ],
     [
       // Overload declaration
-      /(?<!\.)\b(func|public|protected|private|virtual)\s+(static\s+)?(@)([a-zA-Z_][a-zA-Z0-9_]+)\b/,
+      /\b(func|public|protected|private|virtual)\s+(static\s+)?(@)([a-zA-Z_][a-zA-Z0-9_]+)\b/,
       'purple', 'purple', 'red', 'cyan'
     ],
     [
@@ -409,7 +409,7 @@ scheme = {
     ],
     [
       // Static operator for classes
-      /(?<!\.)\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(::)(?=[a-zA-Z_\$])/,
+      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(::)(?=[a-zA-Z_\$])/,
       'yellow', 'white'
     ],
     [
