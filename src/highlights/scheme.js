@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.9.1',
+    VERSION: '0.9.2',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -241,6 +241,11 @@ scheme = {
       // DECLARE
       /(?<!\.)\b(decl)(\s+(?:public|protected|private))?\s+(let)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'purple', 'purple', 'red', 'cyan'
+    ],
+    [
+      // Lazy overloads
+      /(?<!\.)\b(public)\s+(pln)\s+(@)(lazy_(?:clone|serialize|unserialize|serial_fields))(?=\s*=)/,
+      'purple', 'purple', 'red', 'cyan'
     ],
     [
       // Declaration statement in classes for constants and frozens (plain or not)
