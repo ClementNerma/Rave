@@ -2728,3 +2728,33 @@ class Two implements ConvertibleToInt {
 ```
 
 Think to it if you have to accept any type of value that simply implements some attributes and/or methods.
+
+### Traits
+
+Traits act kind of abstract classes. The main difference though is they can't implement static members, but they can still write the body of the function they declare. They aim to provide _horizontal reuse_, while abstract classes aim to provide _vertical reuse_ (plus the fact they can implement static members).
+
+A good example of traits is when you want to inherit from multiple classes. This is absolutely impossible in SilverNight, but you implement multiple traits. Here is how it goes:
+
+```sn
+trait Vehicle {
+  public val speed: float;
+  public func accelerate() : string -> "Vroom !";
+}
+
+trait Wheeled {
+  public val wheels: uint;
+}
+
+class Car {
+  use Vehicle, Wheeled;
+}
+```
+
+We can now try it:
+
+```sn
+// Sub-typing works fine
+let car: Vehicle = new Car();
+// Try a function
+printlnl!(car.accelerate()); // Prints: "Vroom!"
+```
