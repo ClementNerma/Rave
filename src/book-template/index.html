@@ -15,12 +15,12 @@
 <body>
   <nav>
     <ul>
-      {{#each summary}}
+      {{#each summary}} {{#if is_max_subtitle}}
       <li data-depth="{{depth_dec}}">
         <a href="#{{slug}}">
           <span class="index">{{prettydepth}}</span> {{{text}}}</a>
       </li>
-      {{/each}}
+      {{/if}} {{/each}}
     </ul>
   </nav>
 
