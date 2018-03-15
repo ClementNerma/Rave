@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.9.4',
+    VERSION: '0.9.5',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -219,13 +219,13 @@ scheme = {
     ],
     [
       // Declaration of variables
-      /\b(let)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-      'purple', 'red', 'cyan'
+      /\b(let)\s+((:)[a-zA-Z_\$][a-zA-Z0-9_\$]*\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      'purple', 'yellow', 'cyan', 'red', 'cyan'
     ],
     [
       // Declaration of constants, frozens and values
-      /(frozen|val|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-      'purple', 'red', 'orange'
+      /(frozen|val|pln)\s+((:)[a-zA-Z_\$][a-zA-Z0-9_\$]*\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      'purple', 'yellow', 'cyan', 'red', 'orange'
     ],
     [
       // DECLARE function, interface or class
