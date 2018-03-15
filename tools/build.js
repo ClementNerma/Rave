@@ -585,7 +585,8 @@ const main_mod = {
     { long: 'live-reload', short: 'r', type: 'boolean', help: 'Serve the output each time the build is triggerd (requires `--watch`)' },
     { long: 'logfile', short: 'l', value: 'file', help: 'Write all log messages in a file' },
     { long: 'logverbose', type: 'boolean', default: false, help: 'If `--logfile` is enabled, log all verbose messages (can be heavy)' },
-    { long: 'test', type: 'boolean', default: false, help: 'Run the test (build everything and clean)' }
+    { long: 'test', type: 'boolean', default: false, help: 'Run the test (build everything and clean)' },
+    { long: 'no-colors', type: 'boolean', default: false, help: 'Disable colors in the console' } // Automatically handled by the "chalk" module
   ]
 };
 
