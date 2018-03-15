@@ -11,8 +11,15 @@
 
   <!-- Load the template's stylesheet -->
   {{{include "style.css"}}}
+
+  <!-- View the page instantly if JavaScript is not loaded -->
+  <noscript>
+    <style type="text/css">
+      body { display: block; }
+    </style>
+  </noscript>
 </head>
-<body>
+<body class="body-hidden">
   <nav>
     <ul>
       {{#each summary}} {{#if is_max_subtitle}}

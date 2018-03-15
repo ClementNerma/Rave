@@ -332,3 +332,6 @@ window.addEventListener('keydown', e => {
     // Go to the next section
     showSection(currentSectionID + 1);
 });
+
+// Now the page is ready, show it
+document.body.style.display = 'block';

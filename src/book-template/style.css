@@ -8,6 +8,10 @@ body {
   font-size: 16px;
   background-color: white;
   z-index: 0;
+  /* Hide the body while JavaScript is preparing the page */
+  /* If JavaScript is disabled, a <noscript> tag in the template
+      will rewrite this rule thanks to an inline <style>. */
+  display: none;
 }
 
 nav {
