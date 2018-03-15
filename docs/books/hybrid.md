@@ -2324,6 +2324,51 @@ println!(calc(2, 5)); // Prints: "7"
 
 Remember: making the **class** callable as a function requires a static function, while it won't be to make the **instances** callable as a function. We can also implement both the overloads in the same time, of course.
 
+### Friends
+
+Another concept of accessibility is the _friends_. These are resources, listed in a class, that can access its private attributes. Here is how it goes:
+
+```sn
+class Product {
+  private static counter = 0;
+  private id: int;
+
+  public func @construct() -> @unique_id = self::counter ++;
+
+  // List a function as this class' friend
+  friend getProductId(product: self) : int;
+}
+
+// Define the class' friend function
+func getProductId(product: Product) : int {
+  // Access the instance's private attributes
+  return product.id;
+}
+```
+
+There are several syntax to set a resource as friend:
+
+```sn
+class Product {
+  // List a simple function as a friend
+  friend func simpleFunction(product: self) : int;
+
+  // List another class' static function as a friend
+  friend func AnotherClass::staticFunction(product: self) : int;
+
+  // List a function from another class' instances as a friend
+  friend func AnotherClass.instanceFunction(product: self) : int;
+
+  // Even a whole class can be listed as a friend!
+  friend class AnotherClass;
+
+  // And even structures!
+  friend struct SomeStructure;
+}
+```
+
+As we will see later, this also works for interfaces, traits and other things.
+
 ## Cross-typing
 
 Cross-typing is a very important concept in classes. SilverNight is largely based on it, as it features many useful sub-concepts for programming. In this chapter, we'll them all, before going to the final chapter about classes: the dictionnaries.
