@@ -1692,6 +1692,53 @@ jack.fight(john); // Prints: "Jack is going to fight John!"
                   //         "Jack is attacked by John and loses 70 HP!"
 ```
 
+### Members accessibility
+
+We just saw two _accessor_ keywords for a class' members: `public` and `private`. Public members are public, so anyone can access them, even from the outside of the class. This mean we can do this:
+
+```sn
+class Example {
+  public val hello = "Hello!";
+}
+
+val instance = new Example();
+println!(instance.hello); // Prints: "Hello!"
+```
+
+Private members are restricted to the inside of the class, meaning they can be used only by code that is written between the `{` and `}` braces of the class. Here is an example:
+
+```sn
+class Example {
+  public val hello = "Hello!";
+  private val secret = "No one can see me!";
+
+  public func printSecret() -> println!(this.secret);
+}
+
+val instance = new Example();
+println!(instance.hello); // Prints: "Hello!"
+println!(instance.printSecret()); // Prints: "No one can see me!"
+println!(instance.secret); // ERROR
+```
+
+There is a specificy about private members, though. We can access an instance's private members from the inside of a class even if it's not the current instance.
+
+```sn
+class Example {
+  public val hello = "Hello!";
+  private val secret = "No one can see me!";
+
+  public func printAnotherSecret(other: Example) -> println!(other.secret);
+}
+
+val instance = new Example();
+val another  = new Example();
+
+println!(instance.printAnotherSecret(other)); // Prints: "No one can see me!"
+```
+
+This is due to the fact a class is registered as a _friend_ of itself, but that's a notion we will see later.
+
 ### The constructor
 
 Let's see, more in details, how the constructor works.
