@@ -2682,3 +2682,49 @@ acceleration(new Motorcycle()); // Prints: "Vroom vroom!"
 ```
 
 That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept.
+
+### Interfaces
+
+Because understanding the concrete point of an interfaces isn't always easy, let's take an example to introduce the concept.
+
+Let's say we have a function that takes two arguments of any type, and add them as integers. In order to perform the addition, they need to be convertible to integers, of course. So our function will take any argument that implements the `@toInteger` overload. But how can we do that?
+
+The first idea would be to make an abstract class called `ConvertibleToInt` with an abstract method called `@toInteger`, like this:
+
+```sn
+abstract class ConvertibleToInt {
+  abstract func @toInteger() : int;
+}
+```
+
+But that would be a very bad idea. Why ? Because all classes would have to inherit from it to be used in our function so it would restrict the accepted type of arguments to the only classes that implement it. Right from the start it excludes all the native types (which doesn't inherit from your own class, of course) plus all the classes you haven't made yourself (which are part of a library, for example) and the classes that already inherits from a class, because a class can't have multiple mother classes. This also would be very heavy to write.
+
+So, the solution to this problem is to use an interface. An interface is simply a list of functions and attributes a class **must** implement - it can't write the body of functions. When declaring a class, you explicitly tell what interface(s) it uses, and not implementing any of the interface's members will result in an error.
+
+Also, and that's the great point about interfaces, any class that implements all of its members (with the exact same signature, accessibility etc.) will be considered as implementing the interface itself. If we use it with sub-typing, you could easily imagine to solve our problem.
+
+Try to find the solution by yourself. The solution is just below:
+
+```sn
+interface ConvertibleToInt {
+  public func @toInteger() : int;
+}
+
+func add(left: ConvertibleToInt, right: ConvertibleToInt) : int {
+  return int(left) + int(right);
+}
+```
+
+**NOTE :** Writing `int(value)` calls the `int` class' constructor with `value` as an argument to convert it to an integer. It accepts any value implementing the `@toInteger` value, like our interface.
+
+If we try this code, it works perfectly fine.
+
+To implement an interface in a class, simply use the `implements` keyword like the `extends` one:
+
+```sn
+class Two implements ConvertibleToInt {
+  public func @toInteger() -> 2;
+}
+```
+
+Think to it if you have to accept any type of value that simply implements some attributes and/or methods.
