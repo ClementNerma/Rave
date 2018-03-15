@@ -1,0 +1,18 @@
+
+// Declare variables
+let :int t1 = 0,
+         t2 = 1,
+         nextTerm;
+
+// A hundred times...
+for (let i of 1 => 100) {
+  // Print the current term of the suite
+  println!(t1);
+
+  // Calculate the next one
+  nextTerm = t1 + t2;
+
+  // Actualize the two last terms of the suite
+  t1 = t2;
+  t2 = nextTerm;
+}

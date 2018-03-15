@@ -2280,3 +2280,43 @@ It's also possible to customize the fields that have to be serialized and unseri
 ```
 
 You now know everything about serialization!
+
+### Inline calls
+
+Inline calls allow us to make a class callable, just like a function. It can takes whatever arguments it wants to and use any return type.
+
+There are two overloads for inline calls: the first one is common to each instance, making the instances callable, and the second one is static and allows the class itself to be called.
+
+Let's take an example:
+
+```sn
+class Translator {
+  // Here is a function that translates a text
+  //  and returns the translated string
+  public static func translate(text: string, lang: string) : string {
+    // Do some translation stuff here
+    // For the example we will return a constant string
+    return "Bonjour";
+  }
+
+  // Make the class callable
+  public static func @call(text: string, lang: string) : string ->
+    @translate(text, lang);
+}
+
+println!(Translator("Hello", "fr")); // Prints: "Bonjour"
+```
+
+Here, the `@call` overload made the class callable. We could implement it for instances:
+
+```sn
+class Calculator {
+  public func add(left: int, right: int) : int -> left + right;
+  public func @call(left: int, right: int) : int -> @add(left, right);
+}
+
+val calc = new Calculator();
+println!(calc(2, 5)); // Prints: "7"
+```
+
+Remember: making the **class** callable as a function requires a static function, while it won't be to make the **instances** callable as a function. We can also implement both the overloads in the same time, of course.
