@@ -2334,7 +2334,7 @@ Here is the big part of classes: inheritance. That's a very important concept so
 
 When declaring a class, we sometimes encounter a problem when we want to make specific instances. For instance, let's say we have a `Hero` class. With it we want to describe a warrior, which has no `mp` but a `rage` attribute that increases when he receives damages which increases its attack points. At the opposite, we have wizards, who don't have `rage` but `mp` to use spell on their target.
 
-The warrior could have a `isEnraged()` method that returns a boolean to check if it is in a rage state, and wizards could have a `fireball()` method to throw a fireball to the ennemy.
+The warrior could have a `rage` attribute to check if their rage level, and the wizard could have a `fireball()` method to throw a fireball to the ennemy.
 
 Of course, we could implement this in a single class, by having a `type` attribute for instance that describes if the hero is a warrior or a wizard, and do the check in the two methods we just saw to forbid warriors using fireballs and always keep a nil rage for wizards. But that'd make our code less clear and less maintable, and that'll be even worse if we add new type of heroes (like a dragon that can fly to avoid attacks, or a demon that invokes some demoniac creatures).
 
@@ -2377,7 +2377,7 @@ abstract class Hero {
   public func receiveDamages(amount: int, ennemyName: string) : void {
     // Check if this hero is dead
     if (@hp is 0) {
-      println!(`${@name} did not receive any damage because he's already dead.`);
+      println!(`${@name} did not receive any damage because he's dead.`);
       return ;
     }
 
@@ -2406,7 +2406,7 @@ So, now we seen that, let's make our children classes:
 
 ```sn
 class Warrior extends Hero {
-  private readable rage: int;
+  public readable rage: int;
 
   public func receiveDamages(amount: int, ennemyName: string) : void {
     // Call the parent class' `receiveDamages()` method
