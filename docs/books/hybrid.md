@@ -2945,3 +2945,62 @@ class StringDict<K, V implements Stringifyable> extends KindOfDict<K, V> {
 That's all! Note that, if a class inherits from another that uses some template(s), it must have the exact same number of templates (must it is not forced to use the same names).
 
 For information, the `T`, `X`, `Y`, `Z`, `K` and `V` names are reserved to templates.
+
+### Dictionary classes
+
+Here is an heavy part of this chapter: how to make custom dictionaries.
+
+First, what's a dictionary, exactly? In SilverNight, a dictionary is any instance of a dictionary class. These classes provides an instance that aims to associate a key to a value, whatever their type and content are, but with a single type for keys and a single type for values.
+
+#### The truth about vectors
+
+The `Array` and `List` classes are in fact dictionaries. They both inherits from the `Vector` dictionary class, which associates integers to any type of value. The integers in question cannot be manually manipulated, they are automatically handled by the dictionary class, to keep keys from 0 to any positive integer.
+
+#### How to make dictionary classes
+
+Dictionary classes (also called custom dictionaries) are defined this way:
+
+```sn
+// K = type for keys
+// V = type for values
+dict Custom<K, V> {
+  // Code here
+}
+```
+
+There are a special kind of classes. First, some overloads **must** be implemented. These are `@get`, `@set`, `@unset`, `@has`, `@keys` and `@values`, which are specific to dictionaries and can't be used in standard classes. All other overloads (like `@clone` or `@random`, even `@construct` and `@destruct`) can be implemented but are not required. Also, dictionary classes must take two templates (they can have any name) but they can force the type of keys and/or the type of values by writing a class' name instead (like `dict Vector<int, V>` for vectors).
+
+Let's detail these overloads:
+
+```sn
+// K = type for keys
+// V = type for values
+dict Custom<K, V> {
+  // Get a value from a key
+  public func @get(key: K) : V;
+  // Associate a value to a key
+  public func @set(key: K, value: V) : void;
+  // Delete a key (and the value it refers to)
+  public func @unset(key: K) : void;
+  // Check if a key is known
+  public func @has(key: K) : bool;
+  // Get the list of all keys
+  public func @keys() : List<K>;
+  // Get the list of all values
+  public func @values() : List<V>;
+}
+```
+
+As always, the return type of these overloads is omittable, put they are written here to see their complete signature.
+
+About `@keys` and `@values`, their behaviour is a little special. They can be called automatically, when iterating the dictionary through a loop (we'll see that soon), or manually thanks to a function. If they are called automatically (in a loop iterator, for instance), the return value will be kept as it is. But if they are called manually, the return value will automatically be cloned - and there's no way to prevent it. Why this behaviour? Because, if a loop iterates through the list of keys/values, there is no need to clone the values as the list will not be written. But if the list is retrieved manually and written by some piece of code, this could cause some garbage in the dictionary - because some dictionary use a special behaviour like forbidding duplicate values or restricting keys to a specific list of names.
+
+Most of the time, custom dictionaries should always inherit from the `Dictionary` class (the same one that is used when using `#Dynamic` in a key/value association with IST). The syntax is the same as for classes:
+
+```sn
+dict Custom<K, V> extends Dictionary<K, V> {
+  // Do some stuff here
+}
+```
+
+This will inherits all functions that comes with basic dictionaries, like `.filter()` or `.map()`. It will grant access to two protected members, `keys` and `values`, which are arrays referring respectively to the dictionary's keys and its values.
