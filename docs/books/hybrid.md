@@ -2735,6 +2735,26 @@ func add(left: ConvertibleToInt, right: ConvertibleToInt) : int {
 
 If we try this code, it works perfectly fine.
 
+#### Self-references
+
+An interface can use the `self` keyword to refers to the class that is implemeting it. Here is an exemple:
+
+```sn
+interface Duplication {
+  public func duplicate() : self;
+}
+
+class Product {
+  private readable name: string;
+
+  public func @construct(@name: string) {};
+
+  public func duplicate() : self -> new Product(@name);
+}
+```
+
+The `parent` keyword is also available.
+
 #### Native interfaces
 
 Here are some native interfaces we can use in our programs:
