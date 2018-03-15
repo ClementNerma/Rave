@@ -2323,3 +2323,172 @@ println!(calc(2, 5)); // Prints: "7"
 ```
 
 Remember: making the **class** callable as a function requires a static function, while it won't be to make the **instances** callable as a function. We can also implement both the overloads in the same time, of course.
+
+## Cross-typing
+
+Cross-typing is a very important concept in classes. SilverNight is largely based on it, as it features many useful sub-concepts for programming. In this chapter, we'll them all, before going to the final chapter about classes: the dictionnaries.
+
+### Inheritance
+
+Here is the big part of classes: inheritance. That's a very important concept so be sure to understand it fully.
+
+When declaring a class, we sometimes encounter a problem when we want to make specific instances. For instance, let's say we have a `Hero` class. With it we want to describe a warrior, which has no `mp` but a `rage` attribute that increases when he receives damages which increases its attack points. At the opposite, we have wizards, who don't have `rage` but `mp` to use spell on their target.
+
+The warrior could have a `isEnraged()` method that returns a boolean to check if it is in a rage state, and wizards could have a `fireball()` method to throw a fireball to the ennemy.
+
+Of course, we could implement this in a single class, by having a `type` attribute for instance that describes if the hero is a warrior or a wizard, and do the check in the two methods we just saw to forbid warriors using fireballs and always keep a nil rage for wizards. But that'd make our code less clear and less maintable, and that'll be even worse if we add new type of heroes (like a dragon that can fly to avoid attacks, or a demon that invokes some demoniac creatures).
+
+A solution to this problem is the _inheritance_. How does it work? Well, it's mostly simple to understand: we will declare a new class that _inherits_ from another called the _mother class_. These classes will be called the _children classes_. In our example, the `Hero` class would be the mother, while two `Warrior` and `Wizard` classes would be the children that _inherits_ from `Hero`.
+
+A class inheriting from another will receive all of its members, including overloads. That means any method that works on the mother class will work on this children. But the specificity of children classes it that they can implement their own members, and rewrite their parent's ones (though they can't remove them). For instance, if the `Hero` class has an `fight()` method, `Warrior` and `Wizard` could rewrite its body (what it does) but not its signature ; they will be forced to have a method with the same signature, even if they rewrite it. But, thanks to polymorphism, they can still define a new method with the same name if it has other arguments (and potentially another return type) - but the mother's method will be inherited anyway.
+
+Now we saw the concept, let's implement it step by step. First, we'll make a skeleton for the mother class:
+
+```sn
+abstract class Hero {
+  protected readable name: string;
+  protected readable hp: int;
+  protected readable attack: int;
+
+  public @construct(@name: string, @hp: int, @attack: int) {}
+
+  // Attack an ennemy
+  public func fight(ennemy: self) : void {
+    // Check if this hero is dead
+    if (@hp is 0) {
+      println!(`${@name} can't find because he's dead.`);
+      return ;
+    }
+
+    // Attack the ennemy
+    ennemy.receiveDamages(@attack, @name);
+
+    // Check if the ennemy died
+    if (ennemy.hp is 0) {
+      println!(`${@name} killed ${ennemy.name}!`);
+      return ;
+    }
+
+    // Receive damages from the ennemy
+    @receiveDamages(ennemy.attack, ennemy.name);
+  }
+
+  // Receive damages from an ennemy
+  public func receiveDamages(amount: int, ennemyName: string) : void {
+    // Check if this hero is dead
+    if (@hp is 0) {
+      println!(`${@name} did not receive any damage because he's already dead.`);
+      return ;
+    }
+
+    println!(`${ennemyName} fights ${@name}.`);
+
+    // Check if the damages are higher than the remaining HP
+    if (amount > @hp) {
+      @hp = 0;
+      println!(`${@name} dies.`);
+      return ;
+    }
+
+    println!(`${@name} loses ${amount} HP.`);
+
+    // Receives the damages
+    @hp -= amount;
+  }
+}
+```
+
+A little subtlety here is the presence of the `abstract` keyword before the `class` one. It's called a _class state_, a concept we'll see later. This one simply indicates the class can't be instanciated, so you can't do `new Hero();` or `val someone: Hero;` - both will throw an error. Instead, we will instanciate the `Hero`'s children classes, if they are not defined as `abstract` too.
+
+Another thing: the `protected` keyword. It kind of acts like `private`, as the member it prefixes will only be available from the inside of the class. But, `private` is a special keyword that, in addition to making the attribute writable only from the inside of the class, will not make it available from its children class. So `Warrior` and `Wizard` wouldn't be able to write it. That's not really a problem, since these attributes don't aim to be modified, but that's a thing we need to think to when making a class that will be inherited by anothers. The `protected` keyword does the same thing than `private` excepted that it makes it available for children classes.
+
+So, now we seen that, let's make our children classes:
+
+```sn
+class Warrior extends Hero {
+  private readable rage: int;
+
+  public func receiveDamages(amount: int, ennemyName: string) : void {
+    // Call the parent class' `receiveDamages()` method
+    parent.receiveDamages(amount, ennemyName);
+
+    // Check if the warrior rage will exceed 20 points
+    //  by adding the damages just received
+    if (@rage + amount > 20) {
+      // Limit them
+      @attack += 20 - @rage;
+      @rage = 20;
+    } else {
+      // Else, increase without worrying about the amount
+      @attack += amount;
+      @rage += amount;
+    }
+  }
+}
+```
+
+What happens in this class? First, we tell to the class to inherit from `Hero`, so it keeps all its attributes and methods (including overloads). Next, we declare a new `rage` attribute, which this time is set as `private` because there won't be any class inheriting from it. Then, we redefine the `receiveDamages` method. In it, we use a brand new keyword: `parent`. It is the same as `this`, excepted it refers to the parent class as an instance. For example, `parent.receiveDamages()` will call the `receiveDamages()` method of the **parent class**. This way, we don't have to rewrite the calculation of damages and other checkings - which would make a code duplicate, which is a thing to avoid absolutely in development.
+
+Then, the redefined method increases the rage counter (with a maximum of 20 points) and increases the warrior's attack points, so his attack points will be up to his original value plus 20 points.
+
+We can now write our `Wizard` class:
+
+```sn
+class Wizard extends Hero {
+  private readable mp: int;
+
+  public func @construct(@name: int, @hp: int, @attack: int, @mp: int) {}
+
+  public func fireball(ennemy: Hero) : void {
+    // Check if remaining MP are enough
+    if (@mp < 10) {
+      println!(`${name} can't throw a fireball because he doesn't have enough MP.`);
+      return ;
+    }
+
+    // Decrease remaining MP
+    @mp -= 10;
+
+    // Attack the ennemy
+    ennemy.receiveDamages(@attack * 2, @name);
+
+    // Check if the ennemy died
+    if (ennemy.hp is 0) {
+      println!(`${@name} killed ${ennemy.name}!`);
+      return ;
+    }
+
+    // Receive damages from the ennemy
+    @receiveDamages(ennemy.attack, ennemy.name);
+  }
+}
+```
+
+The `Wizard` class also inherits from `Hero`, and adds a new `mp` attribute (private, like `rage` for `Warrior`). It also redefines the constructor, as it now needs a new attribute.
+
+Then, it implements a new method called `fireball()` to throw a fireball on the ennemy, which doubles its attack points for this attack. Pretty powerful.
+
+Now we've done this, let's try our classes:
+
+```sn
+let hegor = new Warrior("Hegor", 100, 30);
+let jack  = new Wizard("Jack", 120, 10, 35);
+
+hegor.fight(jack);
+println!('------------------');
+jack.fireball(hegor);
+
+/*
+ * Hegor fights Jack.
+ * Jack loses 30 HP.
+ * Jack fights Hegor.
+ * Hegor loses 10 HP.
+ * ------------------
+ * Jack fights Hegor.
+ * Hegor loses 20 HP.
+ * Hegor fights Jack.
+ * Jack loses 50 HP.
+*/
+```
+
+Here we are! We implemented a mother class with two children.
