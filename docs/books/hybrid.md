@@ -3076,3 +3076,24 @@ This is very simple: a `Vector<T>` (`List` or `Array`) is a `<int, T>` dictionar
 #### Collections
 
 There is a native type called `Collection<T>`, which is a strict equivalent to `Dictionary<string, T>`.
+
+#### Shortened typing
+
+A way to simplify the writing of dictionary names is to use the shortened syntax, as it follows:
+
+```sn
+// Collection<double> <=> Dictionary<string, double>
+val dict: { double };
+
+// Dictionary<string, int>
+val dict: { string, int };
+
+// Dictionary<string, Dictionary<int, float>>
+val dict: { string, { int, float } };
+
+// Dictionary<Dictionary<string, int>, float>
+val dict: { { string, int }, float };
+
+// Dictionary<Dictionary<Dictionary<string, int>, float>, string>
+val dict: { { { string, int }, float }, string };
+```
