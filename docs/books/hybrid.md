@@ -2793,3 +2793,155 @@ let car: Vehicle = new Car();
 // Try a function
 printlnl!(car.accelerate()); // Prints: "Vroom!"
 ```
+
+## Dictionaries in depth
+
+Let's see the final part about classes: dictionaries. As you already, dictionaries in SilverNight are instances of the `Dictionary` class. But how do they really work? That's what we will see in this chapter, as well as how to make your own dictionary classes to store key/values (or more) dictionaries with a custom behaviour.
+
+### Templates
+
+Here we are, another of the most important concepts of Object-Oriented Programming: the templates. In fact, you won't use them explicitly very often, but you will use them _implicitly_. To be exact, you already do this as lists and arrays use templates, as we will see now.
+
+Remember when we talked about `List` and `Array` as _templated_ types? This meant these two classes take a class reference, called a _template_, to work.
+
+Basically, a template is the name of a class. Any class, function, structure... can use one or several templates to work, and it will register it as an _alias_.
+
+To take an example, let's say I have a structure that aims to associate any kind of value with an identifier. With what we saw until now, we can't do that because there is no way to accept any type in a structure. That's where the templates come.
+
+```sn
+struct ValueWithID<T> {
+  val id: int;
+  val value: T;
+}
+```
+
+Let's detail this. We have a structure, called `ValueWithID`, with two attributes: `id` (which is an integer) and `value`, which is an instance of `T`. Both are constants to ensure they won't change after the structure's creation.
+
+Here, `T` is called the structure's _template_. When a structure is declared with a template, we can't just write `val something: ValueWithID`, but `val something: ValueWithID<SomeClass>`. Then, `T` will simply refer to `SomeClass`, so `value` will need to be an instance of `SomeClass`. Here is an example:
+
+```sn
+struct ValueWithID<T> {
+  val id: int;
+  val value: T;
+}
+
+val test: ValueWithID<string> = {
+  id: 1,
+  value: "Hello !"
+};
+```
+
+There's also a feature in SilverNight called _Inferred Templating_, which acts like IST for structures and ICT for callbacks: it _guesses_ the template's type, and can be combined with both IST and ICT. So, we can declare our `test` constant like this:
+
+```sn
+val test = {
+  id: 1,
+  value: "Hello !"
+};
+```
+
+That's more simple, right? Now, let's see an application in classes. We will make a class that acts as a dictionary: it will associate a key (of any type) to a value (of any type). Here is how it could look like:
+
+```sn
+class KindOfDict<K, V> {
+  private keys: K[];
+  private values: K[];
+
+  public func has(key: K) : bool -> @keys.has(key);
+
+  public func set(key: K, value: V) : void {
+    // If this key is not already known...
+    if (not @has(key)) {
+      // Create it
+      @keys.push(key);
+      // Add the new value
+      @values.push(value);
+    } else
+      // Else, associate the new value to the existing key
+      @values[@keys.indexOf(key)] = value;
+  }
+
+  public func get(key: K) : V ->
+    // Return the value associated to the key
+    @values[@keys.indexOf(key)];
+}
+```
+
+**NOTE :** As for a real dictionary, an error will be thrown if someone tries to get the value associated to an unknown key. The `has()` function is here in order to avoid such a thing to happen.
+
+Here, we use two templates for our class: `K`, which refers to the keys, and `V` for the values. We can know make a new "dictionary" like this:
+
+```sn
+val myDict: KindOfDict<Array<int>, string>;
+
+myDict.set([ 2, 5 ], "Message 1");
+myDict.set([ 4, 8, 3 ], "Message 2");
+
+println!(myDict.get([ 2, 5 ])); // Prints: "Message 1"
+```
+
+As you can see, templates you can even be other templated classes. Because, yes, both `Array` and `List` are templated types - they are in reality custom dictionary classes this chapter aims to present.
+
+#### Restricting templates
+
+Because the chosen template will always vary, we can't instanciate it nor use its methods/attributes. But we may want to interact with the template or its instances, by ensuring it implements some methods or attributes. That's possible, and here is the syntax:
+
+```sn
+// Make a structure
+struct Data<T implements Stringifyable> {
+  val value: T;
+  func stringify() : string = () -> string(value);
+}
+
+// Make a class that works with the structure
+class Working {
+  public func @toString() : void -> "It's working!";
+}
+
+// Make a class that doesn't work with the structure
+class NotWorking {
+  public func @toInteger() : int -> 28;
+}
+```
+
+Let's try this code:
+
+```sn
+// This works
+val workingTest: Data<Working> = {
+  value: new Working();
+};
+
+println!(workingTest.stringify()); // Prints: "It's working!"
+
+// This doesn't work
+val notWorkingTest: Data<NotWorking> = {
+  value: new NotWorking()
+}; // ERROR because `NotWorking` does not implement `ConvertibleToString`
+```
+
+Here are some examples of constrainted templates:
+
+```sn
+T extends SomeClass;
+
+T implements SomeInterface;
+T implements SomeInterface1, SomeInterface2;
+
+T use SomeTrait;
+T use SomeTrait1, SomeTrait2;
+
+T extends SomeClass implements SomeInterface use SomeTrait;
+```
+
+Pretty powerful, right? We can this syntax to force the templates to do codes like this:
+
+```sn
+class StringDict<K, V implements Stringifyable> extends KindOfDict<K, V> {
+  public stringify(key: T) : string -> string(@values[@keys.indexOf(key)]);
+}
+```
+
+That's all! Note that, if a class inherits from another that uses some template(s), it must have the exact same number of templates (must it is not forced to use the same names).
+
+For information, the `T`, `X`, `Y`, `Z`, `K` and `V` names are reserved to templates.
