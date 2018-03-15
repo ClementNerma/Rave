@@ -3030,3 +3030,23 @@ As we saw before, dictionaries associate a key to a value. So, getting any index
 For example, the `Dictionary` class implements a `.fill()` function, so we can do `mydict.fill("hello")`. But then, `mydict.fill` won't return a value of the dictionary, right?
 
 This is a conception choice that hopefully has a solution if we want to access any index. In order to be assured to get the value corresponding to the key we have, we simply have to do: `mydict[index]`, where `index` is an instance of `K` (the dictionary's key type). Getting an index between brackets means we're explicitly trying to get an index, not a public member, while `mydict.index` means we are first trying to get a public member if it exists, else to get the value associated to this key (if it exists).
+
+#### Using loops to iterate dictionaries
+
+Loops are our best friend when exploring dictionaries. While we can still get access to the list of a dictionary's keys thanks to `mydict.keys()` and to its value with `mydict.values()`, the most simple remains to use the `foreach` loop:
+
+```sn
+// Explore a dictionary using its keys
+foreach (let key in myArray.keys())
+  println!(key);
+
+// Explore a dictionary using its values
+foreach (let value in myArray)
+  println!(key);
+
+// Explore a dictionary with both its keys and its values
+foreach (let key => let value of myArray)
+  println!(key, value);
+```
+
+To be exact, the first loop is based on the second one. If we look at it more precisely, the `in` operator in `foreach` means "explore the _values_ of the given dictionary". The given dictionary in the first loop is `myArray.keys()`, which returns a `List<int, K>`, so we are exploring a `List<K>` (`List<int, K>`'s `@values()` will produce a `List<K>` since `K` is its value's template).
