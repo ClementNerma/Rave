@@ -3019,4 +3019,4 @@ dict Custom<K, V> extends Dictionary<K, V> {
 }
 ```
 
-This will inherits all functions that comes with basic dictionaries, like `.filter()` or `.map()`. It will grant access to two protected members, `keys` and `values`, which are arrays referring respectively to the dictionary's keys and its values.
+This will inherits all functions that comes with basic dictionaries, like `.filter()` or `.map()`. It will grant access to two protected members, `keys` and `values`, which are arrays referring respectively to the dictionary's keys and its values, as well as all overloads you can implement in a dictionary with no restricted template.
