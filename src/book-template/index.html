@@ -16,7 +16,7 @@
   <nav>
     <ul>
       {{#each summary}} {{#if is_max_subtitle}}
-      <li data-depth="{{depth_dec}}">
+      <li data-depth="{{depth_dec}}" data-target="{{section_slug}}">
         <a href="#{{slug}}">
           <span class="index">{{prettydepth}}</span> {{{text}}}</a>
       </li>

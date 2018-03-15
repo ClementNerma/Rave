@@ -237,6 +237,9 @@ self = {
           slug,
           depth,
 
+          // Parent section's slug
+          section_slug: lastSlug,
+
           // Depth booleans
           is_main_title: depth == 1,
           is_section: depth == 2,
