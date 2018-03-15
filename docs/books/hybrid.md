@@ -1977,7 +1977,7 @@ Of course, your solution could be different, as there are many ways to solve it.
 
 ## Classes in depth
 
-Now we've acquired the basis of classes, this part will teach you more complex features of OOP like templates, inheritance or stated classes.
+Now we've acquired the basis of classes, this part will teach you more complex features of OOP like inheritance, sub-typing or interfaces.
 
 ### The destructor
 
