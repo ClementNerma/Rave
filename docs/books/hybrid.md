@@ -2516,3 +2516,48 @@ class World {
 The first difference we can see between these two classes is that the first one is abstract and not the second one. Why? Because, when we declare an abstract method without its body, it can't of course be used from this class - because the program doesn't know what to do. So it can't be instanciated, and because of it it is stated as an abstract class.
 
 The second class declares an abstract method but with a body, this time. That means any child class will be forced to implement its own version of this method, but the class is still instanciable because we written the method's body in the class.
+
+### Stated classes
+
+As methods can be prefixed in a class, there are also prefixes for classes themselves. _Stated_ classes are standard classes with a keyword prefixing the `class` one, called the _class' state_. There are a few ones:
+
+#### `abstract` classes
+
+We already saw this state, it means the class cannot be instanciated, so it must have at least one child class that will be instanciable (if it isn't prefixed with the same keyword too).
+
+#### `final` classes
+
+Final classes are classes that can't be inherited. They can be instanciated, though.
+
+#### `static` classes
+
+Static classes are both `abstract` and `final` classes. They are not instanciable and not inheritable. This means all the class' members **must** be static.
+
+#### `unique` classes
+
+Unique classes are a special case where the class has one unique instance and cannot be instanciated later. Here is an example with a translation class:
+
+```sn
+unique class Translation as tr {
+  public func translate(text: str, lang: str) : string {
+    // Do some stuff here
+    return "Bonjour";
+  }
+
+  public func @call(text: str, lang: str) : string ->
+    @translate(text, lang);
+}
+
+// Let's try it!
+val instance = new Translation(); // ERROR
+Translation("Hello", "fr"); // ERROR
+
+tr.translate("Hello", "fr"); // Returns: "Bonjour"
+tr("Hello", "tr"); // Returns: "Bonjour"
+```
+
+As you can see, the `Translation` class does not even exist, in reality. There is only the `tr` instance.
+
+#### `readonly` classes
+
+Read-only classes are classes that can't be written from the outside of the class. All attributes must be set as read-only or be protected/private. Protected and private attributes that are not marked as read-only won't available from the outside of the class (as for a standard class).
