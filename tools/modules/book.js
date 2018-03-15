@@ -236,6 +236,14 @@ self = {
           text: mdIt.renderInline(title), // Without the "<p>...</p>" wrapping
           slug,
           depth,
+
+          // Depth booleans
+          is_main_title: depth == 1,
+          is_section: depth == 2,
+          is_subtitle: depth == 3,
+          is_max_subtitle: depth <= 3,
+          is_subsubtitle_or_more: depth > 3,
+
           depth_dec: depth - 1,
           prettydepth: (depth === 1) ? '0.' : counter.filter(c => c > 0).join('.') + '.'
         };
