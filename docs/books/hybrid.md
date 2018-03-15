@@ -3020,3 +3020,13 @@ dict Custom<K, V> extends Dictionary<K, V> {
 ```
 
 This will inherits all functions that comes with basic dictionaries, like `.filter()` or `.map()`. It will grant access to two protected members, `keys` and `values`, which are arrays referring respectively to the dictionary's keys and its values, as well as all overloads you can implement in a dictionary with no restricted template.
+
+### Exploring dictionaries
+
+#### Dealing with public members
+
+As we saw before, dictionaries associate a key to a value. So, getting any index from the dictionary, like `mydict.someIndex` will return a key, whatever happens. But, what about public members?
+
+For example, the `Dictionary` class implements a `.fill()` function, so we can do `mydict.fill("hello")`. But then, `mydict.fill` won't return a value of the dictionary, right?
+
+This is a conception choice that hopefully has a solution if we want to access any index. In order to be assured to get the value corresponding to the key we have, we simply have to do: `mydict[index]`, where `index` is an instance of `K` (the dictionary's key type). Getting an index between brackets means we're explicitly trying to get an index, not a public member, while `mydict.index` means we are first trying to get a public member if it exists, else to get the value associated to this key (if it exists).
