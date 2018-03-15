@@ -2755,9 +2755,9 @@ class Product {
 
 The `parent` keyword is also available.
 
-#### Native interfaces
+#### Native typecasting interfaces
 
-Here are some native interfaces we can use in our programs:
+Here are some native typecasting interfaces we can use in our programs:
 
 * `BooleanConvertible`
 * `IntegerConvertible`
