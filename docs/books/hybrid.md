@@ -3057,7 +3057,7 @@ Loops are our best friend when exploring dictionaries. While we can still get ac
 
 ```sn
 // Explore a dictionary using its keys
-foreach (let key in myArray.keys())
+foreach (let key of myArray)
   println!(key);
 
 // Explore a dictionary using its values
@@ -3068,5 +3068,3 @@ foreach (let value in myArray)
 foreach (let key => let value of myArray)
   println!(key, value);
 ```
-
-To be exact, the first loop is based on the second one. If we look at it more precisely, the `in` operator in `foreach` means "explore the _values_ of the given dictionary". The given dictionary in the first loop is `myArray.keys()`, which returns a `List<int, K>`, so we are exploring a `List<K>` (`List<int, K>`'s `@values()` will produce a `List<K>` since `K` is its value's template).
