@@ -737,8 +737,8 @@ else if (argv.watch && ! CHILD) {
         // Ignore it
         return ;
 
-      // If less than 30ms passed since the last change...
-      if (Date.now() - last < 30)
+      // If less than 200ms passed since the last change...
+      if (Date.now() - last < 200)
         // Ignore this call
         return ;
 
