@@ -2655,3 +2655,30 @@ The `@toPrimitive` overload will simply return a string if **any** typecasting o
 **NOTE :** `Number` is the mother class of both `int` and `float`, themselves respectively mothers of all integers types like `uint8` or `int32` for the first one and floating-points types like `ufloat` or `double` for the second one.
 
 A concrete example of using these overloads is when using the `println!` macro. It takes as an argument any instance implementing `@toPrimitive`, gets this overload's result, and prints it in the output. There are several usages of it, but most are to use them in interfaces and traits.
+
+### Sub-typing
+
+Here is a very useful feature that simply acts like this: any children class will be accepted if one of its ancestors is required.
+
+To put it clearly: if a function asks for a `Vehicle` and we make a `Motorcycle` child class that inherits from `Vehicle`, the function will accept `Motorcycle` instances.
+
+Here is an example:
+
+```sn
+class Vehicle {
+  public func accelerate() : void -> println!("Vroom!");
+}
+
+class Motorcycle extends Vehicle {
+  public func accelerate() : void -> println!("vroom vroom!");
+}
+
+func acceleration(vehicle: Vehicle) : void {
+  vehicle.accelerate();
+}
+
+acceleration(new Vehicle()); // Prints: "Vroom!"
+acceleration(new Motorcycle()); // Prints: "Vroom vroom!"
+```
+
+That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept.
