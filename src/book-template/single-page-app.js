@@ -69,7 +69,7 @@ function refreshActive() {
   }
 
   // For each title in the current section (reversed order to start from the bottom of the section)...
-  for (let title of Array.from(currentSection.querySelectorAll('h1, h2, h3, h4, h5, h6')).reverse())
+  for (let title of Array.from(currentSection.querySelectorAll('h1, h2, h3')).reverse())
     // If this title is visible
     // and if this one is located below the current scroll's position...
     if (title.offsetTop > 0 && window.scrollY > title.offsetTop - title.offsetHeight) {
