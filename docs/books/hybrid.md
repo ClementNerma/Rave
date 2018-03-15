@@ -1822,7 +1822,17 @@ class Superthing {
 }
 ```
 
-`@` is a strict equivalent to `this.`, so we can use it to access the members of the current class.
+`@` is a strict equivalent to `this.`, so we can use it to access the members of the current class
+
+We can also use it in the constructor to automatically set some attributes:
+
+```sn
+class Superthing {
+  private name: string;
+
+  public func @construct(@name: string) {}
+}
+```
 
 ### Private readable attributes
 
@@ -1877,8 +1887,7 @@ class Product {
   private readable name: string;
 
   // Initialize the instance
-  public func @construct(name: string) {
-    @name = name;
+  public func @construct(@name: string) {
     // Generate a unique identifier from the static function
     @unique_id = self::increaseCounter();
   }
@@ -1916,11 +1925,9 @@ class Map {
   private cells: int[][];
 
   // Create the map
-  public func @construct(cells: int[][], startX: int, startY: int) {
+  public func @construct(cells: int[][], @playerX: int, @playerY: int) {
     // Initialize attributes
     @cells = cells;
-    @playerX = startX;
-    @playerY = startY;
   }
 
   // Move the hero
@@ -1939,7 +1946,7 @@ class Map {
     else if (cells[y][x] is self::BLOCK)
       println!("There's a rock on your way.");
 
-    // Else, move the player    
+    // Else, move the player
     else {
       // Save the new player's location
       @playerX = x;
@@ -2134,9 +2141,7 @@ class Product {
   private readable price: int;
   private static counter: int = 0;
 
-  public @construct(name: string, price: int) {
-    @name = name;
-    @price = price;
+  public @construct(@name: string, @price: int) {
     @unique_id = self::counter ++;
   }
 }
@@ -2200,9 +2205,7 @@ class Product {
 
   public pln @lazy_clone = true;
 
-  public @construct(name: string, price: int) {
-    @name = name;
-    @price = price;
+  public @construct(@name: string, @price: int) {
     @unique_id = self::counter ++;
   }
 }
