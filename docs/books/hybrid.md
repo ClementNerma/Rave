@@ -2731,7 +2731,7 @@ func add(left: ConvertibleToInt, right: ConvertibleToInt) : int {
 }
 ```
 
-**NOTE :** Writing `int(value)` calls the `int` class' constructor with `value` as an argument to convert it to an integer. It accepts any value implementing the `@toInteger` value, like our interface.
+**NOTE :** Writing `int(value)` calls the `int` class as a function with `value` as an argument to convert it to an integer. It accepts any value implementing the `@toInteger` value, like our interface.
 
 If we try this code, it works perfectly fine.
 
