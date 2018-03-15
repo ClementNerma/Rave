@@ -2606,3 +2606,52 @@ As you can see, the `Translation` class does not even exist, in reality. There i
 #### `readonly` classes
 
 Read-only classes are classes that can't be written from the outside of the class. All attributes must be set as read-only or be protected/private. Protected and private attributes that are not marked as read-only won't available from the outside of the class (as for a standard class).
+
+### Typecasting
+
+In SilverNight, typecasting is the concept of converting a given type into a primitive type, for example converting a string to an integer or a structure to a string. But it's not magic, types need to have a _transtyping overload_ for each primitive type they want to be typecastable to.
+
+These overloads have to following signature:
+
+```sn
+  [public|protected|private] @toType() : type;
+```
+
+If they are public, casting will work anywhere. If they are protected/private, they will work only from the inside of the class (and not in children if private).
+
+For examlple, casting a type to a boolean (`bool` or `Boolean` type) requires the `@toBoolean` overload. Here is an example:
+
+```sn
+class MyInteger {
+  private value: int;
+
+  public func set(@value: int) : void {}
+  public func get() : int -> @value;
+
+  public func @toBoolean() : bool -> @value isnt 0;
+}
+```
+
+Now, `MyInteger` instances can be casted to booleans (`false` if they are equal to 0, `true` else).
+
+Here is the list of all typecasting overloads:
+
+```sn
+  // ...
+  public func @toBoolean()   : bool;
+  public func @toInteger()   : int;
+  public func @toFloat()     : float;
+  public func @toString()    : string;
+
+  public func @toNumber()    : Number;
+  public func @toPrimitive() : string;
+  // ...
+```
+
+There two last overloads can be automatically available even if they are not written by hand: `@toNumber` and `@toPrimitive`. The first one returns a `Number` instance but exists if and only if either `@toInteger` and/or `@toFloat` is implemented. If `@toFloat` exists, it will return its result, else it will return `@toInteger`'s one.
+
+The `@toPrimitive` overload will simply return a string if **any** typecasting overload is implemented. It will give priority to `@toString`, then to `@toNumber`, then to `@toBoolean`. That's as simple as that. It can be useful in some cases like in interfaces and/or traits like we'll see later.
+
+**NOTE :** `Number` is the mother class of both `int` and `float`, themselves respectively mothers of all integers types like `uint8` or `int32` for the first one and floating-points types like `ufloat` or `double` for the second one.
+
+A concrete example of using these overloads is when using the `println!` macro. It takes as an argument any instance implementing `@toPrimitive`, gets this overload's result, and prints it in the output. There are several usages of it, but most are to use them in interfaces and traits.
