@@ -2681,6 +2681,22 @@ acceleration(new Vehicle()); // Prints: "Vroom!"
 acceleration(new Motorcycle()); // Prints: "Vroom vroom!"
 ```
 
+Be aware though: when declaring a resource as a type and using a child type instead, you won't be able to use its new members. The only difference can come from the rewritten methods that already existed in the type we declared, these ones will use the code of the child type.
+
+```sn
+class Vehicle {
+  public func accelerate() : void -> println!("Vroom!");
+}
+
+class Motorcycle extends Vehicle {
+  public func accelerate() : void -> println!("vroom vroom!");
+  public func stunt() : void -> println!("Wow!");
+}
+
+val motorcycle: Vehicle = new Motorcycle();
+motorcycle.stunt(); // ERROR because `stunt` is not part of the `Vehicle` class
+```
+
 That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept.
 
 ### Interfaces
