@@ -2735,6 +2735,25 @@ func add(left: ConvertibleToInt, right: ConvertibleToInt) : int {
 
 If we try this code, it works perfectly fine.
 
+#### Native interfaces
+
+Here are some native interfaces we can use in our programs:
+
+* `BooleanConvertible`
+* `IntegerConvertible`
+* `FloatConvertible`
+* `NumberConvertible`
+* `Stringifyable`
+* `Clonable`
+* `Freezable`
+* `Serializable`
+* `Randomizable`
+* `Primitivable`
+
+**NOTE :** `Randomizable` forces to implement the `@random` overload that generates a random element of the current class.
+
+#### Implemeting interfaces in a class
+
 To implement an interface in a class, simply use the `implements` keyword like the `extends` one:
 
 ```sn
