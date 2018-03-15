@@ -2882,6 +2882,22 @@ println!(myDict.get([ 2, 5 ])); // Prints: "Message 1"
 
 As you can see, templates you can even be other templated classes. Because, yes, both `Array` and `List` are templated types - they are in reality custom dictionary classes this chapter aims to present.
 
+#### Optional templates
+
+Many native functions use optional templates. They work exactly like optional arguments for functions:
+
+```sn
+struct Data<T = float> {
+  val id: int;
+  val value: T;
+}
+
+val test: Data = {
+  id: 5,
+  value: 2.8
+}; // Works fine
+```
+
 #### Restricting templates
 
 Because the chosen template will always vary, we can't instanciate it nor use its methods/attributes. But we may want to interact with the template or its instances, by ensuring it implements some methods or attributes. That's possible, and here is the syntax:
