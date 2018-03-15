@@ -3068,3 +3068,7 @@ foreach (let value in myArray)
 foreach (let key => let value of myArray)
   println!(key, value);
 ```
+
+#### The case of vectors
+
+This is very simple: a `Vector<T>` (`List` or `Array`) is a `<int, T>` dictionary (with different members, though). That's as simple as that.
