@@ -3072,3 +3072,7 @@ foreach (let key => let value of myArray)
 #### The case of vectors
 
 This is very simple: a `Vector<T>` (`List` or `Array`) is a `<int, T>` dictionary (with different members, though). That's as simple as that.
+
+#### Collections
+
+There is a native type called `Collection<T>`, which is a strict equivalent to `Dictionary<string, T>`.
