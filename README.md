@@ -34,11 +34,12 @@ In a terminal with `sudo` / Administrator rights.
 Here are the build commands for the project (to run in the set-up repository folder):
 
 ```bash
-yarn test # Run the tests
-yarn build-all # Build everything
-yarn build-test # Run the tests for the build tools
-yarn clean # Clean build data
-yarn build website # Build the website locally
+yarn test           # Run the tests
+yarn build-all      # Build everything
+yarn build-test     # Run the tests for the build tools
+yarn clean          # Clean build data
+yarn build website  # Build the website locally
+yarn build-dev-live # Build everything, watch for modifications, serve locally
 ```
 
 ## Documentation
