@@ -258,6 +258,11 @@ scheme = {
       'purple', 'purple', 'purple', 'red', 'orange'
     ],
     [
+      // Declaration statement of readable constants, frozens or plain attributes in classes
+      /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readable)\s+(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      'purple', 'purple', 'purple', 'purple', 'red', 'orange'
+    ],
+    [
       // Declaration statement in classes
       /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readable\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'purple', 'purple', 'red', 'cyan'
