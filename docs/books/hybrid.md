@@ -3004,7 +3004,7 @@ val notWorkingTest: Data<NotWorking> = {
 }; // ERROR because `NotWorking` does not implement `ConvertibleToString`
 ```
 
-Here are some examples of constrainted templates:
+Here are some examples of constrained templates:
 
 ```sn
 T extends SomeClass;
