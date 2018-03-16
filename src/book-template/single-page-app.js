@@ -178,12 +178,29 @@ function toggleSummary () {
   // Toggle the "previous" button position
   previous.classList.toggle('force-left');
 
-  // Save the summary's visibility in the local storage
-  try {
-    localStorage.setItem('sn-book-hidden-summary', summary.classList.contains('hidden') ? 'true' : 'false');
-  } catch (e) {
-    // Display the error in the console, to debug it
-    console.error(e);
+  // If the summary is now visible...
+  if (summary.classList.contains('hidden')) {
+    // Set the button's legend
+    hideNav.innerHTML = '❯';
+    
+    // Remember this state in the local storage
+    try {
+      localStorage.setItem('sn-book-hidden-summary', 'true');
+    } catch (e) {
+      // Display the error in the console, to debug it
+      console.error(e);
+    }
+  } else {
+    // Set the button's legend
+    hideNav.innerHTML = '❮';
+
+    // Remove the boolean from the local storage
+    try {
+      localStorage.removeItem('sn-book-hidden-summary');
+    } catch (e) {
+      // Display the error in the console, to debug it
+      console.error(e);
+    }
   }
 }
 
