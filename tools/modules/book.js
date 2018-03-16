@@ -145,12 +145,21 @@ self = {
     // Is this the first section?
     let firstSection = true;
 
+    // Are we in a code block?
+    let inCodeBlock = false;
+
     verb('Generating summary and sections...');
 
     // For each line in the source code...
     for (let line of source.split(/\r\n|\r|\n/g).concat('## END OF FILE') /* To close the last section */) {
-      // If this is a title...
-      if (line.startsWith('#')) {
+      // If this is the beginning (or the end) of a code block...
+      if (line.startsWith('```'))
+        // Toggle the corresponding boolean
+        inCodeBlock = ! inCodeBlock;
+
+      // If this is a title
+      // and if we are not in a code block...
+      if (line.startsWith('#') && ! inCodeBlock) {
         // Use a RegExp to extract informations from it
         const match = line.match(/^(#+) *(.*)$/);
 
