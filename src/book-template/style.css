@@ -204,3 +204,7 @@ blockquote p {
   padding: 15px;
   font-size: 20px;
 }
+
+#hide-summary:hover {
+  cursor: pointer;
+}
