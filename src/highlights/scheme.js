@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.9.9',
+    VERSION: '0.9.10',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -515,6 +515,16 @@ scheme = {
     [
       // Name directive (2)
       /#name\b/,
+      'purple'
+    ],
+    [
+      // Type alias directive with argument as a single name
+      /(#type)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s+is\s+.*\s*;)/,
+      'purple', 'yellow'
+    ],
+    [
+      // Type alias directive
+      /#type(?=\s+.*\s+is\s+.*\s*;)/,
       'purple'
     ],
     [
