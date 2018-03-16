@@ -2818,6 +2818,20 @@ class Two implements ConvertibleToInt {
 
 Think to it if you have to accept any type of value that simply implements some attributes and/or methods.
 
+#### The `Any` interface
+
+The smallest interface in SilverNight is the `Any` interface. It allows us to take absolutely any instance of any class as an argument. Here is its full declaration:
+
+```sn
+interface Any {
+  // Nothing here
+}
+```
+
+Yes, this interface is empty. Because it is empty, every single class implements it. So every class will match the requirement of implementing the `Any` interface, and we can use it in our programs!
+
+But, because it is empty, we can't use **any** member of the values we get from it. So, how could we ever need it? That's because of things like reflection we'll later, that can grant information on absolutely any type, and with some macros. But most of the time, we simply won't use it. Simply remember that if you need to accept any type of value in one of your functions for instance, this interface exists.
+
 ### Traits
 
 Traits act kind of abstract classes. The main difference though is they can't implement static members, but they can still write the body of the function they declare. They aim to provide _horizontal reuse_, while abstract classes aim to provide _vertical reuse_ (plus the fact they can implement static members).
