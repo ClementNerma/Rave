@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.9.7',
+    VERSION: '0.9.8',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -339,7 +339,7 @@ scheme = {
     ],
     [
       // Math assignments
-      /(\+|-|\/|\*|%|\^|\*\*|<<|>>|\.)?=/,
+      /(\+|-|\/|\*|%|\^|\*\*|<<|>>|\.|\?)?=/,
       'cyan'
     ],
     [
