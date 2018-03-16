@@ -16,7 +16,7 @@ This book is for everyone who wants to learn all the features of SilverNight, or
 
 In order to fully understand this book, you should already know at least one other programming language (the lower level it is, the better), ideally with a good knowledge in Object-Oriented Programming (OOP) because SilverNight always deal with objects.
 
-Please note if you simply want to learn the language, you should read [The SilverNight Book](https://github.com/ClementNerma/SilverNight/doc/books/tutorial.book.md) instead. This hybrid book aims to provide a deep, complex view of the language with all of its detailed concepts.
+Please note if you simply want to learn the language, you should read **The SilverNight Book** (not published yet) instead. This hybrid book aims to provide a deep, complex view of the language with all of its detailed concepts.
 
 ### Who is this language for?
 
