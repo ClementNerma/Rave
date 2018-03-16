@@ -3148,6 +3148,8 @@ val dict: { { { string, int }, float }, string };
 
 ## Advanced concepts
 
+Here is a transitional chapter between the end of object-oriented programming and deeper concepts of SilverNight like errors, pointers or packages. The notions we will see here may not be used in every single program, be they can still be useful.
+
 ### Future declarations
 
 Here is a concept which will be especially useful in some conditionals. Futurely-declared resources are resources that are explicitly typed and don't have an initial value.
