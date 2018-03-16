@@ -3340,3 +3340,63 @@ This is all! We can now rewrite our `run` function:
 ```sn
 func run(callback: lambda () #bind engineBindings): void -> callback();
 ```
+
+### Constrained types
+
+Sometimes we want to get restricted values from a specific type. For example, if we make a function named `treatCars` that takes a `Vehicle` instance as a parameter, we could only want to accept vehicles with four `wheels` or less.
+
+This time, because we haven't seen any feature that could achieve it, let's just see how it we could do it: with _constrained types_. Assuming we have this code:
+
+```sn
+class Vehicle {
+  private readable wheels: int;
+  public func @construct(@wheels: int);
+}
+
+val car = new Vehicle(4);
+val motorcycle = new Vehicle(2);
+```
+
+Our function will have this look:
+
+```sn
+func treatCars(car: Vehicle with (c -> c.wheels <= 4)) : void ->
+  println!(`This vehicle has ${car.wheels} wheels.`);
+```
+
+Here, the `with` keywords indicates a constrained type. At its left, we write the type we want to constraint, and at its right a callback (the constraint).
+
+But how does it work? This is simple: when we read the value, it acts exactly like if we didn't put a constraint on its type. But when we try to write it (assign something else), the callback will be ran with an argument, the value we are trying to assign. It could also receive a second argument, which would then be the current value of the resource. As you can see, ICT works in the constraint callback because arguments' types as well as its return type can be guessed.
+
+If we put aside the fact that writing is controlled by a callback, constrained types act **exactly** like standard types: sub-typing work with them (in the example above, writing `Vehicle` instead of its constrained version would accept it as well).
+
+Here is an exemple to better understand the concept:
+
+```sn
+func treatCars(car: Vehicle with (c -> c.wheels <= 4)) : void {
+  c = new Vehicle(2); // Works fine
+  c = new Vehicle(4); // Works fine
+  c = new Vehicle(8); // ERROR because the constraint returned `false`
+}
+
+treatCars(new Vehicle(4));
+```
+
+When the resource is written, the callback receives its value (plus the current value of the resource if it takes two arguments), and returns a boolean. If it accepts the changes, it will return `true` (in our case, this will happen only if the vehicle has four wheels or less). Else, it will return `false` and the writing will be rejected, which will result in an error.
+
+But, because of the need to match the constraint, constrained resources cannot be declared without an initialization value. Here is an example:
+
+```sn
+let car: Vehicle with (c -> c.wheels is 4); // ERROR
+let car: Vehicle with (c -> c.wheels is 4) = new Vehicle(4); // Works fine
+```
+
+Also, because we could want to re-use a constrained type later, the `#type` directive allows us to register:
+
+```sn
+#type Car is Vehicle with (c -> c.wheels is 4);
+
+let car: Car;                  // ERROR
+let car: Car = new Vehicle(2); // ERROR
+let car: Car = new Vehicle(4); // Works fine
+```
