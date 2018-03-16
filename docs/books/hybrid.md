@@ -3479,3 +3479,65 @@ println!(test( 'Jack' ));
 // This will produce:
 println!(" 'Jack' ");
 ```
+
+### Operator superoverloads
+
+Superoverloads are overloads that don't act only as a class level, but as the whole program's level. Some of them work with some concepts we haven't seen yet, so we'll only see operators superoverloads.
+
+How do they work? That's simple: each operator superoverload overwrites the behaviour of an operator. Here is the list:
+
+* `@plus` (`+`)
+* `@less` (`-`)
+* `@times` (`*`)
+* `@divide` (`/`)
+* `@modulo` (`**`)
+
+You can see the matching operator on the right of the corresponding superoverload. Each of them take two arguments, and return a new value. Let's see an example: we have a class called `BankAccount`, with a private readable member called `money` and a method to add and substract money from the account. We now want to be able to add two bank accounts. Here is how we could do it:
+
+```sn
+class BankAccount {
+  private readable money: int with (c -> c >= 0);
+  public func @construct(@money: int);
+  public func add(amount: int) : void -> @money += amount;
+  public func sub(amount: int) : void -> @money -= amount;
+}
+
+let account1 = new BankAccount(1000);
+let account2 = new BankAccount(2000);
+
+func @plus(left: BankAccount, right: BankAccount) : int ->
+  left.money + right.money;
+
+println!(account1 + account2); // Prints: "3000"
+```
+
+That's as simple as that. Note that, conventionally, an operator superoverload's arguments are called `left` and `right` - even though we're not forced to call them this way.
+
+We could also implement a way to handle operations between bank accounts and numbers:
+
+```sn
+func @plus(left: BankAccount, right: Number) : Number ->
+  left.money + right;
+
+println!(account1 + 20); // Prints: "1020"
+```
+
+There are though some operators that can't return any type. These are the logical operators, which must return a boolean. Here is the list :
+
+* `@equal` (`==`)
+* `@greater` (`>`)
+* `@smaller` (`<`)
+* `@greater_eq` (`>=`)
+* `@smaller_eq` (`<=`)
+
+So, we could compare two bank accounts:
+
+```sn
+func @equal(left: BankAccount, right: BankAccount) : bool ->
+  left.money is right.money;
+
+println!(account1 == account2); // Prints: "false"
+println!(account1 == new BankAccount(1000)); // Prints: "true"
+```
+
+This works the same way for the other logical operators.
