@@ -44,6 +44,20 @@ yarn build-dev-live # Build everything, watch for modifications, serve locally
 
 Some other commands are available in the [`package.json`](package.json) file, but these are the most common ones.
 
+### Building live
+
+To build some parts of the project each time a file changes in the folder, you can use the `build-dev-live` as follows:
+
+```bash
+yarn build-dev-live website
+```
+
+Where `website` can be replaced by any other module. If you want instead to build the whole project each time a file changes:
+
+```bash
+yarn build-dev-live
+```
+
 ## Documentation
 
 You can take a look at the language's syntax and its current state by reading [The Hybrid Book](https://silvernight.herokuapp.com/docs/book/hybrid.html).
