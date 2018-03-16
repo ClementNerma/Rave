@@ -2697,7 +2697,16 @@ val motorcycle: Vehicle = new Motorcycle();
 motorcycle.stunt(); // ERROR because `stunt` is not part of the `Vehicle` class
 ```
 
-That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept.
+That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept. Also, note there is a way to ask for a specific type and not its children, thanks to the `#mustbe<T>` directive. Yes, directive can be templated. Here is an exemple:
+
+```sn
+func precise(vehicle: #mustbe<Vehicle>) : void ->
+  vehicle.accelerate();
+
+let car        : Vehicle    = new Vehicle();    // Works fine
+let motorcycle1: Vehicle    = new Motorcycle(); // ERROR
+let motorcycle2: Motorcycle = new Motorcycle(); // ERROR
+```
 
 ### Interfaces
 
