@@ -354,6 +354,8 @@ let article = q('body > article');
 let hideNav = document.createElement('a');
 // Give it an ID
 hideNav.setAttribute('id', 'hide-summary');
+// Give it a help text
+hideNav.setAttribute('title', 'Toggle the summary');
 // Give it a legend
 hideNav.innerHTML = '❮';
 // When it is clicked...
