@@ -3251,3 +3251,76 @@ if (not is_init!(name))
 ```
 
 Only the first `println!` will be called, because in the second condition `name` has been initialized.
+
+### Bindings
+
+A useful concept when using libraries with a lot of resources is the _bindings_. It consists in applying an alias object on a function to extract resources in the local scope.
+
+Let's imagine we have an `engine` class instance with a `run` function, which takes as an argument a function. This game engine runs the function but it also wants to provide a huge number of functions to manage the scene, the collisions, the geometry, the physics, etc.
+
+A first solution would be to provide them each one after another as an argument. But this would result in a lambda with thousands of arguments, so that's not a good idea, even with the `#auto` lambda (because we still have to write the argument's name and order).
+
+Another solution would be to make a structure with functions in it, like:
+
+```sn
+struct EngineFunctions {
+  init = engine.init;
+  createScene = engine.createScene;
+  getScene = engine.getScene;
+  /* ... and so on */
+}
+
+val functions: EngineFunctions;
+```
+
+This works but involves to create a large structure, and then make an object with it, then give it as an argument. Putting aside the fact it is really heavy, all the functions would need to be called with `functions.init()`, `functions.createScene()` etc. which is long to write and heavy too if we call them multiple times. Plus, there's no difference between writing `engine.init()` or `engine.createScene()`.
+
+That's where we use bindings. Bindings act like plain structure that links a name to a resource. Let's take an example:
+
+```sn
+func run(callback: lambda () #bind
+  {
+    printInConsole: "println!",
+    sayHello: "println!(\"Hello \" + ${1})",
+    sayHappyBirthday: "println!('Happy birthday ' + ${1} + ' you are now ' + ${2} + ' years old!')"
+  })
+  : void -> callback();
+```
+
+Here, `myBindings` generates several links.
+
+* The first one simply aliases `println!` as `printInConsole`, s we can do `printInConsole("Hello")`.
+* The second one uses `${1}` in its body, so it acts as a function and takes one, and only one argument, that cannot be omitted. Doing `sayHello("Jack")` will result in `println!("Hello" + "Jack")`.
+* The third one acts like the first one, but with two arguments. So writing `sayHappyBirthday("Jack", 28)` will result in `println!('Happy birthday ' + 'Jack' + ' you are now ' + 20 + ' years old!')`. Thanks to typecasting, `20` will be understood to `"20"`.
+
+So, we can use the `run` function like this:
+
+```sn
+run(() -> {
+  #bind;
+
+  printInConsole("Hello, world!");
+  sayHello("Jack");
+  happyBirthday("Jack", 28);
+});
+```
+
+This will work as expected, even if the three functions we use in the callback don't really exist but are part of the bindings object. Note that `#bind` directive at the beginning of the callback: it means we know a bindings object will be applied to it and that we accept it. This is needed because bindings can also rewrite the native functions/macros, so the program needs to be sure we really want to perform the binding.
+
+#### Using a declared bindings object
+
+Because writing bindings is heavy in a function's signature (like we saw), and because we may want to re-use bindings several times, we can declare the bindings as an object to use them later. The bindings object is a plain structure linking a string (the name) to another string (the resource). Here is how it goes:
+
+```sn
+pln engineBindings = #makebindings {
+  printInConsole: "println!",
+  sayHello: "println!(\"Hello \" + ${1})",
+  sayHappyBirthday: "println!('Happy birthday ' + ${1} + ' you are now ' + ${2} + ' years old!')"
+};
+```
+
+This is all! We can now rewrite our `run` function:
+
+```sn
+func run(callback: lambda () #bind engineBindings): void -> callback();
+```
