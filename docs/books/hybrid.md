@@ -1939,21 +1939,17 @@ Here is the solution:
 class Map {
   // Cell types
   private static readable EMPTY = 0;
-  private static readable BLOCK = 1;
+  private static readable ROCK  = 1;
   private static readable TRAP  = 2;
 
   // Private attributes
   private readable playerX: int;
   private readable playerY: int;
   private readable trapped: bool = false;
-  // Not readable because sub-arrays could be written from the outside
-  private cells: int[][];
+  private readable cells: int[][];
 
   // Create the map
-  public func @construct(cells: int[][], @playerX: int, @playerY: int) {
-    // Initialize attributes
-    @cells = cells;
-  }
+  public func @construct(@cells: int[][], @playerX: int, @playerY: int);
 
   // Move the hero
   private func move(x: int, y: int) : void {
@@ -1968,7 +1964,7 @@ class Map {
       println!("Cannot move outside the map.");
 
     // Check if the cell we are going to is a rock
-    else if (cells[y][x] is self::BLOCK)
+    else if (@cells[y][x] is self::ROCK)
       println!("There's a rock on your way.");
 
     // Else, move the player
@@ -1978,7 +1974,7 @@ class Map {
       @playerY = y;
 
       // If we fell in a trap, game over!
-      if (cells[y][x] is self::TRAP) {
+      if (@cells[y][x] is self::TRAP) {
         println!("You've been trapped!");
         @trapped = true;
       }
@@ -1999,6 +1995,26 @@ class Map {
 Here it is! This code answers to the problem.
 
 Of course, your solution could be different, as there are many ways to solve it. This anwser is well optimized and relatively short. Try to compare you own solution to this one and see the differences.
+
+A short note about accessibility now: as you can see, `cells` is not cloned when assigned using the constructor. This means that if an pre-defined array is gave to the constructor, changing it from the outside will also affects the class' attribute.
+Another point is that `cells` is also readable and not declared as a frozen, so anyone from the outside can access it and change its values.
+
+Here is a corrected version of the class that fixes this mistakes:
+
+```sn
+class Map {
+  // ...
+  private readable frozen cells: int[][];
+  // ...
+
+  // ...
+  public func @construct(cells: int[][], @playerX: int, @playerY: int) ->
+    // Clone the given cells to avoid them from being frozen
+    @cells = clone!(cells);
+}
+```
+
+Here, if we didn't clone `cells`, the original array would have been frozen too! So that's important to clone it here.
 
 ## Classes in depth
 
