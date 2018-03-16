@@ -2563,29 +2563,29 @@ jack.fireball(hegor);
 
 Here we are! We implemented a mother class with two children.
 
-### Abstract methods
+### Virtual methods
 
-Let's see a new prefix for class' methods: `abstract`. We already saw what an abstract class was, but now an abstract a method (because attributes cannot be abstracted).
+Let's see a new prefix for class' methods: `virtual`. We already saw what an virtual class was, but now a virtual a method (because attributes cannot be virtualized).
 
-Basically, abstracting a method means that its signature is written in the class, but its body is not forced to. It also forces any children of this class to implement its own version of the method, and this method will be usable in the parent even though its body is in a child.
+Basically, virtualizing a method means that its signature is written in the class, but its body is not forced to. It also forces any children of this class to implement its own version of the method, and this method will be usable in the parent even though its body is in a child.
 
 Here is an example:
 
 ```sn
 abstract class Hello {
-  abstract public sayHello() : string;
+  virtual public sayHello() : string;
 }
 
 class World {
-  abstract public sayHello() : string {
+  virtual public sayHello() : string {
     println!("Hello world!");
   }
 }
 ```
 
-The first difference we can see between these two classes is that the first one is abstract and not the second one. Why? Because, when we declare an abstract method without its body, it can't of course be used from this class - because the program doesn't know what to do. So it can't be instanciated, and because of it it is stated as an abstract class.
+The first difference we can see between these two classes is that the first one is abstract and not the second one. Why? Because, when we declare a virtual method without its body, it can't of course be used from this class - because the program doesn't know what to do. So it can't be instanciated, and because of it it is stated as an abstract class.
 
-The second class declares an abstract method but with a body, this time. That means any child class will be forced to implement its own version of this method, but the class is still instanciable because we written the method's body in the class.
+The second class declares a virtual method but with a body, this time. That means any child class will be forced to implement its own version of this method, but the class is still instanciable because we written the method's body in the class.
 
 ### Stated classes
 
@@ -2739,11 +2739,11 @@ Because understanding the concrete point of an interfaces isn't always easy, let
 
 Let's say we have a function that takes two arguments of any type, and add them as integers. In order to perform the addition, they need to be convertible to integers, of course. So our function will take any argument that implements the `@toInteger` overload. But how can we do that?
 
-The first idea would be to make an abstract class called `ConvertibleToInt` with an abstract method called `@toInteger`, like this:
+The first idea would be to make an abstract class called `ConvertibleToInt` with a virtual method called `@toInteger`, like this:
 
 ```sn
 abstract class ConvertibleToInt {
-  abstract func @toInteger() : int;
+  virtual func @toInteger() : int;
 }
 ```
 
