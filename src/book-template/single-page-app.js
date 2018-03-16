@@ -166,6 +166,27 @@ function showSection(id) {
   refreshActive();
 }
 
+/**
+ * Toggle the summary's visibility
+ * @returns {void}
+ */
+function toggleSummary () {
+  // Toggle summary's visibility
+  summary.classList.toggle('hidden');
+  // Toggle article's full-width state
+  article.classList.toggle('full-width');
+  // Toggle the "previous" button position
+  previous.classList.toggle('force-left');
+
+  // Save the summary's visibility in the local storage
+  try {
+    localStorage.setItem('sn-book-hidden-summary', summary.classList.contains('hidden') ? 'true' : 'false');
+  } catch (e) {
+    // Display the error in the console, to debug it
+    console.error(e);
+  }
+}
+
 // For each title in the page...
 for (let title of qa('h1, h2, h3, h4, h5, h6'))
   // If it has an ID...
@@ -319,16 +340,19 @@ hideNav.setAttribute('id', 'hide-summary');
 // Give it a legend
 hideNav.innerHTML = '❮';
 // When it is clicked...
-hideNav.addEventListener('click', () => {
-  // Toggle summary's visibility
-  summary.classList.toggle('hidden');
-  // Toggle article's full-width state
-  article.classList.toggle('full-width');
-  // Toggle the "previous" button position
-  previous.classList.toggle('force-left');
-});
+hideNav.addEventListener('click', toggleSummary);
 // Append it to the <body>
 document.body.appendChild(hideNav);
+
+try {
+  // If the book summary is marked as hidden in the local storage...
+  if (localStorage.getItem('sn-book-hidden-summary') === 'true')
+    // Hide it
+    toggleSummary();
+} catch (e) {
+  // Display the error, to debug it
+  console.error(e);
+}
 
 // If a hash was specified in the URL
 // and if it targets an existing section...
