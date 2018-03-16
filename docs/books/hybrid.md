@@ -14,7 +14,7 @@ This book is called "hybrid" because it provides a simple specification for the 
 
 This book is for everyone who wants to learn all the features of SilverNight, or simply for developers who are curious to know how this language work.
 
-In order to fully understand this book, you should already know at least one other programming language (the lower level it is, the better), ideally with a good knowledge in Oriented-Object Programming (OOP) because SilverNight always deal with objects.
+In order to fully understand this book, you should already know at least one other programming language (the lower level it is, the better), ideally with a good knowledge in Object-Oriented Programming (OOP) because SilverNight always deal with objects.
 
 Please note if you simply want to learn the language, you should read [The SilverNight Book](https://github.com/ClementNerma/SilverNight/doc/books/tutorial.book.md) instead. This hybrid book aims to provide a deep, complex view of the language with all of its detailed concepts.
 
@@ -86,7 +86,7 @@ println!("Hello !");
 
 For now, consider you can display any value with it, only special values (like custom classes or conceptual resources) cannot be displayed, but we will see this in details before we encounter this problem.
 
-## Variables and typings
+## Variables and typing
 
 In SilverNight, everything is object. Every single number or string is considered as an object. The thing that describes what an object is is a _type_. What is a type? That's simply a set of methods, properties and other tricks that provides tools to manipulate a resource, like a variable or a constant. You can also see it as a describer that indicates what kind of value a resource can take.
 
@@ -871,7 +871,7 @@ Here, we told to the compiler to completely freeze `paul`. This way, its propert
 
 _Tip :_ The `frozen` keyword works on almost any type, including `Dictionary`.
 
-## Controlling the program's flow
+## The blocks
 
 ### Conditional blocks
 
@@ -1489,11 +1489,11 @@ pointStr({ x: 2, y: 5 }); // Prints: "(2, 5)"
 
 They work as expected and print the same result.
 
-## Oriented-Object Programming
+## Object-oriented programming
 
 ### The concept of class
 
-Here we are. We will now talk about the most important concept in SilverNight, which is also the most complex one: **Oriented-Object Programming**.
+Here we are. We will now talk about the most important concept in SilverNight, which is also the most complex one: **Object-Oriented Programming**.
 
 Like we saw before, everything in SilverNight is an object. Though primitive types like `string` or `int` are special ones, they follow a strict behavior rules by their _type_.
 
