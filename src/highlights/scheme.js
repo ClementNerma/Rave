@@ -509,7 +509,12 @@ scheme = {
     ],
     [
       // Typed directives
-      /#(pln|name|mustbe)(?=[^a-zA-Z_\$])/,
+      /#(pln|mustbe)(?=\s*<)/,
+      'purple'
+    ],
+    [
+      // Name directive (2)
+      /#name\b/,
       'purple'
     ],
     [
