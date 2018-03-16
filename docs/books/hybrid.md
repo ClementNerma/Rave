@@ -3480,7 +3480,7 @@ println!(test( 'Jack' ));
 println!(" 'Jack' ");
 ```
 
-### Operator superoverloads
+### Overloading operators
 
 Superoverloads are overloads that don't act only as a class level, but as the whole program's level. Some of them work with some concepts we haven't seen yet, so we'll only see operators superoverloads.
 
