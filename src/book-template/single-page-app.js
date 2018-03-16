@@ -307,6 +307,29 @@ for (let block of qa('pre')) {
   block.appendChild(link);
 }
 
+// Store the summary's DOM element into a variable
+let summary = q('body > nav');
+// Store the article's DOM element into a variable
+let article = q('body > article');
+
+// Create a button to hide the summary
+let hideNav = document.createElement('a');
+// Give it an ID
+hideNav.setAttribute('id', 'hide-summary');
+// Give it a legend
+hideNav.innerHTML = '❮';
+// When it is clicked...
+hideNav.addEventListener('click', () => {
+  // Toggle summary's visibility
+  summary.classList.toggle('hidden');
+  // Toggle article's full-width state
+  article.classList.toggle('full-width');
+  // Toggle the "previous" button position
+  previous.classList.toggle('force-left');
+});
+// Append it to the <body>
+document.body.appendChild(hideNav);
+
 // If a hash was specified in the URL
 // and if it targets an existing section...
 if (window.location.hash && q(`[data-slug="${window.location.hash.substr(1)}"]`))

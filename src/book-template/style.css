@@ -66,6 +66,10 @@ nav a:hover, nav a.active {
   color: rgb(0, 140, 255);
 }
 
+nav.hidden {
+  display: none;
+}
+
 article {
   position: absolute;
   top: 0;
@@ -76,6 +80,15 @@ article {
   padding-right: 15%;
   line-height: 22px;
   color: rgb(51, 51, 51);
+}
+
+article.full-width {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-left: 20%;
+  padding-right: 20%;
 }
 
 section {
@@ -176,6 +189,18 @@ blockquote p {
   left: 350px;
 }
 
+#previous.force-left {
+  left: 20px;
+}
+
 #next {
   right: 20px;
+}
+
+#hide-summary {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding: 15px;
+  font-size: 20px;
 }
