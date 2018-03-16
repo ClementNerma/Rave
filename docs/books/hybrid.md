@@ -1227,6 +1227,31 @@ for (let i of 1 => 10) {
 
 This code will check each time if there had an error. If so, it will ignore all instructions above `continue` and iterate the loop a new time. Else, it will run the `println!` macro, just as expected.
 
+### Resoruces are block-scoped
+
+In SilverNight, all resources are _block-scoped_. This means that, when a resource is declared, it exists only _inside_ the block it is declared in. To take an example:
+
+```sn
+if (true)
+  val message = "Hello world!";
+
+println!(message); // ERROR because `message` does not exist
+```
+
+Here, `message` is declared inside an `if` block, so it only exists _inside_ this block. When we go outside of it, the resource does no longer exist. This is done to keep a better clarity about where resources are available. For example, with a loop, you can do:
+
+```sn
+for (let i = 0; i < 10; i += 2)
+  println!(i);
+
+// Do some stuff here
+
+for (let i = 10; i >= 0; i -= 2)
+  println!(i);
+```
+
+Without block-scoped declarations, this would not have worked because the declaration of `i` would have been duplicated, so we would have had to be aware to declare `i` at the beginning of the function, to use it later.
+
 ## Functions
 
 Another common concept in almost every programming language is the concept of _functions_. A function is a special block that can is not ran by default but that can be called manually. It eventually takes values called _arguments_ and generally return a value called the _return value_.
