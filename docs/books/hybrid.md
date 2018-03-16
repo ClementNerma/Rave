@@ -22,9 +22,9 @@ Please note if you simply want to learn the language, you should read [The Silve
 
 SilverNight's purpose is to provide a multi-platform compatibility coupled with an expressive syntax. Because of that, this language is not designed for very low-level applications, like drivers or operating systems - though it's still possible to make them, it is not originally intended for. In order to make such low-level programs, you should use other programming languages such as [C++](https://en.wikipedia.org/wiki/C%2B%2B) or [Rust](https://www.rust-lang.org).
 
-## Setting up environment
+### Setting up environment
 
-### Installation
+#### Installation
 
 **As the compiler is not done yet, your programs will not compile and you will not be able to run it. The book is here to details the languages' concept and the way it works. Thanks for your understanding.**
 
@@ -48,13 +48,13 @@ snt -v
 
 If it shows a version number, then the tools are now available globally!
 
-### Compiling programs
+#### Compiling programs
 
 You can write SilverNight with any text editor - even with the Windows' Notepad! But we advise you to use a code editor, like [Atom](https://atom.io) or [Visual Studio Code](https://code.visualstudio.com), and install the _SilverNight_ extension for them. This will highlight your code following different rules to make it more pleasant to see.
 
 Once you wrote your code, save it in a file with the `.sn` extension. Then, open a terminal and go into the folder in which your file is, and run `snt program.sn` (replace `program.sn` the name of your file) to compile it. This will produce an executable file in the same directory (the name will depend on the platform you are using). You can run this executable directly on any computer that is under the same platform.
 
-### Commenting your code
+#### Commenting your code
 
 SilverNight has several types of comments for different purposes, but the main ones are the single-line and the multiple-line comments. These are passive comments (which means they don't do anything and are perfectly ignored by the compiler).
 
@@ -76,7 +76,7 @@ println!("Hello"); // This is still one
 println!(/* Even in the middle of a line */ "Hello");
 ```
 
-### Displaying values
+#### Displaying values
 
 You can display values to your terminal (called _output_) by using the `println!` macro (we'll see what is a macro later in this book).
 
@@ -262,9 +262,9 @@ Representing large numbers can quickly become a big deal if you don't have a num
 
 When writing a plain number, all underscores are simply removed from its representation.
 
-## Operators
+### Operators
 
-### Mathematical operators
+#### Mathematical operators
 
 _Operators_ are symbols that provides a way to add, substract, multiply or do some operations with one or several numbers. The most common ones are the addition `+`, the substraction `-`, the multiplication `*` and the division `/` operators. Here's how we use it:
 
@@ -296,7 +296,7 @@ Showcase:
 
 _NOTE :_ As we will see later, mathematical operators can in fact handle any type if some pre-requisites are done. Manipulating numbers is their elementary usage.
 
-### Incremental operators
+#### Incremental operators
 
 There only two incremental operators, they only take a variable (not a constant or a plain value) and change its value depending on the operator. You can write the operator before or after the variable's name but be aware, this will change the operator's effect.
 
@@ -316,7 +316,7 @@ println!(variable --); // Prints: "2" ; variable = 1
 println!(-- variable); // Prints: "0" ; variable = 0
 ```
 
-### Bitwise operators
+#### Bitwise operators
 
 These are bit-by-bit operators - operators that work on each single bit of numbers. They take two number and return a number.
 
@@ -344,7 +344,7 @@ A << 2; // 1111 0000 : 240
 A >> 2; // 0000 1111 : 15
 ```
 
-### Logical operators
+#### Logical operators
 
 These are operators that take one or two entities they convert to booleans (`false` if it's a NIL value, `true` else) and return a boolean.
 
@@ -383,7 +383,7 @@ A xor B; // false
 ! A; // false
 ```
 
-### Assignment operators
+#### Assignment operators
 
 Unlike operators above that create a value from two other ones, assignment operators directly affect the variable it operates on.
 
@@ -404,7 +404,7 @@ value %= 5; // value == 2
 value **= 3; // value == 8
 ```
 
-### Concatenation
+#### Concatenation
 
 In SilverNight, the `+` (add) operator also acts as the _concatenation operator_. It provides a way to _concatenate_ two stringifyable entities, like a `string` and an `int`. For example, if you have a variable called `area` and you want to display its value with a message, you can do:
 
@@ -414,7 +414,7 @@ println!("The area is: " + area);
 
 Here, the compiler will understand you want to do a concatenation because the first entity is a string, and the second one a number. So it will perform the concatenation.
 
-### Bonus: String expressions
+#### Bonus: String expressions
 
 Here is a useful trick when using strings: you can _evaluate an expression_ from the inside of a string and get its result directly. Let's try it:
 
