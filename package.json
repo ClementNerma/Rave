@@ -31,7 +31,7 @@
     "build-test": "node tools/build.js --test",
     "build-all": "node tools/build.js --all",
     "build-live": "node tools/build.js --watch --live-reload --all",
-    "build-dev-live": "node tools/build.js --watch --live-reload --fast --all",
+    "build-dev-live": "node tools/build.js --watch --live-reload --fast --all --module",
     "read-book": "node tools/build.js --module book --open --book",
     "install-extension": "node tools/build.js --module highlights --install-help --target",
     "available-editors": "node tools/build.js --module highlights --list"
