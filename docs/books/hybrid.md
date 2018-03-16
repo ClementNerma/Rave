@@ -3400,3 +3400,82 @@ let car: Car;                  // ERROR
 let car: Car = new Vehicle(2); // ERROR
 let car: Car = new Vehicle(4); // Works fine
 ```
+
+### Macros
+
+Remember the very first "function" we saw in this book? Yes, this was `println!`. Why there are quotes about "function"? Because `println!` is not a function. It's a macro.
+
+But what's a macro, anyway? A macro is simply a function that replaces some parts of the code by anothers. To take, an example, `println!` will replace the arguments you give to it by `Output::println(...<your arguments>...)`.
+
+To understand better the concept, here is how we define a macro:
+
+```sn
+#macro sayHello(name: string) -> println!(`Hello, ${name}`);
+```
+
+How do we use the macro then? Like this:
+
+```sn
+// Call the macro
+sayHello!("Jack");
+
+// Will produce:
+println!(`Hello, Jack`);
+
+// Which will itself produce:
+Output::println(`Hello, Jack`);
+```
+
+As you can see, a macro is simply a way to simplify the writing of a call. It would be heavier to write `Output::println` each time we want to display something in the console, right? That's why the `println!` macro is here. And as you can guess, the `!` symbol indicates we are calling a macro and not a function.
+
+Macros can have several arguments, which must be typed. But it can also have a return type if it is ensured to return a specific type of value. For example, in our example, because `println!` is void-typed, the macro will return a `void`. So, we write:
+
+```sn
+#macro sayHello(name: string) : void -> println!(`Hello, ${name}`);
+```
+
+One of the native macros can be useful when using arguments. In fact, when writing the same macro as above but like this:
+
+```sn
+#macro sayHello(name: string) : void -> println!("Hello, " + name);
+```
+
+Using it will almost certainly throw an error. Why? Because it would produce this result:
+
+```sn
+// Call the macro
+sayHello!("Jack");
+
+// Will produce:
+println!("Hello, " + Jack);
+```
+
+Until a `Jack` resource is declared, the code above will throw an error because of an undefined reference. This is due to the fact every argument given to a macro is gave as a plain content. The solution to this problem is to use the `uneval!` primitive.
+
+```sn
+#macro sayHello(name: string) : void -> println!("Hello, " + uneval!(name));
+```
+
+Also note that macros can use a special type for their arguments, that are not available for standard functions. It's the `#plain` type, which prevent the arguments from being checked and evaluated. For example, the following code will work fine:
+
+```sn
+// Declare the macro
+#macro sayHello(name: #plain) : void -> println!("Hello, " + name);
+
+// Call it
+sayHello( 'Jack' );
+// This will produce:
+println!("Hello, " +  'Jack' );
+```
+
+As you can see, even the spaces are kept in `name`. Note that plain arguments can also be unevaluated to a string:
+
+```sn
+// Declare the macro
+#macro test(name: #plain) : void -> uneval!(name);
+
+// Call it
+println!(test( 'Jack' ));
+// This will produce:
+println!(" 'Jack' ");
+```
