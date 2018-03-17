@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.10.5',
+    VERSION: '0.10.6',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -231,21 +231,6 @@ scheme = {
       // Declaration of constants, frozens and values
       /(frozen|val|pln)\s+((:)[a-zA-Z_\$][a-zA-Z0-9_\$]*\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'yellow', 'cyan', 'red', 'orange'
-    ],
-    [
-      // DECLARE function, interface or class
-      /\b(decl)\s+(func|interface|class)\b/,
-      'purple'
-    ],
-    [
-      // DECLARE constants and frozens (plain or not)
-      /\b(decl)(\s+(?:public|protected|private))?\s+(static\s+)?(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-      'purple', 'purple', 'purple', 'purple', 'red', 'orange'
-    ],
-    [
-      // DECLARE
-      /\b(decl)(\s+(?:public|protected|private))?\s+(static\s+)?(let)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-      'purple', 'purple', 'purple', 'purple', 'red', 'cyan'
     ],
     [
       // Lazy overloads
