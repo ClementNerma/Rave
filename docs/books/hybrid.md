@@ -4173,3 +4173,365 @@ val two = strict!(nullable);
 ```
 
 Now, `one` has nullable `int?` type and `two` has standard `int` type.
+
+## Pointers
+
+### How references work
+
+In SilverNight, each object (not primitives) has a unique identifier associated to it, called the RUID (Reference Unique Identifier). This means that when we do a `new SomeClass()` or create an object from a structure (flying or not), an invisible identifier is put on it. It is not available to the program itself, but allows to compare if two objects are the same, by comparing their RUID.
+
+Here is the signature of the native `@equal` superoverload:
+
+```sn
+func @equal<T>(left: T, right: T) : bool;
+```
+
+It can compare two instances of the same class and tell if they are identical by comparing their RUID. Of course, this could not be done manually because we can't access the RUID, but this is a native superoverload so the builder can implement it itself.
+
+One of the most basic concepts of SilverNight is the references. For example, when an object is gave to a function, the object is not cloned automatically, so it keeps the same UID. That's why modifying an object inside a function will also modify the original one that was gave to it.
+
+Primitive don't have this problem, has they are very special classes. When a primitive is gave to a function or assigned to another resource, it will automatically be cloned - there's no way to prevent it.
+
+### References in depth
+
+Pointers aim to provide a new way to deal with references. Let's take the following code:
+
+```sn
+// Make a 'Hero' structure
+struct Hero {
+  name: string;
+  attack: int;
+}
+
+// Make a function that changes a single property of the function
+func changeProperty(obj: Hero) : void {
+  obj.attack = 20;
+}
+
+// Make a function
+func assignSomethingNew(obj: Hero) : void {
+  obj = {
+    name: "John",
+    attack: 50
+  };
+}
+
+// Create a 'Hero' object
+val hero = {
+  name: "Jack",
+  attack: 10
+};
+
+// Test the two functions
+changeProperty(hero);
+assignSomethingNew(hero);
+
+// Show the result
+println!(obj.name); // Prints: "Jack"
+printon!(obj.attack); // 20
+```
+
+So, what happened here? After we created a hero object, we sent it to the `changeProperty` function. But technically, only a link to `hero` was sent to the function, which was assigned to its `obj` arguments. This way, when the function changed one of the `obj`'s properties, it also changed `hero`, because they are exactly the same object.
+
+In the second function, `assignSomethingNew`, only a link to `hero` was also sent and assigned to `obj`. But no changes were made to the original `hero`. Why? Because the two entities only share the same _RUID_, they are still two separate entities. So assigning something new to `obj` grants it a new RUID that replaces the previous one.
+
+But what if we wanted to make the whole `hero` object change within a function? Well, for that, we use _pointers_.
+
+### How pointers work
+
+While references simply share a RUID referring to a specific object in the memory, pointers share an EUID, which stands for Entity Unique Identifier. The difference between a RUID and an EUID is that a RUID simply refers to an object, while an EUID refers to an entity. This means that, when modifying an entity, even if something new is assigned, all entities with the same EUID will be affected the same way.
+
+By default, each entity has its new EUID. That's where pointers come: they provide a way to create a new entity with the same EUID than another. To create a pointer, we use the `&` symbol followed by the entity's name, which returns an identical entity (with the same type) and the same EUID. Here is how it goes:
+
+```sn
+let hero = {
+  name: "Jack",
+  attack: 10
+};
+
+&hero = {
+  name: "John",
+  attack: 20
+};
+
+println!(hero.name); // Prints: "John"
+```
+
+Note that, if `hero` had been declared with the `val` keyword, an error would have been thrown. Because this is not very convenient to always use `&` to get a pointer, we can also store it into a _pointer variable_:
+
+```sn
+// Create a hero
+let hero = {
+  name: "Jack",
+  attack: 10
+};
+
+// Create a pointer to it
+let *ptr = &hero;
+
+// Assign a new object to the pointer
+ptr = {
+  name: "Jack",
+  attack: 10
+};
+
+// Display the result
+println!(ptr.name); // Prints: "John"
+println!(hero.name); // Prints: "John"
+```
+
+It's also possible to make pointers on primitive entities, like a string or a number:
+
+```sn
+let str = "Hello";
+
+let *ptr = &str;
+ptr += " World!"
+
+println!(str); // Prints: "Hello World!"
+```
+
+Last but not least, pointers can be made on attributes:
+
+```sn
+val hero = {
+  name: "Jack",
+  attack: 20
+};
+
+let *ptr = &(hero.name);
+ptr = "John";
+
+println!(hero.name); // Prints: "John"
+```
+
+The syntax is as follow:
+
+```sn
+&object.property;   // Make a pointer to `object` and get `property`
+&(object).property; // Make a pointer to `object` and get `property`
+(&object).property; // Make a pointer to `object` and get `property`
+&(object.property); // Make a pointer to `object.property`
+```
+
+### Pointers using expressions
+
+Pointers can also be defined without referring to an entity. See the code below:
+
+```sn
+let *ptr = "Hello !";
+```
+
+When this code is ran, an entity is created with content `"Hello"`, and `ptr` points to it. It's an equivalent to the code above:
+
+```sn
+// Doing this...
+let *ptr = "Hello !";
+// Is the same as doing...
+let str = "Hello !";
+let *ptr = &str;
+```
+
+### Pointers in functions
+
+Pointers can be used to manipulate data in functions. Here is how it goes:
+
+```sn
+func increment(*counter: int) : void -> counter ++;
+
+let counter = 0;
+increment(&counter);
+println!(counter); // Prints: "1"
+```
+
+They can also return a pointer:
+
+```sn
+func increment(*counter: int) : &int -> &(counter + 1);
+
+let *ptr = increment(&(0));
+
+println!(ptr); // Prints: "1"
+```
+
+This example is a little bit complex. First, we define a function that takes as an argument a pointer, and returns another. In its body, it adds 1 to the counter on-the-fly (without assigning anything). This results in making a brand new integer, which is not a pointer but a simple value. Then, it makes a pointer from this new value and returns it, so `ptr` receives a new pointer. The function could also have returned a simple number, without making a pointer from it: assigning a simple integer to `ptr` would automatically have turned it into a pointer. So that doesn't change anything here.
+
+### Reassigning pointers
+
+A pointer can be reassigned to a new entity easily, using the `*` symbol. Here is how it goes:
+
+```sn
+// Make two simple integers
+let i = 0;
+let j = 0;
+
+// Make a pointer from it
+let *ptr = &i;
+
+// Assign a new value to the pointer (its target remains the same)
+ptr = 8;
+println!(i); // Prints: "8"
+println!(j); // Prints: "0"
+
+// Assign a new target to the pointer
+*ptr = &j;
+
+// Assign a new value to the pointer
+ptr = 3;
+println!(i); // Prints: "8"
+println!(j); // Prints: "3"
+```
+
+### The `NULL` pointer
+
+Sometimes we simply want to make a pointer referring to nothing, after using it. In fact, using `free!` on a pointer may not free the value it refers to (it depends on its scope usage) but it will make assign the `NULL` pointer to the current pointer, which is constant, so nothing can be assigned to it.
+
+```sn
+let i = 0;
+
+let *ptr = &i;
+ptr = 8; // Works fine
+
+free!(ptr);
+ptr = 3; // ERROR because the pointer was freed
+
+*ptr = &i; // ERROR because the pointer was freed
+```
+
+This can also be done using a manual assignment, if we want to re-use the pointer later by assigning a new target to it:
+
+```sn
+let i = 0;
+
+let *ptr = &i;
+ptr = 8; // Works fine
+
+*ptr = NULL;
+ptr = 3; // ERROR because the pointer refers to `null`
+
+*ptr = &i; // Works fine
+ptr = 2; // Works fine
+
+println!(i); // Prints: "2"
+```
+
+### Impact on lifetime duration
+
+Creating a pointer on an entity will prevent it from being automatically freed when it goes out of the scope, because there its EUID is still used somewhere. The pointer itself, though, will be freed automatically since it goes out of the scope (unless there is another pointer referring from it - a double pointer).
+
+### Checking a pointer
+
+It is possible to check if an entity is a pointer, thanks to the `is_ptr!` macro:
+
+```sn
+let i = 0;
+let *ptr = &i;
+
+println!(is_ptr!(i)); // Prints: "false"
+println!(is_ptr!(ptr)); // Prints: "true"
+```
+
+The target of a pointer can also be checked using the equality operator, thanks to the fact a pointer and its referer always have the same EUID:
+
+```sn
+let i = 0;
+let j = 0;
+
+let *ptr = &i;
+
+println!(ptr is &i); // Prints: "true"
+println!(ptr is &j); // Prints: "false"
+```
+
+### Target state
+
+A pointer must respect the state of its target. For example, if a pointer refers to a constant, assigning anything to the pointer will result in an error (excepting rewriting the pointer's target, of course).
+
+```sn
+val i = 1;
+
+let *ptr = &i;
+ptr = 8; // ERROR
+```
+
+Don't forget that everything in a frozen is considered as a frozen too.
+
+```sn
+frozen obj = {
+  value: 2
+};
+
+let *ptr = &(obj.value);
+ptr = 8; // ERROR
+```
+
+A last word about state: pointers can have their own state to prevent from being written, though rewriting their target will also rewrite the value they point to:
+
+```sn
+let i = 1;
+val *ptr = i;
+
+i = 2;
+println!(ptr); // Prints: "2"
+
+ptr = 8; // ERROR
+```
+
+### Multiple-level pointers
+
+Pointers can refer to an entity, but they can also refer to other pointers (which also are entities, after all). Here is how it goes:
+
+```sn
+let i = 1;
+let j = 2;
+
+let **ptr = i;
+// `ptr` refers to an unnamed pointer itself refering to `i`
+
+ptr = 8;
+println!(i); // Prints: "8"
+
+**ptr = &i; // ERROR
+**ptr = &&i; // Works fine (changes nothing)
+```
+
+Now, let's take two examples to detail this because this is a bit complex:
+
+```sn
+*ptr = &j; // Works fine
+println!(ptr); // Prints: "2"
+```
+
+This code rewrites the target of the pointer `ptr` is itself referring to, let's call it the intermediate pointer. So this code rewrites the target of the intermediate pointer, and because `ptr` is referring to it, its value will be the same.
+
+```sn
+**ptr = &&i; // Works fine
+println!(ptr); // Prints: "8"
+```
+
+This code makes `ptr` referring to a brand new unnamed pointer, itself referring to `i`. So it removes the intermediate pointer we had just before.
+
+Note that the `*` symbol, when not used as the name of an entity in its declaration, allows to retrieve the entity it refers to:
+
+```sn
+let i = 1;
+let j = 2;
+
+let **ptr = i;
+let *inter = *ptr;
+
+inter = 8;
+println!(ptr); // Prints: "8"
+
+// The two lines above are strictly equivalent
+*ptr = &i;
+*inter = &i;
+
+// Use a brand new intermediate pointer
+**ptr = &&i;
+
+inter = 3;
+println!(ptr); // Prints: "8"
+```
+
+This part is complex, so don't hesitate to read it again until you understand it.
