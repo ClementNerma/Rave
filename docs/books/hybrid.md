@@ -3957,13 +3957,7 @@ This code will print: `No point found`, as you can guess.
 
 ### Checking `null` with `==`
 
-An alternative to writing `is_null!` each time we want to check if a value is `null`, we can use the equality operator `==` or the difference operator `!=`. This can be done thanks to a native superoverload:
-
-```sn
-func @equal(left: Any, right: void) #reversable : bool;
-```
-
-As you can see, it can compare any value with a `void` instance, so we can write:
+An alternative to writing `is_null!` each time we want to check if a value is `null`, we can use the equality operator `==` or the difference operator `!=`. This can be done thanks the fact two instances of the same class can be compared with these two operators (we'll see that in details in the pointers chapter). So we can write:
 
 ```sn
 val point = getNilPoints([]);
