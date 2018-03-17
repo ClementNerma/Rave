@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.9.12',
+    VERSION: '0.10.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -213,6 +213,11 @@ scheme = {
       ]
     },
     [
+      // Null value and null pointer
+      /\b(null)\b/,
+      'orange'
+    ],
+    [
       // Class references
       /\b(this|self|parent)\b/,
       'yellow'
@@ -304,13 +309,13 @@ scheme = {
     ],
     [
       // Function's or declaration's special type (not caught by the previous expressions)
-      /(?<!:)(:)\s*((?:&\s*)*)(void|self|Any|class_ref|func_ref|var_ref|macro_ref|T|X|Y|Z|K|V)(?=\s*[\{\),;=]|\s*->|\s*with)/,
-      'white', 'cyan', 'purple'
+      /(?<!:)(:)\s*((?:&\s*)*)(void|self|Any|class_ref|func_ref|var_ref|macro_ref|T|X|Y|Z|K|V)(\?)?(?=\s*[\{\),;=]|\s*->|\s*with)/,
+      'white', 'cyan', 'purple', 'cyan'
     ],
     [
       // Function's or declaration's (other) type
-      /(?<!:)(:)\s*((?:&\s*)*)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*[\{\),;=]|\s*->|\s*with)/,
-      'white', 'cyan', 'yellow'
+      /(?<!:)(:)\s*((?:&\s*)*)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(\?)?(?=\s*[\{\),;=]|\s*->|\s*with)/,
+      'white', 'cyan', 'yellow', 'cyan'
     ],
     [
       // Arrow function
@@ -374,13 +379,13 @@ scheme = {
     ],
     [
       // Native types and classes
-      /\b(bool|Boolean|Number|FloatNumber|(u?int|(Unsigned)?Integer)(|1|8|16|32|64|128)|u?byte|(Unsigned|Signed)Byte|float|[Ff]loat|[Dd]ouble|[Ss]tring|StringConvertible|Stringifyable|IntegerConvertible|FloatConvertible|BoolConvertible|Primitivable|Collection|Dictionary|Symbol|Promise|ResolvePL|RejectPL|Vector|Array|List|Buffer|Error|ErrorStack|Timer|RegExp|NativeRegExp|RegExpMatch|Stream|InputStream|OutputStream|console)\b/,
-      'yellow'
+      /\b(bool|Boolean|Number|FloatNumber|(u?int|(Unsigned)?Integer)(|1|8|16|32|64|128)|u?byte|(Unsigned|Signed)Byte|float|[Ff]loat|[Dd]ouble|[Ss]tring|StringConvertible|Stringifyable|IntegerConvertible|FloatConvertible|BoolConvertible|Primitivable|Collection|Dictionary|Symbol|Promise|ResolvePL|RejectPL|Vector|Array|List|Buffer|Error|ErrorStack|Timer|RegExp|NativeRegExp|RegExpMatch|Stream|InputStream|OutputStream|console)(\?)?\b/,
+      'yellow', 'cyan'
     ],
     [
       // Special native types
-      /(?<!\.)\b(void|self|Any|class_ref|func_ref|var_ref|macro_ref|T|X|Y|Z|K|V)(?!\s*:)\b/,
-      'purple'
+      /(?<!\.)\b(void|self|Any|class_ref|func_ref|var_ref|macro_ref|T|X|Y|Z|K|V)(\?)?(?!\s*:)\b/,
+      'purple', 'cyan'
     ],
     [
       // Keywords
@@ -424,8 +429,8 @@ scheme = {
     ],
     [
       // Object followed by a child property
-      /(@?[a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=[\.\[])/,
-      'red'
+      /(@?[a-zA-Z_\$][a-zA-Z0-9_\$]*)(\?)?(?=[\.\[])/,
+      'red', 'cyan'
     ],
     [
       // Classes' native functions' call
@@ -454,18 +459,18 @@ scheme = {
     ],
     [
       // Object's function's call
-      /(@)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*\()/,
-      'red', 'blue'
+      /(@)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(\?)?(?=\s*\()/,
+      'red', 'blue', 'cyan'
     ],
     [
       // Object's function's call with a template
-      /(@)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*<(.*?)>\s*\s*\()/,
-      'red', 'blue'
+      /(@)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(\?)?(?=\s*<(.*?)>\s*\s*\()/,
+      'red', 'blue', 'cyan'
     ],
     [
       // Object's *constant* property
-      /(@)([A-Z_\$][A-Z0-9_\$]*)(?=\s*[[\.]|@]\b)/,
-      'red', 'orange'
+      /(@)([A-Z_\$][A-Z0-9_\$]*)(\?)?(?=\s*[[\.]|@]\b)/,
+      'red', 'orange', 'cyan'
     ],
     [
       // Object's property
@@ -499,8 +504,8 @@ scheme = {
     ],
     [
       // Constrained types
-      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s+(?=with\s+\()/,
-      'yellow'
+      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(\?)?\s+(?=with\s+\()/,
+      'yellow', 'cyan'
     ],
     [
       // MACRO declarations
