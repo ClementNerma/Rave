@@ -4055,6 +4055,42 @@ val two = strict!(nullable);
 
 Now, `one` has nullable `int?` type and `two` has standard `int` type.
 
+### A concrete example
+
+A concrete example of nullable types usage: the problem of list initialization.
+
+Here is the program we want to make:
+
+1. Declare a list of integers with 4096 cells.
+2. Generate a random boolean.
+3. If it's "true", fill the list with zeros
+4. If it's "false", fill the list with ones
+
+The problem is: if we simply declare the list with `val`, we create a `List<Vehicle>` instance that will be filled with vehicles later. So this will generate 4096 instances of the `Vehicle` class at the same time the list is declared, and then we will make again 4096 instances in our `if` block. Performances are so divided by 2.
+
+In order to avoid this problem, we can declare the list using an optional type. When the resource is declared, no instance is created, and we will only instanciate it in our conditional block, so "only" 4096 instances of `Vehicle` will be created, instead of 8192 with the previous method - that's a considerable speed up.
+
+Here is how it works:
+
+```sn
+let list: List<Vehicle>? = null;
+
+if (random!(bool))
+  list = (new Vehicle[4096]).fill(new Car());
+else
+  list = (new Vehicle[4096]).fill(new Motorcycle());
+```
+
+But, because it's always preferable to avoid using nullable types as they can cause errors if not manipulated correctly, and because the code above is not optimized, we should write this one instead:
+
+```sn
+val list = (new Vehicle[4096]).fill(
+  random!(bool) ? new Car() : new Motorcycle()
+);
+```
+
+Even though this code is not pretty, it's better optimized and avoid using a nullable type. Plus, our `list` resource is now a constant instead of being a mutable.
+
 ## Pointers
 
 ### How references work
