@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.10.6',
+    VERSION: '0.11.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -278,11 +278,6 @@ scheme = {
       'yellow', 'cyan', 'yellow'
     ],
     [
-      // Plain data
-      /(val)\s*(?=<[^;]+>)/,
-      'purple'
-    ],
-    [
       // Overload declaration
       /\b(func|public|protected|private|virtual)\s+(static\s+)?(@)([a-zA-Z_][a-zA-Z0-9_]+)\b/,
       'purple', 'purple', 'red', 'cyan'
@@ -315,11 +310,6 @@ scheme = {
     [
       // Logical operators
       /(<=|>=|<|>|==|!=|&&|\|\|)/,
-      'cyan'
-    ],
-    [
-      // Declaration conditionnal operator
-      /\?\?/,
       'cyan'
     ],
     [
@@ -364,7 +354,7 @@ scheme = {
     ],
     [
       // Native types and classes
-      /\b(bool|Boolean|Number|FloatNumber|(?:u?int|(?:Unsigned)?Integer)(?:|1|8|16|32|64|128)|u?byte|(?:Unsigned|Signed)Byte|float|[Ff]loat|[Dd]ouble|[Ss]tring|StringConvertible|Stringifyable|IntegerConvertible|FloatConvertible|BoolConvertible|Primitivable|Collection|Dictionary|Symbol|Promise|ResolvePL|RejectPL|Vector|Array|List|Buffer|Error|ErrorStack|Timer|RegExp|NativeRegExp|RegExpMatch|Stream|InputStream|OutputStream|console)(\?)?\b/,
+      /\b(bool|Boolean|Number|FloatNumber|(?:u?int|(?:Unsigned)?Integer)(?:|1|8|16|32|64|128)|u?byte|(?:Unsigned|Signed)Byte|float|[Ff]loat|[Dd]ouble|[Ss]tring|Any|Primitive|BooleanConvertible|IntegerConvertible|FloatConvertible|NumberConvertible|Stringifyable|Clonable|Freezable|Serializable|Randomizable|Primitivable|Collection|Dictionary|Vector|Array|List|Error|ErrorStep|RegExp|console)(\?)?\b/,
       'yellow', 'cyan'
     ],
     [
@@ -374,12 +364,12 @@ scheme = {
     ],
     [
       // Keywords
-      /(?<!\.)\b(let|pln|val|frozen|frozen|func|lambda|public|protected|private|auto|friend|static|abstract|final|unique|virtual|extern|readonly|do|if|else|finally|for|foreach|in|of|break|continue|unless|until|when|default|export|return|throw|die|try|catch|while|with|new|include|await|native)(?!\s*:)\b/,
+      /(?<!\.)\b(let|pln|val|frozen|frozen|func|lambda|public|protected|private|auto|friend|static|abstract|final|unique|virtual|extern|readonly|do|if|else|for|foreach|in|of|break|continue|unless|until|when|default|export|return|throw|try|catch|while|with|new|include)(?!\s*:)\b/,
       'purple'
     ],
     [
       // Already specified keywords, written here to have partial syntax highlighting
-      /(?<!\.)\b(struct|class|type|dict|namespace|package|trait|interface|implements|extends|import|from)(?!\s*:)\b/,
+      /(?<!\.)\b(struct|class|type|dict|package|trait|interface|implements|extends|import|from)(?!\s*:)\b/,
       'purple'
     ],
     [
@@ -419,7 +409,7 @@ scheme = {
     ],
     [
       // Classes' native functions' call
-      /(\.)(toBoolean|toInteger|toFloat|toString|freeze|keys|values|clone|forceclone|serialize|truncate|round|fPart|approx|charAt|charCodeAt|codePointAt|count|cut|endsWith|firstWord|indexOf|isInteger|isFloat|lastIndexOf|lastWord|includes|isIn|repeat|startsWith|split|substr|toBase64|toArray|toList|toLowerCase|toUpperCase|trim|trimLeft|trimRight|withoutAccents|word|words|set|get|has|fill|fillDynamic|filter|forEach|join|map|random|reduce|slice|unset|concat|pop|push|clear|reverse|shift|sort|shuffle|splice|unshift|isEqualTo|merge|then|catch|addFlag|removeFlag|getGroups|match|matchAll)(?=(?:\s*<(.*?)>)?\s*\()/,
+      /(\.)(keys|values|truncate|round|fPart|approx|charAt|charCodeAt|codePointAt|count|cut|endsWith|firstWord|indexOf|isInteger|isFloat|lastIndexOf|lastWord|includes|isIn|repeat|startsWith|split|substr|toBase64|toArray|toList|toLowerCase|toUpperCase|trim|trimLeft|trimRight|withoutAccents|word|words|set|get|has|fill|fillDynamic|filter|forEach|join|map|random|reduce|slice|unset|concat|pop|push|clear|reverse|shift|sort|shuffle|splice|unshift|isEqualTo|merge|then|catch|addFlag|removeFlag|getGroups|match|matchAll)(?=(?:\s*<(.*?)>)?\s*\()/,
       'white', 'cyan'
     ],
     [
@@ -499,7 +489,7 @@ scheme = {
     ],
     [
       // Generic known directives
-      /#(Dynamic|alias|samedef|bind|makebindings|declarative|auto|declare|process|ref|raw_indent|if|else|end|only|reversable|package|uneval)( +;)?/,
+      /#([Dd]ynamic|alias|bind|makebindings|declarative|study|raw_indent|if|else|end|only|reversable|package|uneval)( +;)?/,
       'orange'
     ],
     [
@@ -513,11 +503,6 @@ scheme = {
       'purple'
     ],
     [
-      // Name directive (2)
-      /#name\b/,
-      'purple'
-    ],
-    [
       // Type alias directive with argument as a single name
       /(#type)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s+is\s+.*\s*;)/,
       'purple', 'yellow'
@@ -526,26 +511,6 @@ scheme = {
       // Type alias directive
       /#type(?=\s+.*\s+is\s+.*\s*;)/,
       'purple'
-    ],
-    [
-      // Typing mode directive
-      /(#typing\s*\()(flexible|explicit|inferred)(\)\s*;?)/,
-      'orange', 'cyan', 'orange'
-    ],
-    [
-      // Invalid typing modes
-      /(#typing\s*\()(.*?)(\)\s*;?)/,
-      'orange', 'invalid', 'orange'
-    ],
-    [
-      // Flying lambdas typing mode directive
-      /(#flying\s*\()(explicit|inferred)(\)\s*;?)/,
-      'orange', 'cyan', 'orange'
-    ],
-    [
-      // Invalid flying lambdas typing modes
-      /(#flying\s*\()(.*?)(\)\s*;?)/,
-      'orange', 'invalid', 'orange'
     ],
     [
       // All other directives
