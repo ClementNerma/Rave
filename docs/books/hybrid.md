@@ -2431,7 +2431,7 @@ A class inheriting from another will receive all of its members, including overl
 Now we saw the concept, let's implement it step by step. First, we'll make a skeleton for the mother class:
 
 ```sn
-abstract class Hero {
+virtual class Hero {
   protected readable name: string;
   protected readable hp: int;
   protected readable attack: int;
@@ -2484,7 +2484,7 @@ abstract class Hero {
 }
 ```
 
-A little subtlety here is the presence of the `abstract` keyword before the `class` one. It's called a _class state_, a concept we'll see later. This one simply indicates the class can't be instanciated, so you can't do `new Hero();` or `val someone: Hero;` - both will throw an error. Instead, we will instanciate the `Hero`'s children classes, if they are not defined as `abstract` too.
+A little subtlety here is the presence of the `virtual` keyword before the `class` one. It's called a _class state_, a concept we'll see later. This one simply indicates the class can't be instanciated, so you can't do `new Hero();` or `val someone: Hero;` - both will throw an error. Instead, we will instanciate the `Hero`'s children classes, if they are not defined as `virtual` too.
 
 Another thing: the `protected` keyword. It kind of acts like `private`, as the member it prefixes will only be available from the inside of the class. But, `private` is a special keyword that, in addition to making the attribute writable only from the inside of the class, will not make it available from its children class. So `Warrior` and `Wizard` wouldn't be able to write it. That's not really a problem, since these attributes don't aim to be modified, but that's a thing we need to think to when making a class that will be inherited by anothers. The `protected` keyword does the same thing than `private` excepted that it makes it available for children classes.
 
@@ -2579,29 +2579,29 @@ jack.fireball(hegor);
 
 Here we are! We implemented a mother class with two children.
 
-### Virtual methods
+### Abstract methods
 
-Let's see a new prefix for class' methods: `virtual`. We already saw what an virtual class was, but now a virtual a method (because attributes cannot be virtualized).
+Let's see a new prefix for class' methods: `abstract`. We already saw what a virtual class was, but now let's see what an abstract a method (because attributes cannot be abstraced) is.
 
-Basically, virtualizing a method means that its signature is written in the class, but its body is not forced to. It also forces any children of this class to implement its own version of the method, and this method will be usable in the parent even though its body is in a child.
+Basically, abstracting a method means that its signature is written in the class, but its body is not forced to. It also forces any children of this class to implement its own version of the method, and this method will be usable in the parent even though its body is in a child.
 
 Here is an example:
 
 ```sn
-abstract class Hello {
-  virtual public sayHello() : string;
+virtual class Hello {
+  abstract public sayHello() : string;
 }
 
 class World {
-  virtual public sayHello() : string {
+  abstract public sayHello() : string {
     println!("Hello world!");
   }
 }
 ```
 
-The first difference we can see between these two classes is that the first one is abstract and not the second one. Why? Because, when we declare a virtual method without its body, it can't of course be used from this class - because the program doesn't know what to do. So it can't be instanciated, and because of it it is stated as an abstract class.
+The first difference we can see between these two classes is that the first one is abstract and not the second one. Why? Because, when we declare an abstract method without its body, it can't of course be used from this class - because the program doesn't know what to do. So it can't be instanciated, and because of it it is stated as a virtual class.
 
-The second class declares a virtual method but with a body, this time. That means any child class will be forced to implement its own version of this method, but the class is still instanciable because we written the method's body in the class.
+The second class declares an abstract method but with a body, this time. That means any child class will be forced to implement its own version of this method, but the class is still instanciable because we written the method's body in the class.
 
 ### Stated classes
 
@@ -2755,11 +2755,11 @@ Because understanding the concrete point of an interfaces isn't always easy, let
 
 Let's say we have a function that takes two arguments of any type, and add them as integers. In order to perform the addition, they need to be convertible to integers, of course. So our function will take any argument that implements the `@toInteger` overload. But how can we do that?
 
-The first idea would be to make an abstract class called `ConvertibleToInt` with a virtual method called `@toInteger`, like this:
+The first idea would be to make a virtual class called `ConvertibleToInt` with an abstract method called `@toInteger`, like this:
 
 ```sn
-abstract class ConvertibleToInt {
-  virtual func @toInteger() : int;
+virtual class ConvertibleToInt {
+  abstract func @toInteger() : int;
 }
 ```
 
@@ -2850,7 +2850,7 @@ But, because it is empty, we can't use **any** member of the values we get from 
 
 ### Traits
 
-Traits act kind of abstract classes. The main difference though is they can't implement static members, but they can still write the body of the function they declare. They aim to provide _horizontal reuse_, while abstract classes aim to provide _vertical reuse_ (plus the fact they can implement static members).
+Traits act kind of virtual classes. The main difference though is they can't implement static members, but they can still write the body of the function they declare. They aim to provide _horizontal reuse_, while virtual classes aim to provide _vertical reuse_ (plus the fact they can implement static members).
 
 A good example of traits is when you want to inherit from multiple classes. This is absolutely impossible in SilverNight, but you implement multiple traits. Here is how it goes:
 
