@@ -3556,7 +3556,16 @@ println!(account1 == account2); // Prints: "false"
 println!(account1 == new BankAccount(1000)); // Prints: "true"
 ```
 
-This works the same way for the other logical operators.
+This works the same way for the other logical operators. Please note that some superoverloads can be implemented automatically in some ways: if we define the `@equal` superoverload, the `!=` operator will also work and return the opposite of `@equal`. If we implement the `@greater` superoverload, `@smaller_eq` will automatically be implemented.
+
+To avoid this behavior, simply write:
+
+```sn
+func @equal(left: BankAccount, right: BankAccount) #only : bool ->
+  left.money is right.money;
+```
+
+This will prevent the `!=` operator from being automatically implemented as the opposite to our `@equal`.
 
 ## Errors
 
