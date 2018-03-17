@@ -3842,3 +3842,173 @@ This will work as expected. If we don't care about getting an error object, we c
 ```sn
 val result = try divide(5, 0) catch -> println!(e.why());
 ```
+
+## Nullable types
+
+Here is a short chapter to show another of the most useful concepts in SilverNight: the nullable types. Basically, nullable types are types that can either be an instance of the class they refer to, or `null`. What's the point? Simply to provide a way of returning _nothing_.
+
+### An example with points
+
+To take an example, let's imagine we have a function that look for a point with `x` and `y` attributes equal to zero. It could look like this:
+
+```sn
+struct Point {
+  name: string;
+  x: int;
+  y: int;
+}
+
+func getNilPoints(list: Point[]) : Point {
+  foreach (let point of list)
+    if (point.x is 0 and point.y is 0)
+      return point;
+}
+```
+
+This works fine. Now, what if we run this code:
+
+```sn
+val point: Point = getNilPoints([]);
+```
+
+Our program will crash because `getNilPoints` returned a `void` while a `Point` was expected. This is simply due to the fact no point matched the condition in the `foreach` loop, so the function ended without returning nothing (which is equivalent to returning an instance of `void`). So, in order to make this function works anyway, and without returning a whole structure with a `success` boolean or something ugly, we can use a nullable type:
+
+```sn
+func getNilPoints(list: Point[]) : Point? {
+```
+
+This allows the function to return a `Point` instance **or** a `void` instance. But, our program will still crash with an error message telling that `Point?` cannot be converted to `Point`. That's simply because we declared our constant with the `Point` type, but we must now tell it can also contain a `void`:
+
+```sn
+val point: Point? = getNilPoints();
+```
+
+This now works fine. Also, inferred typing can do it automatically, like this:
+
+```sn
+val point = getNilPoints();
+```
+
+### The `null` value
+
+As we saw, the `getNilPoints()` function can now return an instance of `void`. But what's that, exactly? That's simply a special SilverNight value with no member at all, excepted some overloads like `@toString()` or `@clone()`.
+
+A strict equivalent to the function we saw would be:
+
+```sn
+func getNilPoints(list: Point[]) : Point? {
+  foreach (let point of list)
+    if (point.x is 0 and point.y is 0)
+      return point;
+
+  return new void();
+}
+```
+
+This would achieve exatly the same thing. There's also a native value, named `null`, which is an instance of `void`:
+
+```sn
+func getNilPoints(list: Point[]) : Point? {
+  foreach (let point of list)
+    if (point.x is 0 and point.y is 0)
+      return point;
+
+  return null;
+}
+```
+
+The function still works as expected. In fact, `null` is defined natively with the following instruction (here, `Void` is strictly equivalent to `void`):
+
+```sn
+frozen null: Void = new Void();
+```
+
+Be aware though, using inferred typing with `null` could result in the following behavior:
+
+```sn
+let point = null;
+point = getNilPoints([]); // ERROR
+```
+
+This will result in an error because inferred typing gave the `void` type to `point`, so it can't receive a `Point?` value.
+
+Now we've saw all this, let's try our function:
+
+```sn
+val point1 = getNilPoints([ { name: "Test point", x: 0, y: 0 } ]);
+println!(point1.name); // Prints: "Test point"
+
+val point2 = getNilPoints([]);
+println!(point2.name); // ERROR
+```
+
+The second `println!` call makes our program crash. Why? Simply because `point2` is a `void` instance, so it has no `name` member. We have to check first if our constant contains a `null` value or not, thanks to the `is_null!` macro:
+
+```sn
+val point = getNilPoints([]);
+
+if (is_null!(point))
+  println!("No point found.");
+else
+  println!(`A point was found: ${point.name}`);
+```
+
+This code will print: `No point found`, as you can guess.
+
+### Checking `null` with `==`
+
+An alternative to writing `is_null!` each time we want to check if a value is `null`, we can use the equality operator `==` or the difference operator `!=`. This can be done thanks to a native superoverload:
+
+```sn
+func @equal(left: Any, right: void) #reversable : bool;
+```
+
+As you can see, it can compare any value with a `void` instance, so we can write:
+
+```sn
+val point = getNilPoints([]);
+
+if (point is null)
+  println!("No point found.");
+else
+  println!(`A point was found: ${point.name}`);
+```
+
+Also, thanks to `void` implementing a `@toBoolean` overload which always return `false`, we can do use some native operators like `!` or `point ? doSomething() : doSomethingElse()` on our constant.
+
+### The nullable `?` operator
+
+Here is an operator we can use to do something only if the value is not null. Here is an example:
+
+```sn
+val point = getNilPoints([]);
+println!(point?.name);
+```
+
+Here, because `point` is null, the program won't try to access its `name` property thanks to the `?` operator. Instead, it will return a `void`, so the return type of the expression, whatever `name` is null or not, will be `string?`. This operator avoids crashes when accessing a value's attribute, and will always return null if the value it is applied (the value on its left) on is null.
+
+```sn
+// Make a 'Hero' structure
+struct Hero {
+  name: string;
+  hp: int;
+  attack: int;
+}
+
+// Make a 'Data' structure
+struct Data {
+  id: int;
+  hero: Hero?;
+}
+
+// Make a nullable constant
+val someData: Data? = null;
+
+// Get the hero object
+val dataHero = data?.hero; // A `Hero` with default values for all its attributes
+
+// Prints the hero's name
+println!(dataHero?.name); // Prints: ""
+```
+
+What happened here? Well, doing `data?.hero` returned `null` because `data` was null. Then, doing `dataHero?.name` also returned a `void` because `dataHero` was null. So the final expression between the `println!`'s parenthesis is a `string?`.
