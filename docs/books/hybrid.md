@@ -1859,7 +1859,7 @@ class Superthing {
 }
 ```
 
-### Private readable attributes
+### Readonly attributes
 
 When declaring class' attributes, we sometimes want to make it private because we don't want anyone to change it without control, but we also want a developer to read it. So, this would be a read-only attributes from the class' outside, and a classic attribute from the inside (both readable and writable). Here is how we could implement it:
 
@@ -1877,7 +1877,7 @@ This is perfectly valid and works as expected. But doing this can be heavy to wr
 
 ```sn
 class SomeClass {
-  private readable myAttribute: string;
+  public readonly myAttribute: string;
 }
 ```
 
@@ -1907,9 +1907,9 @@ class Product {
   public static func increaseCounter() : int -> ++ self::counter;
 
   // The product's unique identifier
-  private readable unique_id: int;
+  public readonly unique_id: int;
   // The product's name
-  private readable name: string;
+  public readonly name: string;
 
   // Initialize the instance
   public func @construct(@name: string) {
@@ -1943,10 +1943,10 @@ class Map {
   private static readable TRAP  = 2;
 
   // Private attributes
-  private readable playerX: int;
-  private readable playerY: int;
-  private readable trapped: bool = false;
-  private readable cells: int[][];
+  public readonly playerX: int;
+  public readonly playerY: int;
+  public readonly trapped: bool = false;
+  public readonly cells: int[][];
 
   // Create the map
   public func @construct(@cells: int[][], @playerX: int, @playerY: int);
@@ -2004,7 +2004,7 @@ Here is a corrected version of the class that fixes this mistakes:
 ```sn
 class Map {
   // ...
-  private readable frozen cells: int[][];
+  public readonly frozen cells: int[][];
   // ...
 
   // ...
@@ -2073,7 +2073,7 @@ That's why an overload exists to implement the 'frozen' state in a class, called
 
 ```sn
 class IntArray {
-  private readable data: int[];
+  public readonly data: int[];
 
   public func @freeze() {}
 
@@ -2177,9 +2177,9 @@ But cloning is not magic. We can't simply clone data like this. Imagine a class 
 
 ```sn
 class Product {
-  private readable unique_id: int;
-  private readable name: string;
-  private readable price: int;
+  public readonly unique_id: int;
+  public readonly name: string;
+  public readonly price: int;
   private static counter: int = 0;
 
   public @construct(@name: string, @price: int) {
@@ -2239,9 +2239,9 @@ For instance, we could imagine we have the same `Product` class as we saw before
 
 ```sn
 class Product {
-  private readable unique_id: int;
-  private readable name: string;
-  private readable price: int;
+  public readonly unique_id: int;
+  public readonly name: string;
+  public readonly price: int;
   private static counter: int = 0;
 
   public pln @lazy_clone = true;
@@ -2432,9 +2432,9 @@ Now we saw the concept, let's implement it step by step. First, we'll make a ske
 
 ```sn
 virtual class Hero {
-  protected readable name: string;
-  protected readable hp: int;
-  protected readable attack: int;
+  public readonly name: string;
+  public readonly hp: int;
+  public readonly attack: int;
 
   public @construct(@name: string, @hp: int, @attack: int) {}
 
@@ -2492,7 +2492,7 @@ So, now we seen that, let's make our children classes:
 
 ```sn
 class Warrior extends Hero {
-  public readable rage: int;
+  public readonly rage: int;
 
   public func receiveDamages(amount: int, ennemyName: string) : void {
     // Call the parent class' `receiveDamages()` method
@@ -2521,7 +2521,7 @@ We can now write our `Wizard` class:
 
 ```sn
 class Wizard extends Hero {
-  private readable mp: int;
+  public readonly mp: int;
 
   public func @construct(@name: int, @hp: int, @attack: int, @mp: int) {}
 
@@ -2795,7 +2795,7 @@ interface Duplication {
 }
 
 class Product {
-  private readable name: string;
+  public readonly name: string;
 
   public func @construct(@name: string) {};
 
@@ -3365,7 +3365,7 @@ This time, because we haven't seen any feature that could achieve it, let's just
 
 ```sn
 class Vehicle {
-  private readable wheels: int;
+  public readonly wheels: int;
   public func @construct(@wheels: int);
 }
 
@@ -3508,11 +3508,11 @@ How do they work? That's simple: each operator superoverload overwrites the beha
 * `@divide` (`/`)
 * `@modulo` (`**`)
 
-You can see the matching operator on the right of the corresponding superoverload. Each of them take two arguments, and return a new value. Let's see an example: we have a class called `BankAccount`, with a private readable member called `money` and a method to add and substract money from the account. We now want to be able to add two bank accounts. Here is how we could do it:
+You can see the matching operator on the right of the corresponding superoverload. Each of them take two arguments, and return a new value. Let's see an example: we have a class called `BankAccount`, with a public readonly member called `money` and a method to add and substract money from the account. We now want to be able to add two bank accounts. Here is how we could do it:
 
 ```sn
 class BankAccount {
-  private readable money: int with (c -> c >= 0);
+  public readonly money: int with (c -> c >= 0);
   public func @construct(@money: int);
   public func add(amount: int) : void -> @money += amount;
   public func sub(amount: int) : void -> @money -= amount;
