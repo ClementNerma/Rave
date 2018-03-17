@@ -3447,10 +3447,10 @@ sayHello!("Jack");
 println!("Hello, " + Jack);
 ```
 
-Until a `Jack` resource is declared, the code above will throw an error because of an undefined reference. This is due to the fact every argument given to a macro is gave as a plain content. The solution to this problem is to use the `uneval!` primitive.
+Until a `Jack` resource is declared, the code above will throw an error because of an undefined reference. This is due to the fact every argument given to a macro is gave as a plain content. The solution to this problem is to use the `#uneval` directive.
 
 ```sn
-#macro sayHello(name: string) : void -> println!("Hello, " + uneval!(name));
+#macro sayHello(name: string) : void -> println!("Hello, " + #uneval(name));
 ```
 
 Also note that macros can use a special type for their arguments, that are not available for standard functions. It's the `#plain` type, which prevent the arguments from being checked and evaluated. For example, the following code will work fine:
@@ -3469,7 +3469,7 @@ As you can see, even the spaces are kept in `name`. Note that plain arguments ca
 
 ```sn
 // Declare the macro
-#macro test(name: #plain) : void -> uneval!(name);
+#macro test(name: #plain) : void -> #uneval(name);
 
 // Call it
 println!(test( 'Jack' ));
