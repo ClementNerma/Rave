@@ -3604,6 +3604,24 @@ println!(1000 is new BankAccount(1000)); // Prints: "true"
 println!(new BankAccount(1000) isnt 1000); // ERROR
 ```
 
+#### Templating
+
+It's possible to use templates on superoverloads, but only if these templates are part of the type of at least one argument of the function. Here are some examples of signatures:
+
+```sn
+// Doesn't work because "T" cannot be guessed
+func @plus<T>(left: string, right: int) : int[];
+
+// Doesn't work because "T" cannot be guessed
+func @plus<T>(left: string, right: int) : T;
+
+// Works fine
+func @plus<T>(left: T, right: int) : bool;
+
+// Works fine
+func @plus<T>(left: string, right: Dictionary<int, T>) : string[];
+```
+
 ## Errors
 
 In SilverNight, behaviours that can't natively be handled throw errors. For instance, dividing a number by zero will throw an error because the program doesn't know how to handle it.
