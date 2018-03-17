@@ -179,8 +179,10 @@ Here is a list of terms used in SilverNight. Most of them are unknown for you at
 
 #### Pointers
 
-* A **reference**, also called a **pointer**, is a link to an object
 * A **RUID**, standing for _**R**eference **U**nique **Id**entifier_, is a unique identifier granted by the builder to an object or a pointer
+* A **EUID**, standing for _**E**ntity **U**nique **Id**entifier_
+* A **reference** is a link to an object using its RUID
+* A **pointer** is a link to an entity using an EUID
 
 ## Variables and typing
 
