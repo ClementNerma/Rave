@@ -2127,7 +2127,7 @@ We saw before the constructor, a special method called when the instance is crea
 
 By default, when we instanciate a class, nothing is done (excepted creating the object itself). The constructor overwrites this behavior by running its own code.
 
-The destructor is a special function you probably won't use very often, but it is still useful in some cases. Like the constructor, it's an overload, and is written `@destruct`. It takes no argument and must be `void`-typed, so its return type can also be omitted.
+The destructor is a special function you probably won't use very often, but it is still useful in some cases. Like the constructor, it's an overload, and is written `@free`. It takes no argument and must be `void`-typed, so its return type can also be omitted.
 
 Now, a word about freeing:
 
@@ -2141,7 +2141,7 @@ In our case, the destructor is called when the instance is manually freed, using
 class IntArray {
   private data: int[];
 
-  public func @destruct() {
+  public func @free() {
     println!("I will be freed.");
   }
 
@@ -3167,7 +3167,7 @@ dict Custom<K, V> {
 }
 ```
 
-There are a special kind of classes. First, some overloads **must** be implemented. These are `@get`, `@set`, `@unset`, `@has`, `@keys` and `@values`, which are specific to dictionaries and can't be used in standard classes. All other overloads (like `@clone` or `@random`, even `@construct` and `@destruct`) can be implemented but are not required. Also, dictionary classes must take two templates (they can have any name) but they can force the type of keys and/or the type of values by writing a class' name instead (like `dict Vector<int, V>` for vectors).
+There are a special kind of classes. First, some overloads **must** be implemented. These are `@get`, `@set`, `@unset`, `@has`, `@keys` and `@values`, which are specific to dictionaries and can't be used in standard classes. All other overloads (like `@clone` or `@random`, even `@construct` and `@free`) can be implemented but are not required. Also, dictionary classes must take two templates (they can have any name) but they can force the type of keys and/or the type of values by writing a class' name instead (like `dict Vector<int, V>` for vectors).
 
 Let's detail these overloads:
 
