@@ -1227,7 +1227,7 @@ for (let i of 1 => 10) {
 
 This code will check each time if there had an error. If so, it will ignore all instructions above `continue` and iterate the loop a new time. Else, it will run the `println!` macro, just as expected.
 
-### Resoruces are block-scoped
+### Resources are block-scoped
 
 In SilverNight, all resources are _block-scoped_. This means that, when a resource is declared, it exists only _inside_ the block it is declared in. To take an example:
 
