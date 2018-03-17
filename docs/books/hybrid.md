@@ -134,7 +134,6 @@ Here is a list of terms used in SilverNight. Most of them are unknown for you at
 * A **signature** describes an entity
 * A **declaration** is the combination of a **declaration keyword** (e.g. `let`, `struct`, `class`) and a signature
 * An **initialization value** is the action of assigning a value to an assignable entity before closing its declaration
-* A **futurely-declared** assignable entity is an entity that doesn't have an initialization value, even its own type's one
 
 #### Functions
 
@@ -3265,124 +3264,6 @@ val dict: { { { string, int }, float }, string };
 ## Advanced concepts
 
 Here is a transitional chapter between the end of object-oriented programming and deeper concepts of SilverNight like errors, pointers or packages. The notions we will see here may not be used in every single program, be they can still be useful.
-
-### Future declarations
-
-Here is a concept which will be especially useful in some conditionals. Futurely-declared resources are resources that are explicitly typed and don't have an initial value.
-
-If we create a mutable with `let variable: Collection;` type for example, an instance of the `Collection` class will be created and assigned automatically and transparently to `variable`. For example:
-
-```sn
-let hello: SomeType;
-```
-
-Is **strictly equivalent to** as:
-
-```sn
-let hello: SomeType = new SomeType();
-```
-
-With a future declarations, the initialization is not automatically done, so the resource has no initial value.
-
-```sn
-// Mutables
-decl let nums: List<int>;
-
-// Constants
-decl val nums: List<int>;
-
-// Frozens
-decl frozen nums: List<int>;
-```
-
-Here, we declare `nums` as an instance of `List<int>`. But because it is not initialized, we cannot access its value. We instead have to initialize it first:
-
-```sn
-decl let nums: List<int>;
-// Do some stuff
-nums = new List<int>;
-```
-
-This also works for constants and frozens, so that's also a great way to declare a read-only resource without assigning its definitive value directly.
-
-Be aware, trying to access a futurely-declared resource before it is initialized will result in an error!
-
-#### A concrete example
-
-A practical example of future declarations: the problem of list initialization.
-
-Here is the program we want to make:
-
-1. Declare a list of integers with 4096 cells.
-2. Generate a random boolean.
-3. If it's "true", fill the list with zeros
-4. If it's "false", fill the list with ones
-
-The problem is: if we simply declare the list with `val`, we create a `List<Vehicle>` instance that will be filled with vehicles later. So this will generate 4096 instances of the `Vehicle` class at the same time the list is declared, and then we will make again 4096 instances in our `if` block. Performances are so divided by 2.
-
-In order to avoid this problem, we can declare the list using `decl`. When the resource is declared, no instance is created, and we will only instanciate it in our conditional block, so "only" 4096 instances of `Vehicle` will be created, instead of 8192 with the previous method - that's a considerable speed up.
-
-Here is how it works:
-
-```sn
-decl let tableau: uint[4096];
-
-if (bool.random())
-    tableau.fill(0);
-else
-    tableau.fill(1);
-```
-
-#### The problem with future declarations
-
-There is a problem with future declarations, though. If we are not aware, we could try to use an not-initialized resource, which would result in an error.
-
-That's why we should always be careful when using them.
-
-#### How optimization can replace future declarations
-
-Also, always think about optimization. This can avoid usage of the `decl` keyword, which can cause some troubles if not used correctly. Below, we see how to optimize our program in order to reduce the number of lines, then simply to remove future declarations.
-
-```sn
-// Optimization 1: Reduce the number of lines
-decl let tableau: uint[4096];
-tableau.fill(bool.random() ? 0 : 1);
-
-// Optimization 2: Remove the "declare" keyword
-let tableau = new List<uint>(4096, bool.random() ? 0 : 1);
-```
-
-To conclude, this keyword is great because you avoid to create thousands of instances for nothing, and sometimes we simply just don't want to initialize our resosurce because of something. But, we must use it only when it's needed, because it can make our code more confusing as we don't always see where the resource is definitely initialized.
-
-#### The declaration operator
-
-Here is a useful operator when dealing with futurely-declared resources. It allows us to assign something to it if, and only if, it hasn't been initialized yet. Here is how it goes:
-
-```sn
-decl let name: string;
-// Do some stuff here...
-name ?= "Jack";
-```
-
-Here, `"Jack"` will be assigned to `name` only if it hasn't been initialized yet.
-
-#### Check if a resource has been initialized
-
-There's also a macro to check if a futurely-declared resource has been initialized, the `is_init!` macro.
-
-```sn
-decl val name: string;
-
-if (not is_init!(name))
-  println!("`name` has not been initialized yet.");
-
-name = "Jack";
-
-if (not is_init!(name))
-  println!("`name` has not been initialized yet.");
-```
-
-Only the first `println!` will be called, because in the second condition `name` has been initialized.
 
 ### Bindings
 
