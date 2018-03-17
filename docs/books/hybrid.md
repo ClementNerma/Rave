@@ -4030,3 +4030,46 @@ println!(dataHero?.name); // Prints: ""
 ```
 
 What happened here? Well, doing `data?.hero` returned `null` because `data` was null. Then, doing `dataHero?.name` also returned a `void` because `dataHero` was null. So the final expression between the `println!`'s parenthesis is a `string?`.
+
+### Automatic typecasting
+
+Let's take an example for this one: we have a function that takes a `string` as an argument, but we want to give it a constant that was declared as a `string?`. Because the function may not be able to handle the `null` value, this should result in an error.
+
+But there's a specific typecasting for nullable types. When giving a nullable type where a standard type is expected, it is automatically cast into the standard type, and an error will be thrown if the value was `null`. Let's take an example:
+
+```sn
+func inc(num: int) : int -> num + 1;
+
+val one: int = 1;
+val two = inc(one); // Returns: 2
+
+val three: int? = 3;
+val four = inc(three); // Returns: 4
+
+val nothing: int? = null;
+val result = inc(nothing); // ERROR
+```
+
+Note that `two` and `four` automatically gets the `int` type, which is the `inc`'s return type, not `int?`.
+
+The last call to `inc` fails because a `null` value was gave, so typecasting to an `int` failed to be done. In order for this instruction to work, typecasting must be done manually, using:
+
+```sn
+val result = inc(int(nothing)); // Returns: 1
+```
+
+This works only because both `null` implements `@toInteger()` (which returns `0`).
+
+### Forced nullable typecasting
+
+There's two macros available to turn a nullable value into a standard value, which is `strict!`, and another to turn a standard value into a nullable value, which is `nullable!`. Here is how they go:
+
+```sn
+val standard: int = 1;
+val nullable: int? = 2;
+
+val one = nullable!(standard);
+val two = strict!(nullable);
+```
+
+Now, `one` has nullable `int?` type and `two` has standard `int` type.
