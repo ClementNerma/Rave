@@ -265,9 +265,9 @@ Take the reflex to declare you values using plain (or simple) constant instead o
 
 ### Primitive types
 
-There are two categories of types in SilverNight: _primitives_ and _objects_. The first ones are the `void` value, booleans, numbers and strings. Every other type outside of these is not primitive.
+There are two categories of types in SilverNight: _primitives_ and _objects_. The first ones are voids, booleans, numbers and strings. Every other type outside of these is not primitive.
 
-Primitive types can access additional features object types cannot use, such as the optional operator `.=`. It will assign the provided value on its right if and _only if_ the value is NIL (any value between: `void`, `false`, `0`, `""`, `NULL`). This doesn't work with the other types.
+Primitive types can access additional features object types cannot use, such as the optional operator `.=`. It will assign the provided value on its right if and _only if_ the value is NIL (any value between: `null`, `false`, `0`, `""`). This doesn't work with the other types.
 
 ## Numbers
 
