@@ -3557,3 +3557,248 @@ println!(account1 == new BankAccount(1000)); // Prints: "true"
 ```
 
 This works the same way for the other logical operators.
+
+## Errors
+
+In SilverNight, behaviours that can't natively be handled throw errors. For instance, dividing a number by zero will throw an error because the program doesn't know how to handle it.
+
+### How errors are thrown
+
+Throwing an error consists in throwing an _instance_ of an error class. What's that? This is simply a child class of the native `Error` class, or `Error` itself. After instanciating it, the error is thrown using the `throw` keyword, like this:
+
+```sn
+throw new Error("Something bad happened.");
+```
+
+Here, `throw` indicates it will throw an error. The instance written on its right is the error we want to throw. If we write the code above in our programs, they will crash with this error message (if debugging is enabled).
+
+Here is the signature of the `Error` class (and the structure it uses):
+
+```sn
+struct ErrorStep {
+  val file: string;
+  val line: int;
+  val function: int;
+  val column: int;
+}
+
+class Error {
+  public readonly message: string;
+  public readonly traceback: List<ErrorStep>;
+  public func @construct(@message: string);
+  public func @toString();
+}
+```
+
+As you can see, an error instance has a `message` attribute that is the message we give to it when we instanciate the class, and a `traceback` which is a list of functions that were ran until the error. Here is an example:
+
+```sn
+func a() : void -> b();
+func b() : void -> c();
+func c() : void -> throw new Error("Test");
+
+a();
+```
+
+If we run this script from a file named `src.sn`, `traceback` will be equal to the following object:
+
+```sn
+[
+  {
+    file: "src.sn",
+    line: 3,
+    column: 20,
+    function: "global.c"
+  },
+
+  {
+    file: "src.sn",
+    line: 2,
+    column: 20,
+    function: "global.b"
+  },
+
+  {
+    file: "src.sn",
+    line: 1,
+    column: 20,
+    function: "global.a"
+  },
+
+  {
+    file: "src.sn",
+    line: 5,
+    column: 1,
+    function: "global.main"
+  }
+]
+```
+
+The `global` object refers to resources that are defined in a global context, which means they aren't defined inside a class for example. The `line` and `column` refers to the moment the current `function` calls another one. For the last function, it refers to the location of the `throw` keyword that has been ran.
+
+### `try` and `catch` errors
+
+Errors can either be automatically thrown (e.g. when dividing by 0) or manually (thanks to the `throw` keyword). But errors does not only aim to make the program crash when something goes wrong ; it also provides a way to understand something hasn't worked as expected and do something in consequence.
+
+For exampe, we could imagine using a function to read a file. Reading the file could fail because of numerous reasons (file does not exist, error while reading the disk, invalid files table, etc.). Still, we don't want our program to stop just because the reading failed.
+
+The same thing applies if we do a division, we could want to be able handle division errors. Here is an example:
+
+```sn
+func divide(left: int, right: int) : float ->
+  float(left) / right;
+
+divide(2, 5); // Returns: 0.4
+divide(2, 0); // ERROR
+```
+
+To catch the errors, we use a couple of blocks named `try` and `catch`. In the first one, which has no block head, we put the code that could throw an error. In the second one, which takes a single parameter (the error which could have been thrown) we put a code that is ran only if an error was thrown. If no error occured, this code will simply be ignored. Here is how it goes:
+
+```sn
+try {
+  divide(2, 0);
+} catch (e: Error) {
+  println!("Division failed");
+}
+```
+
+Here, a message will be displayed because an error has been automatically thrown when `divide` attempted to divided two by zero.
+
+The great point of `try` and `catch` blocks is that the error is, well, _catch_ by the second block, so our program won't crash.
+
+We can also use the `catch` block's argument to get additional informations about the error, like its message or traceback.
+
+### Sub-typing with errors
+
+Of course, as `catch` blocks ask for an error type, they support sub-typing. There are several numerous native error classes, like `ArithmeticError` or `OutOfMemoryError` (which occurs when the memory is filled). So, if we want to catch only some type of errors, we can use sub-typing in the `catch`, like this:
+
+```sn
+try {
+  divide(2, 0);
+} catch (e: OutOfMemoryError) {
+  println!("Program is out of memory.");
+}
+```
+
+Unless we really fill the memory up, this `catch` block will never display anything. But, we can also chain multiple `catch` blocks, to catch distinctly several types of error.
+
+```sn
+try {
+  divide(2, 0);
+} catch (e: OutOfMemoryError) {
+  println!("Program is out of memory.");
+} catch (e: ArithmeticError) {
+  println!("Division failed because we can't divide by zero.");
+}
+```
+
+Thanks to sub-typing (again), we can also use a final `catch` block that will catch absolutely any type of error:
+
+```sn
+try {
+  divide(2, 0);
+} catch (e: OutOfMemoryError) {
+  println!("Program is out of memory.");
+} catch (e: ArithmeticError) {
+  println!("Division failed because we can't divide by zero.");
+} catch (e: Error) {
+  println!("An unknown error occured. Here is its message:");
+  println!(e.message);
+}
+```
+
+Also, thanks to inferred typing, if we give no type to the block's argument, it will be considered as `Error` automatically:
+
+```sn
+try {
+  divide(2, 0);
+} catch (e) {
+  println!("Some error occured. Here is its message:");
+  println!(e.message);
+}
+```
+
+A last version of this syntax is if we don't care about getting an error object. In this case, we can simply omit the block's head:
+
+```sn
+try {
+  divide(2, 0);
+} catch {
+  println!("Some error occured.");
+}
+```
+
+### Making custom errors
+
+Throwing custom errors simply consists in throwing an instance of a child class of `Error`. This allows us to make a distinction between native error types and our own ones. Here is an exemple:
+
+```sn
+func divide(left: int, right: int) : float {
+  if (right is 0)
+    throw new CustomError("Cannot divide by zero.");
+
+  return float(left) / right;
+}
+```
+
+The `CustomError` class could look like this:
+
+```sn
+class CustomError extends Error {
+  // A sample function
+  public func why() : string ->
+    "This is a custom error class";
+}
+```
+
+Here is a usage example:
+
+```sn
+try {
+  divide(5, 0);
+} catch (e: CustomError) {
+  println!(e.why()); // Prints: "This is a custom error class"
+}
+```
+
+Here, `CustomError` can be caught apart from other errors like `OutOfMemoryError`.
+
+### Inline `try` and `catch`
+
+These blocks are quite useful, but they can be heavy to write. Like `for` or `while` loops, there is an _inline_ version of `try` and `catch` blocks. Here is how it goes:
+
+```sn
+// Classic way
+try {
+  divide(5, 0);
+} catch (e: CustomError) {
+  println!(e.why());
+}
+
+// Inline way
+try divide(5, 0) catch (e: CustomError) {
+  println!(e.why());
+}
+```
+
+That's as simmple as that. There's also a syntax even lighter for single-instruction blocks:
+
+```sn
+try divide(5, 0) catch (e: CustomError) -> println!(e.why());
+```
+
+Also, if the function returns something, we can use its result, like this:
+
+```sn
+val result = try divide(5, 0) catch (e: CustomError) -> println!(e.why());
+
+val result = try divide(5, 0)
+             catch (e: CustomError) ->
+               println!(e.why());
+```
+
+This will work as expected. If we don't care about getting an error object, we can omit the `catch`'s argument:
+
+```sn
+val result = try divide(5, 0) catch -> println!(e.why());
+```
