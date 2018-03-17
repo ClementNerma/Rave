@@ -2123,7 +2123,7 @@ Now we've acquired the basis of classes, this part will teach you more complex f
 
 A word about overloads:
 
-We saw before the constructor, a special method called when the instance is created. This method can't be ran the normal way, meaning you can't do `myInstance.construct()` for example. Such a method, and every method we will see beginning by the `@` symbol, are called _overloads_.
+We saw before the constructor, a special method called when the instance is created. This method can't be ran the normal way, meaning you can't do `myInstance.construct()` or `myInstance.@construct()` for example. Such a method, and every method we will see beginning by the `@` symbol, are called _overloads_.
 
 By default, when we instanciate a class, nothing is done (excepted creating the object itself). The constructor overwrites this behavior by running its own code.
 
@@ -2204,7 +2204,7 @@ Because of this behaviour, our instance is not _fully_ frozen. That's why implem
 
 Thanks to this behaviour, we don't take the risk to forget freezing an attribute, a problem that can occur especially when adding new attributes to a class and forgetting to freeze them. Hopefully, we don't have to think about that.
 
-Note that any instance of the `IntArray` can still be frozen after being declared, using the `freeze!` macro, which permits to freeze the data after manipulating its data.
+Note that any instance of the `IntArray` can still be frozen after being declared, using the `freeze!` macro, which permits to freeze the data after manipulating its data. In fact, overloads excepted the constructor can be called manually by using the macro with the same name the overload has. For example, the `@freeze` overload can be called using the `freeze!` macro.
 
 Also, conventionnally, freezing cannot be undone, so we don't have to implement an `unfreeze` method or anything.
 
@@ -3216,7 +3216,7 @@ This is a conception choice that hopefully has a solution if we want to access a
 
 #### Using loops to iterate dictionaries
 
-Loops are our best friend when exploring dictionaries. While we can still get access to the list of a dictionary's keys thanks to `mydict.keys()` and to its value with `mydict.values()`, the most simple remains to use the `foreach` loop:
+Loops are our best friend when exploring dictionaries. While we can still get access to the list of a dictionary's keys thanks to `keys!(mydict)` and to its value with `!values(mydict)`, the most simple remains to use the `foreach` loop:
 
 ```sn
 // Explore a dictionary using its keys
