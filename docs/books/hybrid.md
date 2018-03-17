@@ -4452,3 +4452,188 @@ println!(ptr); // Prints: "8"
 ```
 
 This part is complex, so don't hesitate to read it again until you understand it.
+
+## Packages
+
+In SilverNight, packages are simply a couple formed by a _package file_ and a _package source code_. It is usually formed by a folder, with a `package.yaml` as the package file, and an `index.sn` file as its source code - though their can be additional source code files.
+
+### Creating a package
+
+First, create a new folder (with any name you want). Inside of it, create a `main.sn` and open it in your favorite code editor: this will be our program's main file. Now, create a `_packages` folder, and inside it a `test-package` folder. Create a `package.toml` file and an `index.sn` file, open them in the same code editor.
+
+`main.sn` will be our main program, which will be ran. The two other files will constitute the _package_ we will use.
+
+#### The package file
+
+First, let's make our package file. It's a TOML ([Tom's Obvious Language](https://github.com/toml-lang/toml)) file we will fill as follows:
+
+```toml
+[package]
+slug = "name-manager"
+name = "NameManager"
+version = "0.1.0"
+authors = [ "Your Name <you@example.com>" ]
+license = "MIT"
+main = "index.sn"
+
+[dependencies]
+```
+
+This tells that our package must be located in a `name-manager` directory when downloaded from the package manager (we'll see that soon), that its name is `NameManager`, and gives informations about its version (which is very important as we'll see soon) and the list of authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now). Next, it gives the _dependencies_ of this package, and ends by giving the filename of the package's main file. For now, don't worry about the file's content, we'll see it in details later.
+
+#### The package source code
+
+Now we've written our package file, we can write the package's source, which will be written in `index.sn` as specified in the package file. Here is an example:
+
+```sn
+#package
+
+let name: string;
+
+func defineName(newName: string with (c -> c) : void ->
+  name = newName;
+
+func readName() : string {
+  if (name)
+    return name;
+  else
+    throw new Error("Name is not defined.");
+}
+
+export { defineName, readName };
+```
+
+First, the `#package` directive tells this is the main file of the package. It defines a `name` variable, with two functions, one to set it, one to read it.
+
+_Tip :_ Because `(c -> c)` is a constraint callback, it must return a boolean. Strings does implement the `@toBoolean` overload, which returns `false` if they are empty, and `false` else. So this constraint simply ensures the string is not empty.
+
+The last line of the file **exports** some entities. This simply creates an object that will be available from the outside of the package, so `name` won't be available from the outside.
+
+### Importing a package
+
+To import a package, we must use the `import` keyword followed by the package's _name_ (not its slug). So here is our `main.sn` file:
+
+```sn
+// Import the package
+import NameManager;
+
+// Use its exported entities
+NameManager.defineName("John");
+println!(NameManager.readName()); // Prints: "John"
+
+// Try to access an entity not exported by the package
+println!(NameManager.name); // ERROR because `name` hasn't been exported
+```
+
+This is as simple as that. Also, because this name could be a little heavy, we can make an alias:
+
+```sn
+// Import the package
+import NameManager as manager;
+
+manager.defineName("John");
+println!(manager.readName()); // Prints: "John"
+```
+
+#### The `import!` macro
+
+The `import!` macro allows to import a package as an object, so we can use it as we want. Here is an example:
+
+```sn
+val manager = import!("NameManager");
+
+manager.defineName("John");
+println!(manager.readName()); // Prints: "John"
+```
+
+In fact, this will be produce the following code:
+
+```sn
+import NameManager as _pkg_NameManager;
+
+val manager = _pkg_NameManager;
+
+manager.defineName("John");
+println!(manager.readName()); // Prints: "John"
+```
+
+Also, the macro will never the package several times, so we can write:
+
+```sn
+import!("NameManager").defineName("John");
+println!(import!("NameManager").readName()); // Prints: "John"
+```
+
+This will work as expected and produce the following code:
+
+```sn
+import NameManager as _pkg_NameManager;
+_pkg_NameManager.defineName("John");
+println!(_pkg_NameManager.readName()); // Prints: "John"
+```
+
+### The package manager
+
+**WARNING: Because the toolchain is not ready yet, the package manager is not available at this time. This part of the book is purely informative and won't work if you try it.**
+
+When you installed the toolchain at the beginning of this book, it came with the package manager in it, because it's part of the toolchain.
+
+This tool aims to provide a way to simply manage the packages used by our program, so we can in a single line download and install a new package from the official repository, update and remove the installed packages, etc.
+
+#### Installing a new package
+
+To install a new package, simply a terminal, go into our project's folder, and run the following command:
+
+```bash
+snt add hello-world
+```
+
+This will download the package which has the `hello-world` slug in the official repository, then install it into the `_packages/hello-world` folder, so we can use it in our programs. We can of course replace `hello-world` by any other package name.
+
+#### Removing a package
+
+To remove a package that is locally installed, simply write:
+
+```bash
+snt remove hello-world
+```
+
+#### Update a package
+
+To update a single package installed locally, do:
+
+```bash
+snt update hello-world
+```
+
+We can also update all packages at once, by doing:
+
+```bash
+snt upgrade
+```
+
+#### Dependencies
+
+Remember the `dependencies` block we saw in our package file sooner? It simply described the packages _required_ by our program in order to make it work. It's a list of `package = "expected_version"` lines. Here is how it could look like:
+
+```toml
+[dependencies]
+hello-world = "^1.0.0"
+```
+
+The dependency we put here indicates we accept all versions compatible with the `1.0.0` version, which means every `1.x.y` version. It is based on the following semantic versioning:
+
+* A patch release, which only fixes some bugs in the package, increments once the third digit of the version ;
+* A minor release, which grants new features without breaking backward compatibility, increments once the second digit of the version ;
+* A major release, which grants new features and breaks some of the backward compatibility, increments once the first digit of the version
+
+We can use the following version names in the `dependencies` section of the package file:
+
+* `=1.0.0` or `1.0.0`: accepts only the specific `1.0.0` version (rarely used) ;
+* `~1.0.0` or `1.0.x` or `1.0`: accepts any `1.0.x` version (patch releases) ;
+* `^1.0.0` or `1.x` or `1`: accepts any `1.x.y` version (patch and minor releases) ;
+* `latest` or `*`: accepts any version
+
+When downloading a package, the package manager will get the latest version accepted by the version we gave in our package file. For instance, if a package releases `1.0.5` and `1.1.0` versions, and as a dependency we specify the `~1.0.5` version, it will download the `1.1.0` version instead.
+
+This is why we told previously that version numbers were so important: our package file declares the slug, name, license etc. but also the version of our package, meaning that if we publish it, the programs from other developers that will depend on it will expect us from respecting this semantic versioning. Be aware of this!
