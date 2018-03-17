@@ -98,6 +98,14 @@ Here is a list of terms used in SilverNight. Most of them are unknown for you at
 * An **inline block** is an inline variant of a block, with a syntax depending on the used block
 * A **directive** is an indicator to change the default behaviour of a part of the code at build time
 
+#### Tools
+
+* The **builder** is a build program that is ran whatever a SilverNight source code is compiled, transpiled or interpreted
+* The **compiler** is a build program that turns a SilverNight bytecode into machine code
+* The **interpreter** is a build program that runs on-the-fly a SilverNight source code
+* A **transpiler** is a build program that converts a SilverNight source code into a another language
+* The **toolchain** is a suite of tools which, combined, can compile, interpret, transpile, build a package from, etc. a SilverNight source code or an intermediary step of compilation (like bytecode)
+
 #### Resources
 
 * A **resource**, also called an **entity**, is anything that can be declared (variable, frozen, class, interface, structure...) or used as a value
