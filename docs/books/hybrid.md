@@ -3121,11 +3121,11 @@ Loops are our best friend when exploring dictionaries. While we can still get ac
 
 ```sn
 // Explore a dictionary using its keys
-foreach (let key of myArray)
+foreach (let key in myArray)
   println!(key);
 
 // Explore a dictionary using its values
-foreach (let value in myArray)
+foreach (let value of myArray)
   println!(key);
 
 // Explore a dictionary with both its keys and its values
