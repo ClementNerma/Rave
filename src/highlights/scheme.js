@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.9.11',
+    VERSION: '0.9.12',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -258,13 +258,8 @@ scheme = {
       'purple', 'purple', 'purple', 'red', 'orange'
     ],
     [
-      // Declaration statement of readable constants, frozens or plain attributes in classes
-      /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readable)\s+(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-      'purple', 'purple', 'purple', 'purple', 'red', 'orange'
-    ],
-    [
       // Declaration statement in classes
-      /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readable\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'purple', 'purple', 'red', 'cyan'
     ],
     [
@@ -389,7 +384,7 @@ scheme = {
     ],
     [
       // Keywords
-      /(?<!\.)\b(let|pln|val|frozen|frozen|func|lambda|public|protected|private|auto|friend|static|abstract|final|unique|virtual|extern|readable|do|if|else|finally|for|foreach|in|of|break|continue|unless|until|when|default|export|return|throw|die|try|catch|while|with|new|include|await|native)(?!\s*:)\b/,
+      /(?<!\.)\b(let|pln|val|frozen|frozen|func|lambda|public|protected|private|auto|friend|static|abstract|final|unique|virtual|extern|readonly|do|if|else|finally|for|foreach|in|of|break|continue|unless|until|when|default|export|return|throw|die|try|catch|while|with|new|include|await|native)(?!\s*:)\b/,
       'purple'
     ],
     [
