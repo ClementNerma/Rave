@@ -3947,22 +3947,7 @@ val point2 = getNilPoints([]);
 println!(point2.name); // ERROR
 ```
 
-The second `println!` call makes our program crash. Why? Simply because `point2` is a `void` instance, so it has no `name` member. We have to check first if our constant contains a `null` value or not, thanks to the `is_null!` macro:
-
-```sn
-val point = getNilPoints([]);
-
-if (is_null!(point))
-  println!("No point found.");
-else
-  println!(`A point was found: ${point.name}`);
-```
-
-This code will print: `No point found`, as you can guess.
-
-### Checking `null` with `==`
-
-An alternative to writing `is_null!` each time we want to check if a value is `null`, we can use the equality operator `==` or the difference operator `!=`. This can be done thanks the fact two instances of the same class can be compared with these two operators (we'll see that in details in the pointers chapter). So we can write:
+The second `println!` call makes our program crash. Why? Simply because `point2` is a `void` instance, so it has no `name` member. We have to check first if our constant contains a `null` value or not, thanks to the equality operator `==` or the difference operator `!=`. This can be done thanks the fact two instances of the same class can be compared with these two operators (we'll see that in details in the pointers chapter). So we can write:
 
 ```sn
 val point = getNilPoints([]);
