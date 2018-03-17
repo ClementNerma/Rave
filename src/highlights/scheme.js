@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.10.3',
+    VERSION: '0.10.4',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -514,11 +514,16 @@ scheme = {
     ],
     [
       // Generic known directives
-      /#(Dynamic|alias|samedef|bind|makebindings|declarative|auto|declare|process|ref|raw_indent|if|else|end|plain|only|reversable|package)( +;)?/,
+      /#(Dynamic|alias|samedef|bind|makebindings|declarative|auto|declare|process|ref|raw_indent|if|else|end|only|reversable|package)( +;)?/,
       'orange'
     ],
     [
-      // Typed directives
+      // Type directives for macros
+      /#(plain|var)\b/,
+      'purple'
+    ],
+    [
+      // Typed directives with templates for macros
       /#(pln|mustbe)(?=\s*<)/,
       'purple'
     ],
