@@ -1348,7 +1348,9 @@ for (let i = 10; i >= 0; i -= 2)
   println!(i);
 ```
 
-Without block-scoped declarations, this would not have worked because the declaration of `i` would have been duplicated, so we would have had to be aware to declare `i` at the beginning of the function, to use it later.
+Without block-scoped declarations, this would not have worked because the declaration of `i` would have been duplicated, so we would have had to be aware to declare `i` at the beginning of the function, to use it later. The time during which an entity exists is its **lifetime duration**.
+
+Also, global entities (the ones that are defined outside another entities, which means they aren't part of a class, of an interface, of a function, etc.) have an infinite lifetime duration.
 
 ## Functions
 
