@@ -3567,6 +3567,37 @@ func @equal(left: BankAccount, right: BankAccount) #only : bool ->
 
 This will prevent the `!=` operator from being automatically implemented as the opposite to our `@equal`.
 
+Also, by default, implemeting a superoverload will preserve the argument's order. This means the following code:
+
+```sn
+func @equal(left: BankAccount, right: int) : bool ->
+  left.money is right.money;
+
+println!(new BankAccount(1000) is 1000); // Prints: "true"
+println!(1000 is new BankAccount(1000)); // ERROR
+```
+
+Will result in an error, because `@equal` only takes on its _left_ a `BankAccount` instance, and on its right an `int`. To make the superoverload working whatever the arguments order is without rewriting it with the opposite order, we can simply use the `#reversable` directive:
+
+```sn
+func @equal(left: BankAccount, right: int) #reversable : bool ->
+  left.money is right.money;
+
+println!(new BankAccount(1000) is 1000); // Prints: "true"
+println!(1000 is new BankAccount(1000)); // Prints: "true"
+```
+
+This now works as expected. Note that `#only` and `#reversable` can be combined:
+
+```sn
+func @equal(left: BankAccount, right: int) #reversable #only : bool ->
+  left.money is right.money;
+
+println!(new BankAccount(1000) is 1000); // Prints: "true"
+println!(1000 is new BankAccount(1000)); // Prints: "true"
+println!(new BankAccount(1000) isnt 1000); // ERROR
+```
+
 ## Errors
 
 In SilverNight, behaviours that can't natively be handled throw errors. For instance, dividing a number by zero will throw an error because the program doesn't know how to handle it.
