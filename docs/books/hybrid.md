@@ -3477,6 +3477,25 @@ println!(test( 'Jack' ));
 println!(" 'Jack' ");
 ```
 
+There is also a type to ask specifically for an assignable entity (variables, constants and frozens):
+
+```sn
+// Declare the macro
+#macro test(name: #var) : void ->
+  println!(`${name} is an assignable entity`);
+
+// Declare a constant
+val hello = "World";
+
+// Declare a structure
+struct Hero {}
+
+// Call it
+test!(hello); // Prints: "hello is an assignable entity"
+test!(notfound); // ERROR because `notfound` does not exist
+test!(Hero); // ERROR because `Hero` is not an assignable entity
+```
+
 ### Overloading operators
 
 Superoverloads are overloads that don't act only as a class level, but as the whole program's level. Some of them work with some concepts we haven't seen yet, so we'll only see operators superoverloads.
