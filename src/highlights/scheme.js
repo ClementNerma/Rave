@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.11.1',
+    VERSION: '0.11.2',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -494,7 +494,7 @@ scheme = {
     ],
     [
       // Type directives for macros
-      /#(raw|var)\b/,
+      /#(raw|var|noptr)\b/,
       'purple'
     ],
     [
