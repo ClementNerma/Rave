@@ -3455,11 +3455,11 @@ Until a `Jack` resource is declared, the code above will throw an error because 
 #macro sayHello(name: string) : void -> println!("Hello, " + #uneval(name));
 ```
 
-Also note that macros can use a special type for their arguments, that are not available for standard functions. It's the `#plain` type, which prevent the arguments from being checked and evaluated. For example, the following code will work fine:
+Also note that macros can use a special type for their arguments, that are not available for standard functions. It's the `#raw` type, which prevent the arguments from being checked and evaluated. For example, the following code will work fine:
 
 ```sn
 // Declare the macro
-#macro sayHello(name: #plain) : void -> println!("Hello, " + name);
+#macro sayHello(name: #raw) : void -> println!("Hello, " + name);
 
 // Call it
 sayHello( 'Jack' );
@@ -3471,7 +3471,7 @@ As you can see, even the spaces are kept in `name`. Note that plain arguments ca
 
 ```sn
 // Declare the macro
-#macro test(name: #plain) : void -> #uneval(name);
+#macro test(name: #raw) : void -> #uneval(name);
 
 // Call it
 println!(test( 'Jack' ));
