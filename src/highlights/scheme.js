@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.11.0',
+    VERSION: '0.11.1',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -354,7 +354,7 @@ scheme = {
     ],
     [
       // Native types and classes
-      /\b(bool|Boolean|Number|FloatNumber|(?:u?int|(?:Unsigned)?Integer)(?:|1|8|16|32|64|128)|u?byte|(?:Unsigned|Signed)Byte|float|[Ff]loat|[Dd]ouble|[Ss]tring|Any|Primitive|BooleanConvertible|IntegerConvertible|FloatConvertible|NumberConvertible|Stringifyable|Clonable|Freezable|Serializable|Randomizable|Primitivable|Collection|Dictionary|Vector|Array|List|Error|ErrorStep|RegExp|console)(\?)?\b/,
+      /\b(bool|Boolean|Number|FloatNumber|(?:u?int|(?:Unsigned)?Integer)(?:|1|8|16|32|64|128)|u?byte|(?:Unsigned|Signed)Byte|float|[Ff]loat|[Dd]ouble|[Ss]tring|Primitive|BooleanConvertible|IntegerConvertible|FloatConvertible|NumberConvertible|Stringifyable|Clonable|Freezable|Serializable|Randomizable|Primitivable|Collection|Dictionary|Vector|Array|List|Error|ErrorStep|RegExp|console)(\?)?\b/,
       'yellow', 'cyan'
     ],
     [
@@ -494,7 +494,7 @@ scheme = {
     ],
     [
       // Type directives for macros
-      /#(plain|var)\b/,
+      /#(raw|var)\b/,
       'purple'
     ],
     [
