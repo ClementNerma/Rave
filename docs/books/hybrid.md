@@ -1447,6 +1447,68 @@ sayHello("John"); // "Hello, John!"
 
 This is useful when we don't want to give a default value to arguments. Note that default values can be absolutely anything, even expressions.
 
+### Infinite arguments
+
+Sometimes we simply want a function to accept any number of arguments, without making an array to have a lighter syntax. This can be done using infinite arguments:
+
+```sn
+func sum (...numbers: int) : int {
+  let sum = 0;
+
+  for (let i = 0; i < numbers.size; i ++)
+    sum += i;
+
+  return sum;
+}
+
+println!(sum(2, 3, 4)); // Prints: "9"
+```
+
+Here, `numbers` becomes a `List<int>` because of the `...` symbol, and it will also accept any argument. Note that this feature can be used between before other arguments:
+
+```sn
+func sum (...numbers: int, coefficient: int) : int {
+  let sum = 0;
+
+  for (let i = 0; i < numbers.size; i ++)
+    sum += i;
+
+  return sum * coefficient;
+}
+
+println!(sum(2, 3, 4, 5)); // Prints: "45"
+```
+
+Or after:
+
+```sn
+func sum (coefficient: int, ...numbers: int) : int {
+  let sum = 0;
+
+  for (let i = 0; i < numbers.size; i ++)
+    sum += i;
+
+  return sum * coefficient;
+}
+
+println!(sum(5, 2, 3, 4)); // Prints: "45"
+```
+
+Or even between:
+
+```sn
+func sum (coeff1: int, ...numbers: int, coeff2: int) : int {
+  let sum = 0;
+
+  for (let i = 0; i < numbers.size; i ++)
+    sum += i;
+
+  return sum * coeff1 * coeff2;
+}
+
+println!(sum(2, 2, 3, 4, 3)); // Prints: "54"
+```
+
 ### Lambdas and callbacks
 
 We saw that functions can be declared with a name, a list of arguments, a return type and a body. But there are some functions that omit the name, called _lambdas_.
