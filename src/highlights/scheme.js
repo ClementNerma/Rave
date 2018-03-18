@@ -404,6 +404,11 @@ scheme = {
       'blue'
     ],
     [
+      // Macros call, with template
+      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*\!)(?=\s*<(.*?)>\s*\()/,
+      'cyan'
+    ],
+    [
       // Constants
       /\b([A-Z_\$][A-Z0-9_\$]*)\b/,
       'orange'
