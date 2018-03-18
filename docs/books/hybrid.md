@@ -3409,10 +3409,10 @@ But what's a macro, anyway? A macro is simply a function that replaces some part
 To understand better the concept, here is how we define a macro:
 
 ```sn
-#macro sayHello(name: string) -> println!(`Hello, ${name}`);
+#macro sayHello(name: string) -> println!(`Hello, $${name}`);
 ```
 
-How do we use the macro then? Like this:
+Note the double `$` symbol here: it means we are retrieving a macro variable and we want to insert it as it is. Now, how do we use the macro? Like this:
 
 ```sn
 // Call the macro
@@ -3430,7 +3430,7 @@ As you can see, a macro is simply a way to simplify the writing of a call. It wo
 Macros can have several arguments, which must be typed. But it can also have a return type if it is ensured to return a specific type of value. For example, in our example, because `println!` is void-typed, the macro will return a `void`. So, we write:
 
 ```sn
-#macro sayHello(name: string) : void -> println!(`Hello, ${name}`);
+#macro sayHello(name: string) : void -> println!(`Hello, $${name}}`);
 ```
 
 One of the native macros can be useful when using arguments. In fact, when writing the same macro as above but like this:
@@ -3484,7 +3484,7 @@ There is also a type to ask specifically for an assignable entity (variables, co
 ```sn
 // Declare the macro
 #macro test(name: #var) : void ->
-  println!(`${name} is an assignable entity`);
+  println!(`$${name} is an assignable entity`);
 
 // Declare a constant
 val hello = "World";
@@ -3499,6 +3499,17 @@ test!(Hero); // ERROR because `Hero` is not an assignable entity
 ```
 
 Note that `#var` can be templated, like `#var<string>` to accept any assignable entities with `string` type.
+
+Another type we can use is `#name`: it forces to use a valid entity name, but does not check if it exists. It can be especially useful if we want to make some declarations:
+
+```sn
+#macro make_vehicles(name: #name) -> val $${name}: Array<Vehicle>;
+
+// Writing this:
+make_vehicles(hello);
+// Will produce:
+val hello: Array<Vehicle>;
+```
 
 There are is last type for macros: `#noptr<T>`. It only accepts assignable entities, like `#raw`, but refuses pointers. Like `#raw`, it can be written without its template to accept any type. This is a specialized macro you probably won't encounter very often, but it's here if you need them.
 
