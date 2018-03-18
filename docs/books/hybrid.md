@@ -3205,6 +3205,8 @@ class StringDict<K, V implements Stringifyable> extends KindOfDict<K, V> {
 }
 ```
 
+Note that inheritance is a little but special with templates: writing `T extends SomeClass` will of course accept all classes inheriting from `SomeClass`, but also `SomeClass` itself. Be aware of that.
+
 That's all! Note that, if a class inherits from another that uses some template(s), it must have the exact same number of templates (must it is not forced to use the same names).
 
 For information, the `T`, `X`, `Y`, `Z`, `K` and `V` names are reserved to templates.
