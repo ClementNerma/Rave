@@ -3500,6 +3500,10 @@ test!(Hero); // ERROR because `Hero` is not an assignable entity
 
 Note that `#var` can be templated, like `#var<string>` to accept any assignable entities with `string` type.
 
+There are is last type for macros: `#noptr<T>`. It only accepts assignable entities, like `#raw`, but refuses pointers. Like `#raw`, it can be written without its template to accept any type. This is a specialized macro you probably won't encounter very often, but it's here if you need them.
+
+_Tip :_ If you absolutely require a pointer in a macro, simply use the `&` symbol like functions. For pointer assignable entities, use `*pointer: #var<T>`.
+
 ### Overloading operators
 
 Superoverloads are overloads that don't act only as a class level, but as the whole program's level. Some of them work with some concepts we haven't seen yet, so we'll only see operators superoverloads.
