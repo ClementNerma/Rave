@@ -1425,6 +1425,8 @@ val num = 2;
 i_need_a_plain(num); // ERROR
 ```
 
+Its point is mainly to use with some macros to pre-process data, but that's a very special case you probably won't encounter very often.
+
 ### Optional arguments
 
 Optional arguments are... optional. Well, that's pretty explicit, at least. When declaring a function's arguments, we list them with their respective types. But, we can also make some of them _omittable_ by giving them a _default value_. Let's try it:
