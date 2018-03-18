@@ -500,7 +500,7 @@ scheme = {
     ],
     [
       // Generic known directives
-      /#([Dd]ynamic|alias|bind|makebindings|declarative|study|raw_indent|if|else|end|only|reversable|package|uneval)( +;)?/,
+      /#([Dd]ynamic|alias|bind|makebindings|declarative|raw_indent|if|else|end|only|reversable|package|uneval)( +;)?/,
       'orange'
     ],
     [
