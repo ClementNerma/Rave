@@ -3590,6 +3590,8 @@ There are is last type for macros: `#noptr<T>`. It only accepts assignable entit
 
 _Tip :_ If you absolutely require a pointer in a macro, simply use the `&` symbol like functions. For pointer assignable entities, use `*pointer: #var<T>`.
 
+To conclude, simply remember that every function signature (with `#macro` replacing `func`) is a valid macro signature, but that a macro can also use additional features like the `#var` directive.
+
 ### Overloading operators
 
 Superoverloads are overloads that don't act only as a class level, but as the whole program's level. Some of them work with some concepts we haven't seen yet, so we'll only see operators superoverloads.
