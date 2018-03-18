@@ -2206,7 +2206,7 @@ Because of this behaviour, our instance is not _fully_ frozen. That's why implem
 
 Thanks to this behaviour, we don't take the risk to forget freezing an attribute, a problem that can occur especially when adding new attributes to a class and forgetting to freeze them. Hopefully, we don't have to think about that.
 
-Note that any instance of the `IntArray` can still be frozen after being declared, using the `freeze!` macro, which permits to freeze the data after manipulating its data. In fact, all overloads can be called manually by using the macro with the same name the overload has (an exception for the constructor is that the called item must have its type inheriting from the `Reconstructable` class - but we'll see inheritance later). For example, the `@freeze` overload can be called using the `freeze!` macro.
+Note that any instance of the `IntArray` can still be frozen after being declared, using the `freeze!` macro, which permits to freeze the data after manipulating its data. In fact, all overloads can be called manually by using the macro with the same name the overload has (except `@construct` and `@call`). For example, the `@freeze` overload can be called using the `freeze!` macro.
 
 Also, conventionnally, freezing cannot be undone, so we don't have to implement an `unfreeze` method or anything.
 
