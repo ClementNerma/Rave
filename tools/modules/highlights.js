@@ -60,7 +60,7 @@ self = {
       error(`Unknown editor "${name}"`, 19);
 
     // Determine its path
-    let target_path = `src/highlights/${name}.json`;
+    let target_path = `src/highlights/${name}.js`;
 
     // If the file does not exist...
     if (!fileExists(target_path))
@@ -79,14 +79,14 @@ self = {
 
     // Try to parse it as JSON
     try {
-      source = JSON.parse(source);
+      source = eval(source);
     } catch (e) {
       // ERROR
       error(`Failed to parse editor's scheme file as JSON`, 22, e);
     }
 
     // Determine its path
-    let scheme_path = `src/highlights/scheme.js`;
+    let scheme_path = `src/highlights/_scheme.js`;
 
     // If the file does not exist...
     if (!fileExists(scheme_path))
@@ -256,17 +256,13 @@ self = {
     };
 
     /**
-     * Convert all variables and constants in a build object and merge patterns
-     * Then extract the folders and files to the real filesystem
-     * @param {string} dest The build folder
-     * @param {Object} build The build object
+     * Treat all files in the build tree
+     * @param {Object} tree The build treee
      * @param {Array<Object>} patterns The patterns object
      * @param {Object} repository The repository object
-     * @returns {Object} The build object, formatted
+     * @returns {Object} The build tree, treated
      */
-    function execBuild(dest, build, patterns, repository) {
-      verb(`Executing the build() function inside "${dest}"...`);
-
+    function treatTree(tree, patterns, repository) {
       // Declare a variable for formatted items' name
       let newName;
 
@@ -274,37 +270,59 @@ self = {
       let move;
 
       // For each item in the build object...
-      for (let item of Object.getOwnPropertyNames(build)) {
+      for (let item of Reflect.ownKeys(tree)) {
         // Format name
         let newName = formatConstants(item);
 
         // If the new name is different from the original one...
         if (item !== newName) {
           // Backup the original item
-          move = build[item];
+          move = tree[item];
           // Delete it in the object
-          delete build[item];
+          delete tree[item];
           // Move it to its new name
-          build[newName] = move;
+          tree[newName] = move;
         }
 
         // If it's a file...
-        if (build[newName].hasOwnProperty('content')) {
+        if (tree[newName].hasOwnProperty('content')) {
           // If the content is an object...
-          if (typeof build[newName].content === 'object')
+          if (typeof tree[newName].content === 'object')
             // Stringify it
-            build[newName].content = JSON.stringify(build[newName].content);
+            tree[newName].content = JSON.stringify(tree[newName].content);
 
           // Format all constants in it
-          build[newName] = formatConstants(build[newName].content)
+          tree[newName] = formatConstants(tree[newName].content)
             // Insert patterns if asked to
             .replace(/\$INSERT_PATTERNS\$|"\$INSERT_PATTERNS_Q\$"/g, () => JSON.stringify(patterns))
             // Insert the repository if asked to
             .replace(/\$INSERT_REPOSITORY\$|"\$INSERT_REPOSITORY_Q\$"/g, () => JSON.stringify(repository));
+        } else
+          // Else, it's a folder
+          // Treat it
+          tree[newName] = treatTree(tree[newName].files, patterns, repository);
+      }
 
+      return tree;
+    }
+
+    /**
+     * Convert all variables and constants in a build object and merge patterns
+     * Then extract the folders and files to the real filesystem
+     * @param {string} dest The build folder
+     * @param {Object} tree The build tree
+     */
+    function execBuild(dest, tree) {
+      // Verbose
+      verb(`Running the build() function inside "${dest}"...`);
+
+      // For each item in the build object...
+      for (let item of Reflect.ownKeys(tree)) {
+        // If it's a file...
+        if (typeof tree[item] === 'string') {
           // Try to write it
           try {
-            writeFile(path.join(dest, newName), build[newName]);
+            writeFile(path.join(dest, item), tree[item]);
           } catch (e) {
             // ERROR
             error('Failed to write a package file', 26, e);
@@ -313,22 +331,29 @@ self = {
           // Else, it's a folder
           // Create a (real) folder
           try {
-            mkdir(path.join(dest, newName));
+            mkdir(path.join(dest, item));
           } catch (e) {
             // ERROR
             error('Failed to make a package folder', 27, e);
           }
-          // Treat it
-          build[newName] = execBuild(path.join(dest, newName), build[newName].files, patterns, repository);
+
+          // Write it
+          execBuild(path.join(dest, item), tree[item]);
         }
       }
-
-      // Return the final object
-      return build;
     }
 
-    // Format the build file and write it to the output
-    execBuild(output_path, source.tree, scheme.patterns, scheme.repository);
+    // Format the build file
+    source.tree = treatTree(source.tree, scheme.patterns, scheme.repository);
+    
+    // Verbose
+    verb('Running the target\'s build function...');
+
+    // Run the target's build function
+    source.build(source, BUILD_CONSTANTS);
+
+    // Write the build files to the disk
+    execBuild(output_path, source.tree);
 
     // If asked to...
     if (self.argv['install-help']) {
