@@ -60,7 +60,7 @@ yarn build-dev-live
 
 ## Documentation
 
-You can take a look at the language's syntax and its current state by reading [The Hybrid Book](https://silvernight.herokuapp.com/docs/book/hybrid.html).
+You can take a look at the language's syntax and its current state by reading [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html).
 
 You can also get the book locally to read it at anytime by running `yarn read-book hybrid`. This way, you can read it without an access to the web.
 
