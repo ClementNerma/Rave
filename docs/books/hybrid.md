@@ -4771,3 +4771,17 @@ We can use the following version names in the `dependencies` section of the pack
 When downloading a package, the package manager will get the latest version accepted by the version we gave in our package file. For instance, if a package releases `1.0.5` and `1.1.0` versions, and as a dependency we specify the `~1.0.5` version, it will download the `1.1.0` version instead.
 
 This is why we told previously that version numbers were so important: our package file declares the slug, name, license etc. but also the version of our package, meaning that if we publish it, the programs from other developers that will depend on it will expect us from respecting this semantic versioning. Be aware of this!
+
+### Project as a package
+
+Did you know that any project we make could be considered as a package? For that, all we have to do is to create the package file `package.toml` in our project's root folder, and so we can manage its dependencies. When you need some package, simply use `snt add <package_name>` and so on.
+
+When someone will get your project, we maybe won't want to transfer all the packages we use (some can be very heavy), especially if publishing on a public repository or something. So, we can simply release the project folder, without the `_packages` directory, and any person wanting to run the project will simply have to run `snt install` inside the project's root folder to download all its dependencies.
+
+### The lockfile
+
+When a package is downloaded, updated or removed by the package manager, it edits a little file called `packages_lock.toml` inside the project's root folder. This file specifies the exact version of all the modules we use. What's the point?
+
+Let's admit we are using version `1.0.1` of a module that treats web requests. We accept any `1.x` version, and we send the source code to a person using the project. She run `snt install` in the folder and, surprise, there is a new version called `1.1.0` that was released a few hours before. That's not a bad deal, you'll say, after all we accepted minor changes. But, let's imagine the person who made the package didn't followed the semantic versioning convention, or that a bug appeared in the package, making it unable to work properly? The person using our source code will not be able to test it and will think it's buggy because of a not-working package.
+
+That's where the lockfile comes: it stores the exact version of every package downloaded from the package manager, plus some other little informations. Because it's an important file that aims to provide a way to test and run our project at the exact same state than its original developer, the lockfile is not placed under `_packages` but in the project's root folder, so we won't forget to send it to the persons who use it.
