@@ -255,8 +255,8 @@ scheme = {
     ],
     [
       // Declaration statement in classes for constants and frozens (plain or not)
-      /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-      'purple', 'purple', 'purple', 'red', 'orange'
+      /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      'purple', 'purple', 'purple', 'purple', 'red', 'orange'
     ],
     [
       // Declaration statement in classes
