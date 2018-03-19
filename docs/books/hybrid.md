@@ -2742,6 +2742,40 @@ jack.fireball(hegor);
 
 Here we are! We implemented a mother class with two children.
 
+### Resolution keywords
+
+In a class, we can use a several keywords to access classes.
+
+Briefly, `this` refers to the current instance's class, `self` refers to the current class, `parent` refers to `self`'s parent.
+
+Let's take a short example:
+
+```sn
+class Mother {
+  public func callHello() : void -> this.hello();
+  public func hello() : void -> println!("I am the mother class.");
+}
+
+class Child extends Mother {
+  public func hello() : void -> println!("I am the child class.");
+}
+```
+
+* `this` refers to the current instance whatever the class it is written in is. ;
+* `self` will refer to `Child` inside the `Child` class, and to `Mother` inside the `Mother` class ;
+* `parent` will refer to `Mother` inside the `Child` class, and throw an error if used in the `Mother` class.
+
+But there is an important rule about `this`: if we write the following code:
+
+```sn
+val child: Child;
+child.callHello(); // Prints: "I am the child class."
+```
+
+Here, we can use the `callHello()` method because `Child` inherits it from `Mother`. This method runs the `hello()` method of the _instance_'s class, not the current one. So it calls the `hello()` method from `Child` instead of of `Mother`. To call the method of the _current_ class, we should have used `self.hello()` instead.
+
+Note that these keywords can be used both in a dynamic and static way: we could write `this::staticMethod()` as well as `self.sayHello()`, which would have printed `"I am the mother class"`.
+
 ### Abstract methods
 
 Let's see a new prefix for class' methods: `abstract`. We already saw what a virtual class was, but now let's see what an abstract a method (because attributes cannot be abstraced) is.
