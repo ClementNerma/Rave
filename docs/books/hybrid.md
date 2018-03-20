@@ -4669,6 +4669,8 @@ manager.defineName("John");
 println!(manager.readName()); // Prints: "John"
 ```
 
+Note that `NameManager`'s content is strictly equivalent to the value exported by the package. Our one exported an object with two attributes referring to its functions, but it could have only exported a single function for example, so we would have been able to call `NameManager` as a function.
+
 #### The `import!` macro
 
 The `import!` macro allows to import a package as an object, so we can use it as we want. Here is an example:
