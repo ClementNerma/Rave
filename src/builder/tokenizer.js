@@ -146,6 +146,9 @@ function tokenize (source) {
   // The current character
   let char = '';
 
+  // The next character
+  let next = '';
+
   // The last token
   let last_token = null;
 
@@ -174,6 +177,9 @@ function tokenize (source) {
   for (col = 0; col < source.length; col ++) {
     // Get the current character
     char = source[col];
+
+    // Get the next character
+    next = source[col + 1];
 
     // If we are in a string...
     if (buff_type === 'string') {
@@ -242,6 +248,22 @@ function tokenize (source) {
     if (char === '\n') {
       // Push it
       push(T_NEWLINE);
+      continue ;
+    }
+
+    // [SYMBOL] operators with two arguments
+    if ('+-*/%^!'.includes(char)) {
+      // Handle the pow operator
+      if (char === '*' && next === '*') {
+        // Ignore the next character
+        col ++;
+        // Set the current symbol
+        char += next;
+      }
+
+      // Push the operator
+      push(T_OPERATOR, char);
+
       continue ;
     }
 
