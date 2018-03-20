@@ -281,7 +281,7 @@ function tokenize (source) {
     }
 
     // [SYMBOL] equality operators
-    else if (isIn('=!') && isIn('=')) {
+    else if (isIn('=!') && isNext('=')) {
       // Ignore the next character
       col ++;
       // Push the operator
