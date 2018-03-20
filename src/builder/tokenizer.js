@@ -6,15 +6,17 @@
 "use strict";
 
 // List of tokens
-const T_NEWLINE          = 'T_NEWLINE';
-const T_SPACE            = 'T_SPACE';
-const T_LITERAL_BOOL     = 'T_LITERAL_BOOL';
-const T_LITERAL_NUMBER   = 'T_LITERAL_NUMBER';
-const T_LITERAL_STRING   = 'T_LITERAL_STRING';
-const T_NAME             = 'T_NAME';
-const T_QUOTE            = 'T_QUOTE';
-const T_OPERATOR         = 'T_OPERATOR';
-const T_PREPOST_OPERATOR = 'T_PREPOST_OPERATOR';
+const T_NEWLINE             = 'T_NEWLINE';
+const T_SPACE               = 'T_SPACE';
+const T_LITERAL_BOOL        = 'T_LITERAL_BOOL';
+const T_LITERAL_NUMBER      = 'T_LITERAL_NUMBER';
+const T_LITERAL_STRING      = 'T_LITERAL_STRING';
+const T_NAME                = 'T_NAME';
+const T_QUOTE               = 'T_QUOTE';
+const T_OPERATOR            = 'T_OPERATOR';
+const T_PREPOST_OPERATOR    = 'T_PREPOST_OPERATOR';
+const T_LOGICAL_OPERATOR    = 'T_LOGICAL_OPERATOR';
+const T_SHIFT_OPERATOR      = 'T_SHIFT_OPERATOR';
 
 /**
  * Tokenize a source code
@@ -250,9 +252,39 @@ function tokenize (source) {
 
       continue ;
     }
+    
+    // [SYMBOL] shift operators
+    if ((isIn('<') && isNext('<')) ||
+        (isIn('>') && isNext('>'))) {
+      // Ignore the next character
+      col ++;
+      // Push the operator
+      push(T_SHIFT_OPERATOR, char + char);
+
+      continue ;
+    }
+
+    // [SYMBOL] comparison operators
+    if (isIn('<>')) {
+      // Push the operator
+      push(T_LOGICAL_OPERATOR, char);
+
+      continue ;
+    }
+
+    // [SYMBOL] logical operators
+    if ((isIn('&') && isNext('&')) ||
+        (isIn('|') && isNext('|'))) {
+      // Ignore the next character
+      col ++;
+      // Push the operator
+      push(T_LOGICAL_OPERATOR, char + char);
+
+      continue ;
+    }
 
     // [SYMBOL] operators with two arguments
-    if (isIn('+-*/%^!')) {
+    if (isIn('+-*/%^!&|')) {
       // Handle the pow operator
       if (isIn('*') && isNext('*')) {
         // Ignore the next character
