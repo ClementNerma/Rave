@@ -100,11 +100,11 @@ Here is a list of terms used in SilverNight. Most of them are unknown for you at
 
 #### Tools
 
-* The **builder** is a build program that is ran whatever a SilverNight source code is compiled, transpiled or interpreted ; it turns a SilverNight source code into a valid AST
-* The **compiler** is a build program that turns a SilverNight valid AST into machine code
-* The **interpreter** is a build program that runs on-the-fly a SilverNight AST
-* A **transpiler** is a build program that converts a SilverNight AST into a another language
-* The **toolchain** is a suite of tools which, combined, can compile, interpret, transpile, build a package from, etc. a SilverNight source code or an intermediary step of compilation (like bytecode)
+* The **builder** is the part of the toolchain that is ran whatever a SilverNight source code is compiled, transpiled or interpreted ; it turns a SilverNight source code into a valid AST
+* The **compiler** is the part of the toolchain that turns a valid SilverNight AST into machine code
+* The **interpreter** is the part of the toolchain that runs on-the-fly a SilverNight AST
+* A **transpiler** is a part of the toolchain that converts a SilverNight AST into a another language's source code
+* The **toolchain** is a suite of tools which, combined, can compile, interpret, transpile, build a package from, etc. a SilverNight source code or an intermediary step of compilation (like an AST)
 
 #### Resources
 
