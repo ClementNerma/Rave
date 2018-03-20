@@ -131,10 +131,19 @@ function tokenize (source) {
   /**
    * Check if the current symbol is followed by a symbol or a group of symbols
    * @param {string} follow The list of symbols to check
+   * @param {boolean} [ignoreNext] Ignore the next character if the test is true (default: true)
    * @returns {bool} `true` if the symbol is followed by the provided list, `false` else
    */
-  function isNext (follow) {
-    return source.substr(col + 1, follow.length) === follow;
+  function isNext (follow, ignoreNext = true) {
+    // Do the test
+    let test = source.substr(col + 1, follow.length) === follow;
+
+    // If asked, ignore the next characters
+    if (ignoreNext)
+      col ++;
+    
+    // Return the test's result
+    return test;
   }
 
   // Normalize line breaks in the source code
@@ -242,21 +251,15 @@ function tokenize (source) {
       push(T_NEWLINE);
 
     // [SYMBOL] (pre/post) increment and decrement operators
-    else if (isIn('+-') && isNext(char)) {
-      // Ignore the next character
-      col ++;
+    else if (isIn('+-') && isNext(char))
       // Push the operator
       push(T_PREPOST_OPERATOR, char + char);
-    }
     
     // [SYMBOL] shift operators
     else if ((isIn('<') && isNext('<')) ||
-             (isIn('>') && isNext('>'))) {
-      // Ignore the next character
-      col ++;
+             (isIn('>') && isNext('>')))
       // Push the operator
       push(T_SHIFT_OPERATOR, char + char);
-    }
 
     // [SYMBOL] comparison operators
     else if (isIn('<>'))
@@ -264,29 +267,20 @@ function tokenize (source) {
       push(T_COMPARISON_OPERATOR, char);
 
     // [SYMBOL] comparison operators
-    else if (isIn('<>') && isNext('=')) {
-      // Ignore the next character
-      col ++;
+    else if (isIn('<>') && isNext('='))
       // Push the operator
       push(T_COMPARISON_OPERATOR, char);
-    }
 
     // [SYMBOL] logical operators
     else if ((isIn('&') && isNext('&')) ||
-        (isIn('|') && isNext('|'))) {
-      // Ignore the next character
-      col ++;
+             (isIn('|') && isNext('|')))
       // Push the operator
       push(T_LOGICAL_OPERATOR, char + char);
-    }
 
     // [SYMBOL] equality operators
-    else if (isIn('=!') && isNext('=')) {
-      // Ignore the next character
-      col ++;
+    else if (isIn('=!') && isNext('='))
       // Push the operator
       push(T_COMPARISON_OPERATOR, char + '=');
-    }
 
     // [SYMBOL] negation operator
     else if (isIn('!'))
@@ -296,12 +290,9 @@ function tokenize (source) {
     // [SYMBOL] operators with two arguments
     else if (isIn('+-*/%^&|')) {
       // Handle the pow operator
-      if (isIn('*') && isNext('*')) {
-        // Ignore the next character
-        col ++;
+      if (isIn('*') && isNext('*'))
         // Set the current symbol
         char += char;
-      }
 
       // Push the operator
       push(T_MATH_OPERATOR, char);
