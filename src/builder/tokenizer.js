@@ -229,7 +229,7 @@ function tokenize (source) {
       closeBuffer();
 
     // Handle unknown symbols
-    fail(`Unknown symbol: ${char}`);
+    fail(`Unknown symbol: ${char} (char code = ${char.charCodeAt(0)} | ${char.length} bytes)`);
   }
 
   // If a number buff is opened...
