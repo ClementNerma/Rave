@@ -13,10 +13,12 @@ const T_LITERAL_NUMBER      = 'T_LITERAL_NUMBER';
 const T_LITERAL_STRING      = 'T_LITERAL_STRING';
 const T_NAME                = 'T_NAME';
 const T_QUOTE               = 'T_QUOTE';
-const T_OPERATOR            = 'T_OPERATOR';
 const T_PREPOST_OPERATOR    = 'T_PREPOST_OPERATOR';
 const T_LOGICAL_OPERATOR    = 'T_LOGICAL_OPERATOR';
 const T_SHIFT_OPERATOR      = 'T_SHIFT_OPERATOR';
+const T_NEG_OPERATOR        = 'T_NEG_OPERATOR';
+const T_COMPARISON_OPERATOR = 'T_COMPARISON_OPERATOR';
+const T_MATH_OPERATOR       = 'T_MATH_OPERATOR';
 
 /**
  * Tokenize a source code
@@ -249,7 +251,6 @@ function tokenize (source) {
       col ++;
       // Push the operator
       push(T_PREPOST_OPERATOR, char + char);
-
       continue ;
     }
     
@@ -260,15 +261,22 @@ function tokenize (source) {
       col ++;
       // Push the operator
       push(T_SHIFT_OPERATOR, char + char);
-
       continue ;
     }
 
     // [SYMBOL] comparison operators
     if (isIn('<>')) {
       // Push the operator
-      push(T_LOGICAL_OPERATOR, char);
+      push(T_COMPARISON_OPERATOR, char);
+      continue ;
+    }
 
+    // [SYMBOL] comparison operators
+    if (isIn('<>') && isNext('=')) {
+      // Ignore the next character
+      col ++;
+      // Push the operator
+      push(T_COMPARISON_OPERATOR, char);
       continue ;
     }
 
@@ -279,12 +287,18 @@ function tokenize (source) {
       col ++;
       // Push the operator
       push(T_LOGICAL_OPERATOR, char + char);
-
       continue ;
     }
 
+    // [SYMBOL] negation operator
+    if (isIn('!')) {
+      // Push the operator
+      push(T_NEG_OPERATOR, char);
+      continue;
+    }
+
     // [SYMBOL] operators with two arguments
-    if (isIn('+-*/%^!&|')) {
+    if (isIn('+-*/%^&|')) {
       // Handle the pow operator
       if (isIn('*') && isNext('*')) {
         // Ignore the next character
@@ -294,8 +308,7 @@ function tokenize (source) {
       }
 
       // Push the operator
-      push(T_OPERATOR, char);
-
+      push(T_MATH_OPERATOR, char);
       continue ;
     }
 
