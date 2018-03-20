@@ -140,21 +140,6 @@ function showSection(id) {
 
   // Get the current section's slug
   const currentSlug = currentSection.getAttribute('data-slug');
-  
-  // For each link in the summary...
-  for (let link of nav_links)
-    // If its parent is a subtitle...
-    if (parseInt(link.parentElement.getAttribute('data-depth')) >= 2) {
-      // If it refers to a title in the current section...
-      if (link.parentElement.getAttribute('data-target') === currentSlug)
-        // Show it
-        link.parentElement.style.display = 'block';
-      // Else...
-      else
-        // Hide it
-        link.parentElement.style.display = 'none';
-    }
-
     
   // Set the window's hash
   window.location.hash = '#' + currentSection.getAttribute('data-slug');
