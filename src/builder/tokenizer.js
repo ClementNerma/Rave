@@ -40,14 +40,14 @@ function tokenize (source) {
   }
 
   /**
-   * Push a token to the tree
+   * Push a token
    * @param {string} token The token
    * @param {*} [data] The data that goes with it
    * @returns {void}
    */
   function push (token, data) {
-    // Push the token to the tree
-    tree.push(typeof data !== 'undefined' ? [ token, data ] : [ token ]);
+    // Push the token
+    token_arr.push(typeof data !== 'undefined' ? [ token, data ] : [ token ]);
 
     // Remember it as the last token
     last_token = token;
@@ -164,7 +164,7 @@ function tokenize (source) {
   source = source.replace(/\r\n|\r/g, '\n');
 
   // The build tokens tree
-  let tree = [];
+  let token_arr = [];
 
   // The current column in the source code
   let col = 0;
@@ -326,7 +326,7 @@ function tokenize (source) {
     fail(`A ${buff_type} buffer was not closed`);
 
   // Return the tokens tree
-  return tree;
+  return token_arr;
 }
 
 // If a file was given as an argument...
