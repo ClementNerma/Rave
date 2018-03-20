@@ -78,11 +78,6 @@ function tokenize (source) {
    * @returns {void}
    */
   function openBuffer (type, type_token, close_callback, token, data) {
-    // If a buffer was just closed...
-    if (just_closed_buff_type)
-      // Fail
-      fail(`Error: cannot open a ${type} buffer just after a ${just_closed_buff_type} buffer`);
-
     // Set the buffer's type
     buff_type = type;
 
@@ -132,9 +127,6 @@ function tokenize (source) {
       // Push it
       push(token, data);
 
-    // Remember a buffer just closed
-    just_closed_buff_type = buff_type;
-
     // Reset informations about the current buffer
     buff_type = null;
     buff_token = null;
@@ -174,11 +166,6 @@ function tokenize (source) {
 
   // A callback to run when before the buffer is closed
   let buff_close_callback = null;
-
-  // Was a buffer just closed?
-  // (turned on when a buffer is closed)
-  // (turned off when a non-breaking token is used after the close)
-  let just_closed_buff_type = false;
 
   // For each character...
   for (col = 0; col < source.length; col ++) {
@@ -254,11 +241,6 @@ function tokenize (source) {
   else if (buff_type)
     // Fail
     fail(`A ${buff_type} buffer was not closed`);
-
-  // If this character is non-breaking...
-  if (char !== ` ` && char !== `\r` && char !== '\n')
-    // No buffer just closed
-    just_closed_buff_type = null;
 
   // Return the tokens tree
   return tree;
