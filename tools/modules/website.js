@@ -12,7 +12,9 @@ self = {
    * The module's arguments
    * @type {Array<Object>}
    */
-  arguments: [],
+  arguments: [
+    { long: 'open', type: 'boolean', help: 'Open the website in the browser' }
+  ],
 
   /**
    * The module's help
@@ -107,8 +109,19 @@ self = {
       // Remove it
       rmdir(tmp_build_folder);
 
-    // All went good :)
-    success(`Website was successfully built in "${output_folder}".`, output_folder, self.argv.SYS_NO_EXIT);
+    // Declare the end function
+    let end = () => {
+      // All went good :)
+      success(`Website was successfully built in "${output_folder}".`, output_folder, self.argv.SYS_NO_EXIT);
+    };
+
+    // If output must be opened in the browser...
+    if (self.argv['open'])
+      // Open it
+      openBrowser(output_folder, end, 'Opening website in the browser...');
+    else
+      // Exit
+      end();
   },
 
   /**
