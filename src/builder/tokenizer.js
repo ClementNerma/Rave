@@ -189,12 +189,39 @@ function tokenize (source) {
       continue ;
     }
 
+    // [SYMBOL] digit
+    if ('0123456789'.includes(char)) {
+      // If a number is already opened...
+      if (buff.number)
+        // Push the number to it
+        buff.number += char;
+      else {
+        // Open a new buffer
+        openBuffer('number', T_LITERAL_NUMBER);
+
+        // Open a number buffer
+        buff.number = char;
+      }
+
+      continue ;
+    }
+
+    // If number is not a digit but a number buffer is opened...
+    else if (buff.number)
+      // Close it
+      closeBuffer();
+
     // Handle unknown symbols
     fail(`Unknown symbol: ${char}`);
   }
 
+  // If a number buff is opened...
+  if (buff.number)
+    // Close it
+    closeBuffer();
+
   // If a buffer is opened...
-  if (buff_type)
+  else if (buff_type)
     // Fail
     fail(`A ${buff_type} buffer was not closed`);
 
