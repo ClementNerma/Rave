@@ -968,6 +968,102 @@ Here, we told to the compiler to completely freeze `paul`. This way, its propert
 
 _Tip :_ The `frozen` keyword works on almost any type, including `Dictionary`.
 
+### Multiple assignments
+
+Objects allow _multiple assignments_, which means we can make several assignments at once. Let's consider the following object:
+
+```sn
+val hero = {
+  name: "John",
+  age: 20,
+  warrior: true
+};
+```
+
+We want to store its properties in three constants, `name`, `age` and `warrior`. The first way would be this one:
+
+```sn
+val name = hero.name;
+val age = hero.age;
+val warrior = hero.warrior;
+```
+
+But that's a bit long, so there's a syntax to shorten that in a single line:
+
+```sn
+val { name, age, warrior } = hero;
+```
+
+What we've done here is to extract some properties of `hero` and store them into constants of the same name. The list of the properties to extract (which is also the list of constant to make) is specified between braces (`{}`).
+
+Multiple assignments also work the other way: we can make an object from a list of entities, like this
+
+```sn
+val hero_copy = { name, age, warrior };
+// Strictly equivalent to:
+val hero_copy = {
+  name: name,
+  age: age,
+  warrior: warrior
+};
+```
+
+This syntax can also be mixed with other properties:
+
+```sn
+val new_hero = {
+  name,
+  age,
+  warrior: false
+};
+```
+
+Note that there is a similar syntax for arrays:
+
+```sn
+// Make a sample array
+val arr = [ 2, 5, 8, 9 ];
+
+// Extract from array
+val [ n1, n2, n3, n4 ] = arr;
+// Equivalent to:
+val n1 = arr[0],
+    n2 = arr[1],
+    n3 = arr[2],
+    n4 = arr[3];
+
+// Left splice
+val [ ...first, n4 ] = arr;
+// Equivalent to:
+val first = arr.slice(0, 3),
+    n4 = arr[3];
+
+// Right splice
+val [ n1, ...last ] = arr;
+// Equivalent to:
+val n1 = arr[0],
+    last = arr.slice(1, 3);
+
+// Middle splice
+val [ n1, ...middle, n4 ] = arr;
+// Equivalent to:
+val n1 = arr[0],
+    middle = arr.slice(2, 2),
+    n4 = arr[3];
+```
+
+Note that there is also the `...` symbol to ignore some entries in the array:
+
+```sn
+// Middle splice
+val [ n1, ..., n4 ] = arr;
+// Equivalent to:
+val n1 = arr[0],
+    n4 = arr[3];
+```
+
+This avoids making a useless entity that takes time and memory for nothing if we don't need it.
+
 ## The blocks
 
 ### Conditional blocks
