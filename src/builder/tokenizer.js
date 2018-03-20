@@ -232,82 +232,69 @@ function tokenize (source) {
       closeBuffer();
 
     // [SYMBOL] space
-    if (char === ' ') {
+    if (char === ' ')
       // Push it
       push(T_SPACE);
-      continue ;
-    }
 
     // [SYMBOL] newline
-    if (char === '\n') {
+    else if (char === '\n')
       // Push it
       push(T_NEWLINE);
-      continue ;
-    }
 
     // [SYMBOL] (pre/post) increment and decrement operators
-    if (isIn('+-') && isNext(char)) {
+    else if (isIn('+-') && isNext(char)) {
       // Ignore the next character
       col ++;
       // Push the operator
       push(T_PREPOST_OPERATOR, char + char);
-      continue ;
     }
     
     // [SYMBOL] shift operators
-    if ((isIn('<') && isNext('<')) ||
-        (isIn('>') && isNext('>'))) {
+    else if ((isIn('<') && isNext('<')) ||
+             (isIn('>') && isNext('>'))) {
       // Ignore the next character
       col ++;
       // Push the operator
       push(T_SHIFT_OPERATOR, char + char);
-      continue ;
     }
 
     // [SYMBOL] comparison operators
-    if (isIn('<>')) {
+    else if (isIn('<>'))
       // Push the operator
       push(T_COMPARISON_OPERATOR, char);
-      continue ;
-    }
 
     // [SYMBOL] comparison operators
-    if (isIn('<>') && isNext('=')) {
+    else if (isIn('<>') && isNext('=')) {
       // Ignore the next character
       col ++;
       // Push the operator
       push(T_COMPARISON_OPERATOR, char);
-      continue ;
     }
 
     // [SYMBOL] logical operators
-    if ((isIn('&') && isNext('&')) ||
+    else if ((isIn('&') && isNext('&')) ||
         (isIn('|') && isNext('|'))) {
       // Ignore the next character
       col ++;
       // Push the operator
       push(T_LOGICAL_OPERATOR, char + char);
-      continue ;
     }
 
     // [SYMBOL] equality operators
-    if (isIn('=!') && isIn('=')) {
+    else if (isIn('=!') && isIn('=')) {
       // Ignore the next character
       col ++;
       // Push the operator
       push(T_COMPARISON_OPERATOR, char + '=');
-      continue ;
     }
 
     // [SYMBOL] negation operator
-    if (isIn('!')) {
+    else if (isIn('!'))
       // Push the operator
       push(T_NEG_OPERATOR, char);
-      continue;
-    }
 
     // [SYMBOL] operators with two arguments
-    if (isIn('+-*/%^&|')) {
+    else if (isIn('+-*/%^&|')) {
       // Handle the pow operator
       if (isIn('*') && isNext('*')) {
         // Ignore the next character
@@ -318,11 +305,11 @@ function tokenize (source) {
 
       // Push the operator
       push(T_MATH_OPERATOR, char);
-      continue ;
     }
 
     // Handle unknown symbols
-    fail(`Unknown symbol: ${char} (char code = ${char.charCodeAt(0)} | ${char.length} bytes)`);
+    else
+      fail(`Unknown symbol: ${char} (char code = ${char.charCodeAt(0)} | ${char.length} bytes)`);
   }
 
   // If a number buff is opened...
