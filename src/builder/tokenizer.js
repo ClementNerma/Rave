@@ -290,6 +290,15 @@ function tokenize (source) {
       continue ;
     }
 
+    // [SYMBOL] equality operators
+    if (isIn('=!') && isIn('=')) {
+      // Ignore the next character
+      col ++;
+      // Push the operator
+      push(T_COMPARISON_OPERATOR, char + '=');
+      continue ;
+    }
+
     // [SYMBOL] negation operator
     if (isIn('!')) {
       // Push the operator
