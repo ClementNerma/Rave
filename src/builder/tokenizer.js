@@ -190,12 +190,22 @@ function tokenize (source) {
     }
 
     // [SYMBOL] digit
-    if ('0123456789'.includes(char)) {
+    if ('0123456789.'.includes(char)) {
       // If a number is already opened...
-      if (buff.number)
+      if (buff.number) {
+        // If it's a point and there's already a point in the buffer...
+        if (char === '.' && buff.number.includes('.'))
+          // Fail
+          fail(`Cannot have two points in a number`);
+
         // Push the number to it
         buff.number += char;
-      else {
+      } else {
+        // If this is a point...
+        if (char === '.')
+          // Fail
+          fail(`A point must follow a digit`);
+
         // Open a new buffer
         openBuffer('number', T_LITERAL_NUMBER);
 
