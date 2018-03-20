@@ -13,6 +13,7 @@ const T_LITERAL_NUMBER   = 'T_LITERAL_NUMBER';
 const T_LITERAL_STRING   = 'T_LITERAL_STRING';
 const T_NAME             = 'T_NAME';
 const T_QUOTE            = 'T_QUOTE';
+const T_OPERATOR         = 'T_OPERATOR';
 const T_PREPOST_OPERATOR = 'T_PREPOST_OPERATOR';
 
 /**
@@ -46,11 +47,6 @@ function tokenize (source) {
 
     // Remember it as the last token
     last_token = token;
-    
-    // If this is NOT a breaking token
-    if (T_BREAKING.includes(token))
-      // Remember it as the last non-breaking token
-      last_nb_token = token;
   }
 
   /**
@@ -119,6 +115,24 @@ function tokenize (source) {
     buff_close_callback = null;
   }
 
+  /**
+   * Check if the current symbol belongs to a group of symbols
+   * @param {string} list The list of symbols to check
+   * @returns {bool} `true` if the symbol is in the list, `false` else
+   */
+  function isIn (list) {
+    return list.includes(char);
+  }
+
+  /**
+   * Check if the current symbol is followed by a symbol or a group of symbols
+   * @param {string} follow The list of symbols to check
+   * @returns {bool} `true` if the symbol is followed by the provided list, `false` else
+   */
+  function isNext (follow) {
+    return source.substr(col + 1, follow.length) === follow;
+  }
+
   // Normalize line breaks in the source code
   source = source.replace(/\r\n|\r/g, '\n');
 
@@ -131,14 +145,8 @@ function tokenize (source) {
   // The current character
   let char = '';
 
-  // The next character
-  let next = '';
-
   // The last token
   let last_token = null;
-
-  // The last non-space and non-newline token
-  let last_nb_token = null;
 
   // List of buffers
   let buff = {
@@ -163,9 +171,6 @@ function tokenize (source) {
     // Get the current character
     char = source[col];
 
-    // Get the next character
-    next = source[col + 1];
-
     // If we are in a string...
     if (buff_type === 'string') {
       // If the current character is the opening quote...
@@ -183,7 +188,7 @@ function tokenize (source) {
 
     // If the current character...
     // [SYMBOL] quote
-    if (`'"`.includes(char)) {
+    if (isIn(`'"`)) {
       // Open a new buffer
       openBuffer('string', T_LITERAL_STRING, null, T_QUOTE, char);
 
@@ -191,7 +196,7 @@ function tokenize (source) {
     }
 
     // [SYMBOL] digit
-    if ('0123456789.'.includes(char)) {
+    if (isIn('0123456789.')) {
       // If a number is already opened...
       if (buff.number) {
         // If it's a point and there's already a point in the buffer...
@@ -237,23 +242,23 @@ function tokenize (source) {
     }
 
     // [SYMBOL] (pre/post) increment and decrement operators
-    if ('+-'.includes(char) && next === char) {
+    if (isIn('+-') && isNext(char)) {
       // Ignore the next character
       col ++;
       // Push the operator
-      push(T_PREPOST_OPERATOR, char + next);
+      push(T_PREPOST_OPERATOR, char + char);
 
       continue ;
     }
 
     // [SYMBOL] operators with two arguments
-    if ('+-*/%^!'.includes(char)) {
+    if (isIn('+-*/%^!')) {
       // Handle the pow operator
-      if (char === '*' && next === '*') {
+      if (isIn('*') && isNext('*')) {
         // Ignore the next character
         col ++;
         // Set the current symbol
-        char += next;
+        char += char;
       }
 
       // Push the operator
