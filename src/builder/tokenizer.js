@@ -146,6 +146,20 @@ function tokenize (source) {
     return test;
   }
 
+  /**
+   * Run if the current symbol is in a list and if it is followed by another list of symbols
+   * @param {string} in_list The list of symbols the current character should be in
+   * @param {string} follow_list The list of symbols the current character should be followed by
+   * @param {boolean} [ignoreNext] Ignore the next character if the test is true (default: true)
+   * @returns {boolean} `true` if all tests succeed, `false` else
+   */
+  function suite (in_list, follow_list, ignoreNext = true) {
+    // Do the tests and return the result
+    // NOTE: This funny form is used to prevent `isNext()` from being called
+    //       if `isIn()` returns `false`
+    return isIn(in_list) ? isNext(follow_list, ignoreNext) : false;
+  }
+
   // Normalize line breaks in the source code
   source = source.replace(/\r\n|\r/g, '\n');
 
@@ -251,13 +265,12 @@ function tokenize (source) {
       push(T_NEWLINE);
 
     // [SYMBOL] (pre/post) increment and decrement operators
-    else if (isIn('+-') && isNext(char))
+    else if (suite('+-', char))
       // Push the operator
       push(T_PREPOST_OPERATOR, char + char);
     
     // [SYMBOL] shift operators
-    else if ((isIn('<') && isNext('<')) ||
-             (isIn('>') && isNext('>')))
+    else if (suite('<', '<') || suite('>', '>'))
       // Push the operator
       push(T_SHIFT_OPERATOR, char + char);
 
@@ -267,18 +280,17 @@ function tokenize (source) {
       push(T_COMPARISON_OPERATOR, char);
 
     // [SYMBOL] comparison operators
-    else if (isIn('<>') && isNext('='))
+    else if (suite('<>', '='))
       // Push the operator
       push(T_COMPARISON_OPERATOR, char);
 
     // [SYMBOL] logical operators
-    else if ((isIn('&') && isNext('&')) ||
-             (isIn('|') && isNext('|')))
+    else if (suite('&|', char))
       // Push the operator
       push(T_LOGICAL_OPERATOR, char + char);
 
     // [SYMBOL] equality operators
-    else if (isIn('=!') && isNext('='))
+    else if (suite('=!', '='))
       // Push the operator
       push(T_COMPARISON_OPERATOR, char + '=');
 
