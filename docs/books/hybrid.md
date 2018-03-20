@@ -4739,6 +4739,34 @@ _Tip :_ Because `(c -> c)` is a constraint callback, it must return a boolean. S
 
 The last line of the file **exports** some entities. This simply creates an object that will be available from the outside of the package, so `name` won't be available from the outside.
 
+Because a package's source code can (and will often) be heavy, we can use the `#include` directive to import a file's content at its position. Here is an example:
+
+```sn
+// File: "index.sn"
+#package
+
+let name: string;
+#include "functions.sn"
+export { defineName, readName };
+
+// File: "functions.sn"
+func defineName(newName: string with (c -> c) : void ->
+  name = newName;
+
+func readName() : string {
+  if (name)
+    return name;
+  else
+    throw new Error("Name is not defined.");
+}
+
+export { defineName, readName };
+```
+
+Here, the content of `functions.sn` will be imported as it is right where the `#include` directive is. This way, we can split our source code into several files.
+
+_Tip :_ The `#include` directive can be used everywhere, even outside a package. Think to it to structure your code!
+
 ### Importing a package
 
 To import a package, we must use the `import` keyword followed by the package's _name_ (not its slug). So here is our `main.sn` file:
