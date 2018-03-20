@@ -94,7 +94,7 @@ self = {
           { output: tmp_build_folder + '/' + build.module, SYS_NO_EXIT: true },
           build.arguments
         )
-      ).build();
+      )[build.all ? 'buildAll' : 'build']();
     }
 
     // For each map...
