@@ -72,11 +72,12 @@ function tokenize (source) {
    * Open a new buffer
    * @param {string} type The buffer's type
    * @param {string} type_token The buffer's type token
+   * @param {Function} close_handler A callback to call before the buffer closes
    * @param {string} [token] The buffer's opening token
    * @param {*} [data] The data that goes with it
    * @returns {void}
    */
-  function openBuffer (type, type_token, token, data) {
+  function openBuffer (type, type_token, close_callback, token, data) {
     // If a buffer was just closed...
     if (just_closed_buff_type)
       // Fail
@@ -87,6 +88,9 @@ function tokenize (source) {
 
     // Set the buffer's token type
     buff_token = type_token;
+
+    // Store the close callback
+    buff_close_callback = close_callback;
 
     // If an opening token was provided...
     if (token) {
@@ -105,16 +109,28 @@ function tokenize (source) {
    * @returns {void}
    */
   function closeBuffer (token, data) {
+    // If there is a close handler...
+    if (buff_close_callback) {
+      // Call it and save its result
+      const callback_result = buff_close_callback(buff[buff_type], token, data);
+
+      // If something was returned...
+      if (callback_result !== undefined)
+        // Use it instead of the buffer
+        buff[buff_type] = callback_result;
+    }
+
     // Push the buffer
+    // If there is a close handler, call it and use its return value instead
     push(buff_token, buff[buff_type]);
+
+    // Reset the buffer
+    buff[buff_type] = '';
     
     // If a buffer's closing token was provided...
     if (token)
       // Push it
       push(token, data);
-
-    // Reset the buffer
-    buff[buff_type] = '';
 
     // Remember a buffer just closed
     just_closed_buff_type = buff_type;
@@ -123,6 +139,7 @@ function tokenize (source) {
     buff_type = null;
     buff_token = null;
     buff_opening_token = null;
+    buff_close_callback = null;
   }
 
   // The build tokens tree
@@ -155,6 +172,9 @@ function tokenize (source) {
   // Current buffer's opening token
   let buff_opening_token = null;
 
+  // A callback to run when before the buffer is closed
+  let buff_close_callback = null;
+
   // Was a buffer just closed?
   // (turned on when a buffer is closed)
   // (turned off when a non-breaking token is used after the close)
@@ -184,7 +204,7 @@ function tokenize (source) {
     // [SYMBOL] quote
     if (`'"`.includes(char)) {
       // Open a new buffer
-      openBuffer('string', T_LITERAL_STRING, T_QUOTE, char);
+      openBuffer('string', T_LITERAL_STRING, null, T_QUOTE, char);
 
       continue ;
     }
