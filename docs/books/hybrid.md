@@ -2,9 +2,9 @@
 
 ## Introduction
 
-Welcome to _"The Hybrid Book"_, a feature-exhaustive tutorial to learn SilverNight. SilverNight is borned from the wish to have a language almost as simple as JavaScript or Python but as powerful, safe and fast as Rust to cover most of developpers' need. It is a statically-typed, functional programming language. Intended for multi-platform development, it comes with great flexibility and a large native library.
+Welcome to _"The Hybrid Book"_, a feature-exhaustive tutorial to learn SilverNight. SilverNight is borned from the wish to have a language almost as simple as JavaScript or Python but as powerful, safe and fast as Rust to cover most of developers' needs. It is a statically-typed, functional programming language. Intended for multi-platform development, it comes with great flexibility and a large native library.
 
-**This book is still a draft, some features could be added, changed or removed completely in the final version of the language. Please be careful about this.**
+**WARNING: This book is still a draft, some features could be added, changed or removed completely AT ANY MOMENT until the final version of the language. Please be careful about this.**
 
 ### Why is it an hybrid book?
 
@@ -12,7 +12,7 @@ This book is called "hybrid" because it provides a simple specification for the 
 
 ### For whom is this book?
 
-This book is for everyone who wants to learn all the features of SilverNight, or simply for developers who are curious to know how this language work.
+This book is for everyone who wants to learn all the features of SilverNight, or simply for developers who are curious to know how this language works.
 
 In order to fully understand this book, you should already know at least one other programming language (the lower level it is, the better), ideally with a good knowledge in Object-Oriented Programming (OOP) because SilverNight always deal with objects.
 
@@ -26,7 +26,7 @@ SilverNight's purpose is to provide a multi-platform compatibility coupled with 
 
 #### Installation
 
-**As the compiler is not done yet, your programs will not compile and you will not be able to run it. The book is here to details the languages' concept and the way it works. Thanks for your understanding.**
+**As the compiler is not done yet, your programs will not compile and you will not be able to run it. The book is here to detail the languages' concept and the way it works. Thanks for your understanding.**
 
 As a pre-requisite you must have [Git](https://git-scm.com/) as well as [Node.js](https://nodejs.org) and [Yarn](https://yarnpkg.com) (or [NPM](https://www.npmjs.com)) installed on your computer.
 
@@ -38,7 +38,7 @@ cd SilverNight/compiler
 yarn install-tools # NPM: `npm run install-tools`
 ```
 
-_NOTE :_ As this program installs the tools on your computer, you may be asked for the **root** password on Linux systems.
+_NOTE :_ As this program installs the tools on your computer, you may have to run the `install-tools` command with `sudo` on Linux systems.
 
 To check if all the tools were correctly installed, simply run this command in a terminal:
 
@@ -46,17 +46,17 @@ To check if all the tools were correctly installed, simply run this command in a
 snt -v
 ```
 
-If it shows a version number, then the tools are now available globally!
+If it shows you a version number, the tools are available globally.
 
 #### Compiling programs
 
-You can write SilverNight with any text editor - even with the Windows' Notepad! But we advise you to use a code editor, like [Atom](https://atom.io) or [Visual Studio Code](https://code.visualstudio.com), and install the _SilverNight_ extension for them. This will highlight your code following different rules to make it more pleasant to see.
+You can write SilverNight with any text editor - even with the Windows' Notepad! But we advise you to use a code editor, like [Atom](https://atom.io) or [Visual Studio Code](https://code.visualstudio.com), and install the SilverNight [support extension](https://github.com/ClementNerma/SilverNight#syntax-highlighting-support)  for them. This will highlight your code following different rules to make it more pleasant to see.
 
-Once you wrote your code, save it in a file with the `.sn` extension. Then, open a terminal and go into the folder in which your file is, and run `snt program.sn` (replace `program.sn` the name of your file) to compile it. This will produce an executable file in the same directory (the name will depend on the platform you are using). You can run this executable directly on any computer that is under the same platform.
+Once you wrote your code, save it in a file with the `.sn` extension. Then, open a terminal and go into the folder in which your file is, and run `snt program.sn` (replace `program.sn` by the name of your file) to compile it. This will produce an executable file in the same directory (the name will depend on the platform you are using). You can run this executable directly on any computer that is under the same platform.
 
 #### Commenting your code
 
-SilverNight has several types of comments for different purposes, but the main ones are the single-line and the multiple-line comments. These are passive comments (which means they don't do anything and are perfectly ignored by the compiler).
+SilverNight has several types of comments for different purposes, but the main ones are the single-line and the multiple-line comments. These are passive comments (which means they don't do anything and are completely ignored by the compiler).
 
 To write a single-line comment, write `//` just before your comment. Everything written **after** this double slash will be ignored until the end of the line.
 
@@ -78,22 +78,22 @@ println!(/* Even in the middle of a line */ "Hello");
 
 #### Displaying values
 
-You can display values to your terminal (called _output_) by using the `println!` macro (we'll see what is a macro later in this book).
+We can display values to your terminal (called _output_) by using the `println!` macro (we'll see what is a macro later in this book).
 
 ```sn
 println!("Hello !");
 ```
 
-For now, consider you can display any value with it, only special values (like custom classes or conceptual resources) cannot be displayed, but we will see this in details before we encounter this problem.
+For now, consider we can display any value with it, only special values (like custom classes or conceptual resources) cannot be displayed, but we will see this in details before we encounter this problem.
 
 ### Vocabulary
 
-Here is a list of terms used in SilverNight. Most of them are unknown for you at the moment, but this section aims to provide a way to clearly know the meaning of each term.
+Here is a list of terms used in SilverNight. Most of them are unknown for you at the moment, but this section aims to provide a way to clearly know the meaning of each term. Don't hesitate to go back there if you forgot the meaning of a term.
 
 #### Concepts
 
 * A **block keyword**, or **block name**, is the name of a block (like `for` or `while`)
-* A **block head** is the head of a block, written between `(` and `)` parenthesis ; its syntax depends on the the block
+* A **block head** is the head of a block, written between `()` parenthesis ; its syntax depends on the the block it is used with
 * A **block** is the combination of a block keyword, eventually a block head, an opening bracket `{`, a list of instructions called the **body**, and a closing bracket `}`
 * An **inline block** is an inline variant of a block, with a syntax depending on the used block
 * A **directive** is an indicator to change the default behaviour of a part of the code at build time
@@ -185,7 +185,7 @@ Here is a list of terms used in SilverNight. Most of them are unknown for you at
 
 ## Variables and typing
 
-In SilverNight, everything is object. Every single number or string is considered as an object. The thing that describes what an object is is a _type_. What is a type? That's simply a set of methods, properties and other tricks that provides tools to manipulate a resource, like a variable or a constant. You can also see it as a describer that indicates what kind of value a resource can take.
+In SilverNight, everything is primitive or object. Even single numbers or strings, which are primitives, can use some features reserved to objects in many other programming languages. To describe what a primitive or an object is, we use a _type_. What is a type? That's simply a set of methods, properties and other tricks that provides tools to manipulate a resource, like a variable or a constant. You can also see it as a describer that indicates what kind of value a resource can take.
 
 _Tip :_ For those who already programmed in Java, C, C++ or Rust, the concept of type is roughly the same in SilverNight.
 
@@ -195,7 +195,7 @@ There's several way to declare a resource in SilverNight. Let's take a look at v
 let hello: string;
 ```
 
-This will declare a string mutable called "hello". When declared like this, an empty string is put in this (we call it an _instance_ of the "string" class).
+This will declare a mutable string called "hello". When declared like this, an empty string is put in this (we call it an _instance_ of the "string" class).
 
 To assign a contant, use the `=` operator:
 
@@ -204,19 +204,19 @@ let hello: string;
 hello = "I am a variable!";
 ```
 
-You can also assign a value in the declaration statement:
+We can also assign a value in the declaration statement:
 
 ```sn
 let hello: string = "I am a variable!";
 ```
 
-This syntax is kind of heavy. Because we don't want to declare a type and an initial value for each variable, we can use a feature called _inferred typing_ which guesses the variable's type thanks to the value you assign to it.
+This syntax is kind of heavy. Because we don't want to declare a type and an initial value for each variable, we can use a feature called _inferred typing_ which guesses the variable's type thanks to the value we assign to it.
 
 ```sn
 let hello = "I am a variable!";
 ```
 
-In the above code, the compiler understands you are trying to assign a string to `hello`, so it guesses its type is `string`.
+In the above code, the compiler understands we are trying to assign a string to `hello`, so it guesses its type is `string`.
 
 ### Mutability
 
@@ -226,7 +226,7 @@ Some data are not intended to be modified. To store them, we use _constants_, wh
 val constant = "I am a constant!";
 ```
 
-You can also specify the constant's type, but you will have to give it an initialization value anyway.
+We can also specify the constant's type, but we will have to give it an initialization value anyway.
 
 ```sn
 val constant = "I am a constant!"; // Works fine
@@ -234,7 +234,7 @@ val constant: string = "I am a constant!"; // Works fine
 val constant: string; // ERROR: Initialization value expected
 ```
 
-Constants cannot have their value changed, so can't use the `=` operator only. See them as read-only resources (though this is not fully true, as we will see later). But you can still use other resources to initialize them:
+Constants cannot have their value changed, so we can't use the `=` operator on it. See them as read-only resources with a value that can't change through the time. Though, we can still use other resources to initialize them:
 
 ```sn
 // Declare a variable
@@ -249,32 +249,32 @@ constant = "A new value"; // ERROR: Cannot assign a value to a constant
 
 ### Plain constants
 
-You can also declare "_plain constants_", which are explicit values that can be used by the compiler to optimize some calls but also to perform additional tests about program's validity. Some functions also require plain constants, as we will see later.
+We can also declare "_plain constants_", which are explicit values that can be used by the compiler to optimize some calls but also to perform additional tests about program's validity. Some functions also require plain constants, as we will see later. Basically, a plain constant is a value that won't change whatever the program's running conditions are. That means it must not be impact by user's input, platform-dependent variables and behaviours, current time or geolocation, etc.
 
 ```sn
 // Declare a plain constant
 pln MY_JOB = "Developer";
 ```
 
-A convention is to use a capitalized name for plain constants, to make them distinctive from variables. As always, you can declare the value's type, but it's still optional. Note that you cannot assign any content taken from a variable or a standard constant here.
+A convention is to use a capitalized name for plain constants, to make them distinctive from variables and basic constants. As always, we can declare the value's type, but it's still optional. Note that we cannot assign any content taken from a variable or a standard constant here.
 
 ```sn
 val MY_JOB = "Developer";
 pln MY_REAL_JOB = MY_JOB; // ERROR: Plain value expected
 ```
 
-You can only assign values from other plain constants:
+We can only assign values from other plain constants:
 
 ```sn
 pln MY_JOB = "Developer";
 pln MY_REAL_JOB = MY_JOB; // Works fine
 ```
 
-Take the reflex to declare you values using plain (or simple) constant instead of mutables when you won't change their value. This assigns something by error, and helps the compiler finding some errors in your code. Plus, in some languages like JavaScript, it even makes your program a little faster!
+Take the reflex to declar values using plain (or simple) constant instead of mutables when you won't change their value. This prevents these theorically immutable datas from being modified by error. Plus, in some languages like JavaScript, it even makes the programs (a bit) faster.
 
 ### Primitive types
 
-There are two categories of types in SilverNight: _primitives_ and _objects_. The first ones are voids, booleans, numbers and strings. Every other type outside of these is not primitive.
+There are two categories of types in SilverNight: _primitives_ and _objects_. The first ones are voids, booleans, numbers and strings. Everything else is not a primitive type.
 
 Primitive types can access additional features object types cannot use, such as the optional operator `.=`. It will assign the provided value on its right if and _only if_ the value is NIL (any value between: `null`, `false`, `0`, `""`). This doesn't work with the other types.
 
@@ -288,13 +288,13 @@ _Tip:_ The more bits a number uses for its representation, the more memory it ta
 
 _Tip:_ All signed type has its unsigned counterpart, which is basically this type prefixed by the `u` symbol. What are unsigned numbers? These are numbers that don't have a positive or negative sign, so they are always positive. For example, `uint32` will handle numbers from `0` to `4,294,967,295` while `uint16` while deal with numbers from `0` to `65,536`.
 
-For very large numbers, you can use the `int64`, `uint64`, `int128` or even `uint128` type (this last one handles from `0` to `~ 3.4 E +38`, so really huge numbers).
+For very large numbers, we can use the `int64`, `uint64`, `int128` or even `uint128` type (this last one handles from `0` to `~ 3.4 E +38`, so really huge numbers).
 
 _NOTE :_ Here the `E` symbols refers to `10^`: `3.4 E +38` refers to `3.4 x 10^38`.
 
 ### Floating-point numbers
 
-SilverNight also supports floating-point numbers. There are two signed types for them, `float`, `double`. Unlike integers, their isn't unsigned floating-point number types.
+SilverNight also supports floating-point numbers. There are two signed types for them, `float`, `double`. Unlike integers, there isn't unsigned floating-point number types.
 
 Their ranges is huge but, where numbers have an exact value, these types have a limited precision:
 
@@ -323,9 +323,9 @@ A problem that low-level languages (like C or SilverNight) compilers often encou
 let result = 2 / 3;
 ```
 
-Why should the compiler understand here? It sees an integer divided by an integer, so the result should be an integer. But any human would understand the result should be here a `float` as the result is around `0.66666...`.
+Why does the compiler understand here? It sees an integer divided by an integer, so the result should be an integer. But any human would understand the result should be here a `float` as the result is around `0.66666...`.
 
-Because of this confusion, the code above will produce `0`. An unexpected number that could result in strange behaviours in your programs. The simpliest and shortest way to indicate you are dealing with a `float` is to do explicit conversion:
+Because of this confusion, the above code will produce `0`. An unexpected number that could result in strange behaviours in your programs. The simpliest and shortest way to indicate you are dealing with a `float` is to do explicit conversion:
 
 ```sn
 let result = 2.0 / 3.0;
@@ -335,7 +335,7 @@ Giving a decimal part to a number indicates it's a `float` (or a `double` if it 
 
 ### Alternative bases
 
-Because not everyone want to deal with decimal numbers, but also with binary, hexadecimal or even octal, there is a way to represent way simply:
+Because sometimes we don't want to deal with decimal numbers, but also with binary, hexadecimal or even octal values, there is a way to represent them in their original base:
 
 ```sn
 let dec1 =    92; // Decimal
@@ -350,7 +350,7 @@ Note that all numbers, whatever is the representation you use, are converted to 
 
 ### Underscore separator
 
-Representing large numbers can quickly become a big deal if you don't have a number separator. Because the comma `,` is reserved to separate arguments and the single quote `'` to delimit strings, we will use the underscore `_` symbol.
+Representing large numbers can quickly become a big deal without a number separator. Because the comma `,` is reserved to separate arguments and the single quote `'` to delimit strings, we will use the underscore `_` symbol.
 
 ```sn
 0b10000011;
@@ -395,7 +395,7 @@ _NOTE :_ As we will see later, mathematical operators can in fact handle any typ
 
 #### Incremental operators
 
-There only two incremental operators, they only take a variable (not a constant or a plain value) and change its value depending on the operator. You can write the operator before or after the variable's name but be aware, this will change the operator's effect.
+There only two incremental operators, they only take a variable (not a constant or a plain value) and change its value depending on the operator. We can write the operator before or after the variable's name but be aware, this will change the operator's effect.
 
 * `variable ++` (post-increment operator, increment `variable` and return its old value)
 * `++ variable` (pre-increment operator, increment `variable` and return its new value)
@@ -425,7 +425,7 @@ They are:
 * `<<` (binary left shift operator)
 * `>>` (binary right shift operator)
 
-The last bitwise operator takes a single number and return a number: that's the one's complement `~` operator.
+The last bitwise operator takes a single number and returns a number: that's the one's complement `~` operator.
 
 Showcase:
 
@@ -482,7 +482,7 @@ A xor B; // false
 
 #### Assignment operators
 
-Unlike operators above that create a value from two other ones, assignment operators directly affect the variable it operates on.
+Unlike operators above that create a value from two other ones, assignment operators directly affect to the variable they are applied on.
 
 The list is: `+=` (add), `-=` (substract), `*=` (multiply), `/=` (divide), `%` (modulate), `**=` (pow).
 
@@ -503,17 +503,17 @@ value **= 3; // value == 8
 
 #### Concatenation
 
-In SilverNight, the `+` (add) operator also acts as the _concatenation operator_. It provides a way to _concatenate_ two stringifyable entities, like a `string` and an `int`. For example, if you have a variable called `area` and you want to display its value with a message, you can do:
+In SilverNight, the `+` (add) operator also acts as the _concatenation operator_. It provides a way to _concatenate_ two stringifyable entities, like a `string` and an `int`. For example, if we have a variable called `area` and we want to display its value with a message, we can do:
 
 ```sn
 println!("The area is: " + area);
 ```
 
-Here, the compiler will understand you want to do a concatenation because the first entity is a string, and the second one a number. So it will perform the concatenation.
+Here, the compiler will understand we want to do a concatenation because the first entity is a string, and the second one a number. So it will perform the concatenation.
 
 #### Bonus: String expressions
 
-Here is a useful trick when using strings: you can _evaluate an expression_ from the inside of a string and get its result directly. Let's try it:
+Here is a useful trick when using strings: we can _evaluate an expression_ from the inside of a string and get its result directly. Let's try it:
 
 ```sn
 val area = 8.5;
@@ -553,7 +553,7 @@ println!(names[1]); // Second element
 println!(names[2]); // Third element
 ```
 
-As you can see, indexes start at `0`. That's a standard implementation of vectors in almost any programming language. If you run the code above, it will display three empty strings, because we haven't initialized our list yet. We know have several choices:
+As you can see, indexes start at `0`. That's a standard implementation of vectors in almost any programming language. If we run the code above, it will display three empty strings, because we haven't initialized our list yet. We know have several choices:
 
 * Assigning values at declaration ;
 * Assigning them _after_ declaration ;
@@ -617,20 +617,20 @@ println!(list[value]); // Prints: "Lucy"
 
 ### Templated types
 
-When we saw vectors, we didn't talked about what they _really_ are. They are in fact represented by two classes, `List` and `Array`. There are different on some little points:
+Let's now see what vectors _really_ are. They are in fact represented by two classes, `List` and `Array`. There are different on some little points:
 
 * `List` is a fixed-length list. We cannot extend it or remove some elements, we can just do some operations on the elements it contains ;
 * `Array` is an extensible list.
 
 We will be able to access exactly the same functions for both the `List` and the `Array` type, excepted there are some additional ones for `Array` (like extension or elements removing).
 
-There is a specificity about these types, though. If you simply try to create variables with them, like for a list of names:
+There is a specificity about these types, though. If we simply try to create variables with them, like for a list of names:
 
 ```sn
 let names: List; // ERROR
 ```
 
-Your program won't work. Why? Because these types are called _templated_ types. This mean they need _another type_ to work correctly. In fact, vectors need to know what _type_ the values will take. In our case, we want to store a list of names, which are strings, so let's declare it:
+Iyr program won't work. Why? Because these types are called _templated_ types. This mean they need _another type_ to work correctly. In fact, vectors need to know what _type_ of values they will handle. In our case, we want to store a list of names, which are strings, so let's declare it:
 
 ```sn
 let names: List<string>;
@@ -642,7 +642,7 @@ Here, `List` is called a _templated type_ and `string` is called its _template_.
 let names: List<string> = new List<string>(3);
 ```
 
-Here's a keyword we don't know: `new`. It simply creates an _instance_ of a type, an object. This won't work on primitive types like `string`.
+Here's a keyword we don't know: `new`. It simply creates an _instance_ of a type, and returns it. An instance is always an object, excepted for primitive types that are very special - in their case it returns a primitive.
 
 We give one argument to `List` here: `3` is the length of the list. But this syntax is still heavy, so let's shorten this declaration:
 
