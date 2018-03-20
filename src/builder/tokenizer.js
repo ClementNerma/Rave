@@ -134,6 +134,9 @@ function tokenize (source) {
     buff_close_callback = null;
   }
 
+  // Normalize line breaks in the source code
+  source = source.replace(/\r\n|\r/g, '\n');
+
   // The build tokens tree
   let tree = [];
 
@@ -227,6 +230,20 @@ function tokenize (source) {
     else if (buff.number)
       // Close it
       closeBuffer();
+
+    // [SYMBOL] space
+    if (char === ' ') {
+      // Push it
+      push(T_SPACE);
+      continue ;
+    }
+
+    // [SYMBOL] newline
+    if (char === '\n') {
+      // Push it
+      push(T_NEWLINE);
+      continue ;
+    }
 
     // Handle unknown symbols
     fail(`Unknown symbol: ${char} (char code = ${char.charCodeAt(0)} | ${char.length} bytes)`);
