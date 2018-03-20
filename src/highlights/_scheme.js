@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.11.4',
+    VERSION: '0.11.5',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -505,7 +505,7 @@ scheme = {
     ],
     [
       // Generic known directives
-      /#([Dd]ynamic|alias|bind|makebindings|declarative|raw_indent|if|else|end|only|reversable|package|uneval)( +;)?/,
+      /#([Dd]ynamic|alias|bind|makebindings|declarative|raw_indent|if|else|end|only|reversable|package|uneval|include)( +;)?/,
       'orange'
     ],
     [
