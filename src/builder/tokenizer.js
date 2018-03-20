@@ -15,21 +15,6 @@ const T_NAME             = 'T_NAME';
 const T_QUOTE            = 'T_QUOTE';
 const T_PREPOST_OPERATOR = 'T_PREPOST_OPERATOR';
 
-// Set up lists
-
-// Breaking tokens
-const T_BREAKING = [
-  T_NEWLINE,
-  T_SPACE
-];
-
-// Literal tokens
-const T_LITERAL  = [
-  T_LITERAL_BOOL,
-  T_LITERAL_NUMBER,
-  T_LITERAL_STRING
-];
-
 /**
  * Tokenize a source code
  * @param {string} source The source code to tokenize
