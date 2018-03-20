@@ -118,7 +118,7 @@ self = {
     // If output must be opened in the browser...
     if (self.argv['open'])
       // Open it
-      openBrowser(output_folder, end, 'Opening website in the browser...');
+      openBrowser(path.join(output_folder, map.index), end, 'Opening website in the browser...');
     else
       // Exit
       end();

@@ -11,5 +11,6 @@
   "removeBuild": true,
   "map": {
     "docs/book/hybrid.html": "tmp/book/hybrid.book.html"
-  }
+  },
+  "index": "index.html"
 }
