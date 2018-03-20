@@ -6,14 +6,14 @@
 "use strict";
 
 // List of tokens
-const T_NEWLINE        = 'T_NEWLINE';
-const T_SPACE          = 'T_SPACE';
-const T_LITERAL_BOOL   = 'T_LITERAL_BOOL';
-const T_LITERAL_NUMBER = 'T_LITERAL_NUMBER';
-const T_LITERAL_STRING = 'T_LITERAL_STRING';
-const T_NAME           = 'T_NAME';
-const T_QUOTE          = 'T_QUOTE';
-const T_OPERATOR       = 'T_OPERATOR';
+const T_NEWLINE          = 'T_NEWLINE';
+const T_SPACE            = 'T_SPACE';
+const T_LITERAL_BOOL     = 'T_LITERAL_BOOL';
+const T_LITERAL_NUMBER   = 'T_LITERAL_NUMBER';
+const T_LITERAL_STRING   = 'T_LITERAL_STRING';
+const T_NAME             = 'T_NAME';
+const T_QUOTE            = 'T_QUOTE';
+const T_PREPOST_OPERATOR = 'T_PREPOST_OPERATOR';
 
 // Set up lists
 
@@ -248,6 +248,16 @@ function tokenize (source) {
     if (char === '\n') {
       // Push it
       push(T_NEWLINE);
+      continue ;
+    }
+
+    // [SYMBOL] (pre/post) increment and decrement operators
+    if ('+-'.includes(char) && next === char) {
+      // Ignore the next character
+      col ++;
+      // Push the operator
+      push(T_PREPOST_OPERATOR, char + next);
+
       continue ;
     }
 
