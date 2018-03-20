@@ -80,6 +80,55 @@ yarn install-extension sublime # For Sublime Text
 
 And follow the instructions that appears in your terminal.
 
+## Roadmap
+
+Here is the roadmap for the whole project.
+
+### Documentation
+
+* Redact [_The Hybrid Book_](https://silvernight.netlify.com/docs/book/hybrid.html) (**active**)
+* Redact the whole specifications
+* Redact _The SilverNight programming language_
+
+### Toolchain
+
+Quote from [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html):
+
+> The **toolchain** is a suite of tools which, combined, can compile, interpret, transpile, build a package from, etc. a SilverNight source code or an intermediary step of compilation (like an AST)
+
+#### Builder
+
+> The **builder** is the part of the toolchain that [...] turns a SilverNight source code into a valid AST
+
+* Make the [Tokenizer](src/builder/tokenizer.js) (**active**)
+* Make the AST Builder (Tokenizer + AST Builder = Parser)
+* Make the AST Checker
+* Make the AST Optimizer
+
+#### Interpreter
+
+> The **interpreter** is the part of the toolchain that runs on-the-fly a SilverNight AST
+
+* Make a JavaScript interpreter
+* Make a low-level interpreter (for great performances)
+
+#### Transpilers
+
+> A **transpiler** is a part of the toolchain that converts a SilverNight AST into a another language
+
+* Make the TypeScript transpiler
+* Make the JavaScript transpiler from it
+* Make the C++ transpiler
+* Make the Rust transpiler
+* Make the Java transpiler
+* Make the Swift transpiler
+
+#### Compiler
+
+> The **compiler** is the part of the toolchain that turns a valid SilverNight AST into machine code
+
+This part is coming soon.
+
 ## Contribute
 
 You can contribute by [submitting bugs](https://github.com/ClementNerma/SilverNight/issues) and helping me tracking them or by [proposing some improvements](https://github.com/ClementNerma/SilverNight/issues) for the language.
