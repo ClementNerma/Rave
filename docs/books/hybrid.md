@@ -178,8 +178,8 @@ Here is a list of terms used in SilverNight. Most of them are unknown for you at
 
 #### Pointers
 
-* A **RUID**, standing for _**R**eference **U**nique **Id**entifier_, is a unique identifier granted by the builder to an object or a pointer
-* A **EUID**, standing for _**E**ntity **U**nique **Id**entifier_
+* A **RUID**, standing for _**R**eference **U**nique **Id**entifier_, is a unique identifier granted by the builder to each object (several entities can share the same RUID)
+* A **EUID**, standing for _**E**ntity **U**nique **Id**entifier_, is a unique identifier granted by the builder to each entity (several entities cannot share the same EUID except using to pointers)
 * A **reference** is a link to an object using its RUID
 * A **pointer** is a link to an entity using an EUID
 
@@ -4323,7 +4323,7 @@ Even though this code is not pretty, it's better optimized and avoid using a nul
 
 ## Pointers
 
-### How references work
+### References and pointers
 
 In SilverNight, each object (not primitives) has a unique identifier associated to it, called the RUID (Reference Unique Identifier). This means that when we do a `new SomeClass()` or create an object from a structure (flying or not), an invisible identifier is put on it. It is not available to the program itself, but allows to compare if two objects are the same, by comparing their RUID.
 
@@ -4335,11 +4335,9 @@ func @equal<T>(left: T, right: T) : bool;
 
 It can compare two instances of the same class and tell if they are identical by comparing their RUID. Of course, this could not be done manually because we can't access the RUID, but this is a native superoverload so the builder can implement it itself.
 
-One of the most basic concepts of SilverNight is the references. For example, when an object is gave to a function, the object is not cloned automatically, so it keeps the same UID. That's why modifying an object inside a function will also modify the original one that was gave to it.
+One of the most basic concepts of SilverNight is the references. To take an example, when an object is gave to a function, the object is not cloned automatically, so it keeps the same RUID. That's why modifying an object inside a function will also modify the original one that was gave to it.
 
-Primitive don't have this problem, has they are very special classes. When a primitive is gave to a function or assigned to another resource, it will automatically be cloned - there's no way to prevent it.
-
-### References in depth
+Primitives don't have this problem, has they are very special classes. When a primitive is gave to a function or assigned to another resource, it will automatically be cloned - there's no way to prevent it.
 
 Pointers aim to provide a new way to deal with references. Let's take the following code:
 
@@ -4590,7 +4588,7 @@ println!(ptr is &i); // Prints: "true"
 println!(ptr is &j); // Prints: "false"
 ```
 
-### Target state
+### Target's state
 
 A pointer must respect the state of its target. For example, if a pointer refers to a constant, assigning anything to the pointer will result in an error (excepting rewriting the pointer's target, of course).
 
