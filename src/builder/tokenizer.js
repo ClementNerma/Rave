@@ -16,7 +16,9 @@ const Tokens_List = [
   'LITERAL_NUMBER',
   'LITERAL_STRING',
   'LITERAL_NAME',
+  'LITERAL_TEMPLATED_STRING',
   'QUOTE',
+  'TEMPLATED_STRING_QUOTE',
   'PREPOST_OPERATOR',
   'LOGICAL_OPERATOR',
   'SHIFT_OPERATOR',
@@ -332,6 +334,29 @@ function tokenize (source) {
     if (isIn(`'"`))
       // Open a new buffer
       openBuffer('string', T_.LITERAL_STRING, null, T_.QUOTE, char);
+
+    // [MATCH] quote
+    else if (isIn('`')) {
+      // Open a new buffer
+      openBuffer('string', T_.LITERAL_TEMPLATED_STRING, null, T_.TEMPLATED_STRING_QUOTE, char);
+
+      // Until the end of the string...
+      while (source[col + 1] !== '`') {
+        // If the end of the source code was reached...
+        if (col === source.length - 1)
+          // Fail
+          fail('Unclosed templated string');
+
+        // Add it to the buffer
+        buff.string += source[++col];
+      }
+
+      // Increase the column number
+      col ++;
+
+      // Close the buffer
+      closeBuffer(T_.TEMPLATED_STRING_QUOTE, char);
+    }
 
     // [MATCH] name character (with digits only if buffer opened)
     else if (isIn(nameSymbol) || (isIn(nameSybolWithDigits) && buff.name)) {
