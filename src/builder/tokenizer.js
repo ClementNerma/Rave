@@ -106,6 +106,29 @@ function tokenize (source) {
   }
 
   /**
+   * Go to a next character
+   * @param {Number} step The number of characters to pass
+   * @returns {void}
+   */
+  function goNextChars (step) {
+    // For each step...
+    for (let i = 0; i < step; i ++) {
+      // Increase the global source code index
+      col ++;
+
+      // If the current character is a line break...
+      if (source[col] === '\n') {
+        // Refresh the line buffer
+        line = lines.shift();
+        // Reset the line's column index
+        line_col = -1;
+      } else
+        // Increase the line column index
+        line_col ++;
+    }
+  }
+
+  /**
    * Push a token
    * @param {string} token The token
    * @param {*} [data] The data that goes with it
@@ -206,7 +229,7 @@ function tokenize (source) {
 
     // If asked, ignore the next characters
     if (ignoreNext)
-      col += follow.length;
+      goNextChars(follow.length);
     
     // Return the test's result
     return test;
@@ -238,7 +261,7 @@ function tokenize (source) {
     // If next characters must be ignored...
     if (ignoreNext)
       // Increase the column index
-      col += follow_list.length + (not_follow_sym ? 1 : 0);
+      goNextChars(follow_list.length + (not_follow_sym ? 1 : 0));
 
     return true;
   }
@@ -250,7 +273,7 @@ function tokenize (source) {
   let token_arr = [];
 
   // The current column in the source code
-  let col = 0;
+  let col = -1;
 
   // Get all lines
   let lines = source.split('\n');
@@ -290,20 +313,12 @@ function tokenize (source) {
   let groups_stack = [];
 
   // For each character...
-  for (col = 0; col < source.length; col ++) {
+  while (col < source.length - 1) {
+    // Go the next character
+    goNextChars(1);
+
     // Get the current character
     char = source[col];
-
-    // If the current character is a line break...
-    if (char === '\n') {
-      // Refresh the line buffer
-      line = lines.shift();
-      // Reset the line's column index
-      line_col = -1;
-    }
-
-    // Increment the line's column index
-    line_col ++;
 
     // If we are in a string...
     if (buff_type === 'string') {
@@ -347,12 +362,15 @@ function tokenize (source) {
           // Fail
           fail('Unclosed templated string');
 
+        // Go to the next character
+        goNextChars(1);
+
         // Add it to the buffer
-        buff.string += source[++col];
+        buff.string += source[col];
       }
 
       // Increase the column number
-      col ++;
+      goNextChars(1);
 
       // Close the buffer
       closeBuffer(T_.TEMPLATED_STRING_QUOTE, char);
@@ -416,9 +434,13 @@ function tokenize (source) {
       let comment = '';
 
       // Until the end of the line (or of the source code)...
-      while (source[col + 1] !== '\n' && col < source.length - 1)
+      while (source[col + 1] !== '\n' && col < source.length - 1) {
+        // Go the next character
+        goNextChars(1);
+
         // Add it to the buffer
-        comment += source[++ col];
+        comment += source[col];
+      }
 
       // Push the symbol
       push(T_.SINGLE_LINE_COMMENT, comment);
@@ -435,12 +457,15 @@ function tokenize (source) {
           // Fail
           fail('Unclosed multi-line comment');
 
+        // Go to the next character
+        goNextChars(1);
+
         // Add it to the buffer
-        comment += source[++ col];
+        comment += source[col];
       }
 
       // Increase the column number twice
-      col += 2;
+      goNextChars(2);
 
       // Push the symbol
       push(T_.MULTI_LINE_COMMENT, comment);
