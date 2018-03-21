@@ -555,12 +555,12 @@ function tokenize (source) {
     // [MATCH] class statical operator
     else if (suite(':', ':'))
       // Push the operator
-      push(T_.STATICAL_REF_OPERATOR, char + char);
+      push(T_.STATICAL_REF_OPERATOR);
 
     // [MATCH] type prefix symbol
     else if (char === ':')
       // Push the symbol
-      push(T_.TYPE_PREFIX_SYMBOL, char);
+      push(T_.TYPE_PREFIX_SYMBOL);
 
     // [MATCH] assignments
     else if (char === '=')
@@ -605,7 +605,7 @@ function tokenize (source) {
     // [MATCH] negation operator
     else if (isIn('!'))
       // Push the operator
-      push(T_.NEG_OPERATOR, char);
+      push(T_.NEG_OPERATOR);
 
     // [MATCH] operators with two arguments
     else if (isIn('+-*/%^&|')) {
