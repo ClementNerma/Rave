@@ -53,7 +53,8 @@ const Tokens_List = [
   'DO_STATEMENT',
   'UNTIL_STATEMENT',
   'UNLESS_STATEMENT',
-  'ARROW_FUNCTION'
+  'ARROW_FUNCTION',
+  'LIST_SEPARATOR'
 ];
 
 // Generate the tokens
@@ -427,6 +428,10 @@ function tokenize (source) {
     // [MATCH] instruction end
     else if (char === ';')
       push(T_.INSTRUCTION_END);
+
+    // [MATCH] list separator
+    else if (char === ',')
+      push(T_.LIST_SEPARATOR)
 
     // [MATCH] digit
     else if (isIn('0123456789.')) {
