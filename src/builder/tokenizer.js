@@ -52,7 +52,8 @@ const Tokens_List = [
   'WHILE_STATEMENT',
   'DO_STATEMENT',
   'UNTIL_STATEMENT',
-  'UNLESS_STATEMENT'
+  'UNLESS_STATEMENT',
+  'ARROW_FUNCTION'
 ];
 
 // Generate the tokens
@@ -554,6 +555,11 @@ function tokenize (source) {
     else if (char === ':')
       // Push the symbol
       push(T_.TYPE_PREFIX_SYMBOL, char);
+
+    // [MATCH] arrow symbol
+    else if (suite('-', '>'))
+      // Push the symbol
+      push(T_.ARROW_FUNCTION);
 
     // [MATCH] (pre/post) increment and decrement operators
     else if (suite('+-', char))
