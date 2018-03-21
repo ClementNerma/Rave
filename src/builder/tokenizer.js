@@ -23,6 +23,10 @@ const Tokens_List = [
   'STATICAL_REF_OPERATOR',
   'OPENING_PARENTHESIS',
   'CLOSING_PARENTHESIS',
+  'OPENING_BRACE',
+  'CLOSING_BRACE',
+  'OPENING_BRACKET',
+  'CLOSING_BRACKET',
   'TYPE_PREFIX_SYMBOL'
 ];
 
@@ -49,6 +53,24 @@ const digitsWithPoint = digits + '.';
 
 // List of non-breaking symbols
 const NON_BREAKING_SYMBOLS = nameSybolWithDigits;
+
+// Group symbols and tokens
+const groups = {
+  '(': { name: 'parenthesis', openingSymbol: '(', closingSymbol: ')', openingToken: T_.OPENING_PARENTHESIS, closingToken: T_.CLOSING_PARENTHESIS },
+  '[': { name: 'brace', openingSymbol: '[', closingSymbol: ']', openingToken: T_.OPENING_BRACKET, closingToken: T_.CLOSING_BRACKET },
+  '{': { name: 'bracket', openingSymbol: '{', closingSymbol: '}', openingToken: T_.OPENING_BRACE, closingToken: T_.CLOSING_BRACE }
+};
+
+// List of groups' opening symbols
+const group_opening_symbols = '([{';
+
+// Complete the list of group symbols and tokens with the closing tokens
+groups[')'] = groups['('];
+groups[']'] = groups['['];
+groups['}'] = groups['{'];
+
+// List of groups' closing symbols
+const group_closing_symbols = ')]}';
 
 /**
  * Tokenize a source code
@@ -241,8 +263,8 @@ function tokenize (source) {
   // A callback to run when before the buffer is closed
   let buff_close_callback = null;
 
-  // Parenthesis counter
-  let parenthesis_counter = 0;
+  // Groups stack
+  let groups_stack = [];
 
   // For each character...
   for (col = 0; col < source.length; col ++) {
@@ -331,24 +353,33 @@ function tokenize (source) {
       // Push it
       push(T_.NEWLINE);
 
-    // [MATCH] opening parenthesis
-    else if (char === '(') {
-      // Push it
-      push(T_.OPENING_PARENTHESIS);
-      // Increment the counter
-      parenthesis_counter ++;
+    // [MATCH] group opening symbol
+    else if (isIn(group_opening_symbols)) {
+      // Open a group
+      groups_stack.push({ char, name: groups[char].name, closingToken: groups[char].closingToken });
+
+      // Push the symbol
+      push(groups[char].openingToken);
     }
 
-    // [MATCH] closing parenthesis
-    else if (char === ')') {
-      // Push it
-      push(T_.CLOSING_PARENTHESIS)
-      // If the counter is already equal to zero...
-      if (! parenthesis_counter)
+    // [MATCH] group closing symbol
+    else if (isIn(group_closing_symbols)) {
+      // If no group is opened...
+      if (! groups_stack.length)
         // Fail
-        fail('Cannot close parenthesis: no matching opening parenthesis');
-      // Decrement the counter
-      parenthesis_counter --;
+        fail(`Found a closing ` + groups[char].name + ' but no matching opening symbol was found');
+
+      // If the last opened group does not match with this symbol...
+      if (groups_stack[groups_stack.length - 1].closingToken !== groups[char].closingToken)
+        // Fail
+        fail(`Expected a closing ` + groups_stack[groups_stack.length - 1].name +
+             ' but got a closing ' + groups[char].name);
+
+      // Close the group
+      groups_stack.pop();
+
+      // Push the symbol
+      push(groups[char].closingToken);
     }
 
     // [MATCH] class statical operator
@@ -431,10 +462,12 @@ function tokenize (source) {
     fail(`A ${buff_type} buffer was not closed`);
 
   // If (at least) one parenthesis was not closed...
-  else if (parenthesis_counter)
+  else if (groups_stack.length)
     // Fail
-    fail('There ' + (parenthesis_counter === 1 ? 'is' : 'are') + ' ' + parenthesis_counter + ' unclosed parenthesis');
-
+    fail('There ' + (groups_stack.length === 1 ? 'is' : 'are') + ' ' +
+         groups_stack.length + ' unclosed group(s) - last is a missing ' +
+         groups_stack[groups_stack.length - 1].name);
+  
   // Return the tokens tree
   return token_arr;
 }
