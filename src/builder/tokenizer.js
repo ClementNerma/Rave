@@ -39,6 +39,9 @@ const Tokens_List = [
   'OPENING_MULTI_LINE_COMMENT',
   'CLOSING_MULTI_LINE_COMMENT',
   'MULTI_LINE_COMMENT',
+  'OPENING_DOCUMENTATION_COMMENT',
+  'CLOSING_DOCUMENTATION_COMMENT',
+  'DOCUMENTATION_COMMENT',
   'PROPERTY_SEPARATOR',
   'INSTRUCTION_END',
   'LET_STATEMENT',
@@ -546,10 +549,13 @@ function tokenize (source) {
       push(T_.SINGLE_LINE_COMMENT, comment);
     }
 
-    // [MATCH] multi-line comment
+    // [MATCH] multi-line comment and documentation comments
     else if (suite('/', '*')) {
+      // Check if it's a documentation comment
+      const doc = isNext('*');
+    
       // Push the opening symbol
-      push(T_.OPENING_MULTI_LINE_COMMENT);
+      push(doc ? T_.OPENING_DOCUMENTATION_COMMENT : T_.OPENING_MULTI_LINE_COMMENT);
 
       // Make a temporary comment buffer
       let comment = '';
@@ -568,10 +574,10 @@ function tokenize (source) {
       goNextChars(2);
 
       // Push the comment
-      push(T_.MULTI_LINE_COMMENT, comment);
+      push(doc ? T_.DOCUMENTATION_COMMENT : T_.MULTI_LINE_COMMENT, comment);
 
       // Push the closing symbol
-      push(T_.CLOSING_MULTI_LINE_COMMENT);
+      push(doc ? T_.CLOSING_DOCUMENTATION_COMMENT : T_.CLOSING_MULTI_LINE_COMMENT);
     }
 
     // [MATCH] group opening symbol
@@ -745,5 +751,5 @@ if (process.argv[2]) {
   }
 
   // Treat the file and display the result in the console
-  console.log(tokenize(content));
+  console.log(JSON.stringify(tokenize(content), null, 2));
 }
