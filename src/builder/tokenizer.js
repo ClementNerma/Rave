@@ -26,6 +26,7 @@ const Tokens_List = [
   'COMPARISON_OPERATOR',
   'MATH_OPERATOR',
   'STATICAL_REF_OPERATOR',
+  'ASSIGNMENT_OPERATOR',
   'OPENING_PARENTHESIS',
   'CLOSING_PARENTHESIS',
   'OPENING_BRACE',
@@ -560,6 +561,11 @@ function tokenize (source) {
     else if (char === ':')
       // Push the symbol
       push(T_.TYPE_PREFIX_SYMBOL, char);
+
+    // [MATCH] assignments
+    else if (char === '=')
+      // Push the symbol
+      push(T_.ASSIGNMENT_OPERATOR);
 
     // [MATCH] arrow symbol
     else if (suite('-', '>'))
