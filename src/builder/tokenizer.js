@@ -5,6 +5,9 @@
 // Enable strict mode
 "use strict";
 
+// Error's width for debugging
+const errorWidth = 20;
+
 // List of token names
 const Tokens_List = [
   'NEWLINE',
@@ -86,9 +89,16 @@ function tokenize (source) {
    * @returns {void}
    */
   function fail (message) {
-    // Display an error message
-    console.error(`[ERROR] ${message}`);
-  
+    // === Set the message with debugging ===
+    // Define the part to display
+    let part = line.substr(line_col < errorWidth ? 0 : line_col - errorWidth, 2 * errorWidth + 1);
+    // Define the cursor's position
+    // The Math.max() function is used here to prevent negative values if the
+    // parser calculates a wrong cursor position.
+    let cursor = Math.max(line_col < errorWidth ? line_col : errorWidth, 0);
+    // Display the error message
+    console.error(`ERROR : At line ${source.split('\n').length - lines.length + 1}, column ${line_col + 1} : \n\n${part}\n${' '.repeat(cursor)}^\n${' '.repeat(cursor)}${message}`);
+
     // Thrown an error
     throw new Error('Tokenization failed.');    
   }
@@ -240,6 +250,15 @@ function tokenize (source) {
   // The current column in the source code
   let col = 0;
 
+  // Get all lines
+  let lines = source.split('\n');
+
+  // The current line
+  let line = lines.shift();
+
+  // The current column in the line
+  let line_col = -1;
+
   // The current character
   let char = '';
 
@@ -272,6 +291,17 @@ function tokenize (source) {
   for (col = 0; col < source.length; col ++) {
     // Get the current character
     char = source[col];
+
+    // If the current character is a line break...
+    if (char === '\n') {
+      // Refresh the line buffer
+      line = lines.shift();
+      // Reset the line's column index
+      line_col = -1;
+    }
+
+    // Increment the line's column index
+    line_col ++;
 
     // If we are in a string...
     if (buff_type === 'string') {
@@ -486,7 +516,7 @@ function tokenize (source) {
 
     // Handle unexcepted symbols
     else
-      fail(`Unexpected symbol: ${char} (char code = ${char.charCodeAt(0)} | ${char.length} bytes)`);
+      fail(`Unexpected symbol: ${char} (ASCII code = ${char.charCodeAt(0)})`);
   }
 
   // If a number or a name buff is opened...
