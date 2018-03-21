@@ -9,7 +9,7 @@
 const Tokens_List = [
   'NEWLINE',
   'SPACE',
-  'LITERAL_BOOL',
+  'LITERAL_BOOLEAN',
   'LITERAL_NUMBER',
   'LITERAL_STRING',
   'NAME',
@@ -222,7 +222,7 @@ function tokenize (source) {
     }
 
     // If the current character...
-    // [SYMBOL] quote
+    // [MATCH] quote
     if (isIn(`'"`)) {
       // Open a new buffer
       openBuffer('string', T_.LITERAL_STRING, null, T_.QUOTE, char);
@@ -230,7 +230,7 @@ function tokenize (source) {
       continue ;
     }
 
-    // [SYMBOL] digit
+    // [MATCH] digit
     if (isIn('0123456789.')) {
       // If a number is already opened...
       if (buff.number) {
@@ -262,52 +262,52 @@ function tokenize (source) {
       // Close it
       closeBuffer();
 
-    // [SYMBOL] space
+    // [MATCH] space
     if (char === ' ')
       // Push it
       push(T_.SPACE);
 
-    // [SYMBOL] newline
+    // [MATCH] newline
     else if (char === '\n')
       // Push it
       push(T_.NEWLINE);
 
-    // [SYMBOL] (pre/post) increment and decrement operators
+    // [MATCH] (pre/post) increment and decrement operators
     else if (suite('+-', char))
       // Push the operator
       push(T_.PREPOST_OPERATOR, char + char);
     
-    // [SYMBOL] shift operators
+    // [MATCH] shift operators
     else if (suite('<', '<') || suite('>', '>'))
       // Push the operator
       push(T_.SHIFT_OPERATOR, char + char);
 
-    // [SYMBOL] comparison operators
+    // [MATCH] comparison operators
     else if (isIn('<>'))
       // Push the operator
       push(T_.COMPARISON_OPERATOR, char);
 
-    // [SYMBOL] comparison operators
+    // [MATCH] comparison operators
     else if (suite('<>', '='))
       // Push the operator
       push(T_.COMPARISON_OPERATOR, char);
 
-    // [SYMBOL] logical operators
+    // [MATCH] logical operators
     else if (suite('&|', char))
       // Push the operator
       push(T_.LOGICAL_OPERATOR, char + char);
 
-    // [SYMBOL] equality operators
+    // [MATCH] equality operators
     else if (suite('=!', '='))
       // Push the operator
       push(T_.COMPARISON_OPERATOR, char + '=');
 
-    // [SYMBOL] negation operator
+    // [MATCH] negation operator
     else if (isIn('!'))
       // Push the operator
       push(T_.NEG_OPERATOR, char);
 
-    // [SYMBOL] operators with two arguments
+    // [MATCH] operators with two arguments
     else if (isIn('+-*/%^&|')) {
       // Handle the pow operator
       if (isIn('*') && isNext('*'))
@@ -317,6 +317,14 @@ function tokenize (source) {
       // Push the operator
       push(T_.MATH_OPERATOR, char);
     }
+
+    // [MATCH] booleans
+    else if (suite('t', 'rue'))
+      push(T_.LITERAL_BOOLEAN, 'true');
+    
+    // [MATCH] booleans
+    else if (suite('f', 'alse'))
+      push(T_.LITERAL_BOOLEAN, 'false');
 
     // Handle unknown symbols
     else
