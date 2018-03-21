@@ -19,7 +19,9 @@ const Tokens_List = [
   'SHIFT_OPERATOR',
   'NEG_OPERATOR',
   'COMPARISON_OPERATOR',
-  'MATH_OPERATOR'
+  'MATH_OPERATOR',
+  'OPENING_PARENTHESIS',
+  'CLOSING_PARENTHESIS'
 ];
 
 // Generate the tokens
@@ -42,6 +44,9 @@ const nameSybolWithDigits = nameSymbol + '0123456789';
 const digits = '0123456789';
 // Digits with point
 const digitsWithPoint = digits + '.';
+
+// List of breaking symbols
+const BREAKING_SYMBOLS = ' \n()';
 
 /**
  * Tokenize a source code
@@ -217,6 +222,9 @@ function tokenize (source) {
   // A callback to run when before the buffer is closed
   let buff_close_callback = null;
 
+  // Parenthesis counter
+  let parenthesis_counter = 0;
+
   // For each character...
   for (col = 0; col < source.length; col ++) {
     // Get the current character
@@ -243,7 +251,7 @@ function tokenize (source) {
       closeBuffer();
 
     // If this symbol is a breaking one and a name buffer is opened...
-    if (buff.name && isIn(' \n'))
+    if (buff.name && isIn(BREAKING_SYMBOLS))
       // Close it
       closeBuffer();
 
@@ -303,6 +311,26 @@ function tokenize (source) {
     else if (char === '\n')
       // Push it
       push(T_.NEWLINE);
+
+    // [MATCH] opening parenthesis
+    else if (char === '(') {
+      // Push it
+      push(T_.OPENING_PARENTHESIS);
+      // Increment the counter
+      parenthesis_counter ++;
+    }
+
+    // [MATCH] closing parenthesis
+    else if (char === ')') {
+      // Push it
+      push(T_.CLOSING_PARENTHESIS)
+      // If the counter is already equal to zero...
+      if (! parenthesis_counter)
+        // Fail
+        fail('Cannot close parenthesis: no matching opening parenthesis');
+      // Decrement the counter
+      parenthesis_counter --;
+    }
 
     // [MATCH] (pre/post) increment and decrement operators
     else if (suite('+-', char))
@@ -372,6 +400,11 @@ function tokenize (source) {
   else if (buff_type)
     // Fail
     fail(`A ${buff_type} buffer was not closed`);
+
+  // If (at least) one parenthesis was not closed...
+  else if (parenthesis_counter)
+    // Fail
+    fail('There ' + (parenthesis_counter === 1 ? 'is' : 'are') + ' ' + parenthesis_counter + ' unclosed parenthesis');
 
   // Return the tokens tree
   return token_arr;
