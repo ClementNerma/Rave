@@ -34,7 +34,8 @@ const Tokens_List = [
   'CLOSING_BRACKET',
   'TYPE_PREFIX_SYMBOL',
   'SINGLE_LINE_COMMENT',
-  'MULTI_LINE_COMMENT'
+  'MULTI_LINE_COMMENT',
+  'PROPERTY_SEPARATOR'
 ];
 
 // Generate the tokens
@@ -390,6 +391,10 @@ function tokenize (source) {
         buff.name = char;
       }
     }
+
+    // [MATCH] property separator
+    else if (char === '.')
+      push(T_.PROPERTY_SEPARATOR);
 
     // [MATCH] digit
     else if (isIn('0123456789.')) {
