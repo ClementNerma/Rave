@@ -484,9 +484,9 @@ function tokenize (source) {
     else if (suite('f', 'alse'))
       push(T_.LITERAL_BOOLEAN, 'false');
 
-    // Handle unknown symbols
+    // Handle unexcepted symbols
     else
-      fail(`Unknown symbol: ${char} (char code = ${char.charCodeAt(0)} | ${char.length} bytes)`);
+      fail(`Unexpected symbol: ${char} (char code = ${char.charCodeAt(0)} | ${char.length} bytes)`);
   }
 
   // If a number or a name buff is opened...
