@@ -139,7 +139,7 @@ const upperAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 // Name symbol
 const nameSymbol = lowerAlphabet + upperAlphabet + '_$';
 // Name symbol with digits
-const nameSybolWithDigits = nameSymbol + '0123456789';
+const nameSymbolWithDigits = nameSymbol + '0123456789';
 
 // Digits
 const digits = '0123456789';
@@ -147,7 +147,7 @@ const digits = '0123456789';
 const digitsWithPoint = digits + '.';
 
 // List of non-breaking symbols
-const NON_BREAKING_SYMBOLS = nameSybolWithDigits;
+const NON_BREAKING_SYMBOLS = nameSymbolWithDigits;
 
 // Group symbols and tokens
 const groups = {
@@ -458,7 +458,7 @@ function tokenize (source) {
       openBuffer('string', T_.LITERAL_STRING, null, char === '`' ? T_.BACK_QUOTE : T_.QUOTE, char);
 
     // [MATCH] name character (with digits only if buffer opened)
-    else if (isIn(nameSymbol) || (isIn(nameSybolWithDigits) && buff.name)) {
+    else if (isIn(nameSymbol) || (isIn(nameSymbolWithDigits) && buff.name)) {
       // If a name buffer was already opened...
       if (buff.name)
         // Append the character to it
