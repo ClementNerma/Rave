@@ -12,7 +12,7 @@ const Tokens_List = [
   'LITERAL_BOOLEAN',
   'LITERAL_NUMBER',
   'LITERAL_STRING',
-  'NAME',
+  'LITERAL_NAME',
   'QUOTE',
   'PREPOST_OPERATOR',
   'LOGICAL_OPERATOR',
@@ -27,6 +27,21 @@ const T_ = {};
 
 for (let token of Tokens_List)
   T_[token] = 'T_' + token;
+
+// Lower-case alphabet
+const lowerAlphabet = 'abcdefghijklmnopqrstuvwxyz';
+// Upper-case alphabet
+const upperAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+// Name symbol
+const nameSymbol = lowerAlphabet + upperAlphabet + '_$';
+// Name symbol with digits
+const nameSybolWithDigits = nameSymbol + '0123456789';
+
+// Digits
+const digits = '0123456789';
+// Digits with point
+const digitsWithPoint = digits + '.';
 
 /**
  * Tokenize a source code
@@ -186,7 +201,8 @@ function tokenize (source) {
   // List of buffers
   let buff = {
     number: '',
-    string: ''
+    string: '',
+    name: ''
   };
 
   // Current buffer type
@@ -221,17 +237,38 @@ function tokenize (source) {
       continue ;
     }
 
-    // If the current character...
+    // If the current symbol is not a digit but a number buffer is opened...
+    if (buff.number && !isIn(digitsWithPoint))
+      // Close it
+      closeBuffer();
+
+    // If this symbol is a breaking one and a name buffer is opened...
+    if (buff.name && isIn(' \n'))
+      // Close it
+      closeBuffer();
+
     // [MATCH] quote
-    if (isIn(`'"`)) {
+    if (isIn(`'"`))
       // Open a new buffer
       openBuffer('string', T_.LITERAL_STRING, null, T_.QUOTE, char);
 
-      continue ;
+    // [MATCH] name character (with digits only if buffer opened)
+    else if (isIn(nameSymbol) || (isIn(nameSybolWithDigits) && buff.name)) {
+      // If a name buffer was already opened...
+      if (buff.name)
+        // Append the character to it
+        buff.name += char;
+      else {
+        // Open a new buffer
+        openBuffer('name', T_.LITERAL_NAME);
+
+        // Append this character to it
+        buff.name = char;
+      }
     }
 
     // [MATCH] digit
-    if (isIn('0123456789.')) {
+    else if (isIn('0123456789.')) {
       // If a number is already opened...
       if (buff.number) {
         // If it's a point and there's already a point in the buffer...
@@ -250,20 +287,15 @@ function tokenize (source) {
         // Open a new buffer
         openBuffer('number', T_.LITERAL_NUMBER);
 
-        // Open a number buffer
+        // Append this character to it
         buff.number = char;
       }
 
       continue ;
     }
 
-    // If number is not a digit but a number buffer is opened...
-    else if (buff.number)
-      // Close it
-      closeBuffer();
-
     // [MATCH] space
-    if (char === ' ')
+    else if (char === ' ')
       // Push it
       push(T_.SPACE);
 
@@ -331,8 +363,8 @@ function tokenize (source) {
       fail(`Unknown symbol: ${char} (char code = ${char.charCodeAt(0)} | ${char.length} bytes)`);
   }
 
-  // If a number buff is opened...
-  if (buff.number)
+  // If a number or a name buff is opened...
+  if (buff.number || buff.name)
     // Close it
     closeBuffer();
 
