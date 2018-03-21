@@ -36,7 +36,20 @@ const Tokens_List = [
   'SINGLE_LINE_COMMENT',
   'MULTI_LINE_COMMENT',
   'PROPERTY_SEPARATOR',
-  'INSTRUCTION_END'
+  'INSTRUCTION_END',
+  'FUNCTION_STATEMENT',
+  'RETURN_STATEMENT',
+  'LET_STATEMENT',
+  'CONST_STATEMENT',
+  'FROZEN_STATEMENT',
+  'PLAIN_STATEMENT',
+  'IF_STATEMENT',
+  'ELSE_STATEMENT',
+  'FOR_STATEMENT',
+  'WHILE_STATEMENT',
+  'DO_STATEMENT',
+  'UNTIL_STATEMENT',
+  'UNLESS_STATEMENT'
 ];
 
 // Generate the tokens
@@ -44,6 +57,23 @@ const T_ = {};
 
 for (let token of Tokens_List)
   T_[token] = 'T_' + token;
+
+// Entities that replaces literal names
+const nameAltEntities = {
+  'function': T_.FUNCTION_STATEMENT,
+  'return'  : T_.RETURN_STATEMENT,
+  'let'     : T_.LET_STATEMENT,
+  'const'   : T_.CONST_STATEMENT,
+  'frozen'  : T_.FROZEN_STATEMENT,
+  'plain'   : T_.PLAIN_STATEMENT,
+  'if'      : T_.IF_STATEMENT,
+  'else'    : T_.ELSE_STATEMENT,
+  'for'     : T_.FOR_STATEMENT,
+  'while'   : T_.WHILE_STATEMENT,
+  'do'      : T_.DO_STATEMENT,
+  'until'   : T_.UNTIL_STATEMENT,
+  'unless'  : T_.UNLESS_STATEMENT
+};
 
 // Lower-case alphabet
 const lowerAlphabet = 'abcdefghijklmnopqrstuvwxyz';
@@ -596,6 +626,13 @@ function tokenize (source) {
          groups_stack.length + ' unclosed group(s) - last is a missing ' +
          groups_stack[groups_stack.length - 1].name);
   
+  // Treat some specials entities
+  for (let i = 0; i < token_arr.length; i ++)
+    // If it's a literal name and if it relies on another entity...
+    if (token_arr[i][0] === T_.LITERAL_NAME && nameAltEntities.hasOwnProperty(token_arr[i][1]))
+      // Replace the current token
+      token_arr[i] = [ nameAltEntities[token_arr[i][1]] ];
+
   // Return the tokens tree
   return token_arr;
 }
