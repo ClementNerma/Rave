@@ -20,6 +20,7 @@ const Tokens_List = [
   'NEG_OPERATOR',
   'COMPARISON_OPERATOR',
   'MATH_OPERATOR',
+  'STATICAL_REF_OPERATOR',
   'OPENING_PARENTHESIS',
   'CLOSING_PARENTHESIS'
 ];
@@ -45,8 +46,8 @@ const digits = '0123456789';
 // Digits with point
 const digitsWithPoint = digits + '.';
 
-// List of breaking symbols
-const BREAKING_SYMBOLS = ' \n()';
+// List of non-breaking symbols
+const NON_BREAKING_SYMBOLS = nameSybolWithDigits;
 
 /**
  * Tokenize a source code
@@ -268,7 +269,7 @@ function tokenize (source) {
       closeBuffer();
 
     // If this symbol is a breaking one and a name buffer is opened...
-    if (buff.name && isIn(BREAKING_SYMBOLS))
+    if (buff.name && ! isIn(NON_BREAKING_SYMBOLS))
       // Close it
       closeBuffer();
 
