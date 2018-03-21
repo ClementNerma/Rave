@@ -500,7 +500,7 @@ function tokenize (source) {
       // Make a temporary comment buffer
       let comment = '';
       // Until the end of the comment...
-      while (source[col + 1] !== '*' && source[col + 2] !== '/') {
+      while (source[col + 1] !== '*' || source[col + 2] !== '/') {
         // If the end of the source code was reached...
         if (col === source.length - 2)
           // Fail
