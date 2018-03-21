@@ -57,7 +57,8 @@ const Tokens_List = [
   'ARROW_FUNCTION',
   'LIST_SEPARATOR',
   'DIRECTIVE',
-  'AROBASE_SYMBOL'
+  'AROBASE_SYMBOL',
+  'NULLABLE_SYMBOL'
 ];
 
 // Generate the tokens
@@ -439,6 +440,10 @@ function tokenize (source) {
     // [MATCH] arobase
     else if (char === '@')
       push(T_.AROBASE_SYMBOL);
+
+    // [MATCH] nullable symbol
+    else if (char === '?')
+      push(T_.NULLABLE_SYMBOL);
 
     // [MATCH] digit
     else if (isIn('0123456789.')) {
