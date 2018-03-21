@@ -63,7 +63,7 @@ for (let token of Tokens_List)
 
 // Entities that replaces literal names
 const nameAltEntities = {
-  'function': T_.FUNCTION_STATEMENT,
+  'func'    : T_.FUNCTION_STATEMENT,
   'return'  : T_.RETURN_STATEMENT,
   'let'     : T_.LET_STATEMENT,
   'const'   : T_.CONST_STATEMENT,
