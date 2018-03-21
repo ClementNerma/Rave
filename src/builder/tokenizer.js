@@ -148,7 +148,7 @@ function tokenize (source) {
 
     // If asked, ignore the next characters
     if (ignoreNext)
-      col ++;
+      col += follow.length;
     
     // Return the test's result
     return test;
