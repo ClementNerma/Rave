@@ -147,7 +147,7 @@ function tokenize (source) {
   /**
    * Go to a next character
    * @param {Number} step The number of characters to pass
-   * @returns {void}
+   * @returns {string} The last got character
    */
   function goNextChars (step) {
     // For each step...
@@ -170,6 +170,9 @@ function tokenize (source) {
         // Increase the line column index
         line_col ++;
     }
+
+    // Return the new current character
+    return source[col];
   }
 
   /**
@@ -361,11 +364,8 @@ function tokenize (source) {
 
   // For each character...
   while (col < source.length - 1) {
-    // Go the next character
-    goNextChars(1);
-
-    // Get the current character
-    char = source[col];
+    // Go to the next character
+    char = goNextChars(1);
 
     // If we are in a string...
     if (buff_type === 'string') {
@@ -481,13 +481,9 @@ function tokenize (source) {
       let comment = '';
 
       // Until the end of the line (or of the source code)...
-      while (source[col + 1] !== '\n' && col < source.length - 1) {
-        // Go the next character
-        goNextChars(1);
-
+      while (source[col + 1] !== '\n' && col < source.length - 1)
         // Add it to the buffer
-        comment += source[col];
-      }
+        comment += goNextChars(1);
 
       // Push the comment
       push(T_.SINGLE_LINE_COMMENT, comment);
@@ -507,11 +503,8 @@ function tokenize (source) {
           // Fail
           fail('Unclosed multi-line comment');
 
-        // Go to the next character
-        goNextChars(1);
-
-        // Add it to the buffer
-        comment += source[col];
+        // Go to the next character and add it to the buffer
+        comment += goNextChars(1);
       }
 
       // Increase the column number twice
@@ -561,13 +554,9 @@ function tokenize (source) {
       let directive = '';
 
       // While the current character is a letter...
-      while (nameSymbol.includes(source[col + 1])) {
-        // Add it to the buffer
-        directive += source[col + 1];
-
-        // Go to the next character
-        goNextChars(1);
-      }
+      while (nameSymbol.includes(source[col + 1]))
+        // Go to the next character and add it to the buffer
+        directive += goNextChars(1);
 
       // Push the symbol
       push(T_.DIRECTIVE, directive);
