@@ -5,20 +5,28 @@
 // Enable strict mode
 "use strict";
 
-// List of tokens
-const T_NEWLINE             = 'T_NEWLINE';
-const T_SPACE               = 'T_SPACE';
-const T_LITERAL_BOOL        = 'T_LITERAL_BOOL';
-const T_LITERAL_NUMBER      = 'T_LITERAL_NUMBER';
-const T_LITERAL_STRING      = 'T_LITERAL_STRING';
-const T_NAME                = 'T_NAME';
-const T_QUOTE               = 'T_QUOTE';
-const T_PREPOST_OPERATOR    = 'T_PREPOST_OPERATOR';
-const T_LOGICAL_OPERATOR    = 'T_LOGICAL_OPERATOR';
-const T_SHIFT_OPERATOR      = 'T_SHIFT_OPERATOR';
-const T_NEG_OPERATOR        = 'T_NEG_OPERATOR';
-const T_COMPARISON_OPERATOR = 'T_COMPARISON_OPERATOR';
-const T_MATH_OPERATOR       = 'T_MATH_OPERATOR';
+// List of token names
+const Tokens_List = [
+  'NEWLINE',
+  'SPACE',
+  'LITERAL_BOOL',
+  'LITERAL_NUMBER',
+  'LITERAL_STRING',
+  'NAME',
+  'QUOTE',
+  'PREPOST_OPERATOR',
+  'LOGICAL_OPERATOR',
+  'SHIFT_OPERATOR',
+  'NEG_OPERATOR',
+  'COMPARISON_OPERATOR',
+  'MATH_OPERATOR'
+];
+
+// Generate the tokens
+const T_ = {};
+
+for (let token of Tokens_List)
+  T_[token] = 'T_' + token;
 
 /**
  * Tokenize a source code
@@ -203,7 +211,7 @@ function tokenize (source) {
       // If the current character is the opening quote...
       if (char === buff_opening_token[1]) {
         // Push the string
-        closeBuffer(T_QUOTE, char);
+        closeBuffer(T_.QUOTE, char);
         // Reset the string buffer
         buff.string = '';
       } else
@@ -217,7 +225,7 @@ function tokenize (source) {
     // [SYMBOL] quote
     if (isIn(`'"`)) {
       // Open a new buffer
-      openBuffer('string', T_LITERAL_STRING, null, T_QUOTE, char);
+      openBuffer('string', T_.LITERAL_STRING, null, T_.QUOTE, char);
 
       continue ;
     }
@@ -240,7 +248,7 @@ function tokenize (source) {
           fail(`A point must follow a digit`);
 
         // Open a new buffer
-        openBuffer('number', T_LITERAL_NUMBER);
+        openBuffer('number', T_.LITERAL_NUMBER);
 
         // Open a number buffer
         buff.number = char;
@@ -257,47 +265,47 @@ function tokenize (source) {
     // [SYMBOL] space
     if (char === ' ')
       // Push it
-      push(T_SPACE);
+      push(T_.SPACE);
 
     // [SYMBOL] newline
     else if (char === '\n')
       // Push it
-      push(T_NEWLINE);
+      push(T_.NEWLINE);
 
     // [SYMBOL] (pre/post) increment and decrement operators
     else if (suite('+-', char))
       // Push the operator
-      push(T_PREPOST_OPERATOR, char + char);
+      push(T_.PREPOST_OPERATOR, char + char);
     
     // [SYMBOL] shift operators
     else if (suite('<', '<') || suite('>', '>'))
       // Push the operator
-      push(T_SHIFT_OPERATOR, char + char);
+      push(T_.SHIFT_OPERATOR, char + char);
 
     // [SYMBOL] comparison operators
     else if (isIn('<>'))
       // Push the operator
-      push(T_COMPARISON_OPERATOR, char);
+      push(T_.COMPARISON_OPERATOR, char);
 
     // [SYMBOL] comparison operators
     else if (suite('<>', '='))
       // Push the operator
-      push(T_COMPARISON_OPERATOR, char);
+      push(T_.COMPARISON_OPERATOR, char);
 
     // [SYMBOL] logical operators
     else if (suite('&|', char))
       // Push the operator
-      push(T_LOGICAL_OPERATOR, char + char);
+      push(T_.LOGICAL_OPERATOR, char + char);
 
     // [SYMBOL] equality operators
     else if (suite('=!', '='))
       // Push the operator
-      push(T_COMPARISON_OPERATOR, char + '=');
+      push(T_.COMPARISON_OPERATOR, char + '=');
 
     // [SYMBOL] negation operator
     else if (isIn('!'))
       // Push the operator
-      push(T_NEG_OPERATOR, char);
+      push(T_.NEG_OPERATOR, char);
 
     // [SYMBOL] operators with two arguments
     else if (isIn('+-*/%^&|')) {
@@ -307,7 +315,7 @@ function tokenize (source) {
         char += char;
 
       // Push the operator
-      push(T_MATH_OPERATOR, char);
+      push(T_.MATH_OPERATOR, char);
     }
 
     // Handle unknown symbols
