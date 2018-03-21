@@ -55,7 +55,8 @@ const Tokens_List = [
   'UNTIL_STATEMENT',
   'UNLESS_STATEMENT',
   'ARROW_FUNCTION',
-  'LIST_SEPARATOR'
+  'LIST_SEPARATOR',
+  'DIRECTIVE'
 ];
 
 // Generate the tokens
@@ -550,6 +551,26 @@ function tokenize (source) {
 
       // Push the symbol
       push(groups[char].closingToken);
+    }
+
+    // [MATCH] directive
+    else if (char === '#') {      
+      // Match the next alphanumeric characters
+
+      // Make a name buffer
+      let directive = '';
+
+      // While the current character is a letter...
+      while (nameSymbol.includes(source[col + 1])) {
+        // Add it to the buffer
+        directive += source[col + 1];
+
+        // Go to the next character
+        goNextChars(1);
+      }
+
+      // Push the symbol
+      push(T_.DIRECTIVE, directive);
     }
 
     // [MATCH] class statical operator
