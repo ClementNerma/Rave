@@ -18,7 +18,7 @@ const Tokens_List = [
   'LITERAL_NAME',
   'LITERAL_TEMPLATED_STRING',
   'QUOTE',
-  'TEMPLATED_STRING_QUOTE',
+  'BACK_QUOTE',
   'PREPOST_OPERATOR',
   'LOGICAL_OPERATOR',
   'SHIFT_OPERATOR',
@@ -344,6 +344,9 @@ function tokenize (source) {
   // A callback to run when before the buffer is closed
   let buff_close_callback = null;
 
+  // ['string' buffer] Is the last character a backslash?
+  let will_escape = false;
+
   // Groups stack
   let groups_stack = [];
 
@@ -357,15 +360,26 @@ function tokenize (source) {
 
     // If we are in a string...
     if (buff_type === 'string') {
+      // If the last character was NOT an escape backslash and...
       // If the current character is the opening quote...
-      if (char === buff_opening_token[1]) {
+      if (! will_escape && char === buff_opening_token[1]) {
         // Push the string
-        closeBuffer(T_.QUOTE, char);
+        closeBuffer(char === '`' ? T_.BACK_QUOTE : T_.QUOTE, char);
         // Reset the string buffer
         buff.string = '';
       } else
         // Push the character to the string buffer
         buff.string += char;
+
+      // If the current character is a backslash...
+      if (char === '\\')
+        // Revert the escape boolean
+        // NOTE: If the last character was a backslash, then simply cancel them
+        //       If it was note, this symbol will escape the next one
+        will_escape = ! will_escape;
+      else
+        // The next character will not be escaped
+        will_escape = false;
 
       continue ;
     }
@@ -381,35 +395,9 @@ function tokenize (source) {
       closeBuffer();
 
     // [MATCH] quote
-    if (isIn(`'"`))
+    if (isIn('\'"`'))
       // Open a new buffer
-      openBuffer('string', T_.LITERAL_STRING, null, T_.QUOTE, char);
-
-    // [MATCH] quote
-    else if (isIn('`')) {
-      // Open a new buffer
-      openBuffer('string', T_.LITERAL_TEMPLATED_STRING, null, T_.TEMPLATED_STRING_QUOTE, char);
-
-      // Until the end of the string...
-      while (source[col + 1] !== '`') {
-        // If the end of the source code was reached...
-        if (col === source.length - 1)
-          // Fail
-          fail('Unclosed templated string');
-
-        // Go to the next character
-        goNextChars(1);
-
-        // Add it to the buffer
-        buff.string += source[col];
-      }
-
-      // Increase the column number
-      goNextChars(1);
-
-      // Close the buffer
-      closeBuffer(T_.TEMPLATED_STRING_QUOTE, char);
-    }
+      openBuffer('string', T_.LITERAL_STRING, null, char === '`' ? T_.BACK_QUOTE : T_.QUOTE, char);
 
     // [MATCH] name character (with digits only if buffer opened)
     else if (isIn(nameSymbol) || (isIn(nameSybolWithDigits) && buff.name)) {
