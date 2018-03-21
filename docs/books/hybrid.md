@@ -4139,6 +4139,20 @@ This now works fine. Also, inferred typing can do it automatically, like this:
 val point = getNilPoints();
 ```
 
+Note that writing:
+
+```sn
+val point: Point?;
+```
+
+Will, as for a standard type, be understood as this:
+
+```sn
+val point: Point? = new Point?();
+```
+
+Instanciating a nullable type will return the `null` value by default.
+
 ### The `null` value
 
 As we saw, the `getNilPoints()` function can now return an instance of `void`. But what's that, exactly? That's simply a special SilverNight value with no member at all, excepted some overloads like `@toString()` or `@clone()`.
