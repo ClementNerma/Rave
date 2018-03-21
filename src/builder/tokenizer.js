@@ -28,7 +28,8 @@ const Tokens_List = [
   'OPENING_BRACKET',
   'CLOSING_BRACKET',
   'TYPE_PREFIX_SYMBOL',
-  'SINGLE_LINE_COMMENT'
+  'SINGLE_LINE_COMMENT',
+  'MULTI_LINE_COMMENT'
 ];
 
 // Generate the tokens
@@ -366,6 +367,28 @@ function tokenize (source) {
 
       // Push the symbol
       push(T_.SINGLE_LINE_COMMENT, comment);
+    }
+
+    // [MATCH] multi-line comment
+    else if (suite('/', '*')) {
+      // Make a temporary comment buffer
+      let comment = '';
+      // Until the end of the comment...
+      while (source[col + 1] !== '*' && source[col + 2] !== '/') {
+        // If the end of the source code was reached...
+        if (col === source.length - 2)
+          // Fail
+          fail('Unclosed multi-line comment');
+
+        // Add it to the buffer
+        comment += source[++ col];
+      }
+
+      // Increase the column number twice
+      col += 2;
+
+      // Push the symbol
+      push(T_.MULTI_LINE_COMMENT, comment);
     }
 
     // [MATCH] group opening symbol
