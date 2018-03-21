@@ -153,6 +153,11 @@ function tokenize (source) {
 
       // If the current character is a line break...
       if (source[col] === '\n') {
+        // If an *inline* string buffer was opened...
+        if (buff_opening_token ? buff_opening_token[0] === T_.QUOTE : false)
+          // Fail
+          fail('Quote was not closed before the end of the line');
+
         // Refresh the line buffer
         line = lines.shift();
         // Reset the line's column index
