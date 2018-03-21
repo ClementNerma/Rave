@@ -22,7 +22,8 @@ const Tokens_List = [
   'MATH_OPERATOR',
   'STATICAL_REF_OPERATOR',
   'OPENING_PARENTHESIS',
-  'CLOSING_PARENTHESIS'
+  'CLOSING_PARENTHESIS',
+  'TYPE_PREFIX_SYMBOL'
 ];
 
 // Generate the tokens
@@ -354,6 +355,11 @@ function tokenize (source) {
     else if (suite(':', ':'))
       // Push the operator
       push(T_.STATICAL_REF_OPERATOR, char + char);
+
+    // [MATCH] type prefix symbol
+    else if (char === ':')
+      // Push the symbol
+      push(T_.TYPE_PREFIX_SYMBOL, char);
 
     // [MATCH] (pre/post) increment and decrement operators
     else if (suite('+-', char))
