@@ -90,7 +90,8 @@ const Tokens_List = [
   'FRIEND_DESCRIPTOR',
   'INHERITANCE_DESCRIPTOR',
   'IMPLEMENTS_DESCRIPTOR',
-  'ALIAS_KEYWORD'
+  'ALIAS_KEYWORD',
+  'INFINITE_DESCRIPTOR'
 ];
 
 // Generate the tokens
@@ -474,6 +475,10 @@ function tokenize (source) {
         buff.name = char;
       }
     }
+
+    // [MATCH] infinite descriptor
+    else if (suite('.', '..'))
+      push(T_.INFINITE_DESCRIPTOR);
 
     // [MATCH] property separator
     else if (char === '.')
