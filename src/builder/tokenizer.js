@@ -178,14 +178,31 @@ function tokenize (source) {
    * Run if the current symbol is in a list and if it is followed by another list of symbols
    * @param {string} in_list The list of symbols the current character should be in
    * @param {string} follow_list The list of symbols the current character should be followed by
+   * @param {string} not_follow_sym A list of symbols that musn't follow `follow_list`
    * @param {boolean} [ignoreNext] Ignore the next character if the test is true (default: true)
    * @returns {boolean} `true` if all tests succeed, `false` else
    */
-  function suite (in_list, follow_list, ignoreNext = true) {
-    // Do the tests and return the result
-    // NOTE: This funny form is used to prevent `isNext()` from being called
-    //       if `isIn()` returns `false`
-    return isIn(in_list) ? isNext(follow_list, ignoreNext) : false;
+  function suite (in_list, follow_list, not_follow_sym = '', ignoreNext = true) {
+    // If the character is not in the provided list...
+    if (! isIn(in_list))
+      return false;
+    
+    // If the character is not followed by the provided list...
+    if (! isNext(follow_list, false))
+      return false;
+
+    // If the character is followed by a forbidden symbol...
+    if (not_follow_sym.includes(source.charAt(col + follow_list.length + 1)))
+      return false;
+    
+    // Test is `true`
+
+    // If next characters must be ignored...
+    if (ignoreNext)
+      // Increase the column index
+      col += follow_list.length + (not_follow_sym ? 1 : 0);
+
+    return true;
   }
 
   // Normalize line breaks in the source code
@@ -331,6 +348,11 @@ function tokenize (source) {
       // Decrement the counter
       parenthesis_counter --;
     }
+
+    // [MATCH] class statical operator
+    else if (suite(':', ':'))
+      // Push the operator
+      push(T_.STATICAL_REF_OPERATOR, char + char);
 
     // [MATCH] (pre/post) increment and decrement operators
     else if (suite('+-', char))
