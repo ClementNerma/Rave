@@ -27,7 +27,8 @@ const Tokens_List = [
   'CLOSING_BRACE',
   'OPENING_BRACKET',
   'CLOSING_BRACKET',
-  'TYPE_PREFIX_SYMBOL'
+  'TYPE_PREFIX_SYMBOL',
+  'SINGLE_LINE_COMMENT'
 ];
 
 // Generate the tokens
@@ -352,6 +353,20 @@ function tokenize (source) {
     else if (char === '\n')
       // Push it
       push(T_.NEWLINE);
+
+    // [MATCH] single-line comment
+    else if (suite('/', '/')) {
+      // Make a temporary comment buffer
+      let comment = '';
+
+      // Until the end of the line (or of the source code)...
+      while (source[col + 1] !== '\n' && col < source.length - 1)
+        // Add it to the buffer
+        comment += source[++ col];
+
+      // Push the symbol
+      push(T_.SINGLE_LINE_COMMENT, comment);
+    }
 
     // [MATCH] group opening symbol
     else if (isIn(group_opening_symbols)) {
