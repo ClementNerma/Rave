@@ -35,7 +35,8 @@ const Tokens_List = [
   'TYPE_PREFIX_SYMBOL',
   'SINGLE_LINE_COMMENT',
   'MULTI_LINE_COMMENT',
-  'PROPERTY_SEPARATOR'
+  'PROPERTY_SEPARATOR',
+  'INSTRUCTION_END'
 ];
 
 // Generate the tokens
@@ -395,6 +396,10 @@ function tokenize (source) {
     // [MATCH] property separator
     else if (char === '.')
       push(T_.PROPERTY_SEPARATOR);
+
+    // [MATCH] instruction end
+    else if (char === ';')
+      push(T_.INSTRUCTION_END);
 
     // [MATCH] digit
     else if (isIn('0123456789.')) {
