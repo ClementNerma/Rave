@@ -174,7 +174,7 @@ const group_closing_symbols = ')]}';
 /**
  * Tokenize a source code
  * @param {string} source The source code to tokenize
- * @returns {Array} A representation of the source code with tokens
+ * @returns {Array.<Array>} A tokens array
  */
 function tokenize (source) {
   /**
