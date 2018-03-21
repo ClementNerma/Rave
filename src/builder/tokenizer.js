@@ -758,3 +758,16 @@ if (process.argv[2]) {
   // Treat the file and display the result in the console
   console.log(JSON.stringify(tokenize(content), null, 2));
 }
+
+// Export some data
+if (typeof module === 'object' && module)
+  module.exports = {
+    // Templates object
+    T_,
+    // List of templates
+    tokens: Object.values(T_),
+    // Non-breaking symbols
+    non_breaking_symbols: NON_BREAKING_SYMBOLS,
+    // Main function
+    tokenize
+  };
