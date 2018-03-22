@@ -16,6 +16,7 @@ const Tokens_List = [
   'LITERAL_NUMBER',
   'LITERAL_STRING',
   'LITERAL_NAME',
+  'LITERAL_MACRO_NAME',
   'LITERAL_TEMPLATED_STRING',
   'QUOTE',
   'BACK_QUOTE',
@@ -685,9 +686,17 @@ function tokenize (source) {
       push(T_.COMPARISON_OPERATOR, char + '=');
 
     // [MATCH] negation operator
-    else if (isIn('!'))
-      // Push the operator
-      push(T_.NEG_OPERATOR);
+    else if (isIn('!')) {
+      // If the last token was a literal name...
+      if (last_token === T_.LITERAL_NAME) {
+        // Get it and remove it from the array
+        let token = token_arr.pop();
+        // Push a new token instead
+        push(T_.LITERAL_MACRO_NAME, token[1]);
+      } else
+        // Push the operator
+        push(T_.NEG_OPERATOR);
+    }
 
     // [MATCH] operators with two arguments
     else if (isIn('+-*/%^&|')) {
