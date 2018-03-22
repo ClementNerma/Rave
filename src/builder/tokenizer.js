@@ -496,10 +496,10 @@ function tokenize (source) {
       // Push the operator
       push('T_FLY_OPERATOR', char + '=');
 
-    // [MATCH] negation operator
-    else if (isIn('!'))
+    // [MATCH] negation and one's complement operator
+    else if (isIn('!~'))
       // Push the operator
-      push('T_FLY_OPERATOR');
+      push('T_FLY_ONEARG_OPERATOR');
 
     // [MATCH] operators with two arguments
     else if (isIn('+-*/%^&|')) {
