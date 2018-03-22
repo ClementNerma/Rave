@@ -8,161 +8,23 @@
 // Error's width for debugging
 const errorWidth = 20;
 
-// List of token names
-const Tokens_List = [
-  'NEWLINE',
-  'SPACE',
-  'LITERAL_BOOLEAN',
-  'LITERAL_NUMBER',
-  'LITERAL_STRING',
-  'LITERAL_NAME',
-  'LITERAL_MACRO_NAME',
-  'LITERAL_TEMPLATED_STRING',
-  'QUOTE',
-  'BACK_QUOTE',
-  'PREPOST_OPERATOR',
-  'LOGICAL_OPERATOR',
-  'SHIFT_OPERATOR',
-  'NEG_OPERATOR',
-  'COMPARISON_OPERATOR',
-  'MATH_OPERATOR',
-  'STATICAL_REF_OPERATOR',
-  'ASSIGNMENT_OPERATOR',
-  'OPENING_PARENTHESIS',
-  'CLOSING_PARENTHESIS',
-  'OPENING_BRACE',
-  'CLOSING_BRACE',
-  'OPENING_BRACKET',
-  'CLOSING_BRACKET',
-  'DOUBLE_POINT_SYMBOL',
-  'OPENING_SINGLE_LINE_COMMENT',
-  'SINGLE_LINE_COMMENT',
-  'OPENING_MULTI_LINE_COMMENT',
-  'CLOSING_MULTI_LINE_COMMENT',
-  'MULTI_LINE_COMMENT',
-  'OPENING_DOCUMENTATION_COMMENT',
-  'CLOSING_DOCUMENTATION_COMMENT',
-  'DOCUMENTATION_COMMENT',
-  'PROPERTY_SEPARATOR',
-  'INSTRUCTION_END',
-  'LET_STATEMENT',
-  'CONST_STATEMENT',
-  'FROZEN_STATEMENT',
-  'PLAIN_STATEMENT',
-  'IF_STATEMENT',
-  'ELSE_STATEMENT',
-  'FOR_STATEMENT',
-  'WHILE_STATEMENT',
-  'DO_STATEMENT',
-  'UNTIL_STATEMENT',
-  'UNLESS_STATEMENT',
-  'ARROW_FUNCTION',
-  'LIST_SEPARATOR',
-  'DIRECTIVE',
-  'AROBASE_SYMBOL',
-  'NULLABLE_SYMBOL',
-  'FUNCTION_STATEMENT',
-  'LAMBDA_STATEMENT',
-  'RETURN_STATEMENT',
-  'LET_STATEMENT',
-  'CONST_STATEMENT',
-  'FROZEN_STATEMENT',
-  'PLAIN_STATEMENT',
-  'IF_STATEMENT',
-  'ELSE_STATEMENT',
-  'FOR_STATEMENT',
-  'FOREACH_STATEMENT',
-  'WHILE_STATEMENT',
-  'DO_STATEMENT',
-  'UNTIL_STATEMENT',
-  'UNLESS_STATEMENT',
-  'WHEN_STATEMENT',
-  'STRUCT_STATEMENT',
-  'CLASS_STATEMENT',
-  'DICTIONARY_STATEMENT',
-  'INTERFACE_STATEMENT',
-  'TRAIT_STATEMENT',
-  'PUBLIC_DESCRIPTOR',
-  'PROTECTED_DESCRIPTOR',
-  'PRIVATE_DESCRIPTOR',
-  'READONLY_DESCRIPTOR',
-  'STATIC_DESCRIPTOR',
-  'EXTERN_DESCRIPTOR',
-  'ABSTRACT_DESCRIPTOR',
-  'VIRTUAL_DESCRIPTOR',
-  'FRIEND_DESCRIPTOR',
-  'INHERITANCE_DESCRIPTOR',
-  'IMPLEMENTS_DESCRIPTOR',
-  'ALIAS_KEYWORD',
-  'INFINITE_DESCRIPTOR'
-];
-
-// Generate the tokens
-const T_ = {};
-
-for (let token of Tokens_List)
-  T_[token] = 'T_' + token;
-
-// Entities that replaces literal names
-const nameAltEntities = {
-  'func'      : T_.FUNCTION_STATEMENT,
-  'lambda'    : T_.LAMBDA_STATEMENT,
-  'return'    : T_.RETURN_STATEMENT,
-  'let'       : T_.LET_STATEMENT,
-  'val'       : T_.CONST_STATEMENT,
-  'frozen'    : T_.FROZEN_STATEMENT,
-  'plain'     : T_.PLAIN_STATEMENT,
-  'if'        : T_.IF_STATEMENT,
-  'else'      : T_.ELSE_STATEMENT,
-  'for'       : T_.FOR_STATEMENT,
-  'foreach'   : T_.FOREACH_STATEMENT,
-  'while'     : T_.WHILE_STATEMENT,
-  'do'        : T_.DO_STATEMENT,
-  'until'     : T_.UNTIL_STATEMENT,
-  'unless'    : T_.UNLESS_STATEMENT,
-  'when'      : T_.WHEN_STATEMENT,
-  'struct'    : T_.STRUCT_STATEMENT,
-  'class'     : T_.CLASS_STATEMENT,
-  'dict'      : T_.DICTIONARY_STATEMENT,
-  'interface' : T_.INTERFACE_STATEMENT,
-  'trait'     : T_.TRAIT_STATEMENT,
-  'public'    : T_.PUBLIC_DESCRIPTOR,
-  'protected' : T_.PROTECTED_DESCRIPTOR,
-  'private'   : T_.PRIVATE_DESCRIPTOR,
-  'readonly'  : T_.READONLY_DESCRIPTOR,
-  'static'    : T_.STATIC_DESCRIPTOR,
-  'extern'    : T_.EXTERN_DESCRIPTOR,
-  'abstract'  : T_.ABSTRACT_DESCRIPTOR,
-  'virtual'   : T_.VIRTUAL_DESCRIPTOR,
-  'friend'    : T_.FRIEND_DESCRIPTOR,
-  'extends'   : T_.INHERITANCE_DESCRIPTOR,
-  'implements': T_.IMPLEMENTS_DESCRIPTOR,
-  'as'        : T_.ALIAS_KEYWORD,
-};
-
-// Lower-case alphabet
-const lowerAlphabet = 'abcdefghijklmnopqrstuvwxyz';
-// Upper-case alphabet
-const upperAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-// Name symbol
-const nameSymbol = lowerAlphabet + upperAlphabet + '_$';
-// Name symbol with digits
-const nameSymbolWithDigits = nameSymbol + '0123456789';
-
 // Digits
 const digits = '0123456789';
-// Digits with point
-const digitsWithPoint = digits + '.';
+
+// Name symbol
+const nameSymbol = 'abcdefghijklmnopqrstuvwxyz' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + '_$';
+
+// Name symbol with digits
+const nameSymbolWithDigits = nameSymbol + digits;
 
 // List of non-breaking symbols
 const NON_BREAKING_SYMBOLS = nameSymbolWithDigits;
 
 // Group symbols and tokens
 const groups = {
-  '(': { name: 'parenthesis', openingSymbol: '(', closingSymbol: ')', openingToken: T_.OPENING_PARENTHESIS, closingToken: T_.CLOSING_PARENTHESIS },
-  '[': { name: 'brace', openingSymbol: '[', closingSymbol: ']', openingToken: T_.OPENING_BRACKET, closingToken: T_.CLOSING_BRACKET },
-  '{': { name: 'bracket', openingSymbol: '{', closingSymbol: '}', openingToken: T_.OPENING_BRACE, closingToken: T_.CLOSING_BRACE }
+  '(': { name: 'parenthesis', openingSymbol: '(', closingSymbol: ')', openingToken: 'T_OPENING_PARENTHESIS', closingToken: 'T_CLOSING_PARENTHESIS' },
+  '[': { name: 'brace', openingSymbol: '[', closingSymbol: ']', openingToken: 'T_OPENING_BRACKET', closingToken: 'T_CLOSING_BRACKET' },
+  '{': { name: 'bracket', openingSymbol: '{', closingSymbol: '}', openingToken: 'T_OPENING_BRACE', closingToken: 'T_CLOSING_BRACE' }
 };
 
 // List of groups' opening symbols
@@ -178,8 +40,11 @@ const group_closing_symbols = ')]}';
 
 /**
  * Tokenize a source code
- * @param {string} source The source code to tokenize
- * @returns {Array.<Array>} A tokens array
+ * The returned analysis assures all groups (parenthesis, brackets...) have a match and are put in the right order
+ * Literals are put into buffers (including spaces)
+ * No other syntax checking is performed
+ * @param {string} source The source code to analysis
+ * @returns {Array.<Array>} A literal analysis (array of tokens)
  */
 function tokenize (source) {
   /**
@@ -216,7 +81,7 @@ function tokenize (source) {
       // If the current character is a line break...
       if (source[col] === '\n') {
         // If an *inline* string buffer was opened...
-        if (buff_opening_token ? buff_opening_token[0] === T_.QUOTE : false)
+        if (buff_opening_token ? buff_opening_token[0] === 'T_QUOTE' : false)
           // Fail
           fail('Quote was not closed before the end of the line');
 
@@ -431,7 +296,7 @@ function tokenize (source) {
       // If the current character is the opening quote...
       if (! will_escape && char === buff_opening_token[1]) {
         // Push the string
-        closeBuffer(char === '`' ? T_.BACK_QUOTE : T_.QUOTE, char);
+        closeBuffer(char === '`' ? 'T_BACK_QUOTE' : 'T_QUOTE', char);
         // Reset the string buffer
         buff.string = '';
       } else
@@ -452,7 +317,7 @@ function tokenize (source) {
     }
 
     // If the current symbol is not a digit but a number buffer is opened...
-    if (buff.number && !isIn(digitsWithPoint))
+    if (buff.number && !isIn(digits + '.'))
       // Close it
       closeBuffer();
 
@@ -464,7 +329,7 @@ function tokenize (source) {
     // [MATCH] quote
     if (isIn('\'"`'))
       // Open a new buffer
-      openBuffer('string', T_.LITERAL_STRING, null, char === '`' ? T_.BACK_QUOTE : T_.QUOTE, char);
+      openBuffer('string', 'T_LITERAL_STRING', null, char === '`' ? 'T_BACK_QUOTE' : 'T_QUOTE', char);
 
     // [MATCH] name character (with digits only if buffer opened)
     else if (isIn(nameSymbol) || (isIn(nameSymbolWithDigits) && buff.name)) {
@@ -474,36 +339,12 @@ function tokenize (source) {
         buff.name += char;
       else {
         // Open a new buffer
-        openBuffer('name', T_.LITERAL_NAME);
+        openBuffer('name', 'T_LITERAL_NAME');
 
         // Append this character to it
         buff.name = char;
       }
     }
-
-    // [MATCH] infinite descriptor
-    else if (suite('.', '..'))
-      push(T_.INFINITE_DESCRIPTOR);
-
-    // [MATCH] property separator
-    else if (char === '.')
-      push(T_.PROPERTY_SEPARATOR);
-
-    // [MATCH] instruction end
-    else if (char === ';')
-      push(T_.INSTRUCTION_END);
-
-    // [MATCH] list separator
-    else if (char === ',')
-      push(T_.LIST_SEPARATOR)
-
-    // [MATCH] arobase
-    else if (char === '@')
-      push(T_.AROBASE_SYMBOL);
-
-    // [MATCH] nullable symbol
-    else if (char === '?')
-      push(T_.NULLABLE_SYMBOL);
 
     // [MATCH] digit
     else if (isIn('0123456789.')) {
@@ -523,29 +364,40 @@ function tokenize (source) {
           fail(`A point must follow a digit`);
 
         // Open a new buffer
-        openBuffer('number', T_.LITERAL_NUMBER);
+        openBuffer('number', 'T_LITERAL_NUMBER');
 
         // Append this character to it
         buff.number = char;
       }
-
-      continue ;
     }
 
     // [MATCH] space
-    else if (char === ' ')
-      // Push it
-      push(T_.SPACE);
+    else if (char === ' ' || char === '\t') {
+      // Set up a counter
+      let counter = (char === '\t' ? 2 : 1);
+
+      // While the next character is a space...
+      while (source[col + 1] === ' ' || source[col + 1] === '\t') {
+        // Increment the counter
+        counter += (source[col + 1] === '\t' ? 2 : 1);
+
+        // Go to the next character
+        goNextChars(1);
+      }
+
+      // Push the token
+      push('T_SPACE', ' '.repeat(counter));
+    }
 
     // [MATCH] newline
     else if (char === '\n')
       // Push it
-      push(T_.NEWLINE);
+      push('T_NEWLINE');
 
     // [MATCH] single-line comment
     else if (suite('/', '/')) {
       // Push the symbol
-      push(T_.OPENING_SINGLE_LINE_COMMENT);
+      push('T_OPENING_SINGLE_LINE_COMMENT');
 
       // Make a temporary comment buffer
       let comment = '';
@@ -556,7 +408,7 @@ function tokenize (source) {
         comment += goNextChars(1);
 
       // Push the comment
-      push(T_.SINGLE_LINE_COMMENT, comment);
+      push('T_SINGLE_LINE_COMMENT', comment);
     }
 
     // [MATCH] multi-line comment and documentation comments
@@ -565,7 +417,7 @@ function tokenize (source) {
       const doc = isNext('*');
     
       // Push the opening symbol
-      push(doc ? T_.OPENING_DOCUMENTATION_COMMENT : T_.OPENING_MULTI_LINE_COMMENT);
+      push(doc ? 'T_OPENING_DOCUMENTATION_COMMENT' : 'T_OPENING_MULTI_LINE_COMMENT');
 
       // Make a temporary comment buffer
       let comment = '';
@@ -584,10 +436,10 @@ function tokenize (source) {
       goNextChars(2);
 
       // Push the comment
-      push(doc ? T_.DOCUMENTATION_COMMENT : T_.MULTI_LINE_COMMENT, comment);
+      push(doc ? 'T_DOCUMENTATION_COMMENT' : 'T_MULTI_LINE_COMMENT', comment);
 
       // Push the closing symbol
-      push(doc ? T_.CLOSING_DOCUMENTATION_COMMENT : T_.CLOSING_MULTI_LINE_COMMENT);
+      push(doc ? 'T_CLOSING_DOCUMENTATION_COMMENT' : 'T_CLOSING_MULTI_LINE_COMMENT');
     }
 
     // [MATCH] group opening symbol
@@ -618,85 +470,36 @@ function tokenize (source) {
       // Push the symbol
       push(groups[char].closingToken);
     }
-
-    // [MATCH] directive
-    else if (char === '#') {      
-      // Match the next alphanumeric characters
-
-      // Make a name buffer
-      let directive = '';
-
-      // While the current character is a letter...
-      while (nameSymbol.includes(source[col + 1]))
-        // Go to the next character and add it to the buffer
-        directive += goNextChars(1);
-
-      // Push the symbol
-      push(T_.DIRECTIVE, directive);
-    }
-
-    // [MATCH] class statical operator
-    else if (suite(':', ':'))
-      // Push the operator
-      push(T_.STATICAL_REF_OPERATOR);
-
-    // [MATCH] double point symbol
-    else if (char === ':')
-      // Push the symbol
-      push(T_.DOUBLE_POINT_SYMBOL);
-
-    // [MATCH] assignments
-    else if (char === '=')
-      // Push the symbol
-      push(T_.ASSIGNMENT_OPERATOR);
-
-    // [MATCH] arrow symbol
-    else if (suite('-', '>'))
-      // Push the symbol
-      push(T_.ARROW_FUNCTION);
-
-    // [MATCH] (pre/post) increment and decrement operators
-    else if (suite('+-', char))
-      // Push the operator
-      push(T_.PREPOST_OPERATOR, char + char);
     
     // [MATCH] shift operators
     else if (suite('<', '<') || suite('>', '>'))
       // Push the operator
-      push(T_.SHIFT_OPERATOR, char + char);
+      push('T_FLY_OPERATOR', char + char);
 
     // [MATCH] comparison operators
-    else if (isIn('<>'))
+    else if (suite('<>', '', char))
       // Push the operator
-      push(T_.COMPARISON_OPERATOR, char);
+      push('T_FLY_OPERATOR', char);
 
     // [MATCH] comparison operators
     else if (suite('<>', '='))
       // Push the operator
-      push(T_.COMPARISON_OPERATOR, char);
+      push('T_FLY_OPERATOR', char);
 
     // [MATCH] logical operators
     else if (suite('&|', char))
       // Push the operator
-      push(T_.LOGICAL_OPERATOR, char + char);
+      push('T_FLY_OPERATOR', char + char);
 
     // [MATCH] equality operators
     else if (suite('=!', '='))
       // Push the operator
-      push(T_.COMPARISON_OPERATOR, char + '=');
+      push('T_FLY_OPERATOR', char + '=');
 
     // [MATCH] negation operator
-    else if (isIn('!')) {
-      // If the last token was a literal name...
-      if (last_token === T_.LITERAL_NAME) {
-        // Get it and remove it from the array
-        let token = token_arr.pop();
-        // Push a new token instead
-        push(T_.LITERAL_MACRO_NAME, token[1]);
-      } else
-        // Push the operator
-        push(T_.NEG_OPERATOR);
-    }
+    else if (isIn('!'))
+      // Push the operator
+      push('T_FLY_OPERATOR');
 
     // [MATCH] operators with two arguments
     else if (isIn('+-*/%^&|')) {
@@ -706,20 +509,19 @@ function tokenize (source) {
         char += char;
 
       // Push the operator
-      push(T_.MATH_OPERATOR, char);
+      push('T_FLY_OPERATOR', char);
     }
 
-    // [MATCH] booleans
-    else if (suite('t', 'rue'))
-      push(T_.LITERAL_BOOLEAN, 'true');
-    
-    // [MATCH] booleans
-    else if (suite('f', 'alse'))
-      push(T_.LITERAL_BOOLEAN, 'false');
-
-    // Handle unexcepted symbols
-    else
-      fail(`Unexpected symbol: ${char} (ASCII code = ${char.charCodeAt(0)})`);
+    // Handle other symbols
+    else {
+      // If the last token was a plain symbol too...
+      if (last_token === 'T_PLAIN')
+        // Merge this one to it
+        token_arr[token_arr.length - 1][1] += char;
+      else
+        // Push the token
+        token_arr.push('T_PLAIN', char);
+    }
   }
 
   // If a number or a name buff is opened...
@@ -738,49 +540,12 @@ function tokenize (source) {
     fail('There ' + (groups_stack.length === 1 ? 'is' : 'are') + ' ' +
          groups_stack.length + ' unclosed group(s) - last is a missing ' +
          groups_stack[groups_stack.length - 1].name);
-  
-  // Treat some specials entities
-  for (let i = 0; i < token_arr.length; i ++)
-    // If it's a literal name and if it relies on another entity...
-    if (token_arr[i][0] === T_.LITERAL_NAME && nameAltEntities.hasOwnProperty(token_arr[i][1]))
-      // Replace the current token
-      token_arr[i] = [ nameAltEntities[token_arr[i][1]] ];
 
   // Return the tokens tree
   return token_arr;
 }
 
-// If a file was given as an argument...
-if (process.argv[2]) {
-  // Load some Node.js modules
-  const fs = require('fs'),
-        path = require('path');
-
-  // Format the path
-  const file = path.normalize(process.argv[2]);
-
-  // Read it
-  let content;
-
-  try {
-    content = fs.readFileSync(file, 'utf8');
-  } catch (e) {
-    throw new Error(`Failed to read argument file "${file}"`);
-  }
-
-  // Treat the file and display the result in the console
-  console.log(JSON.stringify(tokenize(content), null, 2));
-}
-
-// Export some data
-if (typeof module === 'object' && module)
-  module.exports = {
-    // Templates object
-    T_,
-    // List of templates
-    tokens: Object.values(T_),
-    // Non-breaking symbols
-    non_breaking_symbols: NON_BREAKING_SYMBOLS,
-    // Main function
-    tokenize
-  };
+// If modules are supported...
+if (module && typeof module === 'object')
+  // Export the main function
+  module.exports = tokenize;
