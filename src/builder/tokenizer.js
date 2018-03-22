@@ -33,7 +33,7 @@ const Tokens_List = [
   'CLOSING_BRACE',
   'OPENING_BRACKET',
   'CLOSING_BRACKET',
-  'TYPE_PREFIX_SYMBOL',
+  'DOUBLE_POINT_SYMBOL',
   'OPENING_SINGLE_LINE_COMMENT',
   'SINGLE_LINE_COMMENT',
   'OPENING_MULTI_LINE_COMMENT',
@@ -70,10 +70,12 @@ const Tokens_List = [
   'IF_STATEMENT',
   'ELSE_STATEMENT',
   'FOR_STATEMENT',
+  'FOREACH_STATEMENT',
   'WHILE_STATEMENT',
   'DO_STATEMENT',
   'UNTIL_STATEMENT',
   'UNLESS_STATEMENT',
+  'WHEN_STATEMENT',
   'STRUCT_STATEMENT',
   'CLASS_STATEMENT',
   'DICTIONARY_STATEMENT',
@@ -112,10 +114,12 @@ const nameAltEntities = {
   'if'        : T_.IF_STATEMENT,
   'else'      : T_.ELSE_STATEMENT,
   'for'       : T_.FOR_STATEMENT,
+  'foreach'   : T_.FOREACH_STATEMENT,
   'while'     : T_.WHILE_STATEMENT,
   'do'        : T_.DO_STATEMENT,
   'until'     : T_.UNTIL_STATEMENT,
   'unless'    : T_.UNLESS_STATEMENT,
+  'when'      : T_.WHEN_STATEMENT,
   'struct'    : T_.STRUCT_STATEMENT,
   'class'     : T_.CLASS_STATEMENT,
   'dict'      : T_.DICTIONARY_STATEMENT,
@@ -635,10 +639,10 @@ function tokenize (source) {
       // Push the operator
       push(T_.STATICAL_REF_OPERATOR);
 
-    // [MATCH] type prefix symbol
+    // [MATCH] double point symbol
     else if (char === ':')
       // Push the symbol
-      push(T_.TYPE_PREFIX_SYMBOL);
+      push(T_.DOUBLE_POINT_SYMBOL);
 
     // [MATCH] assignments
     else if (char === '=')
