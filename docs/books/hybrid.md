@@ -3037,9 +3037,13 @@ That may appear to be simple and not very useful at the moment, but as we will s
 func precise(vehicle: #mustbe<Vehicle>) : void ->
   vehicle.accelerate();
 
-let car        : Vehicle    = new Vehicle();    // Works fine
-let motorcycle1: Vehicle    = new Motorcycle(); // ERROR
-let motorcycle2: Motorcycle = new Motorcycle(); // ERROR
+let car        : Vehicle    = new Vehicle();
+let motorcycle1: Vehicle    = new Motorcycle();
+let motorcycle2: Motorcycle = new Motorcycle();
+
+println!(precise(car));         // Prints: "Vroom!"
+println!(precise(motorcycle1)); // ERROR
+println!(precise(motorcycle2)); // ERROR
 ```
 
 ### Interfaces
