@@ -520,7 +520,7 @@ function tokenize (source) {
         token_arr[token_arr.length - 1][1] += char;
       else
         // Push the token
-        token_arr.push('T_PLAIN', char);
+        token_arr.push([ 'T_PLAIN', char ]);
     }
   }
 
