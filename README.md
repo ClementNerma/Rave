@@ -87,6 +87,7 @@ Here is the roadmap for the whole project.
 ### Documentation
 
 * Redact [_The Hybrid Book_](https://silvernight.netlify.com/docs/book/hybrid.html) (**active**)
+* Redact [_The Book of Concepts_](https://silvernight.netlify.com/docs/book/concepts.html) (**active**)
 * Redact the whole specifications
 * Redact _The SilverNight programming language_
 
@@ -100,8 +101,8 @@ Quote from [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.ht
 
 > The **builder** is the part of the toolchain that [...] turns a SilverNight source code into a valid AST
 
-* Make the [Tokenizer](src/builder/tokenizer.js) (**active**)
-* Make the AST Builder (Tokenizer + AST Builder = Parser)
+* Make the Tokenizer
+* Make the AST Builder
 * Make the AST Checker
 * Make the AST Optimizer
 
