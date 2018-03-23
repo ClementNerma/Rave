@@ -2197,9 +2197,9 @@ Here is the solution:
 ```sn
 class Map {
   // Cell types
-  private static readable EMPTY = 0;
-  private static readable ROCK  = 1;
-  private static readable TRAP  = 2;
+  private static readonly EMPTY = 0;
+  private static readonly ROCK  = 1;
+  private static readonly TRAP  = 2;
 
   // Private attributes
   public readonly playerX: int;
