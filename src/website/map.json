@@ -2,15 +2,14 @@
   "build": [
     {
       "module": "book",
-      "arguments": {
-        "book": "hybrid"
-      }
+      "all": true
     }
   ],
   "buildPath": "tmp",
   "removeBuild": true,
   "map": {
-    "docs/book/hybrid.html": "tmp/book/hybrid.book.html"
+    "docs/book/hybrid.html": "tmp/book/hybrid.book.html",
+    "docs/book/concepts.html": "tmp/book/concepts.book.html"
   },
   "index": "index.html"
 }
