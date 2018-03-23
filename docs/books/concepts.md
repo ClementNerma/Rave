@@ -12,6 +12,8 @@ If you are looking for a tutorial or the detailed functioning of the language, y
 
 The SilverNight programming language is based on a toolchain, which is the set of modules that, used together, are able to convert a SilverNight source code to a source code from another language or to a machine code.
 
+_NOTE :_ In order to fully understand this part, you should already know how SilverNight works (especially for packages). Explanations on it can be found in [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html).
+
 ### A global overview
 
 The toolchain is split into several modules, each with its own task. Some of them (like the builder) are themselves split into sub-modules (sometimes even more).
