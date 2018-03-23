@@ -26,17 +26,19 @@ _NOTE :_ All across this book, we will often use the _trusted_ term (mostly on s
 * A _functionally-trusted_ resource means that is guaranteed to work under the right circumstances (no missing dependencies, no error due to a bug of the operating system, etc.) thanks to many checks performed on it (checking that functions aren't declared twice, type compatibility, template constraints, etc.). To be functionally-trusted, a resource needs to be syntaxically-trusted first (because a program with syntax error scannot work) ;
 * An _untrusted_ resource is a resource that is not syntaxically-trusted (and so not functionally-trusted).
 
-### Converting the source folder to an SST
+### The adapter
 
 The first module of the toolchain to run is the _adapter_. It handles characters encoding (`utf-8`...), line breaks (`\r\n` on Windows, `\r` on some old Mac systems, `\n` on Linux). If the source code is not a string (for example, a compressed package like we'll see later), it runs the _package handler_ to manage dependencies, uncompress source code, resolve links, etc.
 
 The goal of this package is to get a SST for SilverNight Source Tree, which is a folder-like representation of the source code, in a little more complex way. It can handle packages management (including binary resources like images our sounds that come with some packages) or code split across several files.
 
-### Converting the SST to an AST
+**Reminder :** It takes as an input an unstrusted source folder and delivers an unstrusted SST.
+
+### The builder
 
 The _builder_ is the second module of the toolchain to run. It converts a source tree to an _Abstract Syntax Tree_ (AST), which is a representation of the source codes that clearly indicates additions, block usages, call to functions, declaration of variables, etc.
 
-It takes as an input an untrusted SST and delivers a syntaxically-trusted AST.
+**Reminder :** It takes as an input an unstructed SST and delivers a syntaxically-trusted AST.
 
 #### The tokenizer: SST to TST
 
@@ -60,7 +62,7 @@ It fully checks the syntax. If a semicolon is missing, if the `for` loop does no
 
 Its output is a syntaxically-trusted AST.
 
-### Converting the AST to an SRT
+### The checker
 
 The _checker_ comes right after the builder. It has several goals represented as tasks done in the following order:
 
@@ -68,19 +70,19 @@ The _checker_ comes right after the builder. It has several goals represented as
 * Perform the four inferences (inferred typing, IST, ICT, inferred templating) ;
 * Guarantee the proper functioning of the code
 
-It takes as an input a syntaxically-trusted AST and delivers a functionally-trusted SRT.
+**Reminder :** It takes as an input a syntaxically-trusted AST and delivers a functionally-trusted SRT.
 
-### Compilation: SRT to machine code
+### The compiler
 
 The compiler first converst the SRT to LLIC (low-level intermediary code), which is a special representation of the SRT that is a lot simplifer for the machine but not human-friendly. For example, it does not implement the concept of class and does not support `for` loops.
 
-The goal is to make a low-level representation that can be converted to the assembly language, which is a translation of binary (which is our final machine code) that can be ran directly on the machine, with the best performances.
+The goal of LLIC is to make a low-level representation that can be converted to the assembly language, which is a translation of binary (which is our final machine code) that can be ran directly on the machine, with the best performances.
 
 Altough, this step requires the compiled program to run on the operating system **and** platform it was compiled for. For example, a program compiled for Windows will not runnable on Linux. Also, a program compiled for x86 CPU on Linux won't work on ARM CPU like a Raspberry Pi, even if it runs Linux.
 
 Hopefully, it's still possible to compile a program for Windows from a Linux system. And that's where LLIC is especially useful, not only for the persons who work on the compiler, but also for the final user: when compiling a program to, let's say, seven targets (x86 and x64 versions of Windows, Linux and Mac OS, plus ARM for Linux), the first part of the compilation, which is the most heavy (converting a SRT to LLIC) will be done only once. For each platform, the compiler will simply have to convert LLIC to a machine code designed for the target (like x64 Windows), so it saves a lot of times when deploying an heavy project on several platforms.
 
-### Interpretation: SRT on-the-fly
+### The interpreter
 
 **THIS IS A THEORICAL PART. The interpreter is not fully designed yet, and it could be completely re-designed (like interpreting SRT using a JIT compiler or some things). Also, the execution speed written in this part are predicted, as they _should_ be like precised here, but this is not a commitment.**
 
@@ -90,7 +92,7 @@ First, interpreted SRTs are slow. They are not _extremly_ slow, but clearly slow
 
 Secondly, the toolchain needs to be installed on the platform we run the SRT on (because the interpreter is, like all modules, dependent on the toolchain to convert for example the source code to a SRT). Even if the toolchain supports many platforms, even ARM processors, this can be a downside when deploying applications because the final user will need the SilverNight toolchain.
 
-### Transpiling: SRT to another language's source code
+### The transpilers
 
 A _transpiler_ is a toolchain's module that converts the SRT provided by the checker/optimizer to a source code in another language. For example, a transpiler could convert an SRT to a valid JavaScript source code.
 
@@ -106,7 +108,7 @@ This point is also true for libraries: if a library does not implement some impo
 
 Note that there is a directive to run instructions for specific language targets without making a new file each time for each platform. This way, writing code blocks for C or Java only is very simple to do and keep the code clear and maintanable.
 
-### Packaging: SRT to package file
+### Package archives
 
 In SilverNight, packages are folders that come with at least a _package file_, named `package.toml`, and a main source file (written in SilverNight) that exports its data.
 
