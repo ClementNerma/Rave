@@ -3,7 +3,7 @@
 
 // Set up a list of available books
 const books = {
-  'hybrid': { title: 'The Hybrid Book', skill: 'advanced users' }
+  'hybrid': { title: 'The Hybrid Book', skill: 'all levels' }
 };
 
 // Export API
