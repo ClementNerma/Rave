@@ -284,15 +284,24 @@ Primitive types can access additional features object types cannot use, such as 
 
 There is not only one type to represent numbers. The "default" one is **int**, also known as **int32**, a signed 32-bit integer. Basically, it can handle any number between `−2,147,483,648` and `2,147,483,647`.
 
-_Tip:_ The more bits a number uses for its representation, the more memory it takes. If you don't need such a large number, you can use the `int16` number instead (handling from `-32,768` to `32,767`). For very small numbers or when making programs for platforms with a limited amount of memory (like Arduino boards) you can even use the `int8` (`byte`) type (handling from `-128` to `127`).
+Here is the table of types with their respective capacities:
 
-_Tip:_ All signed type has its unsigned counterpart, which is basically this type prefixed by the `u` symbol. What are unsigned numbers? These are numbers that don't have a positive or negative sign, so they are always positive. For example, `uint32` will handle numbers from `0` to `4,294,967,295` while `uint16` while deal with numbers from `0` to `65,536`.
+|    Type   |            Minimum           |            Maximum           |
+|-----------|------------------------------|------------------------------|
+| `int8`    | `-128`                       | `127`                        |
+| `uint8`   | `0`                          | `255`                        |
+| `int16`   | `-32,768`                    | `32,767`                     |
+| `uint16`  | `0`                          | `65,535`                     |
+| `int32`   | `−2,147,483,648`             | `2,147,483,647`              |
+| `uint32`  | `0`                          | `4,294,967,295`              |
+| `int64`*  | `-9,223,372,036,854,775,808` | `9,223,372,036,854,775,807`  |
+| `uint64`* | `0`                          | `18,446,744,073,709,551,615` |
 
-For very large numbers, we can use the `int64` or even `uint64`.
+_*_ : Please be aware that numbers higher than 32-bit could not be handled by some operating systems. For example, `int64` could not be supported in all platforms.
 
-_NOTE :_ Here the `E` symbols refers to `10^`: `3.4 E +38` refers to `3.4 x 10^38`.
+Note that, the more bits a number uses for its representation (for integers, this is the number written after `int`, like 32 bits for `int32`), the more memory it takes. By default, integers use the `int32` type, but if you don't need such big numbers, you can still use the `int16` type instead. This is especially important when making programs for platforms with a very limited amount of memory (like Arduino boards), in this case you can even use the `int8` (`byte`) type (handling from `-128` to `127`).
 
-Also, please be aware that numbers higher than 32-bit could not be handled by some operating systems. For example, `int64` could not be supported in all platforms.
+To conclude, always use the smallest type number you have to. If you are dealing with numbers from `0` to `40,000`, instead of using a `int32`, simply use a `uint16` instead.
 
 ### Floating-point numbers
 
@@ -300,8 +309,8 @@ SilverNight also supports floating-point numbers. There are two signed types for
 
 Their ranges is huge but, where numbers have an exact value, these types have a limited precision:
 
-* `float` handles from `~ 1.2 E -38` to `~ 3.4 E +38` with a 6-decimal precision ;
-* `double` handles from `~ 2.3 E -308` to `~ 1.7 E +308` with a 15-decimal precision.
+* `float` handles from `~ 1.2 * 10^-38` to `~ 3.4 * 10^+38` with a 6-decimal precision ;
+* `double` handles from `~ 2.3 * 10^-308` to `~ 1.7 * 10^+308` with a 15-decimal precision.
 
 As you can see, the floating-point types can handle huge ranges, but they don't have the same precision. For example, substracting `0.0000003` (7 decimals) to a `floating` will have no effect at all (but it will on `double`, which has a better precision).
 
