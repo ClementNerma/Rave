@@ -203,7 +203,7 @@ pln plain: int = constant;
 
 They aim to provide a way to optimize the program at compilation time, because here `plain` will always be equivalent to the `5` literal, whatever happens.
 
-### Plain constants
+### Frozens
 
 The last type of assignable entities is the frozen, which is basically a constant with deep freeze (we will see the concept later). They are defined the same way than constants:
 
