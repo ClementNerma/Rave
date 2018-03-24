@@ -149,3 +149,72 @@ Literals, also called plain values, are values that can be evaluated whatever th
 ### Keywords
 
 Keywords are single words that describes something in the code. They are reserved and can't be used as names for other entities.
+
+## Mutability
+
+### Mutables
+
+There are four types of assignable entities: variables (also called mutables), constants, plain constants, and frozens.
+Every assignable entity have a _type_, which describes the type of data it can be. A type can be any descriptor, but it mainly refers to classes.
+
+They are defined using a keyword. Variables can either have a type, an initialization value, or both.
+
+```sn
+// Type only
+let mutable: int;
+
+// Initialization value only
+let mutable = 5;
+
+// Both
+let mutable: int = 5;
+```
+
+Because assignable entities always have a type, the second line will use _type inference_ to guess the variable's type. Here, it will use the `int` type for the variable.
+
+### Constants
+
+Constants must have an initialization value, with an optional type thanks to type inference. Here is how they go:
+
+```sn
+// Initialization value only
+val constant = 5;
+
+// Both
+val constant: int = 5;
+```
+
+Because constants can't have their value changing after their initialization, they must have one straight from when they are declared.
+
+### Plain constants
+
+Plain constants are like constants, but they only accept literals:
+
+```sn
+// Initialization value only
+pln plain = 5;
+
+// Both
+pln plain: int = 5;
+
+// ERROR
+pln plain: int = constant;
+```
+
+They aim to provide a way to optimize the program at compilation time, because here `plain` will always be equivalent to the `5` literal, whatever happens.
+
+### Plain constants
+
+The last type of assignable entities is the frozen, which is basically a constant with deep freeze (we will see the concept later). They are defined the same way than constants:
+
+```sn
+// Initialization value only
+frozen constant = 5;
+
+// Both
+frozen constant: int = 5;
+```
+
+### Expressions
+
+An expression is a group of symbols that produces a result. For example, `2 + 8 * (7 / constant)` produces a result, so it's an expression.
