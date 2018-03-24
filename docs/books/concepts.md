@@ -218,3 +218,67 @@ frozen constant: int = 5;
 ### Expressions
 
 An expression is a group of symbols that produces a result. For example, `2 + 8 * (7 / constant)` produces a result, so it's an expression.
+
+## Literals
+
+### Booleans
+
+Literal booleans can either be `true` or `false`.
+
+### Numbers
+
+Literal numbers are a suite of digits from 0 to 9 as well as the `_` symbol which acts as a separator - it is simply ignored -. Only the first symbol must be a digit from 1 to 9.
+They can eventually be followed by a point `(.)` and another number. In this last case, the literal number is considered as a _floating-point number_, else as an _integer number_. Integers automatically have the `int` type, and floating-point number the `double` type.
+
+For example, `28` is considered as an integer.
+
+#### Alternative bases
+
+Literal numbers can also be expressed using alternative bases, using the `0` prefix.
+
+| Syntax |       Base       | Decimal value |
+|--------|------------------|---------------|
+| `0b11` | 2 (binary)       | 3             |
+| `0o75` | 8 (octal)        | 61            |
+| `0d15` | 10 (decimal)     | 15            |
+| `0xB5` | 16 (hexadecimal) | 181           |
+
+#### Number types
+
+Here is the list of **integer** types:
+
+|    Type   |            Minimum           |            Maximum           |
+|-----------|------------------------------|------------------------------|
+| `int8`    | `-128`                       | `127`                        |
+| `uint8`   | `0`                          | `255`                        |
+| `int16`   | `-32,768`                    | `32,767`                     |
+| `uint16`  | `0`                          | `65,535`                     |
+| `int32`   | `−2,147,483,648`             | `2,147,483,647`              |
+| `uint32`  | `0`                          | `4,294,967,295`              |
+| `int64`*  | `-9,223,372,036,854,775,808` | `9,223,372,036,854,775,807`  |
+| `uint64`* | `0`                          | `18,446,744,073,709,551,615` |
+
+There are also two **floating-point** types:
+
+* `float` handles from `~ 1.2 * 10^-38` to `~ 3.4 * 10^+38` with a 6-decimal precision ;
+* `double` handles from `~ 2.3 * 10^-308` to `~ 1.7 * 10^+308` with a 15-decimal precision.
+
+These last types work with a single integer digit, a decimal part and an exponent. For example, `12.8` will be represented in a `float` as `1.28 * 10^1`. This is why, when dealing with numbers that have a large amount of digits, some may be lost because of the limited precision of these types.
+
+#### Overflow and underflow
+
+When an operation exceeds the type's capacity, it _overflows_ and goes back to its minimum value to continue the operation. When the value goes below the type's minimum value, it _underflows_ and goes back to its maximum to continue.
+
+For instance, adding `1` to a `int16` equal to `32767` will give `0`, because it overflow. At the opposite, substracting `1` to a `uint8` equal to `0` will give `255`, because it underflows.
+
+**NOTE :** Overflows and underflows don't stop operation. Adding `5` to a `int16` equal to `125` will give `-126` and not `-128`.
+
+### Strings
+
+Literal strings are delimited by simple `(')` or double `(")` quotes. They are single-line and can use the `(\)` symbol to escape any character. They are usually represented in memory as a list of bytes.
+
+#### Templated strings
+
+Templated strings are special strings delimited by backquotes ``(`)`` and can use string templates using `${...}` where `...` is an expression. The result of the expression is automatically converted to a string and put as a replacement for the template. For example, ```2 + 2 = ${2 + 2}``` will be evaluated as ```2 + 2 = 4``` because the result of the `2 + 2` expression, which is `4`, can natively be converted to a string.
+
+**NOTE :** If the expression cannot be converted to a string, or it's not an expression (like `2 +` is not an expression), an error will be thrown.
