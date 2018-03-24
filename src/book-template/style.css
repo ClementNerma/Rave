@@ -170,6 +170,16 @@ blockquote p {
   margin: 10px;
 }
 
+table {
+  border-collapse: collapse;
+}
+
+th, td {
+  border-bottom: 1px solid gray;
+  padding: 10px;
+  text-align: center;
+}
+
 #previous, #next {
   padding: 10px;
   color: #ddd;
