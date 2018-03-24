@@ -288,7 +288,7 @@ _Tip:_ The more bits a number uses for its representation, the more memory it ta
 
 _Tip:_ All signed type has its unsigned counterpart, which is basically this type prefixed by the `u` symbol. What are unsigned numbers? These are numbers that don't have a positive or negative sign, so they are always positive. For example, `uint32` will handle numbers from `0` to `4,294,967,295` while `uint16` while deal with numbers from `0` to `65,536`.
 
-For very large numbers, we can use the `int64`, `uint64`, `int128` or even `uint128` type (this last one handles from `0` to `~ 3.4 E +38`, so really huge numbers).
+For very large numbers, we can use the `int64` or even `uint64`.
 
 _NOTE :_ Here the `E` symbols refers to `10^`: `3.4 E +38` refers to `3.4 x 10^38`.
 
