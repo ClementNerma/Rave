@@ -320,7 +320,7 @@ longnum = longnum - 0.0000003; // This time it affects the variable because
 A problem that low-level languages (like C or SilverNight) compilers often encounter is how to interpret user's numbers when doing several operations. For example, let's take this code:
 
 ```sn
-let result = 2 / 3;
+val result = 2 / 3;
 ```
 
 Why does the compiler understand here? It sees an integer divided by an integer, so the result should be an integer. But any human would understand the result should be here a `float` as the result is around `0.66666...`.
@@ -328,7 +328,7 @@ Why does the compiler understand here? It sees an integer divided by an integer,
 Because of this confusion, the above code will produce `0`. An unexpected number that could result in strange behaviours in your programs. The simpliest and shortest way to indicate you are dealing with a `float` is to do explicit conversion:
 
 ```sn
-let result = 2.0 / 3.0;
+val result = 2.0 / 3.0;
 ```
 
 Giving a decimal part to a number indicates it's a `float` (or a `double` if it exceeds the range), even if it's `.0`.
@@ -338,12 +338,12 @@ Giving a decimal part to a number indicates it's a `float` (or a `double` if it 
 Because sometimes we don't want to deal with decimal numbers, but also with binary, hexadecimal or even octal values, there is a way to represent them in their original base:
 
 ```sn
-let dec1 =    92; // Decimal
-let dec2 = 0d192; // Decimal
+val dec1 =    92; // Decimal
+val dec2 = 0d192; // Decimal
 
-let bin = 0b110; // Binary
-let oct = 0o675; // Octal
-let hex = 0xFFA; // Hexadecimal
+val bin = 0b110; // Binary
+val oct = 0o675; // Octal
+val hex = 0xFFA; // Hexadecimal
 ```
 
 Note that all numbers, whatever is the representation you use, are converted to decimals and manipulated by the computer as bits. This is just a way to represent simply numbers in an alternative base.
@@ -366,7 +366,7 @@ When writing a plain number, all underscores are simply removed from its represe
 _Operators_ are symbols that provides a way to add, substract, multiply or do some operations with one or several numbers. The most common ones are the addition `+`, the substraction `-`, the multiplication `*` and the division `/` operators. Here's how we use it:
 
 ```sn
-let result = 2 + 5; // Perform an addition
+val result = 2 + 5; // Perform an addition
 ```
 
 If we tell you `2` and `5` are both `int` resources, you can guess the `result` variable will have the same type. Mathematical operators always take two numbers and return a number.
