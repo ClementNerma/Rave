@@ -370,6 +370,25 @@ Representing large numbers can quickly become a big deal without a number separa
 
 When writing a plain number, all underscores are simply removed from its representation.
 
+### Overflow and underflow
+
+A specificity about numbers is the concept of _overflow_ and the similar concept of _underflow_. When dealing with a `int8` for example, if we write:
+
+```sn
+let num: int8 = -128;
+num = num - 1;
+println!(num);
+```
+
+The expected result is `-129`. But, because this type cannot handle it, it will _underflow_, and so it will come back to its maximum value, which is `+127`. So, the code above will print `127`, which is unexpected. Be aware of that!
+The same behavior applies when dealing with the upper limit of numbers.
+
+```sn
+let num: int16 = +125;
+num = num + 5;
+println!(num); // Prints: "-126"
+```
+
 ### Operators
 
 #### Mathematical operators
