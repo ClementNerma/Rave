@@ -384,7 +384,7 @@ The expected result is `-129`. But, because this type cannot handle it, it will 
 The same behavior applies when dealing with the upper limit of numbers.
 
 ```sn
-let num: int16 = +125;
+let num: int8 = 125;
 num = num + 5;
 println!(num); // Prints: "-126"
 ```
