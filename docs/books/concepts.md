@@ -281,4 +281,13 @@ Literal strings are delimited by simple `(')` or double `(")` quotes. They are s
 
 Templated strings are special strings delimited by backquotes ``(`)`` and can use string templates using `${...}` where `...` is an expression. The result of the expression is automatically converted to a string and put as a replacement for the template. For example, ```2 + 2 = ${2 + 2}``` will be evaluated as ```2 + 2 = 4``` because the result of the `2 + 2` expression, which is `4`, can natively be converted to a string.
 
+Also, templated strings can be written on multiple lines:
+
+```sn
+pln data = `I am
+  a
+  templated
+  string`;
+```
+
 **NOTE :** If the expression cannot be converted to a string, or it's not an expression (like `2 +` is not an expression), an error will be thrown.
