@@ -125,3 +125,27 @@ Package archives are simply the concept of reducing a whole folder to a single f
 Pre-parsing is another concept that consists in making an AST right from the source code and writing it to a file, it is usually triggered when making a package archive. In our video game example, when making the archive, each file will get its own AST representation. What's the point? When someone will build the project from its package archive, the parsing (which is the concept converting a source code to an AST) will not have to be performed, which saves a lot of time. Also, even when a single file is modified, this concept is still useful: because an AST is made for each individual file, only this one will need to have an AST made again. The toolchain automatically detects changes using the package archive's hash table, which lists the hash of each file - so it will change if the file is modified.
 
 Also, pre-parsing allow to remove the source code from the package archive, in order to reduce its size even more. If a developer then gets the package archive, he will still be able to work on the source code because ASTs are reversable: the toolchain supports converting an AST to a source code (this also works for any SRT or TST).
+
+## Basic concepts
+
+### Entities
+
+In SilverNight, an _entity_, also called _resource_, is either a _value_, a _descriptor_ or a _container_.
+
+Values are representation of data. For example, plain numbers or strings are values, but arrays are too.
+Descriptors are simply descriptors of a model of data, like interfaces, classes or structures.
+Containers, they, are entities that contain a data, like variables or constants. They are also called _assignable entities_.
+
+An _entity name_ is a suite of symbols that can be used to define the name of an entity. The regular expression that validates an entity name is `[a-zA-Z_\$][a-zA-Z0-9_\$]*`.
+
+### Operators
+
+Operators are special symbols that can't be part of an entity name, like `+` or `*`. There are several types of operators we will see later.
+
+### Literals
+
+Literals, also called plain values, are values that can be evaluated whatever the platform the program is running on. These are plain strings (`"Hello world"`), plain numbers (`28.5`), or plain booleans (`true`).
+
+### Keywords
+
+Keywords are single words that describes something in the code. They are reserved and can't be used as names for other entities.
