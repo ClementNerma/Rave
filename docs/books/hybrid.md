@@ -292,6 +292,8 @@ For very large numbers, we can use the `int64`, `uint64`, `int128` or even `uint
 
 _NOTE :_ Here the `E` symbols refers to `10^`: `3.4 E +38` refers to `3.4 x 10^38`.
 
+Also, please be aware that numbers higher than 32-bit could not be handled by some operating systems. For example, `int64` could not be supported in all platforms.
+
 ### Floating-point numbers
 
 SilverNight also supports floating-point numbers. There are two signed types for them, `float`, `double`. Unlike integers, there isn't unsigned floating-point number types.
