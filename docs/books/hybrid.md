@@ -4628,16 +4628,19 @@ let *ptr = &(obj.value);
 ptr = 8; // ERROR
 ```
 
-A last word about state: pointers can have their own state to prevent from being written, though rewriting their target will also rewrite the value they point to:
+A last word about state: pointers cannot have their own state to prevent from being written. They must have the exact same type as the target they are referring to:
 
 ```sn
 let i = 1;
-val *ptr = i;
+let *ptrI = i; // Must be a mutable
+
+val j = 2;
+val *ptrJ = j; // Must be a constant
 
 i = 2;
-println!(ptr); // Prints: "2"
+println!(ptrI); // Prints: "2"
 
-ptr = 8; // ERROR
+ptrJ = 8; // ERROR
 ```
 
 ### Multiple-level pointers
