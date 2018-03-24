@@ -270,7 +270,7 @@ pln MY_JOB = "Developer";
 pln MY_REAL_JOB = MY_JOB; // Works fine
 ```
 
-Take the reflex to declar values using plain (or simple) constant instead of mutables when you won't change their value. This prevents these theorically immutable datas from being modified by error. Plus, in some languages like JavaScript, it even makes the programs (a bit) faster.
+Prefer declaring values using plain (or simple) constants instead of mutables when you won't change their value. This prevents these theorically immutable datas from being modified by error. Plus, in some languages like JavaScript, it even makes the programs (a bit) faster.
 
 ### Primitive types
 
