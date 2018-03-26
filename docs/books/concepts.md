@@ -260,8 +260,12 @@ Here is the list of **integer** types:
 
 There are also two **floating-point** types:
 
-* `float` handles from `~ 1.2 * 10^-38` to `~ 3.4 * 10^+38` with a 6-decimal precision ;
-* `double` handles from `~ 2.3 * 10^-308` to `~ 1.7 * 10^+308` with a 15-decimal precision.
+|    Type    |       Minimum      |       Maximum      | Minimum positive value |
+|------------|--------------------|--------------------|------------------------|
+| **float**  | `~ -3.4 * 10^+38`  | `~ +3.4 * 10^+38`  | `~ +1.2 * 10^-38`      |
+| **double** | `~ -1.7 * 10^+308` | `~ +1.7 * 10^+308` | `~ ++2.3 * 10^-308`    |
+
+_NOTE :_ The `~` symbol means "approximative".
 
 These last types work with a single integer digit, a decimal part and an exponent. For example, `12.8` will be represented in a `float` as `1.28 * 10^1`. This is why, when dealing with numbers that have a large amount of digits, some may be lost because of the limited precision of these types.
 
