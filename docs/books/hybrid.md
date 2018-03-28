@@ -1221,7 +1221,7 @@ for (let i = 0; i < 5; i ++) println!(i);
 There is an alternative syntax made to replace the one we saw above. This is called the _range syntax_:
 
 ```sn
-for (let i of 0 => 5)
+for (let i of 0 -> 5)
   println!(i);
 
 // Equivalent to
@@ -1232,7 +1232,7 @@ for (let i: int = 0; i <= 5; i ++)
 Be aware here, the end value is applied to the set of expressions. So, this code will print: `0` `1` `2` `3` `4` `5`.
 
 ```sn
-for (let i of 5 => 0)
+for (let i of 5 -> 0)
   println!(i);
 ```
 
@@ -1305,10 +1305,10 @@ But this is kind of heavy. So we can perform a _match_ instead:
 
 ```sn
 when (name) {
-  "Paul"  => println!("Happy birthday, Paul!");
-  "John"  => println!("How are you, John?");
-  "Marc"  => println!("Hello there Marc!");
-  default => println!("I don't know you...");
+  "Paul"  -> println!("Happy birthday, Paul!");
+  "John"  -> println!("How are you, John?");
+  "Marc"  -> println!("Hello there Marc!");
+  default -> println!("I don't know you...");
 }
 ```
 
@@ -1316,9 +1316,9 @@ If you want to specify a condition, you can write it between parenthesis. You wi
 
 ```sn
 let adult: string = when (age) {
-  (_ < 20) => "No";
-  (_ > 20) => "Yes";
-  default  => "Kind of";
+  (_ < 20) -> "No";
+  (_ > 20) -> "Yes";
+  default  -> "Kind of";
 }
 ```
 
@@ -1326,9 +1326,9 @@ You can also specify a set of expressions for a match, but you will have to retu
 
 ```sn
 let adult: string = when (age) {
-  (_ < 20) => "No";
-  (_ > 20) => "Yes";
-  default  => { println!("Default value taken."); return "Kind of"; }
+  (_ < 20) -> "No";
+  (_ > 20) -> "Yes";
+  default  -> { println!("Default value taken."); return "Kind of"; }
 }
 ```
 
@@ -1336,9 +1336,9 @@ Note that the `break` instruction does nothing on this block. The `when` block c
 
 ```sn
 when (age) {
-  (_ < 20) => adult = "No";
-  (_ > 20) => adult = "Yes";
-  default  => adult = "Kind of";
+  (_ < 20) -> adult = "No";
+  (_ > 20) -> adult = "Yes";
+  default  -> adult = "Kind of";
 }
 ```
 
@@ -1394,20 +1394,20 @@ Inline generation is a useful feature when coming to generate a list of data. Fo
 ```sn
 let cubes: int[10]; // List<int>
 
-for (let i of 1 => 10)
+for (let i of 1 -> 10)
   cubes.push(i * i * i);
 ```
 
 But there is another, simplier way to generate this list.
 
 ```sn
-let cubes: int[10] = (i * i * i) for (let i of 1 => 10);
+let cubes: int[10] = (i * i * i) for (let i of 1 -> 10);
 ```
 
 This will do exactly the same thing. Because the compiler has a great support of inferred typing, you can also omit the `cubes`' explicit type:
 
 ```sn
-let cubes = (i * i * i) for (let i of 1 => 10);
+let cubes = (i * i * i) for (let i of 1 -> 10);
 ```
 
 This is also why we told you should be careful when using inline loops. All inline loops generate a vector (`List` for explicit `for` loops like ranges or simple incremental / decremental expressions, `Array` for anything else).
@@ -1415,7 +1415,7 @@ This is also why we told you should be careful when using inline loops. All inli
 Note that inline loops will not perform a generation if a `void` is returned (not any NIL value, only this one). So, if you do:
 
 ```sn
-println!(i) for (let i of 1 => 10)
+println!(i) for (let i of 1 -> 10)
 ```
 
 Nothing will be generated. Also, nothing will be generated if you don't give the result to a function or assign it to a variable.
@@ -1427,7 +1427,7 @@ When dealing with a loop, you can want to exit it if a specific even happens. Fo
 Let's try it:
 
 ```sn
-for (let i of 1 => 10) {
+for (let i of 1 -> 10) {
   println!(i);
 
   if (hadError())
@@ -1440,7 +1440,7 @@ This will work as expected: if `hadError` returns `true`, the `break` instructio
 Another keyword is `continue` that provides a way to ignore all instructions below it but only one time.
 
 ```sn
-for (let i of 1 => 10) {
+for (let i of 1 -> 10) {
   if (hadError())
     continue;
 
@@ -1727,25 +1727,25 @@ val posArr = arr.filter(myFunc);
 So, lambdas are great to reduce the size of a program, but it's kind of heavy to use this syntax. This is why we can use the _arrow syntax_:
 
 ```sn
-val posArr = arr.filter((value: int, key: int) : bool -> value >= 0);
+val posArr = arr.filter((value: int, key: int) : bool => value >= 0);
 ```
 
-We don't have the `func` keyword anymore, but the `->` one appeared. This symbol means that the value on its right is automatically returned by the function. This symbol can in fact even be used with functions, like `function returnTrue() : bool -> true;`. We can also use the `{` and `}` symbols while omitting the `func` keyword to use several instructions, but we'll then have to use manually the `return` keyword.
+We don't have the `func` keyword anymore, but the `=>` one appeared. This symbol means that the value on its right is automatically returned by the function. This symbol can in fact even be used with functions, like `function returnTrue() : bool => true;`. We can also use the `{` and `}` symbols while omitting the `func` keyword to use several instructions, but we'll then have to use manually the `return` keyword.
 
 Showcase:
 
 ```sn
 // Classic functions
 func returnTrue() : bool { return true; }
-func returnTrue() : bool -> true;
+func returnTrue() : bool => true;
 
 // Classic lambdas
 val returnTrue = func () : bool { return true; }
-val returnTrue = func () : bool -> true;
+val returnTrue = func () : bool => true;
 
 // Arrow syntax
 val returnTrue = () : bool { return true; }
-val returnTrue = () : bool -> true;
+val returnTrue = () : bool => true;
 ```
 
 But even with the arrow syntax, this is still heavy as we have to write the arguments' type as well as the lambda's return type. So there is a last feature called **ICT** for **I**nferred **C**allback **T**yping we will see now.
@@ -1763,10 +1763,10 @@ So there is a way to perform inferred typing on a lambda, for both its arguments
 val posArr = arr.filter(func (value: int, key: int) : bool { return value >= 0; });
 
 // Arrow syntax
-val posArr = arr.filter((value: int, key: int) : bool -> value >= 0);
+val posArr = arr.filter((value: int, key: int) : bool => value >= 0);
 
 // Inferred callback typing
-val posArr = arr.filter((value, key) -> value >= 0);
+val posArr = arr.filter((value, key) => value >= 0);
 ```
 
 This last syntax is clearly lighter as it avoids to declare the types. But be careful though to read carefully the signature of the function you are giving this lambda to ; else you could have some... surprises, at compilation time.
@@ -1793,8 +1793,8 @@ struct Point {
 }
 
 // Declare the two functions with polymorphism
-func pointStr (x: float, y: float) : string -> `(${x}, ${y})`;
-func pointStr (pt: Point) -> `(${Point.x}, ${Point.y})`;
+func pointStr (x: float, y: float) : string => `(${x}, ${y})`;
+func pointStr (pt: Point) => `(${Point.x}, ${Point.y})`;
 
 // Let's try them!
 pointStr(2, 5); // Prints: "(2, 5)"
@@ -1869,7 +1869,7 @@ class Hero {
   private atk: int;
   private def: int;
 
-  public func @construct(name: string, hp: int, mp: int, atk: int, def: int) {
+  public func %construct(name: string, hp: int, mp: int, atk: int, def: int) {
     this.name = name;
     this.hp = hp;
     this.mp = mp;
@@ -1879,7 +1879,7 @@ class Hero {
 }
 ```
 
-That becomes a little more complicated here. We start by declaring the `@construct` function which is called the _constructor_. This function is called when a resource (variable, constant or frozen) is created with the `Hero` type. Because any return value would be lost from it there is an exception in the language's rules that allow us to not give it a return type (it will implicitly be `void`), without any directive.
+That becomes a little more complicated here. We start by declaring the `%construct` function which is called the _constructor_. This function is called when a resource (variable, constant or frozen) is created with the `Hero` type. Because any return value would be lost from it there is an exception in the language's rules that allow us to not give it a return type (it will implicitly be `void`), without any directive.
 
 The constructor will take as an argument a name, an amount of HP and MP, an attack and a defense. Then, it will assign these given values to its _members_, which are not available from outside the class.
 
@@ -1957,7 +1957,7 @@ class Hero {
   private atk: int;
   private def: int;
 
-  public func @construct(name: string, hp: int, mp: int, atk: int, def: int) {
+  public func %construct(name: string, hp: int, mp: int, atk: int, def: int) {
     this.name = name;
     this.hp = hp;
     this.mp = mp;
@@ -2026,7 +2026,7 @@ class Example {
   public val hello = "Hello!";
   private val secret = "No one can see me!";
 
-  public func printSecret() -> println!(this.secret);
+  public func printSecret() => println!(this.secret);
 }
 
 val instance = new Example();
@@ -2042,7 +2042,7 @@ class Example {
   public val hello = "Hello!";
   private val secret = "No one can see me!";
 
-  public func printAnotherSecret(other: Example) -> println!(other.secret);
+  public func printAnotherSecret(other: Example) => println!(other.secret);
 }
 
 val instance = new Example();
@@ -2075,7 +2075,7 @@ Because we want some attributes to be initialized before the developer uses them
 class Superthing {
   private name: string;
 
-  public func @construct(theThingName: string) {
+  public func %construct(theThingName: string) {
     this.name = theThingName;
   }
 }
@@ -2105,7 +2105,7 @@ Note that all attributes and methods of a class (called its _members_) can be ac
 class Superthing {
   private name: string;
 
-  public func @construct(theThingName: string) {
+  public func %construct(theThingName: string) {
     this.name = theThingName;
   }
 
@@ -2144,7 +2144,7 @@ We can also use it in the constructor to automatically set some attributes:
 class Superthing {
   private name: string;
 
-  public func @construct(@name: string) {}
+  public func %construct(@name: string) {}
 }
 ```
 
@@ -2179,7 +2179,7 @@ This is another type of members. Static members are not available from the insta
 ```sn
 class Product {
   private static unique_id = 0;
-  public static func increaseCounter() : int -> ++ self::unique_id;
+  public static func increaseCounter() : int => ++ self::unique_id;
 }
 ```
 
@@ -2193,7 +2193,7 @@ class Product {
   private static counter = 0;
 
   // Increase the global counter
-  public static func increaseCounter() : int -> ++ self::counter;
+  public static func increaseCounter() : int => ++ self::counter;
 
   // The product's unique identifier
   public readonly unique_id: int;
@@ -2201,7 +2201,7 @@ class Product {
   public readonly name: string;
 
   // Initialize the instance
-  public func @construct(@name: string) {
+  public func %construct(@name: string) {
     // Generate a unique identifier from the static function
     @unique_id = self::increaseCounter();
   }
@@ -2238,7 +2238,7 @@ class Map {
   public readonly cells: int[][];
 
   // Create the map
-  public func @construct(@cells: int[][], @playerX: int, @playerY: int) {};
+  public func %construct(@cells: int[][], @playerX: int, @playerY: int) {};
 
   // Move the hero
   private func move(x: int, y: int) : void {
@@ -2271,13 +2271,13 @@ class Map {
   }
 
   // Move up
-  public func moveUp() : void -> @move(@playerX, @playerY - 1);
+  public func moveUp() : void => @move(@playerX, @playerY - 1);
   // Move down
-  public func moveDown() : void -> @move(@playerX, @playerY + 1);
+  public func moveDown() : void => @move(@playerX, @playerY + 1);
   // Move to the left
-  public func moveLeft() : void -> @move(@playerX - 1, @playerY);
+  public func moveLeft() : void => @move(@playerX - 1, @playerY);
   // Move to the right
-  public func moveRight() : void -> @move(@playerX + 1, @playerY);
+  public func moveRight() : void => @move(@playerX + 1, @playerY);
 }
 ```
 
@@ -2297,7 +2297,7 @@ class Map {
   // ...
 
   // ...
-  public func @construct(cells: int[][], @playerX: int, @playerY: int) ->
+  public func %construct(cells: int[][], @playerX: int, @playerY: int) =>
     // Clone the given cells to avoid them from being frozen
     @cells = clone!(cells);
 }
@@ -2313,11 +2313,11 @@ Now we've acquired the basis of classes, this part will teach you more complex f
 
 A word about overloads:
 
-We saw before the constructor, a special method called when the instance is created. This method can't be ran the normal way, meaning you can't do `myInstance.construct()` or `myInstance.@construct()` for example. Such a method, and every method we will see beginning by the `@` symbol, are called _overloads_.
+We saw before the constructor, a special method called when the instance is created. This method can't be ran the normal way, meaning you can't do `myInstance.construct()` or `myInstance.%construct()` for example. Such a method, and every method we will see beginning by the `%` symbol, are called _overloads_.
 
 By default, when we instanciate a class, nothing is done (excepted creating the object itself). The constructor overwrites this behavior by running its own code.
 
-The destructor is a special function you probably won't use very often, but it is still useful in some cases. Like the constructor, it's an overload, and is written `@free`. It takes no argument and must be `void`-typed, so its return type can also be omitted.
+The destructor is a special function you probably won't use very often, but it is still useful in some cases. Like the constructor, it's an overload, and is written `%free`. It takes no argument and must be `void`-typed, so its return type can also be omitted.
 
 Now, a word about freeing:
 
@@ -2331,12 +2331,12 @@ In our case, the destructor is called when the instance is manually freed, using
 class IntArray {
   private data: int[];
 
-  public func @free() {
+  public func %free() {
     println!("I will be freed.");
   }
 
-  public func add(value: int) : void -> @data.push(value);
-  public func pop() : bool -> @data.pop();
+  public func add(value: int) : void => @data.push(value);
+  public func pop() : bool => @data.pop();
 }
 
 let arr = new IntArray();
@@ -2358,13 +2358,13 @@ Let's imagine we have a class representing a list of integers. We have a method,
 
 If we simply declared an instance of this class as a frozen, it will freeze its public attributes. But this won't prevent from adding numbers to the private list thanks to the `add` function, for example.
 
-That's why an overload exists to implement the 'frozen' state in a class, called `@freeze`. It takes no argument and is `void`-typed, so its return type can be omitted. It this method is implemented, the instance is considered as being able to be frozen.
+That's why an overload exists to implement the 'frozen' state in a class, called `%freeze`. It takes no argument and is `void`-typed, so its return type can be omitted. It this method is implemented, the instance is considered as being able to be frozen.
 
 ```sn
 class IntArray {
   public readonly data: int[];
 
-  public func @freeze() {}
+  public func %freeze() {}
 
   public func add(value: int) : void {
     // Check if the instance is frozen
@@ -2382,7 +2382,7 @@ class IntArray {
       @data.pop();
   }
 
-  public func sum() : int -> @data.reduce((acc, value) -> acc + value);
+  public func sum() : int => @data.reduce((acc, value) => acc + value);
 }
 ```
 
@@ -2390,11 +2390,11 @@ As you can see, the overload's body is empty. It's simply because when declaring
 
 When freezing the class, we aim to make the instance and its data immutable. But there is a problem here. In fact, even if `data` can't be written from the outside, its sub-values can. For example, doing `arr.data = [1, 2]` won't work, but `arr.data[1] = 5` will. This is due to the fact `arr.data[1]` is independent of `arr.data` because it's its own single value, while `arr.data` is a list of values, not the values themselves.
 
-Because of this behaviour, our instance is not _fully_ frozen. That's why implementing the `@freeze` overload will automatically freeze all attributes, even private ones, and their own attributes if they are objects are instances of classes, and so on. Even though freezing all of this could take a bit of time, it's done because declaring is frozen is always done intentionnally. If we simply wanted to make `add` and `pop` unable to act, we would have implemented a `makeImmutable` method or something.
+Because of this behaviour, our instance is not _fully_ frozen. That's why implementing the `%freeze` overload will automatically freeze all attributes, even private ones, and their own attributes if they are objects are instances of classes, and so on. Even though freezing all of this could take a bit of time, it's done because declaring is frozen is always done intentionnally. If we simply wanted to make `add` and `pop` unable to act, we would have implemented a `makeImmutable` method or something.
 
 Thanks to this behaviour, we don't take the risk to forget freezing an attribute, a problem that can occur especially when adding new attributes to a class and forgetting to freeze them. Hopefully, we don't have to think about that.
 
-Note that any instance of the `IntArray` can still be frozen after being declared, using the `freeze!` macro, which permits to freeze the data after manipulating its data. In fact, all overloads can be called manually by using the macro with the same name the overload has (except `@construct` and `@call`). For example, the `@freeze` overload can be called using the `freeze!` macro.
+Note that any instance of the `IntArray` can still be frozen after being declared, using the `freeze!` macro, which permits to freeze the data after manipulating its data. In fact, all overloads can be called manually by using the macro with the same name the overload has (except `%construct` and `%call`). For example, the `%freeze` overload can be called using the `freeze!` macro.
 
 Also, conventionnally, freezing cannot be undone, so we don't have to implement an `unfreeze` method or anything.
 
@@ -2462,7 +2462,7 @@ println!(list[1]); // Prints: "7"
 
 This works perfectly fine. We simply added a `clone!` instruction, and our problem is solved because we explicitly tell we want to make a brand _new_ list with the same values than the first one.
 
-But cloning is not magic. We can't simply clone data like this. Imagine a class contains an `unique_id` attribute that aims to be a unique number. Cloning it like that would throw this rule away. This is why, by default, instances can't be cloned until they implement the `@clone` overload. Let's consider this class:
+But cloning is not magic. We can't simply clone data like this. Imagine a class contains an `unique_id` attribute that aims to be a unique number. Cloning it like that would throw this rule away. This is why, by default, instances can't be cloned until they implement the `%clone` overload. Let's consider this class:
 
 ```sn
 class Product {
@@ -2471,7 +2471,7 @@ class Product {
   public readonly price: int;
   private static counter: int = 0;
 
-  public @construct(@name: string, @price: int) {
+  public %construct(@name: string, @price: int) {
     @unique_id = self::counter ++;
   }
 }
@@ -2485,7 +2485,7 @@ The overload will then be able to manipulate the target before returning it, in 
 
 ```sn
   // ...
-  public func @clone(target: self) : self {
+  public func %clone(target: self) : self {
     // Print a simple message
     println!(`Cloning a ${target.name}`);
 
@@ -2502,7 +2502,7 @@ The second signature takes no argument, and must manually return an instance of 
 
 ```sn
   // ...
-  public func @clone() -> new Product(@name, @price);
+  public func %clone() => new Product(@name, @price);
   // ...
 ```
 
@@ -2514,11 +2514,11 @@ There is a third and last way to grant cloning support to your class. It's calle
 
 ```sn
   // ...
-  public pln @lazy_clone = true;
+  public pln %lazy_clone = true;
   // ...
 ```
 
-If we write that, instances of the class will support cloning but we won't be able to do anything when this happen, or even be notified of that. All the attributes of the original instance will automatically be cloned to be assigned to the new one (like the first `@clone` we saw before). This is perfect for classes that don't have to worry about duplicate instances.
+If we write that, instances of the class will support cloning but we won't be able to do anything when this happen, or even be notified of that. All the attributes of the original instance will automatically be cloned to be assigned to the new one (like the first `%clone` we saw before). This is perfect for classes that don't have to worry about duplicate instances.
 
 ### Serialization
 
@@ -2533,9 +2533,9 @@ class Product {
   public readonly price: int;
   private static counter: int = 0;
 
-  public pln @lazy_clone = true;
+  public pln %lazy_clone = true;
 
-  public @construct(@name: string, @price: int) {
+  public %construct(@name: string, @price: int) {
     @unique_id = self::counter ++;
   }
 }
@@ -2546,15 +2546,15 @@ We could now imagine we want to transmit a product over the network, or simply s
 For that, we'll implement two overloads in our class. They are `@serialize` and `@unserialize`, which is pretty explicit, and use the following signature:
 
 ```sn
-  public func @serialize() : string;
-  public static func @unserialize(serial: string) : self;
+  public func %serialize() : string;
+  public static func %unserialize(serial: string) : self;
 ```
 
 Now let's implement them! First, how to implement serialization? We could produce a human-friendly string, like that:
 
 ```sn
   // ...
-  public func @serialize() : string {
+  public func %serialize() : string {
     return `uid: ${@unique_id} ; name: ${@name} ; price: ${@price}`;
   }
   // ...
@@ -2569,7 +2569,7 @@ But there is a problem here: first, the string is not optimized. One of the goal
     val price: int;
   }
 
-  public func @serialize() : string ->
+  public func %serialize() : string =>
     // Make an object containing the data we want to serialize
     // (thanks to IST)
     // Then serialize it and return the result
@@ -2578,7 +2578,7 @@ But there is a problem here: first, the string is not optimized. One of the goal
       price: @price
     });
 
-  public static func @unserialize(serial: string) : self {
+  public static func %unserialize(serial: string) : self {
     // Unserialize the serialized structure
     val obj: Serialized = unserialize!(serial, Serialized);
     // Make a new product instance and return it
@@ -2598,9 +2598,9 @@ Here is the syntax:
 ```sn
   // ...
   // Implement lazy serialization
-  public pln @lazy_serialize = true;
+  public pln %lazy_serialize = true;
   // Implement lazy serialization
-  public pln @lazy_unserialize = true;
+  public pln %lazy_unserialize = true;
   // ...
 ```
 
@@ -2608,7 +2608,7 @@ It's also possible to customize the fields that have to be serialized and unseri
 
 ```sn
   // ...
-  public pln @lazy_serial_fields = [ "name", "price" ];
+  public pln %lazy_serial_fields = [ "name", "price" ];
   // ...
 ```
 
@@ -2633,19 +2633,19 @@ class Translator {
   }
 
   // Make the class callable
-  public static func @call(text: string, lang: string) : string ->
+  public static func %call(text: string, lang: string) : string =>
     @translate(text, lang);
 }
 
 println!(Translator("Hello", "fr")); // Prints: "Bonjour"
 ```
 
-Here, the `@call` overload made the class callable. We could implement it for instances:
+Here, the `%call` overload made the class callable. We could implement it for instances:
 
 ```sn
 class Calculator {
-  public func add(left: int, right: int) : int -> left + right;
-  public func @call(left: int, right: int) : int -> @add(left, right);
+  public func add(left: int, right: int) : int => left + right;
+  public func %call(left: int, right: int) : int => @add(left, right);
 }
 
 val calc = new Calculator();
@@ -2663,7 +2663,7 @@ class Product {
   private static counter = 0;
   private id: int;
 
-  public func @construct() -> @unique_id = self::counter ++;
+  public func %construct() => @unique_id = self::counter ++;
 
   // List a function as this class' friend
   friend getProductId(product: self) : int;
@@ -2725,7 +2725,7 @@ virtual class Hero {
   public readonly hp: int;
   public readonly attack: int;
 
-  public @construct(@name: string, @hp: int, @attack: int) {}
+  public %construct(@name: string, @hp: int, @attack: int) {}
 
   // Attack an ennemy
   public func fight(ennemy: self) : void {
@@ -2812,7 +2812,7 @@ We can now write our `Wizard` class:
 class Wizard extends Hero {
   public readonly mp: int;
 
-  public func @construct(@name: int, @hp: int, @attack: int, @mp: int) {}
+  public func %construct(@name: int, @hp: int, @attack: int, @mp: int) {}
 
   public func fireball(ennemy: Hero) : void {
     // Check if remaining MP are enough
@@ -2878,12 +2878,12 @@ Let's take a short example:
 
 ```sn
 class Mother {
-  public func callHello() : void -> this.hello();
-  public func hello() : void -> println!("I am the mother class.");
+  public func callHello() : void => this.hello();
+  public func hello() : void => println!("I am the mother class.");
 }
 
 class Child extends Mother {
-  public func hello() : void -> println!("I am the child class.");
+  public func hello() : void => println!("I am the child class.");
 }
 ```
 
@@ -2953,7 +2953,7 @@ unique class Translation as tr {
     return "Bonjour";
   }
 
-  public func @call(text: str, lang: str) : string ->
+  public func %call(text: str, lang: str) : string =>
     @translate(text, lang);
 }
 
@@ -2978,21 +2978,21 @@ In SilverNight, typecasting is the concept of converting a given type into a pri
 These overloads have to following signature:
 
 ```sn
-  [public|protected|private] @toType() : type;
+  [public|protected|private] %toType() : type;
 ```
 
 If they are public, casting will work anywhere. If they are protected/private, they will work only from the inside of the class (and not in children if private).
 
-For examlple, casting a type to a boolean (`bool` or `Boolean` type) requires the `@toBoolean` overload. Here is an example:
+For examlple, casting a type to a boolean (`bool` or `Boolean` type) requires the `%toBoolean` overload. Here is an example:
 
 ```sn
 class MyInteger {
   private value: int;
 
   public func set(@value: int) : void {}
-  public func get() : int -> @value;
+  public func get() : int => @value;
 
-  public func @toBoolean() : bool -> @value isnt 0;
+  public func %toBoolean() : bool => @value isnt 0;
 }
 ```
 
@@ -3002,23 +3002,23 @@ Here is the list of all typecasting overloads:
 
 ```sn
   // ...
-  public func @toBoolean()   : bool;
-  public func @toInteger()   : int;
-  public func @toFloat()     : float;
-  public func @toString()    : string;
+  public func %toBoolean()   : bool;
+  public func %toInteger()   : int;
+  public func %toFloat()     : float;
+  public func %toString()    : string;
 
-  public func @toNumber()    : Number;
-  public func @toPrimitive() : string;
+  public func %toNumber()    : Number;
+  public func %toPrimitive() : string;
   // ...
 ```
 
-There two last overloads can be automatically available even if they are not written by hand: `@toNumber` and `@toPrimitive`. The first one returns a `Number` instance but exists if and only if either `@toInteger` and/or `@toFloat` is implemented. If `@toFloat` exists, it will return its result, else it will return `@toInteger`'s one.
+There two last overloads can be automatically available even if they are not written by hand: `%toNumber` and `%toPrimitive`. The first one returns a `Number` instance but exists if and only if either `%toInteger` and/or `%toFloat` is implemented. If `%toFloat` exists, it will return its result, else it will return `%toInteger`'s one.
 
-The `@toPrimitive` overload will simply return a string if **any** typecasting overload is implemented. It will give priority to `@toString`, then to `@toNumber`, then to `@toBoolean`. That's as simple as that. It can be useful in some cases like in interfaces and/or traits like we'll see later.
+The `%toPrimitive` overload will simply return a string if **any** typecasting overload is implemented. It will give priority to `%toString`, then to `%toNumber`, then to `%toBoolean`. That's as simple as that. It can be useful in some cases like in interfaces and/or traits like we'll see later.
 
 **NOTE :** `Number` is the mother class of both `int` and `float`, themselves respectively mothers of all integers types like `uint8` or `int32` for the first one and floating-points types like `ufloat` or `double` for the second one.
 
-A concrete example of using these overloads is when using the `println!` macro. It takes as an argument any instance implementing `@toPrimitive`, gets this overload's result, and prints it in the output. There are several usages of it, but most are to use them in interfaces and traits.
+A concrete example of using these overloads is when using the `println!` macro. It takes as an argument any instance implementing `%toPrimitive`, gets this overload's result, and prints it in the output. There are several usages of it, but most are to use them in interfaces and traits.
 
 ### Sub-typing
 
@@ -3030,11 +3030,11 @@ Here is an example:
 
 ```sn
 class Vehicle {
-  public func accelerate() : void -> println!("Vroom!");
+  public func accelerate() : void => println!("Vroom!");
 }
 
 class Motorcycle extends Vehicle {
-  public func accelerate() : void -> println!("vroom vroom!");
+  public func accelerate() : void => println!("vroom vroom!");
 }
 
 func acceleration(vehicle: Vehicle) : void {
@@ -3049,12 +3049,12 @@ Be aware though: when declaring a resource as a type and using a child type inst
 
 ```sn
 class Vehicle {
-  public func accelerate() : void -> println!("Vroom!");
+  public func accelerate() : void => println!("Vroom!");
 }
 
 class Motorcycle extends Vehicle {
-  public func accelerate() : void -> println!("vroom vroom!");
-  public func stunt() : void -> println!("Wow!");
+  public func accelerate() : void => println!("vroom vroom!");
+  public func stunt() : void => println!("Wow!");
 }
 
 val motorcycle: Vehicle = new Motorcycle();
@@ -3064,7 +3064,7 @@ motorcycle.stunt(); // ERROR because `stunt` is not part of the `Vehicle` class
 That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept. Also, note there is a way to ask for a specific type and not its children, thanks to the `#mustbe<T>` directive. Yes, directive can be templated. Here is an exemple:
 
 ```sn
-func precise(vehicle: #mustbe<Vehicle>) : void ->
+func precise(vehicle: #mustbe<Vehicle>) : void =>
   vehicle.accelerate();
 
 let car        : Vehicle    = new Vehicle();
@@ -3080,13 +3080,13 @@ println!(precise(motorcycle2)); // ERROR
 
 Because understanding the concrete point of an interfaces isn't always easy, let's take an example to introduce the concept.
 
-Let's say we have a function that takes two arguments of any type, and add them as integers. In order to perform the addition, they need to be convertible to integers, of course. So our function will take any argument that implements the `@toInteger` overload. But how can we do that?
+Let's say we have a function that takes two arguments of any type, and add them as integers. In order to perform the addition, they need to be convertible to integers, of course. So our function will take any argument that implements the `%toInteger` overload. But how can we do that?
 
-The first idea would be to make a virtual class called `ConvertibleToInt` with an abstract method called `@toInteger`, like this:
+The first idea would be to make a virtual class called `ConvertibleToInt` with an abstract method called `%toInteger`, like this:
 
 ```sn
 virtual class ConvertibleToInt {
-  abstract func @toInteger() : int;
+  abstract func %toInteger() : int;
 }
 ```
 
@@ -3100,7 +3100,7 @@ Try to find the solution by yourself. The solution is just below:
 
 ```sn
 interface ConvertibleToInt {
-  public func @toInteger() : int;
+  public func %toInteger() : int;
 }
 
 func add(left: ConvertibleToInt, right: ConvertibleToInt) : int {
@@ -3108,7 +3108,7 @@ func add(left: ConvertibleToInt, right: ConvertibleToInt) : int {
 }
 ```
 
-**NOTE :** Writing `int(value)` calls the `int` class as a function with `value` as an argument to convert it to an integer. It accepts any value implementing the `@toInteger` value, like our interface.
+**NOTE :** Writing `int(value)` calls the `int` class as a function with `value` as an argument to convert it to an integer. It accepts any value implementing the `%toInteger` value, like our interface.
 
 If we try this code, it works perfectly fine.
 
@@ -3124,9 +3124,9 @@ interface Duplication {
 class Product {
   public readonly name: string;
 
-  public func @construct(@name: string) {};
+  public func %construct(@name: string) {};
 
-  public func duplicate() : self -> new Product(@name);
+  public func duplicate() : self => new Product(@name);
 }
 ```
 
@@ -3147,7 +3147,7 @@ Here are some native typecasting interfaces we can use in our programs:
 * `Randomizable`
 * `Primitivable`
 
-**NOTE :** `Randomizable` forces to implement the `@random` overload that generates a random element of the current class.
+**NOTE :** `Randomizable` forces to implement the `%random` overload that generates a random element of the current class.
 
 #### Implemeting interfaces in a class
 
@@ -3155,7 +3155,7 @@ To implement an interface in a class, simply use the `implements` keyword like t
 
 ```sn
 class Two implements ConvertibleToInt {
-  public func @toInteger() -> 2;
+  public func %toInteger() => 2;
 }
 ```
 
@@ -3184,7 +3184,7 @@ A good example of traits is when you want to inherit from multiple classes. This
 ```sn
 trait Vehicle {
   public val speed: float;
-  public func accelerate() : string -> "Vroom !";
+  public func accelerate() : string => "Vroom !";
 }
 
 trait Wheeled {
@@ -3258,23 +3258,23 @@ class KindOfDict<K, V> {
   private keys: K[];
   private values: K[];
 
-  public func has(key: K) : bool -> @keys.has(key);
+  public func has(key: K) : bool => %keys.has(key);
 
   public func set(key: K, value: V) : void {
     // If this key is not already known...
-    if (not @has(key)) {
+    if (not %has(key)) {
       // Create it
-      @keys.push(key);
+      %keys.push(key);
       // Add the new value
-      @values.push(value);
+      %values.push(value);
     } else
       // Else, associate the new value to the existing key
-      @values[@keys.indexOf(key)] = value;
+      %values[%keys.indexOf(key)] = value;
   }
 
-  public func get(key: K) : V ->
+  public func get(key: K) : V =>
     // Return the value associated to the key
-    @values[@keys.indexOf(key)];
+    %values[%keys.indexOf(key)];
 }
 ```
 
@@ -3317,17 +3317,17 @@ Because the chosen template will always vary, we can't instanciate it nor use it
 // Make a structure
 struct Data<T implements Stringifyable> {
   val value: T;
-  func stringify() : string = () -> string(value);
+  func stringify() : string = () => string(value);
 }
 
 // Make a class that works with the structure
 class Working {
-  public func @toString() : void -> "It's working!";
+  public func %toString() : void => "It's working!";
 }
 
 // Make a class that doesn't work with the structure
 class NotWorking {
-  public func @toInteger() : int -> 28;
+  public func %toInteger() : int => 28;
 }
 ```
 
@@ -3365,7 +3365,7 @@ Pretty powerful, right? We can this syntax to force the templates to do codes li
 
 ```sn
 class StringDict<K, V implements Stringifyable> extends KindOfDict<K, V> {
-  public stringify(key: T) : string -> string(@values[@keys.indexOf(key)]);
+  public stringify(key: T) : string => string(%values[%keys.indexOf(key)]);
 }
 ```
 
@@ -3397,7 +3397,7 @@ dict Custom<K, V> {
 }
 ```
 
-There are a special kind of classes. First, some overloads **must** be implemented. These are `@get`, `@set`, `@unset`, `@has`, `@keys` and `@values`, which are specific to dictionaries and can't be used in standard classes. All other overloads (like `@clone` or `@random`, even `@construct` and `@free`) can be implemented but are not required. Also, dictionary classes must take two templates (they can have any name) but they can force the type of keys and/or the type of values by writing a class' name instead (like `dict Vector<int, V>` for vectors).
+There are a special kind of classes. First, some overloads **must** be implemented. These are `%get`, `%set`, `%unset`, `%has`, `%keys` and `%values`, which are specific to dictionaries and can't be used in standard classes. All other overloads (like `%clone` or `%random`, even `%construct` and `%free`) can be implemented but are not required. Also, dictionary classes must take two templates (they can have any name) but they can force the type of keys and/or the type of values by writing a class' name instead (like `dict Vector<int, V>` for vectors).
 
 Let's detail these overloads:
 
@@ -3406,23 +3406,23 @@ Let's detail these overloads:
 // V = type for values
 dict Custom<K, V> {
   // Get a value from a key
-  public func @get(key: K) : V;
+  public func %get(key: K) : V;
   // Associate a value to a key
-  public func @set(key: K, value: V) : void;
+  public func %set(key: K, value: V) : void;
   // Delete a key (and the value it refers to)
-  public func @unset(key: K) : void;
+  public func %unset(key: K) : void;
   // Check if a key is known
-  public func @has(key: K) : bool;
+  public func %has(key: K) : bool;
   // Get the list of all keys
-  public func @keys() : List<K>;
+  public func %keys() : List<K>;
   // Get the list of all values
-  public func @values() : List<V>;
+  public func %values() : List<V>;
 }
 ```
 
 As always, the return type of these overloads is omittable, put they are written here to see their complete signature.
 
-About `@keys` and `@values`, their behaviour is a little special. They can be called automatically, when iterating the dictionary through a loop (we'll see that soon), or manually thanks to a function. If they are called automatically (in a loop iterator, for instance), the return value will be kept as it is. But if they are called manually, the return value will automatically be cloned - and there's no way to prevent it. Why this behaviour? Because, if a loop iterates through the list of keys/values, there is no need to clone the values as the list will not be written. But if the list is retrieved manually and written by some piece of code, this could cause some garbage in the dictionary - because some dictionary use a special behaviour like forbidding duplicate values or restricting keys to a specific list of names.
+About `%keys` and `%values`, their behaviour is a little special. They can be called automatically, when iterating the dictionary through a loop (we'll see that soon), or manually thanks to a function. If they are called automatically (in a loop iterator, for instance), the return value will be kept as it is. But if they are called manually, the return value will automatically be cloned - and there's no way to prevent it. Why this behaviour? Because, if a loop iterates through the list of keys/values, there is no need to clone the values as the list will not be written. But if the list is retrieved manually and written by some piece of code, this could cause some garbage in the dictionary - because some dictionary use a special behaviour like forbidding duplicate values or restricting keys to a specific list of names.
 
 Most of the time, custom dictionaries should always inherit from the `Dictionary` class (the same one that is used when using `#Dynamic` in a key/value association with IST). The syntax is the same as for classes:
 
@@ -3458,7 +3458,7 @@ foreach (let value of myArray)
   println!(key);
 
 // Explore a dictionary with both its keys and its values
-foreach (let key => let value of myArray)
+foreach (let key -> let value of myArray)
   println!(key, value);
 ```
 
@@ -3527,7 +3527,7 @@ func run(callback: lambda () #bind
     sayHello: "println!(\"Hello \" + ${1})",
     sayHappyBirthday: "println!('Happy birthday ' + ${1} + ' you are now ' + ${2} + ' years old!')"
   })
-  : void -> callback();
+  : void => callback();
 ```
 
 Here, `myBindings` generates several links.
@@ -3539,7 +3539,7 @@ Here, `myBindings` generates several links.
 So, we can use the `run` function like this:
 
 ```sn
-run(() -> {
+run(() => {
   #bind;
 
   printInConsole("Hello, world!");
@@ -3565,7 +3565,7 @@ pln engineBindings = #makebindings {
 This is all! We can now rewrite our `run` function:
 
 ```sn
-func run(callback: lambda () #bind engineBindings): void -> callback();
+func run(callback: lambda () #bind engineBindings): void => callback();
 ```
 
 ### Constrained types
@@ -3577,7 +3577,7 @@ This time, because we haven't seen any feature that could achieve it, let's just
 ```sn
 class Vehicle {
   public readonly wheels: int;
-  public func @construct(@wheels: int);
+  public func %construct(@wheels: int);
 }
 
 val car = new Vehicle(4);
@@ -3587,7 +3587,7 @@ val motorcycle = new Vehicle(2);
 Our function will have this look:
 
 ```sn
-func treatCars(car: Vehicle with (c -> c.wheels <= 4)) : void ->
+func treatCars(car: Vehicle with (c => c.wheels <= 4)) : void =>
   println!(`This vehicle has ${car.wheels} wheels.`);
 ```
 
@@ -3600,7 +3600,7 @@ If we put aside the fact that writing is controlled by a callback, constrained t
 Here is an exemple to better understand the concept:
 
 ```sn
-func treatCars(car: Vehicle with (c -> c.wheels <= 4)) : void {
+func treatCars(car: Vehicle with (c => c.wheels <= 4)) : void {
   c = new Vehicle(2); // Works fine
   c = new Vehicle(4); // Works fine
   c = new Vehicle(8); // ERROR because the constraint returned `false`
@@ -3614,14 +3614,14 @@ When the resource is written, the callback receives its value (plus the current 
 But, because of the need to match the constraint, constrained resources cannot be declared without an initialization value. Here is an example:
 
 ```sn
-let car: Vehicle with (c -> c.wheels is 4); // ERROR
-let car: Vehicle with (c -> c.wheels is 4) = new Vehicle(4); // Works fine
+let car: Vehicle with (c => c.wheels is 4); // ERROR
+let car: Vehicle with (c => c.wheels is 4) = new Vehicle(4); // Works fine
 ```
 
 Also, because we could want to re-use a constrained type later, the `#type` directive allows us to register:
 
 ```sn
-#type Car is Vehicle with (c -> c.wheels is 4);
+#type Car is Vehicle with (c => c.wheels is 4);
 
 let car: Car;                  // ERROR
 let car: Car = new Vehicle(2); // ERROR
@@ -3637,7 +3637,7 @@ But what's a macro, anyway? A macro is simply a function that replaces some part
 To understand better the concept, here is how we define a macro:
 
 ```sn
-#macro sayHello(name: string) -> println!(`Hello, $${name}`);
+#macro sayHello(name: string) => println!(`Hello, $${name}`);
 ```
 
 Note the double `$` symbol here: it means we are retrieving a macro variable and we want to insert it as it is. Now, how do we use the macro? Like this:
@@ -3658,13 +3658,13 @@ As you can see, a macro is simply a way to simplify the writing of a call. It wo
 Macros can have several arguments, which must be typed. But it can also have a return type if it is ensured to return a specific type of value. For example, in our example, because `println!` is void-typed, the macro will return a `void`. So, we write:
 
 ```sn
-#macro sayHello(name: string) : void -> println!(`Hello, $${name}}`);
+#macro sayHello(name: string) : void => println!(`Hello, $${name}}`);
 ```
 
 One of the native macros can be useful when using arguments. In fact, when writing the same macro as above but like this:
 
 ```sn
-#macro sayHello(name: string) : void -> println!("Hello, " + name);
+#macro sayHello(name: string) : void => println!("Hello, " + name);
 ```
 
 Using it will almost certainly throw an error. Why? Because it would produce this result:
@@ -3680,14 +3680,14 @@ println!("Hello, " + Jack);
 Until a `Jack` resource is declared, the code above will throw an error because of an undefined reference. This is due to the fact every argument given to a macro is gave as a plain content. The solution to this problem is to use the `#uneval` directive.
 
 ```sn
-#macro sayHello(name: string) : void -> println!("Hello, " + #uneval(name));
+#macro sayHello(name: string) : void => println!("Hello, " + #uneval(name));
 ```
 
 Also note that macros can use a special type for their arguments, that are not available for standard functions. It's the `#raw` type, which prevent the arguments from being checked and evaluated. For example, the following code will work fine:
 
 ```sn
 // Declare the macro
-#macro sayHello(name: #raw) : void -> println!("Hello, " + name);
+#macro sayHello(name: #raw) : void => println!("Hello, " + name);
 
 // Call it
 sayHello( 'Jack' );
@@ -3699,7 +3699,7 @@ As you can see, even the spaces are kept in `name`. Note that plain arguments ca
 
 ```sn
 // Declare the macro
-#macro test(name: #raw) : void -> #uneval(name);
+#macro test(name: #raw) : void => #uneval(name);
 
 // Call it
 println!(test( 'Jack' ));
@@ -3711,7 +3711,7 @@ There is also a type to ask specifically for an assignable entity (variables, co
 
 ```sn
 // Declare the macro
-#macro test(name: #var) : void ->
+#macro test(name: #var) : void =>
   println!(`$${name} is an assignable entity`);
 
 // Declare a constant
@@ -3731,7 +3731,7 @@ Note that `#var` can be templated, like `#var<string>` to accept any assignable 
 Another type we can use is `#name`: it forces to use a valid entity name, but does not check if it exists. It can be especially useful if we want to make some declarations:
 
 ```sn
-#macro make_vehicles(name: #name) -> val $${name}: Array<Vehicle>;
+#macro make_vehicles(name: #name) => val $${name}: Array<Vehicle>;
 
 // Writing this:
 make_vehicles(hello);
@@ -3742,7 +3742,7 @@ val hello: Array<Vehicle>;
 Another type we can use is `#name`: it forces to use a valid entity name, but does not check if it exists. It can be especially useful if we want to make some declarations:
 
 ```sn
-#macro make_vehicles(name: #name) -> val $${name}: Array<Vehicle>;
+#macro make_vehicles(name: #name) => val $${name}: Array<Vehicle>;
 
 // Writing this:
 make_vehicles(hello);
@@ -3762,26 +3762,26 @@ Superoverloads are overloads that don't act only as a class level, but as the wh
 
 How do they work? That's simple: each operator superoverload overwrites the behaviour of an operator. Here is the list:
 
-* `@plus` (`+`)
-* `@less` (`-`)
-* `@times` (`*`)
-* `@divide` (`/`)
-* `@modulo` (`**`)
+* `%plus` (`+`)
+* `%less` (`-`)
+* `%times` (`*`)
+* `%divide` (`/`)
+* `%modulo` (`**`)
 
 You can see the matching operator on the right of the corresponding superoverload. Each of them take two arguments, and return a new value. Let's see an example: we have a class called `BankAccount`, with a public readonly member called `money` and a method to add and substract money from the account. We now want to be able to add two bank accounts. Here is how we could do it:
 
 ```sn
 class BankAccount {
-  public readonly money: int with (c -> c >= 0);
-  public func @construct(@money: int);
-  public func add(amount: int) : void -> @money += amount;
-  public func sub(amount: int) : void -> @money -= amount;
+  public readonly money: int with (c => c >= 0);
+  public func %construct(@money: int);
+  public func add(amount: int) : void => @money += amount;
+  public func sub(amount: int) : void => @money -= amount;
 }
 
 let account1 = new BankAccount(1000);
 let account2 = new BankAccount(2000);
 
-func @plus(left: BankAccount, right: BankAccount) : int ->
+func %plus(left: BankAccount, right: BankAccount) : int =>
   left.money + right.money;
 
 println!(account1 + account2); // Prints: "3000"
@@ -3792,7 +3792,7 @@ That's as simple as that. Note that, conventionally, an operator superoverload's
 We could also implement a way to handle operations between bank accounts and numbers:
 
 ```sn
-func @plus(left: BankAccount, right: Number) : Number ->
+func %plus(left: BankAccount, right: Number) : Number =>
   left.money + right;
 
 println!(account1 + 20); // Prints: "1020"
@@ -3800,16 +3800,16 @@ println!(account1 + 20); // Prints: "1020"
 
 There are though some operators that can't return any type. These are the logical operators, which must return a boolean. Here is the list :
 
-* `@equal` (`==`)
-* `@greater` (`>`)
-* `@smaller` (`<`)
-* `@greater_eq` (`>=`)
-* `@smaller_eq` (`<=`)
+* `%equal` (`==`)
+* `%greater` (`>`)
+* `%smaller` (`<`)
+* `%greater_eq` (`>=`)
+* `%smaller_eq` (`<=`)
 
 So, we could compare two bank accounts:
 
 ```sn
-func @equal(left: BankAccount, right: BankAccount) : bool ->
+func %equal(left: BankAccount, right: BankAccount) : bool =>
   left.money is right.money;
 
 println!(account1 == account2); // Prints: "false"
@@ -3820,33 +3820,33 @@ This works the same way for the other logical operators.
 
 #### Order-aware superoverloads
 
-Some superoverloads can be implemented automatically in some ways: if we define the `@equal` superoverload, the `!=` operator will also work and return the opposite of `@equal`. If we implement the `@greater` superoverload, `@smaller_eq` will automatically be implemented.
+Some superoverloads can be implemented automatically in some ways: if we define the `%equal` superoverload, the `!=` operator will also work and return the opposite of `%equal`. If we implement the `%greater` superoverload, `%smaller_eq` will automatically be implemented.
 
 To avoid this behavior, simply write:
 
 ```sn
-func @equal(left: BankAccount, right: BankAccount) #only : bool ->
+func %equal(left: BankAccount, right: BankAccount) #only : bool =>
   left.money is right.money;
 ```
 
-This will prevent the `!=` operator from being automatically implemented as the opposite to our `@equal`.
+This will prevent the `!=` operator from being automatically implemented as the opposite to our `%equal`.
 
 #### Reversable superoverloads
 
 Also, by default, implemeting a superoverload will preserve the argument's order. This means the following code:
 
 ```sn
-func @equal(left: BankAccount, right: int) : bool ->
+func %equal(left: BankAccount, right: int) : bool =>
   left.money is right.money;
 
 println!(new BankAccount(1000) is 1000); // Prints: "true"
 println!(1000 is new BankAccount(1000)); // ERROR
 ```
 
-Will result in an error, because `@equal` only takes on its _left_ a `BankAccount` instance, and on its right an `int`. To make the superoverload working whatever the arguments order is without rewriting it with the opposite order, we can simply use the `#reversable` directive:
+Will result in an error, because `%equal` only takes on its _left_ a `BankAccount` instance, and on its right an `int`. To make the superoverload working whatever the arguments order is without rewriting it with the opposite order, we can simply use the `#reversable` directive:
 
 ```sn
-func @equal(left: BankAccount, right: int) #reversable : bool ->
+func %equal(left: BankAccount, right: int) #reversable : bool =>
   left.money is right.money;
 
 println!(new BankAccount(1000) is 1000); // Prints: "true"
@@ -3856,7 +3856,7 @@ println!(1000 is new BankAccount(1000)); // Prints: "true"
 This now works as expected. Note that `#only` and `#reversable` can be combined:
 
 ```sn
-func @equal(left: BankAccount, right: int) #reversable #only : bool ->
+func %equal(left: BankAccount, right: int) #reversable #only : bool =>
   left.money is right.money;
 
 println!(new BankAccount(1000) is 1000); // Prints: "true"
@@ -3870,16 +3870,16 @@ It's possible to use templates on superoverloads, but only if these templates ar
 
 ```sn
 // Doesn't work because "T" cannot be guessed
-func @plus<T>(left: string, right: int) : int[];
+func %plus<T>(left: string, right: int) : int[];
 
 // Doesn't work because "T" cannot be guessed
-func @plus<T>(left: string, right: int) : T;
+func %plus<T>(left: string, right: int) : T;
 
 // Works fine
-func @plus<T>(left: T, right: int) : bool;
+func %plus<T>(left: T, right: int) : bool;
 
 // Works fine
-func @plus<T>(left: string, right: Dictionary<int, T>) : string[];
+func %plus<T>(left: string, right: Dictionary<int, T>) : string[];
 ```
 
 ## Errors
@@ -3909,17 +3909,17 @@ struct ErrorStep {
 class Error {
   public readonly message: string;
   public readonly traceback: List<ErrorStep>;
-  public func @construct(@message: string);
-  public func @toString();
+  public func %construct(@message: string);
+  public func %toString();
 }
 ```
 
 As you can see, an error instance has a `message` attribute that is the message we give to it when we instanciate the class, and a `traceback` which is a list of functions that were ran until the error. Here is an example:
 
 ```sn
-func a() : void -> b();
-func b() : void -> c();
-func c() : void -> throw new Error("Test");
+func a() : void => b();
+func b() : void => c();
+func c() : void => throw new Error("Test");
 
 a();
 ```
@@ -3969,7 +3969,7 @@ For exampe, we could imagine using a function to read a file. Reading the file c
 The same thing applies if we do a division, we could want to be able handle division errors. Here is an example:
 
 ```sn
-func divide(left: int, right: int) : float ->
+func divide(left: int, right: int) : float =>
   float(left) / right;
 
 divide(2, 5); // Returns: 0.4
@@ -4070,7 +4070,7 @@ The `CustomError` class could look like this:
 ```sn
 class CustomError extends Error {
   // A sample function
-  public func why() : string ->
+  public func why() : string =>
     "This is a custom error class";
 }
 ```
@@ -4108,23 +4108,23 @@ try divide(5, 0) catch (e: CustomError) {
 That's as simmple as that. There's also a syntax even lighter for single-instruction blocks:
 
 ```sn
-try divide(5, 0) catch (e: CustomError) -> println!(e.why());
+try divide(5, 0) catch (e: CustomError) => println!(e.why());
 ```
 
 Also, if the function returns something, we can use its result, like this:
 
 ```sn
-val result = try divide(5, 0) catch (e: CustomError) -> println!(e.why());
+val result = try divide(5, 0) catch (e: CustomError) => println!(e.why());
 
 val result = try divide(5, 0)
-             catch (e: CustomError) ->
+             catch (e: CustomError) =>
                println!(e.why());
 ```
 
 This will work as expected. If we don't care about getting an error object, we can omit the `catch`'s argument:
 
 ```sn
-val result = try divide(5, 0) catch -> println!(e.why());
+val result = try divide(5, 0) catch => println!(e.why());
 ```
 
 ## Nullable types
@@ -4189,7 +4189,7 @@ Instanciating a nullable type will return the `null` value by default.
 
 ### The `null` value
 
-As we saw, the `getNilPoints()` function can now return an instance of `void`. But what's that, exactly? That's simply a special SilverNight value with no member at all, excepted some overloads like `@toString()` or `@clone()`.
+As we saw, the `getNilPoints()` function can now return an instance of `void`. But what's that, exactly? That's simply a special SilverNight value with no member at all, excepted some overloads like `%toString()` or `%clone()`.
 
 A strict equivalent to the function we saw would be:
 
@@ -4251,7 +4251,7 @@ else
   println!(`A point was found: ${point.name}`);
 ```
 
-Also, thanks to `void` implementing a `@toBoolean` overload which always return `false`, we can do use some native operators like `!` or `point ? doSomething() : doSomethingElse()` on our constant.
+Also, thanks to `void` implementing a `%toBoolean` overload which always return `false`, we can do use some native operators like `!` or `point ? doSomething() : doSomethingElse()` on our constant.
 
 ### The nullable `?` operator
 
@@ -4297,7 +4297,7 @@ Let's take an example for this one: we have a function that takes a `string` as 
 But there's a specific typecasting for nullable types. When giving a nullable type where a standard type is expected, it is automatically cast into the standard type, and an error will be thrown if the value was `null`. Let's take an example:
 
 ```sn
-func inc(num: int) : int -> num + 1;
+func inc(num: int) : int => num + 1;
 
 val one: int = 1;
 val two = inc(one); // Returns: 2
@@ -4317,7 +4317,7 @@ The last call to `inc` fails because a `null` value was gave, so typecasting to 
 val result = inc(int(nothing)); // Returns: 1
 ```
 
-This works only because both `null` implements `@toInteger()` (which returns `0`).
+This works only because both `null` implements `%toInteger()` (which returns `0`).
 
 ### Forced nullable typecasting
 
@@ -4375,10 +4375,10 @@ Even though this code is not pretty, it's better optimized and avoid using a nul
 
 In SilverNight, each object (not primitives) has a unique identifier associated to it, called the RUID (Reference Unique Identifier). This means that when we do a `new SomeClass()` or create an object from a structure (flying or not), an invisible identifier is put on it. It is not available to the program itself, but allows to compare if two objects are the same, by comparing their RUID.
 
-Here is the signature of the native `@equal` superoverload:
+Here is the signature of the native `%equal` superoverload:
 
 ```sn
-func @equal<T>(left: T, right: T) : bool;
+func %equal<T>(left: T, right: T) : bool;
 ```
 
 It can compare two instances of the same class and tell if they are identical by comparing their RUID. Of course, this could not be done manually because we can't access the RUID, but this is a native superoverload so the builder can implement it itself.
@@ -4530,7 +4530,7 @@ let *ptr = &str;
 Pointers can be used to manipulate data in functions. Here is how it goes:
 
 ```sn
-func increment(*counter: int) : void -> counter ++;
+func increment(*counter: int) : void => counter ++;
 
 let counter = 0;
 increment(&counter);
@@ -4540,7 +4540,7 @@ println!(counter); // Prints: "1"
 They can also return a pointer:
 
 ```sn
-func increment(*counter: int) : &int -> &(counter + 1);
+func increment(*counter: int) : &int => &(counter + 1);
 
 let *ptr = increment(&(0));
 
@@ -4769,7 +4769,7 @@ Now we've written our package file, we can write the package's source, which wil
 
 let name: string;
 
-func defineName(newName: string with (c -> c) : void ->
+func defineName(newName: string with (c => c) : void =>
   name = newName;
 
 func readName() : string {
@@ -4784,7 +4784,7 @@ export { defineName, readName };
 
 First, the `#package` directive tells this is the main file of the package. It defines a `name` variable, with two functions, one to set it, one to read it.
 
-_Tip :_ Because `(c -> c)` is a constraint callback, it must return a boolean. Strings does implement the `@toBoolean` overload, which returns `false` if they are empty, and `false` else. So this constraint simply ensures the string is not empty.
+_Tip :_ Because `(c => c)` is a constraint callback, it must return a boolean. Strings does implement the `%toBoolean` overload, which returns `false` if they are empty, and `false` else. So this constraint simply ensures the string is not empty.
 
 The last line of the file **exports** some entities. This simply creates an object that will be available from the outside of the package, so `name` won't be available from the outside.
 
@@ -4799,7 +4799,7 @@ let name: string;
 export { defineName, readName };
 
 // File: "functions.sn"
-func defineName(newName: string with (c -> c) : void ->
+func defineName(newName: string with (c => c) : void =>
   name = newName;
 
 func readName() : string {
