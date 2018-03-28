@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.11.5',
+    VERSION: '0.12.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -245,7 +245,7 @@ scheme = {
     ],
     [
       // Lazy overloads
-      /\b(public)\s+(pln)\s+(@)(lazy_(?:clone|serialize|unserialize|serial_fields))(?=\s*=)/,
+      /\b(public)\s+(pln)\s+(%)(lazy_(?:clone|serialize|unserialize|serial_fields))(?=\s*=)/,
       'purple', 'purple', 'red', 'cyan'
     ],
     [
@@ -290,7 +290,7 @@ scheme = {
     ],
     [
       // Overload declaration
-      /\b(func|public|protected|private|virtual)\s+(static\s+)?(@)([a-zA-Z_][a-zA-Z0-9_]+)\b/,
+      /\b(func|public|protected|private|virtual)\s+(static\s+)?(%)([a-zA-Z_][a-zA-Z0-9_]+)\b/,
       'purple', 'purple', 'red', 'cyan'
     ],
     [
