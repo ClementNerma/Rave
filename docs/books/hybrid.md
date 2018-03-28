@@ -2238,7 +2238,7 @@ class Map {
   public readonly cells: int[][];
 
   // Create the map
-  public func @construct(@cells: int[][], @playerX: int, @playerY: int);
+  public func @construct(@cells: int[][], @playerX: int, @playerY: int) {};
 
   // Move the hero
   private func move(x: int, y: int) : void {
