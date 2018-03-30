@@ -290,8 +290,8 @@ scheme = {
     ],
     [
       // Overload declaration
-      /\b(func|public|protected|private|virtual)\s+(static\s+)?(%)([a-zA-Z_][a-zA-Z0-9_]+)\b/,
-      'purple', 'purple', 'red', 'cyan'
+      /\b(func|public|protected|private)\s+(%)([a-zA-Z_][a-zA-Z0-9_]+)\b/,
+      'purple', 'red', 'cyan'
     ],
     [
       // Setter/getter declaration
