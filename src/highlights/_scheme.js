@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.13.1',
+    VERSION: '0.13.2',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -375,7 +375,7 @@ scheme = {
     ],
     [
       // Keywords
-      /(?<!\.)\b(let|pln|val|frozen|frozen|func|lambda|public|protected|private|auto|friend|static|abstract|final|unique|virtual|extern|readonly|do|if|else|for|foreach|in|of|break|continue|unless|until|when|default|export|return|throw|try|catch|while|with|new|include)(?!\s*:)\b/,
+      /(?<!\.)\b(let|pln|val|frozen|frozen|func|lambda|public|protected|private|auto|friend|static|abstract|final|unique|virtual|extern|readonly|do|if|else|for|foreach|in|of|break|continue|unless|until|when|default|export|return|await|throw|try|catch|while|with|new|include)(?!\s*:)\b/,
       'purple'
     ],
     [
