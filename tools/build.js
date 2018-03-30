@@ -251,13 +251,13 @@ function writeFile(p, str, verbmsg) {
  * Copy an item (file or folder) to another location
  * @param {string} src The source item
  * @param {string} dest The destination item
- * @param {boolean} [copyroot] Don't make a sub-folder to copy source folder's content
+ * @param {boolean} [copytoroot] Don't make a sub-folder to copy source folder's content
  * @param {string} verbmsg A message for the verbose mode
  * @returns {void}
  */
-function copy (src, dest, copyroot = false, verbmsg) {
+function copy (src, dest, copytoroot = false, verbmsg) {
   // Verbose
-  verb(`Copying from "${src}" (${copyroot ? 'copying root' : 'making a sub-folder if needed'})` + (verbmsg ? ` (${verbmsg})` : ''), dest);
+  verb(`Copying from "${src}" (${copytoroot ? 'copying root' : 'making a sub-folder if needed'})` + (verbmsg ? ` (${verbmsg})` : ''), dest);
 
   // Adapt the source path
   src = here(src);
@@ -265,7 +265,7 @@ function copy (src, dest, copyroot = false, verbmsg) {
   dest = here(dest);
 
   // If the source is a folder...
-  if (! copyroot && folderExists(src)) {    
+  if (! copytoroot && folderExists(src)) {    
     // Add its basename to the destination
     // NOTE: See https://github.com/jprichardson/node-fs-extra/issues/537
     dest += path.sep + path.basename(src);
