@@ -4371,6 +4371,19 @@ Except this point, this will work as expected. If we don't care about getting an
 val result = try divide(5, 0) catch => println!(e.why());
 ```
 
+Note that this last block can also return a value. Thanks to this, if an error occurs, it is still possible to return an alternative value:
+
+```sn
+val result = try divide(5, 0) catch () : float => {
+  println!(e.why());
+  return 0;
+};
+```
+
+This syntax is a little heavier but it also fixes the type of `result`. It won't be a `float?` anymore but a strict `float` because in all cases it receives a floating-point number.
+
+Please note that the `catch` block must of course the same type of data than the `try` one, else an error will be thrown due to incompatible types.
+
 ## Pointers
 
 ### References and pointers
