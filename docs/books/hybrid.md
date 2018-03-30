@@ -4975,3 +4975,142 @@ When a package is downloaded, updated or removed by the package manager, it edit
 Let's admit we are using version `1.0.1` of a module that treats web requests. We accept any `1.x` version, and we send the source code to a person using the project. She run `snt install` in the folder and, surprise, there is a new version called `1.1.0` that was released a few hours before. That's not a bad deal, you'll say, after all we accepted minor changes. But, let's imagine the person who made the package didn't followed the semantic versioning convention, or that a bug appeared in the package, making it unable to work properly? The person using our source code will not be able to test it and will think it's buggy because of a not-working package.
 
 That's where the lockfile comes: it stores the exact version of every package downloaded from the package manager, plus some other little informations. Because it's an important file that aims to provide a way to test and run our project at the exact same state than its original developer, the lockfile is not placed under `_packages` but in the project's root folder, so we won't forget to send it to the persons who use it.
+
+## Asynchronous behaviour
+
+Sometimes we can't foretell when an even will occur. For example, if we are making a web server, we can't predict the incoming connections. But we still have to handle these events, and in order to do that we use _asynchronous_.
+
+Asynchronous features such as promises are also very useful when dealing with multi-threading: a great tool that allows our code to run several functions simultaneously.
+
+### The problem
+
+Some events are synchronous even though they appear to be asynchronous. For example, errors handling with the `%error` superoverload may appear to be asynchronous becacuse it is called only when an error occured, and implicitly. But in fact, it is called synchronously, because the builder turns all `throw` instructions in the code by a call to `%error` (which is not possible manually). So, `%error` is fully synchronous.
+
+Another case is callbacks. In the following code:
+
+```sn
+class Event {
+  private static handler: lambda();
+
+  public static func handle(@handler: lambda()) : void {}
+  public static func trigger() : void => @handler();
+}
+
+Event::handle(lambda () => println!("Callback was triggered"));
+Event::trigger();
+```
+
+If we don't have we source code of `Event`, we could think this is asynchronous because the function is not called directly but only when a specific even occur. But it's still synchronous, because the callback is ran in the `Event::trigger()` function.
+
+In SilverNight, asynchronous functions happen in two cases:
+
+* When dealing with multi-threading ;
+* When the program is going to be transpiled in an asynchronous language
+
+The first point is about threads, a concept we will see that in details later, but for now we'll put it aside. The second point, though, is interesting.
+
+In some languages, such as JavaScript, several functions can be ran at the same time automatically. For example, the `setTimeout()` function that takes a callback and a delay runs the given function after the delay expires, even if the program is already running some tasks. This will not block the main tasks' execution, because the callback will run in parallel of the main tasks. This specificity makes JavaScript a _non-blocking language_, which means it can run several functions at the same time without blocking one.
+
+Node.js takes advantage of this feature to allow JavaScript being used in servers. When five clients connect at the same time to the server, they can be delivered simultaneously. In a synchronous language, the first client would be served first, and when it's done the second client would be served, then the third one, and so on... That makes a long waiting time for the last users, though. That's why synchronous languages are never used to deliver resources on a server.
+
+Because SilverNight supports transpiling, it can take advantage of this using asynchronous functions.
+
+### Promises
+
+Before talking about asynchronous functions, let's talk about promises. Promises are a great tool when coming to asynchronous actions. It is modeled as a templated class, `Promise<T, X = Error>`, which takes at instanciation time two lambdas, the first one taking a single `T` value, the second one taking a single `X` argument.
+
+Promises are basically a software conception of tasks that can either return a result or throw an error. Here is an example of promises, when dealing with filesystem:
+
+```sn
+// We admit the function below is already defined
+func readAsync(path: string) : Promise<int, Error>;
+
+// Let's use it
+readAsync("hello.txt")
+  .then(lambda (content: string) => println!(`File's size is ${content.length} bytes.`))
+  .catch(lambda (err: Error) => println!(`Something went wrong: ${content.message}`));
+
+// And with ICT:
+readAsync("hello.txt")
+  .then(content => println!(`File's size is ${content.length} bytes.`))
+  .catch(err => println!(`Something went wrong: ${content.message}`));
+```
+
+Here, the `then()` function simply registers the callback for the case the promise succeeds, and `catch()` the callback for the case it fails. Here, a great point is we don't have to use any `try`/`catch` block to handle potential errors ; there is callback for that.
+
+Now we've seen how to use the promise, let's write the `readAsync()` function:
+
+```sn
+func readAsync(path: string) : Promise<string, Error> {
+  // Make a new promise and return it
+  return new Promise<string, Error>(lambda (resolve: lambda (content: string), reject: lambda (err: Error)) {
+    let content: string;
+
+    // Read the file
+    try {
+      content = import('fs').readFile(path, "utf8");
+    } catch (e) {
+      // Failed
+      reject(value);
+      return ;
+    }
+
+    // Success
+    resolve(content);
+  });
+}
+```
+
+Quite heavy, right? Let's still see how this works.
+
+First, we define a function that returns our promise. `T` (here, `string`) is its _success type_, and `X` (here, `Error`) is its _error type_. This function directly returns an instance of this promise class, and give it a callback that takes two arguments.
+
+The first argument is the callback triggered in the case the promise succeeds, which must take a single argument with the `T` type. The second one is the same for the case the promise fails, and must take a single argument with the `X` type.
+
+Now we've seen the detailed syntax of this function, let's rewrite it with ICT:
+
+```sn
+func readAsync(path: string) : Promise<string, Error> =>
+  // Make a new promise and return it
+  new Promise<string, Error>((resolve, reject) => {
+    // Read the file and handle errors
+    let content: string;
+
+    try {
+      content = import('fs').readFile(path, "utf8");
+    } catch (e) {
+      reject(e);
+    }
+
+    // Resolve the promise if the reading worked fine
+    if (content isnt null)
+      resolve(content);
+  });
+}
+```
+
+This is a lot simplier already, but still heavy. This is why we'll now see the `async` keyword.
+
+### `async` functions
+
+The `async` keyword describes an asynchronous function in a syntaxical way - it's pretty explicit. This means the function's signature must return a promise and work only in it. To understand the concept, let's rewrite our `readAsync` function with this new keyword:
+
+```sn
+async func readAsync(path: string) : string => {
+  try
+    resolve import('fs').readFile(path, "utf8");
+
+  catch (e)
+    reject e;
+}
+```
+
+Many things changed here, but this function works exactly as the original.
+
+To begin, the return type changed from `Promise<string, Error>` to `string`. If we would have wanted to use a different error type than `Error`, we would have written `: (string, Error)` to indicate the error type.
+
+Then, because the `async` keyword indicates our function is asynchronous, it transparently wraps it into a promise, with the callbacks.
+
+Finally, the `resolve` and `reject` keyword respectively call the callback they are related to and stop the function.
+
+As you can see, this keyword is pretty powerful when coming to simplify asynchronous functions. Plus, it makes clear for developpers and documentation systems the function is asynchronous.
