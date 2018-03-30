@@ -249,17 +249,22 @@ scheme = {
       'purple', 'purple', 'red', 'cyan'
     ],
     [
-      // Declaration statement in classes for some static resources
-      /\b(public|protected|private)\s+(static|async|static\s+async)?(?=\s+(?:func|getter|setter|struct))/,
-      'purple', 'purple'
-    ],
-    [
       // Declaration statement in classes for constants and frozens (plain or not)
       /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'purple', 'purple', 'purple', 'red', 'orange'
     ],
     [
-      // Declaration statement in classes
+      // Declaration statement in classes for not-assignable entities
+      /\b(public|protected|private)(\s+static)?(?=\s+struct|interface|trait)/,
+      'purple', 'purple', 'purple'
+    ],
+    [
+      // Declaration statement in classes for functions
+      /\b(public|protected|private)(\s+static)?(\s+async)?(?=\s+func)/,
+      'purple', 'purple', 'purple'
+    ],
+    [
+      // Declaration statement in classes for assignable entities
       /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'purple', 'purple', 'red', 'cyan'
     ],
@@ -296,7 +301,7 @@ scheme = {
     [
       // Setter/getter declaration
       /(public|protected|private)\s+(static\s+)?(async\s+)?(getter|setter)\s+([a-zA-Z_][a-zA-Z0-9_]+)\b/,
-      'purple', 'purple', 'purple', 'cyan'
+      'purple', 'purple', 'purple', 'purple', 'cyan'
     ],
     [
       // Function's or declaration's special type (not caught by the previous expressions)
