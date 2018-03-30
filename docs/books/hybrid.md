@@ -4363,7 +4363,9 @@ val result = try divide(5, 0)
                println!(e.why());
 ```
 
-This will work as expected. If we don't care about getting an error object, we can omit the `catch`'s argument:
+But be aware here. Because the `catch` block does not return anything, the return value could be nothing. In this case, the `null` value is returned, which makes the return data either the specified type (here, `float`) or a `void`. See the problem? Yes, the mix of a single type and a `void` is a _nullable type_, so `result` will be typed as a `float?` instead of a `float`. Remember this, else this could lead to unexpected behaviours when using these inline blocks.
+
+Except this point, this will work as expected. If we don't care about getting an error object, we can omit the `catch`'s argument:
 
 ```sn
 val result = try divide(5, 0) catch => println!(e.why());
