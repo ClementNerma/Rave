@@ -5210,3 +5210,43 @@ The final `catch()` call will be triggered if _any_ of the promise fails. Also, 
 
 ### `await` with promises
 
+Sometimes we have to make some asynchronous action in order for the program to continue. For example, this can happen when loading a resource from the web or waiting for a user's input. In these cases, our program would be wrapped inside the callback took by the Promise's `then()` function.
+
+In order to solve this problem, we can use the `await` keyword.
+
+```sn
+// Resolve a promise after a specific delay
+async func sleep(delay: uint) {
+  // Wait for the given delay...
+  Scheduler::setTimeout(delay)
+    // ...then run the callback
+    .then(() => resolve void);
+}
+
+println!("A");  // Prints: "A"
+
+await sleep(1); // After 1 second...
+println!("B");  // Prints: "B"
+
+await sleep(2); // After 1 second...
+println!("C");  // Prints: "C"
+```
+
+As we can see, `await` simply blocks the program until the promise is resolved. If it's rejected, it will simply throw a `PromiseError`. This error class is a little special since its constructor takes a `Primitivable` argument and converts it into a string so we can use its `str_data` attribute to read it.
+
+Also, `await` returns the resolution value of the promise (if there is one). So, the following code works:
+
+```sn
+// Add two numbers after a second
+async func delayed_add(left: int, right: int) : int {
+  // Sleep for 1 second
+  await sleep(1);
+  // Perform the addition and return the result
+  return left + right;
+}
+
+let seven = delayed_add(2, 5);
+println!(seven); // Prints: "7"
+```
+
+We've now finished with promises and asynchronous behaviours.
