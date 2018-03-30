@@ -90,7 +90,7 @@ For now, consider we can display any value with it, only special values (like cu
 
 Here is a list of terms used in SilverNight. Most of them are unknown for you at the moment, but this section aims to provide a way to clearly know the meaning of each term. Don't hesitate to go back there if you forgot the meaning of a term.
 
-#### Concepts
+#### About concepts
 
 * A **block keyword**, or **block name**, is the name of a block (like `for` or `while`)
 * A **block head** is the head of a block, written between `()` parenthesis ; its syntax depends on the the block it is used with
@@ -98,7 +98,7 @@ Here is a list of terms used in SilverNight. Most of them are unknown for you at
 * An **inline block** is an inline variant of a block, with a syntax depending on the used block
 * A **directive** is an indicator to change the default behaviour of a part of the code at build time
 
-#### Tools
+#### About tools
 
 * The **builder** is the part of the toolchain that is ran whatever a SilverNight source code is compiled, transpiled or interpreted ; it turns a SilverNight source code into a valid AST
 * The **compiler** is the part of the toolchain that turns a valid SilverNight AST into machine code
@@ -106,36 +106,36 @@ Here is a list of terms used in SilverNight. Most of them are unknown for you at
 * A **transpiler** is a part of the toolchain that converts a SilverNight AST into a another language's source code
 * The **toolchain** is a suite of tools which, combined, can compile, interpret, transpile, build a package from, etc. a SilverNight source code or an intermediary step of compilation (like an AST)
 
-#### Resources
+#### About resources
 
 * A **resource**, also called an **entity**, is anything that can be declared (variable, frozen, class, interface, structure...) or used as a value
 * A **value** is the result of an expression, which can either be a primitive or an object
 * A **plain value** is a value that is predictable without running the program itself (e.g. `2` or `"hello"`)
 * A **type** is either a class or an interface
 
-#### Types
+#### About types
 
 * A **primitive** is either an instance of `void`, `bool`, `Number` or `string` - nothing else.
 * An **object** is any type that is not a primitive, or any structure, interface, class or trait.
 * **Typecasting** is the action of converting a type into another
 
-#### Operators
+#### About operators
 
 * An **operator** is a single symbol or a group of symbols which can't syntaxically be the name of a function and that can manipulate from one argument (to its right) to two arguments (one to its left, one to its right).
 
-#### Mutability
+#### About mutability
 
 * An **assignable entity**, also called a **variable** or even a **mutable**, is a resource that can receive a single value and must have a type.
 * A **constant** is a mutable that must receive a value when it is declared and can't change it
 * A **frozen** is a constant with all its properties (including sub-objects, at any level) constants
 
-#### Declarations
+#### About declarations
 
 * A **signature** describes an entity
 * A **declaration** is the combination of a **declaration keyword** (e.g. `let`, `struct`, `class`) and a signature
 * An **initialization value** is the action of assigning a value to an assignable entity before closing its declaration
 
-#### Functions
+#### About functions
 
 * A **function** is any piece entity that can be invoked using arguments (including classes' methods)
 * A **lambda** is a unnamed function
@@ -143,7 +143,7 @@ Here is a list of terms used in SilverNight. Most of them are unknown for you at
 * A **flying lambda** is a lambda that is declared only when invoking another function to be one of its arguments
 * A **macro** is a function that is ran at build time and that replaces its own call by another content
 
-#### Classes
+#### About classes
 
 * A **member** either available from the outside, or from the inside of the class, without calling any specific function
 * An **attribute** is an assignable member of a class
@@ -152,31 +152,31 @@ Here is a list of terms used in SilverNight. Most of them are unknown for you at
 * A **template** is a reference to a class
 * An **overload** is a function that rewrites a native behaviour at the level of a class
 
-#### Interfaces and traits
+#### About interfaces and traits
 
 * An **interface** is a list of members (without their body) a class must implement if it explicitly implements it, and is also a type that accepts thanks to cross-typing any class implementing (even implicitly) all its members
 * A **trait** is a list of members (eventually with their body) a class must implement if it explicitly implements it
 
-#### Dictionaries
+#### About dictionaries
 
 * A **dictionnary** is the instance of a class child of `Dictionary` or of the `Dictionary` class itself ; it links keys with a type given by a template with values with a type given by a template
 * A **vector** is a dictionary with positive integer keys, and values with a type given by a template ; it's a list of elements
 * A **list** is a vector with a fixed size
 * An **array** is a vector with a dynamic size
 
-#### Superoverloads
+#### About superoverloads
 
 * A **superoverload** is a function that rewrites a global behaviour (like error handling or operators)
 
-#### Errors
+#### About errors
 
 * An **error** is the instance of a class child of `Error` or of the `Error` class itself ; it can be thrown manually or automatically
 
-#### Nullable types
+#### About nullable types
 
 * A **nullable type** is a type that can either be the provided type of an instance of the `void` class
 
-#### Pointers
+#### About pointers
 
 * A **RUID**, standing for _**R**eference **U**nique **Id**entifier_, is a unique identifier granted by the builder to each object (several entities can share the same RUID)
 * A **EUID**, standing for _**E**ntity **U**nique **Id**entifier_, is a unique identifier granted by the builder to each entity (several entities cannot share the same EUID except using to pointers)
