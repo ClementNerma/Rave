@@ -642,7 +642,7 @@ if (argv.test && ! CHILD) {
       // If an error occured...
       if (code)
         // ERROR
-        error(`Test failed while cleaning. Process exited with code ${code}`, 30);
+        error(`Test failed while cleaning. Process exited with code ${code}`, 33);
       else
         // Success!
         success(yellow('Test result: finished successfully.'));
