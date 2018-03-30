@@ -1553,12 +1553,20 @@ i_need_a_plain(num); // ERROR
 
 Its point is mainly to use with some macros to pre-process data, but that's a very special case you probably won't encounter very often.
 
+Note that void-typed functions (functions that return nothing) can omit their return type, like this:
+
+```sn
+func sayHello() {
+  println!("Hello !");
+}
+```
+
 ### Optional arguments
 
 Optional arguments are... optional. Well, that's pretty explicit, at least. When declaring a function's arguments, we list them with their respective types. But, we can also make some of them _omittable_ by giving them a _default value_. Let's try it:
 
 ```sn
-func sayHello (name: string, justTheName: bool = false) : void {
+func sayHello (name: string, justTheName: bool = false) {
   if (justTheName)
     println!(name);
   else
@@ -1889,7 +1897,7 @@ The constructor will take as an argument a name, an amount of HP and MP, an atta
     return this.atk;
   }
 
-  public func beAttacked(ennemy: Hero) : void {
+  public func beAttacked(ennemy: Hero) {
     this.hp -= ennemy.getAttack();
   }
   // ...
@@ -1908,7 +1916,7 @@ If we want to consider the defense now:
 
 ```sn
   // ...
-  public func beAttacked(ennemy: Hero) : void {
+  public func beAttacked(ennemy: Hero) {
     this.hp -= ennemy.getAttack() - this.def;
   }
   // ...
@@ -1918,7 +1926,7 @@ Here we consider our defense. But now we have to assure HP loss is not negative.
 
 ```sn
   // ...
-  public func beAttacked(ennemy: Hero) : void {
+  public func beAttacked(ennemy: Hero) {
     // Calculate the loss
     val loss = ennemy.getAttack() - this.def;
     // Decrease HP
@@ -1931,14 +1939,14 @@ Here we are! Now, let's write a `fight()` function!
 
 ```sn
   // ...
-  public func beAttacked(ennemy: Hero) : void {
+  public func beAttacked(ennemy: Hero) {
     // Calculate the loss
     val loss = ennemy.getAttack() - this.def;
     // Decrease HP
     this.hp -= loss;
   }
 
-  public func fight(ennemy: Hero) : void {
+  public func fight(ennemy: Hero) {
     // Damage the ennemy
     this.beAttacked(ennemy);
     // Get damages from the ennemy
@@ -1973,7 +1981,7 @@ class Hero {
     return this.atk;
   }
 
-  public func beAttacked(ennemy: Hero) : void {
+  public func beAttacked(ennemy: Hero) {
     // Calculate the loss
     val loss = ennemy.getAttack() - this.def;
     // Tell what happens
@@ -1982,7 +1990,7 @@ class Hero {
     this.hp -= loss;
   }
 
-  public func fight(ennemy: Hero) : void {
+  public func fight(ennemy: Hero) {
     // Tell what happens
     println!(`${this.name} is going to fight ${ennemy.getName()}!`);
     // Damage the ennemy
@@ -2241,7 +2249,7 @@ class Map {
   public func %construct(@cells: int[][], @playerX: int, @playerY: int) {};
 
   // Move the hero
-  private func move(x: int, y: int) : void {
+  private func move(x: int, y: int) {
     // If we fall in a trap before...
     if (@trapped)
       // Move is forbidden
@@ -2271,13 +2279,13 @@ class Map {
   }
 
   // Move up
-  public func moveUp() : void => @move(@playerX, @playerY - 1);
+  public func moveUp() => @move(@playerX, @playerY - 1);
   // Move down
-  public func moveDown() : void => @move(@playerX, @playerY + 1);
+  public func moveDown() => @move(@playerX, @playerY + 1);
   // Move to the left
-  public func moveLeft() : void => @move(@playerX - 1, @playerY);
+  public func moveLeft() => @move(@playerX - 1, @playerY);
   // Move to the right
-  public func moveRight() : void => @move(@playerX + 1, @playerY);
+  public func moveRight() => @move(@playerX + 1, @playerY);
 }
 ```
 
@@ -2335,7 +2343,7 @@ class IntArray {
     println!("I will be freed.");
   }
 
-  public func add(value: int) : void => @data.push(value);
+  public func add(value: int) => @data.push(value);
   public func pop() : bool => @data.pop();
 }
 
@@ -2366,7 +2374,7 @@ class IntArray {
 
   public func %freeze() {}
 
-  public func add(value: int) : void {
+  public func add(value: int) {
     // Check if the instance is frozen
     if (is_frozen!())
       println!("The class is frozen, can't append anything.");
@@ -2728,7 +2736,7 @@ virtual class Hero {
   public %construct(@name: string, @hp: int, @attack: int) {}
 
   // Attack an ennemy
-  public func fight(ennemy: self) : void {
+  public func fight(ennemy: self) {
     // Check if this hero is dead
     if (@hp is 0) {
       println!(`${@name} can't find because he's dead.`);
@@ -2749,7 +2757,7 @@ virtual class Hero {
   }
 
   // Receive damages from an ennemy
-  public func receiveDamages(amount: int, ennemyName: string) : void {
+  public func receiveDamages(amount: int, ennemyName: string) {
     // Check if this hero is dead
     if (@hp is 0) {
       println!(`${@name} did not receive any damage because he's dead.`);
@@ -2783,7 +2791,7 @@ So, now we seen that, let's make our children classes:
 class Warrior extends Hero {
   public readonly rage: int;
 
-  public func receiveDamages(amount: int, ennemyName: string) : void {
+  public func receiveDamages(amount: int, ennemyName: string) {
     // Call the parent class' `receiveDamages()` method
     parent.receiveDamages(amount, ennemyName);
 
@@ -2814,7 +2822,7 @@ class Wizard extends Hero {
 
   public func %construct(@name: int, @hp: int, @attack: int, @mp: int) {}
 
-  public func fireball(ennemy: Hero) : void {
+  public func fireball(ennemy: Hero) {
     // Check if remaining MP are enough
     if (@mp < 10) {
       println!(`${name} can't throw a fireball because he doesn't have enough MP.`);
@@ -2878,12 +2886,12 @@ Let's take a short example:
 
 ```sn
 class Mother {
-  public func callHello() : void => this.hello();
-  public func hello() : void => println!("I am the mother class.");
+  public func callHello() => this.hello();
+  public func hello() => println!("I am the mother class.");
 }
 
 class Child extends Mother {
-  public func hello() : void => println!("I am the child class.");
+  public func hello() => println!("I am the child class.");
 }
 ```
 
@@ -2989,7 +2997,7 @@ For examlple, casting a type to a boolean (`bool` or `Boolean` type) requires th
 class MyInteger {
   private value: int;
 
-  public func set(@value: int) : void {}
+  public func set(@value: int) {}
   public func get() : int => @value;
 
   public func %toBoolean() : bool => @value isnt 0;
@@ -3030,14 +3038,14 @@ Here is an example:
 
 ```sn
 class Vehicle {
-  public func accelerate() : void => println!("Vroom!");
+  public func accelerate() => println!("Vroom!");
 }
 
 class Motorcycle extends Vehicle {
-  public func accelerate() : void => println!("vroom vroom!");
+  public func accelerate() => println!("vroom vroom!");
 }
 
-func acceleration(vehicle: Vehicle) : void {
+func acceleration(vehicle: Vehicle) {
   vehicle.accelerate();
 }
 
@@ -3049,12 +3057,12 @@ Be aware though: when declaring a resource as a type and using a child type inst
 
 ```sn
 class Vehicle {
-  public func accelerate() : void => println!("Vroom!");
+  public func accelerate() => println!("Vroom!");
 }
 
 class Motorcycle extends Vehicle {
-  public func accelerate() : void => println!("vroom vroom!");
-  public func stunt() : void => println!("Wow!");
+  public func accelerate() => println!("vroom vroom!");
+  public func stunt() => println!("Wow!");
 }
 
 val motorcycle: Vehicle = new Motorcycle();
@@ -3064,7 +3072,7 @@ motorcycle.stunt(); // ERROR because `stunt` is not part of the `Vehicle` class
 That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept. Also, note there is a way to ask for a specific type and not its children, thanks to the `#mustbe<T>` directive. Yes, directive can be templated. Here is an exemple:
 
 ```sn
-func precise(vehicle: #mustbe<Vehicle>) : void =>
+func precise(vehicle: #mustbe<Vehicle>) =>
   vehicle.accelerate();
 
 let car        : Vehicle    = new Vehicle();
@@ -3260,7 +3268,7 @@ class KindOfDict<K, V> {
 
   public func has(key: K) : bool => %keys.has(key);
 
-  public func set(key: K, value: V) : void {
+  public func set(key: K, value: V) {
     // If this key is not already known...
     if (not %has(key)) {
       // Create it
@@ -3322,7 +3330,7 @@ struct Data<T implements Stringifyable> {
 
 // Make a class that works with the structure
 class Working {
-  public func %toString() : void => "It's working!";
+  public func %toString() => "It's working!";
 }
 
 // Make a class that doesn't work with the structure
@@ -3408,9 +3416,9 @@ dict Custom<K, V> {
   // Get a value from a key
   public func %get(key: K) : V;
   // Associate a value to a key
-  public func %set(key: K, value: V) : void;
+  public func %set(key: K, value: V);
   // Delete a key (and the value it refers to)
-  public func %unset(key: K) : void;
+  public func %unset(key: K);
   // Check if a key is known
   public func %has(key: K) : bool;
   // Get the list of all keys
@@ -3527,7 +3535,7 @@ func run(callback: lambda () #bind
     sayHello: "println!(\"Hello \" + ${1})",
     sayHappyBirthday: "println!('Happy birthday ' + ${1} + ' you are now ' + ${2} + ' years old!')"
   })
-  : void => callback();
+  => callback();
 ```
 
 Here, `myBindings` generates several links.
@@ -3565,7 +3573,7 @@ pln engineBindings = #makebindings {
 This is all! We can now rewrite our `run` function:
 
 ```sn
-func run(callback: lambda () #bind engineBindings): void => callback();
+func run(callback: lambda () #bind engineBindings) => callback();
 ```
 
 ### Constrained types
@@ -3587,7 +3595,7 @@ val motorcycle = new Vehicle(2);
 Our function will have this look:
 
 ```sn
-func treatCars(car: Vehicle with (c => c.wheels <= 4)) : void =>
+func treatCars(car: Vehicle with (c => c.wheels <= 4)) =>
   println!(`This vehicle has ${car.wheels} wheels.`);
 ```
 
@@ -3600,7 +3608,7 @@ If we put aside the fact that writing is controlled by a callback, constrained t
 Here is an exemple to better understand the concept:
 
 ```sn
-func treatCars(car: Vehicle with (c => c.wheels <= 4)) : void {
+func treatCars(car: Vehicle with (c => c.wheels <= 4)) {
   c = new Vehicle(2); // Works fine
   c = new Vehicle(4); // Works fine
   c = new Vehicle(8); // ERROR because the constraint returned `false`
@@ -3658,13 +3666,13 @@ As you can see, a macro is simply a way to simplify the writing of a call. It wo
 Macros can have several arguments, which must be typed. But it can also have a return type if it is ensured to return a specific type of value. For example, in our example, because `println!` is void-typed, the macro will return a `void`. So, we write:
 
 ```sn
-#macro sayHello(name: string) : void => println!(`Hello, $${name}}`);
+#macro sayHello(name: string) => println!(`Hello, $${name}}`);
 ```
 
 One of the native macros can be useful when using arguments. In fact, when writing the same macro as above but like this:
 
 ```sn
-#macro sayHello(name: string) : void => println!("Hello, " + name);
+#macro sayHello(name: string) => println!("Hello, " + name);
 ```
 
 Using it will almost certainly throw an error. Why? Because it would produce this result:
@@ -3680,14 +3688,14 @@ println!("Hello, " + Jack);
 Until a `Jack` resource is declared, the code above will throw an error because of an undefined reference. This is due to the fact every argument given to a macro is gave as a plain content. The solution to this problem is to use the `#uneval` directive.
 
 ```sn
-#macro sayHello(name: string) : void => println!("Hello, " + #uneval(name));
+#macro sayHello(name: string) => println!("Hello, " + #uneval(name));
 ```
 
 Also note that macros can use a special type for their arguments, that are not available for standard functions. It's the `#raw` type, which prevent the arguments from being checked and evaluated. For example, the following code will work fine:
 
 ```sn
 // Declare the macro
-#macro sayHello(name: #raw) : void => println!("Hello, " + name);
+#macro sayHello(name: #raw) => println!("Hello, " + name);
 
 // Call it
 sayHello( 'Jack' );
@@ -3699,7 +3707,7 @@ As you can see, even the spaces are kept in `name`. Note that plain arguments ca
 
 ```sn
 // Declare the macro
-#macro test(name: #raw) : void => #uneval(name);
+#macro test(name: #raw) => #uneval(name);
 
 // Call it
 println!(test( 'Jack' ));
@@ -3711,7 +3719,7 @@ There is also a type to ask specifically for an assignable entity (variables, co
 
 ```sn
 // Declare the macro
-#macro test(name: #var) : void =>
+#macro test(name: #var) =>
   println!(`$${name} is an assignable entity`);
 
 // Declare a constant
@@ -3774,8 +3782,8 @@ You can see the matching operator on the right of the corresponding superoverloa
 class BankAccount {
   public readonly money: int with (c => c >= 0);
   public func %construct(@money: int);
-  public func add(amount: int) : void => @money += amount;
-  public func sub(amount: int) : void => @money -= amount;
+  public func add(amount: int) => @money += amount;
+  public func sub(amount: int) => @money -= amount;
 }
 
 let account1 = new BankAccount(1000);
@@ -4159,9 +4167,9 @@ class Error {
 As you can see, an error instance has a `message` attribute that is the message we give to it when we instanciate the class, and a `traceback` which is a list of functions that were ran until the error. Here is an example:
 
 ```sn
-func a() : void => b();
-func b() : void => c();
-func c() : void => throw new Error("Test");
+func a() => b();
+func b() => c();
+func c() => throw new Error("Test");
 
 a();
 ```
@@ -4412,12 +4420,12 @@ struct Hero {
 }
 
 // Make a function that changes a single property of the function
-func changeProperty(obj: Hero) : void {
+func changeProperty(obj: Hero) {
   obj.attack = 20;
 }
 
 // Make a function
-func assignSomethingNew(obj: Hero) : void {
+func assignSomethingNew(obj: Hero) {
   obj = {
     name: "John",
     attack: 50
@@ -4545,7 +4553,7 @@ let *ptr = &str;
 Pointers can be used to manipulate data in functions. Here is how it goes:
 
 ```sn
-func increment(*counter: int) : void => counter ++;
+func increment(*counter: int) => counter ++;
 
 let counter = 0;
 increment(&counter);
@@ -4784,7 +4792,7 @@ Now we've written our package file, we can write the package's source, which wil
 
 let name: string;
 
-func defineName(newName: string with (c => c) : void =>
+func defineName(newName: string with (c => c) =>
   name = newName;
 
 func readName() : string {
@@ -4814,7 +4822,7 @@ let name: string;
 export { defineName, readName };
 
 // File: "functions.sn"
-func defineName(newName: string with (c => c) : void =>
+func defineName(newName: string with (c => c) =>
   name = newName;
 
 func readName() : string {
@@ -4992,8 +5000,8 @@ Another case is callbacks. In the following code:
 class Event {
   private static handler: lambda();
 
-  public static func handle(@handler: lambda()) : void {}
-  public static func trigger() : void => @handler();
+  public static func handle(@handler: lambda()) {}
+  public static func trigger() => @handler();
 }
 
 Event::handle(lambda () => println!("Callback was triggered"));
@@ -5136,7 +5144,7 @@ If the filesystem fails to read the file, an error will be thrown, but because o
 
 So, this keyword is pretty powerful when coming to simplify asynchronous functions. Plus, it makes clear for developpers and documentation systems the function is asynchronous.
 
-### Chained promises
+### Promises chaining
 
 Where promises are useful is when chaining several callbacks. Sometimes, because of using many imbricated callbacks, our code can quickly become unreadable. Here is an example when fetching a user from a website:
 
@@ -5199,3 +5207,6 @@ Let's detail what happen here. First, the `fetch()` function returns a promise. 
 In fact, the `then()` function can take two templates, and if so takes as its single argument a callback that returns a new promise with the templates being respectively its resolution and rejection type.
 
 The final `catch()` call will be triggered if _any_ of the promise fails. Also, it will prevent the next ones from being ran.
+
+### `await` with promises
+
