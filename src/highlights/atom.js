@@ -9,8 +9,33 @@ source = {
    */
   build: scheme => {},
 
+  // Installation helper
+  install: (BUILD_CONSTANTS) => {
+    // Get the path of Atom's packages folder
+    let atomFolder = path.join(os.homedir(), '.atom', 'packages');
+    
+    // If this folder does not exist...
+    if (! folderExists(atomFolder))
+      // ERROR
+      error(`Atom's packages folder was not found (expecting folder at "${atomFolder}")`, 32);
+    
+    // Get the path of the installation folder
+    let installFolder = path.join(atomFolder, 'language-' + BUILD_CONSTANTS.LOWERCASE_LANGUAGE);
+
+    // Copy the build data into it
+    copy(
+      BUILD_CONSTANTS.OUTPUT,
+      installFolder,
+      true,
+      'Installing SilverNight extension for Atom'
+    );
+
+    // Return path of the installation folder
+    return atomFolder;
+  },
+
   // Installation instructions
-  install: [
+  installTxt: [
     "1) Rename \"${OUTPUT}\" to \"language-${LOWERCASE_LANGUAGE}\"",
     "2) Move it under \"~/.atom/packages\""
   ],

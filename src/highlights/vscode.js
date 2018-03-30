@@ -9,8 +9,42 @@ source = {
    */
   build: scheme => {},
 
+  // Installation helper
+  install: (BUILD_CONSTANTS) => {
+    say('Packaging the extension...');
+
+    // Package the extension
+    try {
+      child_process.execSync('vsce package', {
+        cwd: BUILD_CONSTANTS.OUTPUT,
+        stdio: [0, 1, 2]
+      });
+    } catch (e) {
+      // ERROR
+      error('Failed to package the extension. Is the "vsce" command available?', 34);
+    }
+
+    say('Installing the extension...');
+
+    // Install it
+    try {
+      child_process.execSync(
+        'code --install-extension language-' +
+        BUILD_CONSTANTS.LOWERCASE_LANGUAGE + '-' +
+        BUILD_CONSTANTS.VERSION + '.vsix',
+        {
+          cwd: BUILD_CONSTANTS.OUTPUT,
+          stdio: [0, 1, 2]
+        }
+      );
+    } catch (e) {
+      // ERROR
+      error('Failed to install the extension', 35);
+    }
+  },
+
   // Installation instructions
-  install: [
+  installTxt: [
     "npm install vsce -g",
     "cd ${OUTPUT}",
     "vsce package",

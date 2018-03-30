@@ -22,7 +22,8 @@ self = {
   arguments: [
     { long: 'target', short: 't', placeholder: 'editor', inline: true, help: 'The editor to build an extension for' },
     { long: 'output', short: 'o', placeholder: 'folder', help: 'Extension output path' },
-    { long: 'install-help', help: 'Display a help text about how to install the extension' }
+    { long: 'install-help', help: 'Display a help text about how to install the extension' },
+    { long: 'auto-install', short: 'i', help: 'Automatically install the built extension' }
   ],
 
   /**
@@ -356,6 +357,19 @@ self = {
     execBuild(output_path, source.tree);
 
     // If asked to...
+    if (self.argv['auto-install']) {
+      // Add a new constant
+      BUILD_CONSTANTS.OUTPUT = output_path;
+
+      // Call the help function
+      say(cyan(`Installing extension for ${yellow(editors[name])}...`));
+      let installdir = source.install(BUILD_CONSTANTS);
+
+      // Display a success message
+      say(green(BUILD_CONSTANTS.LANGUAGE + ` extension for ${editors[name]} was successfully installed` + (installdir ? ` in "~${path.sep + path.relative(os.homedir(), installdir)}"` : '')));
+    }
+
+    // If asked to...
     if (self.argv['install-help']) {
       // Add a new constant
       BUILD_CONSTANTS.OUTPUT = output_path;
@@ -365,7 +379,7 @@ self = {
         cyan('Extension was successfully built.\n' + 
         'To install it, follow these steps and run the specified commands in your terminal:\n') +
         '\n' +
-        yellow(' ' + source.install.map(i => formatConstants(i)).join('\n ')) +
+        yellow(' ' + source.installTxt.map(i => formatConstants(i)).join('\n ')) +
         '\n'
       );
     }

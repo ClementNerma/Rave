@@ -113,8 +113,14 @@ source = {
       '</plist>';
   },
 
+  // Installation helper
+  install: (BUILD_CONSTANTS) => {
+    // Can't do anything
+    error(`Because Sublime Text's packages folder is platform and version-dependant, please install the extension manually.`, 36);
+  },
+
   // Installation instructions
-  install: [
+  installTxt: [
     "Copy \"${OUTPUT}/${LANGUAGE}.JSON-tmLanguage\" to your Sublime Text's \"Packages/User\" directory"
   ],
 
