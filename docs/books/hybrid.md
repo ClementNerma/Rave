@@ -5135,3 +5135,67 @@ async func readAsync(path: string) : string =>
 If the filesystem fails to read the file, an error will be thrown, but because our function use `Error` as its rejection type (because, as we saw, specifying no rejection type use it as default) the error will be turned into a simple promise rejection.
 
 So, this keyword is pretty powerful when coming to simplify asynchronous functions. Plus, it makes clear for developpers and documentation systems the function is asynchronous.
+
+### Chained promises
+
+Where promises are useful is when chaining several callbacks. Sometimes, because of using many imbricated callbacks, our code can quickly become unreadable. Here is an example when fetching a user from a website:
+
+```sn
+// Download a file from the web
+func fetch(url: string, callback: lambda (data: string, err: Error)) { /* ... */ };
+// Parse a JSON string as a dictionary (numbers and booleans are converted to strings)
+func parseJsonAsync(json: string) : Dictionary<string, string> { /* ... */ };
+
+// Here is the code:
+fetch("/api/last-article/author.json", (data, err) => {
+  if (err)
+    return println!(err.message);
+
+  parseJsonAsync(data, (user, err) => {
+    if (err)
+      return println!(err.message);
+
+    fetch("https://api.github.com/users/" + user.name, (githubData, err) => {
+      if (err)
+        return println!(err.message);
+
+      parseJsonAsync(githubData, (githubUser, err) => {
+        if (err)
+          return println!(err.message);
+
+        println!(`This author has ${githubUser.public_repos} public repositories.`);
+      });
+    });
+  });
+});
+```
+
+See the problem? And this is a tiny example, things would be even worse in a more complex program.
+
+That's where we use _chained promises_. Assuming our functions now return promises instead of taking a callback, here is the same code, rewritten:
+
+```sn
+// Fetch the author's JSON profile
+fetch("/api/last-article/author.json")
+  // Parse it
+  .then(data  => parseJsonAsync(data))
+  // Get informations about this author on GitHub
+  .then(user  => fetch("https://api.github.com/users/" + user.name))
+  // Parse the received JSON data
+  .then(gdata => parseJsonAsync(gdata))
+  // Display the number of public repositories for this author
+  .then(guser => println!(`This author has ${githubUser.public_repos} public repositories.`))
+  // If any of the above promises failed, catch the error
+  .catch(err  => println!(`An error occured: ` + err.message));
+```
+
+Let's detail what happen here. First, the `fetch()` function returns a promise. When this promise is resolved, a callback is triggered to parse the data as JSON. And here is the first specificity of this code: instead of returning nothing, it returns a new promise. To be honest, we could have written this line like this:
+
+```sn
+  // Parse it
+  .then<{ string }, Error>(func (data: string) { return parseJson(data); });
+```
+
+In fact, the `then()` function can take two templates, and if so takes as its single argument a callback that returns a new promise with the templates being respectively its resolution and rejection type.
+
+The final `catch()` call will be triggered if _any_ of the promise fails. Also, it will prevent the next ones from being ran.
