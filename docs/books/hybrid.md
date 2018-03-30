@@ -4282,10 +4282,10 @@ struct Data {
 val someData: Data? = null;
 
 // Get the hero object
-val dataHero = data?.hero; // A `Hero` with default values for all its attributes
+val dataHero = data?.hero; // dataHero == null
 
 // Prints the hero's name
-println!(dataHero?.name); // Prints: ""
+println!(dataHero?.name); // Prints: "" (== string(null))
 ```
 
 What happened here? Well, doing `data?.hero` returned `null` because `data` was null. Then, doing `dataHero?.name` also returned a `void` because `dataHero` was null. So the final expression between the `println!`'s parenthesis is a `string?`.
