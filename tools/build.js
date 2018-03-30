@@ -528,7 +528,8 @@ function loadModule(name, argv) {
 
 // Load some built-in modules
 const path = require('path'),
-      child_process = require('child_process');
+      child_process = require('child_process'),
+      os = require('os');
 
 // Load some Yarn modules
 const chalk = require('chalk'),
