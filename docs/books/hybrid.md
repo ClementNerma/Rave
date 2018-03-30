@@ -5113,4 +5113,16 @@ Then, because the `async` keyword indicates our function is asynchronous, it tra
 
 Finally, the `resolve` and `reject` keyword respectively call the callback they are related to and stop the function.
 
-As you can see, this keyword is pretty powerful when coming to simplify asynchronous functions. Plus, it makes clear for developpers and documentation systems the function is asynchronous.
+Note that an asynchronous function can also use the `return` keyword ; it will have the same effect as `resolve` if used in the function's root (not in sub-functions like callbacks, of course). Here is an example:
+
+```sn
+async func readAsync(path: string) : string => {
+  try
+    return import('fs').readFile(path, "utf8");
+
+  catch (e)
+    reject e;
+}
+```
+
+So, this keyword is pretty powerful when coming to simplify asynchronous functions. Plus, it makes clear for developpers and documentation systems the function is asynchronous.
