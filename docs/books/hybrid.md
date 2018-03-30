@@ -2938,7 +2938,7 @@ The second class declares an abstract method but with a body, this time. That me
 
 As methods can be prefixed in a class, there are also prefixes for classes themselves. _Stated_ classes are standard classes with a keyword prefixing the `class` one, called the _class' state_. There are a few ones:
 
-#### `abstract` classes
+#### `virtual` classes
 
 We already saw this state, it means the class cannot be instanciated, so it must have at least one child class that will be instanciable (if it isn't prefixed with the same keyword too).
 
