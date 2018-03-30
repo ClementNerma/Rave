@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.13.0',
+    VERSION: '0.13.1',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -399,13 +399,8 @@ scheme = {
       'blue'
     ],
     [
-      // Functions call, with template
-      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*<(.*?)>\s*\()/,
-      'blue'
-    ],
-    [
-      // Macros call, with template
-      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*\!)(?=\s*<(.*?)>\s*\()/,
+      // Macros name, with template
+      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*\!)(?=\s*<(.*?)>\s*)/,
       'cyan'
     ],
     [
