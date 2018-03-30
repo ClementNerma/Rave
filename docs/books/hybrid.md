@@ -5125,4 +5125,13 @@ async func readAsync(path: string) : string => {
 }
 ```
 
+Also, when an error happens in an asynchronous functions, the error is automatically caught and transformed into a rejection. If the error is not compatible with the rejection type (e.g. if the rejection type is `int`), an error is thrown (for real, this time). So we could write our function like this:
+
+```sn
+async func readAsync(path: string) : string =>
+  import('fs').readFile(path, "utf8");
+```
+
+If the filesystem fails to read the file, an error will be thrown, but because our function use `Error` as its rejection type (because, as we saw, specifying no rejection type use it as default) the error will be turned into a simple promise rejection.
+
 So, this keyword is pretty powerful when coming to simplify asynchronous functions. Plus, it makes clear for developpers and documentation systems the function is asynchronous.
