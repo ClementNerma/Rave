@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.13.2',
+    VERSION: '0.14.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -250,7 +250,7 @@ scheme = {
     ],
     [
       // Declaration statement in classes for some static resources
-      /\b(public|protected|private)\s+(static)(?=\s+(?:func|getter|setter|struct))/,
+      /\b(public|protected|private)\s+(static|async|static\s+async)?(?=\s+(?:func|getter|setter|struct))/,
       'purple', 'purple'
     ],
     [
@@ -290,12 +290,12 @@ scheme = {
     ],
     [
       // Overload declaration
-      /\b(func|public|protected|private)\s+(%)([a-zA-Z_][a-zA-Z0-9_]+)\b/,
-      'purple', 'red', 'cyan'
+      /\b(func|public|protected|private)\s+(async\s+)?(%)([a-zA-Z_][a-zA-Z0-9_]+)\b/,
+      'purple', 'purple', 'red', 'cyan'
     ],
     [
       // Setter/getter declaration
-      /(public|protected|private)\s+(static\s+)?(getter|setter)\s+([a-zA-Z_][a-zA-Z0-9_]+)\b/,
+      /(public|protected|private)\s+(static\s+)?(async\s+)?(getter|setter)\s+([a-zA-Z_][a-zA-Z0-9_]+)\b/,
       'purple', 'purple', 'purple', 'cyan'
     ],
     [
@@ -375,7 +375,7 @@ scheme = {
     ],
     [
       // Keywords
-      /(?<!\.)\b(let|pln|val|frozen|frozen|func|lambda|public|protected|private|auto|friend|static|abstract|final|unique|virtual|extern|readonly|do|if|else|for|foreach|in|of|break|continue|unless|until|when|default|export|return|await|throw|try|catch|while|with|new|include)(?!\s*:)\b/,
+      /(?<!\.)\b(let|pln|val|frozen|frozen|func|lambda|public|protected|private|auto|friend|static|abstract|final|unique|virtual|extern|readonly|do|if|else|for|foreach|in|of|break|continue|unless|until|when|default|export|return|async|await|resolve|reject|throw|try|catch|while|with|new|include)(?!\s*:)\b/,
       'purple'
     ],
     [
