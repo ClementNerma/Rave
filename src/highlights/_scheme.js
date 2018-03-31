@@ -434,6 +434,11 @@ scheme = {
       'yellow', 'white'
     ],
     [
+      // Arguments expansion
+      /\b[a-zA-Z_\$][a-zA-Z0-9_\$]*\.\.\./,
+      'red'
+    ],
+    [
       // Object followed by a child property
       /(@?[a-zA-Z_\$][a-zA-Z0-9_\$]*)(\?)?(?=[\.\[])/,
       'red', 'cyan'
@@ -495,7 +500,7 @@ scheme = {
     ],
     [
       // Infinite values notation
-      /\.\.\.([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      /\.\.\.[a-zA-Z_\$][a-zA-Z0-9_\$]*\b/,
       'red'
     ],
     [
