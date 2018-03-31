@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.15.0',
+    VERSION: '0.16.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -260,8 +260,8 @@ scheme = {
     ],
     [
       // Declaration statement in classes for functions
-      /\b(public|protected|private)(\s+static)?(\s+async)?(?=\s+func)/,
-      'purple', 'purple', 'purple'
+      /\b(public|protected|private)(\s+static)?(\s+async)?(\s+unsafe)?(?=\s+func)/,
+      'purple', 'purple', 'purple', 'purple'
     ],
     [
       // Declaration statement in classes for assignable entities
@@ -295,12 +295,12 @@ scheme = {
     ],
     [
       // Overload declaration
-      /\b(func|public|protected|private)\s+(async\s+)?(%)([a-zA-Z_][a-zA-Z0-9_]+)\b/,
+      /\b(func|public|protected|private)\s+(static\s+)?(%)([a-zA-Z_][a-zA-Z0-9_]+)\b/,
       'purple', 'purple', 'red', 'cyan'
     ],
     [
       // Setter/getter declaration
-      /(public|protected|private)\s+(static\s+)?(async\s+)?(getter|setter)\s+([a-zA-Z_][a-zA-Z0-9_]+)\b/,
+      /(public|protected|private)\s+(static\s+)?(async\s+)?(unsafe\s+)?(getter|setter)\s+([a-zA-Z_][a-zA-Z0-9_]+)\b/,
       'purple', 'purple', 'purple', 'purple', 'cyan'
     ],
     [
@@ -405,7 +405,7 @@ scheme = {
     ],
     [
       // Keywords needing a separator
-      /(?<!\.)\b(let|pln|val|frozen|public|protected|private|friend|static|abstract|final|unique|virtual|extern|readonly|in|of|export|return|async|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
+      /(?<!\.)\b(let|pln|val|frozen|public|protected|private|friend|static|abstract|final|unique|virtual|extern|readonly|in|of|export|return|async|unsafe|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
       'purple'
     ],
     [
