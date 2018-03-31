@@ -1370,7 +1370,7 @@ println!("Goodbye world!") if (world.willDestroy()) else println!("Good morning 
 You can do this with any condition or loop block, but the block's head will then need to be wrapped between parenthesis:
 
 ```sn
-println!(i) for (let i = 0; i < 5; i ++);
+println!(i) for (i = 0; i < 5; i ++);
 ```
 
 But be aware when dealing with inline loops, this could accidentally result in inline generation and make your program crash, as we will see now.
