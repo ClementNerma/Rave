@@ -3266,23 +3266,23 @@ class KindOfDict<K, V> {
   private keys: K[];
   private values: K[];
 
-  public func has(key: K) : bool => %keys.has(key);
+  public func has(key: K) : bool => @keys.has(key);
 
   public func set(key: K, value: V) {
     // If this key is not already known...
-    if (not %has(key)) {
+    if (not @has(key)) {
       // Create it
-      %keys.push(key);
+      @keys.push(key);
       // Add the new value
-      %values.push(value);
+      @values.push(value);
     } else
       // Else, associate the new value to the existing key
-      %values[%keys.indexOf(key)] = value;
+      @values[@keys.indexOf(key)] = value;
   }
 
   public func get(key: K) : V =>
     // Return the value associated to the key
-    %values[%keys.indexOf(key)];
+    @values[@keys.indexOf(key)];
 }
 ```
 
@@ -3373,7 +3373,7 @@ Pretty powerful, right? We can this syntax to force the templates to do codes li
 
 ```sn
 class StringDict<K, V implements Stringifyable> extends KindOfDict<K, V> {
-  public stringify(key: T) : string => string(%values[%keys.indexOf(key)]);
+  public stringify(key: T) : string => string(@values[@keys.indexOf(key)]);
 }
 ```
 
@@ -3441,6 +3441,8 @@ dict Custom<K, V> extends Dictionary<K, V> {
 ```
 
 This will inherits all functions that comes with basic dictionaries, like `.filter()` or `.map()`. It will grant access to two protected members, `keys` and `values`, which are arrays referring respectively to the dictionary's keys and its values, as well as all overloads you can implement in a dictionary with no restricted template.
+
+A specificity about dictionary overloads is that they can be implemented by **any** standard class. This is why we can use integer indexes on a string even though that's not a dictionary, for example. The `dict` keyword simply indicates the class implements every overloads required for a dictionary and explicitly indicates its use.
 
 ### Exploring dictionaries
 
