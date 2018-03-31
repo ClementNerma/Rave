@@ -2224,7 +2224,7 @@ class SomeClass {
 
 This will do the same thing as the previous syntax, excepted we won't access the attribute with `instance.getMyAttribute()` from the outside, but simply with `instance.myAttribute`.
 
-### Static attributes
+### Static members
 
 This is another type of members. Static members are not available from the instances, but only from the class itself. Let's see an example to be more clear:
 
