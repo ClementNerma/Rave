@@ -1175,7 +1175,7 @@ The `for` block repeats the instructions a given amount of times. It needs an _i
 ```sn
 let i: int;
 
-for (i = 0; i < 5; i ++) {
+for i = 0; i < 5; i ++ {
   println!(i);
 }
 ```
@@ -1189,7 +1189,7 @@ The loop above will therefore display `0`, `1`, `2`, `3` and `4`. That's all.
 Note that you could also write the variable's declaration directly in the loop's head:
 
 ```sn
-for (let i: int = 0; i < 5; i ++) {
+for let i: int = 0; i < 5; i ++ {
   println!(i);
 }
 ```
@@ -1200,40 +1200,30 @@ Another thing is about the incremental expression. It can be absolutely any expr
 
 ```sn
 // This loop does exactly the same thing than the previous one
-for (let i = 4; i >= 0; i ++) {
+for let i = 4; i >= 0; i ++ {
   println!(i);
 }
 ```
 
-Or `i += 5`, or whatever you want. Also, any block made by a single instruction can omit `{` and `}` symbols, so you could write:
+Or `i += 5`, or whatever you want. There is also an alternative syntax made to replace the one we saw above. This is called the _range syntax_:
 
 ```sn
-for (let i = 0; i < 5; i ++)
+for let i of 0 -> 5 {
   println!(i);
-```
-
-Or even:
-
-```sn
-for (let i = 0; i < 5; i ++) println!(i);
-```
-
-There is an alternative syntax made to replace the one we saw above. This is called the _range syntax_:
-
-```sn
-for (let i of 0 -> 5)
-  println!(i);
+}
 
 // Equivalent to
-for (let i: int = 0; i <= 5; i ++)
+for let i: int = 0; i <= 5; i ++ {
   println!(i);
+}
 ```
 
 Be aware here, the end value is applied to the set of expressions. So, this code will print: `0` `1` `2` `3` `4` `5`.
 
 ```sn
-for (let i of 5 -> 0)
+for let i of 5 -> 0 {
   println!(i);
+}
 ```
 
 This will result in printing: `5` `4` `3` `2` `1` `0`.
@@ -1247,7 +1237,7 @@ The syntax is:
 ```sn
 let counter = 8;
 
-while (counter > 1) {
+while counter > 1 {
   println!(counter);
   counter /= 2;
 }
@@ -1262,7 +1252,7 @@ The `until` loop is the exact inverse of `while`: it runs the set of instruction
 ```sn
 let counter = 8;
 
-until (counter <= 1) {
+until counter <= 1 {
   println!(counter);
   counter /= 2;
 }
@@ -1304,7 +1294,7 @@ else
 But this is kind of heavy. So we can perform a _match_ instead:
 
 ```sn
-when (name) {
+when name {
   "Paul"  -> println!("Happy birthday, Paul!");
   "John"  -> println!("How are you, John?");
   "Marc"  -> println!("Hello there Marc!");
@@ -1315,7 +1305,7 @@ when (name) {
 If you want to specify a condition, you can write it between parenthesis. You will have access to the `_` variable which refers to the value given in the block's head.
 
 ```sn
-let adult: string = when (age) {
+let adult: string = when age {
   (_ < 20) -> "No";
   (_ > 20) -> "Yes";
   default  -> "Kind of";
@@ -1325,7 +1315,7 @@ let adult: string = when (age) {
 You can also specify a set of expressions for a match, but you will have to return manually the value:
 
 ```sn
-let adult: string = when (age) {
+let adult: string = when age {
   (_ < 20) -> "No";
   (_ > 20) -> "Yes";
   default  -> { println!("Default value taken."); return "Kind of"; }
@@ -1335,7 +1325,7 @@ let adult: string = when (age) {
 Note that the `break` instruction does nothing on this block. The `when` block can also be used without assignment:
 
 ```sn
-when (age) {
+when age {
   (_ < 20) -> adult = "No";
   (_ > 20) -> adult = "Yes";
   default  -> adult = "Kind of";
@@ -1379,7 +1369,7 @@ println!("Hello world!") if (world.exists());
 println!("Goodbye world!") if (world.willDestroy()) else println!("Good morning world!");
 ```
 
-You can do this with any condition or loop block:
+You can do this with any condition or loop block, but the block's head will then need to be wrapped between parenthesis:
 
 ```sn
 println!(i) for (let i = 0; i < 5; i ++);
@@ -1394,8 +1384,9 @@ Inline generation is a useful feature when coming to generate a list of data. Fo
 ```sn
 let cubes: int[10]; // List<int>
 
-for (let i of 1 -> 10)
+for let i of 1 -> 10 {
   cubes.push(i * i * i);
+}
 ```
 
 But there is another, simplier way to generate this list.
@@ -1427,7 +1418,7 @@ When dealing with a loop, you can want to exit it if a specific even happens. Fo
 Let's try it:
 
 ```sn
-for (let i of 1 -> 10) {
+for let i of 1 -> 10 {
   println!(i);
 
   if (hadError())
@@ -1440,7 +1431,7 @@ This will work as expected: if `hadError` returns `true`, the `break` instructio
 Another keyword is `continue` that provides a way to ignore all instructions below it but only one time.
 
 ```sn
-for (let i of 1 -> 10) {
+for let i of 1 -> 10 {
   if (hadError())
     continue;
 
@@ -1464,13 +1455,15 @@ println!(message); // ERROR because `message` does not exist
 Here, `message` is declared inside an `if` block, so it only exists _inside_ this block. When we go outside of it, the resource does no longer exist. This is done to keep a better clarity about where resources are available. For example, with a loop, you can do:
 
 ```sn
-for (let i = 0; i < 10; i += 2)
+for let i = 0; i < 10; i += 2 {
   println!(i);
+}
 
 // Do some stuff here
 
-for (let i = 10; i >= 0; i -= 2)
+for let i = 10; i >= 0; i -= 2 {
   println!(i);
+}
 ```
 
 Without block-scoped declarations, this would not have worked because the declaration of `i` would have been duplicated, so we would have had to be aware to declare `i` at the beginning of the function, to use it later. The time during which an entity exists is its **lifetime duration**.
@@ -1589,8 +1582,9 @@ Sometimes we simply want a function to accept any number of arguments, without m
 func sum (...numbers: int) : int {
   let sum = 0;
 
-  for (let i = 0; i < numbers.size; i ++)
+  for let i = 0; i < numbers.size; i ++ {
     sum += i;
+  }
 
   return sum;
 }
@@ -1604,8 +1598,9 @@ Here, `numbers` becomes a `List<int>` because of the `...` symbol, and it will a
 func sum (...numbers: int, coefficient: int) : int {
   let sum = 0;
 
-  for (let i = 0; i < numbers.size; i ++)
+  for let i = 0; i < numbers.size; i ++ {
     sum += i;
+  }
 
   return sum * coefficient;
 }
@@ -1619,8 +1614,9 @@ Or after:
 func sum (coefficient: int, ...numbers: int) : int {
   let sum = 0;
 
-  for (let i = 0; i < numbers.size; i ++)
+  for let i = 0; i < numbers.size; i ++ {
     sum += i;
+  }
 
   return sum * coefficient;
 }
@@ -1634,8 +1630,9 @@ Or even between:
 func sum (coeff1: int, ...numbers: int, coeff2: int) : int {
   let sum = 0;
 
-  for (let i = 0; i < numbers.size; i ++)
+  for let i = 0; i < numbers.size; i ++ {
     sum += i;
+  }
 
   return sum * coeff1 * coeff2;
 }
@@ -1687,9 +1684,10 @@ What is their point? The more simple is to take an exemple: let's say we have a 
 ```sn
 val posArr: int[];
 
-for (let i = 0; i < arr.size; i ++)
+for let i = 0; i < arr.size; i ++ {
   if (arr[i] >= 0)
     posArr.push(arr[i]);
+}
 ```
 
 But we have a problem here. We have to define `posArr` as an `Array<int>` while `arr` is a `List<int>`. This could introduce compatibility issues when we'll want to give it to functions that require a list. We can still convert `posArr` to a list by doing `posArr.toList()`, but this would involve to make a whole new list, which takes both memory and time.
@@ -2451,8 +2449,9 @@ Let's imagine we have a list of integers. We make a function that calculate, for
 
 ```sn
 func squareList (list: List<int>) : List<int> {
-  for (let i = 0; i < list.size; i ++)
+  for let i = 0; i < list.size; i ++ {
     list[i] *= list[i];
+  }
 
   return list;
 }
@@ -3495,16 +3494,19 @@ Loops are our best friend when exploring dictionaries. While we can still get ac
 
 ```sn
 // Explore a dictionary using its keys
-foreach (let key in myArray.keys())
+foreach let key in myArray.keys() {
   println!(key);
+}
 
 // Explore a dictionary using its values
-foreach (let value in myArray)
+foreach let value in myArray {
   println!(key);
+}
 
 // Explore a dictionary with both its keys and its values
-foreach (let key -> let value in myArray)
+foreach let key -> let value in myArray {
   println!(key, value);
+}
 ```
 
 #### The case of vectors
@@ -3943,9 +3945,10 @@ struct Point {
 }
 
 func getNilPoints(list: Point[]) : Point {
-  foreach (let point in list)
+  foreach let point in list {
     if (point.x is 0 and point.y is 0)
       return point;
+  }
 }
 ```
 
@@ -3995,9 +3998,10 @@ A strict equivalent to the function we saw would be:
 
 ```sn
 func getNilPoints(list: Point[]) : Point? {
-  foreach (let point in list)
+  foreach let point in list {
     if (point.x is 0 and point.y is 0)
       return point;
+  }
 
   return new void();
 }
@@ -4007,9 +4011,10 @@ This would achieve exatly the same thing. There's also a native value, named `nu
 
 ```sn
 func getNilPoints(list: Point[]) : Point? {
-  foreach (let point in list)
+  foreach let point in list {
     if (point.x is 0 and point.y is 0)
       return point;
+  }
 
   return null;
 }
