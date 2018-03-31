@@ -1697,14 +1697,14 @@ But we have a problem here. We have to define `posArr` as an `Array<int>` while 
 That's where lambdas come. There is a function called `filter` we can use on lists, which takes a specific function as an argument. Here is how we use it:
 
 ```sn
-val posArr = arr.filter(func (value: int, key: int) : bool { return value >= 0; });
+val posArr = arr.filter(lambda (value: int, key: int) : bool { return value >= 0; });
 ```
 
 What happened here? Because it's a little cryptic, we'll re-write the code, with a greater spacing:
 
 ```sn
 val posArr = arr.filter(
-  func (value: int, key: int) : bool {
+  lambda (value: int, key: int) : bool {
     return value >= 0;
   }
 );
@@ -1718,7 +1718,7 @@ Also, why do we need the `key` argument while we don't use it? It's simply becau
 
 ```sn
   // ...
-  public func filter(callback: func (value: T, key: int) : bool) : self<T>;
+  public func filter(callback: lambda (value: T, key: int) : bool) : self<T>;
   // ...
 ```
 
@@ -1729,7 +1729,7 @@ Note that, while the argument's number, type and the lambda's return type is dec
 There's another way to apply this filter on our list: declaring the function, and then using it as an argument. Because an example will be more clear than a big explanation:
 
 ```sn
-val myFunc = func (value: int, key: int) : bool {
+val myFunc = lambda (value: int, key: int) : bool {
   return value >= 0;
 };
 
@@ -1741,7 +1741,7 @@ This will do the same thing than the first version. Here, we declare a `myFunc` 
 In fact, this constant has an inferred type ; its full declaration would be:
 
 ```sn
-val myFunc: func (value: int, key: int) : bool = func (value: int, key: int) : bool {
+val myFunc: lambda (value: int, key: int) : bool = lambda (value: int, key: int) : bool {
   return value >= 0;
 }
 
@@ -1783,8 +1783,8 @@ func returnTrue() : bool { return true; }
 func returnTrue() : bool => true;
 
 // Classic lambdas
-val returnTrue = func () : bool { return true; }
-val returnTrue = func () : bool => true;
+val returnTrue = lambda () : bool { return true; }
+val returnTrue = lambda () : bool => true;
 
 // Arrow syntax
 val returnTrue = () : bool { return true; }
@@ -1803,7 +1803,7 @@ So there is a way to perform inferred typing on a lambda, for both its arguments
 
 ```sn
 // Classic lambda
-val posArr = arr.filter(func (value: int, key: int) : bool { return value >= 0; });
+val posArr = arr.filter(lambda (value: int, key: int) : bool { return value >= 0; });
 
 // Arrow syntax
 val posArr = arr.filter((value: int, key: int) : bool => value >= 0);
@@ -5038,9 +5038,9 @@ Another case is callbacks. In the following code:
 
 ```sn
 class Event {
-  private static handler: lambda();
+  private static handler: lambda ();
 
-  public static func handle(@handler: lambda()) {}
+  public static func handle(@handler: lambda ()) {}
   public static func trigger() => @handler();
 }
 
@@ -5241,7 +5241,7 @@ Let's detail what happen here. First, the `fetch()` function returns a promise. 
 
 ```sn
   // Parse it
-  .then<{ string }, Error>(func (data: string) { return parseJson(data); });
+  .then<{ string }, Error>(lambda (data: string) { return parseJson(data); });
 ```
 
 In fact, the `then()` function can take two templates, and if so takes as its single argument a callback that returns a new promise with the templates being respectively its resolution and rejection type.
