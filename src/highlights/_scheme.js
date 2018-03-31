@@ -494,17 +494,12 @@ scheme = {
       'cyan'
     ],
     [
-      // Array concatenation from the left
+      // Infinite values notation
       /\.\.\.([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'red'
     ],
     [
-      // Array concatenation from the right
-      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)\.\.\./,
-      'red'
-    ],
-    [
-      // Array generation from two numerical bounds
+      // Numerical bounds
       /\[[a-zA-Z0-9_\$]+\s*\.\.\s*[a-zA-Z0-9_\$]+\]/,
       'orange'
     ],
