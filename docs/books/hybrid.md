@@ -3814,6 +3814,12 @@ _Tip :_ If you absolutely require a pointer in a macro, simply use the `&` symbo
 
 To conclude, simply remember that every function signature (with `#macro` replacing `func`) is a valid macro signature, but that a macro can also use additional features like the `#var` directive.
 
+### Unsafe functions
+
+Unsafe functions are declared like macros, except they are called like standard functions and therefore won't replace their own call by another content.
+
+The _unsafe_ term refers to the fact their calls is not checked, so they can call a function with the wrong number of arguments or put a third element in a two-sized list.
+
 ### Overloading operators
 
 Superoverloads are overloads that don't act only as a class level, but as the whole program's level. Some of them work with some concepts we haven't seen yet, so we'll only see operators superoverloads.
@@ -4056,7 +4062,7 @@ val point2 = getNilPoints([]);
 println!(point2.name); // ERROR
 ```
 
-The second `println!` call makes our program crash. Why? Simply because `point2` is a `void` instance, so it has no `name` member. We have to check first if our constant contains a `null` value or not, thanks to the equality operator `==` or the difference operator `!=`. This can be done thanks the fact two instances of the same class can be compared with these two operators (we'll see that in details in the pointers chapter). So we can write:
+The second call to `getNilPoints()` makes our program crash. Why? Simply because `point2` is a `void` instance, so it has no `name` member. We have to check first if our constant contains a `null` value or not, thanks to the equality operator `==` or the difference operator `!=`. This can be done thanks the fact two instances of the same class can be compared with these two operators (we'll see that in details in the pointers chapter). So we can write:
 
 ```sn
 val point = getNilPoints([]);
