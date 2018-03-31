@@ -4771,8 +4771,7 @@ First, let's make our package file. It's a TOML ([Tom's Obvious Language](https:
 
 ```toml
 [package]
-slug = "name-manager"
-name = "NameManager"
+name = "name-manager"
 version = "0.1.0"
 authors = [ "Your Name <you@example.com>" ]
 license = "MIT"
@@ -4781,7 +4780,7 @@ main = "index.sn"
 [dependencies]
 ```
 
-This tells that our package must be located in a `name-manager` directory when downloaded from the package manager (we'll see that soon), that its name is `NameManager`, and gives informations about its version (which is very important as we'll see soon) and the list of authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now). Next, it gives the _dependencies_ of this package, and ends by giving the filename of the package's main file. For now, don't worry about the file's content, we'll see it in details later.
+This tells that our package's name is `name-manager` (so it will be located in a `name-manager` directory when downloaded from the package manager - we'll see that soon) and gives informations about its version (which is very important as we'll see soon) and the list of authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now). Next, it gives the _dependencies_ of this package, and ends by giving the filename of the package's main file. For now, don't worry about the file's content, we'll see it in details later.
 
 #### The package source code
 
@@ -4845,45 +4844,34 @@ To import a package, we must use the `import` keyword followed by the package's 
 
 ```sn
 // Import the package
-import NameManager;
+import name-manager as manager;
 
 // Use its exported entities
-NameManager.defineName("John");
-println!(NameManager.readName()); // Prints: "John"
+manager.defineName("John");
+println!(manager.readName()); // Prints: "John"
 
 // Try to access an entity not exported by the package
-println!(NameManager.name); // ERROR because `name` hasn't been exported
+println!(manager.name); // ERROR because `name` hasn't been exported
 ```
 
 This is as simple as that. Also, because this name could be a little heavy, we can make an alias:
 
 ```sn
 // Import the package
-import NameManager as manager;
+import name-manager as manager;
 
 manager.defineName("John");
 println!(manager.readName()); // Prints: "John"
 ```
 
-Note that `NameManager`'s content is strictly equivalent to the value exported by the package. Our one exported an object with two attributes referring to its functions, but it could have only exported a single function for example, so we would have been able to call `NameManager` as a function.
+Note that `name-manager`'s content is strictly equivalent to the value exported by the package. Our one exported an object with two attributes referring to its functions, but it could have only exported a single function for example, so we would have been able to call `manager` as a function.
 
 #### The `import!` macro
 
 The `import!` macro allows to import a package as an object, so we can use it as we want. Here is an example:
 
 ```sn
-val manager = import!("NameManager");
-
-manager.defineName("John");
-println!(manager.readName()); // Prints: "John"
-```
-
-In fact, this will be produce the following code:
-
-```sn
-import NameManager as _pkg_NameManager;
-
-val manager = _pkg_NameManager;
+val manager = import!(name-manager);
 
 manager.defineName("John");
 println!(manager.readName()); // Prints: "John"
@@ -4892,17 +4880,11 @@ println!(manager.readName()); // Prints: "John"
 Also, the macro will never the package several times, so we can write:
 
 ```sn
-import!("NameManager").defineName("John");
-println!(import!("NameManager").readName()); // Prints: "John"
+import!(name-manager).defineName("John");
+println!(import!(name-manager).readName()); // Prints: "John"
 ```
 
-This will work as expected and produce the following code:
-
-```sn
-import NameManager as _pkg_NameManager;
-_pkg_NameManager.defineName("John");
-println!(_pkg_NameManager.readName()); // Prints: "John"
-```
+This will work as expected. A good point about this macro is that the package isn't imported multiple times ; once you imported it, either with `import` or `import!`, it will just retrieve the imported data.
 
 ### The package manager
 
@@ -5056,7 +5038,7 @@ func readAsync(path: string) : Promise<string, Error> {
 
     // Read the file
     try {
-      content = import('fs').readFile(path, "utf8");
+      content = import!('fs').readFile(path, "utf8");
     } catch (e) {
       // Failed
       reject(value);
@@ -5085,7 +5067,7 @@ func readAsync(path: string) : Promise<string, Error> =>
     let content: string;
 
     try {
-      content = import('fs').readFile(path, "utf8");
+      content = import!('fs').readFile(path, "utf8");
     } catch (e) {
       reject(e);
     }
@@ -5106,7 +5088,7 @@ The `async` keyword describes an asynchronous function in a syntaxical way - it'
 ```sn
 async func readAsync(path: string) : string => {
   try
-    resolve import('fs').readFile(path, "utf8");
+    resolve import!('fs').readFile(path, "utf8");
 
   catch (e)
     reject e;
@@ -5126,7 +5108,7 @@ Note that an asynchronous function can also use the `return` keyword ; it will h
 ```sn
 async func readAsync(path: string) : string => {
   try
-    return import('fs').readFile(path, "utf8");
+    return import!('fs').readFile(path, "utf8");
 
   catch (e)
     reject e;
@@ -5137,7 +5119,7 @@ Also, when an error happens in an asynchronous functions, the error is automatic
 
 ```sn
 async func readAsync(path: string) : string =>
-  import('fs').readFile(path, "utf8");
+  import!('fs').readFile(path, "utf8");
 ```
 
 If the filesystem fails to read the file, an error will be thrown, but because our function use `Error` as its rejection type (because, as we saw, specifying no rejection type use it as default) the error will be turned into a simple promise rejection.

@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.14.1',
+    VERSION: '0.14.2',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -364,8 +364,13 @@ scheme = {
       'purple', 'green', 'white', 'green'
     ],
     [
+      // IMPORT macro call (closed or not)
+      /\b(import!)\s*\((?:\s*([a-zA-Z_\$][a-zA-Z0-9_\$\-]*)\s*[\)]?)?/,
+      'purple', 'green'
+    ],
+    [
       // IMPORT statement
-      /\b(import)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$]*)*)\b/,
+      /\b(import)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\-]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\-]*)*)\b/,
       'purple', 'green', 'green'
     ],
     [
