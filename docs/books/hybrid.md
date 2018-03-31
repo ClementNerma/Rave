@@ -1763,7 +1763,20 @@ func myFunc(value: int, key: int) : bool {
 val posArr = arr.filter(myFunc);
 ```
 
-So, lambdas are great to reduce the size of a program, but it's kind of heavy to use this syntax. This is why we can use the _arrow syntax_:
+As void-typed functions that take no argument are called _reduced functions_, the same applies for lambdas with _reduced lambdas_, which allow to omit its parenthesis:
+
+```sn
+// Use the short notation for reduced lambdas (as a type)
+func callReducedLambda(callback: lambda) => callback();
+
+// Use the short notation for reduced lambdas (as an expression)
+val reduced = lambda { println!("Hello there!"); }
+
+// Give it as an argument
+callReducedLambda(reduced);
+```
+
+So, lambdas are great to reduce the size of a program, but reduced lambdas put apart it's kind of heavy to use this syntax. This is why we can use the _arrow syntax_:
 
 ```sn
 val posArr = arr.filter((value: int, key: int) : bool => value >= 0);
