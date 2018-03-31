@@ -4866,6 +4866,17 @@ println!(manager.readName()); // Prints: "John"
 
 Note that `name-manager`'s content is strictly equivalent to the value exported by the package. Our one exported an object with two attributes referring to its functions, but it could have only exported a single function for example, so we would have been able to call `manager` as a function.
 
+Note that it's also possible to import a package without an alias, like this:
+
+```sn
+// Import the package
+import name-manager;
+
+// Because the "-" symbol cannot be part of a name, it is replaced by "_"
+name_manager.defineName("John");
+println!(name_manager.readName()); // Prints: "John"
+```
+
 #### The `import!` macro
 
 The `import!` macro allows to import a package as an object, so we can use it as we want. Here is an example:
