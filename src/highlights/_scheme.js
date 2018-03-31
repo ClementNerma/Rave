@@ -354,8 +354,13 @@ scheme = {
       'purple', 'yellow'
     ],
     [
-      // Extensions and aliases
-      /\b(extends|implements|from|as)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.]*)*)\b/,
+      // Inheritance and aliases
+      /\b(extends|from|as)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
+      'purple', 'green'
+    ],
+    [
+      // Implementation
+      /\b(implements)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.]*)*)\b/,
       'purple', 'green', 'green'
     ],
     [
@@ -375,7 +380,7 @@ scheme = {
     ],
     [
       // Native types and classes
-      /\b(bool|Boolean|Number|FloatNumber|(?:u?int|(?:Unsigned)?Integer)(?:|1|8|16|32|64|128)|u?byte|(?:Unsigned|Signed)Byte|float|[Ff]loat|[Dd]ouble|[Ss]tring|Primitive|BooleanConvertible|IntegerConvertible|FloatConvertible|NumberConvertible|Stringifyable|Clonable|Freezable|Serializable|Randomizable|Primitivable|Collection|Dictionary|Vector|Array|List|Error|ErrorStep|RegExp|console)(\?)?\b/,
+      /\b(bool|Boolean|Number|FloatNumber|(?:u?int|(?:Unsigned)?Integer)(?:|1|8|16|32|64|128)|u?byte|(?:Unsigned|Signed)Byte|float|[Ff]loat|[Dd]ouble|[Cc]har|[Ss]tring|Primitive|BooleanConvertible|IntegerConvertible|FloatConvertible|NumberConvertible|Stringifyable|Clonable|Freezable|Serializable|Randomizable|Primitivable|Collection|Dictionary|Vector|Array|List|Error|ErrorStep|RegExp|console)(\?)?\b/,
       'yellow', 'cyan'
     ],
     [
