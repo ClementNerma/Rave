@@ -1547,7 +1547,7 @@ Its point is mainly to use with some macros to pre-process data, but that's a ve
 Note that void-typed functions (functions that return nothing) can omit their return type, like this:
 
 ```sn
-func sayHello() {
+func sayHello () {
   println!("Hello !");
 }
 ```
@@ -1714,7 +1714,7 @@ Also, why do we need the `key` argument while we don't use it? It's simply becau
 
 ```sn
   // ...
-  public func filter(callback: lambda (value: T, key: int) : bool) : self<T>;
+  public func filter (callback: lambda (value: T, key: int) : bool) : self<T>;
   // ...
 ```
 
@@ -1756,7 +1756,7 @@ println!(myFunc(-3)); // Prints: "false"
 We could also have declared it as a normal function:
 
 ```sn
-func myFunc(value: int, key: int) : bool {
+func myFunc (value: int, key: int) : bool {
   return value >= 0;
 };
 
@@ -1767,7 +1767,7 @@ As void-typed functions that take no argument are called _reduced functions_, th
 
 ```sn
 // Use the short notation for reduced lambdas (as a type)
-func callReducedLambda(callback: lambda) => callback();
+func callReducedLambda (callback: lambda) => callback();
 
 // Use the short notation for reduced lambdas (as an expression)
 val reduced = lambda { println!("Hello there!"); }
@@ -1788,8 +1788,8 @@ Showcase:
 
 ```sn
 // Classic functions
-func returnTrue() : bool { return true; }
-func returnTrue() : bool => true;
+func returnTrue () : bool { return true; }
+func returnTrue () : bool => true;
 
 // Classic lambdas
 val returnTrue = lambda () : bool { return true; }
@@ -1937,11 +1937,11 @@ The constructor will take as an argument a name, an amount of HP and MP, an atta
 
 ```sn
   // ...
-  public func getAttack() : int {
+  public func getAttack () : int {
     return this.atk;
   }
 
-  public func beAttacked(ennemy: Hero) {
+  public func beAttacked (ennemy: Hero) {
     this.hp -= ennemy.getAttack();
   }
   // ...
@@ -1960,7 +1960,7 @@ If we want to consider the defense now:
 
 ```sn
   // ...
-  public func beAttacked(ennemy: Hero) {
+  public func beAttacked (ennemy: Hero) {
     this.hp -= ennemy.getAttack() - this.def;
   }
   // ...
@@ -1970,7 +1970,7 @@ Here we consider our defense. But now we have to assure HP loss is not negative.
 
 ```sn
   // ...
-  public func beAttacked(ennemy: Hero) {
+  public func beAttacked (ennemy: Hero) {
     // Calculate the loss
     val loss = ennemy.getAttack() - this.def;
     // Decrease HP
@@ -1983,14 +1983,14 @@ Here we are! Now, let's write a `fight()` function!
 
 ```sn
   // ...
-  public func beAttacked(ennemy: Hero) {
+  public func beAttacked (ennemy: Hero) {
     // Calculate the loss
     val loss = ennemy.getAttack() - this.def;
     // Decrease HP
     this.hp -= loss;
   }
 
-  public func fight(ennemy: Hero) {
+  public func fight (ennemy: Hero) {
     // Damage the ennemy
     this.beAttacked(ennemy);
     // Get damages from the ennemy
@@ -2017,15 +2017,15 @@ class Hero {
     this.def = defense;
   }
 
-  public func getName() : string {
+  public func getName () : string {
     return this.name;
   }
 
-  public func getAttack() : int {
+  public func getAttack () : int {
     return this.atk;
   }
 
-  public func beAttacked(ennemy: Hero) {
+  public func beAttacked (ennemy: Hero) {
     // Calculate the loss
     val loss = ennemy.getAttack() - this.def;
     // Tell what happens
@@ -2034,7 +2034,7 @@ class Hero {
     this.hp -= loss;
   }
 
-  public func fight(ennemy: Hero) {
+  public func fight (ennemy: Hero) {
     // Tell what happens
     println!(`${this.name} is going to fight ${ennemy.getName()}!`);
     // Damage the ennemy
@@ -2078,7 +2078,7 @@ class Example {
   public val hello = "Hello!";
   private val secret = "No one can see me!";
 
-  public func printSecret() => println!(this.secret);
+  public func printSecret () => println!(this.secret);
 }
 
 val instance = new Example();
@@ -2094,7 +2094,7 @@ class Example {
   public val hello = "Hello!";
   private val secret = "No one can see me!";
 
-  public func printAnotherSecret(other: Example) => println!(other.secret);
+  public func printAnotherSecret (other: Example) => println!(other.secret);
 }
 
 val instance = new Example();
@@ -2161,7 +2161,7 @@ class Superthing {
     this.name = theThingName;
   }
 
-  public func getName() {
+  public func getName () {
     return this.name;
   }
 }
@@ -2182,7 +2182,7 @@ Another trick to use a member from the inside of the class is to use the `@` sym
 class Superthing {
   // ...
 
-  public func getName() {
+  public func getName () {
     return @name;
   }
 }
@@ -2208,7 +2208,7 @@ When declaring class' attributes, we sometimes want to make it private because w
 class SomeClass {
   private myAttribute: string;
 
-  public func getMyAttribute() : string {
+  public func getMyAttribute () : string {
     return @myAttribute;
   }
 }
@@ -2231,7 +2231,7 @@ This is another type of members. Static members are not available from the insta
 ```sn
 class Product {
   private static unique_id = 0;
-  public static func increaseCounter() : int => ++ self::unique_id;
+  public static func increaseCounter () : int => ++ self::unique_id;
 }
 ```
 
@@ -2245,7 +2245,7 @@ class Product {
   private static counter = 0;
 
   // Increase the global counter
-  public static func increaseCounter() : int => ++ self::counter;
+  public static func increaseCounter () : int => ++ self::counter;
 
   // The product's unique identifier
   public readonly unique_id: int;
@@ -2293,7 +2293,7 @@ class Map {
   public func %construct(@cells: int[][], @playerX: int, @playerY: int) {};
 
   // Move the hero
-  private func move(x: int, y: int) {
+  private func move (x: int, y: int) {
     // If we fall in a trap before...
     if (@trapped)
       // Move is forbidden
@@ -2323,13 +2323,13 @@ class Map {
   }
 
   // Move up
-  public func moveUp() => @move(@playerX, @playerY - 1);
+  public func moveUp () => @move(@playerX, @playerY - 1);
   // Move down
-  public func moveDown() => @move(@playerX, @playerY + 1);
+  public func moveDown () => @move(@playerX, @playerY + 1);
   // Move to the left
-  public func moveLeft() => @move(@playerX - 1, @playerY);
+  public func moveLeft () => @move(@playerX - 1, @playerY);
   // Move to the right
-  public func moveRight() => @move(@playerX + 1, @playerY);
+  public func moveRight () => @move(@playerX + 1, @playerY);
 }
 ```
 
@@ -2387,8 +2387,8 @@ class IntArray {
     println!("I will be freed.");
   }
 
-  public func add(value: int) => @data.push(value);
-  public func pop() : bool => @data.pop();
+  public func add (value: int) => @data.push(value);
+  public func pop () : bool => @data.pop();
 }
 
 let arr = new IntArray();
@@ -2418,7 +2418,7 @@ class IntArray {
 
   public func %freeze() {}
 
-  public func add(value: int) {
+  public func add (value: int) {
     // Check if the instance is frozen
     if (is_frozen!())
       println!("The class is frozen, can't append anything.");
@@ -2426,7 +2426,7 @@ class IntArray {
       @data.push(value);
   }
 
-  public func pop() : bool {
+  public func pop () : bool {
     // Check if the instance is frozen
     if (is_frozen!())
       println!("The class is frozen, can't pop the top value.");
@@ -2434,7 +2434,7 @@ class IntArray {
       @data.pop();
   }
 
-  public func sum() : int => @data.reduce((acc, value) => acc + value);
+  public func sum () : int => @data.reduce((acc, value) => acc + value);
 }
 ```
 
@@ -2679,7 +2679,7 @@ Let's take an example:
 class Translator {
   // Here is a function that translates a text
   //  and returns the translated string
-  public static func translate(text: string, lang: string) : string {
+  public static func translate (text: string, lang: string) : string {
     // Do some translation stuff here
     // For the example we will return a constant string
     return "Bonjour";
@@ -2697,7 +2697,7 @@ Here, the `%call` overload made the class callable. We could implement it for in
 
 ```sn
 class Calculator {
-  public func add(left: int, right: int) : int => left + right;
+  public func add (left: int, right: int) : int => left + right;
   public func %call(left: int, right: int) : int => @add(left, right);
 }
 
@@ -2723,7 +2723,7 @@ class Product {
 }
 
 // Define the class' friend function
-func getProductId(product: Product) : int {
+func getProductId (product: Product) : int {
   // Access the instance's private attributes
   return product.id;
 }
@@ -2734,7 +2734,7 @@ There are several syntax to set a resource as friend:
 ```sn
 class Product {
   // List a simple function as a friend
-  friend func simpleFunction(product: self) : int;
+  friend func simpleFunction (product: self) : int;
 
   // List another class' static function as a friend
   friend func AnotherClass::staticFunction(product: self) : int;
@@ -2781,7 +2781,7 @@ virtual class Hero {
   public %construct(@name: string, @hp: int, @attack: int) {}
 
   // Attack an ennemy
-  public func fight(ennemy: self) {
+  public func fight (ennemy: self) {
     // Check if this hero is dead
     if (@hp is 0) {
       println!(`${@name} can't find because he's dead.`);
@@ -2802,7 +2802,7 @@ virtual class Hero {
   }
 
   // Receive damages from an ennemy
-  public func receiveDamages(amount: int, ennemyName: string) {
+  public func receiveDamages (amount: int, ennemyName: string) {
     // Check if this hero is dead
     if (@hp is 0) {
       println!(`${@name} did not receive any damage because he's dead.`);
@@ -2836,7 +2836,7 @@ So, now we seen that, let's make our children classes:
 class Warrior extends Hero {
   public readonly rage: int;
 
-  public func receiveDamages(amount: int, ennemyName: string) {
+  public func receiveDamages (amount: int, ennemyName: string) {
     // Call the parent class' `receiveDamages()` method
     parent.receiveDamages(amount, ennemyName);
 
@@ -2867,7 +2867,7 @@ class Wizard extends Hero {
 
   public func %construct(@name: int, @hp: int, @attack: int, @mp: int) {}
 
-  public func fireball(ennemy: Hero) {
+  public func fireball (ennemy: Hero) {
     // Check if remaining MP are enough
     if (@mp < 10) {
       println!(`${name} can't throw a fireball because he doesn't have enough MP.`);
@@ -2931,12 +2931,12 @@ Let's take a short example:
 
 ```sn
 class Mother {
-  public func callHello() => this.hello();
-  public func hello() => println!("I am the mother class.");
+  public func callHello () => this.hello();
+  public func hello () => println!("I am the mother class.");
 }
 
 class Child extends Mother {
-  public func hello() => println!("I am the child class.");
+  public func hello () => println!("I am the child class.");
 }
 ```
 
@@ -3001,7 +3001,7 @@ Unique classes are a special case where the class has one unique instance and ca
 
 ```sn
 unique class Translation as tr {
-  public func translate(text: str, lang: str) : string {
+  public func translate (text: str, lang: str) : string {
     // Do some stuff here
     return "Bonjour";
   }
@@ -3042,8 +3042,8 @@ For examlple, casting a type to a boolean (`bool` or `Boolean` type) requires th
 class MyInteger {
   private value: int;
 
-  public func set(@value: int) {}
-  public func get() : int => @value;
+  public func set (@value: int) {}
+  public func get () : int => @value;
 
   public func %toBoolean() : bool => @value isnt 0;
 }
@@ -3083,14 +3083,14 @@ Here is an example:
 
 ```sn
 class Vehicle {
-  public func accelerate() => println!("Vroom!");
+  public func accelerate () => println!("Vroom!");
 }
 
 class Motorcycle extends Vehicle {
-  public func accelerate() => println!("vroom vroom!");
+  public func accelerate () => println!("vroom vroom!");
 }
 
-func acceleration(vehicle: Vehicle) {
+func acceleration (vehicle: Vehicle) {
   vehicle.accelerate();
 }
 
@@ -3102,12 +3102,12 @@ Be aware though: when declaring a resource as a type and using a child type inst
 
 ```sn
 class Vehicle {
-  public func accelerate() => println!("Vroom!");
+  public func accelerate () => println!("Vroom!");
 }
 
 class Motorcycle extends Vehicle {
-  public func accelerate() => println!("vroom vroom!");
-  public func stunt() => println!("Wow!");
+  public func accelerate () => println!("vroom vroom!");
+  public func stunt () => println!("Wow!");
 }
 
 val motorcycle: Vehicle = new Motorcycle();
@@ -3117,7 +3117,7 @@ motorcycle.stunt(); // ERROR because `stunt` is not part of the `Vehicle` class
 That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept. Also, note there is a way to ask for a specific type and not its children, thanks to the `#mustbe<T>` directive. Yes, directive can be templated. Here is an exemple:
 
 ```sn
-func precise(vehicle: #mustbe<Vehicle>) =>
+func precise (vehicle: #mustbe<Vehicle>) =>
   vehicle.accelerate();
 
 let car        : Vehicle    = new Vehicle();
@@ -3156,7 +3156,7 @@ interface ConvertibleToInt {
   public func %toInteger() : int;
 }
 
-func add(left: ConvertibleToInt, right: ConvertibleToInt) : int {
+func add (left: ConvertibleToInt, right: ConvertibleToInt) : int {
   return int(left) + int(right);
 }
 ```
@@ -3171,7 +3171,7 @@ An interface can use the `self` keyword to refers to the class that is implemeti
 
 ```sn
 interface Duplication {
-  public func duplicate() : self;
+  public func duplicate () : self;
 }
 
 class Product {
@@ -3179,7 +3179,7 @@ class Product {
 
   public func %construct(@name: string) {};
 
-  public func duplicate() : self => new Product(@name);
+  public func duplicate () : self => new Product(@name);
 }
 ```
 
@@ -3237,7 +3237,7 @@ A good example of traits is when you want to inherit from multiple classes. This
 ```sn
 trait Vehicle {
   public val speed: float;
-  public func accelerate() : string => "Vroom !";
+  public func accelerate () : string => "Vroom !";
 }
 
 trait Wheeled {
@@ -3311,9 +3311,9 @@ class KindOfDict<K, V> {
   private keys: K[];
   private values: K[];
 
-  public func has(key: K) : bool => @keys.has(key);
+  public func has (key: K) : bool => @keys.has(key);
 
-  public func set(key: K, value: V) {
+  public func set (key: K, value: V) {
     // If this key is not already known...
     if (not @has(key)) {
       // Create it
@@ -3325,7 +3325,7 @@ class KindOfDict<K, V> {
       @values[@keys.indexOf(key)] = value;
   }
 
-  public func get(key: K) : V =>
+  public func get (key: K) : V =>
     // Return the value associated to the key
     @values[@keys.indexOf(key)];
 }
@@ -3370,7 +3370,7 @@ Because the chosen template will always vary, we can't instanciate it nor use it
 // Make a structure
 struct Data<T implements Stringifyable> {
   val value: T;
-  func stringify() : string = () => string(value);
+  func stringify () : string = () => string(value);
 }
 
 // Make a class that works with the structure
@@ -3579,7 +3579,7 @@ This works but involves to create a large structure, and then make an object wit
 That's where we use bindings. Bindings act like plain structure that links a name to a resource. Let's take an example:
 
 ```sn
-func run(callback: lambda () #bind
+func run (callback: lambda () #bind
   {
     printInConsole: "println!",
     sayHello: "println!(\"Hello \" + ${1})",
@@ -3623,7 +3623,7 @@ pln engineBindings = #makebindings {
 This is all! We can now rewrite our `run` function:
 
 ```sn
-func run(callback: lambda () #bind engineBindings) => callback();
+func run (callback: lambda () #bind engineBindings) => callback();
 ```
 
 ### Constrained types
@@ -3645,7 +3645,7 @@ val motorcycle = new Vehicle(2);
 Our function will have this look:
 
 ```sn
-func treatCars(car: Vehicle with (c => c.wheels <= 4)) =>
+func treatCars (car: Vehicle with (c => c.wheels <= 4)) =>
   println!(`This vehicle has ${car.wheels} wheels.`);
 ```
 
@@ -3658,7 +3658,7 @@ If we put aside the fact that writing is controlled by a callback, constrained t
 Here is an exemple to better understand the concept:
 
 ```sn
-func treatCars(car: Vehicle with (c => c.wheels <= 4)) {
+func treatCars (car: Vehicle with (c => c.wheels <= 4)) {
   c = new Vehicle(2); // Works fine
   c = new Vehicle(4); // Works fine
   c = new Vehicle(8); // ERROR because the constraint returned `false`
@@ -3838,8 +3838,8 @@ You can see the matching operator on the right of the corresponding superoverloa
 class BankAccount {
   public readonly money: int with (c => c >= 0);
   public func %construct(@money: int);
-  public func add(amount: int) => @money += amount;
-  public func sub(amount: int) => @money -= amount;
+  public func add (amount: int) => @money += amount;
+  public func sub (amount: int) => @money -= amount;
 }
 
 let account1 = new BankAccount(1000);
@@ -3961,7 +3961,7 @@ struct Point {
   y: int;
 }
 
-func getNilPoints(list: Point[]) : Point {
+func getNilPoints (list: Point[]) : Point {
   foreach point in list {
     if (point.x is 0 and point.y is 0)
       return point;
@@ -3978,7 +3978,7 @@ val point: Point = getNilPoints([]);
 Our program will crash because `getNilPoints` returned a `void` while a `Point` was expected. This is simply due to the fact no point matched the condition in the `foreach` loop, so the function ended without returning nothing (which is equivalent to returning an instance of `void`). So, in order to make this function works anyway, and without returning a whole structure with a `success` boolean or something ugly, we can use a nullable type:
 
 ```sn
-func getNilPoints(list: Point[]) : Point? {
+func getNilPoints (list: Point[]) : Point? {
 ```
 
 This allows the function to return a `Point` instance **or** a `void` instance. But, our program will still crash with an error message telling that `Point?` cannot be converted to `Point`. That's simply because we declared our constant with the `Point` type, but we must now tell it can also contain a `void`:
@@ -4014,7 +4014,7 @@ As we saw, the `getNilPoints()` function can now return an instance of `void`. B
 A strict equivalent to the function we saw would be:
 
 ```sn
-func getNilPoints(list: Point[]) : Point? {
+func getNilPoints (list: Point[]) : Point? {
   foreach point in list {
     if (point.x is 0 and point.y is 0)
       return point;
@@ -4027,7 +4027,7 @@ func getNilPoints(list: Point[]) : Point? {
 This would achieve exatly the same thing. There's also a native value, named `null`, which is an instance of `void`:
 
 ```sn
-func getNilPoints(list: Point[]) : Point? {
+func getNilPoints (list: Point[]) : Point? {
   foreach point in list {
     if (point.x is 0 and point.y is 0)
       return point;
@@ -4119,7 +4119,7 @@ Let's take an example for this one: we have a function that takes a `string` as 
 But there's a specific typecasting for nullable types. When giving a nullable type where a standard type is expected, it is automatically cast into the standard type, and an error will be thrown if the value was `null`. Let's take an example:
 
 ```sn
-func inc(num: int) : int => num + 1;
+func inc (num: int) : int => num + 1;
 
 val one: int = 1;
 val two = inc(one); // Returns: 2
@@ -4226,9 +4226,9 @@ class Error {
 As you can see, an error instance has a `message` attribute that is the message we give to it when we instanciate the class, and a `traceback` which is a list of functions that were ran until the error. Here is an example:
 
 ```sn
-func a() => b();
-func b() => c();
-func c() => throw new Error("Test");
+func a () => b();
+func b () => c();
+func c () => throw new Error("Test");
 
 a();
 ```
@@ -4278,7 +4278,7 @@ For exampe, we could imagine using a function to read a file. Reading the file c
 The same thing applies if we do a division, we could want to be able handle division errors. Here is an example:
 
 ```sn
-func divide(left: int, right: int) : float =>
+func divide (left: int, right: int) : float =>
   float(left) / right;
 
 divide(2, 5); // Returns: 0.4
@@ -4366,7 +4366,7 @@ try {
 Throwing custom errors simply consists in throwing an instance of a child class of `Error`. This allows us to make a distinction between native error types and our own ones. Here is an exemple:
 
 ```sn
-func divide(left: int, right: int) : float {
+func divide (left: int, right: int) : float {
   if (right is 0)
     throw new CustomError("Cannot divide by zero.");
 
@@ -4379,7 +4379,7 @@ The `CustomError` class could look like this:
 ```sn
 class CustomError extends Error {
   // A sample function
-  public func why() : string =>
+  public func why () : string =>
     "This is a custom error class";
 }
 ```
@@ -4479,12 +4479,12 @@ struct Hero {
 }
 
 // Make a function that changes a single property of the function
-func changeProperty(obj: Hero) {
+func changeProperty (obj: Hero) {
   obj.attack = 20;
 }
 
 // Make a function
-func assignSomethingNew(obj: Hero) {
+func assignSomethingNew (obj: Hero) {
   obj = {
     name: "John",
     attack: 50
@@ -4612,7 +4612,7 @@ let *ptr = &str;
 Pointers can be used to manipulate data in functions. Here is how it goes:
 
 ```sn
-func increment(*counter: int) => counter ++;
+func increment (*counter: int) => counter ++;
 
 let counter = 0;
 increment(&counter);
@@ -4622,7 +4622,7 @@ println!(counter); // Prints: "1"
 They can also return a pointer:
 
 ```sn
-func increment(*counter: int) : &int => &(counter + 1);
+func increment (*counter: int) : &int => &(counter + 1);
 
 let *ptr = increment(&(0));
 
@@ -4850,10 +4850,10 @@ Now we've written our package file, we can write the package's source, which wil
 
 let name: string;
 
-func defineName(newName: string with (c => c) =>
+func defineName (newName: string with (c => c) =>
   name = newName;
 
-func readName() : string {
+func readName () : string {
   if (name)
     return name;
   else
@@ -4880,10 +4880,10 @@ let name: string;
 export { defineName, readName };
 
 // File: "functions.sn"
-func defineName(newName: string with (c => c) =>
+func defineName (newName: string with (c => c) =>
   name = newName;
 
-func readName() : string {
+func readName () : string {
   if (name)
     return name;
   else
@@ -5062,8 +5062,8 @@ Another case is callbacks. In the following code:
 class Event {
   private static handler: lambda ();
 
-  public static func handle(@handler: lambda ()) {}
-  public static func trigger() => @handler();
+  public static func handle (@handler: lambda ()) {}
+  public static func trigger () => @handler();
 }
 
 Event::handle(lambda () => println!("Callback was triggered"));
@@ -5093,7 +5093,7 @@ Promises are basically a software conception of tasks that can either return a r
 
 ```sn
 // We admit the function below is already defined
-func readAsync(path: string) : Promise<int, Error>;
+func readAsync (path: string) : Promise<int, Error>;
 
 // Let's use it
 readAsync("hello.txt")
@@ -5111,7 +5111,7 @@ Here, the `then()` function simply registers the callback for the case the promi
 Now we've seen how to use the promise, let's write the `readAsync()` function:
 
 ```sn
-func readAsync(path: string) : Promise<string, Error> {
+func readAsync (path: string) : Promise<string, Error> {
   // Make a new promise and return it
   return new Promise<string, Error>(lambda (resolve: lambda (content: string), reject: lambda (err: Error)) {
     let content: string;
@@ -5140,7 +5140,7 @@ The first argument is the callback triggered in the case the promise succeeds, w
 Now we've seen the detailed syntax of this function, let's rewrite it with ICT:
 
 ```sn
-func readAsync(path: string) : Promise<string, Error> =>
+func readAsync (path: string) : Promise<string, Error> =>
   // Make a new promise and return it
   new Promise<string, Error>((resolve, reject) => {
     // Read the file and handle errors
@@ -5166,7 +5166,7 @@ This is a lot simplier already, but still heavy. This is why we'll now see the `
 The `async` keyword describes an asynchronous function in a syntaxical way - it's pretty explicit. This means the function's signature must return a promise and work only in it. To understand the concept, let's rewrite our `readAsync` function with this new keyword:
 
 ```sn
-async func readAsync(path: string) : string => {
+async func readAsync (path: string) : string => {
   try
     resolve import!('fs').readFile(path, "utf8");
 
@@ -5186,7 +5186,7 @@ Finally, the `resolve` and `reject` keyword respectively call the callback they 
 Note that an asynchronous function can also use the `return` keyword ; it will have the same effect as `resolve` if used in the function's root (not in sub-functions like callbacks, of course). Here is an example:
 
 ```sn
-async func readAsync(path: string) : string => {
+async func readAsync (path: string) : string => {
   try
     return import!('fs').readFile(path, "utf8");
 
@@ -5198,7 +5198,7 @@ async func readAsync(path: string) : string => {
 Also, when an error happens in an asynchronous functions, the error is automatically caught and transformed into a rejection. If the error is not compatible with the rejection type (e.g. if the rejection type is `int`), an error is thrown (for real, this time). So we could write our function like this:
 
 ```sn
-async func readAsync(path: string) : string =>
+async func readAsync (path: string) : string =>
   import!('fs').readFile(path, "utf8");
 ```
 
@@ -5212,9 +5212,9 @@ Where promises are useful is when chaining several callbacks. Sometimes, because
 
 ```sn
 // Download a file from the web
-func fetch(url: string, callback: lambda (data: string, err: Error)) { /* ... */ };
+func fetch (url: string, callback: lambda (data: string, err: Error)) { /* ... */ };
 // Parse a JSON string as a dictionary (numbers and booleans are converted to strings)
-func parseJsonAsync(json: string) : Dictionary<string, string> { /* ... */ };
+func parseJsonAsync (json: string) : Dictionary<string, string> { /* ... */ };
 
 // Here is the code:
 fetch("/api/last-article/author.json", (data, err) => {
@@ -5278,7 +5278,7 @@ In order to solve this problem, we can use the `await` keyword.
 
 ```sn
 // Resolve a promise after a specific delay
-async func sleep(delay: uint) {
+async func sleep (delay: uint) {
   // Wait for the given delay...
   Scheduler::setTimeout(delay)
     // ...then run the callback
@@ -5300,7 +5300,7 @@ Also, `await` returns the resolution value of the promise (if there is one). So,
 
 ```sn
 // Add two numbers after a second
-async func delayed_add(left: int, right: int) : int {
+async func delayed_add (left: int, right: int) : int {
   // Sleep for 1 second
   await sleep(1);
   // Perform the addition and return the result
