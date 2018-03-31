@@ -4877,6 +4877,16 @@ name_manager.defineName("John");
 println!(name_manager.readName()); // Prints: "John"
 ```
 
+It's even possible to import several packages at once:
+
+```sn
+// Import the packages
+import name-manager, another-package;
+
+name_manager.defineName("John");
+println!(name_manager.readName()); // Prints: "John"
+```
+
 #### The `import!` macro
 
 The `import!` macro allows to import a package as an object, so we can use it as we want. Here is an example:
