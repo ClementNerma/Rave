@@ -1173,14 +1173,12 @@ A general concept you will find in almost every language is the concept of _loop
 The `for` block repeats the instructions a given amount of times. It needs an _iterator_ (which is a variable with any `Number` type - integer or not), an optional start value, a condition and an incremental expression. Here is how we write it:
 
 ```sn
-let i: int;
-
 for i = 0; i < 5; i ++ {
   println!(i);
 }
 ```
 
-What does this code do? First, we declare a variable called `i` (the `int` type here is optionnal ; it is written to be more clear). The loop starts by giving it a first value (the _start value_) to 0. The loop indicates it will run **until** its condition is true (`i < 5`). Then, it specifies its _incremental expression_, an expression which is evaluated each time the loop is runned (excluding the first time).
+What does this code do? First, it automatically declares a local variable called `i` and infers its type as `int`. The loop starts by giving it a first value (the _start value_) to 0. The loop indicates it will run **until** its condition is true (`i < 5`). Then, it specifies its _incremental expression_, an expression which is evaluated each time the loop is runned (excluding the first time).
 
 So, the loop starts by setting 0 to `i`. The condition is checked, and is evaluated to `true`, so the instructions set will be executed. The program displays `0`. Then, the incremental expression is evaluated so `i` is now equal to `1`. We check again the condition which is still `true`, the expression is ran, the incremental expression is evaluated a second time so `i` is equal to `2`, and so on until, after running the incremental expression, the condition became a NIL value.
 
@@ -1189,18 +1187,18 @@ The loop above will therefore display `0`, `1`, `2`, `3` and `4`. That's all.
 Note that you could also write the variable's declaration directly in the loop's head:
 
 ```sn
-for let i: int = 0; i < 5; i ++ {
+for i: int = 0; i < 5; i ++ {
   println!(i);
 }
 ```
 
-You can write declarations in any block's head, but they will be _scoped_ to this block, which means you can use it only inside the block and that the variable will be deleted outside.
+Whatever is the way we use, the iterator will be _scoped_ to this block, which means we can use it only inside the block and that the variable will be deleted outside. If an `i` variable already exists in the main scope, it will simply be ignored and a new, local variable will be made.
 
 Another thing is about the incremental expression. It can be absolutely any expression, like `i --` to decrement it:
 
 ```sn
 // This loop does exactly the same thing than the previous one
-for let i = 4; i >= 0; i ++ {
+for i = 4; i >= 0; i ++ {
   println!(i);
 }
 ```
@@ -1208,12 +1206,12 @@ for let i = 4; i >= 0; i ++ {
 Or `i += 5`, or whatever you want. There is also an alternative syntax made to replace the one we saw above. This is called the _range syntax_:
 
 ```sn
-for let i of 0 -> 5 {
+for i of 0 -> 5 {
   println!(i);
 }
 
 // Equivalent to
-for let i: int = 0; i <= 5; i ++ {
+for i = 0; i <= 5; i ++ {
   println!(i);
 }
 ```
@@ -1221,7 +1219,7 @@ for let i: int = 0; i <= 5; i ++ {
 Be aware here, the end value is applied to the set of expressions. So, this code will print: `0` `1` `2` `3` `4` `5`.
 
 ```sn
-for let i of 5 -> 0 {
+for i of 5 -> 0 {
   println!(i);
 }
 ```
@@ -1384,7 +1382,7 @@ Inline generation is a useful feature when coming to generate a list of data. Fo
 ```sn
 let cubes: int[10]; // List<int>
 
-for let i of 1 -> 10 {
+for i of 1 -> 10 {
   cubes.push(i * i * i);
 }
 ```
@@ -1418,7 +1416,7 @@ When dealing with a loop, you can want to exit it if a specific even happens. Fo
 Let's try it:
 
 ```sn
-for let i of 1 -> 10 {
+for i of 1 -> 10 {
   println!(i);
 
   if (hadError())
@@ -1431,7 +1429,7 @@ This will work as expected: if `hadError` returns `true`, the `break` instructio
 Another keyword is `continue` that provides a way to ignore all instructions below it but only one time.
 
 ```sn
-for let i of 1 -> 10 {
+for i of 1 -> 10 {
   if (hadError())
     continue;
 
@@ -1455,13 +1453,13 @@ println!(message); // ERROR because `message` does not exist
 Here, `message` is declared inside an `if` block, so it only exists _inside_ this block. When we go outside of it, the resource does no longer exist. This is done to keep a better clarity about where resources are available. For example, with a loop, you can do:
 
 ```sn
-for let i = 0; i < 10; i += 2 {
+for i = 0; i < 10; i += 2 {
   println!(i);
 }
 
 // Do some stuff here
 
-for let i = 10; i >= 0; i -= 2 {
+for i = 10; i >= 0; i -= 2 {
   println!(i);
 }
 ```
@@ -1582,7 +1580,7 @@ Sometimes we simply want a function to accept any number of arguments, without m
 func sum (...numbers: int) : int {
   let sum = 0;
 
-  for let i = 0; i < numbers.size; i ++ {
+  for i = 0; i < numbers.size; i ++ {
     sum += i;
   }
 
@@ -1598,7 +1596,7 @@ Here, `numbers` becomes a `List<int>` because of the `...` symbol, and it will a
 func sum (...numbers: int, coefficient: int) : int {
   let sum = 0;
 
-  for let i = 0; i < numbers.size; i ++ {
+  for i = 0; i < numbers.size; i ++ {
     sum += i;
   }
 
@@ -1614,7 +1612,7 @@ Or after:
 func sum (coefficient: int, ...numbers: int) : int {
   let sum = 0;
 
-  for let i = 0; i < numbers.size; i ++ {
+  for i = 0; i < numbers.size; i ++ {
     sum += i;
   }
 
@@ -1630,7 +1628,7 @@ Or even between:
 func sum (coeff1: int, ...numbers: int, coeff2: int) : int {
   let sum = 0;
 
-  for let i = 0; i < numbers.size; i ++ {
+  for i = 0; i < numbers.size; i ++ {
     sum += i;
   }
 
@@ -1684,7 +1682,7 @@ What is their point? The more simple is to take an exemple: let's say we have a 
 ```sn
 val posArr: int[];
 
-for let i = 0; i < arr.size; i ++ {
+for i = 0; i < arr.size; i ++ {
   if (arr[i] >= 0)
     posArr.push(arr[i]);
 }
@@ -2449,7 +2447,7 @@ Let's imagine we have a list of integers. We make a function that calculate, for
 
 ```sn
 func squareList (list: List<int>) : List<int> {
-  for let i = 0; i < list.size; i ++ {
+  for i = 0; i < list.size; i ++ {
     list[i] *= list[i];
   }
 
@@ -3494,17 +3492,17 @@ Loops are our best friend when exploring dictionaries. While we can still get ac
 
 ```sn
 // Explore a dictionary using its keys
-foreach let key in myArray.keys() {
+foreach key in myArray.keys() {
   println!(key);
 }
 
 // Explore a dictionary using its values
-foreach let value in myArray {
+foreach value in myArray {
   println!(key);
 }
 
 // Explore a dictionary with both its keys and its values
-foreach let key -> let value in myArray {
+foreach key -> value in myArray {
   println!(key, value);
 }
 ```
@@ -3945,7 +3943,7 @@ struct Point {
 }
 
 func getNilPoints(list: Point[]) : Point {
-  foreach let point in list {
+  foreach point in list {
     if (point.x is 0 and point.y is 0)
       return point;
   }
@@ -3998,7 +3996,7 @@ A strict equivalent to the function we saw would be:
 
 ```sn
 func getNilPoints(list: Point[]) : Point? {
-  foreach let point in list {
+  foreach point in list {
     if (point.x is 0 and point.y is 0)
       return point;
   }
@@ -4011,7 +4009,7 @@ This would achieve exatly the same thing. There's also a native value, named `nu
 
 ```sn
 func getNilPoints(list: Point[]) : Point? {
-  foreach let point in list {
+  foreach point in list {
     if (point.x is 0 and point.y is 0)
       return point;
   }
