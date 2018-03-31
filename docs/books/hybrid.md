@@ -3495,15 +3495,15 @@ Loops are our best friend when exploring dictionaries. While we can still get ac
 
 ```sn
 // Explore a dictionary using its keys
-foreach (let key in myArray)
+foreach (let key in myArray.keys())
   println!(key);
 
 // Explore a dictionary using its values
-foreach (let value of myArray)
+foreach (let value in myArray)
   println!(key);
 
 // Explore a dictionary with both its keys and its values
-foreach (let key -> let value of myArray)
+foreach (let key -> let value in myArray)
   println!(key, value);
 ```
 
@@ -3943,7 +3943,7 @@ struct Point {
 }
 
 func getNilPoints(list: Point[]) : Point {
-  foreach (let point of list)
+  foreach (let point in list)
     if (point.x is 0 and point.y is 0)
       return point;
 }
@@ -3995,7 +3995,7 @@ A strict equivalent to the function we saw would be:
 
 ```sn
 func getNilPoints(list: Point[]) : Point? {
-  foreach (let point of list)
+  foreach (let point in list)
     if (point.x is 0 and point.y is 0)
       return point;
 
@@ -4007,7 +4007,7 @@ This would achieve exatly the same thing. There's also a native value, named `nu
 
 ```sn
 func getNilPoints(list: Point[]) : Point? {
-  foreach (let point of list)
+  foreach (let point in list)
     if (point.x is 0 and point.y is 0)
       return point;
 
