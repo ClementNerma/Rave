@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.14.3',
+    VERSION: '0.15.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -386,6 +386,16 @@ scheme = {
     [
       // Special native types
       /(?<!\.)\b(void|self|Any|class_ref|func_ref|var_ref|macro_ref|lambda|T|X|Y|Z|K|V)(\?)?(?!\s*:)\b/,
+      'purple', 'cyan'
+    ],
+    [
+      // Key + value iterators in `foreach`
+      /(foreach)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s*(->)\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      'purple', 'cyan', 'purple', 'cyan'
+    ],
+    [
+      // Iterator in `for` and `foreach`
+      /(for|foreach)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'cyan'
     ],
     [
