@@ -1643,6 +1643,41 @@ func sum (coeff1: int, ...numbers: int, coeff2: int) : int {
 println!(sum(2, 2, 3, 4, 3)); // Prints: "54"
 ```
 
+#### Arguments expansion
+
+Functions can also be called using an array of arguments thanks to the _arguments expansion_ operator. It goes like this:
+
+```sn
+func sum (left: int, right: int) : int => left + right;
+
+// Declare a List<int>
+val numbers = [ 2, 8 ];
+// Use the arguments expansion operator
+println!(sum(numbers...)); // Prints: "10"
+```
+
+Here, `numbers` is expanded as multiple arguments. It's like writing:
+
+```sn
+func sum (left: int, right: int) : int => left + right;
+
+// Declare a List<int>
+val numbers = [ 2, 8 ];
+// Print the sum of the numbers
+println!(sum(numbers[0], numbers[1])); // Prints: "10"
+```
+
+This operator can also be used with other arguments:
+
+```sn
+func sum (left: int, right: int, divide: int) : int {
+  return (left + right) / divide;
+}
+
+val numbers = [ 2, 8 ];
+println!(sum(numbers..., 5)); // Prints: "2"
+```
+
 ### Lambdas and callbacks
 
 We saw that functions can be declared with a name, a list of arguments, a return type and a body. But there are some functions that omit the name, called _lambdas_.
