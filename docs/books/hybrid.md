@@ -1390,13 +1390,13 @@ for i of 1 -> 10 {
 But there is another, simplier way to generate this list.
 
 ```sn
-let cubes: int[10] = (i * i * i) for (let i of 1 -> 10);
+let cubes: int[10] = (i * i * i) for (i of 1 -> 10);
 ```
 
 This will do exactly the same thing. Because the compiler has a great support of inferred typing, you can also omit the `cubes`' explicit type:
 
 ```sn
-let cubes = (i * i * i) for (let i of 1 -> 10);
+let cubes = (i * i * i) for (i of 1 -> 10);
 ```
 
 This is also why we told you should be careful when using inline loops. All inline loops generate a vector (`List` for explicit `for` loops like ranges or simple incremental / decremental expressions, `Array` for anything else).
@@ -1404,7 +1404,7 @@ This is also why we told you should be careful when using inline loops. All inli
 Note that inline loops will not perform a generation if a `void` is returned (not any NIL value, only this one). So, if you do:
 
 ```sn
-println!(i) for (let i of 1 -> 10)
+println!(i) for (i of 1 -> 10)
 ```
 
 Nothing will be generated. Also, nothing will be generated if you don't give the result to a function or assign it to a variable.
