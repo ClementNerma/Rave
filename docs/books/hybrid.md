@@ -5245,7 +5245,7 @@ async func delayed_add(left: int, right: int) : int {
   return left + right;
 }
 
-let seven = delayed_add(2, 5);
+val seven = await delayed_add(2, 5); // int
 println!(seven); // Prints: "7"
 ```
 
