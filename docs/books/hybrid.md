@@ -1211,12 +1211,12 @@ for i of 0 -> 5 {
 }
 
 // Equivalent to
-for i = 0; i <= 5; i ++ {
+for i = 0; i < 5; i ++ {
   println!(i);
 }
 ```
 
-Be aware here, the end value is applied to the set of expressions. So, this code will print: `0` `1` `2` `3` `4` `5`.
+This code will print: `0` `1` `2` `3` `4`.
 
 ```sn
 for i of 5 -> 0 {
@@ -1224,7 +1224,7 @@ for i of 5 -> 0 {
 }
 ```
 
-This will result in printing: `5` `4` `3` `2` `1` `0`.
+This will result in printing: `5` `4` `3` `2` `1`.
 
 ### `while` for conditional repeat
 
