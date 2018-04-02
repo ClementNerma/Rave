@@ -3514,21 +3514,21 @@ This is a conception choice that hopefully has a solution if we want to access a
 
 #### Using loops to iterate dictionaries
 
-Loops are our best friend when exploring dictionaries. While we can still get access to the list of a dictionary's keys thanks to `keys!(mydict)` and to its value with `!values(mydict)`, the most simple remains to use the `foreach` loop:
+Loops are our best friend when exploring dictionaries. While we can still get access to the list of a dictionary's keys thanks to `keys!(mydict)` and to its value with `!values(mydict)`, the most simple remains to use the `for` loop:
 
 ```sn
 // Explore a dictionary using its keys
-foreach key in myArray.keys() {
+for key in myArray.keys() {
   println!(key);
 }
 
 // Explore a dictionary using its values
-foreach value in myArray {
+for value in myArray {
   println!(key);
 }
 
 // Explore a dictionary with both its keys and its values
-foreach key -> value in myArray {
+for key -> value in myArray {
   println!(key, value);
 }
 ```
@@ -3975,7 +3975,7 @@ struct Point {
 }
 
 func getNilPoints (list: Point[]) : Point {
-  foreach point in list {
+  for point in list {
     if (point.x is 0 and point.y is 0)
       return point;
   }
@@ -3988,7 +3988,7 @@ This works fine. Now, what if we run this code:
 val point: Point = getNilPoints([]);
 ```
 
-Our program will crash because `getNilPoints` returned a `void` while a `Point` was expected. This is simply due to the fact no point matched the condition in the `foreach` loop, so the function ended without returning nothing (which is equivalent to returning an instance of `void`). So, in order to make this function works anyway, and without returning a whole structure with a `success` boolean or something ugly, we can use a nullable type:
+Our program will crash because `getNilPoints` returned a `void` while a `Point` was expected. This is simply due to the fact no point matched the condition in the `for` loop, so the function ended without returning nothing (which is equivalent to returning an instance of `void`). So, in order to make this function works anyway, and without returning a whole structure with a `success` boolean or something ugly, we can use a nullable type:
 
 ```sn
 func getNilPoints (list: Point[]) : Point? {
@@ -4028,7 +4028,7 @@ A strict equivalent to the function we saw would be:
 
 ```sn
 func getNilPoints (list: Point[]) : Point? {
-  foreach point in list {
+  for point in list {
     if (point.x is 0 and point.y is 0)
       return point;
   }
@@ -4041,7 +4041,7 @@ This would achieve exatly the same thing. There's also a native value, named `nu
 
 ```sn
 func getNilPoints (list: Point[]) : Point? {
-  foreach point in list {
+  for point in list {
     if (point.x is 0 and point.y is 0)
       return point;
   }
