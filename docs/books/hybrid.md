@@ -1198,7 +1198,7 @@ Another thing is about the incremental expression. It can be absolutely any expr
 
 ```sn
 // This loop does exactly the same thing than the previous one
-for i = 4; i >= 0; i ++ {
+for i = 4; i >= 0; i -- {
   println!(i);
 }
 ```
