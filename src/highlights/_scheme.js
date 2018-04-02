@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.16.1',
+    VERSION: '0.16.2',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -399,8 +399,8 @@ scheme = {
       'purple', 'cyan'
     ],
     [
-      // Key + value iterators in `foreach`
-      /(foreach)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s*(->)\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+      // Key + value iterators in `for`
+      /(for)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s*(->)\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'cyan', 'purple', 'cyan'
     ],
     [
