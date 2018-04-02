@@ -3514,7 +3514,7 @@ This is a conception choice that hopefully has a solution if we want to access a
 
 #### Using loops to iterate dictionaries
 
-Loops are our best friend when exploring dictionaries. While we can still get access to the list of a dictionary's keys thanks to `keys!(mydict)` and to its value with `!values(mydict)`, the most simple remains to use the `for` loop:
+Loops are our best friend when exploring dictionaries. While we can still get access to the list of a dictionary's keys thanks to `mydict.keys()` and to its value with `mydict.values()`, the most simple remains to use the `for` loop:
 
 ```sn
 // Explore a dictionary using its keys
