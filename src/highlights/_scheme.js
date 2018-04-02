@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.16.0',
+    VERSION: '0.16.1',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -145,6 +145,11 @@ scheme = {
         }
       ]
     },
+    [
+      // Numerical bounds
+      /[a-zA-Z0-9_\.\$]+\.\.\.?[a-zA-Z0-9_\.\$]+/,
+      'orange'
+    ],
     [
       // Booleans
       /\b(true|false)\b/,
@@ -517,11 +522,6 @@ scheme = {
       // Infinite values notation
       /\.\.\.[a-zA-Z_\$][a-zA-Z0-9_\$]*\b/,
       'red'
-    ],
-    [
-      // Numerical bounds
-      /\[[a-zA-Z0-9_\$]+\s*\.\.\s*[a-zA-Z0-9_\$]+\]/,
-      'orange'
     ],
     [
       // Constrained types
