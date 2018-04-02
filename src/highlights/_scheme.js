@@ -284,6 +284,11 @@ scheme = {
       'purple', 'blue'
     ],
     [
+      // Function call with template
+      /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=<.*>\s*\()/,
+      'blue'
+    ],
+    [
       // Template usage (with reserved template names)
       /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(<)(T|X|Y|Z|K|V)(?=>)/,
       'yellow', 'cyan', 'purple'
