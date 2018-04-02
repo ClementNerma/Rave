@@ -1206,7 +1206,7 @@ for i = 4; i >= 0; i ++ {
 Or `i += 5`, or whatever you want. There is also an alternative syntax made to replace the one we saw above. This is called the _range syntax_:
 
 ```sn
-for i of 0 -> 5 {
+for i in 0..5 {
   println!(i);
 }
 
@@ -1216,10 +1216,23 @@ for i = 0; i < 5; i ++ {
 }
 ```
 
-This code will print: `0` `1` `2` `3` `4`.
+This code will print: `0` `1` `2` `3` `4`. To go from 0 to 5 (included), simply add a `.` symbol between the bounds:
 
 ```sn
-for i of 5 -> 0 {
+for i in 0...5 {
+  println!(i);
+}
+
+// Equivalent to
+for i = 0; i <= 5; i ++ {
+  pritnln!(i);
+}
+```
+
+To go from 5 to 0:
+
+```sn
+for i in 5..0 {
   println!(i);
 }
 ```
@@ -1382,7 +1395,7 @@ Inline generation is a useful feature when coming to generate a list of data. Fo
 ```sn
 let cubes: int[10]; // List<int>
 
-for i of 1 -> 10 {
+for i in 1...10 {
   cubes.push(i * i * i);
 }
 ```
@@ -1390,13 +1403,13 @@ for i of 1 -> 10 {
 But there is another, simplier way to generate this list.
 
 ```sn
-let cubes: int[10] = (i * i * i) for (i of 1 -> 10);
+let cubes: int[10] = (i * i * i) for (i in 1...10);
 ```
 
 This will do exactly the same thing. Because the compiler has a great support of inferred typing, you can also omit the `cubes`' explicit type:
 
 ```sn
-let cubes = (i * i * i) for (i of 1 -> 10);
+let cubes = (i * i * i) for (i in 1...10);
 ```
 
 This is also why we told you should be careful when using inline loops. All inline loops generate a vector (`List` for explicit `for` loops like ranges or simple incremental / decremental expressions, `Array` for anything else).
@@ -1404,7 +1417,7 @@ This is also why we told you should be careful when using inline loops. All inli
 Note that inline loops will not perform a generation if a `void` is returned (not any NIL value, only this one). So, if you do:
 
 ```sn
-println!(i) for (i of 1 -> 10)
+println!(i) for (i in 1...10)
 ```
 
 Nothing will be generated. Also, nothing will be generated if you don't give the result to a function or assign it to a variable.
@@ -1416,7 +1429,7 @@ When dealing with a loop, you can want to exit it if a specific even happens. Fo
 Let's try it:
 
 ```sn
-for i of 1 -> 10 {
+for i in 1..10 {
   println!(i);
 
   if (hadError())
@@ -1429,7 +1442,7 @@ This will work as expected: if `hadError` returns `true`, the `break` instructio
 Another keyword is `continue` that provides a way to ignore all instructions below it but only one time.
 
 ```sn
-for i of 1 -> 10 {
+for i in 1..10 {
   if (hadError())
     continue;
 
