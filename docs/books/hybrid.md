@@ -4,7 +4,7 @@
 
 Welcome to _"The Hybrid Book"_, a feature-exhaustive tutorial to learn SilverNight. SilverNight is borned from the wish to have a language almost as simple as JavaScript or Python but as powerful, safe and fast as Rust to cover most of developers' needs. It is a statically-typed, functional programming language. Intended for multi-platform development, it comes with great flexibility and a large native library.
 
-**WARNING: This book is still a draft, some features could be added, changed or removed completely AT ANY MOMENT until the final version of the language. Please be careful about this.**
+**WARNING: Please note this language is not finished yet ; some features could and WILL be added, modified or removed at anytime. It's still a draft at this point and no feature or syntax is frozen.**
 
 ### Why is it an hybrid book?
 
