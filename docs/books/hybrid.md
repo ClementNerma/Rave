@@ -4032,6 +4032,30 @@ Also, arguments are not directly replaced by their content, so errors will not t
 
 Otherwise, unsafe functions are exactly like macros (for example type checking is performed only when the function is called and not at its definition).
 
+### Dynamic typecasting
+
+A problem we often encounter with the `Any` type is when we want to use some properties of its real type. For instance, let's take the following code:
+
+```sn
+let data: Any;
+
+func register (data: Any) => data = data;
+
+func doubleRegister () : int {
+  // Multiply the register by 2 and return the result
+}
+```
+
+Here, we don't know how to write the `doubleRegister()` function because we know we can't multiply an `Any` instance by 2. In order to solve this, we use _dynamic typecasting_:
+
+```sn
+func doubleRegister () : int {
+  return cast!<int>(data) * 2;
+}
+```
+
+What happens here? We simply _dynamically_ convert `data` to an `int`. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. This uses the sub-typing scheme: if the real type of `data` is `int` or one of its child, it'll work, else it'll throw a runtime error.
+
 ### Overloading operators
 
 Superoverloads are overloads that don't act only as a class level, but as the whole program's level. Some of them work with some concepts we haven't seen yet, so we'll only see operators superoverloads.
