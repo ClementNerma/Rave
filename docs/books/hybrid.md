@@ -3626,15 +3626,15 @@ dict Custom<K, V> {
   // Check if a key is known
   public func %has(key: K) -> bool;
   // Get the array of all keys
-  public func %keys() -> Array<K>;
+  public func %keys() -> Iterator<K>;
   // Get the array of all values
-  public func %values() -> Array<V>;
+  public func %values() -> Iterator<V>;
 }
 ```
 
 As always, the return type of these overloads is omittable, put they are written here to see their complete signature.
 
-About `%keys` and `%values`, their behaviour is a little special. They can be called automatically, when iterating the dictionary through a loop (we'll see that soon), or manually thanks to a function. If they are called automatically (in a loop iterator, for instance), the return value will be kept as it is. But if they are called manually, the return value will automatically be cloned - and there's no way to prevent it. Why this behaviour? Because, if a loop iterates through the array of keys/values, there is no need to clone the values as the array will not be written. But if the array is retrieved manually and written by some piece of code, this could cause some garbage in the dictionary - because some dictionary use a special behaviour like forbidding duplicate values or restricting keys to a specific array of names.
+About `%keys` and `%values`, their behaviour is a little special. They can be called automatically, when iterating the dictionary through a loop (we'll see that soon), or manually thanks to a function.
 
 Most of the time, custom dictionaries should always inherit from the `Dictionary` class (the same one that is used when using `#Dynamic` in a key/value association with IST). The syntax is the same as for classes:
 
@@ -3678,6 +3678,8 @@ for key -> value in myArray {
   println!(key, value);
 }
 ```
+
+In fact, asking a dictionary for its keys or values will call its `%keys()` or `%values()` overload. These ones return an `Iterator<T>`, remember? Well, an iterator is simply an object with a `next()` function that returns a new value, until it goes out of data. Number ranges use them: `0...10` for example is automatically converted to `(new RangeIterator<uint>(0, 10))`.
 
 #### The case of vectors
 
