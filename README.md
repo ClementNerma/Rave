@@ -5,6 +5,14 @@ It can be transpiled to JavaScript for the web, to Rust for thread-safe desktop 
 
 ## Please note this language is not finished yet ; some features could and WILL be added, modified or removed at anytime. It's still a draft at this point and no feature or syntax is frozen.
 
+## State of the project
+
+Currently, the SilverNight programming language, as well as all its resources, including the books, tutorials, examples, build tools, toolchain, etc. are in a state of **draft**. This means no feature, part of the syntax, native resource or anything is frozen. The whole project can and will be modified without any delay, it is not suitable for everything else than an experimental use.
+
+[The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html) as well as the build tools of the language were made to be maintanable and will certainly be re-used in the final version. Their purpose is to give a preview, while not finished, of what the language will be.
+
+**Commit policy:** When an idea is added to the project, it is very shortly tested, then implemented in the repository, most of the time in The Hybrid Book. Sometimes it will simply be removed in a few hours or a few days because of a problem with it, like its unmaintanability in the long term. Major and breaking updates often occurs, as the language is not fully designed yet. Please keep this in mind.
+
 ## Installation
 
 The compiler isn't ready yet, so there is no way currently to install it.
