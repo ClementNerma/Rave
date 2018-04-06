@@ -5091,8 +5091,9 @@ Now we've written our package file, we can write the package's source, which wil
 
 let name: string;
 
-func defineName (newName: string with (c => c) =>
+func defineName (newName: string with (c => c)) {
   name = newName;
+}
 
 func readName () -> string {
   if (name)
