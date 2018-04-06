@@ -3271,11 +3271,7 @@ let car: Vehicle = new Car();
 printlnl!(car.accelerate()); // Prints: "Vroom!"
 ```
 
-## Dictionaries in depth
-
-Let's see the final part about classes: dictionaries. As you already, dictionaries in SilverNight are instances of the `Dictionary` class. But how do they really work? That's what we will see in this chapter, as well as how to make your own dictionary classes to store key/values (or more) dictionaries with a custom behaviour.
-
-### Templates
+## Templates
 
 Here we are, another of the most important concepts of Object-Oriented Programming: the templates. In fact, you won't use them explicitly very often, but you will use them _implicitly_. To be exact, you already do this as lists and arrays use templates, as we will see now.
 
@@ -3359,7 +3355,7 @@ println!(myDict.get([ 2, 5 ])); // Prints: "Message 1"
 
 As you can see, templates you can even be other templated classes. Because, yes, both `Array` and `List` are templated types - they are in reality custom dictionary classes this chapter aims to present.
 
-#### Optional templates
+### Optional templates
 
 Many native functions use optional templates. They work exactly like optional arguments for functions:
 
@@ -3375,7 +3371,7 @@ val test: Data = {
 }; // Works fine
 ```
 
-#### Static templates
+### Static templates
 
 When inheriting from a class, the child class must have the exact same number of templates, in order to use all of its parent's ones. But, sometimes we don't want to let the user choose and prefer to force a specific class instead. Here is how it goes:
 
@@ -3390,7 +3386,7 @@ The `Child` class will now only require a single template: `V`, because `K` is f
 val child = new Child<int>; // K = string ; V = int
 ```
 
-#### Restricting templates
+### Restricting templates
 
 Because the chosen template will always vary, we can't instanciate it nor use its methods/attributes. But we may want to interact with the template or its instances, by ensuring it implements some methods or attributes. That's possible, and here is the syntax:
 
@@ -3456,7 +3452,7 @@ That's all! Note that, if a class inherits from another that uses some template(
 
 For information, the `T`, `X`, `Y`, `Z`, `K` and `V` names are reserved to templates.
 
-#### Dynamic return types
+### Dynamic return types
 
 Here is a problem we may encounter soon: we have a function, that takes a single argument of any type, do some things with it (like putting it in an array or something) and return an instance of the exact same type. A first idea would be to do this:
 
@@ -3481,6 +3477,10 @@ height = treat(hello); // Works fine
 ```
 
 Here, this works because when we call the `treat()` function, inferred templating guesses that `T` refers to `int` thanks to `something` being an `int`. So, this function's call will return a `T`. That's as simple as that.
+
+## Dictionaries in depth
+
+Let's see the final part about classes: dictionaries. As you already, dictionaries in SilverNight are instances of the `Dictionary` class. But how do they really work? That's what we will see in this chapter, as well as how to make your own dictionary classes to store key/values (or more) dictionaries with a custom behaviour.
 
 ### Dictionary classes
 
