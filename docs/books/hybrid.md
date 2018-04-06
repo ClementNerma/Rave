@@ -5106,7 +5106,7 @@ export { defineName, readName };
 
 First, the `#package` directive tells this is the main file of the package. It defines a `name` variable, with two functions, one to set it, one to read it.
 
-_Tip :_ Because `(c => c)` is a constraint callback, it must return a boolean. Strings does implement the `%toBoolean` overload, which returns `false` if they are empty, and `false` else. So this constraint simply ensures the string is not empty.
+_Tip :_ Because `(c => c)` is a constraint callback, it must return a boolean. Strings does implement the `%toBoolean` overload, which returns `false` if they are empty, and `true` else. So this constraint simply ensures the string is not empty.
 
 The last line of the file **exports** some entities. This simply creates an object that will be available from the outside of the package, so `name` won't be available from the outside.
 
