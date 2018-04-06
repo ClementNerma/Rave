@@ -4073,7 +4073,9 @@ You can see the matching operator on the right of the corresponding superoverloa
 ```sn
 class BankAccount {
   public readonly money: int with (c => c >= 0);
-  public func %construct(@money: int);
+
+  public func %construct (@money: int) {}
+
   public func add (amount: int) => @money += amount;
   public func sub (amount: int) => @money -= amount;
 }
