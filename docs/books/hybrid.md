@@ -3375,6 +3375,21 @@ val test: Data = {
 }; // Works fine
 ```
 
+#### Static templates
+
+When inheriting from a class, the child class must have the exact same number of templates, in order to use all of its parent's ones. But, sometimes we don't want to let the user choose and prefer to force a specific class instead. Here is how it goes:
+
+```sn
+class Mother<K, V> { /* ... */ }
+class Child<K is string, V> { /* ... */ }
+```
+
+The `Child` class will now only require a single template: `V`, because `K` is forced to be the `string` class (we say it's a _static_ template, while `V` is a _dynamic_ one).
+
+```sn
+val child = new Child<int>; // K = string ; V = int
+```
+
 #### Restricting templates
 
 Because the chosen template will always vary, we can't instanciate it nor use its methods/attributes. But we may want to interact with the template or its instances, by ensuring it implements some methods or attributes. That's possible, and here is the syntax:
@@ -3463,7 +3478,7 @@ dict Custom<K, V> {
 }
 ```
 
-There are a special kind of classes. First, some overloads **must** be implemented. These are `%get`, `%set`, `%unset`, `%has`, `%keys` and `%values`, which are specific to dictionaries and can't be used in standard classes. All other overloads (like `%clone` or `%random`, even `%construct` and `%free`) can be implemented but are not required. Also, dictionary classes must take two templates (they can have any name) but they can force the type of keys and/or the type of values by writing a class' name instead (like `dict Vector<int, V>` for vectors).
+There are a special kind of classes. First, some overloads **must** be implemented. These are `%get`, `%set`, `%unset`, `%has`, `%keys` and `%values`, which are specific to dictionaries and can't be used in standard classes. All other overloads (like `%clone` or `%random`, even `%construct` and `%free`) can be implemented but are not required. Also, dictionary classes must take two templates (they can have any name) but they can force the type of keys and/or the type of values by writing a class' name instead (like `dict Vector<K is int, V>` for vectors).
 
 Let's detail these overloads:
 
@@ -3535,7 +3550,7 @@ for key -> value in myArray {
 
 #### The case of vectors
 
-This is very simple: a `Vector<T>` (`List` or `Array`) is a `<int, T>` dictionary (with different members, though). That's as simple as that.
+This is very simple: a `Vector<T>` (`List` or `Array`) is a `<K is int, T>` dictionary (with different members, though). That's as simple as that.
 
 #### Collections
 
