@@ -88,13 +88,13 @@ For now, consider we can display any value with it, only special values (like cu
 
 ### Vocabulary
 
-Here is a list of terms used in SilverNight. Most of them are unknown for you at the moment, but this section aims to provide a way to clearly know the meaning of each term. Don't hesitate to go back there if you forgot the meaning of a term.
+Here is an array of terms used in SilverNight. Most of them are unknown for you at the moment, but this section aims to provide a way to clearly know the meaning of each term. Don't hesitate to go back there if you forgot the meaning of a term.
 
 #### About concepts
 
 * A **block keyword**, or **block name**, is the name of a block (like `for` or `while`)
 * A **block head** is the head of a block, written between `()` parenthesis ; its syntax depends on the the block it is used with
-* A **block** is the combination of a block keyword, eventually a block head, an opening bracket `{`, a list of instructions called the **body**, and a closing bracket `}`
+* A **block** is the combination of a block keyword, eventually a block head, an opening bracket `{`, an array of instructions called the **body**, and a closing bracket `}`
 * An **inline block** is an inline variant of a block, with a syntax depending on the used block
 * A **directive** is an indicator to change the default behaviour of a part of the code at build time
 
@@ -154,15 +154,15 @@ Here is a list of terms used in SilverNight. Most of them are unknown for you at
 
 #### About interfaces and traits
 
-* An **interface** is a list of members (without their body) a class must implement if it explicitly implements it, and is also a type that accepts thanks to cross-typing any class implementing (even implicitly) all its members
-* A **trait** is a list of members (eventually with their body) a class must implement if it explicitly implements it
+* An **interface** is an array of members (without their body) a class must implement if it explicitly implements it, and is also a type that accepts thanks to cross-typing any class implementing (even implicitly) all its members
+* A **trait** is an array of members (eventually with their body) a class must implement if it explicitly implements it
 
 #### About dictionaries
 
 * A **dictionnary** is the instance of a class child of `Dictionary` or of the `Dictionary` class itself ; it links keys with a type given by a template with values with a type given by a template
-* A **vector** is a dictionary with positive integer keys, and values with a type given by a template ; it's a list of elements
-* A **list** is a vector with a fixed size
-* An **array** is a vector with a dynamic size
+* A **vector** is a dictionary with positive integer keys, and values with a type given by a template ; it's an array of elements
+* A **array** is a vector with a fixed size
+* An **list** is a vector with a dynamic size
 
 #### About superoverloads
 
@@ -401,7 +401,7 @@ val result = 2 + 5; // Perform an addition
 
 If we tell you `2` and `5` are both `int` resources, you can guess the `result` variable will have the same type. Mathematical operators always take two numbers and return a number.
 
-The list of mathematical operators is:
+The array of mathematical operators is:
 
 * `+` (add)
 * `-` (substract)
@@ -514,7 +514,7 @@ A xor B; // false
 
 Unlike operators above that create a value from two other ones, assignment operators directly affect to the variable they are applied on.
 
-The list is: `+=` (add), `-=` (substract), `*=` (multiply), `/=` (divide), `%` (modulate), `**=` (pow).
+The array is: `+=` (add), `-=` (substract), `*=` (multiply), `/=` (divide), `%` (modulate), `**=` (pow).
 
 For example, doing `var += 5` is exactly like `var = var + 5`. The same thing applies for all assignment operators.
 
@@ -567,15 +567,15 @@ Think about this feature when using strings with dynamic values!
 
 ### Vectors
 
-When we want to represent a list of data in SilverNight, we use _vectors_. First, they are **lists**, which have a fixed length, and **arrays**, which are extensible.
+When we want to represent an array of data in SilverNight, we use _vectors_. First, they are **arrays**, which have a fixed length, and **lists**, which are extensible.
 
-Let's declare a list of 3 names:
+Let's declare an array of 3 names:
 
 ```sn
 let names: string[3];
 ```
 
-Here, `names` is a list with 3 values, not extensible. We can access its elements by doing:
+Here, `names` is an array with 3 values, not extensible. We can access its elements by doing:
 
 ```sn
 println!(names[0]); // First element
@@ -583,7 +583,7 @@ println!(names[1]); // Second element
 println!(names[2]); // Third element
 ```
 
-As you can see, indexes start at `0`. That's a standard implementation of vectors in almost any programming language. If we run the code above, it will display three empty strings, because we haven't initialized our list yet. We know have several choices:
+As you can see, indexes start at `0`. That's a standard implementation of vectors in almost any programming language. If we run the code above, it will display three empty strings, because we haven't initialized our array yet. We know have several choices:
 
 * Assigning values at declaration ;
 * Assigning them _after_ declaration ;
@@ -593,121 +593,121 @@ Here is how to implement all of them:
 
 ```sn
 // Assigning values at declaration
-let list: string[3] = [ "Jack", "Lucy", "Thomas" ];
+let array: string[3] = [ "Jack", "Lucy", "Thomas" ];
 
 // Assigning values after declaration
-let list: string[3];
-list = [ "Jack", "Lucy", "Thomas" ];
+let array: string[3];
+array = [ "Jack", "Lucy", "Thomas" ];
 
 // Assigning values one by one
-let list: string[3];
-list[0] = "Jack";
-list[1] = "Luy";
-list[2] = "Thomas";
+let array: string[3];
+array[0] = "Jack";
+array[1] = "Luy";
+array[2] = "Thomas";
 ```
 
-There's also a way to define a list when we don't know its type:
+There's also a way to define an array when we don't know its type:
 
 ```sn
 // Assigning without knowing the length
-let list: string[] = [ "Jack", "Lucy", "Thomas" ];
+let array: string[] = [ "Jack", "Lucy", "Thomas" ];
 ```
 
 This is not useful in this example, we especially useful when we will deal with _functions_.
 
-We can also declare lists without their type:
+We can also declare arrays without their type:
 
 ```sn
-let list = [ "Jack", "Lucy", "Thomas" ];
+let array = [ "Jack", "Lucy", "Thomas" ];
 ```
 
-To define an array, we do like this:
+To define a list, we do like this:
 
 ```sn
-let list: Array<string>;
+let array: List<string>;
 ```
 
-We don't even have to declare a length because it is not fixed, so we can add and remove elements whenever we want. Let's rewrite the three assignment methods, for arrays:
+We don't even have to declare a length because it is not fixed, so we can add and remove elements whenever we want. Let's rewrite the three assignment methods, for lists:
 
 ```sn
 // Assigning values at declaration
-let list: Array<string> = [ "Jack", "Lucy", "Thomas" ];
+let array: List<string> = [ "Jack", "Lucy", "Thomas" ];
 
 // Assigning values after declaration
-let list: Array<string>;
-list = [ "Jack", "Lucy", "Thomas" ];
+let array: List<string>;
+array = [ "Jack", "Lucy", "Thomas" ];
 
 // Assigning values one by one
-let list: Array<string>;
-list.push("Jack");
-list.push("Lucy");
-list.push("Thomas");
-list[2] = "Thomas";
+let array: List<string>;
+array.push("Jack");
+array.push("Lucy");
+array.push("Thomas");
+array[2] = "Thomas";
 ```
 
-As you can see, if we except the length value, only the third way changed. We know _push_ new elements, instead of assigning them. We can also remove the last pushed element by doing `list.pop();` which also returns this element (so we can do `let last = list.pop();`).
+As you can see, if we except the length value, only the third way changed. We know _push_ new elements, instead of assigning them. We can also remove the last pushed element by doing `array.pop();` which also returns this element (so we can do `let last = array.pop();`).
 
 We can also access indexes with variables:
 
 ```sn
 let value: int = 1;
-println!(list[value]); // Prints: "Lucy"
+println!(array[value]); // Prints: "Lucy"
 ```
 
 ### Templated types
 
-Let's now see what vectors _really_ are. They are in fact represented by two classes, `List` and `Array`. There are different on some little points:
+Let's now see what vectors _really_ are. They are in fact represented by two classes, `Array` and `List`. There are different on some little points:
 
-* `List` is a fixed-length list. We cannot extend it or remove some elements, we can just do some operations on the elements it contains ;
-* `Array` is an extensible list.
+* `Array` is a fixed-length array. We cannot extend it or remove some elements, we can just do some operations on the elements it contains ;
+* `List` is an extensible array.
 
-We will be able to access exactly the same functions for both the `List` and the `Array` type, excepted there are some additional ones for `Array` (like extension or elements removing).
+We will be able to access exactly the same functions for both the `Array` and the `List` type, excepted there are some additional ones for `List` (like extension or elements removing).
 
-There is a specificity about these types, though. If we simply try to create variables with them, like for a list of names:
+There is a specificity about these types, though. If we simply try to create variables with them, like for an array of names:
 
 ```sn
-let names: List; // ERROR
+let names: Array; // ERROR
 ```
 
-Iyr program won't work. Why? Because these types are called _templated_ types. This mean they need _another type_ to work correctly. In fact, vectors need to know what _type_ of values they will handle. In our case, we want to store a list of names, which are strings, so let's declare it:
+Iyr program won't work. Why? Because these types are called _templated_ types. This mean they need _another type_ to work correctly. In fact, vectors need to know what _type_ of values they will handle. In our case, we want to store an array of names, which are strings, so let's declare it:
 
 ```sn
-let names: List<string>;
+let names: Array<string>;
 ```
 
-Here, `List` is called a _templated type_ and `string` is called its _template_. There's still a problem though: while arrays have a flexible length, lists have a fixed one. So we know have an empty `names` list we cannot anything with. Let's say we have 3 names:
+Here, `Array` is called a _templated type_ and `string` is called its _template_. There's still a problem though: while lists have a flexible length, arrays have a fixed one. So we know have an empty `names` array we cannot anything with. Let's say we have 3 names:
 
 ```sn
-let names: List<string> = new List<string, 3>;
+let names: Array<string> = new Array<string, 3>;
 ```
 
 Here's a keyword we don't know: `new`. It simply creates an _instance_ of a type, and returns it. An instance is always an object, excepted for primitive types that are very special - in their case it returns a primitive.
 
-We give one argument to `List` here: `3` is the length of the list. But this syntax is still heavy, so let's shorten this declaration:
+We give one argument to `Array` here: `3` is the length of the array. But this syntax is still heavy, so let's shorten this declaration:
 
 ```sn
 // Inferred type allows us to omit the type
-let names = new List<string, 3>;
-// There is also a syntax sugar for lists:
+let names = new Array<string, 3>;
+// There is also a syntax sugar for arrays:
 let names: string[3];
 ```
 
-The second line above works exactly like the first one: they both declare a new list with 3 values.
+The second line above works exactly like the first one: they both declare a new array with 3 values.
 
-Let's know see how we declare an array:
+Let's know see how we declare a list:
 
 ```sn
 // The fully explicit version
-let names: Array<string> = new Array<string>;
+let names: List<string> = new List<string>;
 // Inferred type version
-let names = new Array<string>;
+let names = new List<string>;
 ```
 
 We can now use them as we saw previously.
 
 ### Tuples
 
-Tuples are lists that can combine mixed types. They are defined as follows:
+Tuples are arrays that can combine mixed types. They are defined as follows:
 
 ```sn
 val tuples: (int, float, string) = (2, 4.8, "Hello");
@@ -719,7 +719,7 @@ Thanks to inferred typing, we can simply write:
 val tuples = (2, 4.8, "Hello");
 ```
 
-To get or set a value from a tuple, we simply use an index as for lists:
+To get or set a value from a tuple, we simply use an index as for arrays:
 
 ```sn
 println!(tuples[2]); // Prints: "Hello"
@@ -735,11 +735,11 @@ println!(tuples[index1]); // ERROR
 println!(tuples[index2]); // Prints: "Hello"
 ```
 
-Note that, as for lists, tuples are considered as a single type (even if it can combine several values of different types).
+Note that, as for arrays, tuples are considered as a single type (even if it can combine several values of different types).
 
 ### Structures
 
-We now want to represent a video game hero. It has a name, Health Points (HP), Magic Points (MP), attack and defense points. How could we describe this? A first idea would be to make a list of five elements, the first element referring to the name, the second one to the HP, the third one to the MP, and so on. But this is not very readable and hard to maintain.
+We now want to represent a video game hero. It has a name, Health Points (HP), Magic Points (MP), attack and defense points. How could we describe this? A first idea would be to make an array of five elements, the first element referring to the name, the second one to the HP, the third one to the MP, and so on. But this is not very readable and hard to maintain.
 
 A great tool to make custom objects is the _structure_. It acts like a class, but we define its properties and methods. It is not exactly a class, but we'll do as if it was one - for now, at least. Here's how it works:
 
@@ -808,7 +808,7 @@ println!(jack.adult); // Prints: "false"
 
 ### Dictionaries
 
-Last but not least, let's imagine we want to associate the name of a person with its age. We want to be able to add or remove persons at anytime. A structure will of course not be adapted for this purpose. But there is a tool for this type of situations: the dictionaries. These act like lists or arrays, but this time indexes are not forced to be integers but any resource, even boolean or other dictionaries! They are of course extensible.
+Last but not least, let's imagine we want to associate the name of a person with its age. We want to be able to add or remove persons at anytime. A structure will of course not be adapted for this purpose. But there is a tool for this type of situations: the dictionaries. These act like arrays or lists, but this time indexes are not forced to be integers but any resource, even boolean or other dictionaries! They are of course extensible.
 
 ```sn
 let ages: Dictionary<string, int>;
@@ -865,7 +865,7 @@ But a new trap comes here. If you try to omit the type in the declaration above,
 
 IST is a feature of the SilverNight language that aims to simplify data typing.
 
-Let's say we have to handle an object that is a list of books. This would be an array of objects, each with the name of a book and a "details" object that would contain the author's name, the release year as well as the country it was initially released. We want to have two books inside it initially. Because we have an array, containing a specific object, we would write the following code:
+Let's say we have to handle an object that is an array of books. This would be a list of objects, each with the name of a book and a "details" object that would contain the author's name, the release year as well as the country it was initially released. We want to have two books inside it initially. Because we have a list, containing a specific object, we would write the following code:
 
 ```sn
 struct Book {
@@ -877,8 +877,8 @@ struct Book {
   }
 }
 
-// Make a list of books
-let books: Array<Book>;
+// Make an array of books
+let books: List<Book>;
 
 // Add a first book
 books.push({
@@ -901,7 +901,7 @@ books.push({
 });
 ```
 
-That's pretty heavy, right? That's why SilverNight supports IST. Here's how the compiler implements it: when you specify the type of a resource, the compiler attemps to see exactly the same structure in the initialization part (if there is one). That's why you can do the same assignment for a `List` and an `Array` variable, even though there don't have the same type. The compiler understands you are trying to assign a list of data and do the required stuff in the background.
+That's pretty heavy, right? That's why SilverNight supports IST. Here's how the compiler implements it: when you specify the type of a resource, the compiler attemps to see exactly the same structure in the initialization part (if there is one). That's why you can do the same assignment for a `Array` and an `List` variable, even though there don't have the same type. The compiler understands you are trying to assign an array of data and do the required stuff in the background.
 
 IST takes sense when you have more complex structures like this and don't want to define a whole structure. It analyses your object and guesses its type to make what it calls an _on-the-fly_ structure, a structure that wasn't defined explicitly. Here's an example for our problem:
 
@@ -961,7 +961,7 @@ To fully understand the powerfulness of IST, let's think we want to make the `de
 
 _NOTE :_ We say that IST produces **on-the-fly structures**, which means it produces structures that were not declared before being used.
 
-`#Dynamic` will turn `List` objects into `Array` ones and `struct` into `Dictionary<string, int>` here. Of course, this last step requires all the properties into `details` have the same type, else it wouldn't work.
+`#Dynamic` will turn `Array` objects into `List` ones and `struct` into `Dictionary<string, int>` here. Of course, this last step requires all the properties into `details` have the same type, else it wouldn't work.
 
 Note that it works with defined object too:
 
@@ -992,7 +992,7 @@ let books = [
 ];
 ```
 
-Here, because we create a list from two distinct objects, they must have the `#Dynamic` directive on their `details` field.
+Here, because we create an array from two distinct objects, they must have the `#Dynamic` directive on their `details` field.
 
 ### Frozens
 
@@ -1063,9 +1063,9 @@ But that's a bit long, so there's a syntax to shorten that in a single line:
 val { name, age, warrior } = hero;
 ```
 
-What we've done here is to extract some properties of `hero` and store them into constants of the same name. The list of the properties to extract (which is also the list of constant to make) is specified between braces (`{}`).
+What we've done here is to extract some properties of `hero` and store them into constants of the same name. The array of the properties to extract (which is also the array of constant to make) is specified between braces (`{}`).
 
-Multiple assignments also work the other way: we can make an object from a list of entities, like this
+Multiple assignments also work the other way: we can make an object from an array of entities, like this
 
 ```sn
 val hero_copy = { name, age, warrior };
@@ -1087,48 +1087,48 @@ val new_hero = {
 };
 ```
 
-Note that there is a similar syntax for arrays:
+Note that there is a similar syntax for lists:
 
 ```sn
-// Make a sample array
-val arr = [ 2, 5, 8, 9 ];
+// Make a sample list
+val list = [ 2, 5, 8, 9 ];
 
-// Extract from array
-val [ n1, n2, n3, n4 ] = arr;
+// Extract from list
+val [ n1, n2, n3, n4 ] = list;
 // Equivalent to:
-val n1 = arr[0],
-    n2 = arr[1],
-    n3 = arr[2],
-    n4 = arr[3];
+val n1 = list[0],
+    n2 = list[1],
+    n3 = list[2],
+    n4 = list[3];
 
 // Left splice
-val [ ...first, n4 ] = arr;
+val [ ...first, n4 ] = list;
 // Equivalent to:
-val first = arr.slice(0, 3),
-    n4 = arr[3];
+val first = list.slice(0, 3),
+    n4 = list[3];
 
 // Right splice
-val [ n1, ...last ] = arr;
+val [ n1, ...last ] = list;
 // Equivalent to:
-val n1 = arr[0],
-    last = arr.slice(1, 3);
+val n1 = list[0],
+    last = list.slice(1, 3);
 
 // Middle splice
-val [ n1, ...middle, n4 ] = arr;
+val [ n1, ...middle, n4 ] = list;
 // Equivalent to:
-val n1 = arr[0],
-    middle = arr.slice(2, 2),
-    n4 = arr[3];
+val n1 = list[0],
+    middle = list.slice(2, 2),
+    n4 = list[3];
 ```
 
-Note that there is also the `...` symbol to ignore some entries in the array:
+Note that there is also the `...` symbol to ignore some entries in the list:
 
 ```sn
 // Middle splice
-val [ n1, ..., n4 ] = arr;
+val [ n1, ..., n4 ] = list;
 // Equivalent to:
-val n1 = arr[0],
-    n4 = arr[3];
+val n1 = list[0],
+    n4 = list[3];
 ```
 
 This avoids making a useless entity that takes time and memory for nothing if we don't need it.
@@ -1429,17 +1429,17 @@ But be aware when dealing with inline loops, this could accidentally result in i
 
 ### Inline generation
 
-Inline generation is a useful feature when coming to generate a list of data. For example, let's say we want to generate a list of the cube of every number between 1 and 10. Intuitively, we could write this:
+Inline generation is a useful feature when coming to generate an array of data. For example, let's say we want to generate an array of the cube of every number between 1 and 10. Intuitively, we could write this:
 
 ```sn
-let cubes: int[10]; // List<int>
+let cubes: int[10]; // Array<int>
 
 for i in 1...10 {
   cubes.push(i * i * i);
 }
 ```
 
-But there is another, simplier way to generate this list.
+But there is another, simplier way to generate this array.
 
 ```sn
 let cubes: int[10] = (i * i * i) for (i in 1...10);
@@ -1451,7 +1451,7 @@ This will do exactly the same thing. Because the compiler has a great support of
 let cubes = (i * i * i) for (i in 1...10);
 ```
 
-This is also why we told you should be careful when using inline loops. All inline loops generate a vector (`List` for explicit `for` loops like ranges or simple incremental / decremental expressions, `Array` for anything else).
+This is also why we told you should be careful when using inline loops. All inline loops generate a vector (`Array` for explicit `for` loops like ranges or simple incremental / decremental expressions, `List` for anything else).
 
 Note that inline loops will not perform a generation if a `void` is returned (not any NIL value, only this one). So, if you do:
 
@@ -1624,7 +1624,7 @@ func sayHello () {
 
 ### Optional arguments
 
-Optional arguments are... optional. Well, that's pretty explicit, at least. When declaring a function's arguments, we list them with their respective types. But, we can also make some of them _omittable_ by giving them a _default value_. Let's try it:
+Optional arguments are... optional. Well, that's pretty explicit, at least. When declaring a function's arguments, we array them with their respective types. But, we can also make some of them _omittable_ by giving them a _default value_. Let's try it:
 
 ```sn
 func sayHello (name: string, justTheName: bool = false) {
@@ -1644,7 +1644,7 @@ This is useful when we don't want to give a default value to arguments. Note tha
 
 ### Infinite arguments
 
-Sometimes we simply want a function to accept any number of arguments, without making an array to have a lighter syntax. This can be done using infinite arguments:
+Sometimes we simply want a function to accept any number of arguments, without making a list to have a lighter syntax. This can be done using infinite arguments:
 
 ```sn
 func sum (...numbers: int) -> int {
@@ -1660,7 +1660,7 @@ func sum (...numbers: int) -> int {
 println!(sum(2, 3, 4)); // Prints: "9"
 ```
 
-Here, `numbers` becomes a `List<int>` because of the `...` symbol, and it will also accept any argument. Note that this feature can be used between before other arguments:
+Here, `numbers` becomes a `Array<int>` because of the `...` symbol, and it will also accept any argument. Note that this feature can be used between before other arguments:
 
 ```sn
 func sum (...numbers: int, coefficient: int) -> int {
@@ -1710,12 +1710,12 @@ println!(sum(2, 2, 3, 4, 3)); // Prints: "54"
 
 #### Arguments expansion
 
-Functions can also be called using an array of arguments thanks to the _arguments expansion_ operator. It goes like this:
+Functions can also be called using a list of arguments thanks to the _arguments expansion_ operator. It goes like this:
 
 ```sn
 func sum (left: int, right: int) -> int => left + right;
 
-// Declare a List<int>
+// Declare a Array<int>
 val numbers = [ 2, 8 ];
 // Use the arguments expansion operator
 println!(sum(numbers...)); // Prints: "10"
@@ -1726,7 +1726,7 @@ Here, `numbers` is expanded as multiple arguments. It's like writing:
 ```sn
 func sum (left: int, right: int) -> int => left + right;
 
-// Declare a List<int>
+// Declare a Array<int>
 val numbers = [ 2, 8 ];
 // Print the sum of the numbers
 println!(sum(numbers[0], numbers[1])); // Prints: "10"
@@ -1745,31 +1745,31 @@ println!(sum(numbers..., 5)); // Prints: "2"
 
 ### Lambdas and callbacks
 
-We saw that functions can be declared with a name, a list of arguments, a return type and a body. But there are some functions that omit the name, called _lambdas_.
+We saw that functions can be declared with a name, an array of arguments, a return type and a body. But there are some functions that omit the name, called _lambdas_.
 
-What is their point? The more simple is to take an exemple: let's say we have a list of signed integers, and we want to keep only the positive values called `arr`. The first idea we could have would be to write:
+What is their point? The more simple is to take an exemple: let's say we have an array of signed integers, and we want to keep only the positive values called `list`. The first idea we could have would be to write:
 
 ```sn
-val posArr: Array<int>;
+val posArr: List<int>;
 
-for i = 0; i < arr.size; i ++ {
-  if (arr[i] >= 0)
-    posArr.push(arr[i]);
+for i = 0; i < list.size; i ++ {
+  if (list[i] >= 0)
+    posArr.push(list[i]);
 }
 ```
 
-But we have a problem here. We have to define `posArr` as an `Array<int>` while `arr` is a `List<int>`. This could introduce compatibility issues when we'll want to give it to functions that require a list. We can still convert `posArr` to a list by doing `posArr.toList()`, but this would involve to make a whole new list, which takes both memory and time.
+But we have a problem here. We have to define `posArr` as an `List<int>` while `list` is a `Array<int>`. This could introduce compatibility issues when we'll want to give it to functions that require an array. We can still convert `posArr` to an array by doing `posArr.toList()`, but this would involve to make a whole new array, which takes both memory and time.
 
-That's where lambdas come. There is a function called `filter` we can use on lists, which takes a specific function as an argument. Here is how we use it:
+That's where lambdas come. There is a function called `filter` we can use on arrays, which takes a specific function as an argument. Here is how we use it:
 
 ```sn
-val posArr = arr.filter(lambda (value: int, key: int) -> bool { return value >= 0; });
+val posArr = list.filter(lambda (value: int, key: int) -> bool { return value >= 0; });
 ```
 
 What happened here? Because it's a little cryptic, we'll re-write the code, with a greater spacing:
 
 ```sn
-val posArr = arr.filter(
+val posArr = list.filter(
   lambda (value: int, key: int) -> bool {
     return value >= 0;
   }
@@ -1792,14 +1792,14 @@ Let's just concentrate on the function's only argument: called `callback`, it is
 
 Note that, while the argument's number, type and the lambda's return type is declared in the function's signature and cannot be changed, you can still change their names to take your own ones. We could have called them `num` and `k` if we wanted to.
 
-There's another way to apply this filter on our list: declaring the function, and then using it as an argument. Because an example will be more clear than a big explanation:
+There's another way to apply this filter on our array: declaring the function, and then using it as an argument. Because an example will be more clear than a big explanation:
 
 ```sn
 val myFunc = lambda (value: int, key: int) -> bool {
   return value >= 0;
 };
 
-val posArr = arr.filter(myFunc);
+val posArr = list.filter(myFunc);
 ```
 
 This will do the same thing than the first version. Here, we declare a `myFunc` variable that works exactly like the lambda we made before, then we use it as an argument for the `.filter` function.
@@ -1811,7 +1811,7 @@ val myFunc: lambda (value: int, key: int) -> bool = lambda (value: int, key: int
   return value >= 0;
 }
 
-val posArr = arr.filter(myFunc);
+val posArr = list.filter(myFunc);
 ```
 
 This is where inferred typing is _really_ great!
@@ -1830,7 +1830,7 @@ func myFunc (value: int, key: int) -> bool {
   return value >= 0;
 };
 
-val posArr = arr.filter(myFunc);
+val posArr = list.filter(myFunc);
 ```
 
 As void-typed functions that take no argument are called _reduced functions_, the same applies for lambdas with _reduced lambdas_, which allow to omit its parenthesis:
@@ -1849,7 +1849,7 @@ callReducedLambda(reduced);
 So, lambdas are great to reduce the size of a program, but reduced lambdas put apart it's kind of heavy to use this syntax. This is why we can use the _arrow syntax_:
 
 ```sn
-val posArr = arr.filter((value: int, key: int) -> bool => value >= 0);
+val posArr = list.filter((value: int, key: int) -> bool => value >= 0);
 ```
 
 We don't have the `func` keyword anymore, but the `=>` one appeared. This symbol means that the value on its right is automatically returned by the function. This symbol can in fact even be used with functions, like `function returnTrue() -> bool => true;`. We can also use the `{` and `}` symbols while omitting the `func` keyword to use several instructions, but we'll then have to use manually the `return` keyword.
@@ -1876,19 +1876,19 @@ But even with the arrow syntax, this is still heavy as we have to write the argu
 
 ICT works like IST but for functions. Instead of inferring a data's structure, it will infer a function's arugments and return type based on a signature.
 
-This may be appear complex, but let's take a simple example. Remember the `.filter` function we can apply on any `List<T>` value? We gave it a lambda and we had to declare the lambda's arguments' type as well as a return type. But because these types are already specified in the `.filter` function's signature, we know that we'll have _exactly_ the sames types in our lambda's signature.
+This may be appear complex, but let's take a simple example. Remember the `.filter` function we can apply on any `Array<T>` value? We gave it a lambda and we had to declare the lambda's arguments' type as well as a return type. But because these types are already specified in the `.filter` function's signature, we know that we'll have _exactly_ the sames types in our lambda's signature.
 
 So there is a way to perform inferred typing on a lambda, for both its arguments' type and its return type. Here is it:
 
 ```sn
 // Classic lambda
-val posArr = arr.filter(lambda (value: int, key: int) -> bool { return value >= 0; });
+val posArr = list.filter(lambda (value: int, key: int) -> bool { return value >= 0; });
 
 // Arrow syntax
-val posArr = arr.filter((value: int, key: int) -> bool => value >= 0);
+val posArr = list.filter((value: int, key: int) -> bool => value >= 0);
 
 // Inferred callback typing
-val posArr = arr.filter((value, key) => value >= 0);
+val posArr = list.filter((value, key) => value >= 0);
 ```
 
 This last syntax is clearly lighter as it avoids to declare the types. But be careful though to read carefully the signature of the function you are giving this lambda to ; else you could have some... surprises, at compilation time.
@@ -1952,7 +1952,7 @@ Let's imagine we want to represent a hero like we saw before.
 
 > We now want to represent a video game hero. It has a name, Health Points (HP), Magic Points (MP), attack and defense points. How could we describe this?
 
-The first option we saw was to make a list, but that was not very convenient (both not readable and poorly maintanable). So we chose to make a structure, and here is the result we obtained:
+The first option we saw was to make an array, but that was not very convenient (both not readable and poorly maintanable). So we chose to make a structure, and here is the result we obtained:
 
 ```sn
 struct Hero {
@@ -2347,7 +2347,7 @@ When static members are private, that means they can only accessed through the `
 
 ### Practice: Let's make a map!
 
-Let's now practice with a little exercice. We want to represent a RPG map with a class. Each cell has a number referring to an empty cell (0), a rock (1) or a trap (2). The map is given at its creation, as a double array of integers. The map is a rectangle and has a fixed width and heigh deducted from the double array.
+Let's now practice with a little exercice. We want to represent a RPG map with a class. Each cell has a number referring to an empty cell (0), a rock (1) or a trap (2). The map is given at its creation, as a double list of integers. The map is a rectangle and has a fixed width and heigh deducted from the double list.
 
 We can move on this map a player, starting from a location given at the map's creation. The player can move up, down, left and right. It can't go on rock cells, and going to a trap will display a message "You've been trapped!" and make the player unable to move.
 
@@ -2418,7 +2418,7 @@ Here it is! This code answers to the problem.
 
 Of course, your solution could be different, as there are many ways to solve it. This anwser is well optimized and relatively short. Try to compare you own solution to this one and see the differences.
 
-A short note about accessibility now: as you can see, `cells` is not cloned when assigned using the constructor. This means that if an pre-defined array is gave to the constructor, changing it from the outside will also affects the class' attribute.
+A short note about accessibility now: as you can see, `cells` is not cloned when assigned using the constructor. This means that if an pre-defined list is gave to the constructor, changing it from the outside will also affects the class' attribute.
 Another point is that `cells` is also readable and not declared as a frozen, so anyone from the outside can access it and change its values.
 
 Here is a corrected version of the class that fixes this mistakes:
@@ -2436,7 +2436,7 @@ class Map {
 }
 ```
 
-Here, if we didn't clone `cells`, the original array would have been frozen too! So that's important to clone it here.
+Here, if we didn't clone `cells`, the original list would have been frozen too! So that's important to clone it here.
 
 ## Classes in depth
 
@@ -2462,7 +2462,7 @@ In our case, the destructor is called when the instance is manually freed, using
 
 ```sn
 class IntArray {
-  private data: Array<int>;
+  private data: List<int>;
 
   public func %free() {
     println!("I will be freed.");
@@ -2472,11 +2472,11 @@ class IntArray {
   public func pop () -> bool => @data.pop();
 }
 
-let arr = new IntArray();
-arr.push(2);
-arr.push(4);
-arr.push(3);
-free!(arr); // Prints: "I will be freed."
+let list = new IntArray();
+list.push(2);
+list.push(4);
+list.push(3);
+free!(list); // Prints: "I will be freed."
 ```
 
 This overloads aims to provide a way to run a specific code when the developer explicitly says it doesn't need the instance anymore. After the destructor is ran, the instance is freed and any usage of it will result in an error.
@@ -2487,15 +2487,15 @@ Remember the frozens? We saw they were deep constants where even attributes, sub
 
 Frozens have a second use, though. Their real aim is not to deeply freeze an object's values, but to freeze it in its behavior. This is not really clear, so let's see how it goes.
 
-Let's imagine we have a class representing a list of integers. We have a method, `add`, to add a number to a private list and `pop` to get the last value from it, plus a `sum` function to calculate its sum.
+Let's imagine we have a class representing an array of integers. We have a method, `add`, to add a number to a private array and `pop` to get the last value from it, plus a `sum` function to calculate its sum.
 
-If we simply declared an instance of this class as a frozen, it will freeze its public attributes. But this won't prevent from adding numbers to the private list thanks to the `add` function, for example.
+If we simply declared an instance of this class as a frozen, it will freeze its public attributes. But this won't prevent from adding numbers to the private array thanks to the `add` function, for example.
 
 That's why an overload exists to implement the 'frozen' state in a class, called `%freeze`. It takes no argument and is `void`-typed, so its return type can be omitted. It this method is implemented, the instance is considered as being able to be frozen.
 
 ```sn
 class IntArray {
-  public readonly data: Array<int>;
+  public readonly data: List<int>;
 
   public func %freeze() {}
 
@@ -2521,7 +2521,7 @@ class IntArray {
 
 As you can see, the overload's body is empty. It's simply because when declaring this overload, we explicitly tell that our class can be frozen, so it will freeze every single attributes, even the private ones. It will also turn a hidden boolean, the _frozen flag_ to `true`, meaning the instance has been frozen. Then, the `is_frozen!` macro returns it. We could also have put a `println!("I'm now frozen");` code in the overload, but that's totally optional, and most of the time this overload will be empty. Now we know what is does, let's see the process more in details:
 
-When freezing the class, we aim to make the instance and its data immutable. But there is a problem here. In fact, even if `data` can't be written from the outside, its sub-values can. For example, doing `arr.data = [1, 2]` won't work, but `arr.data[1] = 5` will. This is due to the fact `arr.data[1]` is independent of `arr.data` because it's its own single value, while `arr.data` is a list of values, not the values themselves.
+When freezing the class, we aim to make the instance and its data immutable. But there is a problem here. In fact, even if `data` can't be written from the outside, its sub-values can. For example, doing `list.data = [1, 2]` won't work, but `list.data[1] = 5` will. This is due to the fact `list.data[1]` is independent of `list.data` because it's its own single value, while `list.data` is an array of values, not the values themselves.
 
 Because of this behaviour, our instance is not _fully_ frozen. That's why implementing the `%freeze` overload will automatically freeze all attributes, even private ones, and their own attributes if they are objects are instances of classes, and so on. Even though freezing all of this could take a bit of time, it's done because declaring is frozen is always done intentionnally. If we simply wanted to make `add` and `pop` unable to act, we would have implemented a `makeImmutable` method or something.
 
@@ -2531,35 +2531,35 @@ Note that any instance of the `IntArray` can still be frozen after being declare
 
 Also, conventionnally, freezing cannot be undone, so we don't have to implement an `unfreeze` method or anything.
 
-A last advice about freezing is that **all** native types support freezing, so you don't have to worry when dealing with them, from `int` to `Dictionary<string, List<string>>`.
+A last advice about freezing is that **all** native types support freezing, so you don't have to worry when dealing with them, from `int` to `Dictionary<string, Array<string>>`.
 
 The notion of freezing is complex, so don't hesitate to read it again, until you understand. That's an important feature because declaring an instance as frozen or freezing it manually will throw an error if the overload is not implemented in the class.
 
 ### Cloning
 
-Let's imagine we have a list of integers. We make a function that calculate, for each number, its square, and return a final list with these numbers. Here is how we would implement it:
+Let's imagine we have an array of integers. We make a function that calculate, for each number, its square, and return a final array with these numbers. Here is how we would implement it:
 
 ```sn
-func squareList (list: List<int>) -> List<int> {
-  for i = 0; i < list.size; i ++ {
-    list[i] *= list[i];
+func squareList (array: Array<int>) -> Array<int> {
+  for i = 0; i < array.size; i ++ {
+    array[i] *= array[i];
   }
 
-  return list;
+  return array;
 }
 ```
 
 This works fine, but let's now try the following code:
 
 ```sn
-val list = [ 2, 7, 8 ];
-val squares = squareList(list);
+val array = [ 2, 7, 8 ];
+val squares = squareList(array);
 
 println!(squares[1]); // Prints: "49"
-println!(list[1]); // Prints: "49"
+println!(array[1]); // Prints: "49"
 ```
 
-Did you understand what just happened? When we modified the values of the list in our `squareList` function, this also affected the original list. So the original and the result are exactly the same ones.
+Did you understand what just happened? When we modified the values of the array in our `squareList` function, this also affected the original array. So the original and the result are exactly the same ones.
 
 This behaviour is due to the fact SilverNight doesn't clone objects each time, because it would be way too long. We can also observe the problem on objects:
 
@@ -2587,14 +2587,14 @@ The same thing applies for any object, so for any non-primitive values (anything
 To solve our first problem, we simply have to do this:
 
 ```sn
-val list = [ 2, 7, 8 ];
-val squares = squareList(clone!(list));
+val array = [ 2, 7, 8 ];
+val squares = squareList(clone!(array));
 
 println!(squares[1]); // Prints: "49"
-println!(list[1]); // Prints: "7"
+println!(array[1]); // Prints: "7"
 ```
 
-This works perfectly fine. We simply added a `clone!` instruction, and our problem is solved because we explicitly tell we want to make a brand _new_ list with the same values than the first one.
+This works perfectly fine. We simply added a `clone!` instruction, and our problem is solved because we explicitly tell we want to make a brand _new_ array with the same values than the first one.
 
 But cloning is not magic. We can't simply clone data like this. Imagine a class contains an `unique_id` attribute that aims to be a unique number. Cloning it like that would throw this rule away. This is why, by default, instances can't be cloned until they implement the `%clone` overload. Let's consider this class:
 
@@ -2640,7 +2640,7 @@ The second signature takes no argument, and must manually return an instance of 
   // ...
 ```
 
-Be aware, in the case you manually create an instance, don't forget to clone arrays if you give some to the new instance from the current one (same with objects and instances from other classes) - else you could encounter some unexpected behaviour like modifying an instance changes an other too. Conceptually, the goal of a clone is to have the same behaviour than the original (same values...) but to be independant from it.
+Be aware, in the case you manually create an instance, don't forget to clone lists if you give some to the new instance from the current one (same with objects and instances from other classes) - else you could encounter some unexpected behaviour like modifying an instance changes an other too. Conceptually, the goal of a clone is to have the same behaviour than the original (same values...) but to be independant from it.
 
 #### The lazy way
 
@@ -2675,7 +2675,7 @@ class Product {
 }
 ```
 
-We could now imagine we want to transmit a product over the network, or simply save it to a file. This requires to convert the instance as a string, or at least as a list of bits (because all informations in a computer are written with bits). We also want to be able to make an instance from the transmitted/saved string in order to use the product. So we need to _serialize_ the instance and then _unserialize_ the produced string.
+We could now imagine we want to transmit a product over the network, or simply save it to a file. This requires to convert the instance as a string, or at least as an array of bits (because all informations in a computer are written with bits). We also want to be able to make an instance from the transmitted/saved string in order to use the product. So we need to _serialize_ the instance and then _unserialize_ the produced string.
 
 For that, we'll implement two overloads in our class. They are `@serialize` and `@unserialize`, which is pretty explicit, and use the following signature:
 
@@ -2738,7 +2738,7 @@ Here is the syntax:
   // ...
 ```
 
-It's also possible to customize the fields that have to be serialized and unserialized. This way, we can avoid to put in a string that would go over the network or be written on a hard drive some confidential informations contained in the private members - or simply to remove some useless informations. It must be a list of strings, like this one:
+It's also possible to customize the fields that have to be serialized and unserialized. This way, we can avoid to put in a string that would go over the network or be written on a hard drive some confidential informations contained in the private members - or simply to remove some useless informations. It must be an array of strings, like this one:
 
 ```sn
   // ...
@@ -2799,7 +2799,7 @@ class Product {
 
   public func %construct() => @unique_id = self::counter ++;
 
-  // List a function as this class' friend
+  // Array a function as this class' friend
   friend getProductId(product: self) -> int;
 }
 
@@ -2814,13 +2814,13 @@ There are several syntax to set a resource as friend:
 
 ```sn
 class Product {
-  // List a simple function as a friend
+  // Array a simple function as a friend
   friend func simpleFunction (product: self) -> int;
 
-  // List another class' static function as a friend
+  // Array another class' static function as a friend
   friend func AnotherClass::staticFunction(product: self) -> int;
 
-  // List a function from another class' instances as a friend
+  // Array a function from another class' instances as a friend
   friend func AnotherClass.instanceFunction(product: self) -> int;
 
   // Even a whole class can be listed as a friend!
@@ -3132,7 +3132,7 @@ class MyInteger {
 
 Now, `MyInteger` instances can be casted to booleans (`false` if they are equal to 0, `true` else).
 
-Here is the list of all typecasting overloads:
+Here is the array of all typecasting overloads:
 
 ```sn
   // ...
@@ -3226,7 +3226,7 @@ virtual class ConvertibleToInt {
 
 But that would be a very bad idea. Why ? Because all classes would have to inherit from it to be used in our function so it would restrict the accepted type of arguments to the only classes that implement it. Right from the start it excludes all the native types (which doesn't inherit from your own class, of course) plus all the classes you haven't made yourself (which are part of a library, for example) and the classes that already inherits from a class, because a class can't have multiple mother classes. This also would be very heavy to write.
 
-So, the solution to this problem is to use an interface. An interface is simply a list of functions and attributes a class **must** implement - it can't write the body of functions. When declaring a class, you explicitly tell what interface(s) it uses, and not implementing any of the interface's members will result in an error.
+So, the solution to this problem is to use an interface. An interface is simply an array of functions and attributes a class **must** implement - it can't write the body of functions. When declaring a class, you explicitly tell what interface(s) it uses, and not implementing any of the interface's members will result in an error.
 
 Also, and that's the great point about interfaces, any class that implements all of its members (with the exact same signature, accessibility etc.) will be considered as implementing the interface itself. If we use it with sub-typing, you could easily imagine to solve our problem.
 
@@ -3341,9 +3341,9 @@ printlnl!(car.accelerate()); // Prints: "Vroom!"
 
 ## Templates
 
-Here we are, another of the most important concepts of Object-Oriented Programming: the templates. In fact, you won't use them explicitly very often, but you will use them _implicitly_. To be exact, you already do this as lists and arrays use templates, as we will see now.
+Here we are, another of the most important concepts of Object-Oriented Programming: the templates. In fact, you won't use them explicitly very often, but you will use them _implicitly_. To be exact, you already do this as arrays and lists use templates, as we will see now.
 
-Remember when we talked about `List` and `Array` as _templated_ types? This meant these two classes take a class reference, called a _template_, to work.
+Remember when we talked about `Array` and `List` as _templated_ types? This meant these two classes take a class reference, called a _template_, to work.
 
 Basically, a template is the name of a class. Any class, function, structure... can use one or several templates to work, and it will register it as an _alias_.
 
@@ -3385,8 +3385,8 @@ That's more simple, right? Now, let's see an application in classes. We will mak
 
 ```sn
 class KindOfDict<K, V> {
-  private keys: Array<K>;
-  private values: Array<V>;
+  private keys: List<K>;
+  private values: List<V>;
 
   public func has (key: K) -> bool => @keys.has(key);
 
@@ -3413,7 +3413,7 @@ class KindOfDict<K, V> {
 Here, we use two templates for our class: `K`, which refers to the keys, and `V` for the values. We can know make a new "dictionary" like this:
 
 ```sn
-val myDict: KindOfDict<Array<int>, string>;
+val myDict: KindOfDict<List<int>, string>;
 
 myDict.set([ 2, 5 ], "Message 1");
 myDict.set([ 4, 8, 3 ], "Message 2");
@@ -3421,7 +3421,7 @@ myDict.set([ 4, 8, 3 ], "Message 2");
 println!(myDict.get([ 2, 5 ])); // Prints: "Message 1"
 ```
 
-As you can see, templates you can even be other templated classes. Because, yes, both `Array` and `List` are templated types - they are in reality custom dictionary classes this chapter aims to present.
+As you can see, templates you can even be other templated classes. Because, yes, both `List` and `Array` are templated types - they are in reality custom dictionary classes this chapter aims to present.
 
 ### Optional templates
 
@@ -3522,7 +3522,7 @@ For information, the `T`, `X`, `Y`, `Z`, `K` and `V` names are reserved to templ
 
 ### Dynamic return types
 
-Here is a problem we may encounter soon: we have a function, that takes a single argument of any type, do some things with it (like putting it in an array or something) and return an instance of the exact same type. A first idea would be to do this:
+Here is a problem we may encounter soon: we have a function, that takes a single argument of any type, do some things with it (like putting it in a list or something) and return an instance of the exact same type. A first idea would be to do this:
 
 ```sn
 func treat(something: Any) -> Any;
@@ -3567,20 +3567,20 @@ val list1: int[8] = createEmptyList<int, 8>();
 val list2: int[]  = createEmptyList<int, 8>();
 ```
 
-This will work as expected. This also explains how the `List` type work:
+This will work as expected. This also explains how the `Array` type work:
 
 ```sn
 // Writing this:
 val list1: int[8];
 
 // Is exactly the same than:
-val list1: List<int, 8>;
+val list1: Array<int, 8>;
 
 // And for this one;
 val list2: int[];
 
 // Here is its equivalent;
-val list2: List<int>;
+val list2: Array<int>;
 ```
 
 Also, always remember templates are _constants_: they cannot be modified in any case.
@@ -3597,7 +3597,7 @@ First, what's a dictionary, exactly? In SilverNight, a dictionary is any instanc
 
 #### The truth about vectors
 
-The `Array` and `List` classes are in fact dictionaries. They both inherits from the `Vector` dictionary class, which associates integers to any type of value. The integers in question cannot be manually manipulated, they are automatically handled by the dictionary class, to keep keys from 0 to any positive integer.
+The `List` and `Array` classes are in fact dictionaries. They both inherits from the `Vector` dictionary class, which associates integers to any type of value. The integers in question cannot be manually manipulated, they are automatically handled by the dictionary class, to keep keys from 0 to any positive integer.
 
 #### How to make dictionary classes
 
@@ -3627,16 +3627,16 @@ dict Custom<K, V> {
   public func %unset(key: K);
   // Check if a key is known
   public func %has(key: K) -> bool;
-  // Get the list of all keys
-  public func %keys() -> List<K>;
-  // Get the list of all values
-  public func %values() -> List<V>;
+  // Get the array of all keys
+  public func %keys() -> Array<K>;
+  // Get the array of all values
+  public func %values() -> Array<V>;
 }
 ```
 
 As always, the return type of these overloads is omittable, put they are written here to see their complete signature.
 
-About `%keys` and `%values`, their behaviour is a little special. They can be called automatically, when iterating the dictionary through a loop (we'll see that soon), or manually thanks to a function. If they are called automatically (in a loop iterator, for instance), the return value will be kept as it is. But if they are called manually, the return value will automatically be cloned - and there's no way to prevent it. Why this behaviour? Because, if a loop iterates through the list of keys/values, there is no need to clone the values as the list will not be written. But if the list is retrieved manually and written by some piece of code, this could cause some garbage in the dictionary - because some dictionary use a special behaviour like forbidding duplicate values or restricting keys to a specific list of names.
+About `%keys` and `%values`, their behaviour is a little special. They can be called automatically, when iterating the dictionary through a loop (we'll see that soon), or manually thanks to a function. If they are called automatically (in a loop iterator, for instance), the return value will be kept as it is. But if they are called manually, the return value will automatically be cloned - and there's no way to prevent it. Why this behaviour? Because, if a loop iterates through the array of keys/values, there is no need to clone the values as the array will not be written. But if the array is retrieved manually and written by some piece of code, this could cause some garbage in the dictionary - because some dictionary use a special behaviour like forbidding duplicate values or restricting keys to a specific array of names.
 
 Most of the time, custom dictionaries should always inherit from the `Dictionary` class (the same one that is used when using `#Dynamic` in a key/value association with IST). The syntax is the same as for classes:
 
@@ -3646,7 +3646,7 @@ dict Custom<K, V> extends Dictionary<K, V> {
 }
 ```
 
-This will inherits all functions that comes with basic dictionaries, like `.filter()` or `.map()`. It will grant access to two protected members, `keys` and `values`, which are arrays referring respectively to the dictionary's keys and its values, as well as all overloads you can implement in a dictionary with no restricted template.
+This will inherits all functions that comes with basic dictionaries, like `.filter()` or `.map()`. It will grant access to two protected members, `keys` and `values`, which are lists referring respectively to the dictionary's keys and its values, as well as all overloads you can implement in a dictionary with no restricted template.
 
 A specificity about dictionary overloads is that they can be implemented by **any** standard class. This is why we can use integer indexes on a string even though that's not a dictionary, for example. The `dict` keyword simply indicates the class implements every overloads required for a dictionary and explicitly indicates its use.
 
@@ -3662,7 +3662,7 @@ This is a conception choice that hopefully has a solution if we want to access a
 
 #### Using loops to iterate dictionaries
 
-Loops are our best friend when exploring dictionaries. While we can still get access to the list of a dictionary's keys thanks to `mydict.keys()` and to its value with `mydict.values()`, the most simple remains to use the `for` loop:
+Loops are our best friend when exploring dictionaries. While we can still get access to the array of a dictionary's keys thanks to `mydict.keys()` and to its value with `mydict.values()`, the most simple remains to use the `for` loop:
 
 ```sn
 // Explore a dictionary using its keys
@@ -3683,7 +3683,7 @@ for key -> value in myArray {
 
 #### The case of vectors
 
-This is very simple: a `Vector<T>` (`List` or `Array`) is a `<K is int, T>` dictionary (with different members, though). That's as simple as that.
+This is very simple: a `Vector<T>` (`Array` or `List`) is a `<K is int, T>` dictionary (with different members, though). That's as simple as that.
 
 #### Collections
 
@@ -3950,23 +3950,23 @@ Note that `#var` can be templated, like `#var<string>` to accept any assignable 
 Another type we can use is `#name`: it forces to use a valid entity name, but does not check if it exists. It can be especially useful if we want to make some declarations:
 
 ```sn
-#macro make_vehicles(name: #name) => val $${name}: Array<Vehicle>;
+#macro make_vehicles(name: #name) => val $${name}: List<Vehicle>;
 
 // Writing this:
 make_vehicles(hello);
 // Will produce:
-val hello: Array<Vehicle>;
+val hello: List<Vehicle>;
 ```
 
 Another type we can use is `#name`: it forces to use a valid entity name, but does not check if it exists. It can be especially useful if we want to make some declarations:
 
 ```sn
-#macro make_vehicles(name: #name) => val $${name}: Array<Vehicle>;
+#macro make_vehicles(name: #name) => val $${name}: List<Vehicle>;
 
 // Writing this:
 make_vehicles(hello);
 // Will produce:
-val hello: Array<Vehicle>;
+val hello: List<Vehicle>;
 ```
 
 There are is last type for macros: `#noptr<T>`. It only accepts assignable entities, like `#raw`, but refuses pointers. Like `#raw`, it can be written without its template to accept any type. This is a specialized macro you probably won't encounter very often, but it's here if you need them.
@@ -4038,7 +4038,7 @@ Otherwise, unsafe functions are exactly like macros (for example type checking i
 
 Superoverloads are overloads that don't act only as a class level, but as the whole program's level. Some of them work with some concepts we haven't seen yet, so we'll only see operators superoverloads.
 
-How do they work? That's simple: each operator superoverload overwrites the behaviour of an operator. Here is the list:
+How do they work? That's simple: each operator superoverload overwrites the behaviour of an operator. Here is the array:
 
 * `%plus` (`+`)
 * `%less` (`-`)
@@ -4076,7 +4076,7 @@ func %plus(left: BankAccount, right: Number) -> Number =>
 println!(account1 + 20); // Prints: "1020"
 ```
 
-There are though some operators that can't return any type. These are the logical operators, which must return a boolean. Here is the list :
+There are though some operators that can't return any type. These are the logical operators, which must return a boolean. Here is the array :
 
 * `%equal` (`==`)
 * `%greater` (`>`)
@@ -4175,8 +4175,8 @@ struct Point {
   y: int;
 }
 
-func getNilPoints (list: Point[]) -> Point {
-  for point in list {
+func getNilPoints (array: Point[]) -> Point {
+  for point in array {
     if (point.x is 0 and point.y is 0)
       return point;
   }
@@ -4192,7 +4192,7 @@ val point: Point = getNilPoints([]);
 Our program will crash because `getNilPoints` returned a `void` while a `Point` was expected. This is simply due to the fact no point matched the condition in the `for` loop, so the function ended without returning nothing (which is equivalent to returning an instance of `void`). So, in order to make this function works anyway, and without returning a whole structure with a `success` boolean or something ugly, we can use a nullable type:
 
 ```sn
-func getNilPoints (list: Point[]) -> Point? {
+func getNilPoints (array: Point[]) -> Point? {
 ```
 
 This allows the function to return a `Point` instance **or** a `void` instance. But, our program will still crash with an error message telling that `Point?` cannot be converted to `Point`. That's simply because we declared our constant with the `Point` type, but we must now tell it can also contain a `void`:
@@ -4228,8 +4228,8 @@ As we saw, the `getNilPoints()` function can now return an instance of `void`. B
 A strict equivalent to the function we saw would be:
 
 ```sn
-func getNilPoints (list: Point[]) -> Point? {
-  for point in list {
+func getNilPoints (array: Point[]) -> Point? {
+  for point in array {
     if (point.x is 0 and point.y is 0)
       return point;
   }
@@ -4241,8 +4241,8 @@ func getNilPoints (list: Point[]) -> Point? {
 This would achieve exatly the same thing. There's also a native value, named `null`, which is an instance of `void`:
 
 ```sn
-func getNilPoints (list: Point[]) -> Point? {
-  for point in list {
+func getNilPoints (array: Point[]) -> Point? {
+  for point in array {
     if (point.x is 0 and point.y is 0)
       return point;
   }
@@ -4371,39 +4371,39 @@ Now, `one` has nullable `int?` type and `two` has standard `int` type.
 
 ### A concrete example
 
-A concrete example of nullable types usage: the problem of list initialization.
+A concrete example of nullable types usage: the problem of array initialization.
 
 Here is the program we want to make:
 
-1. Declare a list of integers with 4096 cells.
+1. Declare an array of integers with 4096 cells.
 2. Generate a random boolean.
-3. If it's "true", fill the list with zeros
-4. If it's "false", fill the list with ones
+3. If it's "true", fill the array with zeros
+4. If it's "false", fill the array with ones
 
-The problem is: if we simply declare the list with `val`, we create a `List<Vehicle>` instance that will be filled with vehicles later. So this will generate 4096 instances of the `Vehicle` class at the same time the list is declared, and then we will make again 4096 instances in our `if` block. Performances are so divided by 2.
+The problem is: if we simply declare the array with `val`, we create a `Array<Vehicle>` instance that will be filled with vehicles later. So this will generate 4096 instances of the `Vehicle` class at the same time the array is declared, and then we will make again 4096 instances in our `if` block. Performances are so divided by 2.
 
-In order to avoid this problem, we can declare the list using an optional type. When the resource is declared, no instance is created, and we will only instanciate it in our conditional block, so "only" 4096 instances of `Vehicle` will be created, instead of 8192 with the previous method - that's a considerable speed up.
+In order to avoid this problem, we can declare the array using an optional type. When the resource is declared, no instance is created, and we will only instanciate it in our conditional block, so "only" 4096 instances of `Vehicle` will be created, instead of 8192 with the previous method - that's a considerable speed up.
 
 Here is how it works:
 
 ```sn
-let list: List<Vehicle>? = null;
+let array: Array<Vehicle>? = null;
 
 if (random!(bool))
-  list = (new Vehicle[4096]).fill(new Car());
+  array = (new Vehicle[4096]).fill(new Car());
 else
-  list = (new Vehicle[4096]).fill(new Motorcycle());
+  array = (new Vehicle[4096]).fill(new Motorcycle());
 ```
 
 But, because it's always preferable to avoid using nullable types as they can cause errors if not manipulated correctly, and because the code above is not optimized, we should write this one instead:
 
 ```sn
-val list = (new Vehicle[4096]).fill(
+val array = (new Vehicle[4096]).fill(
   random!(bool) ? new Car() -> new Motorcycle()
 );
 ```
 
-Even though this code is not pretty, it's better optimized and avoid using a nullable type. Plus, our `list` resource is now a constant instead of being a mutable.
+Even though this code is not pretty, it's better optimized and avoid using a nullable type. Plus, our `array` resource is now a constant instead of being a mutable.
 
 ## Errors
 
@@ -4431,13 +4431,13 @@ struct ErrorStep {
 
 class Error {
   public readonly message: string;
-  public readonly traceback: List<ErrorStep>;
+  public readonly traceback: Array<ErrorStep>;
   public func %construct(@message: string);
   public func %toString();
 }
 ```
 
-As you can see, an error instance has a `message` attribute that is the message we give to it when we instanciate the class, and a `traceback` which is a list of functions that were ran until the error. Here is an example:
+As you can see, an error instance has a `message` attribute that is the message we give to it when we instanciate the class, and a `traceback` which is an array of functions that were ran until the error. Here is an example:
 
 ```sn
 func a () => b();
@@ -5053,7 +5053,7 @@ main = "index.sn"
 [dependencies]
 ```
 
-This tells that our package's name is `name-manager` (so it will be located in a `name-manager` directory when downloaded from the package manager - we'll see that soon) and gives informations about its version (which is very important as we'll see soon) and the list of authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now). Next, it gives the _dependencies_ of this package, and ends by giving the filename of the package's main file. For now, don't worry about the file's content, we'll see it in details later.
+This tells that our package's name is `name-manager` (so it will be located in a `name-manager` directory when downloaded from the package manager - we'll see that soon) and gives informations about its version (which is very important as we'll see soon) and the array of authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now). Next, it gives the _dependencies_ of this package, and ends by giving the filename of the package's main file. For now, don't worry about the file's content, we'll see it in details later.
 
 #### The package source code
 
@@ -5222,7 +5222,7 @@ snt upgrade
 
 #### Dependencies
 
-Remember the `dependencies` block we saw in our package file sooner? It simply described the packages _required_ by our program in order to make it work. It's a list of `package = "expected_version"` lines. Here is how it could look like:
+Remember the `dependencies` block we saw in our package file sooner? It simply described the packages _required_ by our program in order to make it work. It's an array of `package = "expected_version"` lines. Here is how it could look like:
 
 ```toml
 [dependencies]
