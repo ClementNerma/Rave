@@ -3739,7 +3739,7 @@ println!(`Hello, Jack`);
 Output::println(`Hello, Jack`);
 ```
 
-As you can see, a macro is simply a way to simplify the writing of a call. It would be heavier to write `Output::println` each time we want to display something in the console, right? That's why the `println!` macro is here. And as you can guess, the `!` symbol indicates we are calling a macro and not a function.
+As you can see, a macro is simply a way to simplify the writing of a call. It would be heavier to write `Output::println` each time we want to display something in the console, right? That's why the `println!` macro is here. And as you can guess, the `!` symbol indicates we are calling a macro and not a function (except unsafe functions, but we'll see that later).
 
 Macros can have several arguments, which must be typed. But it can also have a return type if it is ensured to return a specific type of value. For example, in our example, because `println!` is void-typed, the macro will return a `void`. So, we write:
 
@@ -3844,9 +3844,62 @@ To conclude, simply remember that every function signature (with `#macro` replac
 
 ### Unsafe functions
 
-Unsafe functions are declared like macros, except they are called like standard functions and therefore won't replace their own call by another content.
+Unsafe functions are declared like macros, except they are called like standard functions and therefore won't replace their own call by another content. To be exact, when they are called their content replaces their call but in a transparent way. Let's see it:
 
-The _unsafe_ term refers to the fact their calls is not checked, so they can call a function with the wrong number of arguments or put a third element in a two-sized list.
+```sn
+unsafe func sayHello(name: string) -> void {
+  println!(name);
+}
+
+sayHello!("Yeah");
+```
+
+The first thing we can see here is the use of the `unsafe` keyword, which indicates the following function is unsafe. The function is then called using the `!` symbol after its name, as for macros.
+
+When the function is called, its content is directly evaluated, as for macros. The main difference comes from the fact when an error occurs in an unsafe function (like an incompatible type or something), the error will be located in the function's body, not in the code's body. Considering the following function:
+
+```sn
+// A sample function
+func takeAnInt(ent: int) -> void {}
+```
+
+Here is how it goes with macros:
+
+```sn
+#macro sayHello(name: string) -> void => println!(name); \
+  takeAnInt(name);
+
+sayHello!("Yoh"); // Line 4
+```
+
+The error is thrown at line 5. Why? Simply because the call to `sayHello!` is replaced to the macro's content, so the evaluated content is in reality:
+
+```sn
+#macro sayHello(name: string) -> void => println!(name); \
+  takeAnInt(name);
+
+println!(name); // Line 4
+takeAnInt(name); // Line 5
+```
+
+Here is the same thing with unsafe functions:
+
+```sn
+unsafe func sayHello(name: string) -> void {
+  println!(name);
+  takeAnInt(name); // Line 3
+}
+
+sayHello!("Yoh"); // Line 6
+```
+
+The error is now throw at line 3. Even though the unsafe function's content is instantly evaluated, errors are reported following the function's location. This is one the main points of unsafe functions, in fact.
+
+Another high point is that unsafe functions can be part of a class. When so, `this`, `self` and `parent` will automatically refer to the current instance's class, the current class, and the parent class (as if these keywords were used inside a standard function). If the function is written outside of a class, using them will throw an error (as for a standard function). So, these keywords can never be used to refer the class that _calls_ the unsafe function, unlike macros that don't care about it.
+
+Also, arguments are not directly replaced by their content, so errors will not tell that `takeAnInt("Yoh")` is an invalid call (this is what happens using the above macro), but that `takeAnInt(name)` is an invalid call because `name` is typed as a `string`.
+
+Otherwise, unsafe functions are exactly like macros (for example type checking is performed only when the function is called and not at its definition).
 
 ### Overloading operators
 
