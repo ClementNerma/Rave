@@ -260,7 +260,7 @@ scheme = {
     ],
     [
       // Setters/getters declaration
-      /\b(public|protected|private)(\s+static)?(\s+async)?(\s+unsafe)?\s+(getter|setter)\s+([a-zA-Z\$_][a-zA-Z0-9\$_]*)\b/,
+      /\b(public|protected|private)(\s+static)?(\s+unsafe)?(\s+async)?\s+(getter|setter)\s+([a-zA-Z\$_][a-zA-Z0-9\$_]*)\b/,
       'purple', 'purple', 'purple', 'purple', 'purple', 'cyan'
     ],
     [
@@ -270,7 +270,7 @@ scheme = {
     ],
     [
       // Declaration statement in classes for functions
-      /\b(public|protected|private)(\s+static)?(\s+async)?(\s+unsafe)?(?=\s+func)/,
+      /\b(public|protected|private)(\s+static)?(\s+unsafe)?(\s+async)?(?=\s+func)/,
       'purple', 'purple', 'purple', 'purple'
     ],
     [
