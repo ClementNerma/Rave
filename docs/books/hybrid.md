@@ -3658,6 +3658,65 @@ For example, the `Dictionary` class implements a `.fill()` function, so we can d
 
 This is a conception choice that hopefully has a solution if we want to access any index. In order to be assured to get the value corresponding to the key we have, we simply have to do: `mydict[index]`, where `index` is an instance of `K` (the dictionary's key type). Getting an index between brackets means we're explicitly trying to get an index, not a public member, while `mydict.index` means we are first trying to get a public member if it exists, else to get the value associated to this key (if it exists).
 
+#### Iterators
+
+The `%keys()` and `%values()` overloads always return an `Iterator<T>`. It's simply a class that implements a few members, like a `next()` function that returns the next iterated value. To put it simply, iterators can be _iterated_ and at each step return a new _value_, until they are _done_.
+
+Iterators can be defined like this:
+
+```sn
+class MySuperIterator<T> extends Generator<T> {
+  // Start a counter
+  private counter = 0;
+
+  // Generate a new value
+  public func next () -> Iteration<T> {
+    // Increase the counter
+    // If it's lower than 10...
+    if (++ @counter < 10)
+      // Return this value
+      return { value: @counter, done: false };
+    else
+      // Else, return a null value and tell the iterator is done
+      return { value: null, done: true };
+  }
+}
+```
+
+Then, we simply instanciate it and use it like this:
+
+```sn
+let iterator = new MySuperIterator<int>;
+let iteration: Iteration<int>?;
+
+while true {
+  // Get the next value
+  iteration = iterator.next();
+
+  // Exit the loop if it's done
+  break if iteration.done;
+
+  // Else, print the value
+  println!(iteration.value);
+}
+```
+
+But the syntax of the iterator is kind of heavy... So, there's a syntax sugar to write iterators as functions:
+
+```sn
+iter func mySuperIterator () -> Iteration<int> {
+  for i in 0..10 {
+    yield i;
+  }
+}
+```
+
+This code is equivalent to the class we wrote before. We'll, its a lot more simplier here, write? Let's detail this.
+
+The function is marked with the `iter` keyword to indicate it's an iterator. Its signature also tells it returns an iteration. In its body, it simply makes a loop that _yields_ some values. To be exact, each time the `yield` keyword is encountered, the value is returned and the function is _paused_ until the program asks to generate values again. So, all resources locally defined by the function stays in memory.
+
+Now, let's see how to use iterators in loops to explore dictionaries.
+
 #### Using loops to iterate dictionaries
 
 Loops are our best friend when exploring dictionaries. While we can still get access to the array of a dictionary's keys thanks to `mydict.keys()` and to its value with `mydict.values()`, the most simple remains to use the `for` loop:
