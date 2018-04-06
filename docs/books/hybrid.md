@@ -624,34 +624,34 @@ let array = [ "Jack", "Lucy", "Thomas" ];
 To define a list, we do like this:
 
 ```sn
-let array: List<string>;
+let list: List<string>;
 ```
 
 We don't even have to declare a length because it is not fixed, so we can add and remove elements whenever we want. Let's rewrite the three assignment methods, for lists:
 
 ```sn
 // Assigning values at declaration
-let array: List<string> = [ "Jack", "Lucy", "Thomas" ];
+let list: List<string> = [ "Jack", "Lucy", "Thomas" ];
 
 // Assigning values after declaration
-let array: List<string>;
-array = [ "Jack", "Lucy", "Thomas" ];
+let list: List<string>;
+list = [ "Jack", "Lucy", "Thomas" ];
 
 // Assigning values one by one
-let array: List<string>;
-array.push("Jack");
-array.push("Lucy");
-array.push("Thomas");
-array[2] = "Thomas";
+let list: List<string>;
+list.push("Jack");
+list.push("Lucy");
+list.push("Thomas");
+list[2] = "Thomas";
 ```
 
-As you can see, if we except the length value, only the third way changed. We know _push_ new elements, instead of assigning them. We can also remove the last pushed element by doing `array.pop();` which also returns this element (so we can do `let last = array.pop();`).
+As you can see, if we except the length value, only the third way changed. We know _push_ new elements, instead of assigning them. We can also remove the last pushed element by doing `list.pop();` which also returns this element (so we can do `val last = list.pop();`).
 
 We can also access indexes with variables:
 
 ```sn
 let value: int = 1;
-println!(array[value]); // Prints: "Lucy"
+println!(list[value]); // Prints: "Lucy"
 ```
 
 ### Templated types
