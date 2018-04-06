@@ -971,7 +971,7 @@ val harryPotter = {
   details: {
       #Dynamic
       author: "J.K. Rowling",
-      year: 1997,
+      year: "1997",
       country: "United Kingdom"
   }
 };
@@ -981,7 +981,7 @@ val eragon = {
   details: {
       #Dynamic
       author: "Cristopher Paolini",
-      year: 2003,
+      year: "2003",
       country: "U.S.A."
   }
 };
