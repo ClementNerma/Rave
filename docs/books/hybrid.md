@@ -3648,17 +3648,7 @@ This will inherits all functions that comes with basic dictionaries, like `.filt
 
 A specificity about dictionary overloads is that they can be implemented by **any** standard class. This is why we can use integer indexes on a string even though that's not a dictionary, for example. The `dict` keyword simply indicates the class implements every overloads required for a dictionary and explicitly indicates its use.
 
-### Exploring dictionaries
-
-#### Dealing with public members
-
-As we saw before, dictionaries associate a key to a value. So, getting any index from the dictionary, like `mydict.someIndex` will return a key, whatever happens. But, what about public members?
-
-For example, the `Dictionary` class implements a `.fill()` function, so we can do `mydict.fill("hello")`. But then, `mydict.fill` won't return a value of the dictionary, right?
-
-This is a conception choice that hopefully has a solution if we want to access any index. In order to be assured to get the value corresponding to the key we have, we simply have to do: `mydict[index]`, where `index` is an instance of `K` (the dictionary's key type). Getting an index between brackets means we're explicitly trying to get an index, not a public member, while `mydict.index` means we are first trying to get a public member if it exists, else to get the value associated to this key (if it exists).
-
-#### Iterators
+### Iterators
 
 The `%keys()` and `%values()` overloads always return an `Iterator<T>`. It's simply a class that implements a few members, like a `next()` function that returns the next iterated value. To put it simply, iterators can be _iterated_ and at each step return a new _value_, until they are _done_.
 
@@ -3716,6 +3706,16 @@ This code is equivalent to the class we wrote before. We'll, its a lot more simp
 The function is marked with the `iter` keyword to indicate it's an iterator. Its signature also tells it returns an iteration. In its body, it simply makes a loop that _yields_ some values. To be exact, each time the `yield` keyword is encountered, the value is returned and the function is _paused_ until the program asks to generate values again. So, all resources locally defined by the function stays in memory.
 
 Now, let's see how to use iterators in loops to explore dictionaries.
+
+### Exploring dictionaries
+
+#### Dealing with public members
+
+As we saw before, dictionaries associate a key to a value. So, getting any index from the dictionary, like `mydict.someIndex` will return a key, whatever happens. But, what about public members?
+
+For example, the `Dictionary` class implements a `.fill()` function, so we can do `mydict.fill("hello")`. But then, `mydict.fill` won't return a value of the dictionary, right?
+
+This is a conception choice that hopefully has a solution if we want to access any index. In order to be assured to get the value corresponding to the key we have, we simply have to do: `mydict[index]`, where `index` is an instance of `K` (the dictionary's key type). Getting an index between brackets means we're explicitly trying to get an index, not a public member, while `mydict.index` means we are first trying to get a public member if it exists, else to get the value associated to this key (if it exists).
 
 #### Using loops to iterate dictionaries
 
