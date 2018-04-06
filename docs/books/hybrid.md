@@ -1589,6 +1589,24 @@ i_need_a_plain(num); // ERROR
 
 Its point is mainly to use with some macros to pre-process data, but that's a very special case you probably won't encounter very often.
 
+As tuples being a single type, functions can also return them:
+
+```sn
+func add (left: int, right: int) -> (int, float) {
+  return (
+    // Divide as integers
+    left / right,
+    // Divide as floating-point numbers
+    float(left) / float(right)
+  );
+}
+
+val result = add(2, 8);
+
+println!(result[0]); // Prints: "0"
+println!(result[1]); // Prints: "0.25"
+```
+
 Note that void-typed functions (functions that return nothing) can omit their return type, like this:
 
 ```sn
