@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.17.0',
+    VERSION: '0.18.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
@@ -260,8 +260,8 @@ scheme = {
     ],
     [
       // Setters/getters declaration
-      /\b(public|protected|private)(\s+static)?(\s+unsafe)?(\s+async)?\s+(getter|setter)\s+([a-zA-Z\$_][a-zA-Z0-9\$_]*)\b/,
-      'purple', 'purple', 'purple', 'purple', 'purple', 'cyan'
+      /\b(public|protected|private)(\s+static)?(\s+unsafe)?(\s+async)?(\s+iter)?\s+(getter|setter)\s+([a-zA-Z\$_][a-zA-Z0-9\$_]*)\b/,
+      'purple', 'purple', 'purple', 'purple', 'purple', 'purple', 'cyan'
     ],
     [
       // Declaration statement in classes for not-assignable entities
@@ -270,7 +270,7 @@ scheme = {
     ],
     [
       // Declaration statement in classes for functions
-      /\b(public|protected|private)(\s+static)?(\s+unsafe)?(\s+async)?(?=\s+func)/,
+      /\b(public|protected|private)(\s+static)?(\s+unsafe)?(\s+async)?(\s+iter)?(?=\s+func)/,
       'purple', 'purple', 'purple', 'purple'
     ],
     [
@@ -415,7 +415,7 @@ scheme = {
     ],
     [
       // Keywords needing a separator
-      /(?<!\.)\b(let|pln|val|frozen|public|protected|private|friend|static|abstract|final|unique|virtual|extern|readonly|in|of|export|return|async|unsafe|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
+      /(?<!\.)\b(let|pln|val|frozen|public|protected|private|friend|static|abstract|final|unique|virtual|extern|readonly|in|of|export|return|async|iter|yield|unsafe|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
       'purple'
     ],
     [
