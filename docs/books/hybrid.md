@@ -3439,7 +3439,7 @@ val test: Data = {
 
 ### Static templates
 
-When inheriting from a class, the child class must have the exact same number of templates, in order to use all of its parent's ones. But, sometimes we don't want to let the user choose and prefer to force a specific class instead. Here is how it goes:
+When inheriting from a class, the child class must have _at least_ the same number of templates, in order to use all of its parent's ones (we can though add additional templates in a child class). But, sometimes we don't want to let the user choose and prefer to force a specific class instead. Here is how it goes:
 
 ```sn
 class Mother<K, V> { /* ... */ }
@@ -3514,7 +3514,7 @@ class StringDict<K, V implements Stringifyable> extends KindOfDict<K, V> {
 
 Note that inheritance is a little but special with templates: writing `T extends SomeClass` will of course accept all classes inheriting from `SomeClass`, but also `SomeClass` itself. Be aware of that.
 
-That's all! Note that, if a class inherits from another that uses some template(s), it must have the exact same number of templates (must it is not forced to use the same names).
+That's all! Note that, if a class inherits from another that uses some template(s), it must have _at least_ the same number of templates (though it is not forced to use the same names).
 
 For information, the `T`, `X`, `Y`, `Z`, `K` and `V` names are reserved to templates.
 
