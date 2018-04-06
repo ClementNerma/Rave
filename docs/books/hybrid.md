@@ -698,6 +698,38 @@ let names: string[];
 
 We can now use them as we saw previously.
 
+### Tuples
+
+Tuples are lists that can combine mixed types. They are defined as follows:
+
+```sn
+val tuples: (int, float, string) = (2, 4.8, "Hello");
+```
+
+Thanks to inferred typing, we can simply write:
+
+```sn
+val tuples = (2, 4.8, "Hello");
+```
+
+To get or set a value from a tuple, we simply use an index as for lists:
+
+```sn
+println!(tuples[2]); // Prints: "Hello"
+```
+
+Though, indexes must be plain numbers. They can't be a variable, because the type of each member of the tuple may be different. An exception is plain constants, which can be used for indexes:
+
+```sn
+val index1 = 1;
+pln index2 = 2;
+
+println!(tuples[index1]); // ERROR
+println!(tuples[index2]); // Prints: "Hello"
+```
+
+Note that, as for lists, tuples are considered as a single type (even if it can combine several values of different types).
+
 ### Structures
 
 We now want to represent a video game hero. It has a name, Health Points (HP), Magic Points (MP), attack and defense points. How could we describe this? A first idea would be to make a list of five elements, the first element referring to the name, the second one to the HP, the third one to the MP, and so on. But this is not very readable and hard to maintain.
