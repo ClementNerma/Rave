@@ -259,6 +259,11 @@ scheme = {
       'purple', 'purple', 'purple', 'purple', 'red', 'orange'
     ],
     [
+      // Setters/getters declaration
+      /\b(public|protected|private)(\s+static)?(\s+async)?(\s+unsafe)?\s+(getter|setter)\s+([a-zA-Z\$_][a-zA-Z0-9\$_]*)\b/,
+      'purple', 'purple', 'purple', 'purple', 'purple', 'cyan'
+    ],
+    [
       // Declaration statement in classes for not-assignable entities
       /\b(public|protected|private)(\s+static)?(?=\s+struct|interface|trait)/,
       'purple', 'purple', 'purple'
@@ -272,6 +277,11 @@ scheme = {
       // Declaration statement in classes for assignable entities
       /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
       'purple', 'purple', 'purple', 'red', 'cyan'
+    ],
+    [
+      // Overload declaration
+      /\b(func|public|protected|private)\s+(static\s+)?(%)([a-zA-Z_][a-zA-Z0-9_]+)\b/,
+      'purple', 'purple', 'red', 'cyan'
     ],
     [
       // Entity's name
@@ -302,16 +312,6 @@ scheme = {
       // Template usage
       /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(<)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=[^;]*>)/,
       'yellow', 'cyan', 'yellow'
-    ],
-    [
-      // Overload declaration
-      /\b(func|public|protected|private)\s+(static\s+)?(%)([a-zA-Z_][a-zA-Z0-9_]+)\b/,
-      'purple', 'purple', 'red', 'cyan'
-    ],
-    [
-      // Setter/getter declaration
-      /(public|protected|private)\s+(static\s+)?(async\s+)?(unsafe\s+)?(getter|setter)\s+([a-zA-Z_][a-zA-Z0-9_]+)\b/,
-      'purple', 'purple', 'purple', 'purple', 'cyan'
     ],
     [
       // Function's or declaration's special type (not caught by the previous expressions)
