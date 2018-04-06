@@ -4066,7 +4066,8 @@ How do they work? That's simple: each operator superoverload overwrites the beha
 * `%less` (`-`)
 * `%times` (`*`)
 * `%divide` (`/`)
-* `%modulo` (`**`)
+* `%modulo` (`%`)
+* `%pow` (`**`)
 
 You can see the matching operator on the right of the corresponding superoverload. Each of them take two arguments, and return a new value. Let's see an example: we have a class called `BankAccount`, with a public readonly member called `money` and a method to add and substract money from the account. We now want to be able to add two bank accounts. Here is how we could do it:
 
