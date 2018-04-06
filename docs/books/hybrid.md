@@ -3139,16 +3139,15 @@ Here is the array of all typecasting overloads:
   public func %toBoolean()   : bool;
   public func %toInteger()   : int;
   public func %toFloat()     : float;
-  public func %toString()    : string;
 
+  public func %toString()    : string;
   public func %toNumber()    : Number;
-  public func %toPrimitive() -> string;
   // ...
 ```
 
-There two last overloads can be automatically available even if they are not written by hand: `%toNumber` and `%toPrimitive`. The first one returns a `Number` instance but exists if and only if either `%toInteger` and/or `%toFloat` is implemented. If `%toFloat` exists, it will return its result, else it will return `%toInteger`'s one.
+There two last overloads can be automatically available even if they are not written by hand: `%toNumber` and `%toString`. The first one returns a `Number` instance but exists if and only if either `%toInteger` and/or `%toFloat` is implemented. If `%toFloat` exists, it will return its result, else it will return `%toInteger`'s one.
 
-The `%toPrimitive` overload will simply return a string if **any** typecasting overload is implemented. It will give priority to `%toString`, then to `%toNumber`, then to `%toBoolean`. That's as simple as that. It can be useful in some cases like in interfaces and/or traits like we'll see later.
+The `%toString` overload will simply return a string if **any** typecasting overload is implemented. It will give priority to `%toNumber`, then to `%toBoolean`. That's as simple as that. It can be useful in some cases like in interfaces and/or traits like we'll see later.
 
 **NOTE :** `Number` is the mother class of both `int` and `float`, themselves respectively mothers of all integers types like `uint8` or `int32` for the first one and floating-points types like `ufloat` or `double` for the second one.
 
@@ -3279,9 +3278,8 @@ Here are some native typecasting interfaces we can use in our programs:
 * `Freezable`
 * `Serializable`
 * `Randomizable`
-* `Primitivable`
 
-**NOTE :** `Randomizable` forces to implement the `%random` overload that generates a random element of the current class.
+**NOTE :** `Randomizable` forces to implement the `%random` overload that generates a random element of the current class, and `Stringifyable` to implement any `%toXXX()` overload.
 
 #### Implemeting interfaces in a class
 
@@ -5508,7 +5506,7 @@ await sleep(2); // After 1 second...
 println!("C");  // Prints: "C"
 ```
 
-As we can see, `await` simply blocks the program until the promise is resolved. If it's rejected, it will simply throw a `PromiseError`. This error class is a little special since its constructor takes a `Primitivable` argument and converts it into a string so we can use its `str_data` attribute to read it.
+As we can see, `await` simply blocks the program until the promise is resolved. If it's rejected, it will simply throw a `PromiseError`. This error class is a little special since its constructor takes a `Stringifyable` argument and converts it into a string so we can use its `str_data` attribute to read it.
 
 Also, `await` returns the resolution value of the promise (if there is one). So, the following code works:
 
