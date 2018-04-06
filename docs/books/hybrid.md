@@ -5334,7 +5334,7 @@ async func readAsync (path: string) -> string => {
 
 Many things changed here, but this function works exactly as the original.
 
-To begin, the return type changed from `Promise<string, Error>` to `string`. If we would have wanted to use a different error type than `Error`, we would have written `: (string, Error)` to indicate the error type.
+To begin, the return type changed from `Promise<string, Error>` to `string`. If we would have wanted to use a different error type than `Error`, we would have written a tuple `(string, Error)` to indicate the error type too.
 
 Then, because the `async` keyword indicates our function is asynchronous, it transparently wraps it into a promise, with the callbacks.
 
