@@ -1918,6 +1918,17 @@ pointStr({ x: 2, y: 5 }); // Prints: "(2, 5)"
 
 They work as expected and print the same result.
 
+A specific case is when we have two definitions that fit a same call:
+
+```sn
+func something (arg: Any) : void {}
+func something (arg: int) : void {}
+
+something(2);
+```
+
+Which function should be called? The two are valid, so the program will simply choose the more precise one (e.g. the one that defines the nearest type from the given one). Here, it's the second function, because it asks for an `int` while the first signature simply ask for any type of argument. This behaviour is called _polymorphism priority_.
+
 ## Object-oriented programming
 
 ### The concept of class
