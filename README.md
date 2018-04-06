@@ -27,9 +27,7 @@ yarn # Install dependencies
 
 The repository's folder is now set up.
 
-### Troubleshooting
-
-Due to known issues with some dependencies, you may have to install the build tools package in order to make the SilverNight build tools work, by running:
+**Troubleshooting:** Due to known issues with some dependencies, you may have to install the build tools package in order to make the SilverNight build tools work, by running:
 
 ```bash
 npm install --global --production windows-build-tools
@@ -37,7 +35,7 @@ npm install --global --production windows-build-tools
 
 In a terminal with `sudo` / Administrator rights.
 
-## Build
+### Build
 
 Here are the build commands for the project (to run in the set-up repository folder):
 
@@ -92,16 +90,18 @@ And follow the instructions that appears in your terminal.
 
 ## Roadmap
 
+**WARNING:** This roadmap is not definitive ; it could severely change while the project advances.
+
 Here is the roadmap for the whole project.
 
-### Documentation
+### Redact the documentation
 
 * Redact [_The Hybrid Book_](https://silvernight.netlify.com/docs/book/hybrid.html) (**active**)
 * Redact [_The Book of Concepts_](https://silvernight.netlify.com/docs/book/concepts.html) (**active**)
 * Redact the whole specifications
 * Redact _The SilverNight programming language_
 
-### Toolchain
+### Make the toolchain
 
 Quote from [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html):
 
