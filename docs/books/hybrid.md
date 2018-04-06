@@ -606,7 +606,16 @@ list[1] = "Luy";
 list[2] = "Thomas";
 ```
 
-We can even declare the list without its type:
+There's also a way to define a list when we don't know its type:
+
+```sn
+// Assigning without knowing the length
+let list: string[] = [ "Jack", "Lucy", "Thomas" ];
+```
+
+This is not useful in this example, we especially useful when we will deal with _functions_.
+
+We can also declare lists without their type:
 
 ```sn
 let list = [ "Jack", "Lucy", "Thomas" ];
@@ -615,21 +624,21 @@ let list = [ "Jack", "Lucy", "Thomas" ];
 To define an array, we do like this:
 
 ```sn
-let list: string[];
+let list: Array<string>;
 ```
 
 We don't even have to declare a length because it is not fixed, so we can add and remove elements whenever we want. Let's rewrite the three assignment methods, for arrays:
 
 ```sn
 // Assigning values at declaration
-let list: string[] = [ "Jack", "Lucy", "Thomas" ];
+let list: Array<string> = [ "Jack", "Lucy", "Thomas" ];
 
 // Assigning values after declaration
-let list: string[];
+let list: Array<string>;
 list = [ "Jack", "Lucy", "Thomas" ];
 
 // Assigning values one by one
-let list: string[];
+let list: Array<string>;
 list.push("Jack");
 list.push("Lucy");
 list.push("Thomas");
@@ -669,7 +678,7 @@ let names: List<string>;
 Here, `List` is called a _templated type_ and `string` is called its _template_. There's still a problem though: while arrays have a flexible length, lists have a fixed one. So we know have an empty `names` list we cannot anything with. Let's say we have 3 names:
 
 ```sn
-let names: List<string> = new List<string>(3);
+let names: List<string> = new List<string, 3>;
 ```
 
 Here's a keyword we don't know: `new`. It simply creates an _instance_ of a type, and returns it. An instance is always an object, excepted for primitive types that are very special - in their case it returns a primitive.
@@ -678,7 +687,7 @@ We give one argument to `List` here: `3` is the length of the list. But this syn
 
 ```sn
 // Inferred type allows us to omit the type
-let names = new List<string>(3);
+let names = new List<string, 3>;
 // There is also a syntax sugar for lists:
 let names: string[3];
 ```
@@ -692,8 +701,6 @@ Let's know see how we declare an array:
 let names: Array<string> = new Array<string>;
 // Inferred type version
 let names = new Array<string>;
-// Syntax sugar version
-let names: string[];
 ```
 
 We can now use them as we saw previously.
@@ -871,7 +878,7 @@ struct Book {
 }
 
 // Make a list of books
-let books: Book[];
+let books: Array<Book>;
 
 // Add a first book
 books.push({
@@ -1743,7 +1750,7 @@ We saw that functions can be declared with a name, a list of arguments, a return
 What is their point? The more simple is to take an exemple: let's say we have a list of signed integers, and we want to keep only the positive values called `arr`. The first idea we could have would be to write:
 
 ```sn
-val posArr: int[];
+val posArr: Array<int>;
 
 for i = 0; i < arr.size; i ++ {
   if (arr[i] >= 0)
@@ -2455,7 +2462,7 @@ In our case, the destructor is called when the instance is manually freed, using
 
 ```sn
 class IntArray {
-  private data: int[];
+  private data: Array<int>;
 
   public func %free() {
     println!("I will be freed.");
@@ -2488,7 +2495,7 @@ That's why an overload exists to implement the 'frozen' state in a class, called
 
 ```sn
 class IntArray {
-  public readonly data: int[];
+  public readonly data: Array<int>;
 
   public func %freeze() {}
 
@@ -3378,8 +3385,8 @@ That's more simple, right? Now, let's see an application in classes. We will mak
 
 ```sn
 class KindOfDict<K, V> {
-  private keys: K[];
-  private values: K[];
+  private keys: Array<K>;
+  private values: Array<V>;
 
   public func has (key: K) -> bool => @keys.has(key);
 
@@ -3538,6 +3545,45 @@ height = treat(hello); // Works fine
 ```
 
 Here, this works because when we call the `treat()` function, inferred templating guesses that `T` refers to `int` thanks to `something` being an `int`. So, this function's call will return a `T`. That's as simple as that.
+
+### Template instances
+
+In reality, templates are instances of a class. Consider the following code:
+
+```sn
+// This line:
+func something<T>() -> void {}
+
+// Is strictly equivalent to:
+func something<T: class_ref>() -> void {}
+```
+
+This specifies the template's _type_. Here, `T` is an instance of the `class_ref` class, which is a special class that refers to an existing class. But we can also specify other types:
+
+```sn
+func createEmptyList<T, SIZE: int>() -> T[SIZE] { /* ... */ }
+
+val list1: int[8] = createEmptyList<int, 8>();
+val list2: int[]  = createEmptyList<int, 8>();
+```
+
+This will work as expected. This also explains how the `List` type work:
+
+```sn
+// Writing this:
+val list1: int[8];
+
+// Is exactly the same than:
+val list1: List<int, 8>;
+
+// And for this one;
+val list2: int[];
+
+// Here is its equivalent;
+val list2: List<int>;
+```
+
+Also, always remember templates are _constants_: they cannot be modified in any case.
 
 ## Dictionaries in depth
 
