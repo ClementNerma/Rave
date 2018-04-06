@@ -4642,7 +4642,7 @@ let *ptr = increment(&(0));
 println!(ptr); // Prints: "1"
 ```
 
-This example is a little bit complex. First, we define a function that takes as an argument a pointer, and returns another. In its body, it adds 1 to the counter on-the-fly (without assigning anything). This results in making a brand new integer, which is not a pointer but a simple value. Then, it makes a pointer from this new value and returns it, so `ptr` receives a new pointer. The function could also have returned a simple number, without making a pointer from it: assigning a simple integer to `ptr` would automatically have turned it into a pointer. So that doesn't change anything here.
+This example is a little bit complex. First, we define a function that takes as an argument a pointer, and returns another. In its body, it adds 1 to the counter on-the-fly (without assigning anything). This results in making a brand new integer, which is not a pointer but a simple value. Then, it makes a pointer from this new value and returns it, by transparently creating a new assignable entity containing this value and returning a pointer to it. So `ptr` receives a new pointer. The function could also have returned a simple number, without making a pointer from it: assigning a simple integer to `ptr` would automatically have turned it into a pointer. So that doesn't change anything here.
 
 ### Reassigning pointers
 
