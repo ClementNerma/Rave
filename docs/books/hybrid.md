@@ -1928,8 +1928,8 @@ They work as expected and print the same result.
 A specific case is when we have two definitions that fit a same call:
 
 ```sn
-func something (arg: Any) : void {}
-func something (arg: int) : void {}
+func something (arg: Any) -> void {}
+func something (arg: int) -> void {}
 
 something(2);
 ```
