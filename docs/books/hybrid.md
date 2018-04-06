@@ -3456,6 +3456,32 @@ That's all! Note that, if a class inherits from another that uses some template(
 
 For information, the `T`, `X`, `Y`, `Z`, `K` and `V` names are reserved to templates.
 
+#### Dynamic return types
+
+Here is a problem we may encounter soon: we have a function, that takes a single argument of any type, do some things with it (like putting it in an array or something) and return an instance of the exact same type. A first idea would be to do this:
+
+```sn
+func treat(something: Any) -> Any;
+```
+
+But we're wrong, because the following code won't work:
+
+```sn
+let height = 8;
+height = treat(hello); // ERROR
+```
+
+An error will be thrown because `height` is typed as an `int` but `treat` returns an instance of `Any`. This is where we block: the function tells it can return absolutely any type of values. To solve this problem, we'll simply use templates with inferred templating:
+
+```sn
+func treat<T>(something: T) -> T;
+
+let height = 8;
+height = treat(hello); // Works fine
+```
+
+Here, this works because when we call the `treat()` function, inferred templating guesses that `T` refers to `int` thanks to `something` being an `int`. So, this function's call will return a `T`. That's as simple as that.
+
 ### Dictionary classes
 
 Here is an heavy part of this chapter: how to make custom dictionaries.
