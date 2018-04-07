@@ -4142,7 +4142,7 @@ A problem we often encounter with the `Any` type is when we want to use some pro
 ```sn
 let data: Any;
 
-func register (data: Any) => data = data;
+func register (new_data: Any) => data = new_data;
 
 func doubleRegister () : int {
   // Multiply the register by 2 and return the result
