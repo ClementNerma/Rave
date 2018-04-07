@@ -620,6 +620,17 @@ scheme = {
     objects: {
       patterns: [
         {
+          // Non-objects (classes and functions' bodies...)
+          begin: /(?<=[a-zA-Z0-9_\)])\s*{/,
+          end: /}/,
+          patterns: [
+            {
+              include: '#global'
+            }
+          ]
+        },
+
+        {
           // Literal objects
           begin: /{/,
           end: /}/,
