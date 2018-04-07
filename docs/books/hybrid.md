@@ -4259,6 +4259,31 @@ func %plus<T>(left: T, right: int) -> bool;
 func %plus<T>(left: string, right: Dictionary<int, T>) -> string[];
 ```
 
+## The reduction directive
+
+Sometimes we want a function to take as an argument a callback that could not be a reduced lambda, as well as its arguments, in order to be able to call it later.
+
+Problem is: there is no type to catch every existing function. We would have to use the `Any` type, that opens the door to non-function types. So, we wouldn't be able to call the function later. The second problem is that our arguments would have to be an array of `Any`, so the builder would reject the call to the callback because arguments' type would not fit the `Any` type.
+
+The solution to this problem is to use the `#reduced` directive. Used as the type of a single argument, it allows to call a function with the callback and all of its arguments. Then, the argument is turned into a reduced lambda that can be called without worrying about arguments. To make this more clear, let's take an example:
+
+```sn
+func nonBlockingCall (callback: #reduced, times: int) {
+  // Do some amazing stuff here
+  for i in 0..times
+    callback();
+  // Do some amazing stuff here
+}
+
+nonBlockingCall (
+  func (name: string) -> void { println!(name); },
+  "Jack ",
+  2
+); // Prints: "Jack Jack "
+```
+
+Here, `callback` is a reduced function that can be called without any arguments. When it's called, the program will transparently call the real callback, which takes one argument, and gives it the name we gave in the call to `nonBlockingCall()`. Then, next arguments can be used for something else, like the `times` argument.
+
 ## Nullable types
 
 Here is a short chapter to show another of the most useful concepts in SilverNight: the nullable types. Basically, nullable types are types that can either be an instance of the class they refer to, or `null`. What's the point? Simply to provide a way of returning _nothing_.
