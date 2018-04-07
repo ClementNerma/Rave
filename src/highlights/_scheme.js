@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.18.4',
+    VERSION: '0.18.5',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -412,6 +412,16 @@ scheme = {
           'purple', 'green', 'white', 'green'
         ],
         [
+          // 'instanceof' operator (special types)
+          /\b(instanceof)\s+(void|self|Any|class_ref|func_ref|var_ref|macro_ref|lambda|T|X|Y|Z|K|V)\b/,
+          'purple', 'purple'
+        ],
+        [
+          // 'instanceof' operator
+          /\b(instanceof)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
+          'purple', 'yellow'
+        ],
+        [
           // IMPORT macro call (closed or not)
           /\b(import!)\s*\((?:\s*([a-zA-Z_\$][a-zA-Z0-9_\$\-]*)\s*[\)]?)?/,
           'purple', 'green'
@@ -453,7 +463,7 @@ scheme = {
         ],
         [
           // Already specified keywords, written here to have partial syntax highlighting
-          /(?<!\.)\b(struct|class|type|dict|package|trait|interface|implements|extends|import|from)(?!\s*:)\b/,
+          /(?<!\.)\b(struct|class|type|dict|package|trait|interface|implements|extends|import|from|instanceof)(?!\s*:)\b/,
           'purple'
         ],
         [
