@@ -1181,9 +1181,9 @@ let name = "John";
 
 if (name == "Marco") {
   println!("Your name is Marco!");
-} else if (name == "Paul") {
+} elsif (name == "Paul") {
   println!("You are Paul.");
-} else if (name == "John") {
+} elsif (name == "John") {
   println!("Welcome, John!");
 } else {
   println!("I can't remember you...");
@@ -1197,9 +1197,9 @@ let name = "John";
 
 if (name == "Marco")
   println!("Your name is Marco!");
-else if (name == "Paul")
+elsif (name == "Paul")
   println!("You are Paul.");
-else if (name == "John")
+elsif (name == "John")
   println!("Welcome, John!");
 else
   println!("I can't remember you...");
@@ -1211,8 +1211,8 @@ _Tip :_ Unlike some other languages, the compiler doesn't care about the indenta
 let name = "John";
 
 if (name == "Marco") println!("Your name is Marco!");
-else if (name == "Paul") println!("You are Paul.");
-else if (name == "John") println!("Welcome, John!");
+elsif (name == "Paul") println!("You are Paul.");
+elsif (name == "John") println!("Welcome, John!");
 else println!("I can't remember you...");
 ```
 
@@ -1358,9 +1358,9 @@ Let's imagine we have a person and want to run a little set of instructions depe
 ```sn
 if (name == "Paul")
   println!("Happy birthday, Paul!");
-else if (name == "John")
+elsif (name == "John")
   println!("How are you, John?");
-else if (name == "Marc")
+elsif (name == "Marc")
   println!("Hello there Marc!");
 else
   println!("I don't know you...");
@@ -2406,12 +2406,12 @@ class Map {
       println("You can't move because you're trapped.");
 
     // Check if we are outside the map
-    else if (x < 0 || x > @cells[0].size - 1 ||
+    elsif (x < 0 || x > @cells[0].size - 1 ||
              y < 0 || y > @cells.size - 1)
       println!("Cannot move outside the map.");
 
     // Check if the cell we are going to is a rock
-    else if (@cells[y][x] is self::ROCK)
+    elsif (@cells[y][x] is self::ROCK)
       println!("There's a rock on your way.");
 
     // Else, move the player
