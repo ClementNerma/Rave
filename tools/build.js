@@ -225,7 +225,7 @@ function readFile(p, verbmsg) {
 /**
  * Write a file
  * @param {string} p The file's path
- * @param {string} str The content to write in the file
+ * @param {string|Buffer} str The content to write in the file
  * @param {string} verbmsg A message for the verbose mode
  * @returns {void}
  */
@@ -244,7 +244,7 @@ function writeFile(p, str, verbmsg) {
     mkdir(parent);
 
   // Read the file and return its content
-  return fs.writeFileSync(p, str, 'utf8');
+  return (str instanceof Buffer) ? fs.writeFileSync(p, str) : fs.writeFileSync(p, str, 'utf8');
 }
 
 /**
