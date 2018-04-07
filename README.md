@@ -20,7 +20,7 @@ The compiler isn't ready yet, so there is no way currently to install it.
 Though, you can still clone this repository to access the documentation or the build tools, by doing:
 
 ```bash
-git clone https://github.com/ClementNerma/SilverNight-Draft.git # Download the repository
+git clone https://github.com/ClementNerma/SilverNight-draft.git # Download the repository
 cd SilverNight # Go to the downloaded folder
 yarn # Install dependencies
 ```
@@ -142,7 +142,7 @@ This part is coming soon.
 
 ## Contribute
 
-You can contribute by [submitting bugs](https://github.com/ClementNerma/SilverNight-Draft/issues) and helping me tracking them or by [proposing some improvements](https://github.com/ClementNerma/SilverNight-Draft/issues) for the language.
+You can contribute by [submitting bugs](https://github.com/ClementNerma/SilverNight-draft/issues) and helping me tracking them or by [proposing some improvements](https://github.com/ClementNerma/SilverNight-draft/issues) for the language.
 
 You can also [contact me by e-mail](mailto:clement.nerma@gmail.com) if you want to talk about something not covered here or for major changes to the language/compiler/doc.
 

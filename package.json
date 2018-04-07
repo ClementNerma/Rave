@@ -1,7 +1,7 @@
 {
   "name": "silvernight",
   "author": "Clément Nerma <clement.nerma@gmail.com>",
-  "homepage": "https://github.com/ClementNerma/SilverNight-Draft",
+  "homepage": "https://github.com/ClementNerma/SilverNight-draft",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "description": "SilverNight is a statically-typed, multi-platform programming language with super-flexible syntax",
@@ -15,11 +15,11 @@
     "rust"
   ],
   "bugs": {
-    "url": "https://github.com/ClementNerma/SilverNight-Draft/issues"
+    "url": "https://github.com/ClementNerma/SilverNight-draft/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ClementNerma/SilverNight-Draft.git"
+    "url": "https://github.com/ClementNerma/SilverNight-draft.git"
   },
   "engines": {
     "node": ">=6.12.3"
