@@ -620,7 +620,7 @@ scheme = {
           end: /}/,
           patterns: [
             {
-              match: /([a-zA-Z_\$][a-zA-Z0-9_\$]+)\s*(:)(?!:)/,
+              match: /([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s*(:)(?!:)/,
               captures: {
                 '1': {
                   name: '${white}'
