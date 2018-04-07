@@ -4588,6 +4588,18 @@ val two = strict!(nullable);
 
 Now, `one` has nullable `int?` type and `two` has standard `int` type.
 
+### Cautious dynamic typecasting
+
+The `try_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `null` if it fails, without throwing an error. Its return type is nullable, like in this example:
+
+```sn
+val works  = try_cast!<int>(2);
+val doesnt = try_cast!<int>({});
+
+println!(works is 2);     // Prints: "true"
+println!(doesnt is null); // Prints: "true"
+```
+
 ### Really optional arguments
 
 We previously saw how to make optional arguments in functions thanks to a default value. But now let's see how to make _really_ optional arguments using nullable types:
