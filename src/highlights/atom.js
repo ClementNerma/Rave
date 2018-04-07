@@ -77,10 +77,10 @@ source = {
           content: {
             ".source.${EXTENSION}": {
               editor: {
-                nonWordCharacters: "/\\()\"':,.;<>~!#@%^&*|+=[]{}`?-…",
+                nonWordCharacters: "/\\()\"'`:,.;<>~!#@%^&*|+=[]{}`?-…",
                 commentStart: "// ",
                 foldEndPattern: "^\\s*\\}|^\\s*\\]|^\\s*\\)",
-                increaseIndentPattern: "(?x) \\{ [^}\"']* $ | \\[ [^\\]\"']* $ | \\( [^)\"']* $",
+                increaseIndentPattern: "(?x) \\{ [^}\"'`]* $ | \\[ [^\\]\"'`]* $ | \\( [^)\"'`]* $",
                 decreaseIndentPattern: "(?x) ^ \\s* (\\s* /[*] .* [*]/ \\s*)* [}\\])]"
               }
             }

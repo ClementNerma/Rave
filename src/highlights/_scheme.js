@@ -479,6 +479,16 @@ scheme = {
       'white', 'blue'
     ],
     [
+      // Object's unsafe function's call
+      /(\.)([a-zA-Z_\$][a-zA-Z0-9_\$]*!)(?=\s*\()/,
+      'white', 'cyan'
+    ],
+    [
+      // Object's unsafe function's call with a template
+      /(\.)([a-zA-Z_\$][a-zA-Z0-9_\$]*!)(?=\s*<(.*?)>\s*\s*\()/,
+      'white', 'cyan'
+    ],
+    [
       // Object's *constant* property
       /(\.)([A-Z_\$][A-Z0-9_\$]*)(?=\b)/,
       'white', 'orange'
