@@ -1133,6 +1133,19 @@ val n1 = list[0],
 
 This avoids making a useless entity that takes time and memory for nothing if we don't need it.
 
+The same syntax applies to tuples:
+
+```sn
+func invert (left: int, right: int) => (int, int) {
+  return (right, left);
+}
+
+val (two, one) = invert(1, 2);
+
+println!(two); // Prints: "2"
+println!(one); // Prints: "1"
+```
+
 ## The blocks
 
 ### Conditional blocks
