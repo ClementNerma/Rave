@@ -260,7 +260,7 @@ scheme = {
         ],
         [
           // Special types
-          /(?<!:)(:)\s*(void|self|Any|class_ref|func_ref|var_ref|macro_ref|func|lambda|T|X|Y|Z|K|V)\b/,
+          /(?<!:)(:)\s*(void|self|Any|class_ref|func_ref|var_ref|macro_ref|iter|async|unsafe|func|lambda|T|X|Y|Z|K|V)\b/,
           'cyan', 'purple'
         ],
         [
