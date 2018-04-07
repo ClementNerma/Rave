@@ -11,8 +11,8 @@ scheme = {
     VERSION: '0.18.2',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
-    REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight',
-    README: "# SilverNight\n\nSyntax highlighting package for the [SilverNight language](https://github.com/ClementNerma/SilverNight).",
+    REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-Draft',
+    README: "# SilverNight\n\nSyntax highlighting package for the [SilverNight language](https://github.com/ClementNerma/SilverNight-Draft).",
 
     // Define all native colors
     blue: 'entity.name.function.sn',
