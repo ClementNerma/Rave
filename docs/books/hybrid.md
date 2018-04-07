@@ -1337,6 +1337,18 @@ do {
 
 This code will display `1` before the loops ends, because the condition is evaluated _after_ the set of instructions.
 
+### `while` variant: `loop`
+
+This loop acts like a `while true`, but its point is to clearly indicate we are doing an infinite loop, and allow a better optimization of the code. For example, the above code:
+
+```sn
+loop {
+  println!("Hello !");
+}
+```
+
+Will print `Hello !` undefinitely.
+
 ### `when` for matches
 
 Another useful block is `when`. It returns a result depending on _switchs_ that relies on the value you gave to it.
