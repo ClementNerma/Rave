@@ -250,13 +250,13 @@ scheme = {
         ],
         [
           // Declaration of variables
-          /\b(let)\s+((:)[a-zA-Z_\$][a-zA-Z0-9_\$]*\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-          'purple', 'yellow', 'cyan', 'red', 'cyan'
+          /\b(let)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          'purple', 'red', 'cyan'
         ],
         [
           // Declaration of constants, frozens and values
-          /(frozen|val|pln)\s+((:)[a-zA-Z_\$][a-zA-Z0-9_\$]*\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-          'purple', 'yellow', 'cyan', 'red', 'orange'
+          /(frozen|val|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          'purple', 'red', 'orange'
         ],
         [
           // Special types
