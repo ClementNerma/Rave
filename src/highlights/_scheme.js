@@ -448,7 +448,7 @@ scheme = {
         ],
         [
           // Keywords needing a separator
-          /(?<!\.)\b(let|pln|val|frozen|public|protected|private|friend|static|abstract|final|unique|virtual|extern|readonly|in|of|export|return|async|iter|yield|unsafe|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
+          /(?<!\.)\b(let|pln|val|frozen|public|protected|private|friend|static|abstract|final|unique|virtual|extern|readonly|in|export|return|async|iter|yield|unsafe|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
           'purple'
         ],
         [
