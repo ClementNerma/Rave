@@ -382,6 +382,11 @@ window.addEventListener('keydown', e => {
   if (e.keyCode === 39)
     // Go to the next section
     showSection(currentSectionID + 1);
+
+  // If the "lower than" key was pressed...
+  if (e.keyCode === 226)
+    // Toggle the summary
+    toggleSummary();
 });
 
 // Now the page is ready, show it
