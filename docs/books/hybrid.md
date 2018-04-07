@@ -5254,6 +5254,21 @@ func readName () -> string {
 
 Here, the content of `functions.sn` will be imported as it is right where the `#include` directive is. This way, we can split our source code into several files.
 
+To manage better our packages, we can also include files using an alias:
+
+```sn
+// File: "index.sn"
+#package
+
+#include "functions.sn" as Functions
+
+let name: string;
+
+export Functions;
+```
+
+Here, `Functions` is a structure that contains all resources defined in `functions.sn`.
+
 _Tip :_ The `#include` directive can be used everywhere, even outside a package. Think to it to structure your code!
 
 ### Importing a package
