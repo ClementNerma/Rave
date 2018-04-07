@@ -1,0 +1,45 @@
+
+/**
+ * Calculate terms of the Fibonacci suite
+ * @returns A new term of the suite (starting from 0)
+ */
+iter fibonacci () -> int {
+  // n-2th term
+  let t1: int64 = 0;
+  // n-1th term
+  let t2: int64 = 1;
+  // nth term
+  let t3: int64;
+  // Copy of the nth term
+  let t_: int64 = t3;
+
+  // Yield the first term
+  yield t1;
+  // Yield the second term
+  yield t2;
+
+  // Forever...
+  loop {
+    // Calculate a new term of the suite
+    t3 = t1 + t2;
+
+    // If the new term is lower than the previous one...
+    if (t3 < t_)
+      // An overflow occured ; stop the iterator
+      return ;
+
+    // Yield it
+    yield t3;
+
+    // Update the two previous terms
+    t1 = t2;
+    t2 = t3;
+    t_ = t3;
+  }
+}
+
+// For each term calculated by the suite...
+for term in fibonacci {
+  // Display the next term
+  println!(term);
+}
