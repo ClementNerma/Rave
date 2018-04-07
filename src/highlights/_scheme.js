@@ -259,10 +259,12 @@ scheme = {
           'purple', 'yellow', 'cyan', 'red', 'orange'
         ],
         [
+          // Special types
           /(?<!:)(:)\s*(void|self|Any|class_ref|func_ref|var_ref|macro_ref|func|lambda|T|X|Y|Z|K|V)\b/,
           'cyan', 'purple'
         ],
         [
+          // Other types
           /(?<!:)(:)\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'cyan', 'yellow'
         ],
