@@ -41,5 +41,5 @@ iter fibonacci () -> int {
 // For each term calculated by the suite...
 for term in fibonacci {
   // Display the next term
-  println!(term);
+  println!(term.value);
 }
