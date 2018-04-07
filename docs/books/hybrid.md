@@ -4268,21 +4268,23 @@ Problem is: there is no type to catch every existing function. We would have to 
 The solution to this problem is to use the `#reduced` directive. Used as the type of a single argument, it allows to call a function with the callback and all of its arguments. Then, the argument is turned into a reduced lambda that can be called without worrying about arguments. To make this more clear, let's take an example:
 
 ```sn
-func nonBlockingCall (callback: #reduced, times: int) {
+func repeatedCall (callback: #reduced, times: int) {
   // Do some amazing stuff here
-  for i in 0..times
+  for i in 0..times {
     callback();
-  // Do some amazing stuff here
+  }
 }
 
-nonBlockingCall (
+repeatedCall (
   func (name: string) -> void { println!(name); },
   "Jack ",
   2
 ); // Prints: "Jack Jack "
 ```
 
-Here, `callback` is a reduced function that can be called without any arguments. When it's called, the program will transparently call the real callback, which takes one argument, and gives it the name we gave in the call to `nonBlockingCall()`. Then, next arguments can be used for something else, like the `times` argument.
+Here, `callback` is a reduced function that can be called without any arguments. When it's called, the program will transparently call the real callback, which takes one argument, and gives it the name we gave in the call to `repeatedCall()`. Then, next arguments can be used for something else, like the `times` argument.
+
+Note that, because the callback hadn't a specific signature in the `repeatedCall`'s declaration, its arguments' type as well as its return type couldn' tbe guessed, so they must be provided.
 
 ## Nullable types
 
