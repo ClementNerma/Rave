@@ -114,6 +114,7 @@ source = {
         description: "Syntax highlighting for the ${LANGUAGE} programming language",
         version: "${VERSION}",
         publisher: "clement-nerma",
+        icon: "${BUILTIN:icon.png}",
         engines: {
           vscode: "^1.19.0"
         },
