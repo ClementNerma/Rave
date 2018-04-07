@@ -5326,8 +5326,6 @@ This will work as expected. A good point about this macro is that the package is
 
 ### The package manager
 
-**WARNING: Because the toolchain is not ready yet, the package manager is not available at this time. This part of the book is purely informative and won't work if you try it.**
-
 When you installed the toolchain at the beginning of this book, it came with the package manager in it, because it's part of the toolchain.
 
 This tool aims to provide a way to simply manage the packages used by our program, so we can in a single line download and install a new package from the official repository, update and remove the installed packages, etc.
