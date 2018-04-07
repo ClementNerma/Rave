@@ -362,7 +362,7 @@ self = {
       BUILD_CONSTANTS.OUTPUT = output_path;
 
       // Call the help function
-      say(cyan(`Installing extension for ${yellow(editors[name])}...`));
+      say(cyan(`Installing extension for ${green('"' + editors[name] + '"')}...`));
       let installdir = source.install(BUILD_CONSTANTS);
 
       // Display a success message
