@@ -149,14 +149,6 @@ self = {
       return patterns;
     }
 
-    // Treat native patterns
-    scheme.patterns = treatPatterns(scheme.patterns, 'patterns');
-
-    // For each group in the repository...
-    for (let group of Reflect.ownKeys(scheme.repository))
-      // Treat it too
-      scheme.repository[group].patterns = treatPatterns(scheme.repository[group].patterns, `group of patterns "${group}"`)
-
     // Determine the output path
     const output_path = self.argv.output
       ? path.normalize(self.argv.output)
@@ -166,9 +158,17 @@ self = {
     if (folderExists(output_path))
       // Remove it
       rmdir(output_path);
-    
+
     // (Re-)create the output folder
     mkdir(output_path);
+
+    // Treat native patterns
+    scheme.patterns = treatPatterns(scheme.patterns, 'patterns');
+
+    // For each group in the repository...
+    for (let group of Reflect.ownKeys(scheme.repository))
+      // Treat it too
+      scheme.repository[group].patterns = treatPatterns(scheme.repository[group].patterns, `group of patterns "${group}"`)
 
     /**
      * Merge two objects
@@ -190,14 +190,23 @@ self = {
      */
     function formatConstants(str) {
       // Format the string and return it
-      return str.replace(/\${([a-zA-Z_\$][a-zA-Z0-9_\$]*)}/g, (m, name) => {
-        // If this constant is known...
-        if (BUILD_CONSTANTS.hasOwnProperty(name))
-          // Replace the call by its value
-          return BUILD_CONSTANTS[name];
+      return str.replace(/\${(DISK:)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)}/g, (m, disk, name) => {
+        // If this constant is unknown...
+        if (! BUILD_CONSTANTS.hasOwnProperty(name))
+          // ERROR
+          error(`Unknown build constant "${name}".`);
 
-        // ERROR
-        error(`Unknown build constant "${name}".`);
+        // If the content must be written in a file...
+        if (disk) {          
+          // Generate the file
+          // NOTE: diskbc = disk build constants
+          writeFile(output_path + '/.diskbc/cst-' + name + '.plain', BUILD_CONSTANTS[name], `Temporary file for build constant "${name}"`);
+
+          // Return its path
+          return '.diskbc/cst-' + name + '.plain';
+        } else
+          // Else, simply replace the call by its value
+          return BUILD_CONSTANTS[name];
       });
     }
 
