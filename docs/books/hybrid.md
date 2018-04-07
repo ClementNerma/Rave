@@ -1136,7 +1136,7 @@ This avoids making a useless entity that takes time and memory for nothing if we
 The same syntax applies to tuples:
 
 ```sn
-func invert (left: int, right: int) => (int, int) {
+func invert (left: int, right: int) -> (int, int) {
   return (right, left);
 }
 
