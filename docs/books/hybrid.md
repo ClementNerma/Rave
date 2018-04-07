@@ -4303,17 +4303,15 @@ func summation (callback: #reduced -> int, times: int) {
 As you can guess, `#reduced` is an equivalent to `#reduced -> void`. In fact, `#reduced` is simply an equivalent to `func(...anything...)`, so it's even possible to write:
 
 ```sn
-func summation (callback: iter #reduced -> int) {
+func summation (callback: unsafe #reduced -> int, times: int) {
   let sum = 0;
 
-  for term in callback {
-    sum += term;
+  for i in 0..times {
+    sum += callback();
   }
 
   return sum;
 }
-
-println!(summation(1...3)); // Prints: "6"
 ```
 
 ## Nullable types
