@@ -60,8 +60,11 @@ self = {
       // ERROR
       error(`Unknown editor "${name}"`, 19);
 
+    // Determine the source folder
+    let source_path = 'src/highlights';
+
     // Determine its path
-    let target_path = `src/highlights/${name}.js`;
+    let target_path = `${source_path}/${name}.js`;
 
     // If the file does not exist...
     if (!fileExists(target_path))
@@ -207,7 +210,19 @@ self = {
         } else
           // Else, simply replace the call by its value
           return BUILD_CONSTANTS[name];
-      });
+      })
+        .replace(/\${BUILTIN:([^}]+?)}/, (m, file) => {
+          // If the file doesn't exist...
+          if (! fileExists(source_path + '/' + file))
+            // ERROR
+            error(`Provided builtin file "${file}" was not found`, 37);
+
+          // Copy it to the extension's folder
+          copy(source_path + '/' + file, output_path + '/.diskbc/cpy-' + file);
+
+          // Return the path of the copied file
+          return '.diskbc/cpy-' + file;
+        });
     }
 
     /**
