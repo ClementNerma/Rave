@@ -4157,7 +4157,7 @@ func doubleRegister () : int {
 }
 ```
 
-What happens here? We simply _dynamically_ convert `data` to an `int`. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. This uses the sub-typing scheme: if the real type of `data` is `int` or one of its child, it'll work, else it'll throw a runtime error.
+What happens here? We simply _dynamically_ convert `data` to an `int`. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. This uses the inverse of sub-typing scheme: if the real type of `data` is `int` or one of its **mother** classes, it'll work, else it'll throw a runtime error.
 
 Dynamic typecasting is especially useful when coupled with the `instanceof` operator, which checks if a value is instance of a given class. Here is how it goes:
 
