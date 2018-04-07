@@ -321,16 +321,29 @@ scheme = {
           /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=<.*>\s*\()/,
           'blue'
         ],
-        [
-          // Template usage (with reserved template names)
-          /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(<)(T|X|Y|Z|K|V)(?=>)/,
-          'yellow', 'cyan', 'purple'
-        ],
-        [
+        {
           // Template usage
-          /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(<)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=[^;]*>)/,
-          'yellow', 'cyan', 'yellow'
-        ],
+          begin: /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(<)/,
+          beginCaptures: {
+            '1': {
+              name: '${yellow}'
+            },
+            '2': {
+              name: '${cyan}'
+            }
+          },
+          end: /(>)/,
+          endCaptures: {
+            '1': {
+              name: '${cyan}'
+            }
+          },
+          patterns: [
+            {
+              include: '#global'
+            }
+          ]
+        },
         [
           // Function's or declaration's special type (not caught by the previous expressions)
           /(?<!:)(?:(:)|(->))\s*((?:&\s*)*)(void|self|Any|class_ref|func_ref|var_ref|macro_ref|lambda|T|X|Y|Z|K|V)(\?)?(?=\s*[\{\[\),;=]|\s*=>|\s*with)/,
