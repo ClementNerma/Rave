@@ -4318,7 +4318,7 @@ val point: Point = getNilPoints([]);
 Our program will crash because `getNilPoints` returned a `void` while a `Point` was expected. This is simply due to the fact no point matched the condition in the `for` loop, so the function ended without returning nothing (which is equivalent to returning an instance of `void`). So, in order to make this function works anyway, and without returning a whole structure with a `success` boolean or something ugly, we can use a nullable type:
 
 ```sn
-func getNilPoints (array: Point[]) -> Point? {
+func getNilPoints (array: Point[]) -> Point?;
 ```
 
 This allows the function to return a `Point` instance **or** a `void` instance. But, our program will still crash with an error message telling that `Point?` cannot be converted to `Point`. That's simply because we declared our constant with the `Point` type, but we must now tell it can also contain a `void`:
