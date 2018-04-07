@@ -1,0 +1,28 @@
+
+// A container for user's guess
+let guess = -1;
+// The secret number to guess
+let secret = random!(uint);
+// Remaining lives
+let lives = 10;
+
+// While the user hasn't guessed the secret...
+while guess isnt secret {
+  // Decrease the number of remaining lives
+  // If it's now equal to zero...
+  if (not -- lives) {
+    // Game over!
+    println!("Game over!");
+    break ;
+  }
+
+  // Get the user's input
+  guess = console.readInt();
+
+  // Compare the guess to the secret number
+  when guess {
+    (_ < secret) -> println!("Too low!");
+    (_ > secret) -> println!("Too high!");
+    (_ is secret) -> println!("You won!");
+  }
+}
