@@ -33,7 +33,7 @@ As a pre-requisite you must have [Git](https://git-scm.com/) as well as [Node.js
 Open a terminal and run the following commands:
 
 ```bash
-git clone https://github.com/ClementNerma/SilverNight.git
+git clone https://github.com/ClementNerma/SilverNight-Draft.git
 cd SilverNight/compiler
 yarn install-tools # NPM: `npm run install-tools`
 ```
@@ -50,7 +50,7 @@ If it shows you a version number, the tools are available globally.
 
 #### Compiling programs
 
-You can write SilverNight with any text editor - even with the Windows' Notepad! But we advise you to use a code editor, like [Atom](https://atom.io) or [Visual Studio Code](https://code.visualstudio.com), and install the SilverNight [support extension](https://github.com/ClementNerma/SilverNight#syntax-highlighting-support)  for them. This will highlight your code following different rules to make it more pleasant to see.
+You can write SilverNight with any text editor - even with the Windows' Notepad! But we advise you to use a code editor, like [Atom](https://atom.io) or [Visual Studio Code](https://code.visualstudio.com), and install the SilverNight [support extension](https://github.com/ClementNerma/SilverNight-Draft#syntax-highlighting-support)  for them. This will highlight your code following different rules to make it more pleasant to see.
 
 Once you wrote your code, save it in a file with the `.sn` extension. Then, open a terminal and go into the folder in which your file is, and run `snt program.sn` (replace `program.sn` by the name of your file) to compile it. This will produce an executable file in the same directory (the name will depend on the platform you are using). You can run this executable directly on any computer that is under the same platform.
 
