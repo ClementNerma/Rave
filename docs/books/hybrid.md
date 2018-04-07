@@ -4495,6 +4495,23 @@ val two = strict!(nullable);
 
 Now, `one` has nullable `int?` type and `two` has standard `int` type.
 
+### Really optional arguments
+
+We previously saw how to make optional arguments in functions thanks to a default value. But now let's see how to make _really_ optional arguments using nullable types:
+
+```sn
+func sayHello (name: string, age?: int) {
+  println!(`Hello ${name}` + (age is null ? '!' : `, you are ${age} year-old.`));
+}
+
+println!("Jack"); // Prints: "Hello Jack!"
+println!("John", 28); // Prints: "Hello John, you are 28 year-old."
+```
+
+Note that the `?` symbol has been put after the argument's name, and not after its type. If you had written `age: int?`, the argument wouldn't have been optional, but it would have accepted the `null` value (though we would have had to specify it explicitly).
+
+Here, `age` is an `int?` that can also be omitted (in this case it is equal to `null`). That's as simple as that.
+
 ### A concrete example
 
 A concrete example of nullable types usage: the problem of array initialization.
