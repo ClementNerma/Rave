@@ -5233,13 +5233,16 @@ Because a package's source code can (and will often) be heavy, we can use the `#
 // File: "index.sn"
 #package
 
-let name: string;
 #include "functions.sn"
+
+let name: string;
+
 export { defineName, readName };
 
 // File: "functions.sn"
-func defineName (newName: string with (c => c) =>
+func defineName (newName: string with (c => c)) {
   name = newName;
+}
 
 func readName () -> string {
   if (name)
@@ -5247,8 +5250,6 @@ func readName () -> string {
   else
     throw new Error("Name is not defined.");
 }
-
-export { defineName, readName };
 ```
 
 Here, the content of `functions.sn` will be imported as it is right where the `#include` directive is. This way, we can split our source code into several files.
