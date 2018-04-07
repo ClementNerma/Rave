@@ -4314,6 +4314,29 @@ func summation (callback: unsafe #reduced -> int, times: int) {
 }
 ```
 
+A last use is when we want to be able to give some data to the callback, so we want to require it having some arguments. Here is an examplpe:
+
+```sn
+func summation (callback: #reduced (num: int) -> int, times: int) -> int {
+  let sum = 0;
+
+  for i in 0..times {
+    sum += callback(i);
+  }
+
+  return sum;
+}
+
+println!(summation(
+  // The callback
+  func (num: int, coeff: int) -> int { return num * coeff; },
+  // Its only argument (`coeff`)
+  3
+)); // Prints: "18"
+```
+
+As we can see here, the callback's argument required in the `summation`'s signature must be placed at the very beginning of the callback's arguments. We couldn't have written `func (coeff: int, num: int) -> int` for example.
+
 ## Nullable types
 
 Here is a short chapter to show another of the most useful concepts in SilverNight: the nullable types. Basically, nullable types are types that can either be an instance of the class they refer to, or `null`. What's the point? Simply to provide a way of returning _nothing_.
