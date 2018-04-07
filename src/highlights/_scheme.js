@@ -433,13 +433,13 @@ scheme = {
         ],
         [
           // Key + value iterators in `for`
-          /(for)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s*(->)\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-          'purple', 'cyan', 'purple', 'cyan'
+          /(for)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s*(->)\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?:\s+(in)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*))?\b/,
+          'purple', 'cyan', 'purple', 'cyan', 'purple', 'orange'
         ],
         [
-          // Iterator in `for` and `foreach`
-          /(for|foreach)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-          'purple', 'cyan'
+          // Iterator in `for`
+          /(for|foreach)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?:\s+(in)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*))?\b/,
+          'purple', 'cyan', 'purple', 'orange'
         ],
         [
           // Keywords
