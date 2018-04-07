@@ -469,7 +469,7 @@ scheme = {
         [
           // Static operator for classes
           /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(::)(?=[a-zA-Z_\$])/,
-          'yellow', 'white'
+          'yellow', 'cyan'
         ],
         [
           // Arguments expansion
