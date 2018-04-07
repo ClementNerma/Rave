@@ -3719,7 +3719,7 @@ while true {
 But the syntax of the iterator is kind of heavy... So, there's a syntax sugar to write iterators as functions:
 
 ```sn
-iter func mySuperIterator () -> int {
+iter mySuperIterator () -> int {
   for i in 0..10 {
     yield i;
   }
@@ -3728,12 +3728,12 @@ iter func mySuperIterator () -> int {
 
 This code is equivalent to the class we wrote before. We'll, its a lot more simplier here, write? Let's detail this.
 
-The function is marked with the `iter` keyword to indicate it's an iterator. Its signature also tells it returns an iteration. In its body, it simply makes a loop that _yields_ some values. To be exact, each time the `yield` keyword is encountered, the value is returned and the function is _paused_ until the program asks to generate values again. So, all resources locally defined by the function stays in memory.
+The function is marked with the `iter` keyword to indicate it's an iterator, but it does not use the `func` keyword (because this declaration will in reality produce an `Iterator<int>`). Its signature also tells it returns an iteration. In its body, it simply makes a loop that _yields_ some values. To be exact, each time the `yield` keyword is encountered, the value is returned and the function is _paused_ until the program asks to generate values again. So, all resources locally defined by the function stays in memory.
 
 In _synchronous iterators_, like the one we've written, the generator is considered as finished when the function ends. But it's also possible to write _asynchronous iterators_, though they're a bit heavier:
 
 ```sn
-async iter func mySuperIterator () -> int {
+async iter mySuperIterator () -> int {
   for i in 0..10 {
     await sleep(1);
     yield i;
