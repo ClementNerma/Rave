@@ -3719,7 +3719,7 @@ while true {
 But the syntax of the iterator is kind of heavy... So, there's a syntax sugar to write iterators as functions:
 
 ```sn
-iter func mySuperIterator () -> Iteration<int> {
+iter func mySuperIterator () -> int {
   for i in 0..10 {
     yield i;
   }
@@ -3733,7 +3733,7 @@ The function is marked with the `iter` keyword to indicate it's an iterator. Its
 In _synchronous iterators_, like the one we've written, the generator is considered as finished when the function ends. But it's also possible to write _asynchronous iterators_, though they're a bit heavier:
 
 ```sn
-async iter func mySuperIterator () -> Iteration<int> {
+async iter func mySuperIterator () -> int {
   for i in 0..10 {
     await sleep(1);
     yield i;
