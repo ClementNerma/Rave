@@ -4286,6 +4286,36 @@ Here, `callback` is a reduced function that can be called without any arguments.
 
 Note that, because the callback hadn't a specific signature in the `repeatedCall`'s declaration, its arguments' type as well as its return type couldn' tbe guessed, so they must be provided.
 
+It's also possible to ask for a specific return type in a returned function:
+
+```sn
+func summation (callback: #reduced -> int, times: int) {
+  let sum = 0;
+
+  for i in 0..times {
+    sum += callback();
+  }
+
+  return sum;
+}
+```
+
+As you can guess, `#reduced` is an equivalent to `#reduced -> void`. In fact, `#reduced` is simply an equivalent to `func(...anything...)`, so it's even possible to write:
+
+```sn
+func summation (callback: iter #reduced -> int) {
+  let sum = 0;
+
+  for term in callback {
+    sum += term;
+  }
+
+  return sum;
+}
+
+println!(summation(1...3)); // Prints: "6"
+```
+
 ## Nullable types
 
 Here is a short chapter to show another of the most useful concepts in SilverNight: the nullable types. Basically, nullable types are types that can either be an instance of the class they refer to, or `null`. What's the point? Simply to provide a way of returning _nothing_.
