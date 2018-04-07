@@ -448,12 +448,12 @@ scheme = {
         ],
         [
           // Iterator in `for`
-          /(for|foreach)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?:\s+(in)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*))?\b/,
+          /(for)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?:\s+(in)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*))?\b/,
           'purple', 'cyan', 'purple', 'orange'
         ],
         [
           // Keywords
-          /(?<!\.)\b(func|lambda|do|if|else|elsif|for|foreach|while|loop|unless|until|break|continue|when|default|try|catch)(?!\s*:)\b/,
+          /(?<!\.)\b(func|lambda|do|if|else|elsif|for|while|loop|unless|until|break|continue|when|default|try|catch)(?!\s*:)\b/,
           'purple'
         ],
         [
