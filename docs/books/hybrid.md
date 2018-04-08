@@ -4331,7 +4331,7 @@ Note that, because the callback hadn't a specific signature in the `repeatedCall
 It's also possible to ask for a specific return type in a returned function:
 
 ```sn
-func summation (callback: #reduced -> int, times: int) {
+func summation (callback: #reduced -> int, times: int) -> int {
   let sum = 0;
 
   for i in 0..times {
@@ -4345,7 +4345,7 @@ func summation (callback: #reduced -> int, times: int) {
 As you can guess, `#reduced` is an equivalent to `#reduced -> void`. In fact, `#reduced` is simply an equivalent to `func(...anything...)`, so it's even possible to write:
 
 ```sn
-func summation (callback: unsafe #reduced -> int, times: int) {
+func summation (callback: unsafe #reduced -> int, times: int) -> int {
   let sum = 0;
 
   for i in 0..times {
