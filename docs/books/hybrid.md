@@ -4081,7 +4081,7 @@ To conclude, simply remember that every function signature (with `#macro` replac
 Unsafe functions are declared like macros, except they are called like standard functions and therefore won't replace their own call by another content. To be exact, when they are called their content replaces their call but in a transparent way. Let's see it:
 
 ```sn
-unsafe func sayHello(name: string) -> void {
+unsafe func sayHello! (name: string) -> void {
   println!(name);
 }
 
@@ -4119,7 +4119,7 @@ takeAnInt(name); // Line 5
 Here is the same thing with unsafe functions:
 
 ```sn
-unsafe func sayHello(name: string) -> void {
+unsafe func sayHello! (name: string) -> void {
   println!(name);
   takeAnInt(name); // Line 3
 }
