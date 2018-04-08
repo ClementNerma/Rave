@@ -805,6 +805,22 @@ val jack: Identity = {
 println!(jack.adult); // Prints: "false"
 ```
 
+Also, constants prevent structures' data from being modified:
+
+```sn
+struct Identity {
+  name: string;
+  adult: bool;
+}
+
+val jack: Identity = {
+  name: "Jack",
+  adult: true
+};
+
+jack.adult = false; // ERROR
+```
+
 ### Dictionaries
 
 Last but not least, let's imagine we want to associate the name of a person with its age. We want to be able to add or remove persons at anytime. A structure will of course not be adapted for this purpose. But there is a tool for this type of situations: the dictionaries. These act like arrays or lists, but this time indexes are not forced to be integers but any resource, even boolean or other dictionaries! They are of course extensible.
