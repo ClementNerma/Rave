@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.18.8',
+    VERSION: '0.19.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -254,8 +254,8 @@ scheme = {
           'purple', 'red', 'cyan'
         ],
         [
-          // Declaration of constants, frozens and values
-          /(frozen|val|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          // Declaration of constants (plain or not)
+          /(val|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'red', 'orange'
         ],
         [
@@ -274,8 +274,8 @@ scheme = {
           'purple', 'purple', 'red', 'cyan'
         ],
         [
-          // Declaration statement in classes for constants and frozens (plain or not)
-          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?(val|frozen|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          // Declaration statement in classes for constants (plain or not)
+          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?(val|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'purple', 'purple', 'purple', 'red', 'orange'
         ],
         [
@@ -458,7 +458,7 @@ scheme = {
         ],
         [
           // Keywords needing a separator
-          /(?<!\.)\b(let|pln|val|frozen|public|protected|private|friend|static|abstract|final|unique|virtual|extern|readonly|in|export|return|async|iter|yield|unsafe|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
+          /(?<!\.)\b(let|pln|val|public|protected|private|friend|static|abstract|final|unique|virtual|extern|readonly|in|export|return|async|iter|yield|unsafe|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
           'purple'
         ],
         [
