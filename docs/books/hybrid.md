@@ -4120,7 +4120,7 @@ let i: Any = 2;
 let j: *mut int = cast!<int>(&mut i);
 
 // Modify the casted value
-j = 8;
+*j = 8;
 
 // Cast a new time the original value to print it
 println!(cast!<int>(&i)); // Prints: "8"
@@ -4952,7 +4952,7 @@ str = "Goodbye !";
 println!(ptr); // Prints: "Goodbye !"
 
 // Change the pointer's value
-ptr = "Yeah !"; // ERROR
+*ptr = "Yeah !"; // ERROR
 ```
 
 As you can see, we can make constant pointers from mutables, but this also works with constants of course. This is especially useful when we want to make a pointer that cannot be written, so we preserve the referred's value.
@@ -4968,7 +4968,7 @@ let ptr: *mut = &mut hero;
 // let ptr: *mut string = &mut hero;
 
 // Assign a new value to the pointer
-ptr = "John";
+*ptr = "John";
 
 // The changes are reflected on the referred
 println!(hero); // Prints: "John"
@@ -4983,7 +4983,7 @@ let hero = {
 };
 
 let ptr: *mut = &mut (hero.name);
-ptr = "John";
+*ptr = "John";
 
 println!(hero.name); // Prints: "John"
 ```
@@ -5053,7 +5053,7 @@ let ptr2: *mut = fly_mut_ptr!(2);
 Pointers can be used to manipulate data in functions. Here is how it goes:
 
 ```sn
-func increment (counter: *mut int) => counter ++;
+func increment (counter: *mut int) => *counter += 1;
 
 let counter = 0;
 increment(&mut counter);
@@ -5086,15 +5086,15 @@ let j = 0;
 let ptr: *mut = &mut i;
 
 // Assign a new value to the pointer (its target remains the same)
-ptr = 8;
+*ptr = 8;
 println!(i); // Prints: "8"
 println!(j); // Prints: "0"
 
 // Assign a new target to the pointer
-*ptr = &mut j;
+ptr = &mut j;
 
 // Assign a new value to the pointer
-ptr = 3;
+*ptr = 3;
 println!(i); // Prints: "8"
 println!(j); // Prints: "3"
 ```
@@ -5107,12 +5107,12 @@ Sometimes we simply want to make a pointer referring to nothing, after using it.
 let i = 0;
 
 let ptr: *mut = &mut i;
-ptr = 8; // Works fine
+*ptr = 8; // Works fine
 
 free!(ptr);
-ptr = 3; // ERROR because the pointer was freed
+*ptr = 3; // ERROR because the pointer was freed
 
-*ptr = &i; // ERROR because the pointer was freed
+ptr = &i; // ERROR because the pointer was freed
 ```
 
 This can also be done using a manual assignment, if we want to re-use the pointer later by assigning a new target to it:
@@ -5121,13 +5121,13 @@ This can also be done using a manual assignment, if we want to re-use the pointe
 let i = 0;
 
 let ptr: &mut = &mut i;
-ptr = 8; // Works fine
+*ptr = 8; // Works fine
 
-*ptr = NULL;
-ptr = 3; // ERROR because the pointer refers to `null`
+ptr = NULL;
+*ptr = 3; // ERROR because the pointer refers to `null`
 
-*ptr = &mut i; // Works fine
-ptr = 2; // Works fine
+ptr = &mut i; // Works fine
+*ptr = 2; // Works fine
 
 println!(i); // Prints: "2"
 ```
@@ -5158,8 +5158,9 @@ let j = 0;
 
 let ptr: * = &i;
 
-println!(*ptr is &i); // Prints: "true"
-println!(*ptr is &j); // Prints: "false"
+println!(ptr is &i); // Prints: "true"
+println!(ptr is &j); // Prints: "false"
+println!(*ptr is 0); // Prints: "true"
 ```
 
 ### Target's state
@@ -5175,20 +5176,20 @@ let j = 2;
 let ptr1: *mut = &mut i;
 val ptr2: *mut = &mut i;
 
-ptr1 = 3; // Works fine
-ptr2 = 4; // Works fine
+*ptr1 = 3; // Works fine
+*ptr2 = 4; // Works fine
 
-*ptr1 = &j; // Works fine
-*ptr2 = &j; // ERROR (pointer is constant)
+ptr1 = &j; // Works fine
+ptr2 = &j; // ERROR (pointer is constant)
 
 let ptr3: * = &i;
 val ptr3: * = &i;
 
-ptr3 = 5; // ERROR (referred is constant)
-ptr4 = 6; // ERROR (referred is constant)
+*ptr3 = 5; // ERROR (referred is constant)
+*ptr4 = 6; // ERROR (referred is constant)
 
-*ptr3 = &j; // Works fine
-*ptr4 = &j; // ERROR (pointer is constant)
+ptr3 = &j; // Works fine
+ptr4 = &j; // ERROR (pointer is constant)
 ```
 
 The referred's state is considered when the reference is created. We can make a constant reference from a constant, a constant reference from a mutable, a mutable reference from a mutable, but not a mutable reference from a constant:
@@ -5224,11 +5225,11 @@ let j = 2;
 let ptr: *mut *mut = &mut &mut i;
 // `ptr` refers to an unnamed pointer itself refering to `i`
 
-ptr = 8;
+**ptr = 8;
 println!(i); // Prints: "8"
 
-**ptr = &mut i; // ERROR
-**ptr = &mut &mut i; // Works fine (changes nothing)
+ptr = &mut i; // ERROR
+ptr = &mut &mut i; // Works fine (changes nothing)
 ```
 
 Now, let's take two examples to detail this because this is a bit complex:
@@ -5241,7 +5242,7 @@ println!(ptr); // Prints: "2"
 This code rewrites the target of the pointer `ptr` is itself referring to, let's call it the intermediate pointer. So this code rewrites the target of the intermediate pointer, and because `ptr` is referring to it, its value will be the same.
 
 ```sn
-**ptr = &mut &mut i; // Works fine
+ptr = &mut &mut i; // Works fine
 println!(ptr); // Prints: "8"
 ```
 
@@ -5258,7 +5259,7 @@ let ptr: *mut *mut = &mut &mut i;
 // Get the intermediate pointer
 let inter: *mut = *ptr;
 
-inter = 8;
+*inter = 8;
 println!(ptr); // Prints: "8"
 
 // The two lines above are strictly equivalent
@@ -5266,9 +5267,9 @@ println!(ptr); // Prints: "8"
 *inter = &mut i;
 
 // Use a brand new intermediate pointer
-**ptr = &mut &mut i;
+ptr = &mut &mut i;
 
-inter = 3;
+*inter = 3;
 println!(ptr); // Prints: "8"
 ```
 
@@ -5283,7 +5284,7 @@ Depointerization consists in getting the referred from a point. This is what we'
 let ptr: * = 2;
 
 // Assign something to the pointer
-ptr = 8; // ERROR (referred is constant)
+*ptr = 8; // ERROR (referred is constant)
 
 // Depointerize
 let i = *ptr;
