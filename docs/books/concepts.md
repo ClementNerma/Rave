@@ -285,3 +285,7 @@ pln data = `I am
 ```
 
 **NOTE :** If the expression cannot be converted to a string, or it's not an expression (like `2 +` is not an expression), an error will be thrown.
+
+### Voids
+
+Voids are represented by the `null` entity. It's an instance of the `void` class as we'll see later.
