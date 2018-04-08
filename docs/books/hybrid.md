@@ -4917,7 +4917,7 @@ assignSomethingNew(hero);
 
 // Show the result
 println!(obj.name); // Prints: "Jack"
-printon!(obj.attack); // 20
+println!(obj.attack); // 20
 ```
 
 So, what happened here? After we created a hero object, we sent it to the `changeProperty` function. But technically, only a link to `hero` was sent to the function, which was assigned to its `obj` arguments. This way, when the function changed one of the `obj`'s properties, it also changed `hero`, because they are exactly the same object.
