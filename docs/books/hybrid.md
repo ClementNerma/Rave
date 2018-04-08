@@ -4253,7 +4253,7 @@ func %plus<T> (left: T, right: int) -> bool;
 func %plus<T> (left: string, right: Dictionary<int, T>) -> string[];
 ```
 
-## The reduction directive
+### The reduction directive
 
 Sometimes we want a function to take as an argument a callback that could not be a reduced lambda, as well as its arguments, in order to be able to call it later.
 
