@@ -4070,6 +4070,17 @@ Another high point is that unsafe functions can be part of a class. When so, `th
 
 Also, arguments are not directly replaced by their content, so errors will not tell that `takeAnInt("Yoh")` is an invalid call (this is what happens using the above macro), but that `takeAnInt(name)` is an invalid call because `name` is typed as a `string`.
 
+Be aware of the fact that, because unsafe functions are _functions_, they may not have access to the scope they are called from. Their scope remains the same than for a standard function. For example, the following example would not work:
+
+```sn
+unsafe func inc! () {
+  counter += 1; // Line 2
+}
+
+let counter = 0;
+inc! (); // Error at line 2 (undefined 'counter')
+```
+
 Otherwise, unsafe functions are exactly like macros (for example type checking is performed only when the function is called and not at its definition).
 
 ### Dynamic typecasting
