@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.18.7',
+    VERSION: '0.18.8',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -348,13 +348,13 @@ scheme = {
         },
         [
           // Function's or declaration's special type (not caught by the previous expressions)
-          /(?<!:)(?:(:)|(->))\s*((?:&\s*)*)(void|self|Any|class_ref|func_ref|var_ref|macro_ref|lambda|T|X|Y|Z|K|V)(\?)?(?=\s*[\{\[\),;=]|\s*=>|\s*with)/,
-          'white', 'purple', 'cyan', 'purple', 'cyan'
+          /(?<!:)(?:(:)\s*((?:[&\*]\s*)*)|(->)\s*((?:&\s*)*)((?:\*\s*)*))\s*(void|self|Any|class_ref|func_ref|var_ref|macro_ref|lambda|T|X|Y|Z|K|V)\b/,
+          'white', 'invalid', 'purple', 'invalid', 'red', 'purple'
         ],
         [
           // Function's or declaration's (other) type
-          /(?<!:)(?:(:)|(->))\s*((?:&\s*)*)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(\?)?(?=\s*[\{\[\),;=]|\s*=>|\s*with)/,
-          'white', 'purple', 'cyan', 'yellow', 'cyan'
+          /(?<!:)(?:(:)\s*((?:[&\*]\s*)*)|(->)\s*((?:&\s*)*)((?:\*\s*)*))\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          'white', 'invalid', 'purple', 'invalid', 'red', 'yellow', 'cyan'
         ],
         [
           // Arrow function
