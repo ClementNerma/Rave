@@ -4015,7 +4015,7 @@ sayHello!("Yeah");
 
 The first thing we can see here is the use of the `unsafe` keyword, which indicates the following function is unsafe. The function is then called using the `!` symbol after its name, as for macros. And, as for macros, they don't have a return type.
 
-A specificity of unsafe functions when comparing them to macros is that arguments are real assignable entities, so they can be used as it. Although, their type is a simple constraint, which means their only purpose is to directly throw an error when they are called with the wrong arguments and produce a good documentation. But, they are not attached to the arguments themselves. For example, the following code works:
+In unsafe functions, arguments are real assignable entities, so they can be used as it, like a standard functions' arguments. Although, their type is a simple constraint, which means their only purpose is to directly throw an error when they are called with the wrong arguments and produce a good documentation. But, they are not attached to the arguments themselves. For example, the following code works:
 
 ```sn
 unsafe func add! (left: Primitive, right: Primitive) {
@@ -4066,9 +4066,9 @@ sayHello!("Yoh"); // Line 6
 
 The error is now throw at line 3. Even though the unsafe function's content is instantly evaluated, errors are reported following the function's location. This is one the main points of unsafe functions, in fact.
 
-Another high point is that unsafe functions can be part of a class. When so, `this`, `self` and `parent` will automatically refer to the current instance's class, the current class, and the parent class (as if these keywords were used inside a standard function). If the function is written outside of a class, using them will throw an error (as for a standard function). So, these keywords can never be used to refer the class that _calls_ the unsafe function, unlike macros that don't care about it.
+As unsafe functions are _functions_, they can also be part of a class. When so, `this`, `self` and `parent` will automatically refer to the same targets than a standard function.
 
-Also, arguments are not directly replaced by their content, so errors will not tell that `takeAnInt("Yoh")` is an invalid call (this is what happens using the above macro), but that `takeAnInt(name)` is an invalid call because `name` is typed as a `string`.
+Also, because arguments are not directly replaced by their content, so errors will not tell that `takeAnInt("Yoh")` is an invalid call (this is what happens using the above macro), but that `takeAnInt(name)` is an invalid call because `name` is typed as a `string`.
 
 Be aware of the fact that, because unsafe functions are _functions_, they may not have access to the scope they are called from. Their scope remains the same than for a standard function. For example, the following example would not work:
 
@@ -4081,7 +4081,7 @@ let counter = 0;
 inc! (); // Error at line 2 (undefined 'counter')
 ```
 
-Otherwise, unsafe functions are exactly like macros (for example type checking is performed only when the function is called and not at its definition).
+Otherwise, unsafe functions act like as standard functions with a checking done each time they are called, and only when so (like type checking, type inference, etc.).
 
 ### Dynamic typecasting
 
