@@ -4152,17 +4152,17 @@ func doubleRegister () -> int {
 Here, we don't know how to write the `doubleRegister()` function because we know we can't multiply an `Any` instance by 2. In order to solve this, we use _dynamic typecasting_:
 
 ```sn
-func doubleRegister () -> int {
+func doubleRegister () -> &int {
   return cast!<int>(data) * 2;
 }
 ```
 
-What happens here? We simply _dynamically_ convert `data` to an `int`. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. This uses the inverse of sub-typing scheme: if the real type of `data` is `int` or one of its **mother** classes, it'll work, else it'll throw a runtime error.
+What happens here? We simply _dynamically_ convert `data` to an `int` and got a pointer to the value. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. This uses the inverse of sub-typing scheme: if the real type of `data` is `int` or one of its **mother** classes, it'll work, else it'll throw a runtime error.
 
 Dynamic typecasting is especially useful when coupled with the `instanceof` operator, which checks if a value is instance of a given class. Here is how it goes:
 
 ```sn
-func doubleRegister () -> int {
+func doubleRegister () -> &int {
   if (data instanceof int)
     return cast!<int>(data) * 2;
   else {
@@ -4170,6 +4170,21 @@ func doubleRegister () -> int {
     return 0;
   }
 }
+```
+
+The point of getting a pointer from the casted value is to reflect all changes we could make on the casted value on the original resource. For example:
+
+```sn
+// Declare a number as 'Any'
+let i: Any = 2;
+// Cast it to an 'int'
+let *j: int = cast!<int>(i);
+
+// Modify the casted value
+j = 8;
+
+// Cast a new time the original value to print it
+println!(cast!<int>(i)); // Prints: "8"
 ```
 
 ### Overloading operators
@@ -4590,11 +4605,11 @@ Now, `one` has nullable `int?` type and `two` has standard `int` type.
 
 ### Cautious dynamic typecasting
 
-The `try_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `null` if it fails, without throwing an error. Its return type is nullable, like in this example:
+The `try_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `NULL` if it fails, without throwing an error. Its return type is nullable, like in this example:
 
 ```sn
-val works  = try_cast!<int>(2);
-val doesnt = try_cast!<int>({});
+val works  = try_cast!<int>(2); // &int? -> &(nullable!(2))
+val doesnt = try_cast!<int>({}); // &int? -> NULL
 
 println!(works is 2);     // Prints: "true"
 println!(doesnt is null); // Prints: "true"
