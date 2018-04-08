@@ -3954,6 +3954,8 @@ Remember the very first "function" we saw in this book? Yes, this was `println!`
 
 But what's a macro, anyway? A macro is simply a function that replaces some parts of the code by anothers. To take, an example, `println!` will replace the arguments you give to it by `Output::println(...<your arguments>...)`.
 
+Also, macros don't have a return type, because they can return different things depending on their arguments.
+
 To understand better the concept, here is how we define a macro:
 
 ```sn
@@ -4081,26 +4083,26 @@ To conclude, simply remember that every function signature (with `#macro` replac
 Unsafe functions are declared like macros, except they are called like standard functions and therefore won't replace their own call by another content. To be exact, when they are called their content replaces their call but in a transparent way. Let's see it:
 
 ```sn
-unsafe func sayHello! (name: string) -> void {
+unsafe func sayHello! (name: string) {
   println!(name);
 }
 
 sayHello!("Yeah");
 ```
 
-The first thing we can see here is the use of the `unsafe` keyword, which indicates the following function is unsafe. The function is then called using the `!` symbol after its name, as for macros.
+The first thing we can see here is the use of the `unsafe` keyword, which indicates the following function is unsafe. The function is then called using the `!` symbol after its name, as for macros. And, as for macros, they don't have a return type.
 
 When the function is called, its content is directly evaluated, as for macros. The main difference comes from the fact when an error occurs in an unsafe function (like an incompatible type or something), the error will be located in the function's body, not in the code's body. Considering the following function:
 
 ```sn
 // A sample function
-func takeAnInt (ent: int) -> void {}
+func takeAnInt (ent: int) {}
 ```
 
 Here is how it goes with macros:
 
 ```sn
-#macro sayHello(name: string) -> void => println!(name); \
+#macro sayHello(name: string) => println!(name); \
   takeAnInt(name);
 
 sayHello!("Yoh"); // Line 4
@@ -4109,7 +4111,7 @@ sayHello!("Yoh"); // Line 4
 The error is thrown at line 5. Why? Simply because the call to `sayHello!` is replaced to the macro's content, so the evaluated content is in reality:
 
 ```sn
-#macro sayHello(name: string) -> void => println!(name); \
+#macro sayHello(name: string) => println!(name); \
   takeAnInt(name);
 
 println!(name); // Line 4
@@ -4119,7 +4121,7 @@ takeAnInt(name); // Line 5
 Here is the same thing with unsafe functions:
 
 ```sn
-unsafe func sayHello! (name: string) -> void {
+unsafe func sayHello! (name: string) {
   println!(name);
   takeAnInt(name); // Line 3
 }
