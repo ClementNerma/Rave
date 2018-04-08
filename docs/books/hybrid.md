@@ -108,7 +108,7 @@ Here is an array of terms used in SilverNight. Most of them are unknown for you 
 
 #### About resources
 
-* A **resource**, also called an **entity**, is anything that can be declared (variable, frozen, class, interface, structure...) or used as a value
+* A **resource**, also called an **entity**, is anything that can be declared (variable, constant, class, interface, structure...) or used as a value
 * A **value** is the result of an expression, which can either be a primitive or an object
 * A **plain value** is a value that is predictable without running the program itself (e.g. `2` or `"hello"`)
 * A **type** is either a class or an interface
@@ -126,8 +126,7 @@ Here is an array of terms used in SilverNight. Most of them are unknown for you 
 #### About mutability
 
 * An **assignable entity**, also called a **variable** or even a **mutable**, is a resource that can receive a single value and must have a type.
-* A **constant** is a mutable that must receive a value when it is declared and can't change it
-* A **frozen** is a constant with all its properties (including sub-objects, at any level) constants
+* A **constant** is a mutable that must receive a value when it is declared and can't change it. It is in-depth constant (sub-properties, at any level, are constants too)
 
 #### About declarations
 
@@ -993,49 +992,6 @@ let books = [
 ```
 
 Here, because we create an array from two distinct objects, they must have the `#Dynamic` directive on their `details` field.
-
-### Frozens
-
-Along with variables and constants, there is a third type of resource which is the _frozen_. Let's imagine we have a `Person` structure with a `name: string` and an `adress: string` field. Now we want to represent a person but we also want to make it immutable, e.g. its properties must not be editable after its declaration.
-
-Intuitively, we would write the following code:
-
-```sn
-struct Person {
-  name: string;
-  adress: string;
-}
-
-val paul = new Person({ name: "Paul", adress: "Somewhere" });
-```
-
-That code compiles perfectly well, but if you try to write the following code after:
-
-```sn
-println!(paul.name); // Prints: "Paul"
-paul.name = "John"; // Works
-println!(paul.name); // Prints: "John"
-```
-
-This happens because the `val` keyword only affects the _resource_ itself, not its _content_. So, even though we're not be able to assign any new content to `paul` (doing `paul = new Person({ ... });` will throw an error), its content is still modifiable.
-
-To prevent this behaviour, there's a third keyword that can describe our `paul` constant: the `frozen` keyword.
-
-```sn
-struct Person {
-  name: string;
-  adress: string;
-}
-
-frozen paul = new Person({ name: "Paul", adress: "Somewhere" });
-
-println!(paul.name); // Prints: "Paul"
-paul.name = "John"; // ERROR
-```
-
-Here, we told to the compiler to completely freeze `paul`. This way, its properties cannot be modified anymore.
-
-_Tip :_ The `frozen` keyword works on almost any type, including `Dictionary`.
 
 ### Multiple assignments
 
@@ -1922,7 +1878,7 @@ Also, note this will only work with lambdas that are directly given as arguments
 
 While we have inferred typing without looking at any signature for data structure, you may be wondering why functions can't have an inferred typing for their arguments and return type too based on their body. For example, if a function only returns booleans, its return type could be inferred.
 
-To answer this question, there is a directive that allows inferred typing for anything, from variables to functions, even to more complex data structures (like interfaces or classes). But like we'll see later, this has some (really) serious downsides and considerably slows down the compilation. Global inferred typing is only useful when some conditions are met, so for now let's put it aside and only consider inferred typing is supported for variables/constants/frozens/plain values, on-the-fly structures and flying lambdas.
+To answer this question, there is a directive that allows inferred typing for anything, from variables to functions, even to more complex data structures (like interfaces or classes). But like we'll see later, this has some (really) serious downsides and considerably slows down the compilation. Global inferred typing is only useful when some conditions are met, so for now let's put it aside and only consider inferred typing is supported for variables/constants/plain values, on-the-fly structures and flying lambdas.
 
 ### Polymorphism
 
@@ -2037,7 +1993,7 @@ class Hero {
 }
 ```
 
-That becomes a little more complicated here. We start by declaring the `%construct` function which is called the _constructor_. This function is called when a resource (variable, constant or frozen) is created with the `Hero` type. Because any return value would be lost from it there is an exception in the language's rules that allow us to not give it a return type (it will implicitly be `void`), without any directive.
+That becomes a little more complicated here. We start by declaring the `%construct` function which is called the _constructor_. This function is called when a resource (variable or constant) is created with the `Hero` type. Because any return value would be lost from it there is an exception in the language's rules that allow us to not give it a return type (it will implicitly be `void`), without any directive.
 
 The constructor will take as an argument a name, an amount of HP and MP, an attack and a defense. Then, it will assign these given values to its _members_, which are not available from outside the class.
 
@@ -2444,14 +2400,14 @@ Here it is! This code answers to the problem.
 Of course, your solution could be different, as there are many ways to solve it. This anwser is well optimized and relatively short. Try to compare you own solution to this one and see the differences.
 
 A short note about accessibility now: as you can see, `cells` is not cloned when assigned using the constructor. This means that if an pre-defined list is gave to the constructor, changing it from the outside will also affects the class' attribute.
-Another point is that `cells` is also readable and not declared as a frozen, so anyone from the outside can access it and change its values.
+Another point is that `cells` is also readable and not declared as a constant, so anyone from the outside can access it and change its values.
 
 Here is a corrected version of the class that fixes this mistakes:
 
 ```sn
 class Map {
   // ...
-  public readonly frozen cells: int[][];
+  public readonly val cells: int[][];
   // ...
 
   // ...
@@ -2505,60 +2461,6 @@ free!(list); // Prints: "I will be freed."
 ```
 
 This overloads aims to provide a way to run a specific code when the developer explicitly says it doesn't need the instance anymore. After the destructor is ran, the instance is freed and any usage of it will result in an error.
-
-### Freezing
-
-Remember the frozens? We saw they were deep constants where even attributes, sub-structures etc. were completly frozen.
-
-Frozens have a second use, though. Their real aim is not to deeply freeze an object's values, but to freeze it in its behavior. This is not really clear, so let's see how it goes.
-
-Let's imagine we have a class representing an array of integers. We have a method, `add`, to add a number to a private array and `pop` to get the last value from it, plus a `sum` function to calculate its sum.
-
-If we simply declared an instance of this class as a frozen, it will freeze its public attributes. But this won't prevent from adding numbers to the private array thanks to the `add` function, for example.
-
-That's why an overload exists to implement the 'frozen' state in a class, called `%freeze`. It takes no argument and is `void`-typed, so its return type can be omitted. It this method is implemented, the instance is considered as being able to be frozen.
-
-```sn
-class IntArray {
-  public readonly data: List<int>;
-
-  public func %freeze () {}
-
-  public func add (value: int) {
-    // Check if the instance is frozen
-    if (is_frozen!())
-      println!("The class is frozen, can't append anything.");
-    else
-      @data.push(value);
-  }
-
-  public func pop () -> bool {
-    // Check if the instance is frozen
-    if (is_frozen!())
-      println!("The class is frozen, can't pop the top value.");
-    else
-      @data.pop();
-  }
-
-  public func sum () -> int => @data.reduce((acc, value) => acc + value);
-}
-```
-
-As you can see, the overload's body is empty. It's simply because when declaring this overload, we explicitly tell that our class can be frozen, so it will freeze every single attributes, even the private ones. It will also turn a hidden boolean, the _frozen flag_ to `true`, meaning the instance has been frozen. Then, the `is_frozen!` macro returns it. We could also have put a `println!("I'm now frozen");` code in the overload, but that's totally optional, and most of the time this overload will be empty. Now we know what is does, let's see the process more in details:
-
-When freezing the class, we aim to make the instance and its data immutable. But there is a problem here. In fact, even if `data` can't be written from the outside, its sub-values can. For example, doing `list.data = [1, 2]` won't work, but `list.data[1] = 5` will. This is due to the fact `list.data[1]` is independent of `list.data` because it's its own single value, while `list.data` is an array of values, not the values themselves.
-
-Because of this behaviour, our instance is not _fully_ frozen. That's why implementing the `%freeze` overload will automatically freeze all attributes, even private ones, and their own attributes if they are objects are instances of classes, and so on. Even though freezing all of this could take a bit of time, it's done because declaring is frozen is always done intentionnally. If we simply wanted to make `add` and `pop` unable to act, we would have implemented a `makeImmutable` method or something.
-
-Thanks to this behaviour, we don't take the risk to forget freezing an attribute, a problem that can occur especially when adding new attributes to a class and forgetting to freeze them. Hopefully, we don't have to think about that.
-
-Note that any instance of the `IntArray` can still be frozen after being declared, using the `freeze!` macro, which permits to freeze the data after manipulating its data. In fact, all overloads can be called manually by using the macro with the same name the overload has (except `%construct` and `%call`). For example, the `%freeze` overload can be called using the `freeze!` macro.
-
-Also, conventionnally, freezing cannot be undone, so we don't have to implement an `unfreeze` method or anything.
-
-A last advice about freezing is that **all** native types support freezing, so you don't have to worry when dealing with them, from `int` to `Dictionary<string, Array<string>>`.
-
-The notion of freezing is complex, so don't hesitate to read it again, until you understand. That's an important feature because declaring an instance as frozen or freezing it manually will throw an error if the overload is not implemented in the class.
 
 ### Cloning
 
@@ -4029,7 +3931,7 @@ println!(test( 'Jack' ));
 println!(" 'Jack' ");
 ```
 
-There is also a type to ask specifically for an assignable entity (variables, constants and frozens):
+There is also a type to ask specifically for an assignable entity (variables and constants):
 
 ```sn
 // Declare the macro
@@ -4490,7 +4392,7 @@ func getNilPoints (array: Point[]) -> Point? {
 The function still works as expected. In fact, `null` is defined natively with the following instruction (here, `Void` is strictly equivalent to `void`):
 
 ```sn
-frozen null: Void = new Void();
+val null: Void = new Void();
 ```
 
 Be aware though, using inferred typing with `null` could result in the following behavior:
@@ -5210,10 +5112,10 @@ let *ptr = &i;
 ptr = 8; // ERROR
 ```
 
-Don't forget that everything in a frozen is considered as a frozen too.
+Don't forget that everything in a constant is considered as a constant too.
 
 ```sn
-frozen obj = {
+val obj = {
   value: 2
 };
 
