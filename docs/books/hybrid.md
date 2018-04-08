@@ -4545,7 +4545,7 @@ Now, `one` has nullable `int?` type and `two` has standard `int` type.
 The `try_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `NULL` if it fails, without throwing an error. Its return type is nullable, like in this example:
 
 ```sn
-val works  = try_cast!<int>(2); // *int? -> &(nullable!(2))
+val works  = try_cast!<int>(2); // *int? -> &mut (nullable!(2))
 val doesnt = try_cast!<int>({}); // *int? -> NULL
 
 println!(works is 2);     // Prints: "true"
@@ -4930,77 +4930,74 @@ But what if we wanted to make the whole `hero` object change within a function? 
 
 While references simply share a RUID referring to a specific object in the memory, pointers share an EUID, which stands for Entity Unique Identifier. The difference between a RUID and an EUID is that a RUID simply refers to an object, while an EUID refers to an entity. This means that, when modifying an entity, even if something new is assigned, all entities with the same EUID will be affected the same way.
 
-By default, each entity has its new EUID. That's where pointers come: they provide a way to create a new entity with the same EUID than another. To create a pointer, we use the `&` symbol followed by the entity's name, which returns an identical entity (with the same type) and the same EUID. Here is how it goes:
+By default, each entity has its new EUID. That's where pointers come: they provide a way to create a new entity with the same EUID than another. To create a pointer, we use the `&` symbol followed by the entity's name, which returns an identical entity (with the same type) and the same EUID. This creates a **constant** pointer, which means we can assign anything to it. The entity the pointer refers to is called the pointer's _referred_. Here is an example:
+
+```sn
+// Declare a variable
+let str = "Hello !";
+
+// Create a *constant* pointer to it
+let ptr: * = &str;
+// let ptr: *string = &str;
+
+// Display the pointer's value
+println!(ptr); // Prints: "Hello !"
+
+// Change the referred's value
+str = "Goodbye !";
+
+// The changes are reflected on the pointer
+println!(ptr); // Prints: "Goodbye !"
+
+// Change the pointer's value
+ptr = "Yeah !"; // ERROR
+```
+
+As you can see, we can make constant pointers from mutables, but this also works with constants of course. This is especially useful when we want to make a pointer that cannot be written, so we preserve the referred's value.
+
+But sometimes, we simply want to get a pointer we can write to change the referred's value. For that, we use the `&mut` symbol, still follow by the referred's name:
+
+```sn
+// Declare a variable
+let hero = "Jack";
+
+// Create a *mutable* pointer to it
+let ptr: *mut = &mut hero;
+// let ptr: *mut string = &mut hero;
+
+// Assign a new value to the pointer
+ptr = "John";
+
+// The changes are reflected on the referred
+println!(hero); // Prints: "John"
+```
+
+Note that pointers can be made on members or properties, like this:
 
 ```sn
 let hero = {
   name: "Jack",
-  attack: 10
-};
-
-&hero = {
-  name: "John",
   attack: 20
 };
 
-println!(hero.name); // Prints: "John"
-```
-
-Note that, if `hero` had been declared with the `val` keyword, an error would have been thrown. Because this is not very convenient to always use `&` to get a pointer, we can also store it into a _pointer variable_:
-
-```sn
-// Create a hero
-let hero = {
-  name: "Jack",
-  attack: 10
-};
-
-// Create a pointer to it
-let *ptr = &hero;
-
-// Assign a new object to the pointer
-ptr = {
-  name: "Jack",
-  attack: 10
-};
-
-// Display the result
-println!(ptr.name); // Prints: "John"
-println!(hero.name); // Prints: "John"
-```
-
-It's also possible to make pointers on primitive entities, like a string or a number:
-
-```sn
-let str = "Hello";
-
-let *ptr = &str;
-ptr += " World!"
-
-println!(str); // Prints: "Hello World!"
-```
-
-Last but not least, pointers can be made on attributes:
-
-```sn
-val hero = {
-  name: "Jack",
-  attack: 20
-};
-
-let *ptr = &(hero.name);
+let *ptr = &mut (hero.name);
 ptr = "John";
 
 println!(hero.name); // Prints: "John"
 ```
 
-The syntax is as follow:
+The syntax is as follows:
 
 ```sn
 &object.property;   // Make a pointer to `object` and get `property`
 &(object).property; // Make a pointer to `object` and get `property`
 (&object).property; // Make a pointer to `object` and get `property`
 &(object.property); // Make a pointer to `object.property`
+
+&mut object.property;   // Make a pointer to `object` and get `property`
+&mut (object).property; // Make a pointer to `object` and get `property`
+(&mut object).property; // Make a pointer to `object` and get `property`
+&mut (object.property); // Make a pointer to `object.property`
 ```
 
 ### Pointers using expressions
@@ -5008,17 +5005,19 @@ The syntax is as follow:
 Pointers can also be defined without referring to an entity. See the code below:
 
 ```sn
-let *ptr = "Hello !";
+let ptr: *mut = "Hello !";
 ```
 
 When this code is ran, an entity is created with content `"Hello"`, and `ptr` points to it. It's an equivalent to the code above:
 
 ```sn
 // Doing this...
-let *ptr = "Hello !";
+let ptr: *mut = "Hello !";
+
 // Is the same as doing...
 let str = "Hello !";
-let *ptr = &str;
+let ptr = &mut str;
+// let ptr: *mut string = &mut str;
 ```
 
 ### Pointers in functions
@@ -5026,19 +5025,19 @@ let *ptr = &str;
 Pointers can be used to manipulate data in functions. Here is how it goes:
 
 ```sn
-func increment (*counter: int) => counter ++;
+func increment (counter: *mut int) => counter ++;
 
 let counter = 0;
-increment(&counter);
+increment(&mut counter);
 println!(counter); // Prints: "1"
 ```
 
 They can also return a pointer:
 
 ```sn
-func increment (*counter: int) -> *int => &(counter + 1);
+func increment (counter: *int) -> *int => &mut (counter + 1);
 
-let *ptr = increment(&(0));
+let *ptr = increment(&mut (0));
 
 println!(ptr); // Prints: "1"
 ```
@@ -5055,7 +5054,7 @@ let i = 0;
 let j = 0;
 
 // Make a pointer from it
-let *ptr = &i;
+let ptr: *mut = &mut i;
 
 // Assign a new value to the pointer (its target remains the same)
 ptr = 8;
@@ -5063,7 +5062,7 @@ println!(i); // Prints: "8"
 println!(j); // Prints: "0"
 
 // Assign a new target to the pointer
-*ptr = &j;
+*ptr = &mut j;
 
 // Assign a new value to the pointer
 ptr = 3;
@@ -5078,7 +5077,7 @@ Sometimes we simply want to make a pointer referring to nothing, after using it.
 ```sn
 let i = 0;
 
-let *ptr = &i;
+let ptr: *mut = &mut i;
 ptr = 8; // Works fine
 
 free!(ptr);
@@ -5092,19 +5091,19 @@ This can also be done using a manual assignment, if we want to re-use the pointe
 ```sn
 let i = 0;
 
-let *ptr = &i;
+let ptr: &mut = &mut i;
 ptr = 8; // Works fine
 
 *ptr = NULL;
 ptr = 3; // ERROR because the pointer refers to `null`
 
-*ptr = &i; // Works fine
+*ptr = &mut i; // Works fine
 ptr = 2; // Works fine
 
 println!(i); // Prints: "2"
 ```
 
-This behaviour is due to the fact all pointers all nullable. A pointer to an `int` resource will be implicitly typed as `int?`, even though the pointed resource has a different type. This allows to use the `NULL` pointer which is, as you can guess, a pointer to `null`.
+This behaviour is due to the fact all pointers all nullable. A pointer to an `int` resource will be implicitly typed as `int?`, even though the pointed resource has a different type. This allows to use the `NULL` pointer which works both with constant and mutable pointers.
 
 ### Impact on lifetime duration
 
@@ -5116,7 +5115,7 @@ It is possible to check if an entity is a pointer, thanks to the `is_ptr!` macro
 
 ```sn
 let i = 0;
-let *ptr = &i;
+let ptr: * = &i;
 
 println!(is_ptr!(i)); // Prints: "false"
 println!(is_ptr!(ptr)); // Prints: "true"
@@ -5128,47 +5127,61 @@ The target of a pointer can also be checked using the equality operator, thanks 
 let i = 0;
 let j = 0;
 
-let *ptr = &i;
+let ptr: * = &i;
 
-println!(ptr is &i); // Prints: "true"
-println!(ptr is &j); // Prints: "false"
+println!(*ptr is &i); // Prints: "true"
+println!(*ptr is &j); // Prints: "false"
 ```
 
 ### Target's state
 
-A pointer must respect the state of its target. For example, if a pointer refers to a constant, assigning anything to the pointer will result in an error (excepting rewriting the pointer's target, of course).
+A pointer has a double state: the state of the entity containing the pointer, and the state of the referred.
+
+For example, the pointer's entity can either be mutable, which means we can change the entity it refers to, or constant, to make its reference immutable.
 
 ```sn
-val i = 1;
+let i = 1;
+let j = 2;
 
-let *ptr = &i;
-ptr = 8; // ERROR
+let ptr1: *mut = &mut i;
+val ptr2: *mut = &mut i;
+
+ptr1 = 3; // Works fine
+ptr2 = 4; // Works fine
+
+*ptr1 = &j; // Works fine
+*ptr2 = &j; // ERROR (pointer is constant)
+
+let ptr3: * = &i;
+val ptr3: * = &i;
+
+ptr3 = 5; // ERROR (referred is constant)
+ptr4 = 6; // ERROR (referred is constant)
+
+*ptr3 = &j; // Works fine
+*ptr4 = &j; // ERROR (pointer is constant)
 ```
 
-Don't forget that everything in a constant is considered as a constant too.
+The referred's state is considered when the reference is created. We can make a constant reference from a constant, a constant reference from a mutable, a mutable reference from a mutable, but not a mutable reference from a constant:
+
+```sn
+let i = 1;
+val j = 2;
+
+&i;     // Works fine
+&mut i; // Works fine
+&j;     // Works fine
+&mut j; // ERROR (referred is constant)
+```
+
+Following this rule, don't forget that everything in a constant is considered as a constant too.
 
 ```sn
 val obj = {
   value: 2
 };
 
-let *ptr = &(obj.value);
-ptr = 8; // ERROR
-```
-
-A last word about state: pointers cannot have their own state to prevent from being written. They must have the exact same type as the target they are referring to:
-
-```sn
-let i = 1;
-let *ptrI = i; // Must be a mutable
-
-val j = 2;
-val *ptrJ = j; // Must be a constant
-
-i = 2;
-println!(ptrI); // Prints: "2"
-
-ptrJ = 8; // ERROR
+let ptr: *mut = &mut (obj.value); // ERROR
 ```
 
 ### Multiple-level pointers
@@ -5179,27 +5192,27 @@ Pointers can refer to an entity, but they can also refer to other pointers (whic
 let i = 1;
 let j = 2;
 
-let **ptr = i;
+let ptr: *mut *mut = &mut &mut i;
 // `ptr` refers to an unnamed pointer itself refering to `i`
 
 ptr = 8;
 println!(i); // Prints: "8"
 
-**ptr = &i; // ERROR
-**ptr = &&i; // Works fine (changes nothing)
+**ptr = &mut i; // ERROR
+**ptr = &mut &mut i; // Works fine (changes nothing)
 ```
 
 Now, let's take two examples to detail this because this is a bit complex:
 
 ```sn
-*ptr = &j; // Works fine
+*ptr = &mut j; // Works fine
 println!(ptr); // Prints: "2"
 ```
 
 This code rewrites the target of the pointer `ptr` is itself referring to, let's call it the intermediate pointer. So this code rewrites the target of the intermediate pointer, and because `ptr` is referring to it, its value will be the same.
 
 ```sn
-**ptr = &&i; // Works fine
+**ptr = &mut &mut i; // Works fine
 println!(ptr); // Prints: "8"
 ```
 
@@ -5211,18 +5224,20 @@ Note that the `*` symbol, when not used as the name of an entity in its declarat
 let i = 1;
 let j = 2;
 
-let **ptr = i;
-let *inter = *ptr;
+// Declare the global pointer
+let ptr: *mut *mut = &mut &mut i;
+// Get the intermediate pointer
+let inter: *mut = *ptr;
 
 inter = 8;
 println!(ptr); // Prints: "8"
 
 // The two lines above are strictly equivalent
-*ptr = &i;
-*inter = &i;
+*ptr = &mut i;
+*inter = &mut i;
 
 // Use a brand new intermediate pointer
-**ptr = &&i;
+**ptr = &mut &mut i;
 
 inter = 3;
 println!(ptr); // Prints: "8"
