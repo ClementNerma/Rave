@@ -5031,6 +5031,24 @@ let ptr1: * = fly_ptr!(2);
 let ptr2: *mut = fly_mut_ptr!(2);
 ```
 
+### Type compatibility
+
+Type compatibility is simple with pointers: mutable pointers can be used as constant pointers, but constants pointers cannot be used as mutables - which is logic. Here is an example:
+
+```sn
+let i = 1;
+
+let ptr1: *mut = &mut i;
+let ptr2: * = &i;
+
+let mut_ptr: *mut = ptr1; // Works fine
+let mut_ptr: *mut = ptr2; // ERROR (incompatible types)
+let val_ptr: *    = ptr1; // Works fine
+let val_ptr: *    = ptr2; // Works fine
+```
+
+In fact, when a mutable pointer is found where a constant pointer is expected, it is automatically cast.
+
 ### Pointers in functions
 
 Pointers can be used to manipulate data in functions. Here is how it goes:
