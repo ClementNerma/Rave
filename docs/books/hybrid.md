@@ -1562,21 +1562,6 @@ You can now use the three constants. Consider the return value of this function 
 
 Here, the return type of the function **must** describe the type of the value it returns. If you try to return an integer, it will throw an error. If you try to return a string, the same thing will happen.
 
-Note that functions have a special type that requires the argument to be a plain value: the `#pln<T>` type. Here is how it goes:
-
-```sn
-func i_need_a_plain (integer: #pln<int>) -> int {
-  return integer * 2;
-}
-
-i_need_a_plain (2); // Works fine
-
-val num = 2;
-i_need_a_plain(num); // ERROR
-```
-
-Its point is mainly to use with some macros to pre-process data, but that's a very special case you probably won't encounter very often.
-
 As tuples being a single type, functions can also return them:
 
 ```sn
@@ -3929,6 +3914,18 @@ As you can see, even the spaces are kept in `name`. Note that plain arguments ca
 println!(test( 'Jack' ));
 // This will produce:
 println!(" 'Jack' ");
+```
+
+There is also a type for plain constants (also called literals, like `2` or `"Hello"`, but not `myVariable`):
+
+```sn
+// Declare the macro
+#macro test(name: #pln<int>) => println!($${name});
+
+// Call it
+test('Hello');
+// This will produce:
+println!('Hello');
 ```
 
 There is also a type to ask specifically for an assignable entity (variables and constants):
