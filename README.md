@@ -92,7 +92,7 @@ And follow the instructions that appears in your terminal.
 
 **WARNING:** This roadmap is not definitive ; it could severely change while the project advances.
 
-Here is the roadmap for the whole project.
+Here is the roadmap for the whole project. Please note that most parts cannot be achieved while the language isn't totally finished ; the repository should then be moved under a definitive name (like `SilverNight` instead of `SilverNight-draft`) before starting making the toolchain and the definitive tutorials.
 
 ### Redact the documentation
 
