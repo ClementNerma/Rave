@@ -5598,12 +5598,11 @@ func readAsync (path: string) -> Promise<string, Error> {
       content = import!('fs').readFile(path, "utf8");
     } catch (e) {
       // Failed
-      reject(value);
-      return ;
+      reject e;
     }
 
     // Success
-    resolve(content);
+    resolve content;
   });
 }
 ```
@@ -5626,12 +5625,12 @@ func readAsync (path: string) -> Promise<string, Error> =>
     try {
       content = import!('fs').readFile(path, "utf8");
     } catch (e) {
-      reject(e);
+      resolve e;
     }
 
     // Resolve the promise if the reading worked fine
     if (content isnt null)
-      resolve(content);
+      resolve content;
   });
 }
 ```
