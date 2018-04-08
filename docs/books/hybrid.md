@@ -4090,7 +4090,7 @@ Here, we don't know how to write the `doubleRegister()` function because we know
 
 ```sn
 func doubleRegister () -> *int {
-  return cast!<int>(data) * 2;
+  return cast!<int>(&data) * 2;
 }
 ```
 
@@ -4101,7 +4101,7 @@ Dynamic typecasting is especially useful when coupled with the `instanceof` oper
 ```sn
 func doubleRegister () -> *int {
   if (data instanceof int)
-    return cast!<int>(data) * 2;
+    return cast!<int>(&data) * 2;
   else {
     println!("The provided data is not an integer.");
     return 0;
@@ -4109,19 +4109,21 @@ func doubleRegister () -> *int {
 }
 ```
 
+Also, as `cast!` takes a pointer, it respects its state: if a constant pointer is gave, it returns a constant pointer, else it returns a mutable pointer.
+
 The point of getting a pointer from the casted value is to reflect all changes we could make on the casted value on the original resource. For example:
 
 ```sn
 // Declare a number as 'Any'
 let i: Any = 2;
 // Cast it to an 'int'
-let *j: int = cast!<int>(i);
+let j: *mut int = cast!<int>(&mut i);
 
 // Modify the casted value
 j = 8;
 
 // Cast a new time the original value to print it
-println!(cast!<int>(i)); // Prints: "8"
+println!(cast!<int>(&i)); // Prints: "8"
 ```
 
 ### Overloading operators
@@ -4545,8 +4547,8 @@ Now, `one` has nullable `int?` type and `two` has standard `int` type.
 The `try_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `NULL` if it fails, without throwing an error. Its return type is nullable, like in this example:
 
 ```sn
-val works  = try_cast!<int>(2); // *int? -> &mut (nullable!(2))
-val doesnt = try_cast!<int>({}); // *int? -> NULL
+val works  = try_cast!<int>(&mut (2)); // *mut int? -> &mut (nullable!(2))
+val doesnt = try_cast!<int>(&mut ({})); // *mut int? -> NULL
 
 println!(works is 2);     // Prints: "true"
 println!(doesnt is null); // Prints: "true"
