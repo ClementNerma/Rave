@@ -3938,10 +3938,10 @@ let car: Vehicle with (c => c.wheels is 4); // ERROR
 let car: Vehicle with (c => c.wheels is 4) = new Vehicle(4); // Works fine
 ```
 
-Also, because we could want to re-use a constrained type later, the `#type` directive allows us to register:
+Also, because we could want to re-use a constrained type later, the `type` keyword allows us to register:
 
 ```sn
-#type Car is Vehicle with (c => c.wheels is 4);
+type Car is Vehicle with (c => c.wheels is 4);
 
 let car: Car;                  // ERROR
 let car: Car = new Vehicle(2); // ERROR
