@@ -2027,7 +2027,7 @@ class Hero {
   private atk: int;
   private def: int;
 
-  public func %construct(name: string, hp: int, mp: int, atk: int, def: int) {
+  public func %construct (name: string, hp: int, mp: int, atk: int, def: int) {
     this.name = name;
     this.hp = hp;
     this.mp = mp;
@@ -2115,7 +2115,7 @@ class Hero {
   private atk: int;
   private def: int;
 
-  public func %construct(name: string, hp: int, mp: int, atk: int, def: int) {
+  public func %construct (name: string, hp: int, mp: int, atk: int, def: int) {
     this.name = name;
     this.hp = hp;
     this.mp = mp;
@@ -2233,7 +2233,7 @@ Because we want some attributes to be initialized before the developer uses them
 class Superthing {
   private name: string;
 
-  public func %construct(theThingName: string) {
+  public func %construct (theThingName: string) {
     this.name = theThingName;
   }
 }
@@ -2263,7 +2263,7 @@ Note that all attributes and methods of a class (called its _members_) can be ac
 class Superthing {
   private name: string;
 
-  public func %construct(theThingName: string) {
+  public func %construct (theThingName: string) {
     this.name = theThingName;
   }
 
@@ -2302,7 +2302,7 @@ We can also use it in the constructor to automatically set some attributes:
 class Superthing {
   private name: string;
 
-  public func %construct(@name: string) {}
+  public func %construct (@name: string) {}
 }
 ```
 
@@ -2359,7 +2359,7 @@ class Product {
   public readonly name: string;
 
   // Initialize the instance
-  public func %construct(@name: string) {
+  public func %construct (@name: string) {
     // Generate a unique identifier from the static function
     @unique_id = self::increaseCounter();
   }
@@ -2396,7 +2396,7 @@ class Map {
   public readonly cells: int[][];
 
   // Create the map
-  public func %construct(@cells: int[][], @playerX: int, @playerY: int) {};
+  public func %construct (@cells: int[][], @playerX: int, @playerY: int) {};
 
   // Move the hero
   private func move (x: int, y: int) {
@@ -2455,7 +2455,7 @@ class Map {
   // ...
 
   // ...
-  public func %construct(cells: int[][], @playerX: int, @playerY: int) =>
+  public func %construct (cells: int[][], @playerX: int, @playerY: int) =>
     // Clone the given cells to avoid them from being frozen
     @cells = clone!(cells);
 }
@@ -2489,7 +2489,7 @@ In our case, the destructor is called when the instance is manually freed, using
 class IntArray {
   private data: List<int>;
 
-  public func %free() {
+  public func %free () {
     println!("I will be freed.");
   }
 
@@ -2522,7 +2522,7 @@ That's why an overload exists to implement the 'frozen' state in a class, called
 class IntArray {
   public readonly data: List<int>;
 
-  public func %freeze() {}
+  public func %freeze () {}
 
   public func add (value: int) {
     // Check if the instance is frozen
@@ -2644,7 +2644,7 @@ The overload will then be able to manipulate the target before returning it, in 
 
 ```sn
   // ...
-  public func %clone(target: self) -> self {
+  public func %clone (target: self) -> self {
     // Print a simple message
     println!(`Cloning a ${target.name}`);
 
@@ -2661,7 +2661,7 @@ The second signature takes no argument, and must manually return an instance of 
 
 ```sn
   // ...
-  public func %clone() => new Product(@name, @price);
+  public func %clone () => new Product(@name, @price);
   // ...
 ```
 
@@ -2705,15 +2705,15 @@ We could now imagine we want to transmit a product over the network, or simply s
 For that, we'll implement two overloads in our class. They are `@serialize` and `@unserialize`, which is pretty explicit, and use the following signature:
 
 ```sn
-  public func %serialize() -> string;
-  public static func %unserialize(serial: string) -> self;
+  public func %serialize () -> string;
+  public static func %unserialize (serial: string) -> self;
 ```
 
 Now let's implement them! First, how to implement serialization? We could produce a human-friendly string, like that:
 
 ```sn
   // ...
-  public func %serialize() -> string {
+  public func %serialize () -> string {
     return `uid: ${@unique_id} ; name: ${@name} ; price: ${@price}`;
   }
   // ...
@@ -2728,7 +2728,7 @@ But there is a problem here: first, the string is not optimized. One of the goal
     val price: int;
   }
 
-  public func %serialize() -> string =>
+  public func %serialize () -> string =>
     // Make an object containing the data we want to serialize
     // (thanks to IST)
     // Then serialize it and return the result
@@ -2737,7 +2737,7 @@ But there is a problem here: first, the string is not optimized. One of the goal
       price: @price
     });
 
-  public static func %unserialize(serial: string) -> self {
+  public static func %unserialize (serial: string) -> self {
     // Unserialize the serialized structure
     val obj: Serialized = unserialize!(serial, Serialized);
     // Make a new product instance and return it
@@ -2792,7 +2792,7 @@ class Translator {
   }
 
   // Make the class callable
-  public static func %call(text: string, lang: string) -> string =>
+  public static func %call (text: string, lang: string) -> string =>
     @translate(text, lang);
 }
 
@@ -2804,7 +2804,7 @@ Here, the `%call` overload made the class callable. We could implement it for in
 ```sn
 class Calculator {
   public func add (left: int, right: int) -> int => left + right;
-  public func %call(left: int, right: int) -> int => @add(left, right);
+  public func %call (left: int, right: int) -> int => @add(left, right);
 }
 
 val calc = new Calculator();
@@ -2822,7 +2822,7 @@ class Product {
   private static counter = 0;
   private id: int;
 
-  public func %construct() => @unique_id = self::counter ++;
+  public func %construct () => @unique_id = self::counter ++;
 
   // Array a function as this class' friend
   friend getProductId(product: self) -> int;
@@ -2971,7 +2971,7 @@ We can now write our `Wizard` class:
 class Wizard extends Hero {
   public readonly mp: int;
 
-  public func %construct(@name: int, @hp: int, @attack: int, @mp: int) {}
+  public func %construct (@name: int, @hp: int, @attack: int, @mp: int) {}
 
   public func fireball (ennemy: Hero) {
     // Check if remaining MP are enough
@@ -3112,7 +3112,7 @@ unique class Translation as tr {
     return "Bonjour";
   }
 
-  public func %call(text: str, lang: str) -> string =>
+  public func %call (text: str, lang: str) -> string =>
     @translate(text, lang);
 }
 
@@ -3151,7 +3151,7 @@ class MyInteger {
   public func set (@value: int) {}
   public func get () -> int => @value;
 
-  public func %toBoolean() -> bool => @value isnt 0;
+  public func %toBoolean () -> bool => @value isnt 0;
 }
 ```
 
@@ -3161,12 +3161,12 @@ Here is the array of all typecasting overloads:
 
 ```sn
   // ...
-  public func %toBoolean()   : bool;
-  public func %toInteger()   : int;
-  public func %toFloat()     : float;
+  public func %toBoolean ()   : bool;
+  public func %toInteger ()   : int;
+  public func %toFloat ()     : float;
 
-  public func %toString()    : string;
-  public func %toNumber()    : Number;
+  public func %toString ()    : string;
+  public func %toNumber ()    : Number;
   // ...
 ```
 
@@ -3244,7 +3244,7 @@ The first idea would be to make a virtual class called `ConvertibleToInt` with a
 
 ```sn
 virtual class ConvertibleToInt {
-  abstract func %toInteger() -> int;
+  abstract func %toInteger () -> int;
 }
 ```
 
@@ -3258,7 +3258,7 @@ Try to find the solution by yourself. The solution is just below:
 
 ```sn
 interface ConvertibleToInt {
-  public func %toInteger() -> int;
+  public func %toInteger () -> int;
 }
 
 func add (left: ConvertibleToInt, right: ConvertibleToInt) -> int {
@@ -3282,7 +3282,7 @@ interface Duplication {
 class Product {
   public readonly name: string;
 
-  public func %construct(@name: string) {};
+  public func %construct (@name: string) {};
 
   public func duplicate () -> self => new Product(@name);
 }
@@ -3312,7 +3312,7 @@ To implement an interface in a class, simply use the `implements` keyword like t
 
 ```sn
 class Two implements ConvertibleToInt {
-  public func %toInteger() => 2;
+  public func %toInteger () => 2;
 }
 ```
 
@@ -3490,12 +3490,12 @@ struct Data<T implements Stringifyable> {
 
 // Make a class that works with the structure
 class Working {
-  public func %toString() => "It's working!";
+  public func %toString () => "It's working!";
 }
 
 // Make a class that doesn't work with the structure
 class NotWorking {
-  public func %toInteger() -> int => 28;
+  public func %toInteger () -> int => 28;
 }
 ```
 
@@ -3548,7 +3548,7 @@ For information, the `T`, `X`, `Y`, `Z`, `K` and `V` names are reserved to templ
 Here is a problem we may encounter soon: we have a function, that takes a single argument of any type, do some things with it (like putting it in a list or something) and return an instance of the exact same type. A first idea would be to do this:
 
 ```sn
-func treat(something: Any) -> Any;
+func treat (something: Any) -> Any;
 ```
 
 But we're wrong, because the following code won't work:
@@ -3561,7 +3561,7 @@ height = treat(hello); // ERROR
 An error will be thrown because `height` is typed as an `int` but `treat` returns an instance of `Any`. This is where we block: the function tells it can return absolutely any type of values. To solve this problem, we'll simply use templates with inferred templating:
 
 ```sn
-func treat<T>(something: T) -> T;
+func treat<T> (something: T) -> T;
 
 let height = 8;
 height = treat(hello); // Works fine
@@ -3575,16 +3575,16 @@ In reality, templates are instances of a class. Consider the following code:
 
 ```sn
 // This line:
-func something<T>() -> void {}
+func something<T> () -> void {}
 
 // Is strictly equivalent to:
-func something<T: class_ref>() -> void {}
+func something<T: class_ref> () -> void {}
 ```
 
 This specifies the template's _type_. Here, `T` is an instance of the `class_ref` class, which is a special class that refers to an existing class. But we can also specify other types:
 
 ```sn
-func createEmptyList<T, SIZE: int>() -> T[SIZE] { /* ... */ }
+func createEmptyList<T, SIZE: int> () -> T[SIZE] { /* ... */ }
 
 val list1: int[8] = createEmptyList<int, 8>();
 val list2: int[]  = createEmptyList<int, 8>();
@@ -3643,17 +3643,17 @@ Let's detail these overloads:
 // V = type for values
 dict Custom<K, V> {
   // Get a value from a key
-  public func %get(key: K) -> V;
+  public func %get (key: K) -> V;
   // Associate a value to a key
-  public func %set(key: K, value: V);
+  public func %set (key: K, value: V);
   // Delete a key (and the value it refers to)
-  public func %unset(key: K);
+  public func %unset (key: K);
   // Check if a key is known
-  public func %has(key: K) -> bool;
+  public func %has (key: K) -> bool;
   // Get the array of all keys
-  public func %keys() -> Iterator<K>;
+  public func %keys () -> Iterator<K>;
   // Get the array of all values
-  public func %values() -> Iterator<V>;
+  public func %values () -> Iterator<V>;
 }
 ```
 
@@ -3897,7 +3897,7 @@ This time, because we haven't seen any feature that could achieve it, let's just
 ```sn
 class Vehicle {
   public readonly wheels: int;
-  public func %construct(@wheels: int);
+  public func %construct (@wheels: int);
 }
 
 val car = new Vehicle(4);
@@ -4094,7 +4094,7 @@ When the function is called, its content is directly evaluated, as for macros. T
 
 ```sn
 // A sample function
-func takeAnInt(ent: int) -> void {}
+func takeAnInt (ent: int) -> void {}
 ```
 
 Here is how it goes with macros:
@@ -4200,7 +4200,7 @@ class BankAccount {
 let account1 = new BankAccount(1000);
 let account2 = new BankAccount(2000);
 
-func %plus(left: BankAccount, right: BankAccount) -> int =>
+func %plus (left: BankAccount, right: BankAccount) -> int =>
   left.money + right.money;
 
 println!(account1 + account2); // Prints: "3000"
@@ -4211,7 +4211,7 @@ That's as simple as that. Note that, conventionally, an operator superoverload's
 We could also implement a way to handle operations between bank accounts and numbers:
 
 ```sn
-func %plus(left: BankAccount, right: Number) -> Number =>
+func %plus (left: BankAccount, right: Number) -> Number =>
   left.money + right;
 
 println!(account1 + 20); // Prints: "1020"
@@ -4228,7 +4228,7 @@ There are though some operators that can't return any type. These are the logica
 So, we could compare two bank accounts:
 
 ```sn
-func %equal(left: BankAccount, right: BankAccount) -> bool =>
+func %equal (left: BankAccount, right: BankAccount) -> bool =>
   left.money is right.money;
 
 println!(account1 == account2); // Prints: "false"
@@ -4244,7 +4244,7 @@ Some superoverloads can be implemented automatically in some ways: if we define 
 To avoid this behavior, simply write:
 
 ```sn
-func %equal(left: BankAccount, right: BankAccount) #only : bool =>
+func %equal (left: BankAccount, right: BankAccount) #only : bool =>
   left.money is right.money;
 ```
 
@@ -4255,7 +4255,7 @@ This will prevent the `!=` operator from being automatically implemented as the 
 Also, by default, implemeting a superoverload will preserve the argument's order. This means the following code:
 
 ```sn
-func %equal(left: BankAccount, right: int) -> bool =>
+func %equal (left: BankAccount, right: int) -> bool =>
   left.money is right.money;
 
 println!(new BankAccount(1000) is 1000); // Prints: "true"
@@ -4265,7 +4265,7 @@ println!(1000 is new BankAccount(1000)); // ERROR
 Will result in an error, because `%equal` only takes on its _left_ a `BankAccount` instance, and on its right an `int`. To make the superoverload working whatever the arguments order is without rewriting it with the opposite order, we can simply use the `#reversable` directive:
 
 ```sn
-func %equal(left: BankAccount, right: int) #reversable : bool =>
+func %equal (left: BankAccount, right: int) #reversable : bool =>
   left.money is right.money;
 
 println!(new BankAccount(1000) is 1000); // Prints: "true"
@@ -4275,7 +4275,7 @@ println!(1000 is new BankAccount(1000)); // Prints: "true"
 This now works as expected. Note that `#only` and `#reversable` can be combined:
 
 ```sn
-func %equal(left: BankAccount, right: int) #reversable #only : bool =>
+func %equal (left: BankAccount, right: int) #reversable #only : bool =>
   left.money is right.money;
 
 println!(new BankAccount(1000) is 1000); // Prints: "true"
@@ -4289,16 +4289,16 @@ It's possible to use templates on superoverloads, but only if these templates ar
 
 ```sn
 // Doesn't work because "T" cannot be guessed
-func %plus<T>(left: string, right: int) -> int[];
+func %plus<T> (left: string, right: int) -> int[];
 
 // Doesn't work because "T" cannot be guessed
-func %plus<T>(left: string, right: int) -> T;
+func %plus<T> (left: string, right: int) -> T;
 
 // Works fine
-func %plus<T>(left: T, right: int) -> bool;
+func %plus<T> (left: T, right: int) -> bool;
 
 // Works fine
-func %plus<T>(left: string, right: Dictionary<int, T>) -> string[];
+func %plus<T> (left: string, right: Dictionary<int, T>) -> string[];
 ```
 
 ## The reduction directive
@@ -4680,8 +4680,8 @@ struct ErrorStep {
 class Error {
   public readonly message: string;
   public readonly traceback: Array<ErrorStep>;
-  public func %construct(@message: string);
-  public func %toString();
+  public func %construct (@message: string);
+  public func %toString ();
 }
 ```
 
@@ -4922,7 +4922,7 @@ In SilverNight, each object (not primitives) has a unique identifier associated 
 Here is the signature of the native `%equal` superoverload:
 
 ```sn
-func %equal<T>(left: T, right: T) -> bool;
+func %equal<T> (left: T, right: T) -> bool;
 ```
 
 It can compare two instances of the same class and tell if they are identical by comparing their RUID. Of course, this could not be done manually because we can't access the RUID, but this is a native superoverload so the builder can implement it itself.
