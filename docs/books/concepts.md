@@ -26,23 +26,17 @@ _NOTE :_ All across this book, we will often use the _trusted_ term (mostly on s
 * A _functionally-trusted_ resource means that is guaranteed to work under the right circumstances (no missing dependencies, no error due to a bug of the operating system, etc.) thanks to many checks performed on it (checking that functions aren't declared twice, type compatibility, template constraints, etc.). To be functionally-trusted, a resource needs to be syntaxically-trusted first (because a program with syntax error scannot work) ;
 * An _untrusted_ resource is a resource that is not syntaxically-trusted (and so not functionally-trusted).
 
-### The adapter
+### The normalizer: Source -> SST
 
-The first module of the toolchain to run is the _adapter_. It handles characters encoding (`utf-8`...), line breaks (`\r\n` on Windows, `\r` on some old Mac systems, `\n` on Linux). If the source code is not a string (for example, a compressed package like we'll see later), it runs the _package handler_ to manage dependencies, uncompress source code, resolve links, etc.
+The first module of the toolchain to run is the _normalizer_. It handles characters encoding (`utf-8`...), line breaks (`\r\n` on Windows, `\r` on some old Mac systems, `\n` on Linux). If the source code is not a string (for example, a compressed package like we'll see later), it runs the _package handler_ to manage dependencies, uncompress source code, resolve links, etc.
 
 The goal of this package is to get a SST for SilverNight Source Tree, which is a folder-like representation of the source code, in a little more complex way. It can handle packages management (including binary resources like images our sounds that come with some packages) or code split across several files.
 
 **Reminder :** It takes as an input an unstrusted source folder and delivers an unstrusted SST.
 
-### The builder
+### The lexer: SST -> TST
 
-The _builder_ is the second module of the toolchain to run. It converts a source tree to an _Abstract Syntax Tree_ (AST), which is a representation of the source codes that clearly indicates additions, block usages, call to functions, declaration of variables, etc.
-
-**Reminder :** It takes as an input an unstructed SST and delivers a syntaxically-trusted AST.
-
-#### The tokenizer: SST to TST
-
-The very first sub-module to work here is the _tokenizer_. It basically turns each part of the source code from the source tree into an array of tokens. Its goal is to structure the code, to indicate that here there is an integer, here there is a string, here there is a `func` keyword, etc.
+The very first sub-module to work here is the _lexer_. It basically turns each part of the source code from the source tree into an array of tokens. Its goal is to structure the code, to indicate that here there is an integer, here there is a string, here there is a `func` keyword, etc.
 
 It does not perform any check on the syntax except:
 
@@ -54,15 +48,15 @@ It does not treat binary files.
 
 Its output is an untrusted TST (for Tokenized Source Tree).
 
-#### The AST builder: TST to AST
+### The parser: TST -> AST
 
-The AST builder simply converts a TST into an AST.
+The parser simply converts a TST into an AST.
 
 It fully checks the syntax. If a semicolon is missing, if the `for` loop does not get the right head, or if a constant is declared without a value, it will throw an error.
 
 Its output is a syntaxically-trusted AST.
 
-### The checker
+### The checker: AST -> SRT
 
 The _checker_ comes right after the builder. It has several goals represented as tasks done in the following order:
 
@@ -71,6 +65,10 @@ The _checker_ comes right after the builder. It has several goals represented as
 * Guarantee the proper functioning of the code
 
 **Reminder :** It takes as an input a syntaxically-trusted AST and delivers a functionally-trusted SRT.
+
+### Conclusion modules
+
+Conclusion modules are used to convert an SRT to a PRS (Program in a Runnable State), which can include running the produced program. These are: the compiler, the transpilers, and the interpreter.
 
 ### The compiler
 
@@ -108,7 +106,7 @@ This point is also true for libraries: if a library does not implement some impo
 
 Note that there is a directive to run instructions for specific language targets without making a new file each time for each platform. This way, writing code blocks for C or Java only is very simple to do and keep the code clear and maintanable.
 
-### Package archives
+### The case of package archives
 
 In SilverNight, packages are folders that come with at least a _package file_, named `package.toml`, and a main source file (written in SilverNight) that exports its data.
 

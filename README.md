@@ -103,29 +103,19 @@ Here is the roadmap for the whole project.
 
 ### Make the toolchain
 
-Quote from [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html):
+#### Analyzer
 
-> The **toolchain** is a suite of tools which, combined, can compile, interpret, transpile, build a package from, etc. a SilverNight source code or an intermediary step of compilation (like an AST)
-
-#### Builder
-
-> The **builder** is the part of the toolchain that [...] turns a SilverNight source code into a valid AST
-
-* Make the Tokenizer
-* Make the AST Builder
-* Make the AST Checker
-* Make the AST Optimizer
+* Make the Lexer
+* Make the Parser
+* Make the Checker
+* Make the Optimizer
 
 #### Interpreter
-
-> The **interpreter** is the part of the toolchain that runs on-the-fly a SilverNight AST
 
 * Make a JavaScript interpreter
 * Make a low-level interpreter (for great performances)
 
 #### Transpilers
-
-> A **transpiler** is a part of the toolchain that converts a SilverNight AST into a another language
 
 * Make the TypeScript transpiler
 * Make the JavaScript transpiler from it
@@ -135,8 +125,6 @@ Quote from [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.ht
 * Make the Swift transpiler
 
 #### Compiler
-
-> The **compiler** is the part of the toolchain that turns a valid SilverNight AST into machine code
 
 This part is coming soon.
 
