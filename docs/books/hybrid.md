@@ -4547,8 +4547,8 @@ Now, `one` has nullable `int?` type and `two` has standard `int` type.
 The `try_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `NULL` if it fails, without throwing an error. Its return type is nullable, like in this example:
 
 ```sn
-val works  = try_cast!<int>(&mut (2)); // *mut int? -> &mut (nullable!(2))
-val doesnt = try_cast!<int>(&mut ({})); // *mut int? -> NULL
+val works  = try_cast!<int>(fly_mut_ptr! (2)); // *mut int? -> &mut (nullable!(2))
+val doesnt = try_cast!<int>(fly_mut_ptr! ({})); // *mut int? -> NULL
 
 println!(works is 2);     // Prints: "true"
 println!(doesnt is null); // Prints: "true"
@@ -5022,6 +5022,17 @@ let ptr = &mut str;
 // let ptr: *mut string = &mut str;
 ```
 
+### Pointers on values
+
+Sometimes we want to create pointers from simple values, not an assignable entity. For that, we can use the `fly_ptr!` as well as the `flu_mut_ptr!` to make a constant or a mutable pointer. Here is how it goes:
+
+```sn
+// Create a constant pointer
+let ptr1: * = fly_ptr!(2);
+// Create a mutable pointer
+let ptr2: *mut = fly_mut_ptr!(2);
+```
+
 ### Pointers in functions
 
 Pointers can be used to manipulate data in functions. Here is how it goes:
@@ -5037,9 +5048,10 @@ println!(counter); // Prints: "1"
 They can also return a pointer:
 
 ```sn
-func increment (counter: *int) -> *int => &mut (counter + 1);
+func increment (counter: *int) -> *int => fly_ptr! (counter + 1);
 
-let *ptr = increment(&mut (0));
+let ptr: * = increment(fly_mut_ptr! (0));
+// let ptr: *int = ...
 
 println!(ptr); // Prints: "1"
 ```
