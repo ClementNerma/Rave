@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.19.1',
+    VERSION: '0.20.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -250,13 +250,13 @@ scheme = {
         ],
         [
           // Declaration of variables
-          /\b(let)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-          'purple', 'red', 'cyan'
+          /\b(let)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          'purple', 'cyan'
         ],
         [
           // Declaration of constants (plain or not)
-          /(val|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-          'purple', 'red', 'orange'
+          /(val|pln)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          'purple', 'orange'
         ],
         [
           // Type symbol
@@ -275,8 +275,8 @@ scheme = {
         ],
         [
           // Declaration statement in classes for constants (plain or not)
-          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?(val|pln)\s+((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-          'purple', 'purple', 'purple', 'purple', 'red', 'orange'
+          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?(val|pln)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          'purple', 'purple', 'purple', 'purple', 'orange'
         ],
         [
           // Setters/getters declaration
@@ -295,8 +295,8 @@ scheme = {
         ],
         [
           // Declaration statement in classes for assignable entities
-          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?((?:\*\s*)*)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-          'purple', 'purple', 'purple', 'red', 'cyan'
+          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          'purple', 'purple', 'purple', 'cyan'
         ],
         [
           // Overload declaration
@@ -357,6 +357,11 @@ scheme = {
           'purple'
         ],
         [
+          // Pointers
+          /([\*&])(mut)?/,
+          'cyan', 'purple'
+        ],
+        [
           // Logical operators
           /(<=|>=|<|>|==|!=|&&|\|\|)/,
           'cyan'
@@ -374,11 +379,6 @@ scheme = {
         [
           // Math operators
           /(\+|-|\/|\*|%|\^|\*\*|<<|>>|\?)/,
-          'cyan'
-        ],
-        [
-          // Pointer's symbol
-          /&/,
           'cyan'
         ],
         [
