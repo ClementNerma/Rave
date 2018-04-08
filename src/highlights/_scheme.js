@@ -259,9 +259,9 @@ scheme = {
           'purple', 'red', 'orange'
         ],
         [
-          // Special types
-          /(?<!:)(:)\s*(void|self|Any|class_ref|func_ref|var_ref|macro_ref|iter|async|unsafe|func|lambda|T|X|Y|Z|K|V)\b/,
-          'cyan', 'purple'
+          // Type symbol
+          /(?<!:)(:)/,
+          'cyan'
         ],
         [
           // Other types
@@ -347,16 +347,6 @@ scheme = {
           ]
         },
         [
-          // Function's or declaration's special type (not caught by the previous expressions)
-          /(?<!:)(?:(:)\s*((?:[&\*]\s*)*)|(->)\s*((?:&\s*)*)((?:\*\s*)*))\s*(void|self|Any|class_ref|func_ref|var_ref|macro_ref|lambda|T|X|Y|Z|K|V)\b/,
-          'white', 'invalid', 'purple', 'invalid', 'red', 'purple'
-        ],
-        [
-          // Function's or declaration's (other) type
-          /(?<!:)(?:(:)\s*((?:[&\*]\s*)*)|(->)\s*((?:&\s*)*)((?:\*\s*)*))\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-          'white', 'invalid', 'purple', 'invalid', 'red', 'yellow', 'cyan'
-        ],
-        [
           // Arrow function
           /(=>)/,
           'purple'
@@ -438,7 +428,7 @@ scheme = {
         ],
         [
           // Special native types
-          /(?<!\.)\b(void|self|Any|class_ref|func_ref|var_ref|macro_ref|lambda|T|X|Y|Z|K|V)(\?)?(?!\s*:)\b/,
+          /(?<!\.)\b(void|self|Any|class_ref|func_ref|var_ref|macro_ref|lambda|T|X|Y|Z|K|V)(?!\s*:)\b/,
           'purple', 'cyan'
         ],
         [
@@ -614,6 +604,11 @@ scheme = {
           // All other directives
           /#([a-zA-Z_\$][a-zA-Z0-9_\$]+)( +;)?/,
           'invalid'
+        ],
+        [
+          // Type names
+          /\b([A-Z][a-zA-Z0-9_\$]*)\b/,
+          'yellow'
         ]
       ]
     },
