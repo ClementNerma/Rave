@@ -3867,29 +3867,37 @@ As you can see, a macro is simply a way to simplify the writing of a call. It wo
 Macros can have several arguments, which must be typed. But it can also have a return type if it is ensured to return a specific type of value. For example, in our example, because `println!` is void-typed, the macro will return a `void`. So, we write:
 
 ```sn
-#macro sayHello(name: string) => println!(`Hello, $${name}`);
+#macro sayHello(name: string) => println!("Hello, " + $${name});
 ```
 
 One of the native macros can be useful when using arguments. In fact, when writing the same macro as above but like this:
 
 ```sn
-#macro sayHello(name: string) => println!("Hello, " + $${name});
+#macro sayHello(name: string) => println!("Hello, $${name}");
 ```
 
-Using it will almost certainly throw an error. Why? Because it would produce this result:
+Using it could throw an error. Why? Because it would produce this result:
 
 ```sn
 // Call the macro
 sayHello!("Jack");
 
-// Will produce:
-println!("Hello, " + Jack);
+// This will produce:
+println!("Hello, "Jack"");
+//                ^- Syntax error
 ```
 
-Until a `Jack` resource is declared, the code above will throw an error because of an undefined reference. This is due to the fact every argument given to a macro is gave as a plain content. The solution to this problem is to use the `#uneval` directive.
+There is a directive to solve this problem, called `#unwrap`:
 
 ```sn
-#macro sayHello(name: string) => println!("Hello, " + #uneval(name));
+// Declare the macro
+#macro sayHello(name: string) => println!("Hello, #unwrap(name)");
+
+// Call the macro
+sayHello!("Jack");
+
+// This will produce:
+sayHello!("Hello, Jack");
 ```
 
 Also note that macros can use a special type for their arguments, that are not available for standard functions. It's the `#raw` type, which prevent the arguments from being checked and evaluated. For example, the following code will work fine:
@@ -3899,9 +3907,9 @@ Also note that macros can use a special type for their arguments, that are not a
 #macro sayHello(name: #raw) => println!("Hello, " + $${name});
 
 // Call it
-sayHello( 'Jack' );
+sayHello( 'Jack' /* Hey */ );
 // This will produce:
-println!("Hello, " +  'Jack' );
+println!("Hello, " +  'Jack' /* Hey */ );
 ```
 
 As you can see, even the spaces are kept in `name`. Note that plain arguments can also be unevaluated to a string:
