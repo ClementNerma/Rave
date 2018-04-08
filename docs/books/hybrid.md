@@ -4982,7 +4982,7 @@ let hero = {
   attack: 20
 };
 
-let *ptr = &mut (hero.name);
+let ptr: *mut = &mut (hero.name);
 ptr = "John";
 
 println!(hero.name); // Prints: "John"
