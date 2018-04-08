@@ -98,7 +98,6 @@ Here is the roadmap for the whole project. Please note that most parts cannot be
 
 * Redact [_The Hybrid Book_](https://silvernight.netlify.com/docs/book/hybrid.html) (**active**)
 * Redact [_The Book of Concepts_](https://silvernight.netlify.com/docs/book/concepts.html)
-* Redact the whole specifications
 * Redact _The SilverNight programming language_
 
 ### Make the toolchain
