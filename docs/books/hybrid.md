@@ -5034,8 +5034,7 @@ let ptr: *mut = "Hello !";
 
 // Is the same as doing...
 let str = "Hello !";
-let ptr = &mut str;
-// let ptr: *mut string = &mut str;
+let ptr: *mut = &mut str;
 ```
 
 ### Pointers on values
@@ -5274,6 +5273,45 @@ println!(ptr); // Prints: "8"
 ```
 
 This part is complex, so don't hesitate to read it again until you understand it.
+
+### Depointerization
+
+Depointerization consists in getting the referred from a point. This is what we've done when dealing with an intermediate pointer, and it's useful when, for example, we use a function that returns a constant pointer but we want to make a mutable from it. Here is how it goes:
+
+```sn
+// Declare a pointer
+let ptr: * = 2;
+
+// Assign something to the pointer
+ptr = 8; // ERROR (referred is constant)
+
+// Depointerize
+let i = *ptr;
+
+// Assign something to the mutable
+i = 5; // Works
+
+println!(i);   // Prints: "5"
+println!(ptr); // Prints: "2"
+```
+
+As you can see, depointerization allows to get a value that is not linked to the pointer itself, because it creates a new EUID (altough they may share the same RUID if the referred is an object).
+
+```sn
+// Declare a pointer
+let ptr: * = lit_ptr!({ name: "Jack" });
+
+// Depointerize
+let hero = *ptr;
+
+// Assign to a property
+hero.name = "John";
+
+println!(hero.name); // Prints: "John"
+println!(ptr.name); // Prints: "John"
+```
+
+How could this code work? Well, the object `ptr` targets is not defined as constant, even if the reference we assign to the pointer is. So, if we get a reference to this object, we can modify its value. This is why having a constant pointer does not mean having a constant referred. Be aware of this!
 
 ## Packages
 
