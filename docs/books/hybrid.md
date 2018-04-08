@@ -5067,7 +5067,7 @@ They can also return a pointer:
 ```sn
 func increment (counter: *int) -> *int => fly_ptr! (counter + 1);
 
-let ptr: * = increment(fly_mut_ptr! (0));
+let ptr: * = increment(fly_ptr! (0));
 // let ptr: *int = ...
 
 println!(ptr); // Prints: "1"
