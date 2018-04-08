@@ -5167,6 +5167,8 @@ ptr = 2; // Works fine
 println!(i); // Prints: "2"
 ```
 
+This behaviour is due to the fact all pointers all nullable. A pointer to an `int` resource will be implicitly typed as `int?`, even though the pointed resource has a different type. This allows to use the `NULL` pointer which is, as you can guess, a pointer to `null`.
+
 ### Impact on lifetime duration
 
 Creating a pointer on an entity will prevent it from being automatically freed when it goes out of the scope, because there its EUID is still used somewhere. The pointer itself, though, will be freed automatically since it goes out of the scope (unless there is another pointer referring from it - a double pointer).
