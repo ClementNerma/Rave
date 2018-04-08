@@ -4966,6 +4966,8 @@ println!(ptr); // Prints: "Goodbye !"
 *ptr = "Yeah !"; // ERROR
 ```
 
+When using a pointer, `ptr` is the pointer's reference, like `&mut hero`, while `*ptr` is the referred's **value**, like `"Jack"`. When a value is assigned using `*ptr`, the changes are reflected on the referred's value (like in the example above).
+
 As you can see, we can make constant pointers from mutables, but this also works with constants of course. This is especially useful when we want to make a pointer that cannot be written, so we preserve the referred's value.
 
 But sometimes, we simply want to get a pointer we can write to change the referred's value. For that, we use the `&mut` symbol, still follow by the referred's name:
@@ -4984,8 +4986,6 @@ let ptr: *mut = &mut hero;
 // The changes are reflected on the referred
 println!(hero); // Prints: "John"
 ```
-
-When using a pointer, `ptr` is the pointer's reference, like `&mut hero`, while `*ptr` is the referred's **value**, like `"Jack"`. When a value is assigned using `*ptr`, the changes are reflected on the referred's value (like in the example above).
 
 Note that pointers can be made on members or properties, like this:
 
