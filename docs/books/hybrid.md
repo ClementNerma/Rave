@@ -5020,25 +5020,6 @@ let ptr2: *mut = &i;
 let ptr2: *mut int = &i;
 ```
 
-### Pointers using expressions
-
-Pointers can also be defined without referring to an entity. See the code below:
-
-```sn
-let ptr: *mut = "Hello !";
-```
-
-When this code is ran, an entity is created with content `"Hello"`, and `ptr` points to it. It's an equivalent to the code above:
-
-```sn
-// Doing this...
-let ptr: *mut = "Hello !";
-
-// Is the same as doing...
-let str = "Hello !";
-let ptr: *mut = &mut str;
-```
-
 ### Pointers on values
 
 Sometimes we want to create pointers from simple values, not an assignable entity. For that, we can use the `fly_ptr!` as well as the `flu_mut_ptr!` to make a constant or a mutable pointer. Here is how it goes:
