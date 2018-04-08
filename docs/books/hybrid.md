@@ -3873,7 +3873,7 @@ Macros can have several arguments, which must be typed. But it can also have a r
 One of the native macros can be useful when using arguments. In fact, when writing the same macro as above but like this:
 
 ```sn
-#macro sayHello(name: string) => println!("Hello, " + name);
+#macro sayHello(name: string) => println!("Hello, " + $${name});
 ```
 
 Using it will almost certainly throw an error. Why? Because it would produce this result:
@@ -3896,7 +3896,7 @@ Also note that macros can use a special type for their arguments, that are not a
 
 ```sn
 // Declare the macro
-#macro sayHello(name: #raw) => println!("Hello, " + name);
+#macro sayHello(name: #raw) => println!("Hello, " + $${name});
 
 // Call it
 sayHello( 'Jack' );
