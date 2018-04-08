@@ -3867,7 +3867,7 @@ As you can see, a macro is simply a way to simplify the writing of a call. It wo
 Macros can have several arguments, which must be typed. But it can also have a return type if it is ensured to return a specific type of value. For example, in our example, because `println!` is void-typed, the macro will return a `void`. So, we write:
 
 ```sn
-#macro sayHello(name: string) => println!(`Hello, $${name}}`);
+#macro sayHello(name: string) => println!(`Hello, $${name}`);
 ```
 
 One of the native macros can be useful when using arguments. In fact, when writing the same macro as above but like this:
@@ -3990,6 +3990,18 @@ sayHello!("Yeah");
 ```
 
 The first thing we can see here is the use of the `unsafe` keyword, which indicates the following function is unsafe. The function is then called using the `!` symbol after its name, as for macros. And, as for macros, they don't have a return type.
+
+A specificity of unsafe functions when comparing them to macros is that arguments are real assignable entities, so they can be used as it. Although, their type is a simple constraint, which means their only purpose is to directly throw an error when they are called with the wrong arguments and produce a good documentation. But, they are not attached to the arguments themselves. For example, the following code works:
+
+```sn
+unsafe func add! (left: Primitive, right: Primitive) {
+  return left + right;
+}
+
+println!(add!(2, 5)); // Prints: "7"
+```
+
+In this example, `add!` returned an `int` and both `left` and `right` were `int`s too. The `Any` type is only here to indicate the function takes two primitive, but in reality they have a more precise type than it.
 
 When the function is called, its content is directly evaluated, as for macros. The main difference comes from the fact when an error occurs in an unsafe function (like an incompatible type or something), the error will be located in the function's body, not in the code's body. Considering the following function:
 
