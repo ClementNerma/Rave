@@ -4154,7 +4154,7 @@ func doubleRegister () -> int {
 Here, we don't know how to write the `doubleRegister()` function because we know we can't multiply an `Any` instance by 2. In order to solve this, we use _dynamic typecasting_:
 
 ```sn
-func doubleRegister () -> &int {
+func doubleRegister () -> *int {
   return cast!<int>(data) * 2;
 }
 ```
@@ -4164,7 +4164,7 @@ What happens here? We simply _dynamically_ convert `data` to an `int` and got a 
 Dynamic typecasting is especially useful when coupled with the `instanceof` operator, which checks if a value is instance of a given class. Here is how it goes:
 
 ```sn
-func doubleRegister () -> &int {
+func doubleRegister () -> *int {
   if (data instanceof int)
     return cast!<int>(data) * 2;
   else {
@@ -4610,8 +4610,8 @@ Now, `one` has nullable `int?` type and `two` has standard `int` type.
 The `try_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `NULL` if it fails, without throwing an error. Its return type is nullable, like in this example:
 
 ```sn
-val works  = try_cast!<int>(2); // &int? -> &(nullable!(2))
-val doesnt = try_cast!<int>({}); // &int? -> NULL
+val works  = try_cast!<int>(2); // *int? -> &(nullable!(2))
+val doesnt = try_cast!<int>({}); // *int? -> NULL
 
 println!(works is 2);     // Prints: "true"
 println!(doesnt is null); // Prints: "true"
@@ -5101,7 +5101,7 @@ println!(counter); // Prints: "1"
 They can also return a pointer:
 
 ```sn
-func increment (*counter: int) -> &int => &(counter + 1);
+func increment (*counter: int) -> *int => &(counter + 1);
 
 let *ptr = increment(&(0));
 
