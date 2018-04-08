@@ -126,8 +126,6 @@ Also, pre-parsing allow to remove the source code from the package archive, in o
 
 ## Basic concepts
 
-### Entities
-
 In SilverNight, an _entity_, also called _resource_, is either a _value_, a _descriptor_ or a _container_.
 
 Values are representation of data. For example, plain numbers or strings are values, but arrays are too.
@@ -136,15 +134,9 @@ Containers, they, are entities that contain a data, like variables or constants.
 
 An _entity name_ is a suite of symbols that can be used to define the name of an entity. The regular expression that validates an entity name is `[a-zA-Z_\$][a-zA-Z0-9_\$]*`.
 
-### Operators
-
 Operators are special symbols that can't be part of an entity name, like `+` or `*`. There are several types of operators we will see later.
 
-### Literals
-
 Literals, also called plain values, are values that can be evaluated whatever the platform the program is running on. These are plain strings (`"Hello world"`), plain numbers (`28.5`), or plain booleans (`true`).
-
-### Keywords
 
 Keywords are single words that describes something in the code. They are reserved and can't be used as names for other entities.
 
