@@ -5002,6 +5002,22 @@ The syntax is as follows:
 &mut (object.property); // Make a pointer to `object.property`
 ```
 
+You may have noticed that inferred typing is special with pointers. Altough we still don't have to specify the referred's type, we need to clearly indicate we are making a pointer as well as the pointer's state (mutable with `*mut` or constant with `*`). Then, inferred typing guesses the type. Here is an example of both inferred and explicit typing with pointers:
+
+```sn
+let i = 1;
+
+// Implicit
+let ptr1: * = &i;
+// Explicit
+let ptr1: * int = &i;
+
+// Implicit
+let ptr2: *mut = &i;
+// Explicit
+let ptr2: *mut int = &i;
+```
+
 ### Pointers using expressions
 
 Pointers can also be defined without referring to an entity. See the code below:
