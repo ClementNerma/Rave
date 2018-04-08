@@ -294,14 +294,14 @@ Here is the table of types with their respective capacities:
 | `uint16`  | `0`                          | `65,535`                     |
 | `int32`   | `−2,147,483,648`             | `2,147,483,647`              |
 | `uint32`  | `0`                          | `4,294,967,295`              |
-| `int64`*  | `-9,223,372,036,854,775,808` | `9,223,372,036,854,775,807`  |
-| `uint64`* | `0`                          | `18,446,744,073,709,551,615` |
-
-_*_ : Please be aware that numbers higher than 32-bit could not be handled by some operating systems. For example, `int64` could not be supported in all platforms.
+| `int64`   | `-9,223,372,036,854,775,808` | `9,223,372,036,854,775,807`  |
+| `uint64`  | `0`                          | `18,446,744,073,709,551,615` |
 
 Note that, the more bits a number uses for its representation (for integers, this is the number written after `int`, like 32 bits for `int32`), the more memory it takes. By default, integers use the `int32` type, but if you don't need such big numbers, you can still use the `int16` type instead. This is especially important when making programs for platforms with a very limited amount of memory (like Arduino boards), in this case you can even use the `int8` (`byte`) type (handling from `-128` to `127`).
 
 To conclude, always use the smallest type number you have to. If you are dealing with numbers from `0` to `40,000`, instead of using a `int32`, simply use a `uint16` instead.
+
+Also, note that 64-bit numbers even work on 32-bit processors, as they are part of the language specifications.
 
 ### Floating-point numbers
 

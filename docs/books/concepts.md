@@ -245,8 +245,8 @@ Here is the list of **integer** types:
 |  **uint16**   |  0                           |  65,535                      |
 |  **int32**    |  −2,147,483,648              |  2,147,483,647               |
 |  **uint32**   |  0                           |  4,294,967,295               |
-|  **int64***   |  -9,223,372,036,854,775,808  |  9,223,372,036,854,775,807   |
-|  **uint64***  |  0                           |  18,446,744,073,709,551,615  |
+|  **int64**    |  -9,223,372,036,854,775,808  |  9,223,372,036,854,775,807   |
+|  **uint64**   |  0                           |  18,446,744,073,709,551,615  |
 
 There are also two **floating-point** types:
 
@@ -258,6 +258,8 @@ There are also two **floating-point** types:
 _NOTE :_ The `~` symbol means "approximative".
 
 These last types work with a single integer digit, a decimal part and an exponent. For example, `12.8` will be represented in a `float` as `1.28 * 10^1`. This is why, when dealing with numbers that have a large amount of digits, some may be lost because of the limited precision of these types.
+
+Note that 64-bit numbers even work on 32-bit processors, as they are part of the language specifications.
 
 #### Overflow and underflow
 
