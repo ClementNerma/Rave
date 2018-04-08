@@ -4974,6 +4974,8 @@ let ptr: *mut = &mut hero;
 println!(hero); // Prints: "John"
 ```
 
+When using a pointer, `ptr` is the pointer's reference, like `&mut hero`, while `*ptr` is the referred's **value**, like `"Jack"`. When a value is assigned using `*ptr`, the changes are reflected on the referred's value (like in the example above).
+
 Note that pointers can be made on members or properties, like this:
 
 ```sn
