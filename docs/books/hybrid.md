@@ -3932,7 +3932,7 @@ As you can see, even the spaces are kept in `name`. Note that plain arguments ca
 
 ```sn
 // Declare the macro
-#macro test(name: #raw) => #uneval(name);
+#macro test(name: #raw) => #wrap(name);
 
 // Call it
 println!(test( 'Jack' ));
