@@ -496,6 +496,11 @@ scheme = {
           include: '#objects'
         },
         [
+          // Array of type
+          /\b([A-Z][a-zA-Z0-9_\$]*)(?=\s*\[\s*\])/,
+          'yellow'
+        ],
+        [
           // Object followed by a child property
           /(@?[a-zA-Z_\$][a-zA-Z0-9_\$]*)(\?)?(?=[\.\[])/,
           'red', 'cyan'
