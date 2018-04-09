@@ -2763,6 +2763,8 @@ class BankAccount {
 println!(account1 + 20); // Prints: "1020"
 ```
 
+Note that implemeting `%times` will automatically implement `%pow` as a succession of multiplications.
+
 There are though some operators that can't return any type. These are the logical operators, which must return a boolean. They are:
 
 * `%equal` (`==`)
