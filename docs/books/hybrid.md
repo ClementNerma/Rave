@@ -2716,6 +2716,109 @@ println!(calc(2, 5)); // Prints: "7"
 
 Remember: making the **class** callable as a function requires a static function, while it won't be to make the **instances** callable as a function. We can also implement both the overloads in the same time, of course.
 
+### Overloading operators
+
+Operators are overloadable in classes. How does this work? It simply consists in re-writing the behaviour of an operator when using an instance of the current class, coupled with another data. For example, overloading the addition operator will allow to add an instance of our class plus a number (or anything else), and return a result of any type (we can return an integer, a new instance of the class, an array...). Here is the list of operators overloads:
+
+* `%plus` (`+`)
+* `%less` (`-`)
+* `%times` (`*`)
+* `%divide` (`/`)
+* `%modulo` (`%`)
+* `%pow` (`**`)
+
+You can see the matching operator on the right of the corresponding overload. Each of them take two arguments, and return a new value. Let's see an example: we have a class called `BankAccount`, with a public readonly member called `money` and a method to add and substract money from the account. We now want to be able to add two bank accounts. Here is how we could do it:
+
+```sn
+class BankAccount {
+  public readonly money: int with (c => c >= 0);
+
+  public func %construct (@money: int) {}
+
+  public func add (amount: int) => @money += amount;
+  public func sub (amount: int) => @money -= amount;
+
+  public func %plus (cmp: self) -> int {
+    return @money + cmp.money;
+  }
+}
+
+let account1 = new BankAccount(1000);
+let account2 = new BankAccount(2000);
+
+println!(account1 + account2); // Prints: "3000"
+```
+
+That's as simple as that. We could also implement a way to handle operations between bank accounts and numbers:
+
+```sn
+class BankAccount {
+  // ...
+  public func %plus (cmp: Number) -> Number {
+    return @money + cmp;
+  }
+  // ...
+}
+
+println!(account1 + 20); // Prints: "1020"
+```
+
+There are though some operators that can't return any type. These are the logical operators, which must return a boolean. They are:
+
+* `%equal` (`==`)
+* `%inequal` (`!=`)
+* `%greater` (`>`)
+* `%smaller` (`<`)
+* `%greater_eq` (`>=`)
+* `%smaller_eq` (`<=`)
+
+So, we could compare two bank accounts:
+
+```sn
+class BankAccount {
+  // ...
+  public func %equal (cmp: self) -> bool {
+    return @money is right.money;
+  }
+}
+
+println!(account1 == account2); // Prints: "false"
+println!(account1 == new BankAccount(1000)); // Prints: "true"
+```
+
+This works the same way for the other logical operators. A specificy with logical operators are they are reversable: if you implement `%equal`, this will also implement `%inequal` as its opposite.
+
+* Implementing `%equal` will automatically implement `%inequal` ;
+* Implementing `%inequal` will automatically implement `%equal` ;
+* Implementing `%equal`/`%inequal` + `%greater` will automatically implement `%smaller` ;
+* Implementing `%equal`/`%inequal` + `%smaller` will automatically implement `%greater`
+
+#### Templating
+
+It's possible to use templates on overloads, but only if these templates are part of the type of at least one argument of the function. Here are some examples of signatures:
+
+```sn
+class BankAccount {
+  // ...
+
+  // Doesn't work because "T" cannot be guessed
+  public func %plus<T> (left: string, right: int) -> int[];
+
+  // Doesn't work because "T" cannot be guessed
+  public func %plus<T> (left: string, right: int) -> T;
+
+  // Works fine
+  public func %plus<T> (left: T, right: int) -> bool;
+
+  // Works fine
+  public func %plus<T> (left: string, right: Dictionary<int, T>) -> string[];
+
+  // ...
+}
+```
+
+In more precise terms, if the template cannot be _inferred_, the overload's signature will be rejected.
+
 ### Friends
 
 Another concept of accessibility is the _friends_. These are resources, listed in a class, that can access its private attributes. Here is how it goes:
@@ -4141,130 +4244,23 @@ println!(cast!<int>(&i)); // Prints: "8"
 
 Superoverloads are overloads that don't act only as a class level, but as the whole program's level. Some of them work with some concepts we haven't seen yet, so we'll only see operators superoverloads.
 
-How do they work? That's simple: each operator superoverload overwrites the behaviour of an operator. Here is the array:
-
-* `%plus` (`+`)
-* `%less` (`-`)
-* `%times` (`*`)
-* `%divide` (`/`)
-* `%modulo` (`%`)
-* `%pow` (`**`)
-
-You can see the matching operator on the right of the corresponding superoverload. Each of them take two arguments, and return a new value. Let's see an example: we have a class called `BankAccount`, with a public readonly member called `money` and a method to add and substract money from the account. We now want to be able to add two bank accounts. Here is how we could do it:
+How do they work? That's simple: each operator superoverload overwrites the behaviour of an operator, but globally. For example, defining a `%plus` function globally will act in the whole program. The point is mainly to implement operators on classes that don't implement it natively, plus to allow assignments from the right: when overloading the `+` operator in a class with `%plus(cmp: int)`, for example, it will only support operations with the form `myInstance + 2` but not `2 + myInstance`. Superoverloads allow to reverse it:
 
 ```sn
-class BankAccount {
-  public readonly money: int with (c => c >= 0);
-
-  public func %construct (@money: int) {}
-
-  public func add (amount: int) => @money += amount;
-  public func sub (amount: int) => @money -= amount;
+class MyClass {
+  public readonly value: int;
+  public func %construct (@value: int) {}
+  public func %plus (cmp: int) -> int {
+    return @value + cmp;
+  }
 }
 
-let account1 = new BankAccount(1000);
-let account2 = new BankAccount(2000);
-
-func %plus (left: BankAccount, right: BankAccount) -> int =>
-  left.money + right.money;
-
-println!(account1 + account2); // Prints: "3000"
+func %plus (cmp: int, inst: MyClass) -> int {
+  return inst + cmp; // Use the implemented superoverload
+}
 ```
 
-That's as simple as that. Note that, conventionally, an operator superoverload's arguments are called `left` and `right` - even though we're not forced to call them this way.
-
-We could also implement a way to handle operations between bank accounts and numbers:
-
-```sn
-func %plus (left: BankAccount, right: Number) -> Number =>
-  left.money + right;
-
-println!(account1 + 20); // Prints: "1020"
-```
-
-There are though some operators that can't return any type. These are the logical operators, which must return a boolean. Here is the array :
-
-* `%equal` (`==`)
-* `%greater` (`>`)
-* `%smaller` (`<`)
-* `%greater_eq` (`>=`)
-* `%smaller_eq` (`<=`)
-
-So, we could compare two bank accounts:
-
-```sn
-func %equal (left: BankAccount, right: BankAccount) -> bool =>
-  left.money is right.money;
-
-println!(account1 == account2); // Prints: "false"
-println!(account1 == new BankAccount(1000)); // Prints: "true"
-```
-
-This works the same way for the other logical operators.
-
-#### Order-aware superoverloads
-
-Some superoverloads can be implemented automatically in some ways: if we define the `%equal` superoverload, the `!=` operator will also work and return the opposite of `%equal`. If we implement the `%greater` superoverload, `%smaller_eq` will automatically be implemented.
-
-To avoid this behavior, simply write:
-
-```sn
-func %equal (left: BankAccount, right: BankAccount) #only : bool =>
-  left.money is right.money;
-```
-
-This will prevent the `!=` operator from being automatically implemented as the opposite to our `%equal`.
-
-#### Reversable superoverloads
-
-Also, by default, implemeting a superoverload will preserve the argument's order. This means the following code:
-
-```sn
-func %equal (left: BankAccount, right: int) -> bool =>
-  left.money is right.money;
-
-println!(new BankAccount(1000) is 1000); // Prints: "true"
-println!(1000 is new BankAccount(1000)); // ERROR
-```
-
-Will result in an error, because `%equal` only takes on its _left_ a `BankAccount` instance, and on its right an `int`. To make the superoverload working whatever the arguments order is without rewriting it with the opposite order, we can simply use the `#reversable` directive:
-
-```sn
-func %equal (left: BankAccount, right: int) #reversable : bool =>
-  left.money is right.money;
-
-println!(new BankAccount(1000) is 1000); // Prints: "true"
-println!(1000 is new BankAccount(1000)); // Prints: "true"
-```
-
-This now works as expected. Note that `#only` and `#reversable` can be combined:
-
-```sn
-func %equal (left: BankAccount, right: int) #reversable #only : bool =>
-  left.money is right.money;
-
-println!(new BankAccount(1000) is 1000); // Prints: "true"
-println!(1000 is new BankAccount(1000)); // Prints: "true"
-println!(new BankAccount(1000) isnt 1000); // ERROR
-```
-
-#### Templating
-
-It's possible to use templates on superoverloads, but only if these templates are part of the type of at least one argument of the function. Here are some examples of signatures:
-
-```sn
-// Doesn't work because "T" cannot be guessed
-func %plus<T> (left: string, right: int) -> int[];
-
-// Doesn't work because "T" cannot be guessed
-func %plus<T> (left: string, right: int) -> T;
-
-// Works fine
-func %plus<T> (left: T, right: int) -> bool;
-
-// Works fine
-func %plus<T> (left: string, right: Dictionary<int, T>) -> string[];
-```
+Otherwise, operators superoverloads work exactly as operators overloads for classes, though globally.
 
 ### The reduction directive
 
