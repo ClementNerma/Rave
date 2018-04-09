@@ -2468,7 +2468,7 @@ This overloads aims to provide a way to run a specific code when the developer e
 Let's imagine we have an array of integers. We make a function that calculate, for each number, its square, and return a final array with these numbers. Here is how we would implement it:
 
 ```sn
-func squareList (array: Array<int>) -> Array<int> {
+func squareList (array: int[]) -> int[] {
   for i = 0; i < array.size; i ++ {
     array[i] *= array[i];
   }
@@ -4598,7 +4598,7 @@ In order to avoid this problem, we can declare the array using an optional type.
 Here is how it works:
 
 ```sn
-let array: Array<Vehicle>? = null;
+let array: Vehicle[]? = null; // Array<Vehicle>?
 
 if (random!(bool))
   array = (new Vehicle[4096]).fill(new Car());
@@ -4642,7 +4642,7 @@ struct ErrorStep {
 
 class Error {
   public readonly message: string;
-  public readonly traceback: Array<ErrorStep>;
+  public readonly traceback: ErrorStep[];
   public func %construct (@message: string);
   public func %toString ();
 }
