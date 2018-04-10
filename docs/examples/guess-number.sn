@@ -1,5 +1,6 @@
 // Import frontend library
-import console from frontend;
+import frontend.console;
+// TODO: Keep this syntax? If so, reflect in on the books.
 
 // A container for user's guess
 let guess = -1;
