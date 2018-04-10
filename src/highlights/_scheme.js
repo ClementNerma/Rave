@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.20.2',
+    VERSION: '0.20.3',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -245,7 +245,7 @@ scheme = {
         ],
         [
           // Class references
-          /\b(this|self|parent)\b/,
+          /\b(this|self|super)\b/,
           'yellow'
         ],
         [
