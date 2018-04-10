@@ -1489,34 +1489,87 @@ for i in 1..10 {
 
 This code will check each time if there had an error. If so, it will ignore all instructions above `continue` and iterate the loop a new time. Else, it will run the `println!` macro, just as expected.
 
-### Resources are block-scoped
+### Entities are block-scoped
 
-In SilverNight, all resources are _block-scoped_. This means that, when a resource is declared, it exists only _inside_ the block it is declared in. To take an example:
+In SilverNight, a _scope_ is any piece of code between an opening bracket `{` and a closing bracket `}`. For blocks, it also includes the block's head. For inline blocks, it starts from their head to the end of the block's single instruction.
+
+We can also make scopes without any block using the `{ /* scope code here */ }` syntax: it's called a _flying scope_.
+
+Here are some examples of scope:
 
 ```sn
+// Blocks
+if (true) {
+  imInScope();
+  imInScope(); // Still into
+}
+
+// Inline blocks
 if (true)
-  val message = "Hello world!";
+  imInScope();
+  imNot(); // Out of the 'if'
 
-println!(message); // ERROR because `message` does not exist
+// Flying scopes
+{ // <- begin
+  imInScope();
+} // <- end
+imNot();
 ```
 
-Here, `message` is declared inside an `if` block, so it only exists _inside_ this block. When we go outside of it, the resource does no longer exist. This is done to keep a better clarity about where resources are available. For example, with a loop, you can do:
+When we declare an entity in SilverNight, it is _block-scoped_, which means it belongs to the scope it was declared in. For example:
 
 ```sn
-for i = 0; i < 10; i += 2 {
-  println!(i);
-}
-
-// Do some stuff here
-
-for i = 10; i >= 0; i -= 2 {
+if (true) {
+  let i = 2;
   println!(i);
 }
 ```
 
-Without block-scoped declarations, this would not have worked because the declaration of `i` would have been duplicated, so we would have had to be aware to declare `i` at the beginning of the function, to use it later. The time during which an entity exists is its **lifetime duration**.
+Here, `i` belongs to our the scope defined by our `if` block. What "belongs" mean? Simply that, when the entity goes out of the scope, it is _dropped_ (we also say _freed_), so its reference is lost and we can't use it. Here is an example:
 
-Also, global entities (the ones that are defined outside another entities, which means they aren't part of a class, of an interface, of a function, etc.) have an infinite lifetime duration.
+```sn
+let i = 1;
+println!(i); // Prints: "1"
+
+{
+  let j = 2;
+  println!(j); // Prints: "2"
+}
+
+println!(i); // Prints: "1"
+println!(j); // ERROR ('j' is not defined)
+```
+
+The last line throws an error, because `j` is not defined. This is due to the fact we defined `j` in a flying scope, and that scope ended before our instruction, so `j` was dropped - we can't use it anymore.
+
+Now, question is: what entities can I access from a scope? The answer is simple: we can access all entities declared in the current scope, plus every entity that belongs to (that are declared in) a _parent scope_ (a scope that contains, directly or indirectly, the current one). For example:
+
+```sn
+// Global scope (scope 0)
+let i = 1;
+
+{
+  // Scope 1
+  let j = 2;
+
+  {
+    // Scope 2
+    let k = 3;
+  }
+}
+```
+
+The **global scope**, which is transparently defined, has no parent scope. It cannot access any other entity than the ones declared in its body. Because all our code is put somewhere in the global scope, we can always access entities that are declared in them (they are called _global entities_).
+
+So:
+
+* Scope 0 can only access its own entities (`i`) ;
+* Scope 1 can access its own ones plus scope 0's ones (`j` and `i`) ;
+* Scope 2 can access its own ones plus scope 1's ones (by extension, scope 0's ones too) (`k`, `j` and `i`).
+
+As you can see, a scope is considered as a parent of a given one even if it's not its _direct_ parent: it also works if it's an _indirect_ parent, meaning it contains a scope that itself contains the given one.
+
+Remember these rules about scopes (entities availability, drops, parent scopes, flying scopes), because all the language is ruled by it. Don't hesitate to read these explanations again as they may not be very simple.
 
 ## Functions
 
