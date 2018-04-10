@@ -206,10 +206,10 @@ self = {
         if (disk) {          
           // Generate the file
           // NOTE: diskbc = disk build constants
-          writeFile(output_path + '/_static/cst-' + name + '.plain', BUILD_CONSTANTS[name], `Temporary file for build constant "${name}"`);
+          writeFile(output_path + '/_static/' + name + '.txt', BUILD_CONSTANTS[name], `Temporary file for build constant "${name}"`);
 
           // Return its path
-          return '_static/cst-' + name + '.plain';
+          return '_static/' + name + '.txt';
         } else
           // Else, simply replace the call by its value
           return BUILD_CONSTANTS[name];
@@ -221,10 +221,10 @@ self = {
             error(`Provided builtin file "${file}" was not found`, 37);
 
           // Copy it to the extension's folder
-          copy(static_path + '/' + file, output_path + '/_static/cpy-' + file);
+          copy(static_path + '/' + file, output_path + '/_static/raw/' + file);
 
           // Return the path of the copied file
-          return '_static/cpy-' + file;
+          return '_static/raw/' + file;
         });
     }
 
