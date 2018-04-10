@@ -4302,7 +4302,7 @@ let j: *mut int = cast!<int>(&mut i);
 println!(cast!<int>(&i)); // Prints: "8"
 ```
 
-### Overloading operators
+### Superoverloads
 
 Superoverloads are overloads that don't act only as a class level, but as the whole program's level. Some of them work with some concepts we haven't seen yet, so we'll only see operators superoverloads.
 
