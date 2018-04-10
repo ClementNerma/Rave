@@ -4457,10 +4457,10 @@ func getNilPoints (array: Point[]) -> Point? {
 }
 ```
 
-The function still works as expected. In fact, `null` is defined natively with the following instruction (here, `Void` is strictly equivalent to `void`):
+The function still works as expected. In fact, `null` is defined natively with the following instruction:
 
 ```sn
-val null: Void = new Void();
+val null = new void();
 ```
 
 Be aware though, using inferred typing with `null` could result in the following behavior:
