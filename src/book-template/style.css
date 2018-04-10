@@ -59,7 +59,7 @@ nav a:hover {
 }
 
 /* Hide the first title in the summary */
-nav ul li:first-child {
+nav ul li[data-depth="0"] {
   display: none;
 }
 
