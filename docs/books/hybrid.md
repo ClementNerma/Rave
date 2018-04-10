@@ -3815,23 +3815,6 @@ This code is equivalent to the class we wrote before. We'll, its a lot more simp
 
 The function is marked with the `iter` keyword to indicate it's an iterator, but it does not use the `func` keyword (because this declaration will in reality produce an `Iterator<int>`). Its signature also tells it returns an iteration. In its body, it simply makes a loop that _yields_ some values. To be exact, each time the `yield` keyword is encountered, the value is returned and the function is _paused_ until the program asks to generate values again. So, all resources locally defined by the function stays in memory.
 
-In _synchronous iterators_, like the one we've written, the generator is considered as finished when the function ends. But it's also possible to write _asynchronous iterators_, though they're a bit heavier:
-
-```sn
-async iter mySuperIterator () -> int {
-  for i in 0..10 {
-    await sleep(1);
-    yield i;
-  }
-
-  resolve ; // 'reject' works, too
-}
-```
-
-The `resolve` keyword, with no data provided, indicates the end of the iterator. The `reject` keyword can only take a string as a parameter, and an error specific to generators will be thrown if we use it. Note that asynchronous behaviours are always waited for when using an asynchronous iterator.
-
-A last thing about these is that asynchronous iterators return a `Promise<void, IteratorError>` that can be used to handle when the iterator is done. But don't do an `await mySuperIterator()`, because the iterator have to yield values before being terminated, so in our example it would lead to an endless program.
-
 Now, let's see how to use iterators in loops to explore dictionaries.
 
 ### Exploring dictionaries
