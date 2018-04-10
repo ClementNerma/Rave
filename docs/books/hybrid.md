@@ -3527,7 +3527,7 @@ class Working {
 
 // Make a class that doesn't work with the structure
 class NotWorking {
-  public func %toInteger () -> int => 28;
+  public func %construct () -> self => println!("It's not working!");
 }
 ```
 
