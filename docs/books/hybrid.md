@@ -798,7 +798,8 @@ struct Identity {
   adult: bool = false;
 }
 
-val jack: Identity = {
+// Another syntax that uses type inference
+val jack = Identity {
   name: "Jack"
 };
 
@@ -813,7 +814,7 @@ struct Identity {
   adult: bool;
 }
 
-val jack: Identity = {
+val jack = Identity {
   name: "Jack",
   adult: true
 };
