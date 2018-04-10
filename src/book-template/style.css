@@ -128,7 +128,7 @@ pre, code {
 }
 
 pre {
-  padding: 2px;
+  padding: 5px;
   /* Prevent overflow */
   word-wrap: break-word;
   white-space: pre-line;
