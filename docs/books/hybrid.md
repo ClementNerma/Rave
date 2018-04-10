@@ -5225,7 +5225,23 @@ This behaviour is due to the fact all pointers all nullable. A pointer to an `in
 
 ### Impact on lifetime duration
 
-Creating a pointer on an entity will prevent it from being automatically freed when it goes out of the scope, because there its EUID is still used somewhere. The pointer itself, though, will be freed automatically since it goes out of the scope (unless there is another pointer referring from it - a double pointer).
+When a reference is created on an entity, the entity will not be dropped until the reference is dropped too. So, if the reference is created and isn't in use by another scope, the value will be dropped at the end of the scope it belongs to. But, if a reference is created and is in use in another scope at the end of the current scope, the entity will not be dropped as a reference still targets it.
+
+Here is an example to clarify this behaviour:
+
+```sn
+let ptr: *mut = NULL;
+
+{
+  let i = 2;
+  ptr = &i;
+} // 'i' is not dropped here
+
+println!(ptr); // Prints: "2"
+
+ptr = NULL; // 'i' is dropped here
+            // because there are no reference to it anymore
+```
 
 ### Checking a pointer
 
