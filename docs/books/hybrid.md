@@ -2952,7 +2952,7 @@ class Warrior extends Hero {
 
   public func receiveDamages (amount: int, ennemyName: string) {
     // Call the parent class' `receiveDamages()` method
-    parent.receiveDamages(amount, ennemyName);
+    super.receiveDamages(amount, ennemyName);
 
     // Check if the warrior rage will exceed 20 points
     //  by adding the damages just received
@@ -2969,7 +2969,7 @@ class Warrior extends Hero {
 }
 ```
 
-What happens in this class? First, we tell to the class to inherit from `Hero`, so it keeps all its attributes and methods (including overloads). Next, we declare a new `rage` attribute, which this time is set as `private` because there won't be any class inheriting from it. Then, we redefine the `receiveDamages` method. In it, we use a brand new keyword: `parent`. It is the same as `this`, excepted it refers to the parent class as an instance. For example, `parent.receiveDamages()` will call the `receiveDamages()` method of the **parent class**. This way, we don't have to rewrite the calculation of damages and other checkings - which would make a code duplicate, which is a thing to avoid absolutely in development.
+What happens in this class? First, we tell to the class to inherit from `Hero`, so it keeps all its attributes and methods (including overloads). Next, we declare a new `rage` attribute, which this time is set as `private` because there won't be any class inheriting from it. Then, we redefine the `receiveDamages` method. In it, we use a brand new keyword: `super`. It is the same as `this`, excepted it refers to the parent class as an instance. For example, `super.receiveDamages()` will call the `receiveDamages()` method of the **parent class**. This way, we don't have to rewrite the calculation of damages and other checkings - which would make a code duplicate, which is a thing to avoid absolutely in development.
 
 Then, the redefined method increases the rage counter (with a maximum of 20 points) and increases the warrior's attack points, so his attack points will be up to his original value plus 20 points.
 
@@ -3039,7 +3039,7 @@ Here we are! We implemented a mother class with two children.
 
 In a class, we can use a several keywords to access classes.
 
-Briefly, `this` refers to the current instance's class, `self` refers to the current class, `parent` refers to `self`'s parent.
+Briefly, `this` refers to the current instance's class, `self` refers to the current class, `super` refers to `self`'s parent.
 
 Let's take a short example:
 
@@ -3056,7 +3056,7 @@ class Child extends Mother {
 
 * `this` refers to the current instance whatever the class it is written in is. ;
 * `self` will refer to `Child` inside the `Child` class, and to `Mother` inside the `Mother` class ;
-* `parent` will refer to `Mother` inside the `Child` class, and throw an error if used in the `Mother` class.
+* `super` will refer to `Mother` inside the `Child` class, and throw an error if used in the `Mother` class.
 
 But there is an important rule about `this`: if we write the following code:
 
@@ -3296,7 +3296,7 @@ class Product {
 }
 ```
 
-The `parent` keyword is also available.
+The `super` keyword is also available.
 
 #### Native typecasting interfaces
 
@@ -4171,7 +4171,7 @@ sayHello!("Yoh"); // Line 6
 
 The error is now throw at line 3. Even though the unsafe function's content is instantly evaluated, errors are reported following the function's location. This is one the main points of unsafe functions, in fact.
 
-As unsafe functions are _functions_, they can also be part of a class. When so, `this`, `self` and `parent` will automatically refer to the same targets than a standard function.
+As unsafe functions are _functions_, they can also be part of a class. When so, `this`, `self` and `super` will automatically refer to the same targets than a standard function.
 
 Also, because arguments are not directly replaced by their content, so errors will not tell that `takeAnInt("Yoh")` is an invalid call (this is what happens using the above macro), but that `takeAnInt(name)` is an invalid call because `name` is typed as a `string`.
 
