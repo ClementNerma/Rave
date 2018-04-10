@@ -507,7 +507,7 @@ scheme = {
         ],
         [
           // Classes' native functions' call
-          /(\.)(keys|values|truncate|round|fPart|approx|charAt|charCodeAt|codePointAt|count|cut|endsWith|firstWord|indexOf|isInteger|isFloat|lastIndexOf|lastWord|includes|isIn|repeat|startsWith|split|substr|toBase64|toArray|toList|toLowerCase|toUpperCase|trim|trimLeft|trimRight|withoutAccents|word|words|set|get|has|fill|fillDynamic|filter|forEach|join|map|random|reduce|slice|unset|concat|pop|push|clear|reverse|shift|sort|shuffle|splice|unshift|isEqualTo|merge|then|catch|addFlag|removeFlag|getGroups|match|matchAll)(?=(?:\s*<(.*?)>)?\s*\()/,
+          /(\.)(construct|free|toBoolean|toString|toInteger|toFloat|get|set|unset|has|keys|values|toNumber|plus|less|times|divide|modulo|pow|equal|inequal|greater|smaller|truncate|round|fPart|approx|charAt|charCodeAt|codePointAt|count|cut|endsWith|firstWord|indexOf|isInteger|isFloat|lastIndexOf|lastWord|includes|isIn|repeat|startsWith|split|substr|toBase64|toArray|toList|toLowerCase|toUpperCase|trim|trimLeft|trimRight|withoutAccents|word|words|set|get|has|fill|fillDynamic|filter|forEach|join|map|random|reduce|slice|unset|concat|pop|push|clear|reverse|shift|sort|shuffle|splice|unshift|isEqualTo|merge|then|catch|addFlag|removeFlag|getGroups|match|matchAll)(?=(?:\s*<(.*?)>)?\s*\()/,
           'white', 'cyan'
         ],
         [
