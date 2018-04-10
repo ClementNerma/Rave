@@ -63,6 +63,9 @@ self = {
     // Determine the source folder
     let source_path = 'src/highlights';
 
+    // Determine the static folder
+    let static_path = 'src/static';
+
     // Determine its path
     let target_path = `${source_path}/${name}.js`;
 
@@ -213,12 +216,12 @@ self = {
       })
         .replace(/\${BUILTIN:([^}]+?)}/, (m, file) => {
           // If the file doesn't exist...
-          if (! fileExists(source_path + '/' + file))
+          if (! fileExists(static_path + '/' + file))
             // ERROR
             error(`Provided builtin file "${file}" was not found`, 37);
 
           // Copy it to the extension's folder
-          copy(source_path + '/' + file, output_path + '/.diskbc/cpy-' + file);
+          copy(static_path + '/' + file, output_path + '/.diskbc/cpy-' + file);
 
           // Return the path of the copied file
           return '.diskbc/cpy-' + file;
