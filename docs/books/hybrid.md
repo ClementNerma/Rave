@@ -2771,8 +2771,6 @@ There are though some operators that can't return any type. These are the logica
 * `%inequal` (`!=`)
 * `%greater` (`>`)
 * `%smaller` (`<`)
-* `%greater_eq` (`>=`)
-* `%smaller_eq` (`<=`)
 
 So, we could compare two bank accounts:
 
