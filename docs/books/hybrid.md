@@ -3061,7 +3061,7 @@ class Child extends Mother {
 But there is an important rule about `this`: if we write the following code:
 
 ```sn
-val child: Child;
+val child = new Child();
 child.callHello(); // Prints: "I am the child class."
 ```
 
