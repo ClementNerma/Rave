@@ -5,7 +5,7 @@ script {
 
 body {
   position: relative;
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, "Open Sans", Arial, sans-serif;
   font-size: 16px;
   background-color: white;
   z-index: 0;
@@ -24,6 +24,7 @@ nav {
   background-color: rgb(250, 250, 250);
   padding: 1%;
   overflow: auto;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
 }
 
@@ -79,7 +80,7 @@ article {
   bottom: 0;
   padding-left: 15%;
   padding-right: 15%;
-  line-height: 22px;
+  line-height: 30px;
   color: rgb(51, 51, 51);
 }
 
@@ -132,6 +133,7 @@ pre {
   word-wrap: break-word;
   white-space: pre-line;
   position: relative;
+  line-height: 25px;
 }
 
 pre a.copy {
