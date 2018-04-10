@@ -3789,7 +3789,7 @@ Then, we simply instanciate it and use it like this:
 let iterator = new MySuperIterator<int>;
 let iteration: Iteration<int>?;
 
-while true {
+loop {
   // Get the next value
   iteration = iterator.next();
 
