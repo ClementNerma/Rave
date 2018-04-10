@@ -3069,6 +3069,31 @@ Here, we can use the `callHello()` method because `Child` inherits it from `Moth
 
 Note that these keywords can be used both in a dynamic and static way: we could write `this::staticMethod()` as well as `self.sayHello()`, which would have printed `"I am the mother class"`.
 
+#### Calling overloads
+
+Classes can call their own overloads like standard methods:
+
+```sn
+class Test {
+  public readonly id: int;
+  public readonly name: string;
+
+  private static readonly counter: int = 0;
+
+  public func %construct () {
+    @id = ++ self::counter;
+  }
+
+  public func %construct (@name: string) {
+    this.construct(id);
+  }
+}
+```
+
+This work for all overloads with all resolution keywords (`this`, `self` and `super`).
+
+Also, be aware that some languages use `this(...)` to call the current class' overload (the same applies for the other resolution keywords), but in SilverNight it calls the instance (with `this` and `super`) or the class (with `self`) as a function using the `%call` overloads - which throws an error if it's not implemented.
+
 ### Abstract methods
 
 Let's see a new prefix for class' methods: `abstract`. We already saw what a virtual class was, but now let's see what an abstract a method (because attributes cannot be abstraced) is.
