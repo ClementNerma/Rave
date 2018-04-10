@@ -5495,6 +5495,18 @@ println!(import!(name-manager).readName()); // Prints: "John"
 
 This will work as expected. A good point about this macro is that the package isn't imported multiple times ; once you imported it, either with `import` or `import!`, it will just retrieve the imported data.
 
+It's also possible to import a sub-entity from a package. For example, the `frontend` package returns an object containing notably the `console` class instance. If we only want this object, we can do:
+
+```sn
+// Import only the sub-entity
+import frontend.console;
+
+// Use it
+console.println("Hello world!");
+```
+
+Note that there is no `frontend` object available in our example, simply because we didn't import _frontend_ but _frontend.console_ (which means _console_ from _frontend_). This avoid having to use `frontend.console` each time we want to use `console`.
+
 ### The package manager
 
 When you installed the toolchain at the beginning of this book, it came with the package manager in it, because it's part of the toolchain.
