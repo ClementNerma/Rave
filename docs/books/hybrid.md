@@ -1195,7 +1195,7 @@ This will work fine.
 
 A general concept you will find in almost every language is the concept of _loops_. A loop is a block that repeats a set of instructions under certain conditions. Let's see how they work.
 
-The `for` block repeats the instructions a given amount of times. It needs an _iterator_ (which is a variable with any `Number` type - integer or not), an optional start value, a condition and an incremental expression. Here is how we write it:
+The `for` block repeats the instructions a given amount of times. It needs an _iterator variable_ (which is a variable with any `Number` type - integer or not), an optional start value, a condition and an incremental expression. Here is how we write it:
 
 ```sn
 for i = 0; i < 5; i ++ {
@@ -1217,7 +1217,7 @@ for i: int = 0; i < 5; i ++ {
 }
 ```
 
-Whatever is the way we use, the iterator will be _scoped_ to this block, which means we can use it only inside the block and that the variable will be deleted outside. If an `i` variable already exists in the main scope, it will simply be ignored and a new, local variable will be made.
+Whatever is the way we use, the iterator variable will be _scoped_ to this block, which means we can use it only inside the block and that the variable will be deleted outside. If an `i` variable already exists in the main scope, it will simply be ignored and a new, local variable will be made.
 
 Another thing is about the incremental expression. It can be absolutely any expression, like `i --` to decrement it:
 
