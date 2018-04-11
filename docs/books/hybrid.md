@@ -1724,7 +1724,7 @@ Also, why do we need the `key` argument while we don't use it? It's simply becau
 
 ```sn
   // ...
-  public func filter (callback: lambda (value: T, key: int) -> bool) -> self<T>;
+  public func filter (callback: func (value: T, key: int) -> bool) -> self<T>;
   // ...
 ```
 
@@ -1747,7 +1747,7 @@ This will do the same thing than the first version. Here, we declare a `myFunc` 
 In fact, this constant has an inferred type ; its full declaration would be:
 
 ```sn
-val myFunc: lambda (value: int, key: int) -> bool = lambda (value: int, key: int) -> bool {
+val myFunc: func (value: int, key: int) -> bool = lambda (value: int, key: int) -> bool {
   return value >= 0;
 }
 
@@ -1777,7 +1777,7 @@ As void-typed functions that take no argument are called _reduced functions_, th
 
 ```sn
 // Use the short notation for reduced lambdas (as a type)
-func callReducedLambda (callback: lambda) => callback();
+func callReducedLambda (callback: func) => callback();
 
 // Use the short notation for reduced lambdas (as an expression)
 val reduced = lambda { println!("Hello there!"); }
@@ -3813,7 +3813,7 @@ This works but involves to create a large structure, and then make an object wit
 That's where we use bindings. Bindings act like plain structure that links a name to a resource. Let's take an example:
 
 ```sn
-func run (callback: lambda () #bind
+func run (callback: func () #bind
   {
     printInConsole: "println!",
     sayHello: "println!(\"Hello \" + ${1})",
@@ -3857,7 +3857,7 @@ pln engineBindings = #makebindings {
 This is all! We can now rewrite our `run` function:
 
 ```sn
-func run (callback: lambda () #bind engineBindings) => callback();
+func run (callback: func () #bind engineBindings) => callback();
 ```
 
 ### Constrained types
@@ -4245,7 +4245,7 @@ func repeatedCall (callback: #reduced, times: int) {
 }
 
 repeatedCall (
-  func (name: string) -> void { println!(name); },
+  lambda (name: string) -> void { println!(name); },
   "Jack ",
   2
 ); // Prints: "Jack Jack "
@@ -4298,13 +4298,13 @@ func summation (callback: #reduced (num: int) -> int, times: int) -> int {
 
 println!(summation(
   // The callback
-  func (num: int, coeff: int) -> int { return num * coeff; },
+  lambda (num: int, coeff: int) -> int { return num * coeff; },
   // Its only argument (`coeff`)
   3
 )); // Prints: "18"
 ```
 
-As we can see here, the callback's argument required in the `summation`'s signature must be placed at the very beginning of the callback's arguments. We couldn't have written `func (coeff: int, num: int) -> int` for example.
+As we can see here, the callback's argument required in the `summation`'s signature must be placed at the very beginning of the callback's arguments. We couldn't have written `lambda (coeff: int, num: int) -> int` for example.
 
 ## Nullable types
 
@@ -5645,9 +5645,9 @@ Another case is callbacks. In the following code:
 
 ```sn
 class Event {
-  private static handler: lambda ();
+  private static handler: func ();
 
-  public static func handle (@handler: lambda ()) {}
+  public static func handle (@handler: func ()) {}
   public static func trigger () => @handler();
 }
 
@@ -5698,7 +5698,7 @@ Now we've seen how to use the promise, let's write the `readAsync()` function:
 ```sn
 func readAsync (path: string) -> Promise<string, Error> {
   // Make a new promise and return it
-  return new Promise<string, Error>(lambda (resolve: lambda (content: string), reject: lambda (err: Error)) {
+  return new Promise<string, Error>(lambda (resolve: func (content: string), reject: func (err: Error)) {
     let content: string;
 
     // Read the file
@@ -5796,7 +5796,7 @@ Where promises are useful is when chaining several callbacks. Sometimes, because
 
 ```sn
 // Download a file from the web
-func fetch (url: string, callback: lambda (data: string, err: Error)) { /* ... */ };
+func fetch (url: string, callback: func (data: string, err: Error)) { /* ... */ };
 // Parse a JSON string as a dictionary (numbers and booleans are converted to strings)
 func parseJsonAsync (json: string) -> Dictionary<string, string> { /* ... */ };
 
