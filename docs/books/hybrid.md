@@ -4842,9 +4842,9 @@ Please note that the `catch` block must of course the same type of data than the
 
 ## Pointers
 
-### References and pointers
+### The Object Identifier
 
-In SilverNight, each object (not primitives) has a unique identifier associated to it, called the RUID (Reference Unique Identifier). This means that when we do a `new SomeClass()` or create an object from a structure (flying or not), an invisible identifier is put on it. It is not available to the program itself, but allows to compare if two objects are the same, by comparing their RUID.
+In SilverNight, each object (not primitives) has a unique identifier associated to it, called the OID (Object Identifier), whch is unique. This means that when we do a `new SomeClass()` or create an object from a structure (flying or not), an invisible identifier is put on it. It is not available to the program itself, but allows to compare if two objects are equal, by comparing their OID.
 
 Here is the signature of the native `%equal` superoverload:
 
@@ -4852,13 +4852,13 @@ Here is the signature of the native `%equal` superoverload:
 func %equal<T> (left: T, right: T) -> bool;
 ```
 
-It can compare two instances of the same class and tell if they are identical by comparing their RUID. Of course, this could not be done manually because we can't access the RUID, but this is a native superoverload so the builder can implement it itself.
+It can compare two instances of the same class and tell if they are identical by comparing their OID. Of course, this could not be done manually because we can't access the OID, but this is a native superoverload so the builder can implement it itself.
 
-One of the most basic concepts of SilverNight is the references. To take an example, when an object is gave to a function, the object is not cloned automatically, so it keeps the same RUID. That's why modifying an object inside a function will also modify the original one that was gave to it.
+One of the key-concepts of SilverNight is the OESM (Object-Entity Sharing Model) that shares equal objects across entities. To take an example, when an object is gave to a function, the object is not cloned automatically, so it keeps the same OID. That's why modifying an object inside a function will also modify the original one that was gave to it.
 
-Primitives don't have this problem, has they are very special classes. When a primitive is gave to a function or assigned to another resource, it will automatically be cloned - there's no way to prevent it.
+Primitives don't have this problem, has they are very special classes. When a primitive is gave to a function or assigned to another resource, it will automatically be cloned - and there's no way to prevent it.
 
-Pointers aim to provide a new way to deal with references. Let's take the following code:
+Pointers aim to provide a new way to deal with OESM. Let's take the following code:
 
 ```sn
 // Make a 'Hero' structure
@@ -4895,25 +4895,24 @@ println!(obj.name); // Prints: "Jack"
 println!(obj.attack); // 20
 ```
 
-So, what happened here? After we created a hero object, we sent it to the `changeProperty` function. But technically, only a link to `hero` was sent to the function, which was assigned to its `obj` arguments. This way, when the function changed one of the `obj`'s properties, it also changed `hero`, because they are exactly the same object.
+So, what happens here? After creating a hero object, we sent it to the `changeProperty` function. But technically, only a link to `hero` was sent to the function, which was assigned to its `obj` arguments. This way, when the function changed one of the `obj`'s properties, it also changed `hero`, because they are exactly the same object.
 
-In the second function, `assignSomethingNew`, only a link to `hero` was also sent and assigned to `obj`. But no changes were made to the original `hero`. Why? Because the two entities only share the same _RUID_, they are still two separate entities. So assigning something new to `obj` grants it a new RUID that replaces the previous one.
+In the second function, `assignSomethingNew`, only a link to `hero` was also sent and assigned to `obj`. But no changes were made to the original `hero`. Why? Because the two entities only share the same _OID_, they are still two separate entities. So assigning something new to `obj` grants it a new OID that replaces the previous one.
 
-But what if we wanted to make the whole `hero` object change within a function? Well, for that, we use _pointers_.
+But what if we wanted to make the whole `hero` object change within a function? Well, for that, we use _references_.
 
-### How pointers work
+### How references and pointers work
 
-While references simply share a RUID referring to a specific object in the memory, pointers share an EUID, which stands for Entity Unique Identifier. The difference between a RUID and an EUID is that a RUID simply refers to an object, while an EUID refers to an entity. This means that, when modifying an entity, even if something new is assigned, all entities with the same EUID will be affected the same way.
+While entities simply share a OID referring to a specific object in the memory, pointers share an EID, which stands for Entity Identifier - unique like the OID. The difference between an OID and an EID is that a OID simply refers to an object, while an EID refers to an entity - including primitives.
 
-By default, each entity has its own EUID. That's where pointers come: they provide a way to create a value that points to the EUID of an existing entity. To create a pointer, we use the `&` symbol followed by the entity's name, which returns a value pointing to the provided entity (with the same type) and the same EUID. This creates a **constant** pointer, which means we can assign anything to it. The entity the pointer refers to is called the pointer's _referred_. Here is an example:
+By default, each entity has its own EID. That's where references come: they provide a way to create a value that points to the EID of an existing entity. To create one, we use the `&` symbol followed by the entity's name, which returns a _reference_ pointing to the provided entity.
 
 ```sn
 // Declare a variable
-let str = "Hello !";
+let str: string = "Hello !";
 
 // Create a *constant* pointer to it
-let ptr: * = &str;
-// let ptr: *string = &str;
+let ptr: *string = &str;
 
 // Display the pointer's value
 println!(ptr); // Prints: "Hello !"
@@ -4922,27 +4921,26 @@ println!(ptr); // Prints: "Hello !"
 str = "Goodbye !";
 
 // The changes are reflected on the pointer
-println!(ptr); // Prints: "Goodbye !"
+println!(*ptr); // Prints: "Goodbye !"
 
 // Change the pointer's value
 *ptr = "Yeah !"; // ERROR
 ```
 
-When using a pointer, `ptr` is the pointer's reference, like `&mut hero`, while `*ptr` is the referred's **value**, like `"Jack"`. When a value is assigned using `*ptr`, the changes are reflected on the referred's value (like in the example above).
+In this example, we first declare an entity containing string (which is a primitive). Then, we create a reference to it with `&str`. This is called a **constant** reference, meaning we can only _read_ the entity through the reference but not assign anything to it. Note that the entity a reference targets is called the _referred_.
 
-So here, we should have written `println!(*ptr);` instead of `println!(ptr);`, but because the `println!` macro supports pointers, we don't have to worry about that. In fact, we can use absolutely any member of a class even through a reference, so we could write `ptr.substr(0, 1) is "H"` for example. Writing `*ptr` is only required when we give it to a function that doesn't accept pointers, or when we want to _depointerize_ the referred, which is another concept we will see soon.
+Now we have our reference, we can put it into a _pointer_. This is simply an assignable entity that contains a reference. The special thing about them is that they have an additional syntax for assignments (for pointers containing a mutable reference), as we'll see soon.
 
-As you can see, we can make constant pointers from mutables, but this also works with constants of course. This is especially useful when we want to make a pointer that cannot be written, so we preserve the referred's value.
+After creating a pointer, we want to display its referred's value. But we have to use a special syntax for that: when we write `ptr`, we use the pointer's value, which is a reference. The problem is we don't want to display the reference itself, but the reference's value. For that, we have to use the `*` symbol before the reference we want to get the value of. In our case, because it's stored in `ptr`, we write `*ptr`. This is called _depointerization_. In fact, when we write `*ptr`, it is understood as `*(&str)` here, because the pointer is simply made of a value (which is a reference), and the `*` symbol works on values (references), not entities. This means it would be fine to write `println!(*(&str));`.
 
-But sometimes, we simply want to get a pointer we can write to change the referred's value. For that, we use the `&mut` symbol, still follow by the referred's name:
+References can be constant, but they can be mutable to. Sometimes, we simply want to get a pointer we can write to change the referred's value. For that, we use the `&mut` symbol, still followed by the referred's name:
 
 ```sn
 // Declare a variable
-let hero = "Jack";
+let hero: string = "Jack";
 
 // Create a *mutable* pointer to it
-let ptr: *mut = &mut hero;
-// let ptr: *mut string = &mut hero;
+let ptr: *mut string = &mut hero;
 
 // Assign a new value to the pointer
 *ptr = "John";
@@ -4951,7 +4949,9 @@ let ptr: *mut = &mut hero;
 println!(hero); // Prints: "John"
 ```
 
-Note that pointers can be made on members or properties, like this:
+Here, because the reference is mutable, we can write the referred's value, still using the `*` symbol. That's the "extended assignment syntax" we were talking about sooner.
+
+Note that, because references work on entity (that are not limited to _declared_ assignable entities but also _implicit_ assignable entities, like an object's property), pointers can also be made on a class' or a structure's member:
 
 ```sn
 let hero = {
@@ -4979,23 +4979,30 @@ The syntax is as follows:
 &mut (object.property); // Make a pointer to `object.property`
 ```
 
-You may have noticed that inferred typing is special with pointers. Altough we still don't have to specify the referred's type, we need to clearly indicate we are making a pointer as well as the pointer's state (mutable with `*mut` or constant with `*`). Then, inferred typing guesses the type. Here is an example of both inferred and explicit typing with pointers:
+A specificity about references is that they can only be half-type-infered. What does that mean? Simply that their type (e.g. `int`, `string`...) can be type-infered, but not their nature (e.g. `&mut`, ...), so this last one have to be written explicitly:
 
 ```sn
 let i = 1;
 
+// Explicit
+let ptr1: *int = &i;
 // Implicit
 let ptr1: * = &i;
-// Explicit
-let ptr1: * int = &i;
 
-// Implicit
-let ptr2: *mut = &i;
 // Explicit
 let ptr2: *mut int = &i;
+// Implicit
+let ptr2: * = &i;
 ```
 
-### Pointers on values
+This allows to keep a clarity in the code about what assignable entity is a pointer or not. An exception, though, is for properties: we can assign a pointer to a flying structure without specifying it's a pointer.
+
+Here is a recap of the terminology:
+
+* A _reference_ refers to an entity called the _referred_. It is created using the `&` symbol (eventually followed by `mut`). It can either be mutable, which means we can set the value of the entity if refers to, or constant, so we can only read it.
+* A _pointer_ is an entity (variable or constant) containing a pointer.
+
+### References on values
 
 Sometimes we want to create pointers from simple values, not an assignable entity. For that, we can use the `fly_ptr!` as well as the `flu_mut_ptr!` to make a constant or a mutable pointer. Here is how it goes:
 
@@ -5005,6 +5012,8 @@ let ptr1: * = fly_ptr!(2);
 // Create a mutable pointer
 let ptr2: *mut = fly_mut_ptr!(2);
 ```
+
+These macros create a new assignable entity (variable or constant) and return a reference to it so we can read and eventually write it.
 
 ### Type compatibility
 
@@ -5026,7 +5035,9 @@ In fact, when a mutable pointer is found where a constant pointer is expected, i
 
 ### Pointers in functions
 
-Pointers can be used to manipulate data in functions. Here is how it goes:
+First of all, by langage abuse, we often say that a function requires a pointer where it asks for a reference. Technically, a function **cannot** ask for a pointer because a pointer is an entity and a function cannot ask for entities but only for values, so it can ask for references but not for pointers. When you read that a function asks for a pointer, it's in reality a reference - but the argument, as being an entity itself, will be a pointer whatever.
+
+So, references can be used to manipulate data in functions. Here is how it goes:
 
 ```sn
 func increment (counter: *mut int) => *counter += 1;
@@ -5036,7 +5047,7 @@ increment(&mut counter);
 println!(counter); // Prints: "1"
 ```
 
-They can also return a pointer:
+They can also return references:
 
 ```sn
 func increment (counter: *int) -> *int => fly_ptr! (counter + 1);
@@ -5047,11 +5058,13 @@ let ptr: * = increment(fly_ptr! (0));
 println!(ptr); // Prints: "1"
 ```
 
-This example is a little bit complex. First, we define a function that takes as an argument a pointer, and returns another. In its body, it adds 1 to the counter on-the-fly (without assigning anything). This results in making a brand new integer, which is not a pointer but a simple value. Then, it makes a pointer from this new value and returns it, by transparently creating a new assignable entity containing this value and returning a pointer to it. So `ptr` receives a new pointer. The function could also have returned a simple number, without making a pointer from it: assigning a simple integer to `ptr` would automatically have turned it into a pointer. So that doesn't change anything here.
+This example is a little bit complex. First, we define a function that takes as an argument a reference, and returns another. In its body, it adds 1 to the counter on-the-fly (without assigning anything). This results in making a brand new integer, which is not a reference but a simple value. Then, it makes a reference from this new value and returns it, by transparently creating a new assignable entity containing this value and returning a reference to it. So `ptr` receives a new reference.
+
+Of course, the function could also have returned a simple number, without making a pointer from it: assigning a simple integer to `ptr` would automatically have turned it into a pointer, but that's for the example.
 
 ### Reassigning pointers
 
-A pointer can be reassigned to a new entity easily, using the `*` symbol. Here is how it goes:
+A pointer can be reassigned to a new entity easily. Here is how it goes:
 
 ```sn
 // Make two simple integers
@@ -5142,7 +5155,7 @@ println!(is_ptr!(i)); // Prints: "false"
 println!(is_ptr!(ptr)); // Prints: "true"
 ```
 
-The target of a pointer can also be checked using the equality operator, thanks to the fact a pointer and its referer always have the same EUID:
+The target of a pointer can also be checked using the equality operator, thanks to the fact a pointer and its referer always have the same EID:
 
 ```sn
 let i = 0;
@@ -5155,11 +5168,11 @@ println!(ptr is &j); // Prints: "false"
 println!(*ptr is 0); // Prints: "true"
 ```
 
-### Target's state
+### Referred's state
 
-A pointer has a double state: the state of the entity containing the pointer, and the state of the referred.
+Like any entities, pointers have a state (variable or constant), that is not related to the state of their reference's target.
 
-For example, the pointer itself can either be mutable, which means we can change the value of the entity it refers to, or constant, to make its reference immutable.
+For example, the pointer itself can either be mutable, which means we can change its reference and so its target, or constant, to make its reference immutable.
 
 ```sn
 let i = 1;
@@ -5269,17 +5282,19 @@ This part is complex, so don't hesitate to read it again until you understand it
 
 ### Depointerization
 
-Depointerization consists in getting the referred from a point. This is what we've done when dealing with an intermediate pointer, and it's useful when, for example, we use a function that returns a constant pointer but we want to make a mutable from it. Here is how it goes:
+Depointerization, as we already saw, consists in getting the referred from a reference. But here is the thing: when we _write_ through a reference, we retrieve its referred to change the referred's value. But, when we _read_ through a reference, we retrieve its referred's value, and not the referred itself (because we don't want to get an entity but a value to deal with it). Because of that, when we read through a reference, there's no EID involved, only a (potential) OID.
+
+But what does this change, after all? Simply the fact we can, in the case it's a primitive, for example, make a mutable from a constant reference, or anything related. Here is an example:
 
 ```sn
 // Declare a pointer
-let ptr: * = 2;
+let ptr: *int = fly_ptr!(2);
 
 // Assign something to the pointer
 *ptr = 8; // ERROR (referred is constant)
 
 // Depointerize
-let i = *ptr;
+let i: int = *ptr;
 
 // Assign something to the mutable
 i = 5; // Works
@@ -5288,11 +5303,20 @@ println!(i);   // Prints: "5"
 println!(ptr); // Prints: "2"
 ```
 
-As you can see, depointerization allows to get a value that is not linked to the pointer itself, because it creates a new EUID (altough they may share the same RUID if the referred is an object).
+Here, the `fly_ptr!` macro creates a reference to an invisible assignable entity containing an `int`. The reference is stored into a pointer called `ptr`. We then try to assign something to the referred, but because the reference stored in `ptr` is constant, this fails. Note that we could have changed the reference `ptr` contains, because the pointer itself is mutable.
+
+Then, we depointerize `ptr` (meaning we get its reference's referred's value, which is the transparent assignable entity's value). We then assign it to a mutable called `i`, of the same `int` type, and we assign it a new number just after.
+
+At the end, we print both `i` and `ptr`, which have two distinct values, because they are not related - each of them have their own EID, thanks to depointerization returning the value of the referred, not a reference to it.
+
+Now, let's see a last example:
 
 ```sn
+// Declare an objet
+let obj = { name: "Jack" };
+
 // Declare a pointer
-let ptr: * = lit_ptr!({ name: "Jack" });
+let ptr: * = &obj;
 
 // Depointerize
 let hero = *ptr;
@@ -5304,7 +5328,9 @@ println!(hero.name); // Prints: "John"
 println!(ptr.name); // Prints: "John"
 ```
 
-How could this code work? Well, the object `ptr` targets is not defined as constant, even if the reference we assign to the pointer is. So, if we get a reference to this object, we can modify its value. This is why having a constant pointer does not mean having a constant referred. Be aware of this!
+It works, despite the fact `ptr` contains a constant reference. How could this work?
+
+Well, the object `ptr` targets is not defined as constant, even if the reference we assign to the pointer is. So, if we get a reference to this object, we can modify its value. This is why having a constant pointer does not mean having a constant referred. Be aware of this!
 
 ## Packages
 
