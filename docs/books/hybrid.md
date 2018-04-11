@@ -3813,7 +3813,7 @@ This works but involves to create a large structure, and then make an object wit
 That's where we use bindings. Bindings act like plain structure that links a name to a resource. Let's take an example:
 
 ```sn
-func run (callback: func () #bind
+func run (callback: func #bind
   {
     printInConsole: "println!",
     sayHello: "println!(\"Hello \" + ${1})",
@@ -3857,7 +3857,7 @@ pln engineBindings = #makebindings {
 This is all! We can now rewrite our `run` function:
 
 ```sn
-func run (callback: func () #bind engineBindings) => callback();
+func run (callback: func #bind engineBindings) => callback();
 ```
 
 ### Constrained types
@@ -5660,9 +5660,9 @@ Another case is callbacks. In the following code:
 
 ```sn
 class Event {
-  private static handler: func ();
+  private static handler: func;
 
-  public static func handle (@handler: func ()) {}
+  public static func handle (@handler: func) {}
   public static func trigger () => @handler();
 }
 
