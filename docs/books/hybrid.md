@@ -5062,6 +5062,46 @@ This example is a little bit complex. First, we define a function that takes as 
 
 Of course, the function could also have returned a simple number, without making a pointer from it: assigning a simple integer to `ptr` would automatically have turned it into a pointer, but that's for the example.
 
+Also, be aware of depointerization: when a function asks for an `int` for example, it won't accept an `*int`!
+
+```sn
+// Make an addition function
+func add (left: int, right: int) -> int {
+  return left + right;
+}
+
+// Declare two numbers
+val i = 1;
+val j = 2;
+
+// Make two constant references and pointers to them
+val i_ptr: * = &i;
+val j_ptr: * = &j;
+
+// Try them out
+
+// Works fine
+add (i, j); // Returns: 7
+
+// 'left' must be an 'int' not an '*int'
+add (i_ptr, j); // ERROR
+
+// 'right' must be an 'int' not an '*int'
+add (i, j_ptr); // ERROR
+
+// 'left' and 'right' must be of type 'int', not '*int'
+add (i_ptr, j_ptr); // ERROR
+
+// Works fine
+add (*i_ptr, j); // Returns: 7
+
+// Works fine
+add (i, *j_ptr); // Returns: 7
+
+// Works fine
+add (*i_ptr, *j_ptr); // Returns: 7
+```
+
 ### Reassigning pointers
 
 A pointer can be reassigned to a new entity easily. Here is how it goes:
