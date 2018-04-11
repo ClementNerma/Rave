@@ -442,7 +442,7 @@ In SilverNight, the `+` (add) operator also acts as the _concatenation operator_
 println!("The area is: " + area);
 ```
 
-Here, the compiler will understand we want to do a concatenation because the first entity is a string, and the second one a number. So it will perform the concatenation.
+Here, the compiler will understand we want to do a concatenation because the first value is a string, and the second one a number. So it will perform the concatenation.
 
 #### Bonus: String expressions
 
@@ -1518,7 +1518,7 @@ func triangle_area (base: float, height: float) -> float {
 
 Now we want to assign it a variable each time we calculate the area. So we will have to declare a variable and make an assignment **outside** of the function. How can we do this?
 
-There's a simple way to achieve this called the _return statement_. It uses the `return` keyword to return a value from the function. This value is an entity can be assigned to a variable or a constant. Let's do it!
+There's a simple way to achieve this called the _return statement_. It uses the `return` keyword to return a value from the function. This value can then be assigned to an assignable entity like a variable or a constant. Let's do it!
 
 ```sn
 func triangle_area (base: float, height: float) -> float {
@@ -4905,7 +4905,7 @@ But what if we wanted to make the whole `hero` object change within a function? 
 
 While references simply share a RUID referring to a specific object in the memory, pointers share an EUID, which stands for Entity Unique Identifier. The difference between a RUID and an EUID is that a RUID simply refers to an object, while an EUID refers to an entity. This means that, when modifying an entity, even if something new is assigned, all entities with the same EUID will be affected the same way.
 
-By default, each entity has its new EUID. That's where pointers come: they provide a way to create a new entity with the same EUID than another. To create a pointer, we use the `&` symbol followed by the entity's name, which returns an identical entity (with the same type) and the same EUID. This creates a **constant** pointer, which means we can assign anything to it. The entity the pointer refers to is called the pointer's _referred_. Here is an example:
+By default, each entity has its own EUID. That's where pointers come: they provide a way to create a value that points to the EUID of an existing entity. To create a pointer, we use the `&` symbol followed by the entity's name, which returns a value pointing to the provided entity (with the same type) and the same EUID. This creates a **constant** pointer, which means we can assign anything to it. The entity the pointer refers to is called the pointer's _referred_. Here is an example:
 
 ```sn
 // Declare a variable
@@ -5159,7 +5159,7 @@ println!(*ptr is 0); // Prints: "true"
 
 A pointer has a double state: the state of the entity containing the pointer, and the state of the referred.
 
-For example, the pointer's entity can either be mutable, which means we can change the entity it refers to, or constant, to make its reference immutable.
+For example, the pointer itself can either be mutable, which means we can change the value of the entity it refers to, or constant, to make its reference immutable.
 
 ```sn
 let i = 1;
