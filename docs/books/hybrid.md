@@ -4169,8 +4169,8 @@ func doubleRegister () -> int {
 Here, we don't know how to write the `doubleRegister()` function because we know we can't multiply an `Any` instance by 2. In order to solve this, we use _dynamic typecasting_:
 
 ```sn
-func doubleRegister () -> *int {
-  return cast!<int>(&data) * 2;
+func doubleRegister () -> int {
+  return *(cast!<int>(&data)) * 2;
 }
 ```
 
@@ -4179,9 +4179,9 @@ What happens here? We simply _dynamically_ convert `data` to an `int` and got a 
 Dynamic typecasting is especially useful when coupled with the `instanceof` operator, which checks if a value is instance of a given class. Here is how it goes:
 
 ```sn
-func doubleRegister () -> *int {
+func doubleRegister () -> int {
   if (data instanceof int)
-    return cast!<int>(&data) * 2;
+    return *(cast!<int>(&data)) * 2;
   else {
     println!("The provided data is not an integer.");
     return 0;
