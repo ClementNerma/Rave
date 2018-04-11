@@ -4174,7 +4174,22 @@ func doubleRegister () -> int {
 }
 ```
 
-What happens here? We simply _dynamically_ convert `data` to an `int` and got a pointer to the value. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. This uses the inverse of sub-typing scheme: if the real type of `data` is `int` or one of its **mother** classes, it'll work, else it'll throw a runtime error.
+What happens here? We simply _dynamically_ convert `data` to an `int` and got a pointer to the value. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. This uses the inverse of sub-typing scheme: if the real type of `data` is `int` or one of its **mother** classes, it'll work, else it'll return a `NULL` pointer:
+
+```sn
+func multiplyByTwo (num: *Any) -> int {
+  let casted: * = cast!<int>(num); // *int
+
+  if (casted is NULL) {
+    println!("An integer was expected");
+    return -1;
+  } else
+    return *casted * 2;
+}
+
+multiplyByTwo (fly_ptr!(2)); // Works
+multiplyByTwo (fly_ptr!("Hello")); // ERROR
+```
 
 Dynamic typecasting is especially useful when coupled with the `instanceof` operator, which checks if a value is instance of a given class. Here is how it goes:
 
