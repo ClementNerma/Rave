@@ -298,7 +298,7 @@ function openBrowser (p, callback) {
  * @param {string} verbmsg A message for the verbose mode
  * @returns {void}
  */
-function staticServe (folder, port = 80, verbmsg) {
+function staticServe (folder, port = 3000, verbmsg) {
     // Create an Express application
   verb('Creating an Express application');
   const app = express();
@@ -581,7 +581,7 @@ const main_mod = {
     { long: 'release', short: 'r', type: 'boolean', default: true, help: 'Optimize and improve the compatibility of the build' },
     { long: 'fast', short: 'f', type: 'boolean', help: 'Produce an unoptimized code - speed up the build' },
     { long: 'clean', short: 'c', type: 'boolean', help: 'Clean module\'s data' },
-    { long: 'serve', type: 'number', defaultIfTrue: process.env.PORT || 80, help: 'Run a web server to deliver statically the output folder' },
+    { long: 'serve', type: 'number', defaultIfTrue: process.env.PORT || 3000, help: 'Run a web server to deliver statically the output folder' },
     { long: 'watch', short: 'w', value: 'folders', defaultIfTrue: '.', help: 'Build each time a file is changed in the folders (folders are separated by a comma)' },
     { long: 'live-reload', short: 'r', type: 'boolean', help: 'Serve the output each time the build is triggerd (requires `--watch`)' },
     { long: 'logfile', short: 'l', value: 'file', help: 'Write all log messages in a file' },
