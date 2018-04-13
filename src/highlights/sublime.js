@@ -121,7 +121,7 @@ source = {
 
   // Installation instructions
   installTxt: [
-    "Copy \"${OUTPUT}/${LANGUAGE}.JSON-tmLanguage\" to your Sublime Text's \"Packages/User\" directory"
+    "Copy \"${OUTPUT}/${LANGUAGE}.tmLanguage\" to your Sublime Text's \"Packages/User\" directory"
   ],
 
   // Package's content
