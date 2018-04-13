@@ -3889,6 +3889,8 @@ But how does it work? This is simple: when we read the value, it acts exactly li
 
 If we put aside the fact that writing is controlled by a callback, constrained types act **exactly** like standard types: sub-typing work with them (in the example above, writing `Vehicle` instead of its constrained version would accept it as well).
 
+Type constraints are called _type extension_, which are bidirectionaly compatible with their original type. For example, if a function asks for an `int`, we can give an `int with (c => c > 5)` instead. Also, if a function asks for an `int with (c => c < 8)`, we can give it an `int` instead (the constraint will be triggered to ensure we give a valid integer, though). Constrained types can be automatically typecasted to standard types, as well as the opposite.
+
 Here is an exemple to better understand the concept:
 
 ```sn
@@ -4381,6 +4383,8 @@ val point: Point? = new Point?();
 ```
 
 Instanciating a nullable type will return the `null` value by default.
+
+Like constrained types, nullable types are type extensions, meaning we can give an `int` where an `int?` is expected, or an `int?` where an `int` was expected (though in this last case the program will check that our value is not `null`): nullable types can be automatically typecasted to standard types, as well as the opposite.
 
 ### The `null` value
 
