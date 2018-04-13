@@ -2413,9 +2413,9 @@ class IntArray {
 }
 
 let list = new IntArray();
-list.push(2);
-list.push(4);
-list.push(3);
+list.add(2);
+list.add(4);
+list.add(3);
 free!(list); // Prints: "I will be freed."
 ```
 
