@@ -4563,6 +4563,22 @@ Note that the `?` symbol has been put after the argument's name, and not after i
 
 Here, `age` is an `int?` that can also be omitted (in this case it is equal to `null`). That's as simple as that.
 
+### Optional members in structures
+
+The same applies for structures: while we can provide a default value for structures' members, we can also make really optional ones:
+
+```sn
+struct Hero {
+  name: string;
+  age?: int
+}
+
+val jack = Hero { name: "Jack" };
+
+println!(jack.name is "Jack"); // Prints: "true"
+println!(jack.age is null) // Prints: "true"
+```
+
 ### A concrete example
 
 A concrete example of nullable types usage: the problem of array initialization.
