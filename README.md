@@ -90,42 +90,12 @@ And follow the instructions that appears in your terminal.
 
 ## Roadmap
 
-**WARNING:** This roadmap is not definitive ; it could severely change while the project advances.
-
-Here is the roadmap for the whole project. Please note that most parts cannot be achieved while the language isn't totally finished ; the repository should then be moved under a definitive name (like `SilverNight` instead of `SilverNight-draft`) before starting making the toolchain and the definitive tutorials.
-
-### Redact the documentation
-
-* Redact [_The Hybrid Book_](https://silvernight.netlify.com/docs/book/hybrid.html) (**active**)
-* Redact [_The Book of Concepts_](https://silvernight.netlify.com/docs/book/concepts.html)
-* Redact _The SilverNight programming language_
-
-### Make the toolchain
-
-#### Analyzer
-
-* Make the Lexer
-* Make the Parser
-* Make the Checker
-* Make the Optimizer
-
-#### Interpreter
-
-* Make a JavaScript interpreter
-* Make a low-level interpreter (for great performances)
-
-#### Transpilers
-
-* Make the TypeScript transpiler
-* Make the JavaScript transpiler from it
-* Make the C++ transpiler
-* Make the Rust transpiler
-* Make the Java transpiler
-* Make the Swift transpiler
-
-#### Compiler
-
-This part is coming soon.
+* Finish redacting [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html) (**active**)
+* Re-write [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html) in a better way
+* Redact [The Book of Concepts](https://silvernight.netlify.com/docs/book/concepts.html)
+* Make an explicit grammar of the language
+* Make a parser
+* ...
 
 ## Contribute
 
