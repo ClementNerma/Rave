@@ -200,7 +200,12 @@ scheme = {
               // Expressions
               begin: /\${/,
               end: /}/,
-              name: '${red}'
+              name: '${red}',
+              patterns: [
+                {
+                  include: '#global'
+                }
+              ]
             }
           ],
           name: '${green}'
