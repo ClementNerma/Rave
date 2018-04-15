@@ -3793,7 +3793,7 @@ A useful concept when using libraries with a lot of resources is the _bindings_.
 
 Let's imagine we have an `engine` class instance with a `run` function, which takes as an argument a function. This game engine runs the function but it also wants to provide a huge number of functions to manage the scene, the collisions, the geometry, the physics, etc.
 
-A first solution would be to provide them each one after another as an argument. But this would result in a lambda with thousands of arguments, so that's not a good idea, even with the `#auto` lambda (because we still have to write the argument's name and order).
+A first solution would be to provide them each one after another as an argument. But this would result in a lambda with thousands of arguments, so that's not a good idea, even with the ICT (because we still have to write the argument's name and order).
 
 Another solution would be to make a structure with functions in it, like:
 
