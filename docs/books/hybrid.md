@@ -914,6 +914,12 @@ let books = [
 
 Here, because we create an array from two distinct objects, they must have the `#growable` directive on their `details` field.
 
+_Tip :_ Because we sometimes want to write inline objects like this, we can use the inline syntax of directives that consist in adding a `;` symbol to mark their end. This avoid having to add a new line to mark the end of the directive. Here is an example:
+
+```sn
+let books = [ #growable; harryPotter, eragon ]; // Works fine
+```
+
 ### Multiple assignments
 
 Objects allow _multiple assignments_, which means we can make several assignments at once. Let's consider the following object:
