@@ -5030,7 +5030,7 @@ let ptr2: *mut int = &i;
 let ptr2: * = &i;
 ```
 
-This allows to keep a clarity in the code about what assignable entity is a pointer or not. An exception, though, is for properties: we can assign a pointer to a flying structure without specifying it's a pointer.
+This allows to keep a clarity in the code about what assignable entity is a pointer or not. An exception, though, is for properties: we can assign a pointer to a on-the-fly structure without specifying it's a pointer.
 
 Here is a recap of the terminology:
 
