@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.20.7',
+    VERSION: '0.21.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -70,7 +70,7 @@ scheme = {
               name: '${purple}'
             },
             {
-              match: /(@(?:param|template))\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s+/,
+              match: /(@(?:param|template))\s+([a-zA-Z_][a-zA-Z0-9_\$]*)\s+/,
               captures: {
                 '1': {
                   name: '${purple}'
@@ -250,12 +250,12 @@ scheme = {
         ],
         [
           // Declaration of variables
-          /\b(let)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(let)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)\b/,
           'purple', 'cyan'
         ],
         [
           // Declaration of constants (plain or not)
-          /(val|pln)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /(val|pln)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)\b/,
           'purple', 'orange'
         ],
         [
@@ -265,7 +265,7 @@ scheme = {
         ],
         [
           // Other types
-          /(?<!:)(:)\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /(?<!:)(:)\s*([a-zA-Z_][a-zA-Z0-9_\$]*)\b/,
           'cyan', 'yellow'
         ],
         [
@@ -275,7 +275,7 @@ scheme = {
         ],
         [
           // Declaration statement in classes for constants (plain or not)
-          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?(val|pln)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?(val|pln)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)\b/,
           'purple', 'purple', 'purple', 'purple', 'orange'
         ],
         [
@@ -295,7 +295,7 @@ scheme = {
         ],
         [
           // Declaration statement in classes for assignable entities
-          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?([a-zA-Z_][a-zA-Z0-9_\$]*)\b/,
           'purple', 'purple', 'purple', 'cyan'
         ],
         [
@@ -305,7 +305,7 @@ scheme = {
         ],
         [
           // Entity's name
-          /\b(struct|class|type|dict|namespace|package|trait|interface)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(struct|class|type|dict|namespace|package|trait|interface)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)\b/,
           'purple', 'yellow'
         ],
         [
@@ -315,17 +315,17 @@ scheme = {
         ],
         [
           // Function declaration with template
-          /\b(func|lambda)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*<)/,
+          /\b(func|lambda)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)(?=\s*<)/,
           'purple', 'blue'
         ],
         [
           // Function call with template
-          /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=<.*>\s*\()/,
+          /\b([a-zA-Z_][a-zA-Z0-9_\$]*)(?=<.*>\s*\()/,
           'blue'
         ],
         {
           // Template usage
-          begin: /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(<)/,
+          begin: /\b([a-zA-Z_][a-zA-Z0-9_\$]*)(<)/,
           beginCaptures: {
             '1': {
               name: '${yellow}'
@@ -383,22 +383,22 @@ scheme = {
         ],
         [
           // Instanciation
-          /\b(new)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(new)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)\b/,
           'purple', 'yellow'
         ],
         [
           // Inheritance and aliases
-          /\b(extends|from|as)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
+          /\b(extends|from|as)\s+([a-zA-Z_][a-zA-Z0-9_\$\.]*)\b/,
           'purple', 'green'
         ],
         [
           // Implementation
-          /\b(implements)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.]*)*)\b/,
+          /\b(implements)\s+([a-zA-Z_][a-zA-Z0-9_\$\.]*)((?:\s*,\s*[a-zA-Z_][a-zA-Z0-9_\$\.]*)*)\b/,
           'purple', 'green', 'green'
         ],
         [
           // Implementation of traits
-          /\b(use)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)(\s*,\s*([a-zA-Z_\$][a-zA-Z0-9_\$\.]*))*\s*;/,
+          /\b(use)\s+([a-zA-Z_][a-zA-Z0-9_\$\.]*)(\s*,\s*([a-zA-Z_][a-zA-Z0-9_\$\.]*))*\s*;/,
           'purple', 'green', 'white', 'green'
         ],
         [
@@ -408,17 +408,17 @@ scheme = {
         ],
         [
           // 'instanceof' operator
-          /\b(instanceof)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
+          /\b(instanceof)\s+([a-zA-Z_][a-zA-Z0-9_\$\.]*)\b/,
           'purple', 'yellow'
         ],
         [
           // IMPORT macro call (closed or not)
-          /\b(import!)\s*\((?:\s*([a-zA-Z_\$][a-zA-Z0-9_\$\-]*(?:(\.)[a-zA-Z_\$][a-zA-Z0-9_\$\-]*)*)\s*[\)]?)?/,
+          /\b(import!)\s*\((?:\s*([a-zA-Z_][a-zA-Z0-9_\$\-]*(?:(\.)[a-zA-Z_][a-zA-Z0-9_\$\-]*)*)\s*[\)]?)?/,
           'purple', 'green', 'cyan'
         ],
         [
           // IMPORT statement
-          /\b(import)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\-]*(?:(\.)[a-zA-Z_\$][a-zA-Z0-9_\$\-]*)*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\-]*(?:(\.)[a-zA-Z_\$][a-zA-Z0-9_\$\-]*)*)*)\b/,
+          /\b(import)\s+([a-zA-Z_][a-zA-Z0-9_\$\-]*(?:(\.)[a-zA-Z_][a-zA-Z0-9_\$\-]*)*)((?:\s*,\s*[a-zA-Z_][a-zA-Z0-9_\$\-]*(?:(\.)[a-zA-Z_][a-zA-Z0-9_\$\-]*)*)*)\b/,
           'purple', 'green', 'cyan', 'green', 'cyan'
         ],
         [
@@ -433,12 +433,12 @@ scheme = {
         ],
         [
           // Key + value iterators in `for`
-          /(for)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s*(->)\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?:\s+(in)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*))?\b/,
+          /(for)(?:\s*\(\s*|\s+)([a-zA-Z_][a-zA-Z0-9_\$]*)\s*(->)\s*([a-zA-Z_][a-zA-Z0-9_\$]*)(?:\s+(in)\s+([a-zA-Z_][a-zA-Z0-9_\$]*))?\b/,
           'purple', 'cyan', 'purple', 'cyan', 'purple', 'orange'
         ],
         [
           // Iterator in `for`
-          /(for)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?:\s+(in)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*))?\b/,
+          /(for)(?:\s*\(\s*|\s+)([a-zA-Z_][a-zA-Z0-9_\$]*)(?:\s+(in)\s+([a-zA-Z_][a-zA-Z0-9_\$]*))?\b/,
           'purple', 'cyan', 'purple', 'orange'
         ],
         [
@@ -463,17 +463,17 @@ scheme = {
         ],
         [
           // Macros call
-          /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)\!(?=\s*\()/,
+          /\b([a-zA-Z_][a-zA-Z0-9_\$]*)\!(?=\s*\()/,
           'cyan'
         ],
         [
           // Functions call
-          /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*\()/,
+          /\b([a-zA-Z_][a-zA-Z0-9_\$]*)(?=\s*\()/,
           'blue'
         ],
         [
           // Macros name, with template
-          /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*\!)(?=\s*<(.*?)>\s*)/,
+          /\b([a-zA-Z_][a-zA-Z0-9_\$]*\!)(?=\s*<(.*?)>\s*)/,
           'cyan'
         ],
         [
@@ -483,12 +483,12 @@ scheme = {
         ],
         [
           // Static operator for classes
-          /\b([A-Z][a-zA-Z0-9_\$]*)(::)(?=[a-zA-Z_\$])/,
+          /\b([A-Z][a-zA-Z0-9_\$]*)(::)(?=[a-zA-Z_])/,
           'yellow', 'cyan'
         ],
         [
           // Arguments expansion
-          /\b[a-zA-Z_\$][a-zA-Z0-9_\$]*\.\.\./,
+          /\b[a-zA-Z_][a-zA-Z0-9_\$]*\.\.\./,
           'red'
         ],
         {
@@ -502,7 +502,7 @@ scheme = {
         ],
         [
           // Object followed by a child property
-          /(@?[a-zA-Z_\$][a-zA-Z0-9_\$]*)(\?)?(?=[\.\[])/,
+          /(@?[a-zA-Z_][a-zA-Z0-9_\$]*)(\?)?(?=[\.\[])/,
           'red', 'cyan'
         ],
         [
@@ -512,22 +512,22 @@ scheme = {
         ],
         [
           // Object's function's call
-          /(\.)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*\()/,
+          /(\.)([a-zA-Z_][a-zA-Z0-9_\$]*)(?=\s*\()/,
           'white', 'blue'
         ],
         [
           // Object's function's call with a template
-          /(\.)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*<(.*?)>\s*\s*\()/,
+          /(\.)([a-zA-Z_][a-zA-Z0-9_\$]*)(?=\s*<(.*?)>\s*\s*\()/,
           'white', 'blue'
         ],
         [
           // Object's unsafe function's call
-          /(\.)([a-zA-Z_\$][a-zA-Z0-9_\$]*!)(?=\s*\()/,
+          /(\.)([a-zA-Z_][a-zA-Z0-9_\$]*!)(?=\s*\()/,
           'white', 'cyan'
         ],
         [
           // Object's unsafe function's call with a template
-          /(\.)([a-zA-Z_\$][a-zA-Z0-9_\$]*!)(?=\s*<(.*?)>\s*\s*\()/,
+          /(\.)([a-zA-Z_][a-zA-Z0-9_\$]*!)(?=\s*<(.*?)>\s*\s*\()/,
           'white', 'cyan'
         ],
         [
@@ -537,17 +537,17 @@ scheme = {
         ],
         [
           // Object's property
-          /(\.)([a-zA-Z_\$][a-zA-Z0-9_\$]*)/,
+          /(\.)([a-zA-Z_][a-zA-Z0-9_\$]*)/,
           'white', 'red'
         ],
         [
           // Object's function's call
-          /(@)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(\?)?(?=\s*\()/,
+          /(@)([a-zA-Z_][a-zA-Z0-9_\$]*)(\?)?(?=\s*\()/,
           'red', 'blue', 'cyan'
         ],
         [
           // Object's function's call with a template
-          /(@)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(\?)?(?=\s*<(.*?)>\s*\s*\()/,
+          /(@)([a-zA-Z_][a-zA-Z0-9_\$]*)(\?)?(?=\s*<(.*?)>\s*\s*\()/,
           'red', 'blue', 'cyan'
         ],
         [
@@ -557,12 +557,12 @@ scheme = {
         ],
         [
           // Object's property
-          /(@)([a-zA-Z_\$][a-zA-Z0-9_\$]*)/,
+          /(@)([a-zA-Z_][a-zA-Z0-9_\$]*)/,
           'red'
         ],
         [
           // Object property
-          /(@[a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /(@[a-zA-Z_][a-zA-Z0-9_\$]*)\b/,
           'red'
         ],
         [
@@ -572,12 +572,12 @@ scheme = {
         ],
         [
           // Infinite values notation
-          /\.\.\.[a-zA-Z_\$][a-zA-Z0-9_\$]*\b/,
+          /\.\.\.[a-zA-Z_][a-zA-Z0-9_\$]*\b/,
           'red'
         ],
         [
           // Constrained types
-          /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(\?)?\s+(?=with\s+\()/,
+          /\b([a-zA-Z_][a-zA-Z0-9_\$]*)(\?)?\s+(?=with\s+\()/,
           'yellow', 'cyan'
         ],
         [
@@ -612,13 +612,18 @@ scheme = {
         ],
         [
           // All other directives
-          /#([a-zA-Z_\$][a-zA-Z0-9_\$]+)( +;)?/,
+          /#([a-zA-Z_][a-zA-Z0-9_\$]+)( +;)?/,
           'invalid'
         ],
         [
           // Type names
           /\b([A-Z][a-zA-Z0-9_\$]*)\b/,
           'yellow'
+        ],
+        [
+          // Macro arguments
+          /(?<![a-zA-Z0-9_\$])(\$[a-zA-Z_][a-zA-Z0-9_\$]*)(?![a-zA-Z0-9_\$])/,
+          'purple'
         ]
       ]
     },
@@ -643,7 +648,7 @@ scheme = {
           end: /}/,
           patterns: [
             {
-              match: /([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s*(:)(?!:)/,
+              match: /([a-zA-Z_][a-zA-Z0-9_\$]*)\s*(:)(?!:)/,
               captures: {
                 '1': {
                   name: '${white}'
