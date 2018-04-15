@@ -3933,17 +3933,17 @@ Also, macros don't have a return type, because they can return different things 
 To understand better the concept, here is how we define a macro:
 
 ```sn
-#macro sayHello(name: string) => println!(`Hello, $${name}`);
+#macro sayHello($name: string) => println!(`Hello, ${$name}`);
 ```
 
-Note the double `$` symbol here: it means we are retrieving a macro variable and we want to insert it as it is. Now, how do we use the macro? Like this:
+Note that all macros' arguments must start with a `$` symbol. When we write the argument's name in the macro's body, it is automatically replaced by the expression we gave as an argument. Here is an example:
 
 ```sn
 // Call the macro
 sayHello!("Jack");
 
 // Will produce:
-println!(`Hello, Jack`);
+println!(`Hello, ${"Jack"}`);
 
 // Which will itself produce:
 Output::println(`Hello, Jack`);
@@ -3951,47 +3951,11 @@ Output::println(`Hello, Jack`);
 
 As you can see, a macro is simply a way to simplify the writing of a call. It would be heavier to write `Output::println` each time we want to display something in the console, right? That's why the `println!` macro is here. And as you can guess, the `!` symbol indicates we are calling a macro and not a function (except unsafe functions, but we'll see that later).
 
-Macros can have several arguments, which must be typed. But it can also have a return type if it is ensured to return a specific type of value. For example, in our example, because `println!` is void-typed, the macro will return a `void`. So, we write:
-
-```sn
-#macro sayHello(name: string) => println!("Hello, " + $${name});
-```
-
-One of the native macros can be useful when using arguments. In fact, when writing the same macro as above but like this:
-
-```sn
-#macro sayHello(name: string) => println!("Hello, $${name}");
-```
-
-Using it could throw an error. Why? Because it would produce this result:
-
-```sn
-// Call the macro
-sayHello!("Jack");
-
-// This will produce:
-println!("Hello, "Jack"");
-//                ^- Syntax error
-```
-
-There is a directive to solve this problem, called `#unwrap`:
+Also note that macros can use a special type for their arguments, that is not available for standard functions. It's the `#raw` type, which prevent the arguments from being checked and evaluated. For example, the following code will work fine:
 
 ```sn
 // Declare the macro
-#macro sayHello(name: string) => println!("Hello, #unwrap(name)");
-
-// Call the macro
-sayHello!("Jack");
-
-// This will produce:
-sayHello!("Hello, Jack");
-```
-
-Also note that macros can use a special type for their arguments, that are not available for standard functions. It's the `#raw` type, which prevent the arguments from being checked and evaluated. For example, the following code will work fine:
-
-```sn
-// Declare the macro
-#macro sayHello(name: #raw) => println!("Hello, " + $${name});
+#macro sayHello($name: #raw) => println!("Hello, " + $name);
 
 // Call it
 sayHello( 'Jack' /* Hey */ );
@@ -3999,11 +3963,11 @@ sayHello( 'Jack' /* Hey */ );
 println!("Hello, " +  'Jack' /* Hey */ );
 ```
 
-As you can see, even the spaces are kept in `name`. Note that plain arguments can also be unevaluated to a string:
+As you can see, even the spaces are kept in `$name`. Note that plain arguments can also be unevaluated to a string:
 
 ```sn
 // Declare the macro
-#macro test(name: #raw) => #wrap(name);
+#macro test($name: #raw) => #wrap($name);
 
 // Call it
 println!(test( 'Jack' ));
@@ -4015,7 +3979,7 @@ There is also a type for plain constants (also called literals, like `2` or `"He
 
 ```sn
 // Declare the macro
-#macro test(name: #pln<int>) => println!($${name});
+#macro test($name: #pln<int>) => println!($name);
 
 // Call it
 test('Hello');
@@ -4027,8 +3991,8 @@ There is also a type to ask specifically for an assignable entity (variables and
 
 ```sn
 // Declare the macro
-#macro test(name: #var) =>
-  println!(`$${name} is an assignable entity`);
+#macro test($name: #var) =>
+  println!(`${$name} is an assignable entity`);
 
 // Declare a constant
 val hello = "World";
@@ -4047,7 +4011,7 @@ Note that `#var` can be templated, like `#var<string>` to accept any assignable 
 Another type we can use is `#name`: it forces to use a valid entity name, but does not check if it exists. It can be especially useful if we want to make some declarations:
 
 ```sn
-#macro make_vehicles(name: #name) => val $${name}: List<Vehicle>;
+#macro make_vehicles($name: #name) => val $name: List<Vehicle>;
 
 // Writing this:
 make_vehicles(hello);
@@ -4058,7 +4022,7 @@ val hello: List<Vehicle>;
 Another type we can use is `#name`: it forces to use a valid entity name, but does not check if it exists. It can be especially useful if we want to make some declarations:
 
 ```sn
-#macro make_vehicles(name: #name) => val $${name}: List<Vehicle>;
+#macro make_vehicles($name: #name) => val $name: List<Vehicle>;
 
 // Writing this:
 make_vehicles(hello);
@@ -4068,7 +4032,7 @@ val hello: List<Vehicle>;
 
 There are is last type for macros: `#noptr<T>`. It only accepts assignable entities, like `#raw`, but refuses pointers. Like `#raw`, it can be written without its template to accept any type. This is a specialized macro you probably won't encounter very often, but it's here if you need them.
 
-_Tip :_ If you absolutely require a pointer in a macro, simply use the `&` symbol like functions. For pointer assignable entities, use `*pointer: #var<T>`.
+_Tip :_ If you absolutely require a pointer in a macro, simply use the `&` symbol like functions. For pointer assignable entities, use `*$pointer: #var<T>`.
 
 To conclude, simply remember that every function signature (with `#macro` replacing `func`) is a valid macro signature, but that a macro can also use additional features like the `#var` directive.
 
