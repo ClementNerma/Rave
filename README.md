@@ -13,6 +13,55 @@ Currently, the SilverNight programming language, as well as all its resources, i
 
 **Commit policy:** When an idea is added to the project, it is very shortly tested, then implemented in the repository, most of the time in The Hybrid Book. Sometimes it will simply be removed in a few hours or a few days because of a problem with it, like its unmaintanability in the long term. Major and breaking updates often occurs, as the language is not fully designed yet. Please keep this in mind.
 
+## Release model
+
+SilverNight is released using a system of **stages**:
+
+### Stage 0 (name: _Scratch_) _(from Feb 19, 2018)_
+
+**State:** Beginning of the language design
+
+**Goal:** Design the language from scratch
+
+* Breaking syntax and concept updates are frequent
+* Redaction of [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html) (first version)
+
+### Stage 1 (name: _Alpha_)
+
+**State:** The syntax is mostly finished
+
+**Goal:** Improve the language by submitting it to professional and beginner developers
+
+* Development of the native library
+* The language is submitted to reviewers (profesional developers, beginners, ...)
+* Redaction of [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html) (final version)
+
+### Stage 2 (name: _Beta_)
+
+**State:** The syntax is mostly finished
+
+**Goal:** Freeze the language
+
+* Redaction of the [The Book of Concepts](https://silvernight.netlify.com/docs/book/concepts.html)
+* Freeze the language definitely
+* Freeze the native library definitely
+
+### Stage 3 (name: _Stable_)
+
+**State:** The language is frozen
+**Goal:** Make the language usable
+
+* Development of the language's builder (normalizer, lexer, parser, checker)
+
+### Stage 4
+
+**State:** The language is usable
+**Goal:** Make the language usable in all its forms
+
+* Development of an interpreter
+* Development of a compiler
+* Development of transpilers (JavaScript, Java, ...)
+
 ## Installation
 
 The compiler isn't ready yet, so there is no way currently to install it.
