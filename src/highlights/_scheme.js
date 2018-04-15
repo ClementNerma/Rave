@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.20.5',
+    VERSION: '0.20.6',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -592,7 +592,7 @@ scheme = {
         ],
         [
           // Inline directives
-          /#([Dd]ynamic|alias|bind|makebindings|declarative|raw_indent|if|else|end|wrap|unwrap)( *;)?/,
+          /#(growable|alias|bind|makebindings|declarative|raw_indent|if|else|end|wrap|unwrap)( *;)?/,
           'orange'
         ],
         [
