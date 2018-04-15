@@ -5419,7 +5419,7 @@ In SilverNight, packages are simply a couple formed by a _package file_ and a _p
 
 ### Creating a package
 
-First, create a new folder (with any name you want). Inside of it, create a `main.sn` and open it in your favorite code editor: this will be our program's main file. Now, create a `_packages` folder, and inside it a `test-package` folder. Create a `package.toml` file and an `index.sn` file, open them in the same code editor.
+First, create a new folder (with any name you want). Inside of it, create a `main.sn` and open it in your favorite code editor: this will be our program's main file. Now, create a `_packages` folder, and inside it a `test_package` folder. Create a `package.toml` file and an `index.sn` file, open them in the same code editor.
 
 `main.sn` will be our main program, which will be ran. The two other files will constitute the _package_ we will use.
 
@@ -5429,7 +5429,7 @@ First, let's make our package file. It's a TOML ([Tom's Obvious Language](https:
 
 ```toml
 [package]
-name = "name-manager"
+name = "name_manager"
 version = "0.1.0"
 authors = [ "Your Name <you@example.com>" ]
 license = "MIT"
@@ -5438,7 +5438,7 @@ main = "index.sn"
 [dependencies]
 ```
 
-This tells that our package's name is `name-manager` (so it will be located in a `name-manager` directory when downloaded from the package manager - we'll see that soon) and gives informations about its version (which is very important as we'll see soon) and the array of authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now). Next, it gives the _dependencies_ of this package, and ends by giving the filename of the package's main file. For now, don't worry about the file's content, we'll see it in details later.
+This tells that our package's name is `name_manager` (so it will be located in a `name_manager` directory when downloaded from the package manager - we'll see that soon) and gives informations about its version (which is very important as we'll see soon) and the array of authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now). Next, it gives the _dependencies_ of this package, and ends by giving the filename of the package's main file. For now, don't worry about the file's content, we'll see it in details later.
 
 #### The package source code
 
@@ -5519,7 +5519,7 @@ To import a package, we must use the `import` keyword followed by the package's 
 
 ```sn
 // Import the package
-import name-manager as manager;
+import name_manager as manager;
 
 // Use its exported entities
 manager.defineName("John");
@@ -5533,19 +5533,19 @@ This is as simple as that. Also, because this name could be a little heavy, we c
 
 ```sn
 // Import the package
-import name-manager as manager;
+import name_manager as manager;
 
 manager.defineName("John");
 println!(manager.readName()); // Prints: "John"
 ```
 
-Note that `name-manager`'s content is strictly equivalent to the value exported by the package. Our one exported an object with two attributes referring to its functions, but it could have only exported a single function for example, so we would have been able to call `manager` as a function.
+Note that `name_manager`'s content is strictly equivalent to the value exported by the package. Our one exported an object with two attributes referring to its functions, but it could have only exported a single function for example, so we would have been able to call `manager` as a function.
 
 Note that it's also possible to import a package without an alias, like this:
 
 ```sn
 // Import the package
-import name-manager;
+import name_manager;
 
 // Because the "-" symbol cannot be part of a name, it is replaced by "_"
 name_manager.defineName("John");
@@ -5556,7 +5556,7 @@ It's even possible to import several packages at once:
 
 ```sn
 // Import the packages
-import name-manager, another-package;
+import name_manager, another-package;
 
 name_manager.defineName("John");
 println!(name_manager.readName()); // Prints: "John"
@@ -5569,7 +5569,7 @@ Note that all SilverNight programs transparently import the `native` package tha
 The `import!` macro allows to import a package as an object, so we can use it as we want. Here is an example:
 
 ```sn
-val manager = import!(name-manager);
+val manager = import!(name_manager);
 
 manager.defineName("John");
 println!(manager.readName()); // Prints: "John"
@@ -5578,8 +5578,8 @@ println!(manager.readName()); // Prints: "John"
 Also, the macro will never the package several times, so we can write:
 
 ```sn
-import!(name-manager).defineName("John");
-println!(import!(name-manager).readName()); // Prints: "John"
+import!(name_manager).defineName("John");
+println!(import!(name_manager).readName()); // Prints: "John"
 ```
 
 This will work as expected. A good point about this macro is that the package isn't imported multiple times ; once you imported it, either with `import` or `import!`, it will just retrieve the imported data.
