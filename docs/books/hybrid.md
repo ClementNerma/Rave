@@ -853,7 +853,7 @@ To solve this problem, we write `#growable` (names beginning by a `#` symbol are
 
 ```sn
 let books = [
-  #growable
+  #growable;
 
   {
     name: "Harry Potter",
@@ -889,7 +889,7 @@ Note that it works with defined object too:
 val harryPotter = {
   name: "Harry Potter",
   details: {
-      #growable
+      #growable;
       author: "J.K. Rowling",
       year: "1997",
       country: "United Kingdom"
@@ -899,7 +899,7 @@ val harryPotter = {
 val eragon = {
   name: "Eragon",
   details: {
-      #growable
+      #growable;
       author: "Cristopher Paolini",
       year: "2003",
       country: "U.S.A."
@@ -907,18 +907,12 @@ val eragon = {
 };
 
 let books = [
-  #growable
+  #growable;
   harryPotter, eragon
 ];
 ```
 
 Here, because we create an array from two distinct objects, they must have the `#growable` directive on their `details` field.
-
-_Tip :_ Because we sometimes want to write inline objects like this, we can use the inline syntax of directives that consist in adding a `;` symbol to mark their end. This avoid having to add a new line to mark the end of the directive. Here is an example:
-
-```sn
-let books = [ #growable; harryPotter, eragon ]; // Works fine
-```
 
 ### Multiple assignments
 
@@ -5475,7 +5469,7 @@ Because a package's source code can (and will often) be heavy, we can use the `#
 // File: "index.sn"
 #[package]
 
-#include "functions.sn"
+#include "functions.sn";
 
 let name: string;
 
@@ -5502,7 +5496,7 @@ To manage better our packages, we can also include files using an alias:
 // File: "index.sn"
 #[package]
 
-#include "functions.sn" as Functions
+#include "functions.sn" as Functions;
 
 let name: string;
 
