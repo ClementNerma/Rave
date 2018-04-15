@@ -5439,7 +5439,7 @@ This tells that our package's name is `name-manager` (so it will be located in a
 Now we've written our package file, we can write the package's source, which will be written in `index.sn` as specified in the package file. Here is an example:
 
 ```sn
-#package
+#[package]
 
 let name: string;
 
@@ -5457,7 +5457,7 @@ func readName () -> string {
 export { defineName, readName };
 ```
 
-First, the `#package` directive tells this is the main file of the package. It defines a `name` variable, with two functions, one to set it, one to read it.
+First, the `#[package]` directive tells this is the main file of the package. It defines a `name` variable, with two functions, one to set it, one to read it. Note that directives with a name between braces are called _head directives_, they describe a whole file and so must be placed at its head ; it wouldn't work if we placed it below the declaration of `name`, for example.
 
 _Tip :_ Because `(c => c)` is a constraint callback, it must return a boolean. Strings does implement the `%toBoolean` overload, which returns `false` if they are empty, and `true` else. So this constraint simply ensures the string is not empty.
 
@@ -5467,7 +5467,7 @@ Because a package's source code can (and will often) be heavy, we can use the `#
 
 ```sn
 // File: "index.sn"
-#package
+#[package]
 
 #include "functions.sn"
 
@@ -5494,7 +5494,7 @@ To manage better our packages, we can also include files using an alias:
 
 ```sn
 // File: "index.sn"
-#package
+#[package]
 
 #include "functions.sn" as Functions
 
