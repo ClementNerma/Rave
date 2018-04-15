@@ -4019,17 +4019,6 @@ make_vehicles(hello);
 val hello: List<Vehicle>;
 ```
 
-Another type we can use is `#name`: it forces to use a valid entity name, but does not check if it exists. It can be especially useful if we want to make some declarations:
-
-```sn
-#macro make_vehicles($name: #name) => val $name: List<Vehicle>;
-
-// Writing this:
-make_vehicles(hello);
-// Will produce:
-val hello: List<Vehicle>;
-```
-
 There are is last type for macros: `#noptr<T>`. It only accepts assignable entities, like `#raw`, but refuses pointers. Like `#raw`, it can be written without its template to accept any type. This is a specialized macro you probably won't encounter very often, but it's here if you need them.
 
 _Tip :_ If you absolutely require a pointer in a macro, simply use the `&` symbol like functions. For pointer assignable entities, use `*$pointer: #var<T>`.
