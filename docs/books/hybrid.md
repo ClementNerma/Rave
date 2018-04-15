@@ -5392,7 +5392,7 @@ This tells that our package's name is `name_manager` (so it will be located in a
 Now we've written our package file, we can write the package's source, which will be written in `index.sn` as specified in the package file. Here is an example:
 
 ```sn
-#[package]
+#[package];
 
 let name: string;
 
@@ -5420,7 +5420,7 @@ Because a package's source code can (and will often) be heavy, we can use the `#
 
 ```sn
 // File: "index.sn"
-#[package]
+#[package];
 
 #include "functions.sn";
 
@@ -5447,7 +5447,7 @@ To manage better our packages, we can also include files using an alias:
 
 ```sn
 // File: "index.sn"
-#[package]
+#[package];
 
 #include "functions.sn" as Functions;
 
