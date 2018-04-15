@@ -5908,3 +5908,102 @@ println!(seven); // Prints: "7"
 ```
 
 We've now finished with promises and asynchronous behaviours.
+
+## Documenting the code
+
+Making code is great, but it's even better if it's documented. When you are using a library (e.g. a package downloaded from the official repository), it's always better to know how functions work, right? So, we have several solutions:
+
+* Write the documentation by hand ;
+* Document the code and generate the documentation automatically
+
+The second solution is, most of the time, the better. Why? Because, when we document we code directly, we have some advantages:
+
+* The documentation is located under a single location ;
+* We don't have to search through the web how it works ;
+* IDEs and some code editors will provide help and auto-complete.
+
+So, let's see how this work.
+
+### Assignable entities
+
+The syntax of documentation is pretty the same than many other languages: a multi-line comment, starting with a `*` symbol. Let's see how we make it with assignable entities:
+
+```sn
+/**
+ * The name of a person
+ */
+let name: string:
+```
+
+The first line contains two `*` symbols, meaning this is a _documentation comment_. Every next line will start by optional spaces (for indentation) then by another `*` symbol and a content depending on what we want to do. Conventionally, the first line describes the entity (what it contains/does). Because it's an assignable entity, we write what it contains: The name of a person.
+
+### Functions
+
+For functions, that's a bit more complex, because we document both the function itself (including its return value), and its arguments. Here is an example of a summation function:
+
+```sn
+/**
+ * Make a summation from a list of numbers
+ * @param numbers A list of numbers
+ * @returns The summation
+ */
+func sum (...numbers: int) -> int {
+  let summation = 0;
+
+  for num in numbers {
+    summation += num;
+  }
+
+  return summation;
+}
+```
+
+The first line, as usual, describes the function (what it does): Make a summation from a list of numbers. Then, we describe each argument (the only one) using `@param`, followed by the argument's name, and what it contains: A list of numbers. To finish, we indicate what the function returns using `@returns` followed by the returned value: The summation.
+
+Note that we don't have to use `@returns` for void-typed functions.
+
+### Nested functions
+
+To document nested functions (functions as arguments), we document them as usual functions using a `>` symbol:
+
+```sn
+/**
+ * Make a summation from a generation function
+ * @param generation The generator to make the summation from
+ * > @returns A list of values
+ * @returns The summation
+ */
+func sum (generation: func -> int[]) -> int {
+  let summation = 0;
+
+  for num in generation() {
+    summation += num;
+  }
+
+  return summation;
+}
+```
+
+If we had double-nested functions (like a function), we would have used two `> >` symbols to described the callback's callback.
+
+### Functions' templates
+
+Templates are documented like arguments, but with `@template`:
+
+```sn
+/**
+ * Make a summation from an iterator
+ * @template T The numbers' type
+ * @param iterator The iterator to make the summation from
+ * @returns The summation
+ */
+unsafe func sum<T extends Number> (iterator: Iterator<T>) -> T {
+  let summation: T = 0;
+
+  for num in iterator {
+    summation += num;
+  }
+
+  return summation;
+}
+```
