@@ -3963,16 +3963,16 @@ sayHello( 'Jack' /* Hey */ );
 println!("Hello, " +  'Jack' /* Hey */ );
 ```
 
-As you can see, even the spaces are kept in `$name`. Note that plain arguments can also be unevaluated to a string:
+As you can see, even the spaces are kept in `$name`. Note that every macro argument can also be stringified:
 
 ```sn
 // Declare the macro
-#macro test($name: #raw) => #wrap($name);
+#macro test($text: #raw) => #string($text);
 
 // Call it
-println!(test( 'Jack' ));
+println!(test( 'Jack "Yeah" `Some quotes`'  ));
 // This will produce:
-println!(" 'Jack' ");
+println!(" 'Jack \"Yeah\" `Some quotes`'  ");
 ```
 
 There is also a type for plain constants (also called literals, like `2` or `"Hello"`, but not `myVariable`):
