@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.21.2',
+    VERSION: '0.21.3',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -192,20 +192,10 @@ scheme = {
           "green"
         ],
         {
-          // Macro arguments
-          match: /\$\${([a-zA-Z_][a-zA-Z0-9_]*)}/,
-          name: '${purple}'
-        },
-        {
           // Multi-line strings
           begin: /`/,
           end: /`/,
           patterns: [
-            {
-              // Macro arguments
-              match: /\$\${([a-zA-Z_][a-zA-Z0-9_]*)}/,
-              name: '${purple}'
-            },
             {
               // Expressions
               begin: /\${/,
