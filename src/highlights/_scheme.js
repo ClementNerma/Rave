@@ -587,12 +587,12 @@ scheme = {
         ],
         [
           // Head directives
-          /#\[(package)\]( +;)?/,
+          /#\[(package)\]( *;)?/,
           'orange'
         ],
         [
           // Inline directives
-          /#([Dd]ynamic|alias|bind|makebindings|declarative|raw_indent|if|else|end|wrap|unwrap)( +;)?/,
+          /#([Dd]ynamic|alias|bind|makebindings|declarative|raw_indent|if|else|end|wrap|unwrap)( *;)?/,
           'orange'
         ],
         [
