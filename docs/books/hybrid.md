@@ -4473,7 +4473,7 @@ val result = inc(int(nothing)); // Returns: 1
 
 This works only because both `null` implements `%toInteger()` (which returns `0`).
 
-### Forced nullable typecasting
+### Forced typecasting
 
 There's two macros available to turn a nullable value into a standard value, which is `strict!`, and another to turn a standard value into a nullable value, which is `nullable!`. Here is how they go:
 
@@ -4487,7 +4487,7 @@ val two = strict!(nullable);
 
 Now, `one` has nullable `int?` type and `two` has standard `int` type.
 
-### Cautious dynamic typecasting
+### Cautious typecasting
 
 The `try_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `NULL` if it fails, without throwing an error. Its return type is nullable, like in this example:
 
@@ -4516,7 +4516,7 @@ Note that the `?` symbol has been put after the argument's name, and not after i
 
 Here, `age` is an `int?` that can also be omitted (in this case it is equal to `null`). That's as simple as that.
 
-### Optional members in structures
+### Nullable members
 
 The same applies for structures: while we can provide a default value for structures' members, we can also make really optional ones:
 
@@ -4889,7 +4889,7 @@ In the second function, `assignSomethingNew`, only a link to `hero` was also sen
 
 But what if we wanted to make the whole `hero` object change within a function? Well, for that, we use _references_.
 
-### How references and pointers work
+### References and pointers
 
 While entities simply share a OID referring to a specific object in the memory, pointers share an EID, which stands for Entity Identifier - unique like the OID. The difference between an OID and an EID is that a OID simply refers to an object, while an EID refers to an entity - including primitives.
 
