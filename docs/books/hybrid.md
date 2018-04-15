@@ -3922,6 +3922,28 @@ let car: Car = new Vehicle(2); // ERROR
 let car: Car = new Vehicle(4); // Works fine
 ```
 
+### Conditionial directives
+
+Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the _conditional directives_: `#if`, `#else`, `#elif`, `#end`. These directives use a boolean, like their block equivalent. Their specificity is that the code located in them will simply be removed from the source code if the condition is (or is not) filled. They can use build constants, giving the type of conversion (compilation, interpretation, transpiling), the platform (x86_64, ARM...).
+
+Here is an example:
+
+```sn
+#if PROC_ARCH is "ARM"
+  println!("This program has been compiled for ARM.");
+#end
+
+#if OS is "Windows"
+  println!("You are using a Windows system.");
+#elsif OS is "Linux"
+  println!("You are using a Linux system.");
+#elsif OS is "Darwin"
+  println!("You are using a MacOS system.");
+#end
+```
+
+That's as simple as it.
+
 ### Macros
 
 Remember the very first "function" we saw in this book? Yes, this was `println!`. Why there are quotes about "function"? Because `println!` is not a function. It's a macro.
