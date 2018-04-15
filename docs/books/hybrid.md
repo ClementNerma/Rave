@@ -5562,6 +5562,8 @@ name_manager.defineName("John");
 println!(name_manager.readName()); // Prints: "John"
 ```
 
+Note that all SilverNight programs transparently import the `native` package that provides all the native stuff like `println!` or `int32` and link them to global entities (meaning we don't have to write `native.int32` for example).
+
 #### The `import!` macro
 
 The `import!` macro allows to import a package as an object, so we can use it as we want. Here is an example:
