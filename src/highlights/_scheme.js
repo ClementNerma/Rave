@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.20.6',
+    VERSION: '0.20.7',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -483,7 +483,7 @@ scheme = {
         ],
         [
           // Static operator for classes
-          /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(::)(?=[a-zA-Z_\$])/,
+          /\b([A-Z][a-zA-Z0-9_\$]*)(::)(?=[a-zA-Z_\$])/,
           'yellow', 'cyan'
         ],
         [
