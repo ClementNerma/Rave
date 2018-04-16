@@ -491,37 +491,6 @@ scheme = {
           /\b[a-zA-Z_][a-zA-Z0-9_\$]*\.\.\./,
           'red'
         ],
-        {
-          // Non-objects (classes and functions' bodies...)
-          begin: /(?<=[a-zA-Z0-9_\)])\s*{/,
-          end: /}/,
-          patterns: [
-            {
-              include: '#global'
-            }
-          ]
-        },
-        {
-          // Literal objects
-          begin: /{/,
-          end: /}/,
-          patterns: [
-            {
-              match: /([a-zA-Z_][a-zA-Z0-9_\$]*)\s*(:)(?!:)/,
-              captures: {
-                '1': {
-                  name: '${white}'
-                },
-                '2': {
-                  name: '${cyan}'
-                }
-              }
-            },
-            {
-              include: '#global'
-            }
-          ]
-        },
         [
           // Array of type
           /\b([A-Z][a-zA-Z0-9_\$]*)(\?)?(?=\s*\[\s*\])/,
