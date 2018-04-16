@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.22.0',
+    VERSION: '0.22.1',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -415,6 +415,11 @@ scheme = {
           // IMPORT statement
           /\b(import)\s+([a-zA-Z_][a-zA-Z0-9_]*(?:(::)[a-zA-Z_][a-zA-Z0-9_]*)*)((?:\s*,\s*[a-zA-Z_][a-zA-Z0-9_\$\-]*(?:(::)[a-zA-Z_][a-zA-Z0-9_\$\-]*)*)*)\b/,
           'purple', 'green', 'cyan', 'green', 'cyan'
+        ],
+        [
+          // Usage of a package/module
+          /\b([a-zA-Z_][a-zA-Z0-9_]*)(::)\b/,
+          'green', 'cyan'
         ],
         [
           // Native types and classes
