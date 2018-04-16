@@ -497,8 +497,8 @@ scheme = {
         },
         [
           // Array of type
-          /\b([A-Z][a-zA-Z0-9_\$]*)(?=\s*\[\s*\])/,
-          'yellow'
+          /\b([A-Z][a-zA-Z0-9_\$]*)(\?)?(?=\s*\[\s*\])/,
+          'yellow', 'cyan'
         ],
         [
           // Object followed by a child property
