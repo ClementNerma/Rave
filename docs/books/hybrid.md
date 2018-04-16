@@ -5442,6 +5442,8 @@ _Tip :_ Because `(c => c)` is a constraint callback, it must return a boolean. S
 
 The last line of the file **exports** some entities. This simply creates an object that will be available from the outside of the package, so `name` won't be available from the outside.
 
+Note that we can also write `export *;` to export **everything** from the module. This is only if the module doesn't contain any private data.
+
 Because a package's source code can (and will often) be heavy, we can use the `#include` directive to import a file's content at its position. Here is an example:
 
 ```sn
