@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.22.1',
+    VERSION: '0.22.2',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -587,7 +587,7 @@ scheme = {
         ],
         [
           // Head directives
-          /#\[(package|extern)\] *;/,
+          /#\[(module|extern)\] *;/,
           'orange'
         ],
         [
