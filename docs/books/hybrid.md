@@ -3237,7 +3237,7 @@ virtual class ConvertibleToInt {
 }
 ```
 
-But that would be a very bad idea. Why ? Because all classes would have to inherit from it to be used in our function so it would restrict the accepted type of arguments to the only classes that implement it. Right from the start it excludes all the native types (which doesn't inherit from your own class, of course) plus all the classes you haven't made yourself (which are part of a library, for example) and the classes that already inherits from a class, because a class can't have multiple mother classes. This also would be very heavy to write.
+But that would be a very bad idea. Why? Because all classes would have to inherit from it to be used in our function so it would restrict the accepted type of arguments to the only classes that implement it. Right from the start it excludes all the native types (which doesn't inherit from your own class, of course) plus all the classes you haven't made yourself (which are part of a library, for example) and the classes that already inherits from a class, because a class can't have multiple mother classes. This also would be very heavy to write.
 
 So, the solution to this problem is to use an interface. An interface is simply an array of functions and attributes a class **must** implement - it can't write the body of functions. When declaring a class, you explicitly tell what interface(s) it uses, and not implementing any of the interface's members will result in an error.
 
@@ -4427,7 +4427,7 @@ else
   println!(`A point was found: ${point.name}`);
 ```
 
-Also, thanks to `void` implementing a `%toBoolean` overload which always return `false`, we can do use some native operators like `!` or `point ? doSomething() -> doSomethingElse()` on our constant.
+Also, thanks to `void` implementing a `%toBoolean` overload which always return `false`, we can do use some native operators like `!` or `point ? doSomething() : doSomethingElse()` on our constant.
 
 ### The nullable `?` operator
 
@@ -4584,7 +4584,7 @@ But, because it's always preferable to avoid using nullable types as they can ca
 
 ```sn
 val array = (new Vehicle[4096]).fill(
-  random!(bool) ? new Car() -> new Motorcycle()
+  random!(bool) ? new Car() : new Motorcycle()
 );
 ```
 
