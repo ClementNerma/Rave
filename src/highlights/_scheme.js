@@ -492,8 +492,35 @@ scheme = {
           'red'
         ],
         {
-          // Objects
-          include: '#objects'
+          // Non-objects (classes and functions' bodies...)
+          begin: /(?<=[a-zA-Z0-9_\)])\s*{/,
+          end: /}/,
+          patterns: [
+            {
+              include: '#global'
+            }
+          ]
+        },
+        {
+          // Literal objects
+          begin: /{/,
+          end: /}/,
+          patterns: [
+            {
+              match: /([a-zA-Z_][a-zA-Z0-9_\$]*)\s*(:)(?!:)/,
+              captures: {
+                '1': {
+                  name: '${white}'
+                },
+                '2': {
+                  name: '${cyan}'
+                }
+              }
+            },
+            {
+              include: '#global'
+            }
+          ]
         },
         [
           // Array of type
@@ -630,44 +657,6 @@ scheme = {
           /(?<![a-zA-Z0-9_\$])(\$[a-zA-Z_][a-zA-Z0-9_\$]*)(?![a-zA-Z0-9_\$])/,
           'purple'
         ]
-      ]
-    },
-
-    // Objects
-    objects: {
-      patterns: [
-        {
-          // Non-objects (classes and functions' bodies...)
-          begin: /(?<=[a-zA-Z0-9_\)])\s*{/,
-          end: /}/,
-          patterns: [
-            {
-              include: '#global'
-            }
-          ]
-        },
-
-        {
-          // Literal objects
-          begin: /{/,
-          end: /}/,
-          patterns: [
-            {
-              match: /([a-zA-Z_][a-zA-Z0-9_\$]*)\s*(:)(?!:)/,
-              captures: {
-                '1': {
-                  name: '${white}'
-                },
-                '2': {
-                  name: '${cyan}'
-                }
-              }
-            },
-            {
-              include: '#global'
-            }
-          ]
-        }
       ]
     },
 
