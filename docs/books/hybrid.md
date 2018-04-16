@@ -5545,7 +5545,7 @@ name_manager::names.defineName("John");
 println!(name_manager::names.readName()); // Prints: "John"
 ```
 
-Note that all SilverNight programs transparently import the `native` package that provides all the native stuff like `println!` or `int32` and link them to global entities (meaning we don't have to write `native.int32` for example).
+Note that all SilverNight programs transparently import the `frontend::native` module that provides all the native stuff like `string` or `Array` and link them to global entities (meaning we don't have to write `frontend::native::int32` for example).
 
 #### The `import!` macro
 
