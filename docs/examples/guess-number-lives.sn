@@ -1,5 +1,5 @@
 // Import frontend library
-import frontend.console;
+import frontend::console as console;
 
 // A container for user's guess
 let guess = -1;
