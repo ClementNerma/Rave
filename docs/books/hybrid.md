@@ -4567,23 +4567,23 @@ Here is the program we want to make:
 
 The problem is: if we simply declare the array with `val`, we create a `Array<Vehicle>` instance that will be filled with vehicles later. So this will generate 4096 instances of the `Vehicle` class at the same time the array is declared, and then we will make again 4096 instances in our `if` block. Performances are so divided by 2.
 
-In order to avoid this problem, we can declare the array using an optional type. When the resource is declared, no instance is created, and we will only instanciate it in our conditional block, so "only" 4096 instances of `Vehicle` will be created, instead of 8192 with the previous method - that's a considerable speed up.
+In order to avoid this problem, we can declare the array using an optional type. When the resource is declared, only an array instance is created, and we will only instanciate the vehicles in our conditional block, so "only" 4096 instances of `Vehicle` will be created, instead of 8192 with the previous method - that's a considerable speed up.
 
 Here is how it works:
 
 ```sn
-let array: Vehicle[]? = null; // Array<Vehicle>?
+let array: Vehicle?[] = null; // Array<Vehicle?>
 
 if (random!(bool))
-  array = (new Vehicle[4096]).fill(new Car());
+  array.fill(new Car());
 else
-  array = (new Vehicle[4096]).fill(new Motorcycle());
+  array.fill(new Motorcycle());
 ```
 
 But, because it's always preferable to avoid using nullable types as they can cause errors if not manipulated correctly, and because the code above is not optimized, we should write this one instead:
 
 ```sn
-val array = (new Vehicle[4096]).fill(
+val array = (new Vehicle?[4096]).fill(
   random!(bool) ? new Car() : new Motorcycle()
 );
 ```
