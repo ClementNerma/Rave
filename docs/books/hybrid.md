@@ -5526,6 +5526,15 @@ println!(names::readName()); // Prints: "John"
 
 Here, we only import the `names` module and alias it as `names`, so we don't have to write `name_manager::names` each time. Therefore, we still have a `name_manager` object available in our example, because we imported a part of the `name_manager` package anyway. But thanks to the alias, we don't have to write `name_manager::names` anymore.
 
+Another, equivalent, syntax:
+
+```sn
+// This...
+import name_manager::names as names;
+// is *strictly* equivalent to:
+import names from name_manager;
+```
+
 Note that it's also possible to import several packages at once:
 
 ```sn
