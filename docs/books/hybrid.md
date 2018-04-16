@@ -5567,6 +5567,16 @@ println!(import!(name_manager).readName()); // Prints: "John"
 
 This will work as expected. A good point about this macro is that the package isn't imported multiple times ; once you imported it, either with `import` or `import!`, it will just retrieve the imported data.
 
+Note that we can also import several items from a package, like this:
+
+```sn
+// This...
+import frontend::console;
+import frontend::filesystem;
+// is *strictly* equivalent to:
+import console, filesystem from frontend;
+```
+
 ### Sub-modules hierarchy
 
 Sub-modules are modules themselves written inside modules (called their _parent_). When we import the parent module, it also imports all its sub-modules (called its _children_). To illustrate the concept, let's imagine we have package called `universe`, which has two modules: `planets` and `life`. `planets` has two sub-modules: `earth` and `others`, while `life` has `animals`, `insects` and `humans`. Here is our package file:
