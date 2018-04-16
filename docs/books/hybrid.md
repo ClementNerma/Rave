@@ -6047,7 +6047,7 @@ let name: string:
 
 The first line contains two `*` symbols, meaning this is a _documentation comment_. Every next line will start by optional spaces (for indentation) then by another `*` symbol and a content depending on what we want to do. Conventionally, the first line describes the entity (what it contains/does). Because it's an assignable entity, we write what it contains: The name of a person.
 
-### Functions
+### Functions and arguments
 
 For functions, that's a bit more complex, because we document both the function itself (including its return value), and its arguments. Here is an example of a summation function:
 
