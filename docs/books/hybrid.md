@@ -5384,11 +5384,11 @@ Well, the object `ptr` targets is not defined as constant, even if the reference
 
 ## Packages
 
-In SilverNight, packages are simply a couple formed by a _package file_ and a _package source code_. It is usually formed by a folder, with a `package.yaml` as the package file, and an `index.sn` file as its source code - though their can be additional source code files.
+In SilverNight, packages are formed by a _package file_ and one or more _modules file_. It located in a specific folder, with a `package.toml` as the package file, and `*.sn` files as its modules' source code - though their can be additional source files.
 
 ### Creating a package
 
-First, create a new folder (with any name you want). Inside of it, create a `main.sn` and open it in your favorite code editor: this will be our program's main file. Now, create a `_packages` folder, and inside it a `test_package` folder. Create a `package.toml` file and an `index.sn` file, open them in the same code editor.
+First, create a new folder (with any name you want). Inside of it, create a `main.sn` file and open it in your favorite code editor: this will be our program's main file. Now, create a `_packages` folder, and inside it a `test_package` folder. Create a `package.toml` file and an `names.sn` file, open them in the same code editor.
 
 `main.sn` will be our main program, which will be ran. The two other files will constitute the _package_ we will use.
 
@@ -5402,19 +5402,23 @@ name = "name_manager"
 version = "0.1.0"
 authors = [ "Your Name <you@example.com>" ]
 license = "MIT"
-main = "index.sn"
+modules = [ "names" ]
 
 [dependencies]
 ```
 
-This tells that our package's name is `name_manager` (so it will be located in a `name_manager` directory when downloaded from the package manager - we'll see that soon) and gives informations about its version (which is very important as we'll see soon) and the array of authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now). Next, it gives the _dependencies_ of this package, and ends by giving the filename of the package's main file. For now, don't worry about the file's content, we'll see it in details later.
+This tells that our package's name is `name_manager` (so it will be located in a `name_manager` directory when downloaded from the package manager - we'll see that soon) and gives informations about its version (which is very important as we'll see soon) and the array of authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now).
+
+Next, it gives the list of the package's _modules_. Each module is a part of a package and is represented by a single file. In our case, because we have a `names` module, the program will look for a `names.sn` file. We could also use sub-modules, like `names/index` and `names/list` for example, with their respective source code files: `names/index.sn` and `names/list.sn` - but we will see this special case later.
+
+To finish, it gives the _dependencies_ of this package, and ends by giving the filename of the package's main file. For now, don't worry about the file's content, we'll see it in details later.
 
 #### The package source code
 
-Now we've written our package file, we can write the package's source, which will be written in `index.sn` as specified in the package file. Here is an example:
+Now we've written our package file, we can write the package's source, which will be written in `names.sn` as specified in the package file. Here is an example:
 
 ```sn
-#[package];
+#[module];
 
 let name: string;
 
@@ -5432,7 +5436,7 @@ func readName () -> string {
 export { defineName, readName };
 ```
 
-First, the `#[package]` directive tells this is the main file of the package. It defines a `name` variable, with two functions, one to set it, one to read it. Note that directives with a name between braces are called _head directives_, they describe a whole file and so must be placed at its head ; it wouldn't work if we placed it below the declaration of `name`, for example.
+First, the `#[module]` directive tells this is a module of the package. It defines a `name` variable, with two functions, one to set it, one to read it. Note that directives with a name between braces are called _head directives_, they describe a whole file and so must be placed at its head ; it wouldn't work if we placed it below the declaration of `name`, for example.
 
 _Tip :_ Because `(c => c)` is a constraint callback, it must return a boolean. Strings does implement the `%toBoolean` overload, which returns `false` if they are empty, and `true` else. So this constraint simply ensures the string is not empty.
 
@@ -5442,7 +5446,7 @@ Because a package's source code can (and will often) be heavy, we can use the `#
 
 ```sn
 // File: "index.sn"
-#[package];
+#[module];
 
 #include "functions.sn";
 
@@ -5469,7 +5473,7 @@ To manage better our packages, we can also include files using an alias:
 
 ```sn
 // File: "index.sn"
-#[package];
+#[module];
 
 #include "functions.sn" as Functions;
 
@@ -5488,14 +5492,14 @@ To import a package, we must use the `import` keyword followed by the package's 
 
 ```sn
 // Import the package
-import name_manager as manager;
+import name_manager;
 
 // Use its exported entities
-manager.defineName("John");
-println!(manager.readName()); // Prints: "John"
+name_manager::names.defineName("John");
+println!(name_manager::names.readName()); // Prints: "John"
 
 // Try to access an entity not exported by the package
-println!(manager.name); // ERROR because `name` hasn't been exported
+println!(name_manager::names.name); // ERROR because `name` hasn't been exported
 ```
 
 This is as simple as that. Also, because this name could be a little heavy, we can make an alias:
@@ -5504,31 +5508,32 @@ This is as simple as that. Also, because this name could be a little heavy, we c
 // Import the package
 import name_manager as manager;
 
-manager.defineName("John");
-println!(manager.readName()); // Prints: "John"
+manager::names.defineName("John");
+println!(manager::names.readName()); // Prints: "John"
 ```
 
 Note that `name_manager`'s content is strictly equivalent to the value exported by the package. Our one exported an object with two attributes referring to its functions, but it could have only exported a single function for example, so we would have been able to call `manager` as a function.
 
-Note that it's also possible to import a package without an alias, like this:
+We can also use an alias to get only a module:
 
 ```sn
 // Import the package
-import name_manager;
+import name_manager::names as names;
 
-// Because the "-" symbol cannot be part of a name, it is replaced by "_"
-name_manager.defineName("John");
-println!(name_manager.readName()); // Prints: "John"
+names.defineName("John");
+println!(names::readName()); // Prints: "John"
 ```
 
-It's even possible to import several packages at once:
+Here, we only import the `names` module and alias it as `names`, so we don't have to write `name_manager::names` each time. Therefore, we still have a `name_manager` object available in our example, because we imported a part of the `name_manager` package anyway. But thanks to the alias, we don't have to write `name_manager::names` anymore.
+
+Note that it's also possible to import several packages at once:
 
 ```sn
 // Import the packages
-import name_manager, another-package;
+import name_manager, another_package;
 
-name_manager.defineName("John");
-println!(name_manager.readName()); // Prints: "John"
+name_manager::names.defineName("John");
+println!(name_manager::names.readName()); // Prints: "John"
 ```
 
 Note that all SilverNight programs transparently import the `native` package that provides all the native stuff like `println!` or `int32` and link them to global entities (meaning we don't have to write `native.int32` for example).
@@ -5538,7 +5543,7 @@ Note that all SilverNight programs transparently import the `native` package tha
 The `import!` macro allows to import a package as an object, so we can use it as we want. Here is an example:
 
 ```sn
-val manager = import!(name_manager);
+val manager = import!(name_manager::names);
 
 manager.defineName("John");
 println!(manager.readName()); // Prints: "John"
@@ -5557,13 +5562,109 @@ It's also possible to import a sub-entity from a package. For example, the `fron
 
 ```sn
 // Import only the sub-entity
-import frontend.console;
+import frontend::console;
 
 // Use it
 console.println("Hello world!");
 ```
 
-Note that there is no `frontend` object available in our example, simply because we didn't import _frontend_ but _frontend.console_ (which means _console_ from _frontend_). This avoid having to use `frontend.console` each time we want to use `console`.
+This avoid having to use `frontend.console` each time we want to use `console`.
+
+### Sub-modules hierarchy
+
+Sub-modules are modules themselves written inside modules (called their _parent_). When we import the parent module, it also imports all its sub-modules (called its _children_). To illustrate the concept, let's imagine we have package called `universe`, which has two modules: `planets` and `life`. `planets` has two sub-modules: `earth` and `others`, while `life` has `animals`, `insects` and `humans`. Here is our package file:
+
+```toml
+[package]
+name = "name_manager"
+version = "0.1.0"
+authors = [ "Your Name <you@example.com>" ]
+license = "MIT"
+modules = [
+  "universe/planets/earth",
+  "universe/planets/others,
+  "universe/life/animals",
+  "universe/life/insects",
+  "universe/life/humans"
+]
+
+[dependencies]
+```
+
+Now, here is the structure of our folder:
+
+```plain
+universe/
+|
+├── package.toml
+├── planets/
+|   ├── earth.sn
+|   └── others.sn
+├── life/
+|   ├── animals.sn
+|   ├── insects.sn
+|   └── humans.sn
+```
+
+Let's write these files:
+
+```sn
+// _packages/universe/planets/earth.sn:
+#[module];
+
+export { type: "planet", isEarth: true};
+
+// _packages/universe/planets/others.sn:
+#[module];
+
+export { type: "planet", isEarth: false };
+
+// _packages/universe/life/animals.sn:
+#[module];
+
+export { type: "animal", isInsect: false };
+
+// _packages/universe/life/insects.sn:
+#[module];
+
+export { type: "insect", isInsect: true };
+
+// _packages/universe/life/humans.sn:
+#[module];
+
+export { type: "human", isInsect: false };
+```
+
+Here is our test file:
+
+```sn
+// main.sn:
+
+// => Import a sub-module
+import universe::planets;
+// Same as doing:
+// > import universe::planets::earth;
+// > import universe::planets::others;
+
+// Test:
+println!(universe::planets::earth::isEarth); // Prints: "true"
+println!(universe::planets::others::isEarth); // Prints: "false"
+
+// => Import a sub-module with an alias
+import universe::life as life;
+// Same as doing:
+// > import universe::life::animals;
+// > import universe::life::insects;
+// > import universe::life::humans;
+// With an alias
+
+// Test:
+println!(universe::life::animals::isInsect); // Prints: "false"
+println!(universe::life::insects::isInsect); // Prints: "true"
+println!(universe::life::humans::isInsect); // Prints: "false"
+```
+
+As you can see, importing a module automatically imports all its children. We can even do sub-sub-modules, and importing their parent (a sub-module) will import them all automatically.
 
 ### The package manager
 
