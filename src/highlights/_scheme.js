@@ -439,11 +439,57 @@ scheme = {
           /\b(import!)\s*\((?:\s*([a-zA-Z_][a-zA-Z0-9_]*(?:(::)[a-zA-Z_][a-zA-Z0-9_]*)*)\s*[\)]?)?/,
           'purple', 'green', 'cyan'
         ],
-        [
-          // IMPORT statement
-          /\b(scope\s+)?(import)\s+([a-zA-Z_][a-zA-Z0-9_]*(?:(::)[a-zA-Z_][a-zA-Z0-9_]*)*)((?:\s*,\s*[a-zA-Z_][a-zA-Z0-9_\$\-]*(?:(::)[a-zA-Z_][a-zA-Z0-9_\$\-]*)*)*)\b/,
-          'purple', 'purple', 'green', 'cyan', 'green', 'cyan'
-        ],
+        {
+          // Instanciation
+          begin: /\b(scope\s+)?(import)\s+\b/,
+          beginCaptures: {
+            '1': {
+              name: '${purple}'
+            },
+            '2': {
+              name: '${purple}'
+            }
+          },
+          patterns: [
+            {
+              match: /([a-z_][a-zA-Z0-9_\$]*)(?=::)/,
+              captures: {
+                '1': {
+                  name: '${green}'
+                }
+              }
+            },
+            {
+              match: /(::)([a-z_][a-zA-Z0-9_\$]*)/,
+              captures: {
+                '1': {
+                  name: '${cyan}'
+                },
+                '2': {
+                  name: '${green}'
+                }
+              }
+            },
+            {
+              match: /([a-z_][a-zA-Z0-9_\$]*)(?=\s*[,;]|\s*from)/,
+              captures: {
+                '1': {
+                  name: '${green}'
+                }
+              }
+            },
+            {
+              match: /\s*(,)\s*/,
+              captures: {
+                '1': {
+                  name: '${cyan}'
+                }
+              }
+            }
+          ],
+          end: /\s*(?=;|from)/,
+          endCaptures: {}
+        },
         [
           // Usage of a package/module
           /\b([a-z_][a-zA-Z0-9_]*)(::)\b/,
