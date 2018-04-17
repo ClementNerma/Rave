@@ -317,13 +317,8 @@ scheme = {
         ],
         [
           // Macro declaration
-          /\b(macro)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*\s*\!)/,
+          /\b(macro)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*\s*)/,
           'purple', 'orange'
-        ],
-        [
-          // Invalid declaration
-          /\b(macro)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?!\s*\!)/,
-          'purple', 'invalid'
         ],
         [
           // Function declaration
