@@ -5169,6 +5169,8 @@ let ptr: &mut = &mut i;
 ptr = NULL;
 *ptr = 3; // ERROR because the pointer refers to `null`
 
+*ptr; // ERROR because pointer has no valid target
+
 ptr = &mut i; // Works fine
 *ptr = 2; // Works fine
 
