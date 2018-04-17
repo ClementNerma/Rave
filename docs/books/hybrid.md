@@ -2245,7 +2245,16 @@ class SomeClass {
 }
 ```
 
-This will do the same thing as the previous syntax, excepted we won't access the attribute with `instance.getMyAttribute()` from the outside, but simply with `instance.myAttribute`.
+Now we will access `myAttribute` using `instance.myAttribute` instead of `instance.getMyAttribute()`, which is lighter and avoids from calling a function at runtime. Also, readonly attributes are considered as constants from the outside. Here is an example:
+
+```sn
+class SomeClass {
+  public readonly attr = { sub: 1 };
+}
+
+let instance = new SomeClass();
+instance.attr.sub = 2; // ERROR
+```
 
 ### Static members
 
