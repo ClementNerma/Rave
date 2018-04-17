@@ -438,7 +438,7 @@ scheme = {
         ],
         [
           // Usage of a package/module
-          /\b([a-zA-Z_][a-zA-Z0-9_]*)(::)\b/,
+          /\b([a-z_][a-zA-Z0-9_]*)(::)\b/,
           'green', 'cyan'
         ],
         [
