@@ -2079,6 +2079,8 @@ jack.fight(john); // Prints: "Jack is going to fight John!"
                   //         "Jack is attacked by John and loses 70 HP!"
 ```
 
+Conventionally, name of classes must start with an uppercase letter (A to Z), while classes starting with a lowercase letter are the native types (`void`, `string`, `int`...).
+
 ### Members accessibility
 
 We just saw two _accessor_ keywords for a class' members: `public` and `private`. Public members are public, so anyone can access them, even from the outside of the class. This mean we can do this:
