@@ -4462,7 +4462,7 @@ struct Data {
 val someData: Data? = null;
 
 // Get the hero object
-val dataHero = data?.hero; // dataHero == null
+val dataHero = someData?.hero; // dataHero == null
 
 // Prints the hero's name
 println!(dataHero?.name); // Prints: "" (== string(null))
