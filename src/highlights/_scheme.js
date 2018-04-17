@@ -309,6 +309,11 @@ scheme = {
           'purple'
         ],
         [
+          // Macro declaration
+          /\b(macro)\s+(func)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)\s*(\!)/,
+          'purple', 'purple', 'cyan', 'orange'
+        ],
+        [
           // Function declaration
           /\b(func|lambda)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)\b/,
           'purple', 'blue'
