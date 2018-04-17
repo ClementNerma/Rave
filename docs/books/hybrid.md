@@ -3754,6 +3754,8 @@ for key -> value in myArray {
 
 In fact, asking a dictionary for its keys or values will call its `%keys()` or `%values()` overload. These ones return an `Iterator<T>`, remember? Well, an iterator is simply an object with a `next()` function that returns a new value, until it goes out of data. Number ranges use them: `0...10` for example is automatically converted to `(new RangeIterator<uint>(0, 10))`.
 
+So, when we try to iterate an entity using a single iterator variable (like `value`), the `for` loop will require an `Iterator<T>` or a `Dictionary<K, V>` it will iterate using its `%keys` overload. But, when we try to iterate an entity using two iterator variables (like `key` **and** `value`), it will require a `Dictionary<K, V>` and iterate it using `%keys` for the keys and `myArray[key]` for the values.
+
 #### The case of vectors
 
 This is very simple: a `Vector<T>` (`Array` or `List`) is a `<K is int, T>` dictionary (with different members, though). That's as simple as that.
