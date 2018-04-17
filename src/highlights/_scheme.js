@@ -335,29 +335,6 @@ scheme = {
           /\b([a-zA-Z_][a-zA-Z0-9_\$]*)(?=\s*<.*>\s*\()/,
           'blue'
         ],
-        {
-          // Template usage
-          begin: /\b([a-zA-Z_][a-zA-Z0-9_\$]*)(\s*<)/,
-          beginCaptures: {
-            '1': {
-              name: '${yellow}'
-            },
-            '2': {
-              name: '${cyan}'
-            }
-          },
-          end: /(>)/,
-          endCaptures: {
-            '1': {
-              name: '${cyan}'
-            }
-          },
-          patterns: [
-            {
-              include: '#global'
-            }
-          ]
-        },
         [
           // Arrow function
           /(=>)/,
