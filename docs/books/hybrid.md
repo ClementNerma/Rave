@@ -6142,3 +6142,30 @@ unsafe func sum<T extends Number> (iterator: Iterator<T>) -> T {
   return summation;
 }
 ```
+
+### Files
+
+Files can be documented as well, using three indicators: `@file`, which indicates what the file contains and does, `@author` which describes its author(s), and `@license` which gives informations about the license the file uses. Here is how it does:
+
+```sn
+/**
+ * @file Provides a summation function
+ * @author Your Name
+ * @license MIT
+ */
+
+/**
+ * Make a summation from a list of numbers
+ * @param numbers A list of numbers
+ * @returns The summation
+ */
+func sum (...numbers: int) -> int {
+  let summation = 0;
+
+  for num in numbers {
+    summation += num;
+  }
+
+  return summation;
+}
+```
