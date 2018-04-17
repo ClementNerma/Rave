@@ -3984,7 +3984,7 @@ val result = inc(int(nothing)); // Returns: 1
 
 This works only because both `null` implements `%toInteger()` (which returns `0`).
 
-### Forced typecasting
+### Nullables automatic typecasting
 
 There's two macros available to turn a nullable value into a standard value, which is `strict!`, and another to turn a standard value into a nullable value, which is `nullable!`. Here is how they go:
 
