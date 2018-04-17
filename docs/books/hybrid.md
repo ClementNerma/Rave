@@ -5216,394 +5216,6 @@ println!(summation(
 
 As we can see here, the callback's argument required in the `summation`'s signature must be placed at the very beginning of the callback's arguments. We couldn't have written `lambda (coeff: int, num: int) -> int` for example.
 
-## Packages
-
-In SilverNight, packages are formed by a _package file_ and one or more _modules file_. It located in a specific folder, with a `package.toml` as the package file, and `*.sn` files as its modules' source code - though their can be additional source files.
-
-### Creating a package
-
-First, create a new folder (with any name you want). Inside of it, create a `main.sn` file and open it in your favorite code editor: this will be our program's main file. Now, create a `_packages` folder, and inside it a `test_package` folder. Create a `package.toml` file and an `names.sn` file, open them in the same code editor.
-
-`main.sn` will be our main program, which will be ran. The two other files will constitute the _package_ we will use.
-
-#### The package file
-
-First, let's make our package file. It's a TOML ([Tom's Obvious Language](https://github.com/toml-lang/toml)) file we will fill as follows:
-
-```toml
-[package]
-name = "name_manager"
-version = "0.1.0"
-authors = [ "Your Name <you@example.com>" ]
-license = "MIT"
-modules = [ "names" ]
-
-[dependencies]
-```
-
-This tells that our package's name is `name_manager` (so it will be located in a `name_manager` directory when downloaded from the package manager - we'll see that soon) and gives informations about its version (which is very important as we'll see soon) and the array of authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now).
-
-Next, it gives the list of the package's _modules_. Each module is a part of a package and is represented by a single file. In our case, because we have a `names` module, the program will look for a `names.sn` file. We could also use sub-modules, like `names/index` and `names/list` for example, with their respective source code files: `names/index.sn` and `names/list.sn` - but we will see this special case later.
-
-To finish, it gives the _dependencies_ of this package, and ends by giving the filename of the package's main file. For now, don't worry about the file's content, we'll see it in details later.
-
-#### The package source code
-
-Now we've written our package file, we can write the package's source, which will be written in `names.sn` as specified in the package file. Here is an example:
-
-```sn
-#[module];
-
-let name: string;
-
-func defineName (newName: string with (c => c)) {
-  name = newName;
-}
-
-func readName () -> string {
-  if (name)
-    return name;
-  else
-    throw new Error("Name is not defined.");
-}
-
-export { defineName, readName };
-```
-
-First, the `#[module]` directive tells this is a module of the package. It defines a `name` variable, with two functions, one to set it, one to read it. Note that directives with a name between braces are called _head directives_, they describe a whole file and so must be placed at its head ; it wouldn't work if we placed it below the declaration of `name`, for example.
-
-_Tip :_ Because `(c => c)` is a constraint callback, it must return a boolean. Strings does implement the `%toBoolean` overload, which returns `false` if they are empty, and `true` else. So this constraint simply ensures the string is not empty.
-
-The last line of the file **exports** some entities. This simply creates an object that will be available from the outside of the package, so `name` won't be available from the outside.
-
-Note that we can also write `export *;` to export **everything** from the module. This is only if the module doesn't contain any private data.
-
-Because a package's source code can (and will often) be heavy, we can use the `#include` directive to import a file's content at its position. Here is an example:
-
-```sn
-// File: "index.sn"
-#[module];
-
-#include "functions.sn";
-
-let name: string;
-
-export { defineName, readName };
-
-// File: "functions.sn"
-func defineName (newName: string with (c => c)) {
-  name = newName;
-}
-
-func readName () -> string {
-  if (name)
-    return name;
-  else
-    throw new Error("Name is not defined.");
-}
-```
-
-Here, the content of `functions.sn` will be imported as it is right where the `#include` directive is. This way, we can split our source code into several files.
-
-To manage better our packages, we can also include files using an alias:
-
-```sn
-// File: "index.sn"
-#[module];
-
-#include "functions.sn" as Functions;
-
-let name: string;
-
-export Functions;
-```
-
-Here, `Functions` is a structure that contains all resources defined in `functions.sn`.
-
-_Tip :_ The `#include` directive can be used everywhere, even outside a package. Think to it to structure your code!
-
-### Importing a package
-
-To import a package, we must use the `import` keyword followed by the package's _name_ (not its slug). So here is our `main.sn` file:
-
-```sn
-// Import the package
-import name_manager;
-
-// Use its exported entities
-name_manager::names.defineName("John");
-println!(name_manager::names.readName()); // Prints: "John"
-
-// Try to access an entity not exported by the package
-println!(name_manager::names.name); // ERROR because `name` hasn't been exported
-```
-
-This is as simple as that. Also, because this name could be a little heavy, we can make an alias:
-
-```sn
-// Import the package
-import name_manager as manager;
-
-manager::names.defineName("John");
-println!(manager::names.readName()); // Prints: "John"
-```
-
-Note that `name_manager`'s content is strictly equivalent to the value exported by the package. Our one exported an object with two attributes referring to its functions, but it could have only exported a single function for example, so we would have been able to call `manager` as a function.
-
-We can also use an alias to get only a module:
-
-```sn
-// Import the package
-import name_manager::names as names;
-
-names.defineName("John");
-println!(names::readName()); // Prints: "John"
-```
-
-Here, we only import the `names` module and alias it as `names`, so we don't have to write `name_manager::names` each time. Therefore, we still have a `name_manager` object available in our example, because we imported a part of the `name_manager` package anyway. But thanks to the alias, we don't have to write `name_manager::names` anymore.
-
-Another, equivalent, syntax:
-
-```sn
-// This...
-import name_manager::names as names;
-// is *strictly* equivalent to:
-import names from name_manager;
-```
-
-Note that it's also possible to import several packages at once:
-
-```sn
-// Import the packages
-import name_manager, another_package;
-
-name_manager::names.defineName("John");
-println!(name_manager::names.readName()); // Prints: "John"
-```
-
-A last version of import is the _scope_ import:
-
-```sn
-scope import name_manager;
-
-names.defineName("John");
-println!(names.readName()); // Prints: "John"
-```
-
-As you can see, scope imports act like standard imports but also _alias_ all entity names to link them to the package's/module's ones in the _current scope_. So, we can access without writing the package's name all its entities from the current scope - this way, it prevents polluating the global scope. Be aware though to not overwrite some existing entities, this will result in an error, like declaring two constants of the same name. Also, because multiple packages could have entities with the same name, it's discouraged to import several packages in a given scope.
-
-Note the builder transparently adds the following line to all programs (at their beginning, so it's located in the global scope):
-
-```sn
-scope import frontend::native;
-```
-
-This imports the`frontend::native` module that provides all the native stuff like `string` or `Array` and link them to global entities (meaning we don't have to write `frontend::native::int32` for example).
-
-#### The `import!` macro
-
-The `import!` macro allows to import a package as an object, so we can use it as we want. Here is an example:
-
-```sn
-val manager = import!(name_manager::names);
-
-manager.defineName("John");
-println!(manager.readName()); // Prints: "John"
-```
-
-Also, the macro will never the package several times, so we can write:
-
-```sn
-import!(name_manager).defineName("John");
-println!(import!(name_manager).readName()); // Prints: "John"
-```
-
-This will work as expected. A good point about this macro is that the package isn't imported multiple times ; once you imported it, either with `import` or `import!`, it will just retrieve the imported data.
-
-Note that we can also import several items from a package, like this:
-
-```sn
-// This...
-import frontend::console;
-import frontend::filesystem;
-// is *strictly* equivalent to:
-import console, filesystem from frontend;
-```
-
-### Sub-modules hierarchy
-
-Sub-modules are modules themselves written inside modules (called their _parent_). When we import the parent module, it also imports all its sub-modules (called its _children_). To illustrate the concept, let's imagine we have package called `universe`, which has two modules: `planets` and `life`. `planets` has two sub-modules: `earth` and `others`, while `life` has `animals`, `insects` and `humans`. Here is our package file:
-
-```toml
-[package]
-name = "name_manager"
-version = "0.1.0"
-authors = [ "Your Name <you@example.com>" ]
-license = "MIT"
-modules = [
-  "universe/planets/earth",
-  "universe/planets/others",
-  "universe/life/animals",
-  "universe/life/insects",
-  "universe/life/humans"
-]
-
-[dependencies]
-```
-
-Now, here is the structure of our folder:
-
-```plain
-universe/
-|
-├── package.toml
-├── planets/
-|   ├── earth.sn
-|   └── others.sn
-├── life/
-|   ├── animals.sn
-|   ├── insects.sn
-|   └── humans.sn
-```
-
-Let's write these files:
-
-```sn
-// _packages/universe/planets/earth.sn:
-#[module];
-
-export { type: "planet", isEarth: true};
-
-// _packages/universe/planets/others.sn:
-#[module];
-
-export { type: "planet", isEarth: false };
-
-// _packages/universe/life/animals.sn:
-#[module];
-
-export { type: "animal", isInsect: false };
-
-// _packages/universe/life/insects.sn:
-#[module];
-
-export { type: "insect", isInsect: true };
-
-// _packages/universe/life/humans.sn:
-#[module];
-
-export { type: "human", isInsect: false };
-```
-
-Here is our test file:
-
-```sn
-// main.sn:
-
-// => Import a sub-module
-import universe::planets;
-// Same as doing:
-// > import universe::planets::earth;
-// > import universe::planets::others;
-
-// Test:
-println!(universe::planets::earth::isEarth); // Prints: "true"
-println!(universe::planets::others::isEarth); // Prints: "false"
-
-// => Import a sub-module with an alias
-import universe::life as life;
-// Same as doing:
-// > import universe::life::animals;
-// > import universe::life::insects;
-// > import universe::life::humans;
-// With an alias
-
-// Test:
-println!(universe::life::animals::isInsect); // Prints: "false"
-println!(universe::life::insects::isInsect); // Prints: "true"
-println!(universe::life::humans::isInsect); // Prints: "false"
-```
-
-As you can see, importing a module automatically imports all its children. We can even do sub-sub-modules, and importing their parent (a sub-module) will import them all automatically.
-
-### The package manager
-
-When you installed the toolchain at the beginning of this book, it came with the package manager in it, because it's part of the toolchain.
-
-This tool aims to provide a way to simply manage the packages used by our program, so we can in a single line download and install a new package from the official repository, update and remove the installed packages, etc.
-
-#### Installing a new package
-
-To install a new package, simply a terminal, go into our project's folder, and run the following command:
-
-```bash
-snt add hello-world
-```
-
-This will download the package which has the `hello-world` slug in the official repository, then install it into the `_packages/hello-world` folder, so we can use it in our programs. We can of course replace `hello-world` by any other package name.
-
-#### Removing a package
-
-To remove a package that is locally installed, simply write:
-
-```bash
-snt remove hello-world
-```
-
-#### Update a package
-
-To update a single package installed locally, do:
-
-```bash
-snt update hello-world
-```
-
-We can also update all packages at once, by doing:
-
-```bash
-snt upgrade
-```
-
-#### Dependencies
-
-Remember the `dependencies` block we saw in our package file sooner? It simply described the packages _required_ by our program in order to make it work. It's an array of `package = "expected_version"` lines. Here is how it could look like:
-
-```toml
-[dependencies]
-hello-world = "^1.0.0"
-```
-
-The dependency we put here indicates we accept all versions compatible with the `1.0.0` version, which means every `1.x.y` version. It is based on the following semantic versioning:
-
-* A patch release, which only fixes some bugs in the package, increments once the third digit of the version ;
-* A minor release, which grants new features without breaking backward compatibility, increments once the second digit of the version ;
-* A major release, which grants new features and breaks some of the backward compatibility, increments once the first digit of the version
-
-We can use the following version names in the `dependencies` section of the package file:
-
-* `=1.0.0` or `1.0.0`: accepts only the specific `1.0.0` version (rarely used) ;
-* `~1.0.0` or `1.0.x` or `1.0`: accepts any `1.0.x` version (patch releases) ;
-* `^1.0.0` or `1.x` or `1`: accepts any `1.x.y` version (patch and minor releases) ;
-* `latest` or `*`: accepts any version
-
-When downloading a package, the package manager will get the latest version accepted by the version we gave in our package file. For instance, if a package releases `1.0.5` and `1.1.0` versions, and as a dependency we specify the `~1.0.5` version, it will download the `1.1.0` version instead.
-
-This is why we told previously that version numbers were so important: our package file declares the slug, name, license etc. but also the version of our package, meaning that if we publish it, the programs from other developers that will depend on it will expect us from respecting this semantic versioning. Be aware of this!
-
-### Project as a package
-
-Did you know that any project we make could be considered as a package? For that, all we have to do is to create the package file `package.toml` in our project's root folder, and so we can manage its dependencies. When you need some package, simply use `snt add <package_name>` and so on.
-
-When someone will get your project, we maybe won't want to transfer all the packages we use (some can be very heavy), especially if publishing on a public repository or something. So, we can simply release the project folder, without the `_packages` directory, and any person wanting to run the project will simply have to run `snt install` inside the project's root folder to download all its dependencies.
-
-### The lockfile
-
-When a package is downloaded, updated or removed by the package manager, it edits a little file called `packages_lock.toml` inside the project's root folder. This file specifies the exact version of all the modules we use. What's the point?
-
-Let's admit we are using version `1.0.1` of a module that treats web requests. We accept any `1.x` version, and we send the source code to a person using the project. She run `snt install` in the folder and, surprise, there is a new version called `1.1.0` that was released a few hours before. That's not a bad deal, you'll say, after all we accepted minor changes. But, let's imagine the person who made the package didn't followed the semantic versioning convention, or that a bug appeared in the package, making it unable to work properly? The person using our source code will not be able to test it and will think it's buggy because of a not-working package.
-
-That's where the lockfile comes: it stores the exact version of every package downloaded from the package manager, plus some other little informations. Because it's an important file that aims to provide a way to test and run our project at the exact same state than its original developer, the lockfile is not placed under `_packages` but in the project's root folder, so we won't forget to send it to the persons who use it.
-
 ## Asynchronous behaviour
 
 Sometimes we can't foretell when an even will occur. For example, if we are making a web server, we can't predict the incoming connections. But we still have to handle these events, and in order to do that we use _asynchronous_.
@@ -5995,3 +5607,391 @@ func sum (...numbers: int) -> int {
   return summation;
 }
 ```
+
+## Packages
+
+In SilverNight, packages are formed by a _package file_ and one or more _modules file_. It located in a specific folder, with a `package.toml` as the package file, and `*.sn` files as its modules' source code - though their can be additional source files.
+
+### Creating a package
+
+First, create a new folder (with any name you want). Inside of it, create a `main.sn` file and open it in your favorite code editor: this will be our program's main file. Now, create a `_packages` folder, and inside it a `test_package` folder. Create a `package.toml` file and an `names.sn` file, open them in the same code editor.
+
+`main.sn` will be our main program, which will be ran. The two other files will constitute the _package_ we will use.
+
+#### The package file
+
+First, let's make our package file. It's a TOML ([Tom's Obvious Language](https://github.com/toml-lang/toml)) file we will fill as follows:
+
+```toml
+[package]
+name = "name_manager"
+version = "0.1.0"
+authors = [ "Your Name <you@example.com>" ]
+license = "MIT"
+modules = [ "names" ]
+
+[dependencies]
+```
+
+This tells that our package's name is `name_manager` (so it will be located in a `name_manager` directory when downloaded from the package manager - we'll see that soon) and gives informations about its version (which is very important as we'll see soon) and the array of authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now).
+
+Next, it gives the list of the package's _modules_. Each module is a part of a package and is represented by a single file. In our case, because we have a `names` module, the program will look for a `names.sn` file. We could also use sub-modules, like `names/index` and `names/list` for example, with their respective source code files: `names/index.sn` and `names/list.sn` - but we will see this special case later.
+
+To finish, it gives the _dependencies_ of this package, and ends by giving the filename of the package's main file. For now, don't worry about the file's content, we'll see it in details later.
+
+#### The package source code
+
+Now we've written our package file, we can write the package's source, which will be written in `names.sn` as specified in the package file. Here is an example:
+
+```sn
+#[module];
+
+let name: string;
+
+func defineName (newName: string with (c => c)) {
+  name = newName;
+}
+
+func readName () -> string {
+  if (name)
+    return name;
+  else
+    throw new Error("Name is not defined.");
+}
+
+export { defineName, readName };
+```
+
+First, the `#[module]` directive tells this is a module of the package. It defines a `name` variable, with two functions, one to set it, one to read it. Note that directives with a name between braces are called _head directives_, they describe a whole file and so must be placed at its head ; it wouldn't work if we placed it below the declaration of `name`, for example.
+
+_Tip :_ Because `(c => c)` is a constraint callback, it must return a boolean. Strings does implement the `%toBoolean` overload, which returns `false` if they are empty, and `true` else. So this constraint simply ensures the string is not empty.
+
+The last line of the file **exports** some entities. This simply creates an object that will be available from the outside of the package, so `name` won't be available from the outside.
+
+Note that we can also write `export *;` to export **everything** from the module. This is only if the module doesn't contain any private data.
+
+Because a package's source code can (and will often) be heavy, we can use the `#include` directive to import a file's content at its position. Here is an example:
+
+```sn
+// File: "index.sn"
+#[module];
+
+#include "functions.sn";
+
+let name: string;
+
+export { defineName, readName };
+
+// File: "functions.sn"
+func defineName (newName: string with (c => c)) {
+  name = newName;
+}
+
+func readName () -> string {
+  if (name)
+    return name;
+  else
+    throw new Error("Name is not defined.");
+}
+```
+
+Here, the content of `functions.sn` will be imported as it is right where the `#include` directive is. This way, we can split our source code into several files.
+
+To manage better our packages, we can also include files using an alias:
+
+```sn
+// File: "index.sn"
+#[module];
+
+#include "functions.sn" as Functions;
+
+let name: string;
+
+export Functions;
+```
+
+Here, `Functions` is a structure that contains all resources defined in `functions.sn`.
+
+_Tip :_ The `#include` directive can be used everywhere, even outside a package. Think to it to structure your code!
+
+### Importing a package
+
+To import a package, we must use the `import` keyword followed by the package's _name_ (not its slug). So here is our `main.sn` file:
+
+```sn
+// Import the package
+import name_manager;
+
+// Use its exported entities
+name_manager::names.defineName("John");
+println!(name_manager::names.readName()); // Prints: "John"
+
+// Try to access an entity not exported by the package
+println!(name_manager::names.name); // ERROR because `name` hasn't been exported
+```
+
+This is as simple as that. Also, because this name could be a little heavy, we can make an alias:
+
+```sn
+// Import the package
+import name_manager as manager;
+
+manager::names.defineName("John");
+println!(manager::names.readName()); // Prints: "John"
+```
+
+Note that `name_manager`'s content is strictly equivalent to the value exported by the package. Our one exported an object with two attributes referring to its functions, but it could have only exported a single function for example, so we would have been able to call `manager` as a function.
+
+We can also use an alias to get only a module:
+
+```sn
+// Import the package
+import name_manager::names as names;
+
+names.defineName("John");
+println!(names::readName()); // Prints: "John"
+```
+
+Here, we only import the `names` module and alias it as `names`, so we don't have to write `name_manager::names` each time. Therefore, we still have a `name_manager` object available in our example, because we imported a part of the `name_manager` package anyway. But thanks to the alias, we don't have to write `name_manager::names` anymore.
+
+Another, equivalent, syntax:
+
+```sn
+// This...
+import name_manager::names as names;
+// is *strictly* equivalent to:
+import names from name_manager;
+```
+
+Note that it's also possible to import several packages at once:
+
+```sn
+// Import the packages
+import name_manager, another_package;
+
+name_manager::names.defineName("John");
+println!(name_manager::names.readName()); // Prints: "John"
+```
+
+A last version of import is the _scope_ import:
+
+```sn
+scope import name_manager;
+
+names.defineName("John");
+println!(names.readName()); // Prints: "John"
+```
+
+As you can see, scope imports act like standard imports but also _alias_ all entity names to link them to the package's/module's ones in the _current scope_. So, we can access without writing the package's name all its entities from the current scope - this way, it prevents polluating the global scope. Be aware though to not overwrite some existing entities, this will result in an error, like declaring two constants of the same name. Also, because multiple packages could have entities with the same name, it's discouraged to import several packages in a given scope.
+
+Note the builder transparently adds the following line to all programs (at their beginning, so it's located in the global scope):
+
+```sn
+scope import frontend::native;
+```
+
+This imports the`frontend::native` module that provides all the native stuff like `string` or `Array` and link them to global entities (meaning we don't have to write `frontend::native::int32` for example).
+
+#### The `import!` macro
+
+The `import!` macro allows to import a package as an object, so we can use it as we want. Here is an example:
+
+```sn
+val manager = import!(name_manager::names);
+
+manager.defineName("John");
+println!(manager.readName()); // Prints: "John"
+```
+
+Also, the macro will never the package several times, so we can write:
+
+```sn
+import!(name_manager).defineName("John");
+println!(import!(name_manager).readName()); // Prints: "John"
+```
+
+This will work as expected. A good point about this macro is that the package isn't imported multiple times ; once you imported it, either with `import` or `import!`, it will just retrieve the imported data.
+
+Note that we can also import several items from a package, like this:
+
+```sn
+// This...
+import frontend::console;
+import frontend::filesystem;
+// is *strictly* equivalent to:
+import console, filesystem from frontend;
+```
+
+### Sub-modules hierarchy
+
+Sub-modules are modules themselves written inside modules (called their _parent_). When we import the parent module, it also imports all its sub-modules (called its _children_). To illustrate the concept, let's imagine we have package called `universe`, which has two modules: `planets` and `life`. `planets` has two sub-modules: `earth` and `others`, while `life` has `animals`, `insects` and `humans`. Here is our package file:
+
+```toml
+[package]
+name = "name_manager"
+version = "0.1.0"
+authors = [ "Your Name <you@example.com>" ]
+license = "MIT"
+modules = [
+  "universe/planets/earth",
+  "universe/planets/others",
+  "universe/life/animals",
+  "universe/life/insects",
+  "universe/life/humans"
+]
+
+[dependencies]
+```
+
+Now, here is the structure of our folder:
+
+```plain
+universe/
+|
+├── package.toml
+├── planets/
+|   ├── earth.sn
+|   └── others.sn
+├── life/
+|   ├── animals.sn
+|   ├── insects.sn
+|   └── humans.sn
+```
+
+Let's write these files:
+
+```sn
+// _packages/universe/planets/earth.sn:
+#[module];
+
+export { type: "planet", isEarth: true};
+
+// _packages/universe/planets/others.sn:
+#[module];
+
+export { type: "planet", isEarth: false };
+
+// _packages/universe/life/animals.sn:
+#[module];
+
+export { type: "animal", isInsect: false };
+
+// _packages/universe/life/insects.sn:
+#[module];
+
+export { type: "insect", isInsect: true };
+
+// _packages/universe/life/humans.sn:
+#[module];
+
+export { type: "human", isInsect: false };
+```
+
+Here is our test file:
+
+```sn
+// main.sn:
+
+// => Import a sub-module
+import universe::planets;
+// Same as doing:
+// > import universe::planets::earth;
+// > import universe::planets::others;
+
+// Test:
+println!(universe::planets::earth::isEarth); // Prints: "true"
+println!(universe::planets::others::isEarth); // Prints: "false"
+
+// => Import a sub-module with an alias
+import universe::life as life;
+// Same as doing:
+// > import universe::life::animals;
+// > import universe::life::insects;
+// > import universe::life::humans;
+// With an alias
+
+// Test:
+println!(universe::life::animals::isInsect); // Prints: "false"
+println!(universe::life::insects::isInsect); // Prints: "true"
+println!(universe::life::humans::isInsect); // Prints: "false"
+```
+
+As you can see, importing a module automatically imports all its children. We can even do sub-sub-modules, and importing their parent (a sub-module) will import them all automatically.
+
+### The package manager
+
+When you installed the toolchain at the beginning of this book, it came with the package manager in it, because it's part of the toolchain.
+
+This tool aims to provide a way to simply manage the packages used by our program, so we can in a single line download and install a new package from the official repository, update and remove the installed packages, etc.
+
+#### Installing a new package
+
+To install a new package, simply a terminal, go into our project's folder, and run the following command:
+
+```bash
+snt add hello-world
+```
+
+This will download the package which has the `hello-world` slug in the official repository, then install it into the `_packages/hello-world` folder, so we can use it in our programs. We can of course replace `hello-world` by any other package name.
+
+#### Removing a package
+
+To remove a package that is locally installed, simply write:
+
+```bash
+snt remove hello-world
+```
+
+#### Update a package
+
+To update a single package installed locally, do:
+
+```bash
+snt update hello-world
+```
+
+We can also update all packages at once, by doing:
+
+```bash
+snt upgrade
+```
+
+#### Dependencies
+
+Remember the `dependencies` block we saw in our package file sooner? It simply described the packages _required_ by our program in order to make it work. It's an array of `package = "expected_version"` lines. Here is how it could look like:
+
+```toml
+[dependencies]
+hello-world = "^1.0.0"
+```
+
+The dependency we put here indicates we accept all versions compatible with the `1.0.0` version, which means every `1.x.y` version. It is based on the following semantic versioning:
+
+* A patch release, which only fixes some bugs in the package, increments once the third digit of the version ;
+* A minor release, which grants new features without breaking backward compatibility, increments once the second digit of the version ;
+* A major release, which grants new features and breaks some of the backward compatibility, increments once the first digit of the version
+
+We can use the following version names in the `dependencies` section of the package file:
+
+* `=1.0.0` or `1.0.0`: accepts only the specific `1.0.0` version (rarely used) ;
+* `~1.0.0` or `1.0.x` or `1.0`: accepts any `1.0.x` version (patch releases) ;
+* `^1.0.0` or `1.x` or `1`: accepts any `1.x.y` version (patch and minor releases) ;
+* `latest` or `*`: accepts any version
+
+When downloading a package, the package manager will get the latest version accepted by the version we gave in our package file. For instance, if a package releases `1.0.5` and `1.1.0` versions, and as a dependency we specify the `~1.0.5` version, it will download the `1.1.0` version instead.
+
+This is why we told previously that version numbers were so important: our package file declares the slug, name, license etc. but also the version of our package, meaning that if we publish it, the programs from other developers that will depend on it will expect us from respecting this semantic versioning. Be aware of this!
+
+### Project as a package
+
+Did you know that any project we make could be considered as a package? For that, all we have to do is to create the package file `package.toml` in our project's root folder, and so we can manage its dependencies. When you need some package, simply use `snt add <package_name>` and so on.
+
+When someone will get your project, we maybe won't want to transfer all the packages we use (some can be very heavy), especially if publishing on a public repository or something. So, we can simply release the project folder, without the `_packages` directory, and any person wanting to run the project will simply have to run `snt install` inside the project's root folder to download all its dependencies.
+
+### The lockfile
+
+When a package is downloaded, updated or removed by the package manager, it edits a little file called `packages_lock.toml` inside the project's root folder. This file specifies the exact version of all the modules we use. What's the point?
+
+Let's admit we are using version `1.0.1` of a module that treats web requests. We accept any `1.x` version, and we send the source code to a person using the project. She run `snt install` in the folder and, surprise, there is a new version called `1.1.0` that was released a few hours before. That's not a bad deal, you'll say, after all we accepted minor changes. But, let's imagine the person who made the package didn't followed the semantic versioning convention, or that a bug appeared in the package, making it unable to work properly? The person using our source code will not be able to test it and will think it's buggy because of a not-working package.
+
+That's where the lockfile comes: it stores the exact version of every package downloaded from the package manager, plus some other little informations. Because it's an important file that aims to provide a way to test and run our project at the exact same state than its original developer, the lockfile is not placed under `_packages` but in the project's root folder, so we won't forget to send it to the persons who use it.
