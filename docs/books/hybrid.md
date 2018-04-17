@@ -3998,18 +3998,6 @@ val two = strict!(nullable);
 
 Now, `one` has nullable `int?` type and `two` has standard `int` type.
 
-### Cautious typecasting
-
-The `try_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `NULL` if it fails, without throwing an error. Its return type is nullable, like in this example:
-
-```sn
-val works  = try_cast!<int>(fly_mut_ptr! (2)); // *mut int? -> &mut (nullable!(2))
-val doesnt = try_cast!<int>(fly_mut_ptr! ({})); // *mut int? -> NULL
-
-println!(works is 2);     // Prints: "true"
-println!(doesnt is null); // Prints: "true"
-```
-
 ### Really optional arguments
 
 We previously saw how to make optional arguments in functions thanks to a default value. But now let's see how to make _really_ optional arguments using nullable types:
@@ -4664,6 +4652,89 @@ println!(i); // Prints: "2"
 
 This behaviour is due to the fact all pointers all nullable. A pointer to an `int` resource will be implicitly typed as `int?`, even though the pointed resource has a different type. This allows to use the `NULL` pointer which works both with constant and mutable pointers.
 
+
+
+### Cautious typecasting
+
+The `try_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `NULL` if it fails, without throwing an error. Its return type is nullable, like in this example:
+
+```sn
+val works  = try_cast!<int>(fly_mut_ptr! (2)); // *mut int? -> &mut (nullable!(2))
+val doesnt = try_cast!<int>(fly_mut_ptr! ({})); // *mut int? -> NULL
+
+println!(works is 2);     // Prints: "true"
+println!(doesnt is null); // Prints: "true"
+```
+
+### Dynamic typecasting
+
+A problem we often encounter with the `Any` type is when we want to use some properties of its real type. For instance, let's take the following code:
+
+```sn
+let data: Any;
+
+func register (new_data: Any) => data = new_data;
+
+func doubleRegister () -> int {
+  // Multiply the register by 2 and return the result
+}
+```
+
+Here, we don't know how to write the `doubleRegister()` function because we know we can't multiply an `Any` instance by 2. In order to solve this, we use _dynamic typecasting_:
+
+```sn
+func doubleRegister () -> int {
+  return *(cast!<int>(&data)) * 2;
+}
+```
+
+What happens here? We simply _dynamically_ convert `data` to an `int` and got a pointer to the value. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. This uses the sub-typing scheme: if the real type of `data` is `int` or one of its children classes, it'll work, else it'll return a `NULL` pointer:
+
+```sn
+func multiplyByTwo (num: *Any) -> int {
+  let casted: * = cast!<int>(num); // *int
+
+  if (casted is NULL) {
+    println!("An integer was expected");
+    return -1;
+  } else
+    return *casted * 2;
+}
+
+multiplyByTwo (fly_ptr!(2)); // Works
+multiplyByTwo (fly_ptr!("Hello")); // ERROR
+```
+
+Dynamic typecasting is especially useful when coupled with the `instanceof` operator, which checks if a value is instance of a given class. Here is how it goes:
+
+```sn
+func doubleRegister () -> int {
+  if (data instanceof int)
+    return *(cast!<int>(&data)) * 2;
+  else {
+    println!("The provided data is not an integer.");
+    return 0;
+  }
+}
+```
+
+Also, as `cast!` takes a pointer, it respects its state: if a constant pointer is gave, it returns a constant pointer, else it returns a mutable pointer.
+
+The point of getting a pointer from the casted value is to reflect all changes we could make on the casted value on the original resource. For example:
+
+```sn
+// Declare a number as 'Any'
+let i: Any = 2;
+// Cast it to an 'int'
+let j: *mut int = cast!<int>(&mut i);
+
+// Modify the casted value
+*j = 8;
+
+// Cast a new time the original value to print it
+println!(cast!<int>(&i)); // Prints: "8"
+```
+
 ### Impact on lifetime duration
 
 When a reference is created on an entity, the entity will not be dropped until the reference is dropped too. So, if the reference is created and isn't in use by another scope, the value will be dropped at the end of the scope it belongs to. But, if a reference is created and is in use in another scope at the end of the current scope, the entity will not be dropped as a reference still targets it.
@@ -5218,75 +5289,6 @@ inc! (); // Error at line 2 (undefined 'counter')
 ```
 
 Otherwise, unsafe functions act like as standard functions with a checking done each time they are called, and only when so (like type checking, type inference, etc.).
-
-### Dynamic typecasting
-
-A problem we often encounter with the `Any` type is when we want to use some properties of its real type. For instance, let's take the following code:
-
-```sn
-let data: Any;
-
-func register (new_data: Any) => data = new_data;
-
-func doubleRegister () -> int {
-  // Multiply the register by 2 and return the result
-}
-```
-
-Here, we don't know how to write the `doubleRegister()` function because we know we can't multiply an `Any` instance by 2. In order to solve this, we use _dynamic typecasting_:
-
-```sn
-func doubleRegister () -> int {
-  return *(cast!<int>(&data)) * 2;
-}
-```
-
-What happens here? We simply _dynamically_ convert `data` to an `int` and got a pointer to the value. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. This uses the sub-typing scheme: if the real type of `data` is `int` or one of its children classes, it'll work, else it'll return a `NULL` pointer:
-
-```sn
-func multiplyByTwo (num: *Any) -> int {
-  let casted: * = cast!<int>(num); // *int
-
-  if (casted is NULL) {
-    println!("An integer was expected");
-    return -1;
-  } else
-    return *casted * 2;
-}
-
-multiplyByTwo (fly_ptr!(2)); // Works
-multiplyByTwo (fly_ptr!("Hello")); // ERROR
-```
-
-Dynamic typecasting is especially useful when coupled with the `instanceof` operator, which checks if a value is instance of a given class. Here is how it goes:
-
-```sn
-func doubleRegister () -> int {
-  if (data instanceof int)
-    return *(cast!<int>(&data)) * 2;
-  else {
-    println!("The provided data is not an integer.");
-    return 0;
-  }
-}
-```
-
-Also, as `cast!` takes a pointer, it respects its state: if a constant pointer is gave, it returns a constant pointer, else it returns a mutable pointer.
-
-The point of getting a pointer from the casted value is to reflect all changes we could make on the casted value on the original resource. For example:
-
-```sn
-// Declare a number as 'Any'
-let i: Any = 2;
-// Cast it to an 'int'
-let j: *mut int = cast!<int>(&mut i);
-
-// Modify the casted value
-*j = 8;
-
-// Cast a new time the original value to print it
-println!(cast!<int>(&i)); // Prints: "8"
-```
 
 ### Superoverloads
 
