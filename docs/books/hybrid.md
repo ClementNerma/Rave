@@ -4658,7 +4658,7 @@ The `try_cast!` function is an alternative to `cast!`. It **tries** to cast a va
 
 ```sn
 val works  = try_cast!<int>(fly_mut_ptr! (2)); // *mut int? -> &mut (nullable!(2))
-val doesnt = try_cast!<int>(fly_mut_ptr! ({})); // *mut int? -> NULL
+val doesnt = try_cast!<int>(fly_mut_ptr! ("Hey")); // *mut int? -> NULL
 
 println!(works is 2);     // Prints: "true"
 println!(doesnt is null); // Prints: "true"
