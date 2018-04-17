@@ -4652,8 +4652,6 @@ println!(i); // Prints: "2"
 
 This behaviour is due to the fact all pointers all nullable. A pointer to an `int` resource will be implicitly typed as `int?`, even though the pointed resource has a different type. This allows to use the `NULL` pointer which works both with constant and mutable pointers.
 
-
-
 ### Cautious typecasting
 
 The `try_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `NULL` if it fails, without throwing an error. Its return type is nullable, like in this example:
