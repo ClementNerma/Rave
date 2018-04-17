@@ -3710,7 +3710,7 @@ loop {
 But the syntax of the iterator is kind of heavy... So, there's a syntax sugar to write iterators as functions:
 
 ```sn
-iter mySuperIterator () -> int {
+iter func mySuperIterator () -> int {
   for i in 0..10 {
     yield i;
   }
@@ -3719,7 +3719,7 @@ iter mySuperIterator () -> int {
 
 This code is equivalent to the class we wrote before. We'll, its a lot more simplier here, write? Let's detail this.
 
-The function is marked with the `iter` keyword to indicate it's an iterator, but it does not use the `func` keyword (because this declaration will in reality produce an `Iterator<int>`). Its signature also tells it returns an iteration. In its body, it simply makes a loop that _yields_ some values. To be exact, each time the `yield` keyword is encountered, the value is returned and the function is _paused_ until the program asks to generate values again. So, all resources locally defined by the function stays in memory.
+The function is marked with the `iter` keyword to indicate it's an iterator, as well as the `func` keyword because it's a function (even if it will be converted to an `Iterator<T>`). Its signature also tells it returns an iteration. In its body, it simply makes a loop that _yields_ some values. To be exact, each time the `yield` keyword is encountered, the value is returned and the function is _paused_ until the program asks to generate values again. So, all resources locally defined by the function stays in memory.
 
 Now, let's see how to use iterators in loops to explore dictionaries.
 
