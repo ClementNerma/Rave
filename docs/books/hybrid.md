@@ -4433,7 +4433,7 @@ else
 
 Also, thanks to `void` implementing a `%toBoolean` overload which always return `false`, we can do use some native operators like `!` or `point ? doSomething() : doSomethingElse()` on our constant.
 
-### The nullable `?` operator
+### The null object operator
 
 Here is an operator we can use to do something only if the value is not null. Here is an example:
 
