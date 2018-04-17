@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.22.3',
+    VERSION: '0.23.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -275,7 +275,7 @@ scheme = {
         ],
         [
           // Setters/getters declaration
-          /\b(public|protected|private)(\s+static)?(\s+unsafe)?(\s+async)?(\s+iter)?\s+(getter|setter)\s+([a-zA-Z\$_][a-zA-Z0-9\$_]*)\b/,
+          /\b(public|protected|private)(\s+static)?(\s+macro)?(\s+async)?(\s+iter)?\s+(getter|setter)\s+([a-zA-Z\$_][a-zA-Z0-9\$_]*)\b/,
           'purple', 'purple', 'purple', 'purple', 'purple', 'purple', 'cyan'
         ],
         [
@@ -285,7 +285,7 @@ scheme = {
         ],
         [
           // Declaration statement in classes for functions
-          /\b(public|protected|private)(\s+static)?(\s+unsafe)?(\s+async)?(\s+iter)?(?=\s+func)/,
+          /\b(public|protected|private)(\s+static)?(\s+macro)?(\s+async)?(\s+iter)?(?=\s+func)/,
           'purple', 'purple', 'purple', 'purple'
         ],
         [
@@ -463,7 +463,7 @@ scheme = {
         ],
         [
           // Keywords needing a separator
-          /(?<!\.)\b(let|pln|val|public|protected|private|friend|static|abstract|final|unique|virtual|extern|readonly|in|export|return|async|iter|yield|unsafe|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
+          /(?<!\.)\b(let|pln|val|public|protected|private|friend|static|abstract|final|unique|virtual|extern|readonly|in|export|return|async|iter|yield|macro|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
           'purple'
         ],
         [
@@ -532,12 +532,12 @@ scheme = {
           'white', 'blue'
         ],
         [
-          // Object's unsafe function's call
+          // Object's macro function's call
           /(\.)([a-zA-Z_][a-zA-Z0-9_\$]*!)(?=\s*\()/,
           'white', 'cyan'
         ],
         [
-          // Object's unsafe function's call with a template
+          // Object's macro function's call with a template
           /(\.)([a-zA-Z_][a-zA-Z0-9_\$]*!)(?=\s*<(.*?)>\s*\s*\()/,
           'white', 'cyan'
         ],
