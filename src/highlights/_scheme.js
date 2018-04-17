@@ -8,7 +8,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.22.2',
+    VERSION: '0.22.3',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -428,8 +428,8 @@ scheme = {
         ],
         [
           // IMPORT statement
-          /\b(import)\s+([a-zA-Z_][a-zA-Z0-9_]*(?:(::)[a-zA-Z_][a-zA-Z0-9_]*)*)((?:\s*,\s*[a-zA-Z_][a-zA-Z0-9_\$\-]*(?:(::)[a-zA-Z_][a-zA-Z0-9_\$\-]*)*)*)\b/,
-          'purple', 'green', 'cyan', 'green', 'cyan'
+          /\b(scope\s+)?(import)\s+([a-zA-Z_][a-zA-Z0-9_]*(?:(::)[a-zA-Z_][a-zA-Z0-9_]*)*)((?:\s*,\s*[a-zA-Z_][a-zA-Z0-9_\$\-]*(?:(::)[a-zA-Z_][a-zA-Z0-9_\$\-]*)*)*)\b/,
+          'purple', 'purple', 'green', 'cyan', 'green', 'cyan'
         ],
         [
           // Usage of a package/module
@@ -468,7 +468,7 @@ scheme = {
         ],
         [
           // Already specified keywords, written here to have partial syntax highlighting
-          /(?<!\.)\b(struct|class|type|dict|package|trait|interface|implements|extends|import|from|instanceof)(?!\s*:)\b/,
+          /(?<!\.)\b(struct|class|type|dict|package|trait|interface|implements|extends|scope|import|from|instanceof)(?!\s*:)\b/,
           'purple'
         ],
         [
