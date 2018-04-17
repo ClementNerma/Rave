@@ -4718,6 +4718,19 @@ func doubleRegister () -> int {
 }
 ```
 
+To know if a type is of a specific type, we simply have to use the templated directive `#mustbe<T>`:
+
+```sn
+func doubleRegister () -> int {
+  if (data instanceof #mustbe<int>)
+    return *(cast!<int>(&data)) * 2;
+  else {
+    println!("The provided data is not an integer.");
+    return 0;
+  }
+}
+```
+
 Also, as `cast!` takes a pointer, it respects its state: if a constant pointer is gave, it returns a constant pointer, else it returns a mutable pointer.
 
 The point of getting a pointer from the casted value is to reflect all changes we could make on the casted value on the original resource. For example:
