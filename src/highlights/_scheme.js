@@ -376,11 +376,26 @@ scheme = {
           /(\+|-|\/|\*|%|\^|\*\*|<<|>>|\?)/,
           'cyan'
         ],
-        [
+        {
           // Instanciation
-          /\b(new)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)\b/,
-          'purple', 'yellow'
-        ],
+          begin: /\b(new)/,
+          beginCaptures: {
+            '1': {
+              name: '${purple}'
+            }
+          },
+          patterns: [
+            {
+              include: '#global'
+            }
+          ],
+          end: /([a-zA-Z_][a-zA-Z0-9_\$]*)(?=\s*[^ :a-zA-Z0-9_\$])/,
+          endCaptures: {
+            '1': {
+              name: '${yellow}'
+            }
+          }
+        },
         [
           // Inheritance and aliases
           /\b(extends|from|as)\s+([a-zA-Z_][a-zA-Z0-9_\$\.]*)\b/,
