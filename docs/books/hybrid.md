@@ -3325,7 +3325,7 @@ But, because it is empty, we can't use **any** member of the values we get from 
 
 ### Traits
 
-Traits act kind of virtual classes. The main difference though is they can't implement static members, but they can still write the body of the function they declare. They aim to provide _horizontal reuse_, while virtual classes aim to provide _vertical reuse_ (plus the fact they can implement static members).
+Traits act like interfaces, but with the possibility to write the body of the function they define. They aim to provide _horizontal reuse_, while virtual classes aim to provide _vertical reuse_ (plus the fact they can implement static members).
 
 A good example of traits is when you want to inherit from multiple classes. This is absolutely impossible in SilverNight, but you implement multiple traits. Here is how it goes:
 
