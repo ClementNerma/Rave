@@ -5570,7 +5570,7 @@ Templates are documented like arguments, but with `@template`:
  * @param iterator The iterator to make the summation from
  * @returns The summation
  */
-macro func sum<T extends Number> (iterator: Iterator<T>) -> T {
+func sum<T extends Number> (iterator: Iterator<T>) -> T {
   let summation: T = 0;
 
   for num in iterator {
