@@ -2,6 +2,9 @@
  * @file Syntax highlighting scheme for SilverNight (TextMate preprocessor format)
  */
 
+// NOTE: This scheme is currently limited to the "One Dark Pro" theme. Any other theme **may not work** well
+//       with it (strange and unharmonic colors...)
+
 // Enable strict mode
 "use strict";
 
