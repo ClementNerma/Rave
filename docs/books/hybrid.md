@@ -5551,6 +5551,17 @@ name_manager::names.defineName("John");
 println!(name_manager::names.readName()); // Prints: "John"
 ```
 
+A last version of import is the _scope_ import:
+
+```sn
+scope import name_manager;
+
+names.defineName("John");
+println!(names.readName()); // Prints: "John"
+```
+
+As you can see, scope imports act like standard imports but also _alias_ all entity names to link them to the package's/module's ones in the _current scope_. So, we can access without writing the package's name all its entities from the current scope - this way, it prevents polluating the global scope. Be aware though to not overwrite some existing entities, this will result in an error, like declaring two constants of the same name. Also, because multiple packages could have entities with the same name, it's discouraged to import several packages in a given scope.
+
 Note that all SilverNight programs transparently import the `frontend::native` module that provides all the native stuff like `string` or `Array` and link them to global entities (meaning we don't have to write `frontend::native::int32` for example).
 
 #### The `import!` macro
