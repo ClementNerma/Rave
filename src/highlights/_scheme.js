@@ -1,3 +1,7 @@
+/**
+ * @file Syntax highlighting scheme for SilverNight (TextMate preprocessor format)
+ */
+
 // Enable strict mode
 "use strict";
 
