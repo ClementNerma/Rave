@@ -592,11 +592,6 @@ scheme = {
           'yellow', 'cyan'
         ],
         [
-          // MACRO declarations
-          /(#macro)\s+([a-z_\$][a-zA-Z0-9_\$]*)\b/,
-          'purple', 'orange'
-        ],
-        [
           // Head directives
           /#\[(module|extern)\] *;/,
           'orange'
