@@ -5616,7 +5616,7 @@ authors = [ "Your Name <you@example.com>" ]
 license = "MIT"
 modules = [
   "universe/planets/earth",
-  "universe/planets/others,
+  "universe/planets/others",
   "universe/life/animals",
   "universe/life/insects",
   "universe/life/humans"
