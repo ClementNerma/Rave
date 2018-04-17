@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.23.0',
+    VERSION: '0.23.1',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -317,13 +317,13 @@ scheme = {
         ],
         [
           // Macro declaration
-          /\b(macro)\s+(func)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)\s*(\!)/,
-          'purple', 'purple', 'cyan', 'orange'
+          /\b(macro)\s+([a-zA-Z_][a-zA-Z0-9_\$]*\s*\!)/,
+          'purple', 'orange'
         ],
         [
           // Invalid declaration
-          /\b(macro)\s+(func)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)(?!\s*\!)/,
-          'purple', 'purple', 'invalid'
+          /\b(macro)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)(?!\s*\!)/,
+          'purple', 'invalid'
         ],
         [
           // Function declaration
