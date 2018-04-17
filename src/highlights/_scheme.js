@@ -383,7 +383,7 @@ scheme = {
         ],
         {
           // Instanciation
-          begin: /\b(new)/,
+          begin: /\b(new)\b/,
           beginCaptures: {
             '1': {
               name: '${purple}'
@@ -391,7 +391,15 @@ scheme = {
           },
           patterns: [
             {
-              include: '#global'
+              match: /([a-z_][a-zA-Z0-9_\$]*)(::)/,
+              captures: {
+                '1': {
+                  name: '${green}'
+                },
+                '2': {
+                  name: '${cyan}'
+                }
+              }
             }
           ],
           end: /([a-zA-Z_][a-zA-Z0-9_\$]*)(?=\s*[^ :a-zA-Z0-9_\$])/,
