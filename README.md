@@ -25,6 +25,7 @@ SilverNight is released using a system of **stages**:
 
 * Breaking syntax and concept updates are frequent
 * Redaction of [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html) (first version)
+* Development of the [syntax highlighting scheme](src/highlights/_scheme.js) for all themes
 
 ### Stage 1 (name: _Alpha_)
 
@@ -141,6 +142,8 @@ And follow the instructions that appears in your terminal.
 
 * Finish redacting [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html) (**active**)
 * Re-write [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html) in a better way
+* Finish [syntax highlighting scheme](src/highlights/_scheme.js) (**active**)
+* Re-write the [syntax highlighting scheme](src/highlights/_scheme.js) to support all themes (**active**)
 * Redact [The Book of Concepts](https://silvernight.netlify.com/docs/book/concepts.html)
 * Make an explicit grammar of the language
 * Make a parser
