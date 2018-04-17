@@ -4040,6 +4040,39 @@ println!(jack.name is "Jack"); // Prints: "true"
 println!(jack.age is null) // Prints: "true"
 ```
 
+### The nullable operator
+
+Another useful operator when dealing with nullable types is the `??` operator. How does it work? Well, that's really simple: let's imagine we have an entity with a nullable type, and that we want to use a value _only if_ the entity contains `null`. Here is a first idea:
+
+```sn
+val a: int? = 0;
+val b: int? = null;
+
+println!(a || 1); // Prints: "1"
+println!(b || 1); // Prints: "1"
+```
+
+But, as we can see, it even uses 1 when the entity is equal to 0, because, when converted to a boolean, 0 is equal to `false` (so the second member is used). The same applies for `null`, which is converted to `false` too.
+
+So, the way to solve this problem is to use the `??` operator:
+
+```sn
+val a: int? = 0;
+val b: int? = null;
+
+println!(a ?? 1); // Prints: "0"
+println!(b ?? 1); // Prints: "1"
+```
+
+Or more technically:
+
+```sn
+0    || 1; // 1
+null || 1; // 1
+0    ?? 1; // 0
+null ?? 1  // 1
+```
+
 ### A concrete example
 
 A concrete example of nullable types usage: the problem of array initialization.
