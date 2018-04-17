@@ -309,8 +309,8 @@ scheme = {
           'purple'
         ],
         [
-          // Function declaration with template
-          /\b(func|lambda)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)(?=\s*<)/,
+          // Function declaration
+          /\b(func|lambda)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)\b/,
           'purple', 'blue'
         ],
         [
