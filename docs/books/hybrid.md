@@ -3787,521 +3787,6 @@ val dict: { { string, int }, float };
 val dict: { { { string, int }, float }, string };
 ```
 
-## Advanced concepts
-
-Here is a transitional chapter between the end of object-oriented programming and deeper concepts of SilverNight like errors, pointers or packages. The notions we will see here may not be used in every single program, be they can still be useful.
-
-### Bindings
-
-A useful concept when using libraries with a lot of resources is the _bindings_. It consists in applying an alias object on a function to extract resources in the local scope.
-
-Let's imagine we have an `engine` class instance with a `run` function, which takes as an argument a function. This game engine runs the function but it also wants to provide a huge number of functions to manage the scene, the collisions, the geometry, the physics, etc.
-
-A first solution would be to provide them each one after another as an argument. But this would result in a lambda with thousands of arguments, so that's not a good idea, even with the ICT (because we still have to write the argument's name and order).
-
-Another solution would be to make a structure with functions in it, like:
-
-```sn
-struct EngineFunctions {
-  init = engine.init;
-  createScene = engine.createScene;
-  getScene = engine.getScene;
-  /* ... and so on */
-}
-
-val functions: EngineFunctions;
-```
-
-This works but involves to create a large structure, and then make an object with it, then give it as an argument. Putting aside the fact it is really heavy, all the functions would need to be called with `functions.init()`, `functions.createScene()` etc. which is long to write and heavy too if we call them multiple times. Plus, there's no difference between writing `engine.init()` or `engine.createScene()`.
-
-That's where we use bindings. Bindings act like plain structure that links a name to a resource. Let's take an example:
-
-```sn
-func run (callback: func #bind
-  {
-    printInConsole: "println!",
-    sayHello: "println!(\"Hello \" + ${1})",
-    sayHappyBirthday: "println!('Happy birthday ' + ${1} + ' you are now ' + ${2} + ' years old!')"
-  })
-  => callback();
-```
-
-Here, `myBindings` generates several links.
-
-* The first one simply aliases `println!` as `printInConsole`, s we can do `printInConsole("Hello")`.
-* The second one uses `${1}` in its body, so it acts as a function and takes one, and only one argument, that cannot be omitted. Doing `sayHello("Jack")` will result in `println!("Hello" + "Jack")`.
-* The third one acts like the first one, but with two arguments. So writing `sayHappyBirthday("Jack", 28)` will result in `println!('Happy birthday ' + 'Jack' + ' you are now ' + 20 + ' years old!')`. Thanks to typecasting, `20` will be understood to `"20"`.
-
-So, we can use the `run` function like this:
-
-```sn
-run(() => {
-  #bind;
-
-  printInConsole("Hello, world!");
-  sayHello("Jack");
-  happyBirthday("Jack", 28);
-});
-```
-
-This will work as expected, even if the three functions we use in the callback don't really exist but are part of the bindings object. Note that `#bind` directive at the beginning of the callback: it means we know a bindings object will be applied to it and that we accept it. This is needed because bindings can also rewrite the native functions/macros, so the program needs to be sure we really want to perform the binding.
-
-#### Using a declared bindings object
-
-Because writing bindings is heavy in a function's signature (like we saw), and because we may want to re-use bindings several times, we can declare the bindings as an object to use them later. The bindings object is a plain structure linking a string (the name) to another string (the resource). Here is how it goes:
-
-```sn
-pln engineBindings = #makebindings {
-  printInConsole: "println!",
-  sayHello: "println!(\"Hello \" + ${1})",
-  sayHappyBirthday: "println!('Happy birthday ' + ${1} + ' you are now ' + ${2} + ' years old!')"
-};
-```
-
-This is all! We can now rewrite our `run` function:
-
-```sn
-func run (callback: func #bind engineBindings) => callback();
-```
-
-### Constrained types
-
-Sometimes we want to get restricted values from a specific type. For example, if we make a function named `treatCars` that takes a `Vehicle` instance as a parameter, we could only want to accept vehicles with four `wheels` or less.
-
-This time, because we haven't seen any feature that could achieve it, let's just see how it we could do it: with _constrained types_. Assuming we have this code:
-
-```sn
-class Vehicle {
-  public readonly wheels: int;
-  public func %construct (@wheels: int);
-}
-
-val car = new Vehicle(4);
-val motorcycle = new Vehicle(2);
-```
-
-Our function will have this look:
-
-```sn
-func treatCars (car: Vehicle with (c => c.wheels <= 4)) =>
-  println!(`This vehicle has ${car.wheels} wheels.`);
-```
-
-Here, the `with` keywords indicates a constrained type. At its left, we write the type we want to constraint, and at its right a callback (the constraint).
-
-But how does it work? This is simple: when we read the value, it acts exactly like if we didn't put a constraint on its type. But when we try to write it (assign something else), the callback will be ran with an argument, the value we are trying to assign. It could also receive a second argument, which would then be the current value of the resource. As you can see, ICT works in the constraint callback because arguments' types as well as its return type can be guessed.
-
-If we put aside the fact that writing is controlled by a callback, constrained types act **exactly** like standard types: sub-typing work with them (in the example above, writing `Vehicle` instead of its constrained version would accept it as well).
-
-Type constraints are called _type extension_, which are bidirectionaly compatible with their original type. For example, if a function asks for an `int`, we can give an `int with (c => c > 5)` instead. Also, if a function asks for an `int with (c => c < 8)`, we can give it an `int` instead (the constraint will be triggered to ensure we give a valid integer, though). Constrained types can be automatically typecasted to standard types, as well as the opposite.
-
-Here is an exemple to better understand the concept:
-
-```sn
-func treatCars (car: Vehicle with (c => c.wheels <= 4)) {
-  c = new Vehicle(2); // Works fine
-  c = new Vehicle(4); // Works fine
-  c = new Vehicle(8); // ERROR because the constraint returned `false`
-}
-
-treatCars(new Vehicle(4));
-```
-
-When the resource is written, the callback receives its value (plus the current value of the resource if it takes two arguments), and returns a boolean. If it accepts the changes, it will return `true` (in our case, this will happen only if the vehicle has four wheels or less). Else, it will return `false` and the writing will be rejected, which will result in an error.
-
-But, because of the need to match the constraint, constrained resources cannot be declared without an initialization value. Here is an example:
-
-```sn
-let car: Vehicle with (c => c.wheels is 4); // ERROR
-let car: Vehicle with (c => c.wheels is 4) = new Vehicle(4); // Works fine
-```
-
-Also, because we could want to re-use a constrained type later, the `type` keyword allows us to register:
-
-```sn
-type Car is Vehicle with (c => c.wheels is 4);
-
-let car: Car;                  // ERROR
-let car: Car = new Vehicle(2); // ERROR
-let car: Car = new Vehicle(4); // Works fine
-```
-
-### Conditional directives
-
-Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the _conditional directives_: `#if`, `#else`, `#elif`, `#end`. These directives use a boolean, like their block equivalent. Their specificity is that the code located in them will simply be removed from the source code if the condition is (or is not) filled. They can use build constants, giving the type of conversion (compilation, interpretation, transpiling), the platform (x86_64, ARM...).
-
-Here is an example:
-
-```sn
-#if PROC_ARCH is "ARM"
-  println!("This program has been compiled for ARM.");
-#end
-
-#if OS is "Windows"
-  println!("You are using a Windows system.");
-#elsif OS is "Linux"
-  println!("You are using a Linux system.");
-#elsif OS is "Darwin"
-  println!("You are using a MacOS system.");
-#end
-```
-
-That's as simple as it.
-
-### Macros
-
-Remember the very first "function" we saw in this book? Yes, this was `println!`. Why there are quotes about "function"? Because `println!` is not a function. It's a macro.
-
-But what's a macro, anyway? A macro is simply a function that replaces some parts of the code by anothers. To take, an example, `println!` will replace the arguments you give to it by `Output::println(...<your arguments>...)`.
-
-Also, macros don't have a return type, because they can return different things depending on their arguments.
-
-To understand better the concept, here is how we define a macro:
-
-```sn
-#macro sayHello($name: string) => println!(`Hello, ${$name}`);
-```
-
-Note that all macros' arguments must start with a `$` symbol. When we write the argument's name in the macro's body, it is automatically replaced by the expression we gave as an argument. Here is an example:
-
-```sn
-// Call the macro
-sayHello!("Jack");
-
-// Will produce:
-println!(`Hello, ${"Jack"}`);
-
-// Which will itself produce:
-Output::println(`Hello, Jack`);
-```
-
-As you can see, a macro is simply a way to simplify the writing of a call. It would be heavier to write `Output::println` each time we want to display something in the console, right? That's why the `println!` macro is here. And as you can guess, the `!` symbol indicates we are calling a macro and not a function (except unsafe functions, but we'll see that later).
-
-Also note that macros can use a special type for their arguments, that is not available for standard functions. It's the `#raw` type, which prevent the arguments from being checked and evaluated. For example, the following code will work fine:
-
-```sn
-// Declare the macro
-#macro sayHello($name: #raw) => println!("Hello, " + $name);
-
-// Call it
-sayHello( 'Jack' /* Hey */ );
-// This will produce:
-println!("Hello, " +  'Jack' /* Hey */ );
-```
-
-As you can see, even the spaces are kept in `$name`. Note that every macro argument can also be stringified:
-
-```sn
-// Declare the macro
-#macro test($text: #raw) => #string($text);
-
-// Call it
-println!(test( 'Jack "Yeah" `Some quotes`'  ));
-// This will produce:
-println!(" 'Jack \"Yeah\" `Some quotes`'  ");
-```
-
-There is also a type for plain constants (also called literals, like `2` or `"Hello"`, but not `myVariable`):
-
-```sn
-// Declare the macro
-#macro test($name: #pln<int>) => println!($name);
-
-// Call it
-test('Hello');
-// This will produce:
-println!('Hello');
-```
-
-There is also a type to ask specifically for an assignable entity (variables and constants):
-
-```sn
-// Declare the macro
-#macro test($name: #var) =>
-  println!(`${$name} is an assignable entity`);
-
-// Declare a constant
-val hello = "World";
-
-// Declare a structure
-struct Hero {}
-
-// Call it
-test!(hello); // Prints: "hello is an assignable entity"
-test!(notfound); // ERROR because `notfound` does not exist
-test!(Hero); // ERROR because `Hero` is not an assignable entity
-```
-
-Note that `#var` can be templated, like `#var<string>` to accept any assignable entities with `string` type.
-
-Another type we can use is `#name`: it forces to use a valid entity name, but does not check if it exists. It can be especially useful if we want to make some declarations:
-
-```sn
-#macro make_vehicles($name: #name) => val $name: List<Vehicle>;
-
-// Writing this:
-make_vehicles(hello);
-// Will produce:
-val hello: List<Vehicle>;
-```
-
-There are is last type for macros: `#noptr<T>`. It only accepts assignable entities, like `#raw`, but refuses pointers. Like `#raw`, it can be written without its template to accept any type. This is a specialized macro you probably won't encounter very often, but it's here if you need them.
-
-_Tip :_ If you absolutely require a pointer in a macro, simply use the `&` symbol like functions. For pointer assignable entities, use `*$pointer: #var<T>`.
-
-To conclude, simply remember that every function signature (with `#macro` replacing `func`) is a valid macro signature, but that a macro can also use additional features like the `#var` directive.
-
-### Unsafe functions
-
-Unsafe functions are declared like macros, except they are called like standard functions and therefore won't replace their own call by another content. To be exact, when they are called their content replaces their call but in a transparent way. Let's see it:
-
-```sn
-unsafe func sayHello! (name: string) {
-  println!(name);
-}
-
-sayHello!("Yeah");
-```
-
-The first thing we can see here is the use of the `unsafe` keyword, which indicates the following function is unsafe. The function is then called using the `!` symbol after its name, as for macros. And, as for macros, they don't have a return type.
-
-In unsafe functions, arguments are real assignable entities, so they can be used as it, like a standard functions' arguments. Although, their type is a simple constraint, which means their only purpose is to directly throw an error when they are called with the wrong arguments and produce a good documentation. But, they are not attached to the arguments themselves. For example, the following code works:
-
-```sn
-unsafe func add! (left: Primitive, right: Primitive) {
-  return left + right;
-}
-
-println!(add!(2, 5)); // Prints: "7"
-```
-
-In this example, `add!` returned an `int` and both `left` and `right` were `int`s too. The `Any` type is only here to indicate the function takes two primitive, but in reality they have a more precise type than it.
-
-When the function is called, its content is directly evaluated, as for macros. The main difference comes from the fact when an error occurs in an unsafe function (like an incompatible type or something), the error will be located in the function's body, not in the code's body. Considering the following function:
-
-```sn
-// A sample function
-func takeAnInt (ent: int) {}
-```
-
-Here is how it goes with macros:
-
-```sn
-#macro sayHello(name: string) => println!(name); \
-  takeAnInt(name);
-
-sayHello!("Yoh"); // Line 4
-```
-
-The error is thrown at line 5. Why? Simply because the call to `sayHello!` is replaced to the macro's content, so the evaluated content is in reality:
-
-```sn
-#macro sayHello(name: string) => println!(name); \
-  takeAnInt(name);
-
-println!(name); // Line 4
-takeAnInt(name); // Line 5
-```
-
-Here is the same thing with unsafe functions:
-
-```sn
-unsafe func sayHello! (name: string) {
-  println!(name);
-  takeAnInt(name); // Line 3
-}
-
-sayHello!("Yoh"); // Line 6
-```
-
-The error is now throw at line 3. Even though the unsafe function's content is instantly evaluated, errors are reported following the function's location. This is one the main points of unsafe functions, in fact.
-
-As unsafe functions are _functions_, they can also be part of a class. When so, `this`, `self` and `super` will automatically refer to the same targets than a standard function.
-
-Also, because arguments are not directly replaced by their content, so errors will not tell that `takeAnInt("Yoh")` is an invalid call (this is what happens using the above macro), but that `takeAnInt(name)` is an invalid call because `name` is typed as a `string`.
-
-Be aware of the fact that, because unsafe functions are _functions_, they may not have access to the scope they are called from. Their scope remains the same than for a standard function. For example, the following example would not work:
-
-```sn
-unsafe func inc! () {
-  counter += 1; // Line 2
-}
-
-let counter = 0;
-inc! (); // Error at line 2 (undefined 'counter')
-```
-
-Otherwise, unsafe functions act like as standard functions with a checking done each time they are called, and only when so (like type checking, type inference, etc.).
-
-### Dynamic typecasting
-
-A problem we often encounter with the `Any` type is when we want to use some properties of its real type. For instance, let's take the following code:
-
-```sn
-let data: Any;
-
-func register (new_data: Any) => data = new_data;
-
-func doubleRegister () -> int {
-  // Multiply the register by 2 and return the result
-}
-```
-
-Here, we don't know how to write the `doubleRegister()` function because we know we can't multiply an `Any` instance by 2. In order to solve this, we use _dynamic typecasting_:
-
-```sn
-func doubleRegister () -> int {
-  return *(cast!<int>(&data)) * 2;
-}
-```
-
-What happens here? We simply _dynamically_ convert `data` to an `int` and got a pointer to the value. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. This uses the sub-typing scheme: if the real type of `data` is `int` or one of its children classes, it'll work, else it'll return a `NULL` pointer:
-
-```sn
-func multiplyByTwo (num: *Any) -> int {
-  let casted: * = cast!<int>(num); // *int
-
-  if (casted is NULL) {
-    println!("An integer was expected");
-    return -1;
-  } else
-    return *casted * 2;
-}
-
-multiplyByTwo (fly_ptr!(2)); // Works
-multiplyByTwo (fly_ptr!("Hello")); // ERROR
-```
-
-Dynamic typecasting is especially useful when coupled with the `instanceof` operator, which checks if a value is instance of a given class. Here is how it goes:
-
-```sn
-func doubleRegister () -> int {
-  if (data instanceof int)
-    return *(cast!<int>(&data)) * 2;
-  else {
-    println!("The provided data is not an integer.");
-    return 0;
-  }
-}
-```
-
-Also, as `cast!` takes a pointer, it respects its state: if a constant pointer is gave, it returns a constant pointer, else it returns a mutable pointer.
-
-The point of getting a pointer from the casted value is to reflect all changes we could make on the casted value on the original resource. For example:
-
-```sn
-// Declare a number as 'Any'
-let i: Any = 2;
-// Cast it to an 'int'
-let j: *mut int = cast!<int>(&mut i);
-
-// Modify the casted value
-*j = 8;
-
-// Cast a new time the original value to print it
-println!(cast!<int>(&i)); // Prints: "8"
-```
-
-### Superoverloads
-
-Superoverloads are overloads that don't act only as a class level, but as the whole program's level. Some of them work with some concepts we haven't seen yet, so we'll only see operators superoverloads.
-
-How do they work? That's simple: each operator superoverload overwrites the behaviour of an operator, but globally. For example, defining a `%plus` function globally will act in the whole program. The point is mainly to implement operators on classes that don't implement it natively, plus to allow assignments from the right: when overloading the `+` operator in a class with `%plus(cmp: int)`, for example, it will only support operations with the form `myInstance + 2` but not `2 + myInstance`. Superoverloads allow to reverse it:
-
-```sn
-class MyClass {
-  public readonly value: int;
-  public func %construct (@value: int) {}
-  public func %plus (cmp: int) -> int {
-    return @value + cmp;
-  }
-}
-
-func %plus (cmp: int, inst: MyClass) -> int {
-  return inst + cmp; // Use the implemented superoverload
-}
-```
-
-Otherwise, operators superoverloads work exactly as operators overloads for classes, though globally.
-
-### The reduction directive
-
-Sometimes we want a function to take as an argument a callback that could not be a reduced lambda, as well as its arguments, in order to be able to call it later.
-
-Problem is: there is no type to catch every existing function. We would have to use the `Any` type, that opens the door to non-function types. So, we wouldn't be able to call the function later. The second problem is that our arguments would have to be an array of `Any`, so the builder would reject the call to the callback because arguments' type would not fit the `Any` type.
-
-The solution to this problem is to use the `#reduced` directive. Used as the type of a single argument, it allows to call a function with the callback and all of its arguments. Then, the argument is turned into a reduced lambda that can be called without worrying about arguments. To make this more clear, let's take an example:
-
-```sn
-func repeatedCall (callback: #reduced, times: int) {
-  // Do some amazing stuff here
-  for i in 0..times {
-    callback();
-  }
-}
-
-repeatedCall (
-  lambda (name: string) -> void { println!(name); },
-  "Jack ",
-  2
-); // Prints: "Jack Jack "
-```
-
-Here, `callback` is a reduced function that can be called without any arguments. When it's called, the program will transparently call the real callback, which takes one argument, and gives it the name we gave in the call to `repeatedCall()`. Then, next arguments can be used for something else, like the `times` argument.
-
-Note that, because the callback hadn't a specific signature in the `repeatedCall`'s declaration, its arguments' type as well as its return type couldn' tbe guessed, so they must be provided.
-
-It's also possible to ask for a specific return type in a returned function:
-
-```sn
-func summation (callback: #reduced -> int, times: int) -> int {
-  let sum = 0;
-
-  for i in 0..times {
-    sum += callback();
-  }
-
-  return sum;
-}
-```
-
-As you can guess, `#reduced` is an equivalent to `#reduced -> void`. In fact, `#reduced` is simply an equivalent to `func(...anything...)`, so it's even possible to write:
-
-```sn
-func summation (callback: unsafe #reduced -> int, times: int) -> int {
-  let sum = 0;
-
-  for i in 0..times {
-    sum += callback();
-  }
-
-  return sum;
-}
-```
-
-A last use is when we want to be able to give some data to the callback, so we want to require it having some arguments. Here is an examplpe:
-
-```sn
-func summation (callback: #reduced (num: int) -> int, times: int) -> int {
-  let sum = 0;
-
-  for i in 0..times {
-    sum += callback(i);
-  }
-
-  return sum;
-}
-
-println!(summation(
-  // The callback
-  lambda (num: int, coeff: int) -> int { return num * coeff; },
-  // Its only argument (`coeff`)
-  3
-)); // Prints: "18"
-```
-
-As we can see here, the callback's argument required in the `summation`'s signature must be placed at the very beginning of the callback's arguments. We couldn't have written `lambda (coeff: int, num: int) -> int` for example.
-
 ## Nullable types
 
 Here is a short chapter to show another of the most useful concepts in SilverNight: the nullable types. Basically, nullable types are types that can either be an instance of the class they refer to, or `null`. What's the point? Simply to provide a way of returning _nothing_.
@@ -5387,6 +4872,521 @@ println!(ptr.name); // Prints: "John"
 It works, despite the fact `ptr` contains a constant reference. How could this work?
 
 Well, the object `ptr` targets is not defined as constant, even if the reference we assign to the pointer is. So, if we get a reference to this object, we can modify its value. This is why having a constant pointer does not mean having a constant referred. Be aware of this!
+
+## Advanced concepts
+
+Here is a transitional chapter between the end of object-oriented programming and deeper concepts of SilverNight like errors, pointers or packages. The notions we will see here may not be used in every single program, be they can still be useful.
+
+### Bindings
+
+A useful concept when using libraries with a lot of resources is the _bindings_. It consists in applying an alias object on a function to extract resources in the local scope.
+
+Let's imagine we have an `engine` class instance with a `run` function, which takes as an argument a function. This game engine runs the function but it also wants to provide a huge number of functions to manage the scene, the collisions, the geometry, the physics, etc.
+
+A first solution would be to provide them each one after another as an argument. But this would result in a lambda with thousands of arguments, so that's not a good idea, even with the ICT (because we still have to write the argument's name and order).
+
+Another solution would be to make a structure with functions in it, like:
+
+```sn
+struct EngineFunctions {
+  init = engine.init;
+  createScene = engine.createScene;
+  getScene = engine.getScene;
+  /* ... and so on */
+}
+
+val functions: EngineFunctions;
+```
+
+This works but involves to create a large structure, and then make an object with it, then give it as an argument. Putting aside the fact it is really heavy, all the functions would need to be called with `functions.init()`, `functions.createScene()` etc. which is long to write and heavy too if we call them multiple times. Plus, there's no difference between writing `engine.init()` or `engine.createScene()`.
+
+That's where we use bindings. Bindings act like plain structure that links a name to a resource. Let's take an example:
+
+```sn
+func run (callback: func #bind
+  {
+    printInConsole: "println!",
+    sayHello: "println!(\"Hello \" + ${1})",
+    sayHappyBirthday: "println!('Happy birthday ' + ${1} + ' you are now ' + ${2} + ' years old!')"
+  })
+  => callback();
+```
+
+Here, `myBindings` generates several links.
+
+* The first one simply aliases `println!` as `printInConsole`, s we can do `printInConsole("Hello")`.
+* The second one uses `${1}` in its body, so it acts as a function and takes one, and only one argument, that cannot be omitted. Doing `sayHello("Jack")` will result in `println!("Hello" + "Jack")`.
+* The third one acts like the first one, but with two arguments. So writing `sayHappyBirthday("Jack", 28)` will result in `println!('Happy birthday ' + 'Jack' + ' you are now ' + 20 + ' years old!')`. Thanks to typecasting, `20` will be understood to `"20"`.
+
+So, we can use the `run` function like this:
+
+```sn
+run(() => {
+  #bind;
+
+  printInConsole("Hello, world!");
+  sayHello("Jack");
+  happyBirthday("Jack", 28);
+});
+```
+
+This will work as expected, even if the three functions we use in the callback don't really exist but are part of the bindings object. Note that `#bind` directive at the beginning of the callback: it means we know a bindings object will be applied to it and that we accept it. This is needed because bindings can also rewrite the native functions/macros, so the program needs to be sure we really want to perform the binding.
+
+#### Using a declared bindings object
+
+Because writing bindings is heavy in a function's signature (like we saw), and because we may want to re-use bindings several times, we can declare the bindings as an object to use them later. The bindings object is a plain structure linking a string (the name) to another string (the resource). Here is how it goes:
+
+```sn
+pln engineBindings = #makebindings {
+  printInConsole: "println!",
+  sayHello: "println!(\"Hello \" + ${1})",
+  sayHappyBirthday: "println!('Happy birthday ' + ${1} + ' you are now ' + ${2} + ' years old!')"
+};
+```
+
+This is all! We can now rewrite our `run` function:
+
+```sn
+func run (callback: func #bind engineBindings) => callback();
+```
+
+### Constrained types
+
+Sometimes we want to get restricted values from a specific type. For example, if we make a function named `treatCars` that takes a `Vehicle` instance as a parameter, we could only want to accept vehicles with four `wheels` or less.
+
+This time, because we haven't seen any feature that could achieve it, let's just see how it we could do it: with _constrained types_. Assuming we have this code:
+
+```sn
+class Vehicle {
+  public readonly wheels: int;
+  public func %construct (@wheels: int);
+}
+
+val car = new Vehicle(4);
+val motorcycle = new Vehicle(2);
+```
+
+Our function will have this look:
+
+```sn
+func treatCars (car: Vehicle with (c => c.wheels <= 4)) =>
+  println!(`This vehicle has ${car.wheels} wheels.`);
+```
+
+Here, the `with` keywords indicates a constrained type. At its left, we write the type we want to constraint, and at its right a callback (the constraint).
+
+But how does it work? This is simple: when we read the value, it acts exactly like if we didn't put a constraint on its type. But when we try to write it (assign something else), the callback will be ran with an argument, the value we are trying to assign. It could also receive a second argument, which would then be the current value of the resource. As you can see, ICT works in the constraint callback because arguments' types as well as its return type can be guessed.
+
+If we put aside the fact that writing is controlled by a callback, constrained types act **exactly** like standard types: sub-typing work with them (in the example above, writing `Vehicle` instead of its constrained version would accept it as well).
+
+Type constraints are called _type extension_, which are bidirectionaly compatible with their original type. For example, if a function asks for an `int`, we can give an `int with (c => c > 5)` instead. Also, if a function asks for an `int with (c => c < 8)`, we can give it an `int` instead (the constraint will be triggered to ensure we give a valid integer, though). Constrained types can be automatically typecasted to standard types, as well as the opposite.
+
+Here is an exemple to better understand the concept:
+
+```sn
+func treatCars (car: Vehicle with (c => c.wheels <= 4)) {
+  c = new Vehicle(2); // Works fine
+  c = new Vehicle(4); // Works fine
+  c = new Vehicle(8); // ERROR because the constraint returned `false`
+}
+
+treatCars(new Vehicle(4));
+```
+
+When the resource is written, the callback receives its value (plus the current value of the resource if it takes two arguments), and returns a boolean. If it accepts the changes, it will return `true` (in our case, this will happen only if the vehicle has four wheels or less). Else, it will return `false` and the writing will be rejected, which will result in an error.
+
+But, because of the need to match the constraint, constrained resources cannot be declared without an initialization value. Here is an example:
+
+```sn
+let car: Vehicle with (c => c.wheels is 4); // ERROR
+let car: Vehicle with (c => c.wheels is 4) = new Vehicle(4); // Works fine
+```
+
+Also, because we could want to re-use a constrained type later, the `type` keyword allows us to register:
+
+```sn
+type Car is Vehicle with (c => c.wheels is 4);
+
+let car: Car;                  // ERROR
+let car: Car = new Vehicle(2); // ERROR
+let car: Car = new Vehicle(4); // Works fine
+```
+
+### Conditional directives
+
+Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the _conditional directives_: `#if`, `#else`, `#elif`, `#end`. These directives use a boolean, like their block equivalent. Their specificity is that the code located in them will simply be removed from the source code if the condition is (or is not) filled. They can use build constants, giving the type of conversion (compilation, interpretation, transpiling), the platform (x86_64, ARM...).
+
+Here is an example:
+
+```sn
+#if PROC_ARCH is "ARM"
+  println!("This program has been compiled for ARM.");
+#end
+
+#if OS is "Windows"
+  println!("You are using a Windows system.");
+#elsif OS is "Linux"
+  println!("You are using a Linux system.");
+#elsif OS is "Darwin"
+  println!("You are using a MacOS system.");
+#end
+```
+
+That's as simple as it.
+
+### Macros
+
+Remember the very first "function" we saw in this book? Yes, this was `println!`. Why there are quotes about "function"? Because `println!` is not a function. It's a macro.
+
+But what's a macro, anyway? A macro is simply a function that replaces some parts of the code by anothers. To take, an example, `println!` will replace the arguments you give to it by `Output::println(...<your arguments>...)`.
+
+Also, macros don't have a return type, because they can return different things depending on their arguments.
+
+To understand better the concept, here is how we define a macro:
+
+```sn
+#macro sayHello($name: string) => println!(`Hello, ${$name}`);
+```
+
+Note that all macros' arguments must start with a `$` symbol. When we write the argument's name in the macro's body, it is automatically replaced by the expression we gave as an argument. Here is an example:
+
+```sn
+// Call the macro
+sayHello!("Jack");
+
+// Will produce:
+println!(`Hello, ${"Jack"}`);
+
+// Which will itself produce:
+Output::println(`Hello, Jack`);
+```
+
+As you can see, a macro is simply a way to simplify the writing of a call. It would be heavier to write `Output::println` each time we want to display something in the console, right? That's why the `println!` macro is here. And as you can guess, the `!` symbol indicates we are calling a macro and not a function (except unsafe functions, but we'll see that later).
+
+Also note that macros can use a special type for their arguments, that is not available for standard functions. It's the `#raw` type, which prevent the arguments from being checked and evaluated. For example, the following code will work fine:
+
+```sn
+// Declare the macro
+#macro sayHello($name: #raw) => println!("Hello, " + $name);
+
+// Call it
+sayHello( 'Jack' /* Hey */ );
+// This will produce:
+println!("Hello, " +  'Jack' /* Hey */ );
+```
+
+As you can see, even the spaces are kept in `$name`. Note that every macro argument can also be stringified:
+
+```sn
+// Declare the macro
+#macro test($text: #raw) => #string($text);
+
+// Call it
+println!(test( 'Jack "Yeah" `Some quotes`'  ));
+// This will produce:
+println!(" 'Jack \"Yeah\" `Some quotes`'  ");
+```
+
+There is also a type for plain constants (also called literals, like `2` or `"Hello"`, but not `myVariable`):
+
+```sn
+// Declare the macro
+#macro test($name: #pln<int>) => println!($name);
+
+// Call it
+test('Hello');
+// This will produce:
+println!('Hello');
+```
+
+There is also a type to ask specifically for an assignable entity (variables and constants):
+
+```sn
+// Declare the macro
+#macro test($name: #var) =>
+  println!(`${$name} is an assignable entity`);
+
+// Declare a constant
+val hello = "World";
+
+// Declare a structure
+struct Hero {}
+
+// Call it
+test!(hello); // Prints: "hello is an assignable entity"
+test!(notfound); // ERROR because `notfound` does not exist
+test!(Hero); // ERROR because `Hero` is not an assignable entity
+```
+
+Note that `#var` can be templated, like `#var<string>` to accept any assignable entities with `string` type.
+
+Another type we can use is `#name`: it forces to use a valid entity name, but does not check if it exists. It can be especially useful if we want to make some declarations:
+
+```sn
+#macro make_vehicles($name: #name) => val $name: List<Vehicle>;
+
+// Writing this:
+make_vehicles(hello);
+// Will produce:
+val hello: List<Vehicle>;
+```
+
+There are is last type for macros: `#noptr<T>`. It only accepts assignable entities, like `#raw`, but refuses pointers. Like `#raw`, it can be written without its template to accept any type. This is a specialized macro you probably won't encounter very often, but it's here if you need them.
+
+_Tip :_ If you absolutely require a pointer in a macro, simply use the `&` symbol like functions. For pointer assignable entities, use `*$pointer: #var<T>`.
+
+To conclude, simply remember that every function signature (with `#macro` replacing `func`) is a valid macro signature, but that a macro can also use additional features like the `#var` directive.
+
+### Unsafe functions
+
+Unsafe functions are declared like macros, except they are called like standard functions and therefore won't replace their own call by another content. To be exact, when they are called their content replaces their call but in a transparent way. Let's see it:
+
+```sn
+unsafe func sayHello! (name: string) {
+  println!(name);
+}
+
+sayHello!("Yeah");
+```
+
+The first thing we can see here is the use of the `unsafe` keyword, which indicates the following function is unsafe. The function is then called using the `!` symbol after its name, as for macros. And, as for macros, they don't have a return type.
+
+In unsafe functions, arguments are real assignable entities, so they can be used as it, like a standard functions' arguments. Although, their type is a simple constraint, which means their only purpose is to directly throw an error when they are called with the wrong arguments and produce a good documentation. But, they are not attached to the arguments themselves. For example, the following code works:
+
+```sn
+unsafe func add! (left: Primitive, right: Primitive) {
+  return left + right;
+}
+
+println!(add!(2, 5)); // Prints: "7"
+```
+
+In this example, `add!` returned an `int` and both `left` and `right` were `int`s too. The `Any` type is only here to indicate the function takes two primitive, but in reality they have a more precise type than it.
+
+When the function is called, its content is directly evaluated, as for macros. The main difference comes from the fact when an error occurs in an unsafe function (like an incompatible type or something), the error will be located in the function's body, not in the code's body. Considering the following function:
+
+```sn
+// A sample function
+func takeAnInt (ent: int) {}
+```
+
+Here is how it goes with macros:
+
+```sn
+#macro sayHello(name: string) => println!(name); \
+  takeAnInt(name);
+
+sayHello!("Yoh"); // Line 4
+```
+
+The error is thrown at line 5. Why? Simply because the call to `sayHello!` is replaced to the macro's content, so the evaluated content is in reality:
+
+```sn
+#macro sayHello(name: string) => println!(name); \
+  takeAnInt(name);
+
+println!(name); // Line 4
+takeAnInt(name); // Line 5
+```
+
+Here is the same thing with unsafe functions:
+
+```sn
+unsafe func sayHello! (name: string) {
+  println!(name);
+  takeAnInt(name); // Line 3
+}
+
+sayHello!("Yoh"); // Line 6
+```
+
+The error is now throw at line 3. Even though the unsafe function's content is instantly evaluated, errors are reported following the function's location. This is one the main points of unsafe functions, in fact.
+
+As unsafe functions are _functions_, they can also be part of a class. When so, `this`, `self` and `super` will automatically refer to the same targets than a standard function.
+
+Also, because arguments are not directly replaced by their content, so errors will not tell that `takeAnInt("Yoh")` is an invalid call (this is what happens using the above macro), but that `takeAnInt(name)` is an invalid call because `name` is typed as a `string`.
+
+Be aware of the fact that, because unsafe functions are _functions_, they may not have access to the scope they are called from. Their scope remains the same than for a standard function. For example, the following example would not work:
+
+```sn
+unsafe func inc! () {
+  counter += 1; // Line 2
+}
+
+let counter = 0;
+inc! (); // Error at line 2 (undefined 'counter')
+```
+
+Otherwise, unsafe functions act like as standard functions with a checking done each time they are called, and only when so (like type checking, type inference, etc.).
+
+### Dynamic typecasting
+
+A problem we often encounter with the `Any` type is when we want to use some properties of its real type. For instance, let's take the following code:
+
+```sn
+let data: Any;
+
+func register (new_data: Any) => data = new_data;
+
+func doubleRegister () -> int {
+  // Multiply the register by 2 and return the result
+}
+```
+
+Here, we don't know how to write the `doubleRegister()` function because we know we can't multiply an `Any` instance by 2. In order to solve this, we use _dynamic typecasting_:
+
+```sn
+func doubleRegister () -> int {
+  return *(cast!<int>(&data)) * 2;
+}
+```
+
+What happens here? We simply _dynamically_ convert `data` to an `int` and got a pointer to the value. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. This uses the sub-typing scheme: if the real type of `data` is `int` or one of its children classes, it'll work, else it'll return a `NULL` pointer:
+
+```sn
+func multiplyByTwo (num: *Any) -> int {
+  let casted: * = cast!<int>(num); // *int
+
+  if (casted is NULL) {
+    println!("An integer was expected");
+    return -1;
+  } else
+    return *casted * 2;
+}
+
+multiplyByTwo (fly_ptr!(2)); // Works
+multiplyByTwo (fly_ptr!("Hello")); // ERROR
+```
+
+Dynamic typecasting is especially useful when coupled with the `instanceof` operator, which checks if a value is instance of a given class. Here is how it goes:
+
+```sn
+func doubleRegister () -> int {
+  if (data instanceof int)
+    return *(cast!<int>(&data)) * 2;
+  else {
+    println!("The provided data is not an integer.");
+    return 0;
+  }
+}
+```
+
+Also, as `cast!` takes a pointer, it respects its state: if a constant pointer is gave, it returns a constant pointer, else it returns a mutable pointer.
+
+The point of getting a pointer from the casted value is to reflect all changes we could make on the casted value on the original resource. For example:
+
+```sn
+// Declare a number as 'Any'
+let i: Any = 2;
+// Cast it to an 'int'
+let j: *mut int = cast!<int>(&mut i);
+
+// Modify the casted value
+*j = 8;
+
+// Cast a new time the original value to print it
+println!(cast!<int>(&i)); // Prints: "8"
+```
+
+### Superoverloads
+
+Superoverloads are overloads that don't act only as a class level, but as the whole program's level. Some of them work with some concepts we haven't seen yet, so we'll only see operators superoverloads.
+
+How do they work? That's simple: each operator superoverload overwrites the behaviour of an operator, but globally. For example, defining a `%plus` function globally will act in the whole program. The point is mainly to implement operators on classes that don't implement it natively, plus to allow assignments from the right: when overloading the `+` operator in a class with `%plus(cmp: int)`, for example, it will only support operations with the form `myInstance + 2` but not `2 + myInstance`. Superoverloads allow to reverse it:
+
+```sn
+class MyClass {
+  public readonly value: int;
+  public func %construct (@value: int) {}
+  public func %plus (cmp: int) -> int {
+    return @value + cmp;
+  }
+}
+
+func %plus (cmp: int, inst: MyClass) -> int {
+  return inst + cmp; // Use the implemented superoverload
+}
+```
+
+Otherwise, operators superoverloads work exactly as operators overloads for classes, though globally.
+
+### The reduction directive
+
+Sometimes we want a function to take as an argument a callback that could not be a reduced lambda, as well as its arguments, in order to be able to call it later.
+
+Problem is: there is no type to catch every existing function. We would have to use the `Any` type, that opens the door to non-function types. So, we wouldn't be able to call the function later. The second problem is that our arguments would have to be an array of `Any`, so the builder would reject the call to the callback because arguments' type would not fit the `Any` type.
+
+The solution to this problem is to use the `#reduced` directive. Used as the type of a single argument, it allows to call a function with the callback and all of its arguments. Then, the argument is turned into a reduced lambda that can be called without worrying about arguments. To make this more clear, let's take an example:
+
+```sn
+func repeatedCall (callback: #reduced, times: int) {
+  // Do some amazing stuff here
+  for i in 0..times {
+    callback();
+  }
+}
+
+repeatedCall (
+  lambda (name: string) -> void { println!(name); },
+  "Jack ",
+  2
+); // Prints: "Jack Jack "
+```
+
+Here, `callback` is a reduced function that can be called without any arguments. When it's called, the program will transparently call the real callback, which takes one argument, and gives it the name we gave in the call to `repeatedCall()`. Then, next arguments can be used for something else, like the `times` argument.
+
+Note that, because the callback hadn't a specific signature in the `repeatedCall`'s declaration, its arguments' type as well as its return type couldn' tbe guessed, so they must be provided.
+
+It's also possible to ask for a specific return type in a returned function:
+
+```sn
+func summation (callback: #reduced -> int, times: int) -> int {
+  let sum = 0;
+
+  for i in 0..times {
+    sum += callback();
+  }
+
+  return sum;
+}
+```
+
+As you can guess, `#reduced` is an equivalent to `#reduced -> void`. In fact, `#reduced` is simply an equivalent to `func(...anything...)`, so it's even possible to write:
+
+```sn
+func summation (callback: unsafe #reduced -> int, times: int) -> int {
+  let sum = 0;
+
+  for i in 0..times {
+    sum += callback();
+  }
+
+  return sum;
+}
+```
+
+A last use is when we want to be able to give some data to the callback, so we want to require it having some arguments. Here is an examplpe:
+
+```sn
+func summation (callback: #reduced (num: int) -> int, times: int) -> int {
+  let sum = 0;
+
+  for i in 0..times {
+    sum += callback(i);
+  }
+
+  return sum;
+}
+
+println!(summation(
+  // The callback
+  lambda (num: int, coeff: int) -> int { return num * coeff; },
+  // Its only argument (`coeff`)
+  3
+)); // Prints: "18"
+```
+
+As we can see here, the callback's argument required in the `summation`'s signature must be placed at the very beginning of the callback's arguments. We couldn't have written `lambda (coeff: int, num: int) -> int` for example.
 
 ## Packages
 
