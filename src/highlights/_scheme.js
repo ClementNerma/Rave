@@ -332,12 +332,12 @@ scheme = {
         ],
         [
           // Function call with template
-          /\b([a-zA-Z_][a-zA-Z0-9_\$]*)(?=<.*>\s*\()/,
+          /\b([a-zA-Z_][a-zA-Z0-9_\$]*)(?=\s*<.*>\s*\()/,
           'blue'
         ],
         {
           // Template usage
-          begin: /\b([a-zA-Z_][a-zA-Z0-9_\$]*)(<)/,
+          begin: /\b([a-zA-Z_][a-zA-Z0-9_\$]*)(\s*<)/,
           beginCaptures: {
             '1': {
               name: '${yellow}'
