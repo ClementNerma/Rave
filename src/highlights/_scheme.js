@@ -307,8 +307,13 @@ scheme = {
         ],
         [
           // Entity's name
-          /\b(struct|class|type|dict|namespace|trait|interface)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(struct|class|type|dict|trait|interface)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'yellow'
+        ],
+        [
+          // Namespace declaration
+          /\b(namespace)\s+([a-z_][a-zA-Z0-9_\$]*)\b/,
+          'purple', 'green'
         ],
         [
           // Match variable (_)
