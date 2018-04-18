@@ -331,11 +331,6 @@ scheme = {
           'purple', 'blue'
         ],
         [
-          // Function call with template
-          /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*<.*>\s*\()/,
-          'blue'
-        ],
-        [
           // Arrow function
           /(=>)/,
           'purple'
@@ -536,7 +531,7 @@ scheme = {
         ],
         [
           // Functions call
-          /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*\()/,
+          /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*\(|\s*<.*>\s*\()/,
           'blue'
         ],
         [
