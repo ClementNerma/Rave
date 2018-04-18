@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.23.3',
+    VERSION: '0.23.4',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -527,6 +527,11 @@ scheme = {
         [
           // Macros call
           /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)\!(?=\s*\()/,
+          'cyan'
+        ],
+        [
+          // Native functions' call
+          /\b(min|max|sum|free|freeze|clone|serialize|unserialize|toBoolean|toFloat|toString|toNumber|toPrimitive|get|set|unset|has|keys|values|random|is_ptr|cast)(?=\s*\(|\s*<.*>\s*\()/,
           'cyan'
         ],
         [
