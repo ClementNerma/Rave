@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.23.2',
+    VERSION: '0.23.3',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -307,7 +307,7 @@ scheme = {
         ],
         [
           // Entity's name
-          /\b(struct|class|type|dict|namespace|package|trait|interface)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(struct|class|type|dict|namespace|trait|interface)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'yellow'
         ],
         [
@@ -511,7 +511,7 @@ scheme = {
         ],
         [
           // Already specified keywords, written here to have partial syntax highlighting
-          /(?<!\.)\b(struct|class|type|dict|package|trait|interface|implements|extends|scope|import|from|instanceof)(?!\s*:)\b/,
+          /(?<!\.)\b(struct|class|type|dict|trait|interface|implements|extends|scope|import|from|instanceof)(?!\s*:)\b/,
           'purple'
         ],
         [
