@@ -1154,7 +1154,7 @@ for i in 0...5 {
 
 // Equivalent to
 for i = 0; i <= 5; i ++ {
-  pritnln!(i);
+  println!(i);
 }
 ```
 
