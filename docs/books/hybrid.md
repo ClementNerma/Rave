@@ -726,6 +726,19 @@ val jack = Identity {
 jack.adult = false; // ERROR
 ```
 
+#### Tuple structures
+
+Structures can declare a tuple type, to avoid writing the full tuple's definition all the time. Here is how it goes:
+
+```sn
+struct Identity (string, bool);
+
+val jack = Identity { "Jack", true };
+
+println!(jack[0]); // Prints: "Jack"
+println!(jack[1]); // Prints: "true"
+```
+
 ### Dictionaries
 
 Last but not least, let's imagine we want to associate the name of a person with its age. We want to be able to add or remove persons at anytime. A structure will of course not be adapted for this purpose. But there is a tool for this type of situations: the dictionaries. These act like arrays or lists, but this time indexes are not forced to be integers but any resource, even boolean or other dictionaries! They are of course extensible.
