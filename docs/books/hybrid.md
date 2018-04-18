@@ -3591,10 +3591,10 @@ In reality, templates are instances of a class. Consider the following code:
 func something<T> () -> void {}
 
 // Is strictly equivalent to:
-func something<T: class_ref> () -> void {}
+func something<T: class> () -> void {}
 ```
 
-This specifies the template's _type_. Here, `T` is an instance of the `class_ref` class, which is a special class that refers to an existing class. But we can also specify other types:
+This specifies the template's _type_. Here, `T` is an instance of the `class` class, which is a special class that refers to an existing class. But we can also specify other types:
 
 ```sn
 func createEmptyList<T, SIZE: int> () -> T[SIZE] { /* ... */ }
