@@ -17,51 +17,14 @@ Currently, the SilverNight programming language, as well as all its resources, i
 
 SilverNight is released using a system of **stages**:
 
-### Stage 0 (name: _Scratch_) _(from Feb 19, 2018)_
-
-**State:** Beginning of the language design
-
-**Goal:** Design the language from scratch
-
-* Breaking syntax and concept updates are frequent
-* Redaction of [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html) (first version)
-* Development of the [syntax highlighting scheme](src/highlights/_scheme.js) for all themes
-
-### Stage 1 (name: _Alpha_)
-
-**State:** The syntax is mostly finished
-
-**Goal:** Improve the language by submitting it to professional and beginner developers
-
-* Development of the native library
-* The language is submitted to reviewers (profesional developers, beginners, ...)
-* Redaction of [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html) (final version)
-
-### Stage 2 (name: _Beta_)
-
-**State:** The syntax is mostly finished
-
-**Goal:** Freeze the language
-
-* Redaction of the [The Book of Concepts](https://silvernight.netlify.com/docs/book/concepts.html)
-* Freeze the language definitely
-* Freeze the native library definitely
-
-### Stage 3 (name: _Stable_)
-
-**State:** The language is frozen
-**Goal:** Make the language usable
-
-* Development of the language's builder (normalizer, lexer, parser, checker)
-
-### Stage 4
-
-**State:** The language is usable
-**Goal:** Make the language usable in all its forms
-
-* Development of an interpreter
-* Development of a compiler
-* Development of transpilers (JavaScript, Java, ...)
+| Stage no. | Release name | Version |                   Requirements for the next release                  |
+|-----------|--------------|---------|----------------------------------------------------------------------|
+|     0     | Scratch      |    -    | First version of the syntax, redact The Hybrid Book                  |
+|     1     | Alpha        |  0.1.0  | Freeze the syntax, redact again The Hybrid Book, submit to reviewers |
+|     2     | Beta         |  0.x.0  | Freeze the native library                                            |
+|     3     | Stable       |  1.0.0  | Make an analyzer (normalizer, lexer, parser, checker)                |
+|     4     | Analyzable   |  1.0.0  | Make a compiler, an interpreter, transpilers (JavaScript, ...)       |
+|     5     | Prod-ready   |  1.0.0  |                                   -                                  |
 
 ## Installation
 
