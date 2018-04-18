@@ -455,7 +455,7 @@ scheme = {
               }
             },
             {
-              match: /([a-z_][a-zA-Z0-9_\$]*)(?=\s*[,;]|\s*from)/,
+              match: /([a-z_][a-zA-Z0-9_\$]*)(?=\s*[,;]|\s*from|\s*as)/,
               captures: {
                 '1': {
                   name: '${green}'
@@ -471,7 +471,7 @@ scheme = {
               }
             }
           ],
-          end: /\s*(?=;|from)/,
+          end: /\s*(?=;|from|as)/,
           endCaptures: {}
         },
         [
