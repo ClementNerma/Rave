@@ -138,17 +138,6 @@ yarn install-extension sublime # For Sublime Text
 
 And follow the instructions that appears in your terminal.
 
-## Roadmap
-
-* Finish redacting [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html) (**active**)
-* Re-write [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html) in a better way
-* Finish [syntax highlighting scheme](src/highlights/_scheme.js) (**active**)
-* Re-write the [syntax highlighting scheme](src/highlights/_scheme.js) to support all themes (**active**)
-* Redact [The Book of Concepts](https://silvernight.netlify.com/docs/book/concepts.html)
-* Make an explicit grammar of the language
-* Make a parser
-* ...
-
 ## Contribute
 
 You can contribute by [submitting bugs](https://github.com/ClementNerma/SilverNight-draft/issues) and helping me tracking them or by [proposing some improvements](https://github.com/ClementNerma/SilverNight-draft/issues) for the language.
