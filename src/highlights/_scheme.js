@@ -327,7 +327,7 @@ scheme = {
         ],
         [
           // Function declaration
-          /\b(func|lambda)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(func)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'blue'
         ],
         [
