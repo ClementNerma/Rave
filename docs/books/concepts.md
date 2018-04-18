@@ -16,9 +16,9 @@ _NOTE :_ In order to fully understand this part, you should already know how Sil
 
 ### A global overview
 
-The toolchain is split into several modules, each with its own task. Some of them (like the builder) are themselves split into sub-modules (sometimes even more).
+The toolchain is split into several modules, each with its own task. Some of them (like the analyzer) are themselves split into sub-modules (sometimes even more).
 
-When dealing with a SilverNight source code, the toolchain will first convert it to an AST (standing for _Abstract Syntax Tree_) using the _builder_, and then check this AST and make a SRT (standing for _SilverNight Runnable Tree_) using the _checker_. Finally, after being optionally passed to the _optimizer_ to eliminate dead code and optimize the program, it will be gave to one of the _converters_: the compiler, the interpreter, or a transpiler.
+When dealing with a SilverNight source code, the toolchain will first convert it to an AST (standing for _Abstract Syntax Tree_) using the _analyzer_, and then check this AST and make a SRT (standing for _SilverNight Runnable Tree_) using the _checker_. Finally, after being optionally passed to the _optimizer_ to eliminate dead code and optimize the program, it will be gave to one of the _converters_: the compiler, the interpreter, or a transpiler.
 
 _NOTE :_ All across this book, we will often use the _trusted_ term (mostly on source code transformations).
 
@@ -58,7 +58,7 @@ Its output is a syntaxically-trusted AST.
 
 ### The checker: AST -> SRT
 
-The _checker_ comes right after the builder. It has several goals represented as tasks done in the following order:
+The _checker_ comes right after the analyzer. It has several goals represented as tasks done in the following order:
 
 * Give a good representation of an AST by clearly listing entities like functions or variables, usage of blocks, macros, etc. ;
 * Perform the four inferences (inferred typing, IST, ICT, inferred templating) ;

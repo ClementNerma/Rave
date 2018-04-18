@@ -4394,7 +4394,7 @@ Here is the signature of the native `%equal` superoverload:
 func %equal<T> (left: T, right: T) -> bool;
 ```
 
-It can compare two instances of the same class and tell if they are identical by comparing their OID. Of course, this could not be done manually because we can't access the OID, but this is a native superoverload so the builder can implement it itself.
+It can compare two instances of the same class and tell if they are identical by comparing their OID. Of course, this could not be done manually because we can't access the OID, but this is a native superoverload so the analyzer can implement it itself.
 
 One of the key-concepts of SilverNight is the OESM (Object-Entity Sharing Model) that shares equal objects across entities. To take an example, when an object is gave to a function, the object is not cloned automatically, so it keeps the same OID. That's why modifying an object inside a function will also modify the original one that was gave to it.
 
@@ -5197,7 +5197,7 @@ Otherwise, operators superoverloads work exactly as operators overloads for clas
 
 Sometimes we want a function to take as an argument a callback that could not be a reduced lambda, as well as its arguments, in order to be able to call it later.
 
-Problem is: there is no type to catch every existing function. We would have to use the `Any` type, that opens the door to non-function types. So, we wouldn't be able to call the function later. The second problem is that our arguments would have to be an array of `Any`, so the builder would reject the call to the callback because arguments' type would not fit the `Any` type.
+Problem is: there is no type to catch every existing function. We would have to use the `Any` type, that opens the door to non-function types. So, we wouldn't be able to call the function later. The second problem is that our arguments would have to be an array of `Any`, so the analyzer would reject the call to the callback because arguments' type would not fit the `Any` type.
 
 The solution to this problem is to use the `#reduced` directive. Used as the type of a single argument, it allows to call a function with the callback and all of its arguments. Then, the argument is turned into a reduced lambda that can be called without worrying about arguments. To make this more clear, let's take an example:
 
@@ -5279,7 +5279,7 @@ Asynchronous features such as promises are also very useful when dealing with mu
 
 ### The problem
 
-Some events are synchronous even though they appear to be asynchronous. For example, errors handling with the `%error` superoverload may appear to be asynchronous becacuse it is called only when an error occured, and implicitly. But in fact, it is called synchronously, because the builder turns all `throw` instructions in the code by a call to `%error` (which is not possible manually). So, `%error` is fully synchronous.
+Some events are synchronous even though they appear to be asynchronous. For example, errors handling with the `%error` superoverload may appear to be asynchronous becacuse it is called only when an error occured, and implicitly. But in fact, it is called synchronously, because the analyzer turns all `throw` instructions in the code by a call to `%error` (which is not possible manually). So, `%error` is fully synchronous.
 
 Another case is callbacks. In the following code:
 
@@ -5839,7 +5839,7 @@ println!(names.readName()); // Prints: "John"
 
 As you can see, scope imports act like standard imports but also _alias_ all entity names to link them to the package's/module's ones in the _current scope_. So, we can access without writing the package's name all its entities from the current scope - this way, it prevents polluating the global scope. Be aware though to not overwrite some existing entities, this will result in an error, like declaring two constants of the same name. Also, because multiple packages could have entities with the same name, it's discouraged to import several packages in a given scope.
 
-Note the builder transparently adds the following line to all programs (at their beginning, so it's located in the global scope):
+Note the analyzer transparently adds the following line to all programs (at their beginning, so it's located in the global scope):
 
 ```sn
 scope import frontend::native;
