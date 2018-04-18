@@ -5273,6 +5273,74 @@ println!(summation(
 
 As we can see here, the callback's argument required in the `summation`'s signature must be placed at the very beginning of the callback's arguments. We couldn't have written `lambda (coeff: int, num: int) -> int` for example.
 
+### Macros
+
+Remember when we saw `println!` at the beginning? We told that it was a _macro_. And it's now time to see what's this!
+
+Macros, as their alternative name _preprocessor functions_ indicates, are functions. And as functions, they take argument, define a return type, as well as a body.
+
+Still, macros have a double specificity (in addition to the fact we write a `!` after their name to call them). First, their content is evaluated only when they are called. Secondly, type checking is done only at this time.
+
+What does that mean? Well, let's take an example:
+
+```sn
+func sayHello (name: Any) -> void {
+  println!(name);
+}
+
+macro sayHello (name: Any) -> void {
+  println!(name);
+}
+
+sayHello("John"); // ERROR
+sayHello!("John"); // Works
+```
+
+The first call fails while the second works. Why? In the first call, we use a standard function which provides an `Any` to `println!`, which only accepts `Primitivable` values. So, it fails.
+
+But in the second one, the call to `sayHello!` is replaced by the macro's content, just like that:
+
+```sn
+sayHello!("John");
+
+// The evaluated content will be:
+{
+  val name: string = "John";
+  println!(name);
+}
+```
+
+In macros, arguments' type is only an _indicator_, it simply tells the accepted type. But, when the function is compiled, its real type (which is `string`) is used instead of this indicator. This means that `name` is, here, a `string` and not an `Any`.
+
+That's where macros shine: they provide a way to accept all kind of arguments and use them depending on their real type, thanks to types being checked only at usage.
+
+Our `sayHello!` macro _could be_ invalid in some cases, but because type checking is performed only at calls, it won't be reported at invalid. That's as simple as that.
+
+Be aware though: macros' scope are the same as for standard functions. That means, if they are declared in a class for example, they will be able to use `this` or `self`. This also means they won't be able to access the scope from where they are called (like standard functions). Let's take an example:
+
+```sn
+class Hello {
+  private static name = "Hello";
+
+  public static macro printName() {
+    println!(@name);
+  };
+
+  public static macro printLocal() {
+    println!(local);
+  }
+}
+
+{
+  val local_name = "Hello !";
+
+  Hello::printName(); // Prints: "Hello"
+  Hello::printLocal(); // ERROR because 'local_name' is not defined
+}
+```
+
+Here, macros are able to access their declaration scope (the scope of `Hello`) plus their own scope (remember, functions have a reserved scope delimited by their brackets), but they aren't able to access the local scope in which we define a `local_name` constant.
+
 ## Asynchronous behaviour
 
 Sometimes we can't foretell when an even will occur. For example, if we are making a web server, we can't predict the incoming connections. But we still have to handle these events, and in order to do that we use _asynchronous_.
