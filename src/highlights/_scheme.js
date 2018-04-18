@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.23.6',
+    VERSION: '0.23.7',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -410,7 +410,7 @@ scheme = {
         ],
         [
           // 'instanceof' operator (special types)
-          /\b(instanceof)\s+(void|self|Any|class_ref|func_ref|var_ref|macro_ref|lambda|T|X|Y|Z|K|V)\b/,
+          /\b(instanceof)\s+(void|self|Any|func_ref|var_ref|macro_ref|lambda|T|X|Y|Z|K|V)\b/,
           'purple', 'purple'
         ],
         [
@@ -486,7 +486,7 @@ scheme = {
         ],
         [
           // Special native types
-          /(?<!\.)\b(void|self|Any|class_ref|func_ref|var_ref|macro_ref|lambda|T|X|Y|Z|K|V)(?!\s*:)\b/,
+          /(?<!\.)\b(void|self|Any|func_ref|var_ref|macro_ref|lambda|T|X|Y|Z|K|V)(?!\s*:)\b/,
           'purple', 'cyan'
         ],
         [
