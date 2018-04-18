@@ -5791,7 +5791,7 @@ We can also use an alias to get only a module:
 import name_manager::names as names;
 
 names.defineName("John");
-println!(names::readName()); // Prints: "John"
+println!(names.readName()); // Prints: "John"
 ```
 
 Here, we only import the `names` module and alias it as `names`, so we don't have to write `name_manager::names` each time. Therefore, we still have a `name_manager` object available in our example, because we imported a part of the `name_manager` package anyway. But thanks to the alias, we don't have to write `name_manager::names` anymore.
