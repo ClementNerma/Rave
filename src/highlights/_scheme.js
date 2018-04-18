@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.23.4',
+    VERSION: '0.23.5',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -525,9 +525,9 @@ scheme = {
           'cyan'
         ],
         [
-          // Native functions' call
-          /\b(min|max|sum|free|freeze|clone|serialize|unserialize|toBoolean|toFloat|toString|toNumber|toPrimitive|get|set|unset|has|keys|values|random|is_ptr|cast|try_cast|fly_ptr|fly_mut_ptr|nullable|strict)(?=\s*\(|\s*<.*>\s*\()/,
-          'cyan'
+          // Native function
+          /\b(min|max|sum|free|freeze|clone|serialize|unserialize|toBoolean|toFloat|toString|toNumber|toPrimitive|get|set|unset|has|keys|values|random|is_ptr|cast|try_cast|fly_ptr|fly_mut_ptr|nullable|strict)(\!)/,
+          'cyan', 'cyan'
         ],
         [
           // Functions call
