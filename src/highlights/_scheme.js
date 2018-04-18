@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.23.8',
+    VERSION: '0.24.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -274,6 +274,11 @@ scheme = {
           // Lazy overloads
           /\b(public)\s+(pln)\s+(%)(lazy_(?:clone|serialize|unserialize|serial_fields))(?=\s*=)/,
           'purple', 'purple', 'red', 'cyan'
+        ],
+        [
+          // Declaration statement in classes for macros
+          /\b(public|protected|private)\s+(static\s+)?(async\s+)?(iter\s+)?(macro)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          'purple', 'purple', 'purple', 'purple', 'purple', 'orange'
         ],
         [
           // Declaration statement in classes for constants (plain or not)
