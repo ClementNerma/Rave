@@ -526,7 +526,7 @@ scheme = {
         ],
         [
           // Native functions' call
-          /\b(min|max|sum|free|freeze|clone|serialize|unserialize|toBoolean|toFloat|toString|toNumber|toPrimitive|get|set|unset|has|keys|values|random|is_ptr|cast)(?=\s*\(|\s*<.*>\s*\()/,
+          /\b(min|max|sum|free|freeze|clone|serialize|unserialize|toBoolean|toFloat|toString|toNumber|toPrimitive|get|set|unset|has|keys|values|random|is_ptr|cast|try_cast|fly_ptr|fly_mut_ptr|nullable|strict)(?=\s*\(|\s*<.*>\s*\()/,
           'cyan'
         ],
         [
