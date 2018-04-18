@@ -5199,7 +5199,7 @@ Sometimes we want a function to take as an argument a callback that could not be
 
 Problem is: there is no type to catch every existing function. We would have to use the `Any` type, that opens the door to non-function types. So, we wouldn't be able to call the function later. The second problem is that our arguments would have to be an array of `Any`, so the analyzer would reject the call to the callback because arguments' type would not fit the `Any` type.
 
-The solution to this problem is to use the `#reduced` directive. Used as the type of a single argument, it allows to call a function with the callback and all of its arguments. Then, the argument is turned into a reduced lambda that can be called without worrying about arguments. To make this more clear, let's take an example:
+The solution to this problem is to use the `#reduced` directive. Used as the type of a single argument, it allows to call a function with the callback and all of its arguments, as a tuple. Then, the argument is turned into a reduced lambda that can be called without worrying about arguments. To make this more clear, let's take an example:
 
 ```sn
 func repeatedCall (callback: #reduced, times: int) {
@@ -5210,8 +5210,7 @@ func repeatedCall (callback: #reduced, times: int) {
 }
 
 repeatedCall (
-  lambda (name: string) -> void { println!(name); },
-  "Jack ",
+  (lambda (name: string) -> void { println!(name); }, "Jack "),
   2
 ); // Prints: "Jack Jack "
 ```
@@ -5262,10 +5261,13 @@ func summation (callback: #reduced (num: int) -> int, times: int) -> int {
 }
 
 println!(summation(
-  // The callback
-  lambda (num: int, coeff: int) -> int { return num * coeff; },
-  // Its only argument (`coeff`)
-  3
+  // The reduced function's tuple
+  (
+    // The callback
+    lambda (num: int, coeff: int) -> int { return num * coeff; },
+    // Its only argument (`coeff`)
+    3
+  )
 )); // Prints: "18"
 ```
 
