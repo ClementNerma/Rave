@@ -247,7 +247,7 @@ scheme = {
         ],
         [
           // Class references
-          /\b(this|self|super)\b/,
+          /\b(this|super)\b/,
           'yellow'
         ],
         [
