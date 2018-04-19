@@ -2631,6 +2631,8 @@ But there is a problem here: first, the string is not optimized. One of the goal
   // ...
 ```
 
+Note that not-assignable entities (like structures) are considered as constants when declared as a class' member. So, it's impossible to do something like `Product.Serialized = anotherStruct`.
+
 #### The lazy way (again)
 
 Exactly like cloning, there is a lazy overload for serialization. More exactly, there are two lazy overloads: one for serializing, and another for unserializing.
