@@ -2617,14 +2617,14 @@ But there is a problem here: first, the string is not optimized. One of the goal
     // Make an object containing the data we want to serialize
     // (thanks to IST)
     // Then serialize it and return the result
-    serialize!({
+    serialize!(@Serialize {
       name: @name,
       price: @price
     });
 
   public static func %unserialize (serial: string) -> self {
     // Unserialize the serialized structure
-    val obj: Serialized = unserialize!(serial, Serialized);
+    val obj: @Serialized = unserialize!(serial, @Serialized);
     // Make a new product instance and return it
     return new Product(@name, @price);
   }
