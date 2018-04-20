@@ -671,7 +671,7 @@ scheme = {
         ],
         [
           // Type names
-          /\b([A-Z][a-zA-Z0-9_\$]*)\b/,
+          /\b([A-Z][a-zA-Z0-9_\$]*)(?!\s*:)\b/,
           'yellow'
         ],
       ]
