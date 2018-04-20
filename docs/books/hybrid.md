@@ -4805,6 +4805,8 @@ dynamic_cast!<B>(new A()); // Returns NULL
 dynamic_cast!<B>(new B()); // Returns a 'B'
 ```
 
+Be aware though, while `cast!<T>` is fast, `dynamic_cast!<T>` is a lot slower because it also converts the instance to an instance of another class.
+
 ### Impact on scope dropping
 
 When a reference is created on an entity, the entity will not be dropped until the reference is dropped too. So, if the reference is created and isn't in use by another scope, the value will be dropped at the end of the scope it belongs to. But, if a reference is created and is in use in another scope at the end of the current scope, the entity will not be dropped as a reference still targets it.
