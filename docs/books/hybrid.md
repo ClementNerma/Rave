@@ -4791,6 +4791,20 @@ let j: *mut int = cast!<int>(&mut i);
 println!(cast!<int>(&i)); // Prints: "8"
 ```
 
+### Dynamic typecasting
+
+An alternative to `cast!<T>` is the `dynamic_cast!<T>` macro. It works the same way, except it uses the sub-typing scheme: if the real type of the provided data is the template or one of its children classes, it'll work, else it'll return a `NULL` pointer. Here is an example:
+
+```sn
+class A {}
+class B extends A {}
+
+dynamic_cast!<A>(new A()); // Returns a 'A'
+dynamic_cast!<A>(new B()); // Returns a 'A'
+dynamic_cast!<B>(new A()); // Returns NULL
+dynamic_cast!<B>(new B()); // Returns a 'B'
+```
+
 ### Impact on scope dropping
 
 When a reference is created on an entity, the entity will not be dropped until the reference is dropped too. So, if the reference is created and isn't in use by another scope, the value will be dropped at the end of the scope it belongs to. But, if a reference is created and is in use in another scope at the end of the current scope, the entity will not be dropped as a reference still targets it.
