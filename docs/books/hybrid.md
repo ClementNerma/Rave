@@ -4711,11 +4711,11 @@ This behaviour is due to the fact all pointers all nullable. A pointer to an `in
 
 ### Cautious typecasting
 
-The `try_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `NULL` if it fails, without throwing an error. Its return type is nullable, like in this example:
+The `safe_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `NULL` if it fails, without throwing an error. Its return type is nullable, like in this example:
 
 ```sn
-val works  = try_cast!<int>(fly_mut_ptr! (2)); // *mut int? -> &mut (nullable!(2))
-val doesnt = try_cast!<int>(fly_mut_ptr! ("Hey")); // *mut int? -> NULL
+val works  = safe_cast!<int>(fly_mut_ptr! (2)); // *mut int? -> &mut (nullable!(2))
+val doesnt = safe_cast!<int>(fly_mut_ptr! ("Hey")); // *mut int? -> NULL
 
 println!(works is 2);     // Prints: "true"
 println!(doesnt is null); // Prints: "true"
