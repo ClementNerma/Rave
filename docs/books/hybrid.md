@@ -387,7 +387,7 @@ The logical operators are:
 * `>=` (greater than or equal to)
 * `<=` (less than or equal to)
 * `==` (equal to)
-* `!=` (not equal of)
+* `!=` (not equal to)
 * `nand` (not and)
 * `nor` (not or)
 * `xor` (exclusive or)
