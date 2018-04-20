@@ -4709,18 +4709,6 @@ println!(i); // Prints: "2"
 
 This behaviour is due to the fact all pointers all nullable. A pointer to an `int` resource will be implicitly typed as `int?`, even though the pointed resource has a different type. This allows to use the `NULL` pointer which works both with constant and mutable pointers.
 
-### Cautious typecasting
-
-The `safe_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `NULL` if it fails, without throwing an error. Its return type is nullable, like in this example:
-
-```sn
-val works  = safe_cast!<int>(fly_mut_ptr! (2)); // *mut int? -> &mut (nullable!(2))
-val doesnt = safe_cast!<int>(fly_mut_ptr! ("Hey")); // *mut int? -> NULL
-
-println!(works is 2);     // Prints: "true"
-println!(doesnt is null); // Prints: "true"
-```
-
 ### Dynamic typecasting
 
 A problem we often encounter with the `Any` type is when we want to use some properties of its real type. For instance, let's take the following code:
@@ -4801,6 +4789,18 @@ let j: *mut int = cast!<int>(&mut i);
 
 // Cast a new time the original value to print it
 println!(cast!<int>(&i)); // Prints: "8"
+```
+
+### Cautious typecasting
+
+The `safe_cast!` function is an alternative to `cast!`. It **tries** to cast a value to the provided type, and returns `NULL` if it fails, without throwing an error. Its return type is nullable, like in this example:
+
+```sn
+val works  = safe_cast!<int>(fly_mut_ptr! (2)); // *mut int? -> &mut (nullable!(2))
+val doesnt = safe_cast!<int>(fly_mut_ptr! ("Hey")); // *mut int? -> NULL
+
+println!(works is 2);     // Prints: "true"
+println!(doesnt is null); // Prints: "true"
 ```
 
 ### Impact on scope dropping
