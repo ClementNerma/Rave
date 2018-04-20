@@ -4744,8 +4744,8 @@ func multiplyByTwo (num: *Any) -> int {
     return *casted * 2;
 }
 
-multiplyByTwo (fly_ptr!(2)); // Works
-multiplyByTwo (fly_ptr!("Hello")); // ERROR
+multiplyByTwo (fly_ptr!(2)); // Returns: 4
+multiplyByTwo (fly_ptr!("Hello")); // Returns: -1
 ```
 
 Dynamic typecasting is especially useful when coupled with the `instanceof` operator, which checks if a value is instance of a given class. Here is how it goes:
