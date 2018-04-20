@@ -4799,10 +4799,10 @@ An alternative to `cast!<T>` is the `dynamic_cast!<T>` macro. It works the same 
 class A {}
 class B extends A {}
 
-dynamic_cast!<A>(new A()); // Returns a 'A'
-dynamic_cast!<A>(new B()); // Returns a 'A'
-dynamic_cast!<B>(new A()); // Returns NULL
-dynamic_cast!<B>(new B()); // Returns a 'B'
+dynamic_cast!<A>(new A()); // Returns a *mut A
+dynamic_cast!<A>(new B()); // Returns a *mut A
+dynamic_cast!<B>(new A()); // Returns a *mut void
+dynamic_cast!<B>(new B()); // Returns a *mut B
 ```
 
 Be aware though, while `cast!<T>` is fast, `dynamic_cast!<T>` is a lot slower because it also converts the instance to an instance of another class.
