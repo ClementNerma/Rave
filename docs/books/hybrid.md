@@ -4731,7 +4731,7 @@ func doubleRegister () -> int {
 }
 ```
 
-What happens here? We simply _dynamically_ convert `data` to an `int` and got a pointer to the value. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. This uses the sub-typing scheme: if the real type of `data` is `int` or one of its children classes, it'll work, else it'll return a `NULL` pointer:
+What happens here? We simply _dynamically_ convert `data` to an `int` and got a pointer to the value. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. The process is simple: if `num` is in reality an `int`, it converts it ; else it returns the `NULL` pointer.
 
 ```sn
 func multiplyByTwo (num: *Any) -> int {
