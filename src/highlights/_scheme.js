@@ -266,11 +266,6 @@ scheme = {
           'cyan'
         ],
         [
-          // Other types
-          /(?<!:)(:)\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
-          'cyan', 'yellow'
-        ],
-        [
           // Lazy overloads
           /\b(public)\s+(pln)\s+(%)(lazy_(?:clone|serialize|unserialize|serial_fields))(?=\s*=)/,
           'purple', 'purple', 'red', 'cyan'
