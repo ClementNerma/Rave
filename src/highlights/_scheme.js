@@ -409,14 +409,9 @@ scheme = {
           'purple', 'green', 'white', 'green'
         ],
         [
-          // 'instanceof' operator (special types)
-          /\b(instanceof)\s+(void|self|Any|lambda|T|X|Y|Z|K|V)\b/,
-          'purple', 'purple'
-        ],
-        [
           // 'instanceof' operator
-          /\b(instanceof)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
-          'purple', 'yellow'
+          /\s+(instanceof)\s+/,
+          'purple'
         ],
         [
           // IMPORT macro call (closed or not)
