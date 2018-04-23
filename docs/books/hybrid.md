@@ -78,7 +78,7 @@ println!(/* Even in the middle of a line */ "Hello");
 
 #### Displaying values
 
-We can display values to your terminal (called _output_) by using the `println!` macro (we'll see what is a macro later in this book).
+We can display values to your terminal (called _output_) by using the `println!` flex (we'll see what is a flex later in this book).
 
 ```sn
 println!("Hello !");
@@ -1404,7 +1404,7 @@ for i in 1..10 {
 }
 ```
 
-This code will check each time if there had an error. If so, it will ignore all instructions above `continue` and iterate the loop a new time. Else, it will run the `println!` macro, just as expected.
+This code will check each time if there had an error. If so, it will ignore all instructions above `continue` and iterate the loop a new time. Else, it will run the `println!` flex, just as expected.
 
 ### Entities are block-scoped
 
@@ -2422,7 +2422,7 @@ When dealing with heavy objects, or simply when using a low-level languages, dev
 
 A resource can be freed several ways. The first one is with the _garbage collector_, a little tool that detects what resource isn't used anymore and free it because it knows it won't be used anymore. This is done automatically in JavaScript or Python for example, two interpreted high-level languages. Languages such as Rust have other tools instead that does the same thing, but that insert a piece of code to free the resource when compiling the source code. Some other languages, finally, like C or C++, doesn't have this feature and resources must be freed manually.
 
-In our case, the destructor is called when the instance is manually freed, using the `free!` macro. Here is how it looks like:
+In our case, the destructor is called when the instance is manually freed, using the `free!` flex. Here is how it looks like:
 
 ```sn
 class IntArray {
@@ -3191,7 +3191,7 @@ The `%toString` overload will simply return a string if **any** typecasting over
 
 **NOTE :** `Number` is the mother class of both `int` and `float`, themselves respectively mothers of all integers types like `uint8` or `int32` for the first one and floating-points types like `ufloat` or `double` for the second one.
 
-A concrete example of using these overloads is when using the `println!` macro. It takes as an argument any instance implementing `%toPrimitive`, gets this overload's result, and prints it in the output. There are several usages of it, but most are to use them in interfaces and traits.
+A concrete example of using these overloads is when using the `println!` flex. It takes as an argument any instance implementing `%toPrimitive`, gets this overload's result, and prints it in the output. There are several usages of it, but most are to use them in interfaces and traits.
 
 ### Sub-typing
 
@@ -3357,7 +3357,7 @@ interface Any {
 
 Yes, this interface is empty. Because it is empty, every single class implements it. So every class will match the requirement of implementing the `Any` interface, and we can use it in our programs!
 
-But, because it is empty, we can't use **any** member of the values we get from it. So, how could we ever need it? That's because of things like reflection we'll later, that can grant information on absolutely any type, and with some macros. But most of the time, we simply won't use it. Simply remember that if you need to accept any type of value in one of your functions for instance, this interface exists.
+But, because it is empty, we can't use **any** member of the values we get from it. So, how could we ever need it? That's because of things like reflection we'll later, that can grant information on absolutely any type, and with some flexs. But most of the time, we simply won't use it. Simply remember that if you need to accept any type of value in one of your functions for instance, this interface exists.
 
 ### Traits
 
@@ -4022,7 +4022,7 @@ This works only because both `null` implements `%toInteger()` (which returns `0`
 
 ### Nullables typecasting
 
-There's two macros available to turn a nullable value into a standard value, which is `strict!`, and another to turn a standard value into a nullable value, which is `nullable!`. Here is how they go:
+There's two flexs available to turn a nullable value into a standard value, which is `strict!`, and another to turn a standard value into a nullable value, which is `nullable!`. Here is how they go:
 
 ```sn
 val standard: int = 1;
@@ -4569,7 +4569,7 @@ let ptr1: * = fly_ptr!(2);
 let ptr2: *mut = fly_mut_ptr!(2);
 ```
 
-These macros create a new assignable entity (variable or constant) and return a reference to it so we can read and eventually write it.
+These flexs create a new assignable entity (variable or constant) and return a reference to it so we can read and eventually write it.
 
 ### Type compatibility
 
@@ -4805,7 +4805,7 @@ println!(cast!<int>(&i)); // Prints: "8"
 
 ### Dynamic typecasting
 
-An alternative to `cast!<T>` is the `dynamic_cast!<T>` macro. It works the same way, except it uses the sub-typing scheme: if the real type of the provided data is the template or one of its children classes, it'll work, else it'll return a `NULL` pointer. Here is an example:
+An alternative to `cast!<T>` is the `dynamic_cast!<T>` flex. It works the same way, except it uses the sub-typing scheme: if the real type of the provided data is the template or one of its children classes, it'll work, else it'll return a `NULL` pointer. Here is an example:
 
 ```sn
 class A {}
@@ -4841,7 +4841,7 @@ ptr = NULL; // 'i' is dropped here
 
 ### Checking a pointer
 
-It is possible to check if an entity is a pointer, thanks to the `is_ptr!` macro:
+It is possible to check if an entity is a pointer, thanks to the `is_ptr!` flex:
 
 ```sn
 let i = 0;
@@ -4999,7 +4999,7 @@ println!(i);   // Prints: "5"
 println!(ptr); // Prints: "2"
 ```
 
-Here, the `fly_ptr!` macro creates a reference to an invisible assignable entity containing an `int`. The reference is stored into a pointer called `ptr`. We then try to assign something to the referred, but because the reference stored in `ptr` is constant, this fails. Note that we could have changed the reference `ptr` contains, because the pointer itself is mutable.
+Here, the `fly_ptr!` flex creates a reference to an invisible assignable entity containing an `int`. The reference is stored into a pointer called `ptr`. We then try to assign something to the referred, but because the reference stored in `ptr` is constant, this fails. Note that we could have changed the reference `ptr` contains, because the pointer itself is mutable.
 
 Then, we depointerize `ptr` (meaning we get its reference's referred's value, which is the transparent assignable entity's value). We then assign it to a mutable called `i`, of the same `int` type, and we assign it a new number just after.
 
@@ -5085,7 +5085,7 @@ run(() => {
 });
 ```
 
-This will work as expected, even if the three functions we use in the callback don't really exist but are part of the bindings object. Note that `#bind` directive at the beginning of the callback: it means we know a bindings object will be applied to it and that we accept it. This is needed because bindings can also rewrite the native functions/macros, so the program needs to be sure we really want to perform the binding.
+This will work as expected, even if the three functions we use in the callback don't really exist but are part of the bindings object. Note that `#bind` directive at the beginning of the callback: it means we know a bindings object will be applied to it and that we accept it. This is needed because bindings can also rewrite the native functions/flexs, so the program needs to be sure we really want to perform the binding.
 
 #### Using a declared bindings object
 
@@ -5291,13 +5291,13 @@ println!(summation(
 
 As we can see here, the callback's argument required in the `summation`'s signature must be placed at the very beginning of the callback's arguments. We couldn't have written `lambda (coeff: int, num: int) -> int` for example.
 
-### Macros
+### Flexs
 
 Remember when we saw `println!` at the beginning? We told that it was a _macro_. And it's now time to see what's this!
 
-Macros, as their alternative name _preprocessor functions_ indicates, are functions. And as functions, they take argument, define a return type, as well as a body.
+Flexs, as their long name _flexible functions_ indicates, are functions. And as functions, they take argument, define a return type, as well as a body.
 
-Still, macros have a double specificity (in addition to the fact we write a `!` after their name to call them). First, their content is evaluated only when they are called. Secondly, type checking is done only at this time.
+Still, flexs have a double specificity (in addition to the fact we write a `!` after their name to call them). First, their content is evaluated only when they are called. Secondly, type checking is done only at this time.
 
 What does that mean? Well, let's take an example:
 
@@ -5306,7 +5306,7 @@ func sayHello (name: Any) -> void {
   println!(name);
 }
 
-macro sayHello (name: Any) -> void {
+flex sayHello (name: Any) -> void {
   println!(name);
 }
 
@@ -5316,7 +5316,7 @@ sayHello!("John"); // Works
 
 The first call fails while the second works. Why? In the first call, we use a standard function which provides an `Any` to `println!`, which only accepts `Primitivable` values. So, it fails.
 
-But in the second one, the call to `sayHello!` is replaced by the macro's content, just like that:
+But in the second one, the call to `sayHello!` is replaced by the flex's content, just like that:
 
 ```sn
 sayHello!("John");
@@ -5328,23 +5328,23 @@ sayHello!("John");
 }
 ```
 
-In macros, arguments' type is only an _indicator_, it simply tells the accepted type. But, when the function is compiled, its real type (which is `string`) is used instead of this indicator. This means that `name` is, here, a `string` and not an `Any`.
+In flexs, arguments' type is only an _indicator_, it simply tells the accepted type. But, when the function is compiled, its real type (which is `string`) is used instead of this indicator. This means that `name` is, here, a `string` and not an `Any`.
 
-That's where macros shine: they provide a way to accept all kind of arguments and use them depending on their real type, thanks to types being checked only at usage.
+That's where flexs shine: they provide a way to accept all kind of arguments and use them depending on their real type, thanks to types being checked only at usage.
 
-Our `sayHello!` macro _could be_ invalid in some cases, but because type checking is performed only at calls, it won't be reported at invalid. That's as simple as that.
+Our `sayHello!` flex _could be_ invalid in some cases, but because type checking is performed only at calls, it won't be reported at invalid. That's as simple as that.
 
-Be aware though: macros' scope are the same as for standard functions. That means, if they are declared in a class for example, they will be able to use `this` or `self`. This also means they won't be able to access the scope from where they are called (like standard functions). Let's take an example:
+Be aware though: flexs' scope are the same as for standard functions. That means, if they are declared in a class for example, they will be able to use `this` or `self`. This also means they won't be able to access the scope from where they are called (like standard functions). Let's take an example:
 
 ```sn
 class Hello {
   private static name = "Hello";
 
-  public static macro printName() {
+  public static flex printName() {
     println!(@name);
   };
 
-  public static macro printLocal() {
+  public static flex printLocal() {
     println!(local);
   }
 }
@@ -5357,7 +5357,7 @@ class Hello {
 }
 ```
 
-Here, macros are able to access their declaration scope (the scope of `Hello`) plus their own scope (remember, functions have a reserved scope delimited by their brackets), but they aren't able to access the local scope in which we define a `local_name` constant.
+Here, flexs are able to access their declaration scope (the scope of `Hello`) plus their own scope (remember, functions have a reserved scope delimited by their brackets), but they aren't able to access the local scope in which we define a `local_name` constant.
 
 ## Asynchronous behaviour
 
@@ -5935,9 +5935,9 @@ scope import frontend::native;
 
 This imports the`frontend::native` module that provides all the native stuff like `string` or `Array` and link them to global entities (meaning we don't have to write `frontend::native::int32` for example).
 
-#### The `import!` macro
+#### The `import!` flex
 
-The `import!` macro allows to import a package as an object, so we can use it as we want. Here is an example:
+The `import!` flex allows to import a package as an object, so we can use it as we want. Here is an example:
 
 ```sn
 val manager = import!(name_manager::names);
@@ -5946,14 +5946,14 @@ manager.defineName("John");
 println!(manager.readName()); // Prints: "John"
 ```
 
-Also, the macro will never the package several times, so we can write:
+Also, the flex will never the package several times, so we can write:
 
 ```sn
 import!(name_manager).defineName("John");
 println!(import!(name_manager).readName()); // Prints: "John"
 ```
 
-This will work as expected. A good point about this macro is that the package isn't imported multiple times ; once you imported it, either with `import` or `import!`, it will just retrieve the imported data.
+This will work as expected. A good point about this flex is that the package isn't imported multiple times ; once you imported it, either with `import` or `import!`, it will just retrieve the imported data.
 
 Note that we can also import several items from a package, like this:
 
