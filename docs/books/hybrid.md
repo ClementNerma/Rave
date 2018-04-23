@@ -5767,7 +5767,7 @@ First, let's make our package file. It's a TOML ([Tom's Obvious Language](https:
 
 ```toml
 [package]
-name = "name_manager"
+name = "names_manager"
 version = "0.1.0"
 authors = [ "Your Name <you@example.com>" ]
 license = "MIT"
@@ -5776,7 +5776,7 @@ modules = [ "names" ]
 [dependencies]
 ```
 
-This tells that our package's name is `name_manager` (so it will be located in a `name_manager` directory when downloaded from the package manager - we'll see that soon) and gives informations about its version (which is very important as we'll see soon) and the array of authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now).
+This tells that our package's name is `names_manager` (so it will be located in a `names_manager` directory when downloaded from the package manager - we'll see that soon) and gives informations about its version (which is very important as we'll see soon) and the array of authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now).
 
 Next, it gives the list of the package's _modules_. Each module is a part of a package and is represented by a single file. In our case, because we have a `names` module, the program will look for a `names.sn` file. We could also use sub-modules, like `names/index` and `names/list` for example, with their respective source code files: `names/index.sn` and `names/list.sn` - but we will see this special case later.
 
@@ -5863,63 +5863,63 @@ To import a package, we must use the `import` keyword followed by the package's 
 
 ```sn
 // Import the package
-import name_manager;
+import names_manager;
 
 // Use its exported entities
-name_manager::names.defineName("John");
-println!(name_manager::names.readName()); // Prints: "John"
+names_manager::names.defineName("John");
+println!(names_manager::names.readName()); // Prints: "John"
 
 // Try to access an entity not exported by the package
-println!(name_manager::names.name); // ERROR because `name` hasn't been exported
+println!(names_manager::names.name); // ERROR because `name` hasn't been exported
 ```
 
 This is as simple as that. Also, because this name could be a little heavy, we can make an alias:
 
 ```sn
 // Import the package
-import name_manager as manager;
+import names_manager as manager;
 
 manager::names.defineName("John");
 println!(manager::names.readName()); // Prints: "John"
 ```
 
-Note that `name_manager`'s content is strictly equivalent to the value exported by the package. Our one exported an object with two attributes referring to its functions, but it could have only exported a single function for example, so we would have been able to call `manager` as a function.
+Note that `names_manager`'s content is strictly equivalent to the value exported by the package. Our one exported an object with two attributes referring to its functions, but it could have only exported a single function for example, so we would have been able to call `manager` as a function.
 
 We can also use an alias to get only a module:
 
 ```sn
 // Import the package
-import name_manager::names as names;
+import names_manager::names as names;
 
 names.defineName("John");
 println!(names.readName()); // Prints: "John"
 ```
 
-Here, we only import the `names` module and alias it as `names`, so we don't have to write `name_manager::names` each time. Therefore, we still have a `name_manager` object available in our example, because we imported a part of the `name_manager` package anyway. But thanks to the alias, we don't have to write `name_manager::names` anymore.
+Here, we only import the `names` module and alias it as `names`, so we don't have to write `names_manager::names` each time. Therefore, we still have a `names_manager` object available in our example, because we imported a part of the `names_manager` package anyway. But thanks to the alias, we don't have to write `names_manager::names` anymore.
 
 Another, equivalent, syntax:
 
 ```sn
 // This...
-import name_manager::names as names;
+import names_manager::names as names;
 // is *strictly* equivalent to:
-import names from name_manager;
+import names from names_manager;
 ```
 
 Note that it's also possible to import several packages at once:
 
 ```sn
 // Import the packages
-import name_manager, another_package;
+import names_manager, another_package;
 
-name_manager::names.defineName("John");
-println!(name_manager::names.readName()); // Prints: "John"
+names_manager::names.defineName("John");
+println!(names_manager::names.readName()); // Prints: "John"
 ```
 
 A last version of import is the _scope_ import:
 
 ```sn
-scope import name_manager;
+scope import names_manager;
 
 names.defineName("John");
 println!(names.readName()); // Prints: "John"
@@ -5940,7 +5940,7 @@ This imports the`frontend::native` module that provides all the native stuff lik
 The `import!` flex allows to import a package as an object, so we can use it as we want. Here is an example:
 
 ```sn
-val manager = import!(name_manager::names);
+val manager = import!(names_manager::names);
 
 manager.defineName("John");
 println!(manager.readName()); // Prints: "John"
@@ -5949,8 +5949,8 @@ println!(manager.readName()); // Prints: "John"
 Also, the flex will never the package several times, so we can write:
 
 ```sn
-import!(name_manager).defineName("John");
-println!(import!(name_manager).readName()); // Prints: "John"
+import!(names_manager).defineName("John");
+println!(import!(names_manager).readName()); // Prints: "John"
 ```
 
 This will work as expected. A good point about this flex is that the package isn't imported multiple times ; once you imported it, either with `import` or `import!`, it will just retrieve the imported data.
@@ -5971,7 +5971,7 @@ Sub-modules are modules themselves written inside modules (called their _parent_
 
 ```toml
 [package]
-name = "name_manager"
+name = "names_manager"
 version = "0.1.0"
 authors = [ "Your Name <you@example.com>" ]
 license = "MIT"
