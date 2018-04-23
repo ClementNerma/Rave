@@ -3281,7 +3281,7 @@ func add (left: ConvertibleToInt, right: ConvertibleToInt) -> int {
 }
 ```
 
-An important point here is that interfaces can only declare public members ; that's why there is no accessibility keyword before them.
+An important point here is that interfaces can only declare public members ; that's why there is no accessibility keyword before them. Also, because all members are abstract (they must be implemented in every class that implements them), there is no `abstract` keyword before members.
 
 **NOTE :** Writing `int(value)` calls the `int` class as a function with `value` as an argument to convert it to an integer. It accepts any value implementing the `%toInteger` value, like our interface.
 
