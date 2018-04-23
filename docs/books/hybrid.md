@@ -3287,6 +3287,16 @@ An important point here is that interfaces can only declare public members ; tha
 
 If we try this code, it works perfectly fine.
 
+We can also declare attributes in interfaces, and even give them a default value, like this:
+
+```sn
+interface ConvertibleToInt {
+  value: int;
+
+  func %toInteger() -> int;
+}
+```
+
 #### Self-references
 
 An interface can use the `self` keyword to refers to the class that is implemeting it. Here is an exemple:
