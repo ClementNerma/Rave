@@ -3273,13 +3273,15 @@ Try to find the solution by yourself. The solution is just below:
 
 ```sn
 interface ConvertibleToInt {
-  public func %toInteger () -> int;
+  func %toInteger () -> int;
 }
 
 func add (left: ConvertibleToInt, right: ConvertibleToInt) -> int {
   return int(left) + int(right);
 }
 ```
+
+An important point here is that interfaces can only declare public members ; that's why there is no accessibility keyword before them.
 
 **NOTE :** Writing `int(value)` calls the `int` class as a function with `value` as an argument to convert it to an integer. It accepts any value implementing the `%toInteger` value, like our interface.
 
@@ -3291,7 +3293,7 @@ An interface can use the `self` keyword to refers to the class that is implemeti
 
 ```sn
 interface Duplication {
-  public func duplicate () -> self;
+  func duplicate () -> self;
 }
 
 class Product {
@@ -3355,12 +3357,12 @@ A good example of traits is when you want to inherit from multiple classes. This
 
 ```sn
 trait Vehicle {
-  public val speed: float;
-  public func accelerate () -> string => "Vroom !";
+  val speed: float;
+  func accelerate () -> string => "Vroom !";
 }
 
 trait Wheeled {
-  public val wheels: uint;
+  val wheels: uint;
 }
 
 class Car {
