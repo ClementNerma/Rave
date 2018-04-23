@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.24.0',
+    VERSION: '0.24.1',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -271,8 +271,8 @@ scheme = {
           'purple', 'purple', 'red', 'cyan'
         ],
         [
-          // Declaration statement in classes for macros
-          /\b(public|protected|private)\s+(static\s+)?(async\s+)?(iter\s+)?(macro)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          // Declaration statement in classes for flexs
+          /\b(public|protected|private)\s+(static\s+)?(async\s+)?(iter\s+)?(flex)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'purple', 'purple', 'purple', 'purple', 'orange'
         ],
         [
@@ -321,8 +321,8 @@ scheme = {
           'purple'
         ],
         [
-          // Macro declaration
-          /\b(macro)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*\s*)/,
+          // Flex declaration
+          /\b(flex)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*\s*)/,
           'purple', 'orange'
         ],
         [
@@ -414,7 +414,7 @@ scheme = {
           'purple'
         ],
         [
-          // IMPORT macro call (closed or not)
+          // IMPORT flex call (closed or not)
           /\b(import!)\s*\((?:\s*([a-zA-Z_\$][a-zA-Z0-9_]*(?:(::)[a-zA-Z_\$][a-zA-Z0-9_]*)*)\s*[\)]?)?/,
           'purple', 'green', 'cyan'
         ],
@@ -501,7 +501,7 @@ scheme = {
         ],
         [
           // Keywords needing a separator
-          /(?<!\.)\b(let|pln|val|public|protected|private|friend|static|abstract|final|unique|virtual|extern|readonly|in|export|return|async|iter|yield|macro|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
+          /(?<!\.)\b(let|pln|val|public|protected|private|friend|static|abstract|final|unique|virtual|extern|readonly|in|export|return|async|iter|yield|flex|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
           'purple'
         ],
         [
@@ -515,7 +515,7 @@ scheme = {
           'yellow'
         ],
         [
-          // Macros call
+          // Flexs call
           /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)\!(?=\s*\()/,
           'cyan'
         ],
@@ -530,7 +530,7 @@ scheme = {
           'blue'
         ],
         [
-          // Macros name, with template
+          // Flexs name, with template
           /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*\!)(?=\s*<(.*?)>\s*)/,
           'cyan'
         ],
@@ -570,12 +570,12 @@ scheme = {
           'white', 'blue'
         ],
         [
-          // Object's macro function's call
+          // Object's flex function's call
           /(\.)([a-zA-Z_\$][a-zA-Z0-9_\$]*!)(?=\s*\()/,
           'white', 'cyan'
         ],
         [
-          // Object's macro function's call with a template
+          // Object's flex function's call with a template
           /(\.)([a-zA-Z_\$][a-zA-Z0-9_\$]*!)(?=\s*<(.*?)>\s*\s*\()/,
           'white', 'cyan'
         ],
@@ -650,12 +650,12 @@ scheme = {
           'purple'
         ],
         [
-          // Type directives for macros
+          // Type directives for flexs
           /#(raw|var|noptr|name|reduced)\b/,
           'purple'
         ],
         [
-          // Typed directives with templates for macros
+          // Typed directives with templates for flexs
           /#(pln|mustbe)(?=\s*<)/,
           'purple'
         ],
