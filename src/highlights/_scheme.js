@@ -192,12 +192,32 @@ scheme = {
           /(?<!\.)\b0_*x_*(([a-zA-Z0-9]_*)+)(\._*([a-zA-Z0-9]_*)+)?\b/,
           'orange'
         ],
-        [
-          // Single-line strings
-          // Taken from: http://blog.stevenlevithan.com/archives/match-quoted-string
-          /(["'])(?:(?=(\\?))\2.)*?\1/,
-          "green"
-        ],
+        {
+          // Single-line strings (simple quotes)
+          begin: /'/,
+          end: /'|(?=\r\n|\r|\n)/,
+          patterns: [
+            {
+              // Escaped characters
+              match: /\\./,
+              name: '${cyan}'
+            }
+          ],
+          name: '${green}'
+        },
+        {
+          // Single-line strings (double quotes)
+          begin: /"/,
+          end: /"|(?=\r\n|\r|\n)/,
+          patterns: [
+            {
+              // Escaped characters
+              match: /\\./,
+              name: '${cyan}'
+            }
+          ],
+          name: '${green}'
+        },
         {
           // Multi-line strings
           begin: /`/,
@@ -213,6 +233,9 @@ scheme = {
                   include: '#global'
                 }
               ]
+            },
+            {
+              include: '#strings-symbols'
             }
           ],
           name: '${green}'
