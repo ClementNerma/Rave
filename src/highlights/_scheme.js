@@ -241,6 +241,7 @@ scheme = {
           name: '${green}'
         },
         {
+          // Regular expressions
           begin: '(?<=[\\[=(?:+,!]|^|return|=>|&&|\\|\\|)\\s*(/)(?![/*+?])(?=.*/)',
           beginCaptures: {
             '1': {
