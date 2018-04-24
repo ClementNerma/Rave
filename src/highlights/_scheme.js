@@ -342,7 +342,7 @@ scheme = {
         ],
         [
           // Pointers
-          /([\*&])(mut)?/,
+          /([\*&])(mut\b)?/,
           'cyan', 'purple'
         ],
         [
