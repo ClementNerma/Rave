@@ -710,7 +710,7 @@ val jack = Identity {
 println!(jack.adult); // Prints: "false"
 ```
 
-Also, constants prevent structures' data from being modified:
+Also, note that constantness doesn't prevent structure's items from being written:
 
 ```sn
 struct Identity {
@@ -723,7 +723,8 @@ val jack = Identity {
   adult: true
 };
 
-jack.adult = false; // ERROR
+jack.adult = false; // Works fine
+println!(jack.adult); // Prints: "true"
 ```
 
 #### Tuple structures
