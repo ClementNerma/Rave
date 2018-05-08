@@ -4448,8 +4448,8 @@ changeProperty(hero);
 assignSomethingNew(hero);
 
 // Show the result
-println!(obj.name); // Prints: "Jack"
-println!(obj.attack); // 20
+println!(hero.name); // Prints: "Jack"
+println!(hero.attack); // 20
 ```
 
 So, what happens here? After creating a hero object, we sent it to the `changeProperty` function. But technically, only a link to `hero` was sent to the function, which was assigned to its `obj` arguments. This way, when the function changed one of the `obj`'s properties, it also changed `hero`, because they are exactly the same object.
@@ -4549,7 +4549,7 @@ let ptr1: * = &i;
 // Explicit
 let ptr2: *mut int = &i;
 // Implicit
-let ptr2: * = &i;
+let ptr2: *mut = &i;
 ```
 
 This allows to keep a clarity in the code about what assignable entity is a pointer or not. An exception, though, is for properties: we can assign a pointer to a on-the-fly structure without specifying it's a pointer.
@@ -5649,7 +5649,7 @@ The syntax of documentation is pretty the same than many other languages: a mult
 /**
  * The name of a person
  */
-let name: string:
+let name: string;
 ```
 
 The first line contains two `*` symbols, meaning this is a _documentation comment_. Every next line will start by optional spaces (for indentation) then by another `*` symbol and a content depending on what we want to do. Conventionally, the first line describes the entity (what it contains/does). Because it's an assignable entity, we write what it contains: The name of a person.
