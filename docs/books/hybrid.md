@@ -5346,7 +5346,7 @@ class Hello {
   };
 
   public static flex printLocal() {
-    println!(local);
+    println!(local_name);
   }
 }
 
