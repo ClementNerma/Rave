@@ -726,7 +726,7 @@ val jack = Identity {
 };
 
 jack.adult = false; // Works fine
-println!(jack.adult); // Prints: "true"
+println!(jack.adult); // Prints: "false"
 ```
 
 #### Tuple structures
