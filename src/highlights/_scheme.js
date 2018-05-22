@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.24.1',
+    VERSION: '0.24.2',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -281,7 +281,7 @@ scheme = {
         ],
         [
           // Declaration of constants (plain or not)
-          /(val|pln)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /(val|pln|bindings)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'orange'
         ],
         [
@@ -665,7 +665,7 @@ scheme = {
         ],
         [
           // Inline directives
-          /#(alias|bind|makebindings|raw_indent|if|elsif|else|end|wrap|string)\b/,
+          /#(alias|bind|raw_indent|if|elsif|else|end|wrap|string)\b/,
           'orange'
         ],
         [
