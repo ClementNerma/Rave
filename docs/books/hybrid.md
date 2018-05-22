@@ -175,6 +175,8 @@ pln MY_REAL_JOB = MY_JOB; // Works fine
 
 Prefer declaring values using plain (or simple) constants instead of mutables when you won't change their value. This prevents these theorically immutable datas from being modified by error. Plus, in some languages like JavaScript, it even makes the programs (a bit) faster.
 
+Plain constants can only contain primitives and tuples (containing themselves primitives and tuples).
+
 ### Primitive types
 
 There are two categories of types in SilverNight: _primitives_ and _objects_. The first ones are voids, booleans, numbers and strings. Everything else is not a primitive type.
@@ -2655,7 +2657,7 @@ It's also possible to customize the fields that have to be serialized and unseri
 
 ```sn
   // ...
-  public pln %lazy_serial_fields = [ "name", "price" ];
+  public pln %lazy_serial_fields = ( "name", "price" );
   // ...
 ```
 
