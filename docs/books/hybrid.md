@@ -930,6 +930,29 @@ let books = [
 
 Here, because we create an array from two distinct objects, they must have the `#growable` directive on their `details` field.
 
+Be awayre though, if no `#growable` directive is present the vector is considered as an array, else it's a list. So, the following example will not work:
+
+```sn
+struct Hero {
+  name: string,
+  spells: List<string>
+};
+
+val jack = Hero {
+  name: "Jack",
+  spells: [ "Fire", "Ice" ] // ERROR
+};
+```
+
+Here, a `List<string>` is expected but an `Array<string>` is found. The valid code would be:
+
+```sn
+val jack = Hero {
+  name: "Jack",
+  spells: [ #growable; "Fire", "Ice" ] // ERROR
+};
+```
+
 ### Multiple assignments
 
 Objects allow _multiple assignments_, which means we can make several assignments at once. Let's consider the following object:
