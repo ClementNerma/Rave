@@ -3781,19 +3781,27 @@ for key in myArray.keys() {
 }
 
 // Explore a dictionary using its values
-for value in myArray {
+for value in myArray.values() {
   println!(key);
 }
 
 // Explore a dictionary with both its keys and its values
-for key -> value in myArray {
+for key -> value in myArray.iterate() {
   println!(key, value);
 }
 ```
 
 In fact, asking a dictionary for its keys or values will call its `%keys()` or `%values()` overload. These ones return an `Iterator<T>`, remember? Well, an iterator is simply an object with a `next()` function that returns a new value, until it goes out of data. Number ranges use them: `0...10` for example is automatically converted to `(new RangeIterator<uint>(0, 10))`.
 
-So, when we try to iterate an entity using a single iterator variable (like `value`), the `for` loop will require an `Iterator<T>` or a `Dictionary<K, V>` it will iterate using its `%keys` overload. But, when we try to iterate an entity using two iterator variables (like `key` **and** `value`), it will require a `Dictionary<K, V>` and iterate it using `%keys` for the keys and `myArray[key]` for the values.
+So, when we try to iterate an entity using a single iterator variable (like `value`), the `for` loop will require an `Iterator<T>`.
+
+The last syntax (`for key -> value in ...`) we used is a syntax sugar, in reality it translates to:
+
+```sn
+for [ key, value ] in myArray.iterate() {
+```
+
+The `iterate` function, implemented by default in all dictionary classes, returns for a `Dictionary<K, V>` an `Iterator<(K, V)>`.
 
 #### The case of vectors
 
@@ -3840,7 +3848,7 @@ struct Point {
 }
 
 func getNilPoints (array: Point[]) -> Point {
-  for point in array {
+  for point in array.values() {
     if (point.x is 0 and point.y is 0)
       return point;
   }
@@ -3895,7 +3903,7 @@ A strict equivalent to the function we saw would be:
 
 ```sn
 func getNilPoints (array: Point[]) -> Point? {
-  for point in array {
+  for point in array.values() {
     if (point.x is 0 and point.y is 0)
       return point;
   }
@@ -3908,7 +3916,7 @@ This would achieve exatly the same thing. There's also a native value, named `nu
 
 ```sn
 func getNilPoints (array: Point[]) -> Point? {
-  for point in array {
+  for point in array.values() {
     if (point.x is 0 and point.y is 0)
       return point;
   }
@@ -5667,7 +5675,7 @@ For functions, that's a bit more complex, because we document both the function 
 func sum (...numbers: int) -> int {
   let summation = 0;
 
-  for num in numbers {
+  for num in numbers.values() {
     summation += num;
   }
 
@@ -5744,7 +5752,7 @@ Files can be documented as well, using three indicators: `@file`, which indicate
 func sum (...numbers: int) -> int {
   let summation = 0;
 
-  for num in numbers {
+  for num in numbers.values() {
     summation += num;
   }
 
