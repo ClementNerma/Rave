@@ -987,7 +987,7 @@ Note that there is a similar syntax for lists:
 val list = [ 2, 5, 8, 9 ];
 
 // Extract from list
-val [ n1, n2, n3, n4 ] = list;
+val (n1, n2, n3, n4) = list;
 // Equivalent to:
 val n1 = list[0],
     n2 = list[1],
@@ -995,19 +995,19 @@ val n1 = list[0],
     n4 = list[3];
 
 // Left splice
-val [ ...first, n4 ] = list;
+val (...first, n4) = list;
 // Equivalent to:
 val first = list.slice(0, 3),
     n4 = list[3];
 
 // Right splice
-val [ n1, ...last ] = list;
+val (n1, ...last) = list;
 // Equivalent to:
 val n1 = list[0],
     last = list.slice(1, 3);
 
 // Middle splice
-val [ n1, ...middle, n4 ] = list;
+val (n1, ...middle, n4) = list;
 // Equivalent to:
 val n1 = list[0],
     middle = list.slice(2, 2),
@@ -1018,7 +1018,7 @@ Note that there is also the `...` symbol to ignore some entries in the list:
 
 ```sn
 // Middle splice
-val [ n1, ..., n4 ] = list;
+val (n1, ..., n4) = list;
 // Equivalent to:
 val n1 = list[0],
     n4 = list[3];
@@ -3800,7 +3800,7 @@ So, when we try to iterate an entity using a single iterator variable (like `val
 The last syntax (`for key -> value in ...`) we used is a syntax sugar, in reality it translates to:
 
 ```sn
-for [ key, value ] in myArray.iterate() {
+for (key, value) in myArray.iterate() {
 ```
 
 The `iterate` function, implemented by default in all dictionary classes, returns for a `Dictionary<K, V>` an `Iterator<(K, V)>`.
