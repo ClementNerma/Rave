@@ -3703,7 +3703,7 @@ A specificity about dictionary overloads is that they can be implemented by **an
 
 ### Iterators
 
-The `%keys()` and `%values()` overloads always return an `Iterator<T>`. It's simply a class that implements a few members, like a `next()` function that returns the next iterated value. To put it simply, iterators can be _iterated_ and at each step return a new _value_, until they are _done_.
+The `%keys()` and `%values()` overloads respectively return an `Iterator<K>` and an `Iterator<V>`. It's simply a class that implements a few members, like a `next()` function that returns the next iterated value. To put it simply, iterators can be _iterated_ and at each step return a new _value_, until they are _done_.
 
 Iterators can be defined like this:
 
