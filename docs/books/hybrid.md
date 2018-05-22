@@ -5103,7 +5103,7 @@ This will work as expected, even if the three functions we use in the callback d
 Because writing bindings is heavy in a function's signature (like we saw), and because we may want to re-use bindings several times, we can declare the bindings as an object to use them later. The bindings object is a plain structure linking a string (the name) to another string (the resource). Here is how it goes:
 
 ```sn
-pln engineBindings = #makebindings {
+bindings engineBindings = {
   printInConsole: "println!",
   sayHello: "println!(\"Hello \" + ${1})",
   sayHappyBirthday: "println!('Happy birthday ' + ${1} + ' you are now ' + ${2} + ' years old!')"
