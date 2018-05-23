@@ -1052,7 +1052,7 @@ This avoids making a useless entity that takes time and memory for nothing if we
 The same syntax applies to tuples:
 
 ```sn
-func invert (left: int, right: int) -> (int, int) {
+func invert (left: int, right: int) : (int, int) {
   return (right, left);
 }
 
@@ -1531,7 +1531,7 @@ A function is declared using the `func` keyword. We give it a name, and its argu
 Let's write the block's head:
 
 ```sn
-func triangle_area (base: float, height: float) -> float {
+func triangle_area (base: float, height: float) : float {
   // Function's body
 }
 ```
@@ -1541,7 +1541,7 @@ The very first line (without the `{` symbol) is called the function's _prototype
 We want to first calculate the triangle's area. Let's do this:
 
 ```sn
-func triangle_area (base: float, height: float) -> float {
+func triangle_area (base: float, height: float) : float {
   val area = 0.5 * base * height;
 }
 ```
@@ -1549,7 +1549,7 @@ func triangle_area (base: float, height: float) -> float {
 Now we want to print it:
 
 ```sn
-func triangle_area (base: float, height: float) -> float {
+func triangle_area (base: float, height: float) : float {
   val area = 0.5 * base * height;
   println!(`The triangle's area is: ${area}`);
 }
@@ -1560,7 +1560,7 @@ Now we want to assign it a variable each time we calculate the area. So we will 
 There's a simple way to achieve this called the _return statement_. It uses the `return` keyword to return a value from the function. This value can then be assigned to an assignable entity like a variable or a constant. Let's do it!
 
 ```sn
-func triangle_area (base: float, height: float) -> float {
+func triangle_area (base: float, height: float) : float {
   val area = 0.5 * base * height;
   println!(`The triangle's area is: ${area}`);
   return area;
@@ -1578,7 +1578,7 @@ Here, the return type of the function **must** describe the type of the value it
 As tuples being a single type, functions can also return them:
 
 ```sn
-func add (left: int, right: int) -> (int, float) {
+func add (left: int, right: int) : (int, float) {
   return (
     // Divide as integers
     left / right,
@@ -1626,7 +1626,7 @@ This is useful when we don't want to give a default value to arguments. Note tha
 Sometimes we simply want a function to accept any number of arguments, without making a list to have a lighter syntax. This can be done using infinite arguments:
 
 ```sn
-func sum (...numbers: int) -> int {
+func sum (...numbers: int) : int {
   let sum = 0;
 
   for i = 0; i < numbers.size; i ++ {
@@ -1642,7 +1642,7 @@ println!(sum(2, 3, 4)); // Prints: "9"
 Here, `numbers` becomes a `Array<int>` because of the `...` symbol, and it will also accept any argument. Note that this feature can be used between before other arguments:
 
 ```sn
-func sum (...numbers: int, coefficient: int) -> int {
+func sum (...numbers: int, coefficient: int) : int {
   let sum = 0;
 
   for i = 0; i < numbers.size; i ++ {
@@ -1658,7 +1658,7 @@ println!(sum(2, 3, 4, 5)); // Prints: "45"
 Or after:
 
 ```sn
-func sum (coefficient: int, ...numbers: int) -> int {
+func sum (coefficient: int, ...numbers: int) : int {
   let sum = 0;
 
   for i = 0; i < numbers.size; i ++ {
@@ -1674,7 +1674,7 @@ println!(sum(5, 2, 3, 4)); // Prints: "45"
 Or even between:
 
 ```sn
-func sum (coeff1: int, ...numbers: int, coeff2: int) -> int {
+func sum (coeff1: int, ...numbers: int, coeff2: int) : int {
   let sum = 0;
 
   for i = 0; i < numbers.size; i ++ {
@@ -1692,7 +1692,7 @@ println!(sum(2, 2, 3, 4, 3)); // Prints: "54"
 Functions can also be called using a list of arguments thanks to the _arguments expansion_ operator. It goes like this:
 
 ```sn
-func sum (left: int, right: int) -> int => left + right;
+func sum (left: int, right: int) : int => left + right;
 
 // Declare a Array<int>
 val numbers = [ 2, 8 ];
@@ -1703,7 +1703,7 @@ println!(sum(numbers...)); // Prints: "10"
 Here, `numbers` is expanded as multiple arguments. It's like writing:
 
 ```sn
-func sum (left: int, right: int) -> int => left + right;
+func sum (left: int, right: int) : int => left + right;
 
 // Declare a Array<int>
 val numbers = [ 2, 8 ];
@@ -1714,7 +1714,7 @@ println!(sum(numbers[0], numbers[1])); // Prints: "10"
 This operator can also be used with other arguments:
 
 ```sn
-func sum (left: int, right: int, divide: int) -> int {
+func sum (left: int, right: int, divide: int) : int {
   return (left + right) / divide;
 }
 
@@ -1742,14 +1742,14 @@ But we have a problem here. We have to define `posArr` as an `List<int>` while `
 That's where lambdas come. There is a function called `filter` we can use on arrays, which takes a specific function as an argument. Here is how we use it:
 
 ```sn
-val posArr = list.filter(lambda (value: int, key: int) -> bool { return value >= 0; });
+val posArr = list.filter(lambda (value: int, key: int) : bool { return value >= 0; });
 ```
 
 What happened here? Because it's a little cryptic, we'll re-write the code, with a greater spacing:
 
 ```sn
 val posArr = list.filter(
-  lambda (value: int, key: int) -> bool {
+  lambda (value: int, key: int) : bool {
     return value >= 0;
   }
 );
@@ -1763,7 +1763,7 @@ Also, why do we need the `key` argument while we don't use it? It's simply becau
 
 ```sn
   // ...
-  public func filter (callback: func (value: T, key: int) -> bool) -> self<T>;
+  public func filter (callback: func (value: T, key: int) : bool) : self<T>;
   // ...
 ```
 
@@ -1774,7 +1774,7 @@ Note that, while the argument's number, type and the lambda's return type is dec
 There's another way to apply this filter on our array: declaring the function, and then using it as an argument. Because an example will be more clear than a big explanation:
 
 ```sn
-val myFunc = lambda (value: int, key: int) -> bool {
+val myFunc = lambda (value: int, key: int) : bool {
   return value >= 0;
 };
 
@@ -1786,7 +1786,7 @@ This will do the same thing than the first version. Here, we declare a `myFunc` 
 In fact, this constant has an inferred type ; its full declaration would be:
 
 ```sn
-val myFunc: func (value: int, key: int) -> bool = lambda (value: int, key: int) -> bool {
+val myFunc: func (value: int, key: int) : bool = lambda (value: int, key: int) : bool {
   return value >= 0;
 }
 
@@ -1805,7 +1805,7 @@ println!(myFunc(-3)); // Prints: "false"
 We could also have declared it as a normal function:
 
 ```sn
-func myFunc (value: int, key: int) -> bool {
+func myFunc (value: int, key: int) : bool {
   return value >= 0;
 };
 
@@ -1828,25 +1828,25 @@ callReducedLambda(reduced);
 So, lambdas are great to reduce the size of a program, but reduced lambdas put apart it's kind of heavy to use this syntax. This is why we can use the _arrow syntax_:
 
 ```sn
-val posArr = list.filter((value: int, key: int) -> bool => value >= 0);
+val posArr = list.filter((value: int, key: int) : bool => value >= 0);
 ```
 
-We don't have the `func` keyword anymore, but the `=>` one appeared. This symbol means that the value on its right is automatically returned by the function. This symbol can in fact even be used with functions, like `function returnTrue() -> bool => true;`. We can also use the `{` and `}` symbols while omitting the `func` keyword to use several instructions, but we'll then have to use manually the `return` keyword.
+We don't have the `func` keyword anymore, but the `=>` one appeared. This symbol means that the value on its right is automatically returned by the function. This symbol can in fact even be used with functions, like `function returnTrue() : bool => true;`. We can also use the `{` and `}` symbols while omitting the `func` keyword to use several instructions, but we'll then have to use manually the `return` keyword.
 
 Showcase:
 
 ```sn
 // Classic functions
-func returnTrue () -> bool { return true; }
-func returnTrue () -> bool => true;
+func returnTrue () : bool { return true; }
+func returnTrue () : bool => true;
 
 // Classic lambdas
-val returnTrue = lambda () -> bool { return true; }
-val returnTrue = lambda () -> bool => true;
+val returnTrue = lambda () : bool { return true; }
+val returnTrue = lambda () : bool => true;
 
 // Arrow syntax
-val returnTrue = () -> bool { return true; }
-val returnTrue = () -> bool => true;
+val returnTrue = () : bool { return true; }
+val returnTrue = () : bool => true;
 ```
 
 But even with the arrow syntax, this is still heavy as we have to write the arguments' type as well as the lambda's return type. So there is a last feature called **ICT** for **I**nferred **C**allback **T**yping we will see now.
@@ -1861,10 +1861,10 @@ So there is a way to perform inferred typing on a lambda, for both its arguments
 
 ```sn
 // Classic lambda
-val posArr = list.filter(lambda (value: int, key: int) -> bool { return value >= 0; });
+val posArr = list.filter(lambda (value: int, key: int) : bool { return value >= 0; });
 
 // Arrow syntax
-val posArr = list.filter((value: int, key: int) -> bool => value >= 0);
+val posArr = list.filter((value: int, key: int) : bool => value >= 0);
 
 // Inferred callback typing
 val posArr = list.filter((value, key) => value >= 0);
@@ -1894,7 +1894,7 @@ struct Point {
 }
 
 // Declare the two functions with polymorphism
-func pointStr (x: float, y: float) -> string => `(${x}, ${y})`;
+func pointStr (x: float, y: float) : string => `(${x}, ${y})`;
 func pointStr (pt: Point) => `(${Point.x}, ${Point.y})`;
 
 // Let's try them!
@@ -1907,8 +1907,8 @@ They work as expected and print the same result.
 A specific case is when we have two definitions that fit a same call:
 
 ```sn
-func something (arg: Any) -> void {}
-func something (arg: int) -> void {}
+func something (arg: Any) : void {}
+func something (arg: int) : void {}
 
 something(2);
 ```
@@ -1997,7 +1997,7 @@ The constructor will take as an argument a name, an amount of HP and MP, an atta
 
 ```sn
   // ...
-  public func getAttack () -> int {
+  public func getAttack () : int {
     return this.atk;
   }
 
@@ -2077,11 +2077,11 @@ class Hero {
     this.def = defense;
   }
 
-  public func getName () -> string {
+  public func getName () : string {
     return this.name;
   }
 
-  public func getAttack () -> int {
+  public func getAttack () : int {
     return this.atk;
   }
 
@@ -2270,7 +2270,7 @@ When declaring class' attributes, we sometimes want to make it private because w
 class SomeClass {
   private myAttribute: string;
 
-  public func getMyAttribute () -> string {
+  public func getMyAttribute () : string {
     return @myAttribute;
   }
 }
@@ -2302,7 +2302,7 @@ This is another type of members. Static members are not available from the insta
 ```sn
 class Product {
   private static unique_id = 0;
-  public static func increaseCounter () -> int => ++ self::unique_id;
+  public static func increaseCounter () : int => ++ self::unique_id;
 }
 ```
 
@@ -2316,7 +2316,7 @@ class Product {
   private static counter = 0;
 
   // Increase the global counter
-  public static func increaseCounter () -> int => ++ self::counter;
+  public static func increaseCounter () : int => ++ self::counter;
 
   // The product's unique identifier
   public readonly unique_id: int;
@@ -2459,7 +2459,7 @@ class IntArray {
   }
 
   public func add (value: int) => @data.push(value);
-  public func pop () -> bool => @data.pop();
+  public func pop () : bool => @data.pop();
 }
 
 let list = new IntArray();
@@ -2476,7 +2476,7 @@ This overloads aims to provide a way to run a specific code when the developer e
 Let's imagine we have an array of integers. We make a function that calculate, for each number, its square, and return a final array with these numbers. Here is how we would implement it:
 
 ```sn
-func squareList (array: int[]) -> int[] {
+func squareList (array: int[]) : int[] {
   for i = 0; i < array.size; i ++ {
     array[i] *= array[i];
   }
@@ -2555,7 +2555,7 @@ The overload will then be able to manipulate the target before returning it, in 
 
 ```sn
   // ...
-  public func %clone (target: self) -> self {
+  public func %clone (target: self) : self {
     // Print a simple message
     println!(`Cloning a ${target.name}`);
 
@@ -2616,15 +2616,15 @@ We could now imagine we want to transmit a product over the network, or simply s
 For that, we'll implement two overloads in our class. They are `@serialize` and `@unserialize`, which is pretty explicit, and use the following signature:
 
 ```sn
-  public func %serialize () -> string;
-  public static func %unserialize (serial: string) -> self;
+  public func %serialize () : string;
+  public static func %unserialize (serial: string) : self;
 ```
 
 Now let's implement them! First, how to implement serialization? We could produce a human-friendly string, like that:
 
 ```sn
   // ...
-  public func %serialize () -> string {
+  public func %serialize () : string {
     return `uid: ${@unique_id} ; name: ${@name} ; price: ${@price}`;
   }
   // ...
@@ -2639,7 +2639,7 @@ But there is a problem here: first, the string is not optimized. One of the goal
     val price: int;
   }
 
-  public func %serialize () -> string =>
+  public func %serialize () : string =>
     // Make an object containing the data we want to serialize
     // (thanks to IST)
     // Then serialize it and return the result
@@ -2648,7 +2648,7 @@ But there is a problem here: first, the string is not optimized. One of the goal
       price: @price
     });
 
-  public static func %unserialize (serial: string) -> self {
+  public static func %unserialize (serial: string) : self {
     // Unserialize the serialized structure
     val obj: @Serialized = unserialize!(serial, @Serialized);
     // Make a new product instance and return it
@@ -2698,14 +2698,14 @@ Let's take an example:
 class Translator {
   // Here is a function that translates a text
   //  and returns the translated string
-  public static func translate (text: string, lang: string) -> string {
+  public static func translate (text: string, lang: string) : string {
     // Do some translation stuff here
     // For the example we will return a constant string
     return "Bonjour";
   }
 
   // Make the class callable
-  public static func %call (text: string, lang: string) -> string =>
+  public static func %call (text: string, lang: string) : string =>
     @translate(text, lang);
 }
 
@@ -2716,8 +2716,8 @@ Here, the `%call` overload made the class callable. We could implement it for in
 
 ```sn
 class Calculator {
-  public func add (left: int, right: int) -> int => left + right;
-  public func %call (left: int, right: int) -> int => @add(left, right);
+  public func add (left: int, right: int) : int => left + right;
+  public func %call (left: int, right: int) : int => @add(left, right);
 }
 
 val calc = new Calculator();
@@ -2748,7 +2748,7 @@ class BankAccount {
   public func add (amount: int) => @money += amount;
   public func sub (amount: int) => @money -= amount;
 
-  public func %plus (cmp: self) -> int {
+  public func %plus (cmp: self) : int {
     return @money + cmp.money;
   }
 }
@@ -2764,7 +2764,7 @@ That's as simple as that. We could also implement a way to handle operations bet
 ```sn
 class BankAccount {
   // ...
-  public func %plus (cmp: Number) -> Number {
+  public func %plus (cmp: Number) : Number {
     return @money + cmp;
   }
   // ...
@@ -2787,7 +2787,7 @@ So, we could compare two bank accounts:
 ```sn
 class BankAccount {
   // ...
-  public func %equal (cmp: self) -> bool {
+  public func %equal (cmp: self) : bool {
     return @money is right.money;
   }
 }
@@ -2812,16 +2812,16 @@ class BankAccount {
   // ...
 
   // Doesn't work because "T" cannot be guessed
-  public func %plus<T> (left: string, right: int) -> int[];
+  public func %plus<T> (left: string, right: int) : int[];
 
   // Doesn't work because "T" cannot be guessed
-  public func %plus<T> (left: string, right: int) -> T;
+  public func %plus<T> (left: string, right: int) : T;
 
   // Works fine
-  public func %plus<T> (left: T, right: int) -> bool;
+  public func %plus<T> (left: T, right: int) : bool;
 
   // Works fine
-  public func %plus<T> (left: string, right: Dictionary<int, T>) -> string[];
+  public func %plus<T> (left: string, right: Dictionary<int, T>) : string[];
 
   // ...
 }
@@ -2841,11 +2841,11 @@ class Product {
   public func %construct () => @unique_id = self::counter ++;
 
   // Array a function as this class' friend
-  friend getProductId(product: self) -> int;
+  friend getProductId(product: self) : int;
 }
 
 // Define the class' friend function
-func getProductId (product: Product) -> int {
+func getProductId (product: Product) : int {
   // Access the instance's private attributes
   return product.id;
 }
@@ -2856,13 +2856,13 @@ There are several syntax to set a resource as friend:
 ```sn
 class Product {
   // Array a simple function as a friend
-  friend func simpleFunction (product: self) -> int;
+  friend func simpleFunction (product: self) : int;
 
   // Array another class' static function as a friend
-  friend func AnotherClass::staticFunction(product: self) -> int;
+  friend func AnotherClass::staticFunction(product: self) : int;
 
   // Array a function from another class' instances as a friend
-  friend func AnotherClass.instanceFunction(product: self) -> int;
+  friend func AnotherClass.instanceFunction(product: self) : int;
 
   // Even a whole class can be listed as a friend!
   friend class AnotherClass;
@@ -3112,11 +3112,11 @@ Here is an example:
 
 ```sn
 virtual class Hello {
-  abstract public sayHello() -> string;
+  abstract public sayHello() : string;
 }
 
 class World {
-  abstract public sayHello() -> string {
+  abstract public sayHello() : string {
     println!("Hello world!");
   }
 }
@@ -3148,12 +3148,12 @@ Unique classes are a special case where the class has one unique instance and ca
 
 ```sn
 unique class Translation as tr {
-  public func translate (text: str, lang: str) -> string {
+  public func translate (text: str, lang: str) : string {
     // Do some stuff here
     return "Bonjour";
   }
 
-  public func %call (text: str, lang: str) -> string =>
+  public func %call (text: str, lang: str) : string =>
     @translate(text, lang);
 }
 
@@ -3178,7 +3178,7 @@ In SilverNight, typecasting is the concept of converting a given type into a pri
 These overloads have to following signature:
 
 ```sn
-  [public|protected|private] %toType() -> type;
+  [public|protected|private] %toType() : Type;
 ```
 
 If they are public, casting will work anywhere. If they are protected/private, they will work only from the inside of the class (and not in children if private).
@@ -3190,9 +3190,9 @@ class MyInteger {
   private value: int;
 
   public func set (@value: int) {}
-  public func get () -> int => @value;
+  public func get () : int => @value;
 
-  public func %toBoolean () -> bool => @value isnt 0;
+  public func %toBoolean () : bool => @value isnt 0;
 }
 ```
 
@@ -3285,7 +3285,7 @@ The first idea would be to make a virtual class called `ConvertibleToInt` with a
 
 ```sn
 virtual class ConvertibleToInt {
-  abstract func %toInteger () -> int;
+  abstract func %toInteger () : int;
 }
 ```
 
@@ -3299,10 +3299,10 @@ Try to find the solution by yourself. The solution is just below:
 
 ```sn
 interface ConvertibleToInt {
-  func %toInteger () -> int;
+  func %toInteger () : int;
 }
 
-func add (left: ConvertibleToInt, right: ConvertibleToInt) -> int {
+func add (left: ConvertibleToInt, right: ConvertibleToInt) : int {
   return int(left) + int(right);
 }
 ```
@@ -3319,7 +3319,7 @@ We can also declare attributes in interfaces, and even give them a default value
 interface ConvertibleToInt {
   value: int;
 
-  func %toInteger() -> int;
+  func %toInteger() : int;
 }
 ```
 
@@ -3329,7 +3329,7 @@ An interface can use the `self` keyword to refers to the class that is implemeti
 
 ```sn
 interface Duplication {
-  func duplicate () -> self;
+  func duplicate () : self;
 }
 
 class Product {
@@ -3337,7 +3337,7 @@ class Product {
 
   public func %construct (@name: string) {};
 
-  public func duplicate () -> self => new Product(@name);
+  public func duplicate () : self => new Product(@name);
 }
 ```
 
@@ -3394,7 +3394,7 @@ A good example of traits is when you want to inherit from multiple classes. This
 ```sn
 trait Vehicle {
   val speed: float;
-  func accelerate () -> string => "Vroom !";
+  func accelerate () : string => "Vroom !";
 }
 
 trait Wheeled {
@@ -3464,7 +3464,7 @@ class KindOfDict<K, V> {
   private keys: List<K>;
   private values: List<V>;
 
-  public func has (key: K) -> bool => @keys.has(key);
+  public func has (key: K) : bool => @keys.has(key);
 
   public func set (key: K, value: V) {
     // If this key is not already known...
@@ -3478,7 +3478,7 @@ class KindOfDict<K, V> {
       @values[@keys.indexOf(key)] = value;
   }
 
-  public func get (key: K) -> V =>
+  public func get (key: K) : V =>
     // Return the value associated to the key
     @values[@keys.indexOf(key)];
 }
@@ -3538,7 +3538,7 @@ Because the chosen template will always vary, we can't instanciate it nor use it
 // Make a structure
 struct Data<T implements Stringifyable> {
   val value: T;
-  func stringify () -> string = () => string(value);
+  func stringify () : string = () => string(value);
 }
 
 // Make a class that works with the structure
@@ -3548,7 +3548,7 @@ class Working {
 
 // Make a class that doesn't work with the structure
 class NotWorking {
-  public func %construct () -> self => println!("It's not working!");
+  public func %construct () : self => println!("It's not working!");
 }
 ```
 
@@ -3586,7 +3586,7 @@ Pretty powerful, right? We can this syntax to force the templates to do codes li
 
 ```sn
 class StringDict<K, V implements Stringifyable> extends KindOfDict<K, V> {
-  public stringify(key: T) -> string => string(@values[@keys.indexOf(key)]);
+  public stringify(key: T) : string => string(@values[@keys.indexOf(key)]);
 }
 ```
 
@@ -3601,7 +3601,7 @@ For information, the `T`, `X`, `Y`, `Z`, `K` and `V` names are reserved to templ
 Here is a problem we may encounter soon: we have a function, that takes a single argument of any type, do some things with it (like putting it in a list or something) and return an instance of the exact same type. A first idea would be to do this:
 
 ```sn
-func treat (something: Any) -> Any;
+func treat (something: Any) : Any;
 ```
 
 But we're wrong, because the following code won't work:
@@ -3614,7 +3614,7 @@ height = treat(hello); // ERROR
 An error will be thrown because `height` is typed as an `int` but `treat` returns an instance of `Any`. This is where we block: the function tells it can return absolutely any type of values. To solve this problem, we'll simply use templates with inferred templating:
 
 ```sn
-func treat<T> (something: T) -> T;
+func treat<T> (something: T) : T;
 
 let height = 8;
 height = treat(hello); // Works fine
@@ -3628,16 +3628,16 @@ In reality, templates are instances of a class. Consider the following code:
 
 ```sn
 // This line:
-func something<T> () -> void {}
+func something<T> () : void {}
 
 // Is strictly equivalent to:
-func something<T: class> () -> void {}
+func something<T: class> () : void {}
 ```
 
 This specifies the template's _type_. Here, `T` is an instance of the `class` class, which is a special class that refers to an existing class. But we can also specify other types:
 
 ```sn
-func createEmptyList<T, SIZE: int> () -> T[SIZE] { /* ... */ }
+func createEmptyList<T, SIZE: int> () : T[SIZE] { /* ... */ }
 
 val list1: int[8] = createEmptyList<int, 8>();
 val list2: int[]  = createEmptyList<int, 8>();
@@ -3696,17 +3696,17 @@ Let's detail these overloads:
 // V = type for values
 dict Custom<K, V> {
   // Get a value from a key
-  public func %get (key: K) -> V;
+  public func %get (key: K) : V;
   // Associate a value to a key
   public func %set (key: K, value: V);
   // Delete a key (and the value it refers to)
   public func %unset (key: K);
   // Check if a key is known
-  public func %has (key: K) -> bool;
+  public func %has (key: K) : bool;
   // Get the array of all keys
-  public func %keys () -> Iterator<K>;
+  public func %keys () : Iterator<K>;
   // Get the array of all values
-  public func %values () -> Iterator<V>;
+  public func %values () : Iterator<V>;
 }
 ```
 
@@ -3738,7 +3738,7 @@ class MySuperIterator<T> extends Generator<T> {
   private counter = 0;
 
   // Generate a new value
-  public func next () -> Iteration<T> {
+  public func next () : Iteration<T> {
     // Increase the counter
     // If it's lower than 10...
     if (++ @counter < 10)
@@ -3772,7 +3772,7 @@ loop {
 But the syntax of the iterator is kind of heavy... So, there's a syntax sugar to write iterators as functions:
 
 ```sn
-iter func mySuperIterator () -> int {
+iter func mySuperIterator () : int {
   for i in 0..10 {
     yield i;
   }
@@ -3811,7 +3811,7 @@ for value in myArray.values() {
 }
 
 // Explore a dictionary with both its keys and its values
-for key -> value in myArray.iterate() {
+for key : Value in myArray.iterate() {
   println!(key, value);
 }
 ```
@@ -3820,7 +3820,7 @@ In fact, asking a dictionary for its keys or values will call its `%keys()` or `
 
 So, when we try to iterate an entity using a single iterator variable (like `value`), the `for` loop will require an `Iterator<T>`.
 
-The last syntax (`for key -> value in ...`) we used is a syntax sugar, in reality it translates to:
+The last syntax (`for key : Value in ...`) we used is a syntax sugar, in reality it translates to:
 
 ```sn
 for (key, value) in myArray.iterate() {
@@ -3872,7 +3872,7 @@ struct Point {
   y: int;
 }
 
-func getNilPoints (array: Point[]) -> Point {
+func getNilPoints (array: Point[]) : Point {
   for point in array.values() {
     if (point.x is 0 and point.y is 0)
       return point;
@@ -3889,7 +3889,7 @@ val point: Point = getNilPoints([]);
 Our program will crash because `getNilPoints` returned a `void` while a `Point` was expected. This is simply due to the fact no point matched the condition in the `for` loop, so the function ended without returning nothing (which is equivalent to returning an instance of `void`). So, in order to make this function works anyway, and without returning a whole structure with a `success` boolean or something ugly, we can use a nullable type:
 
 ```sn
-func getNilPoints (array: Point[]) -> Point?;
+func getNilPoints (array: Point[]) : Point?;
 ```
 
 This allows the function to return a `Point` instance **or** a `void` instance. But, our program will still crash with an error message telling that `Point?` cannot be converted to `Point`. That's simply because we declared our constant with the `Point` type, but we must now tell it can also contain a `void`:
@@ -3927,7 +3927,7 @@ As we saw, the `getNilPoints()` function can now return an instance of `void`. B
 A strict equivalent to the function we saw would be:
 
 ```sn
-func getNilPoints (array: Point[]) -> Point? {
+func getNilPoints (array: Point[]) : Point? {
   for point in array.values() {
     if (point.x is 0 and point.y is 0)
       return point;
@@ -3940,7 +3940,7 @@ func getNilPoints (array: Point[]) -> Point? {
 This would achieve exatly the same thing. There's also a native value, named `null`, which is an instance of `void`:
 
 ```sn
-func getNilPoints (array: Point[]) -> Point? {
+func getNilPoints (array: Point[]) : Point? {
   for point in array.values() {
     if (point.x is 0 and point.y is 0)
       return point;
@@ -4032,7 +4032,7 @@ Let's take an example for this one: we have a function that takes a `string` as 
 But there's a specific typecasting for nullable types. When giving a nullable type where a standard type is expected, it is automatically cast into the standard type, and an error will be thrown if the value was `null`. Let's take an example:
 
 ```sn
-func inc (num: int) -> int => num + 1;
+func inc (num: int) : int => num + 1;
 
 val one: int = 1;
 val two = inc(one); // Returns: 2
@@ -4257,7 +4257,7 @@ For exampe, we could imagine using a function to read a file. Reading the file c
 The same thing applies if we do a division, we could want to be able handle division errors. Here is an example:
 
 ```sn
-func divide (left: int, right: int) -> float =>
+func divide (left: int, right: int) : float =>
   float(left) / right;
 
 divide(2, 5); // Returns: 0.4
@@ -4345,7 +4345,7 @@ try {
 Throwing custom errors simply consists in throwing an instance of a child class of `Error`. This allows us to make a distinction between native error types and our own ones. Here is an exemple:
 
 ```sn
-func divide (left: int, right: int) -> float {
+func divide (left: int, right: int) : float {
   if (right is 0)
     throw new CustomError("Cannot divide by zero.");
 
@@ -4358,7 +4358,7 @@ The `CustomError` class could look like this:
 ```sn
 class CustomError extends Error {
   // A sample function
-  public func why () -> string =>
+  public func why () : string =>
     "This is a custom error class";
 }
 ```
@@ -4420,7 +4420,7 @@ val result = try divide(5, 0) catch => println!(e.why());
 Note that this last block can also return a value. Thanks to this, if an error occurs, it is still possible to return an alternative value:
 
 ```sn
-val result = try divide(5, 0) catch () -> float => {
+val result = try divide(5, 0) catch () : float => {
   println!(e.why());
   return 0;
 };
@@ -4439,7 +4439,7 @@ In SilverNight, each object (not primitives) has a unique identifier associated 
 Here is the signature of the native `%equal` superoverload:
 
 ```sn
-func %equal<T> (left: T, right: T) -> bool;
+func %equal<T> (left: T, right: T) : bool;
 ```
 
 It can compare two instances of the same class and tell if they are identical by comparing their OID. Of course, this could not be done manually because we can't access the OID, but this is a native superoverload so the analyzer can implement it itself.
@@ -4640,7 +4640,7 @@ println!(counter); // Prints: "1"
 They can also return references:
 
 ```sn
-func increment (counter: *int) -> *int => fly_ptr! (counter + 1);
+func increment (counter: *int) : *int => fly_ptr! (counter + 1);
 
 let ptr: * = increment(fly_ptr! (0));
 // let ptr: *int = ...
@@ -4656,7 +4656,7 @@ Also, be aware of depointerization: when a function asks for an `int` for exampl
 
 ```sn
 // Make an addition function
-func add (left: int, right: int) -> int {
+func add (left: int, right: int) : int {
   return left + right;
 }
 
@@ -4764,7 +4764,7 @@ let data: Any;
 
 func register (new_data: Any) => data = new_data;
 
-func doubleRegister () -> int {
+func doubleRegister () : int {
   // Multiply the register by 2 and return the result
 }
 ```
@@ -4772,7 +4772,7 @@ func doubleRegister () -> int {
 Here, we don't know how to write the `doubleRegister()` function because we know we can't multiply an `Any` instance by 2. In order to solve this, we use _dynamic typecasting_:
 
 ```sn
-func doubleRegister () -> int {
+func doubleRegister () : int {
   return *(cast!<int>(&data)) * 2;
 }
 ```
@@ -4780,7 +4780,7 @@ func doubleRegister () -> int {
 What happens here? We simply _dynamically_ convert `data` to an `int` and got a pointer to the value. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. The process is simple: if `num` is in reality an `int`, it converts it ; else it returns the `NULL` pointer.
 
 ```sn
-func multiplyByTwo (num: *Any) -> int {
+func multiplyByTwo (num: *Any) : int {
   let casted: * = cast!<int>(num); // *int
 
   if (casted is NULL) {
@@ -4797,7 +4797,7 @@ multiplyByTwo (fly_ptr!("Hello")); // Returns: -1
 Dynamic typecasting is especially useful when coupled with the `instanceof` operator, which checks if a value is instance of a given class. Here is how it goes:
 
 ```sn
-func doubleRegister () -> int {
+func doubleRegister () : int {
   if (data instanceof int)
     return *(cast!<int>(&data)) * 2;
   else {
@@ -4810,7 +4810,7 @@ func doubleRegister () -> int {
 To know if a type is of a specific type, we simply have to use the templated directive `#mustbe<T>`:
 
 ```sn
-func doubleRegister () -> int {
+func doubleRegister () : int {
   if (data instanceof #mustbe<int>)
     return *(cast!<int>(&data)) * 2;
   else {
@@ -5233,12 +5233,12 @@ How do they work? That's simple: each operator superoverload overwrites the beha
 class MyClass {
   public readonly value: int;
   public func %construct (@value: int) {}
-  public func %plus (cmp: int) -> int {
+  public func %plus (cmp: int) : int {
     return @value + cmp;
   }
 }
 
-func %plus (cmp: int, inst: MyClass) -> int {
+func %plus (cmp: int, inst: MyClass) : int {
   return inst + cmp; // Use the implemented superoverload
 }
 ```
@@ -5262,7 +5262,7 @@ func repeatedCall (callback: #reduced, times: int) {
 }
 
 repeatedCall (
-  (lambda (name: string) -> void { println!(name); }, "Jack "),
+  (lambda (name: string) : void { println!(name); }, "Jack "),
   2
 ); // Prints: "Jack Jack "
 ```
@@ -5274,7 +5274,7 @@ Note that, because the callback hadn't a specific signature in the `repeatedCall
 It's also possible to ask for a specific return type in a returned function:
 
 ```sn
-func summation (callback: #reduced -> int, times: int) -> int {
+func summation (callback: #reduced : int, times: int) : int {
   let sum = 0;
 
   for i in 0..times {
@@ -5285,10 +5285,10 @@ func summation (callback: #reduced -> int, times: int) -> int {
 }
 ```
 
-As you can guess, `#reduced` is an equivalent to `#reduced -> void`. In fact, `#reduced` is simply an equivalent to `func(...anything...)`, so it's even possible to write:
+As you can guess, `#reduced` is an equivalent to `#reduced : void`. In fact, `#reduced` is simply an equivalent to `func(...anything...)`, so it's even possible to write:
 
 ```sn
-func summation (callback: unsafe #reduced -> int, times: int) -> int {
+func summation (callback: unsafe #reduced : int, times: int) : int {
   let sum = 0;
 
   for i in 0..times {
@@ -5302,7 +5302,7 @@ func summation (callback: unsafe #reduced -> int, times: int) -> int {
 A last use is when we want to be able to give some data to the callback, so we want to require it having some arguments. Here is an examplpe:
 
 ```sn
-func summation (callback: #reduced (num: int) -> int, times: int) -> int {
+func summation (callback: #reduced (num: int) : int, times: int) : int {
   let sum = 0;
 
   for i in 0..times {
@@ -5316,14 +5316,14 @@ println!(summation(
   // The reduced function's tuple
   (
     // The callback
-    lambda (num: int, coeff: int) -> int { return num * coeff; },
+    lambda (num: int, coeff: int) : int { return num * coeff; },
     // Its only argument (`coeff`)
     3
   )
 )); // Prints: "18"
 ```
 
-As we can see here, the callback's argument required in the `summation`'s signature must be placed at the very beginning of the callback's arguments. We couldn't have written `lambda (coeff: int, num: int) -> int` for example.
+As we can see here, the callback's argument required in the `summation`'s signature must be placed at the very beginning of the callback's arguments. We couldn't have written `lambda (coeff: int, num: int) : int` for example.
 
 ### Flexs
 
@@ -5336,11 +5336,11 @@ Still, flexs have a double specificity (in addition to the fact we write a `!` a
 What does that mean? Well, let's take an example:
 
 ```sn
-func sayHello (name: Any) -> void {
+func sayHello (name: Any) : void {
   println!(name);
 }
 
-flex sayHello (name: Any) -> void {
+flex sayHello (name: Any) : void {
   println!(name);
 }
 
@@ -5440,7 +5440,7 @@ Promises are basically a software conception of tasks that can either return a r
 
 ```sn
 // We admit the function below is already defined
-func readAsync (path: string) -> Promise<int, Error>;
+func readAsync (path: string) : Promise<int, Error>;
 
 // Let's use it
 readAsync("hello.txt")
@@ -5458,7 +5458,7 @@ Here, the `then()` function simply registers the callback for the case the promi
 Now we've seen how to use the promise, let's write the `readAsync()` function:
 
 ```sn
-func readAsync (path: string) -> Promise<string, Error> {
+func readAsync (path: string) : Promise<string, Error> {
   // Make a new promise and return it
   return new Promise<string, Error>(lambda (resolve: func (content: string), reject: func (err: Error)) {
     let content: string;
@@ -5486,7 +5486,7 @@ The first argument is the callback triggered in the case the promise succeeds, w
 Now we've seen the detailed syntax of this function, let's rewrite it with ICT:
 
 ```sn
-func readAsync (path: string) -> Promise<string, Error> =>
+func readAsync (path: string) : Promise<string, Error> =>
   // Make a new promise and return it
   new Promise<string, Error>((resolve, reject) => {
     // Read the file and handle errors
@@ -5512,7 +5512,7 @@ This is a lot simplier already, but still heavy. This is why we'll now see the `
 The `async` keyword describes an asynchronous function in a syntaxical way - it's pretty explicit. This means the function's signature must return a promise and work only in it. To understand the concept, let's rewrite our `readAsync` function with this new keyword:
 
 ```sn
-async func readAsync (path: string) -> string => {
+async func readAsync (path: string) : string => {
   try
     resolve import!('fs').readFile(path, "utf8");
 
@@ -5532,7 +5532,7 @@ Finally, the `resolve` and `reject` keyword respectively call the callback they 
 Note that an asynchronous function can also use the `return` keyword ; it will have the same effect as `resolve` if used in the function's root (not in sub-functions like callbacks, of course). Here is an example:
 
 ```sn
-async func readAsync (path: string) -> string => {
+async func readAsync (path: string) : string => {
   try
     return import!('fs').readFile(path, "utf8");
 
@@ -5544,7 +5544,7 @@ async func readAsync (path: string) -> string => {
 Also, when an error happens in an asynchronous functions, the error is automatically caught and transformed into a rejection. If the error is not compatible with the rejection type (e.g. if the rejection type is `int`), an error is thrown (for real, this time). So we could write our function like this:
 
 ```sn
-async func readAsync (path: string) -> string =>
+async func readAsync (path: string) : string =>
   import!('fs').readFile(path, "utf8");
 ```
 
@@ -5560,7 +5560,7 @@ Where promises are useful is when chaining several callbacks. Sometimes, because
 // Download a file from the web
 func fetch (url: string, callback: func (data: string, err: Error)) { /* ... */ };
 // Parse a JSON string as a dictionary (numbers and booleans are converted to strings)
-func parseJsonAsync (json: string) -> Dictionary<string, string> { /* ... */ };
+func parseJsonAsync (json: string) : Dictionary<string, string> { /* ... */ };
 
 // Here is the code:
 fetch("/api/last-article/author.json", (data, err) => {
@@ -5646,7 +5646,7 @@ Also, `await` returns the resolution value of the promise (if there is one). So,
 
 ```sn
 // Add two numbers after a second
-async func delayed_add (left: int, right: int) -> int {
+async func delayed_add (left: int, right: int) : int {
   // Sleep for 1 second
   await sleep(1);
   // Perform the addition and return the result
@@ -5697,7 +5697,7 @@ For functions, that's a bit more complex, because we document both the function 
  * @param numbers A list of numbers
  * @returns The summation
  */
-func sum (...numbers: int) -> int {
+func sum (...numbers: int) : int {
   let summation = 0;
 
   for num in numbers.values() {
@@ -5723,7 +5723,7 @@ To document nested functions (functions as arguments), we document them as usual
  * > @returns A list of values
  * @returns The summation
  */
-func sum (generation: func -> int[]) -> int {
+func sum (generation: func : int[]) : int {
   let summation = 0;
 
   for num in generation() {
@@ -5747,7 +5747,7 @@ Templates are documented like arguments, but with `@template`:
  * @param iterator The iterator to make the summation from
  * @returns The summation
  */
-func sum<T extends Number> (iterator: Iterator<T>) -> T {
+func sum<T extends Number> (iterator: Iterator<T>) : T {
   let summation: T = 0;
 
   for num in iterator {
@@ -5774,7 +5774,7 @@ Files can be documented as well, using three indicators: `@file`, which indicate
  * @param numbers A list of numbers
  * @returns The summation
  */
-func sum (...numbers: int) -> int {
+func sum (...numbers: int) : int {
   let summation = 0;
 
   for num in numbers.values() {
@@ -5829,7 +5829,7 @@ func defineName (newName: string with (c => c)) {
   name = newName;
 }
 
-func readName () -> string {
+func readName () : string {
   if (name)
     return name;
   else
@@ -5864,7 +5864,7 @@ func defineName (newName: string with (c => c)) {
   name = newName;
 }
 
-func readName () -> string {
+func readName () : string {
   if (name)
     return name;
   else
