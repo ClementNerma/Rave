@@ -1138,7 +1138,7 @@ This will work fine.
 
 A general concept you will find in almost every language is the concept of _loops_. A loop is a block that repeats a set of instructions under certain conditions. Let's see how they work.
 
-The `for` block repeats the instructions a given amount of times. It needs an _iterator variable_ (which is a variable with any `Number` type - integer or not), an optional start value, a condition and an incremental expression. Here is how we write it:
+The `for` block repeats the instructions a given amount of times. It needs an _iterator variable_ (which is a variable with any `number` type - integer or not), an optional start value, a condition and an incremental expression. Here is how we write it:
 
 ```sn
 for i = 0; i < 5; i ++ {
@@ -2764,7 +2764,7 @@ That's as simple as that. We could also implement a way to handle operations bet
 ```sn
 class BankAccount {
   // ...
-  public func %plus (cmp: Number) : Number {
+  public func %plus (cmp: number) : number {
     return @money + cmp;
   }
   // ...
@@ -3207,15 +3207,15 @@ Here is the array of all typecasting overloads:
   public func %toFloat ()     : float;
 
   public func %toString ()    : string;
-  public func %toNumber ()    : Number;
+  public func %toNumber ()    : number;
   // ...
 ```
 
-There two last overloads can be automatically available even if they are not written by hand: `%toNumber` and `%toString`. The first one returns a `Number` instance but exists if and only if either `%toInteger` and/or `%toFloat` is implemented. If `%toFloat` exists, it will return its result, else it will return `%toInteger`'s one.
+There two last overloads can be automatically available even if they are not written by hand: `%toNumber` and `%toString`. The first one returns a `number` instance but exists if and only if either `%toInteger` and/or `%toFloat` is implemented. If `%toFloat` exists, it will return its result, else it will return `%toInteger`'s one.
 
 The `%toString` overload will simply return a string if **any** typecasting overload is implemented. It will give priority to `%toNumber`, then to `%toBoolean`. That's as simple as that. It can be useful in some cases like in interfaces and/or traits like we'll see later.
 
-**NOTE :** `Number` is the mother class of both `int` and `float`, themselves respectively mothers of all integers types like `uint8` or `int32` for the first one and floating-points types like `ufloat` or `double` for the second one.
+**NOTE :** `number` is the mother class of both `int` and `float`, themselves respectively mothers of all integers types like `uint8` or `int32` for the first one and floating-points types like `ufloat` or `double` for the second one.
 
 A concrete example of using these overloads is when using the `println!` flex. It takes as an argument any instance implementing `%toPrimitive`, gets this overload's result, and prints it in the output. There are several usages of it, but most are to use them in interfaces and traits.
 
@@ -3816,7 +3816,7 @@ for key : Value in myArray.iterate() {
 }
 ```
 
-In fact, asking a dictionary for its keys or values will call its `%keys()` or `%values()` overload. These ones return an `Iterator<T>`, remember? Well, an iterator is simply an object with a `next()` function that returns a new value, until it goes out of data. Number ranges use them: `0...10` for example is automatically converted to `(new RangeIterator<uint>(0, 10))`.
+In fact, asking a dictionary for its keys or values will call its `%keys()` or `%values()` overload. These ones return an `Iterator<T>`, remember? Well, an iterator is simply an object with a `next()` function that returns a new value, until it goes out of data. number ranges use them: `0...10` for example is automatically converted to `(new RangeIterator<uint>(0, 10))`.
 
 So, when we try to iterate an entity using a single iterator variable (like `value`), the `for` loop will require an `Iterator<T>`.
 
@@ -5747,7 +5747,7 @@ Templates are documented like arguments, but with `@template`:
  * @param iterator The iterator to make the summation from
  * @returns The summation
  */
-func sum<T extends Number> (iterator: Iterator<T>) : T {
+func sum<T extends number> (iterator: Iterator<T>) : T {
   let summation: T = 0;
 
   for num in iterator {
