@@ -5409,8 +5409,8 @@ class Hello {
 {
   val local_name = "Hello !";
 
-  Hello::printName(); // Prints: "Hello"
-  Hello::printLocal(); // ERROR because 'local_name' is not defined
+  Hello::printName!(); // Prints: "Hello"
+  Hello::printLocal!(); // ERROR because 'local_name' is not defined
 }
 ```
 
@@ -5423,7 +5423,7 @@ Note that flexs can be expressed as a type, using `flex` instead of `func`. For 
 flex iterate_tuple (tuple: Tuple, callback: flex (value: Any));
 
 // Showcase
-iterate_tuple (("Hello", 24), flex (value: Any) {
+iterate_tuple! (("Hello", 24), flex (value: Any) {
   println!(value); // Works because all the values in the tuple are Primitivable
 });
 ```
