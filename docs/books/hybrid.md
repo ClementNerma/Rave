@@ -5846,7 +5846,7 @@ Now we've written our package file, we can write the package's source, which wil
 
 let name: string;
 
-func defineName (newName: string with (c => c)) {
+func defineName (newName: string with (_)) {
   name = newName;
 }
 
@@ -5862,7 +5862,7 @@ export { defineName, readName };
 
 First, the `#[module]` directive tells this is a module of the package. It defines a `name` variable, with two functions, one to set it, one to read it. Note that directives with a name between braces are called _head directives_, they describe a whole file and so must be placed at its head ; it wouldn't work if we placed it below the declaration of `name`, for example.
 
-_Tip :_ Because `(c => c)` is a constraint callback, it must return a boolean. Strings does implement the `%toBoolean` overload, which returns `false` if they are empty, and `true` else. So this constraint simply ensures the string is not empty.
+_Tip :_ Because `_` is a constraint callback, it must return a boolean. Strings does implement the `%toBoolean` overload, which returns `false` if they are empty, and `true` else. So this constraint simply ensures the string is not empty.
 
 The last line of the file **exports** some entities. This simply creates an object that will be available from the outside of the package, so `name` won't be available from the outside.
 
@@ -5881,7 +5881,7 @@ let name: string;
 export { defineName, readName };
 
 // File: "functions.sn"
-func defineName (newName: string with (c => c)) {
+func defineName (newName: string with (_)) {
   name = newName;
 }
 
