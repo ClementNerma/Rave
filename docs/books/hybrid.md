@@ -3811,7 +3811,7 @@ for value in myArray.values() {
 }
 
 // Explore a dictionary with both its keys and its values
-for key : Value in myArray.iterate() {
+for key -> value in myArray.iterate() {
   println!(key, value);
 }
 ```
