@@ -4755,6 +4755,19 @@ println!(i); // Prints: "2"
 
 This behaviour is due to the fact all pointers all nullable. A pointer to an `int` resource will be implicitly typed as `int?`, even though the pointed resource has a different type. This allows to use the `NULL` pointer which works both with constant and mutable pointers.
 
+Also, because we sometimes want to have pointers that refer to a real value, and not `null`, we can use the `NonNullPtr<T>` and `NonNullMutPtr<T>` types. They provide a way to ensure our pointers aren't null.
+
+```sn
+func readName (name: NonNullPtr<T>) {
+  println!(`Name is ${name}`);
+}
+
+readName (fly_ptr!("John")); // Prints: "Name is John";
+readName (NULL); // ERROR
+```
+
+Note that both `NonNullPtr<T>` and `NonNullMutPtr<T>` _are_ pointers and not classes. Their definition makes them aliases of respectively constant pointers and mutable pointers which are not referring to `null`.
+
 ### Static typecasting
 
 A problem we often encounter with the `Any` type is when we want to use some properties of its real type. For instance, let's take the following code:
