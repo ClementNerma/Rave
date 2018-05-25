@@ -26,6 +26,8 @@ SilverNight is released using a system of **stages**:
 |     4     | Analyzable   |  1.0.0  | Make a compiler, an interpreter, transpilers (JavaScript, ...)       |
 |     5     | Prod-ready   |  1.0.0  |                                   -                                  |
 
+Current stage is **0**.
+
 ## Installation
 
 The compiler isn't ready yet, so there is no way currently to install it.
