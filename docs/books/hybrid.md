@@ -2741,7 +2741,7 @@ You can see the matching operator on the right of the corresponding overload. Ea
 
 ```sn
 class BankAccount {
-  public readonly money: int with (c => c >= 0);
+  public readonly money: uint;
 
   public func %construct (@money: int) {}
 
