@@ -867,11 +867,11 @@ let books = [
 
 We didn't defined any structure, and yet the compiler guesses the type of the `books` variable. There's only one problem here: the compiler will understand you are making a _structure_, so nothing is extensible here. You can still change a book's name, the country it was originally published in, but not add new books.
 
-To solve this problem, we write `#growable` (names beginning by a `#` symbol are called _directives_) at the beginning of the object we want to make extensible.
+To solve this problem, we write `#dict` (names beginning by a `#` symbol are called _directives_) at the beginning of the object we want to make extensible.
 
 ```sn
 let books = [
-  #growable;
+  #dict;
 
   {
     name: "Harry Potter",
@@ -895,11 +895,11 @@ let books = [
 
 Now all works fine!
 
-To fully understand the powerfulness of IST, let's think we want to make the `details` object extensible, to add _optional_ new informations about the book. We would have to add `#growable` at the beginning of each `details` object, but that would be too heavy. So we simply have to write it at the beginning of the very first `details` object and it will affect all the other ones. It's as simple as that.
+To fully understand the powerfulness of IST, let's think we want to make the `details` object extensible, to add _optional_ new informations about the book. We would have to add `#dict` at the beginning of each `details` object, but that would be too heavy. So we simply have to write it at the beginning of the very first `details` object and it will affect all the other ones. It's as simple as that.
 
 _NOTE :_ We say that IST produces **on-the-fly structures**, which means it produces structures that were not declared before being used.
 
-`#growable` will turn `Array` objects into `List` ones and `struct` into `Dictionary<string, int>` here. Of course, this last step requires all the properties into `details` have the same type, else it wouldn't work.
+`#dict` will turn `Array` objects into `List` ones and `struct` into `Dictionary<string, int>` here. Of course, this last step requires all the properties into `details` have the same type, else it wouldn't work.
 
 Note that it works with defined object too:
 
@@ -907,7 +907,7 @@ Note that it works with defined object too:
 val harryPotter = {
   name: "Harry Potter",
   details: {
-      #growable;
+      #dict;
       author: "J.K. Rowling",
       year: "1997",
       country: "United Kingdom"
@@ -917,7 +917,7 @@ val harryPotter = {
 val eragon = {
   name: "Eragon",
   details: {
-      #growable;
+      #dict;
       author: "Cristopher Paolini",
       year: "2003",
       country: "U.S.A."
@@ -925,14 +925,14 @@ val eragon = {
 };
 
 let books = [
-  #growable;
+  #dict;
   harryPotter, eragon
 ];
 ```
 
-Here, because we create an array from two distinct objects, they must have the `#growable` directive on their `details` field.
+Here, because we create an array from two distinct objects, they must have the `#dict` directive on their `details` field.
 
-Be awayre though, if no `#growable` directive is present the vector is considered as an array, else it's a list. So, the following example will not work:
+Be awayre though, if no `#dict` directive is present the vector is considered as an array, else it's a list. So, the following example will not work:
 
 ```sn
 struct Hero {
@@ -951,7 +951,7 @@ Here, a `List<string>` is expected but an `Array<string>` is found. The valid co
 ```sn
 val jack = Hero {
   name: "Jack",
-  spells: [ #growable; "Fire", "Ice" ] // ERROR
+  spells: [ #dict; "Fire", "Ice" ] // ERROR
 };
 ```
 
@@ -3701,7 +3701,7 @@ As always, the return type of these overloads is omittable, put they are written
 
 About `%keys` and `%values`, their behaviour is a little special. They can be called automatically, when iterating the dictionary through a loop (we'll see that soon), or manually thanks to a function.
 
-Most of the time, custom dictionaries should always inherit from the `Dictionary` class (the same one that is used when using `#growable` in a key/value association with IST). The syntax is the same as for classes:
+Most of the time, custom dictionaries should always inherit from the `Dictionary` class (the same one that is used when using `#dict` in a key/value association with IST). The syntax is the same as for classes:
 
 ```sn
 dict Custom<K, V> extends Dictionary<K, V> {
