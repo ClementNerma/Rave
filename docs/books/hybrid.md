@@ -642,6 +642,8 @@ println!(tuples[index2]); // Prints: "Hello"
 
 Note that, as for arrays, tuples are considered as a single type (even if it can combine several values of different types).
 
+Also, tuples have the `Tuple` type.
+
 ### Structures
 
 We now want to represent a video game hero. It has a name, Health Points (HP), Magic Points (MP), attack and defense points. How could we describe this? A first idea would be to make an array of five elements, the first element referring to the name, the second one to the HP, the third one to the MP, and so on. But this is not very readable and hard to maintain.
