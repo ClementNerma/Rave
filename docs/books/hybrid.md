@@ -5201,6 +5201,14 @@ let car: Car = new Vehicle(2); // ERROR
 let car: Car = new Vehicle(4); // Works fine
 ```
 
+A last thing about this concept is the _short notation_ it allows: because writing a `c => ...` can be a bit heavy, we can omit the arrow syntax and simply use the `_` entity to refer as the candidate value. Here is an example:
+
+```sn
+type Car is Vehicle with (c => c.wheels is 4);
+// *Strict* equivalent:
+type Car is Vehicle with (_.wheels is 4);
+```
+
 ### Conditional directives
 
 Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the _conditional directives_: `#if`, `#else`, `#elif`, `#end`. These directives use a boolean, like their block equivalent. Their specificity is that the code located in them will simply be removed from the source code if the condition is (or is not) filled. They can use build constants, giving the type of conversion (compilation, interpretation, transpiling), the platform (x86_64, ARM...).
