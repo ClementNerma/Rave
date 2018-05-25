@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.24.3',
+    VERSION: '0.24.4',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -660,7 +660,7 @@ scheme = {
         ],
         [
           // Line directives
-          /#(growable) *;/,
+          /#(dict) *;/,
           'orange'
         ],
         [
