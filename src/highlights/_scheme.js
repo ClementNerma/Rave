@@ -500,7 +500,7 @@ scheme = {
         ],
         [
           // Native types and classes
-          /\b(Boolean|bool|[Nn]umber|(?:Unsigned)?Integer(?:|8|16|32|64)|u?int(?:|8|16|32|64)|(?:Unsigned)?Byte|u?byte|[Ff]loat|[Dd]ouble|[Ss]tring|Primitive|BooleanConvertible|IntegerConvertible|FloatConvertible|Numerizable|Stringifyable|Clonable|Freezable|Serializable|Randomizable|Primitivable|Collection|Dictionary|Vector|Array|List|Error|ErrorStep|RegExp|console)(\?)?\b/,
+          /\b(Boolean|bool|[Nn]umber|(?:Unsigned)?Integer(?:|8|16|32|64)|u?int|[ui](?:8|16|32|64)|(?:Unsigned)?Byte|u?byte|[Ff]loat|[Dd]ouble|[Ss]tring|Primitive|BooleanConvertible|IntegerConvertible|FloatConvertible|Numerizable|Stringifyable|Clonable|Freezable|Serializable|Randomizable|Primitivable|Collection|Dictionary|Vector|Array|List|Error|ErrorStep|RegExp|console)(\?)?\b/,
           'yellow', 'cyan'
         ],
         [
