@@ -187,24 +187,24 @@ Primitive types can access additional features object types cannot use, such as 
 
 ### Integers
 
-There is not only one type to represent numbers. The "default" one is **int**, also known as **int32**, a signed 32-bit integer. Basically, it can handle any number between `−2,147,483,648` and `2,147,483,647`.
+There is not only one type to represent numbers. The "default" one is **int**, also known as **i32**, a signed 32-bit integer. Basically, it can handle any number between `−2,147,483,648` and `2,147,483,647`.
 
 Here is the table of types with their respective capacities:
 
-|    Type   |            Minimum           |            Maximum           |
-|-----------|------------------------------|------------------------------|
-| `int8`    | `-128`                       | `127`                        |
-| `uint8`   | `0`                          | `255`                        |
-| `int16`   | `-32,768`                    | `32,767`                     |
-| `uint16`  | `0`                          | `65,535`                     |
-| `int32`   | `−2,147,483,648`             | `2,147,483,647`              |
-| `uint32`  | `0`                          | `4,294,967,295`              |
-| `int64`   | `-9,223,372,036,854,775,808` | `9,223,372,036,854,775,807`  |
-| `uint64`  | `0`                          | `18,446,744,073,709,551,615` |
+|  Type   |            Minimum           |            Maximum           |
+|---------|------------------------------|------------------------------|
+| `i8`    | `-128`                       | `127`                        |
+| `ui8`   | `0`                          | `255`                        |
+| `i16`   | `-32,768`                    | `32,767`                     |
+| `ui16`  | `0`                          | `65,535`                     |
+| `i32`   | `−2,147,483,648`             | `2,147,483,647`              |
+| `ui32`  | `0`                          | `4,294,967,295`              |
+| `i64`   | `-9,223,372,036,854,775,808` | `9,223,372,036,854,775,807`  |
+| `ui64`  | `0`                          | `18,446,744,073,709,551,615` |
 
-Note that, the more bits a number uses for its representation (for integers, this is the number written after `int`, like 32 bits for `int32`), the more memory it takes. By default, integers use the `int32` type, but if you don't need such big numbers, you can still use the `int16` type instead. This is especially important when making programs for platforms with a very limited amount of memory (like Arduino boards), in this case you can even use the `int8` (`byte`) type (handling from `-128` to `127`).
+Note that, the more bits a number uses for its representation (for integers, this is the number written after `int`, like 32 bits for `i32`), the more memory it takes. By default, integers use the `i32` type, but if you don't need such big numbers, you can still use the `i16` type instead. This is especially important when making programs for platforms with a very limited amount of memory (like Arduino boards), in this case you can even use the `i8` (`byte`) type (handling from `-128` to `127`).
 
-To conclude, always use the smallest type number you have to. If you are dealing with numbers from `0` to `40,000`, instead of using a `int32`, simply use a `uint16` instead.
+To conclude, always use the smallest type number you have to. If you are dealing with numbers from `0` to `40,000`, instead of using a `i32`, simply use a `ui16` instead.
 
 Also, note that 64-bit numbers even work on 32-bit processors, as they are part of the language specifications.
 
@@ -277,10 +277,10 @@ When writing a plain number, all underscores are simply removed from its represe
 
 ### Overflow and underflow
 
-A specificity about numbers is the concept of _overflow_ and the similar concept of _underflow_. When dealing with a `int8` for example, if we write:
+A specificity about numbers is the concept of _overflow_ and the similar concept of _underflow_. When dealing with a `i8` for example, if we write:
 
 ```sn
-let num: int8 = -128;
+let num: i8 = -128;
 num = num - 1;
 println!(num);
 ```
@@ -289,7 +289,7 @@ The expected result is `-129`. But, because this type cannot handle it, it will 
 The same behavior applies when dealing with the upper limit of numbers.
 
 ```sn
-let num: int8 = 125;
+let num: i8 = 125;
 num = num + 5;
 println!(num); // Prints: "-126"
 ```
@@ -3215,7 +3215,7 @@ There two last overloads can be automatically available even if they are not wri
 
 The `%toString` overload will simply return a string if **any** typecasting overload is implemented. It will give priority to `%toNumber`, then to `%toBoolean`. That's as simple as that. It can be useful in some cases like in interfaces and/or traits like we'll see later.
 
-**NOTE :** `number` is the mother class of both `int` and `float`, themselves respectively mothers of all integers types like `uint8` or `int32` for the first one and floating-points types like `ufloat` or `double` for the second one.
+**NOTE :** `number` is the mother class of both `int` and `float`, themselves respectively mothers of all integers types like `ui8` or `i32` for the first one and floating-points types like `ufloat` or `double` for the second one.
 
 A concrete example of using these overloads is when using the `println!` flex. It takes as an argument any instance implementing `%toPrimitive`, gets this overload's result, and prints it in the output. There are several usages of it, but most are to use them in interfaces and traits.
 
@@ -5967,7 +5967,7 @@ Note the analyzer transparently adds the following line to all programs (at thei
 scope import frontend::native;
 ```
 
-This imports the`frontend::native` module that provides all the native stuff like `string` or `Array` and link them to global entities (meaning we don't have to write `frontend::native::int32` for example).
+This imports the`frontend::native` module that provides all the native stuff like `string` or `Array` and link them to global entities (meaning we don't have to write `frontend::native::i32` for example).
 
 #### The `import!` flex
 
