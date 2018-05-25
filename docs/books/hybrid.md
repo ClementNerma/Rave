@@ -5416,6 +5416,18 @@ class Hello {
 
 Here, flexs are able to access their declaration scope (the scope of `Hello`) plus their own scope (remember, functions have a reserved scope delimited by their brackets), but they aren't able to access the local scope in which we define a `local_name` constant.
 
+Note that flexs can be expressed as a type, using `flex` instead of `func`. For example, the native `iterate_tuple` flex requires a flex as a callback:
+
+```sn
+// Flex's signature
+flex iterate_tuple (tuple: Tuple, callback: flex (value: Any));
+
+// Showcase
+iterate_tuple (("Hello", 24), flex (value: Any) {
+  println!(value); // Works because all the values in the tuple are Primitivable
+});
+```
+
 ## Asynchronous behaviour
 
 Sometimes we can't foretell when an even will occur. For example, if we are making a web server, we can't predict the incoming connections. But we still have to handle these events, and in order to do that we use _asynchronous_.
