@@ -3517,21 +3517,6 @@ val test: Data = {
 }; // Works fine
 ```
 
-### Static templates
-
-When inheriting from a class, the child class must have _at least_ the same number of templates, in order to use all of its parent's ones (we can though add additional templates in a child class). But, sometimes we don't want to let the user choose and prefer to force a specific class instead. Here is how it goes:
-
-```sn
-class Mother<K, V> { /* ... */ }
-class Child<K is string, V> { /* ... */ }
-```
-
-The `Child` class will now only require a single template: `V`, because `K` is forced to be the `string` class (we say it's a _static_ template, while `V` is a _dynamic_ one).
-
-```sn
-val child = new Child<int>; // K = string ; V = int
-```
-
 ### Restricting templates
 
 Because the chosen template will always vary, we can't instanciate it nor use its methods/attributes. But we may want to interact with the template or its instances, by ensuring it implements some methods or attributes. That's possible, and here is the syntax:
@@ -3594,7 +3579,7 @@ class StringDict<K, V implements Stringifyable> extends KindOfDict<K, V> {
 
 Note that inheritance is a little but special with templates: writing `T extends SomeClass` will of course accept all classes inheriting from `SomeClass`, but also `SomeClass` itself. Be aware of that. Writing `T` alone will be an equivalent of writing `T extends Any`.
 
-That's all! Note that, if a class inherits from another that uses some template(s), it must have _at least_ the same number of templates (though it is not forced to use the same names).
+That's all!
 
 For information, the `T`, `X`, `Y`, `Z`, `K` and `V` names are reserved to templates.
 
