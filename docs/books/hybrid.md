@@ -3713,6 +3713,14 @@ This will inherits all functions that comes with basic dictionaries, like `.filt
 
 A specificity about dictionary overloads is that they can be implemented by **any** standard class. This is why we can use integer indexes on a string even though that's not a dictionary, for example. The `dict` keyword simply indicates the class implements every overloads required for a dictionary and explicitly indicates its use.
 
+#### Static templates
+
+Sometimes we want to force a template, like `Vector<T>` do: it's a `Dictionary<K, V>` which `K` **always** being a number and `V` being `T`. Because dictionaries must have two templates when declaring them the short way, we have to use the long notation by explicitly inheriting from the `Dictionary<K, V>` class:
+
+```sn
+dict Vector<T> extends Dictionary<int, T> { /* ... */ }
+```
+
 ### Iterators
 
 The `%keys()` and `%values()` overloads respectively return an `Iterator<K>` and an `Iterator<V>`. It's simply a class that implements a few members, like a `next()` function that returns the next iterated value. To put it simply, iterators can be _iterated_ and at each step return a new _value_, until they are _done_.
