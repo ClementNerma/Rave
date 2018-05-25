@@ -3733,7 +3733,7 @@ The `%keys()` and `%values()` overloads respectively return an `Iterator<K>` and
 Iterators can be defined like this:
 
 ```sn
-class MySuperIterator<T> extends Generator<T> {
+class MySuperIterator<T> extends Iterator<T> {
   // Start a counter
   private counter = 0;
 
