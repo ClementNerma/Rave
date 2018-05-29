@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.24.4',
+    VERSION: '0.24.5',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -520,7 +520,7 @@ scheme = {
         ],
         [
           // Keywords
-          /(?<!\.)\b(func|lambda|do|if|else|elsif|for|while|loop|unless|until|break|continue|when|default|try|catch)(?!\s*:)\b/,
+          /(?<!\.)\b(func|lambda|do|if|else|elsif|for|while|loop|unless|until|break|continue|match|default|try|catch)(?!\s*:)\b/,
           'purple'
         ],
         [
