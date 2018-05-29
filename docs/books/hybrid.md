@@ -1287,7 +1287,7 @@ else
 But this is kind of heavy. So we can perform a _match_ instead:
 
 ```sn
-when name {
+match name {
   "Paul"  -> println!("Happy birthday, Paul!");
   "John"  -> println!("How are you, John?");
   "Marc"  -> println!("Hello there Marc!");
@@ -1298,7 +1298,7 @@ when name {
 If you want to specify a condition, you can write it between parenthesis. You will have access to the `_` variable which refers to the value given in the block's head.
 
 ```sn
-let adult: string = when age {
+let adult: string = match age {
   (_ < 20) -> "No";
   (_ > 20) -> "Yes";
   default  -> "Kind of";
@@ -1308,7 +1308,7 @@ let adult: string = when age {
 You can also specify a set of expressions for a match, but you will have to return manually the value:
 
 ```sn
-let adult: string = when age {
+let adult: string = match age {
   (_ < 20) -> "No";
   (_ > 20) -> "Yes";
   default  -> { println!("Default value taken."); return "Kind of"; }
@@ -1318,7 +1318,7 @@ let adult: string = when age {
 Note that the `break` instruction does nothing on this block. The `when` block can also be used without assignment:
 
 ```sn
-when age {
+match age {
   (_ < 20) -> adult = "No";
   (_ > 20) -> adult = "Yes";
   default  -> adult = "Kind of";
