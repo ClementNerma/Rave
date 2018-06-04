@@ -574,8 +574,13 @@ scheme = {
           'yellow', 'cyan'
         ],
         [
+          // Static operator applied on a class
+          /(@?[A-Z][a-zA-Z0-9_\$]*)(\?)?(?=[\.\[])/,
+          'yellow', 'cyan'
+        ],
+        [
           // Object followed by a child property
-          /(@?[a-zA-Z_\$][a-zA-Z0-9_\$]*)(\?)?(?=[\.\[])/,
+          /(@?[a-z_\$][a-zA-Z0-9_\$]*)(\?)?(?=[\.\[])/,
           'red', 'cyan'
         ],
         [
