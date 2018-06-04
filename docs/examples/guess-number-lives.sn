@@ -22,7 +22,7 @@ while guess isnt secret {
   guess = console.readInt();
 
   // Compare the guess to the secret number
-  when guess {
+  match guess {
     (_ < secret) -> println!("Too low!");
     (_ > secret) -> println!("Too high!");
     (_ is secret) -> println!("You won!");
