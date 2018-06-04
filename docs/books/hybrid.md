@@ -2842,7 +2842,7 @@ class Product {
 
   public func %construct () => @unique_id = self.counter ++;
 
-  // Array a function as this class' friend
+  // List a function as this class' friend
   friend getProductId(product: self) : int;
 }
 
@@ -2857,10 +2857,10 @@ There are several syntax to set a resource as friend:
 
 ```sn
 class Product {
-  // Array a simple function as a friend
+  // List a simple function as a friend
   friend func simpleFunction (product: self) : int;
 
-  // Array a function from another class as a friend
+  // List a function from another class as a friend
   friend func AnotherClass.instanceFunction(product: self) : int;
 
   // Even a whole class can be listed as a friend!
