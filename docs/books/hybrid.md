@@ -3498,6 +3498,21 @@ println!(myDict.get([ 2, 5 ])); // Prints: "Message 1"
 
 As you can see, templates you can even be other templated classes. Because, yes, both `List` and `Array` are templated types - they are in reality custom dictionary classes this chapter aims to present.
 
+A final word about template inferring: be **really** aware about ambiguities that prevent the code from working. For example, the following code wouldn't work:
+
+```sn
+class KindOfDict<K, V> {
+  public func %construct (theFirstKey: K) { /* ... */ }
+  public func %construct (theFirstValue: V) { /* ... */ }
+}
+
+new KindOfDict(2); // ERROR: Template inferring ambiguity
+```
+
+This error happens because the program can't know what template to infer. Here, `K` could be an `int` and so the first constructor is called, but it could also be `V` and so the second constructor should be called instead.
+
+Because of the program not being able to decide on the template to infer, an error is thrown because of template ambiguity. Be aware of that!
+
 ### Optional templates
 
 Many native functions use optional templates. They work exactly like optional arguments for functions:
