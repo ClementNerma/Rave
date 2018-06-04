@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.24.6',
+    VERSION: '0.24.7',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -399,7 +399,7 @@ scheme = {
           },
           patterns: [
             {
-              match: /([a-z_][a-zA-Z0-9_\$]*)(::)/,
+              match: /([a-zA-Z_\$][a-zA-Z0-9_\$]*)(::)/,
               captures: {
                 '1': {
                   name: '${green}'
@@ -455,7 +455,7 @@ scheme = {
           },
           patterns: [
             {
-              match: /([a-z_][a-zA-Z0-9_\$]*)(?=::)/,
+              match: /([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=::)/,
               captures: {
                 '1': {
                   name: '${green}'
@@ -463,7 +463,7 @@ scheme = {
               }
             },
             {
-              match: /(::)([a-z_][a-zA-Z0-9_\$]*)/,
+              match: /(::)([a-zA-Z_\$][a-zA-Z0-9_\$]*)/,
               captures: {
                 '1': {
                   name: '${cyan}'
@@ -495,7 +495,7 @@ scheme = {
         },
         [
           // Usage of a package/module
-          /\b([a-z_][a-zA-Z0-9_]*)(::)\b/,
+          /\b([a-zA-Z_\$][a-zA-Z0-9_]*)(::)\b/,
           'green', 'cyan'
         ],
         [
@@ -562,11 +562,6 @@ scheme = {
           // Constants
           /\b([A-Z_\$][A-Z0-9_\$]+)\b/,
           'orange'
-        ],
-        [
-          // Static operator for classes
-          /\b([A-Z][a-zA-Z0-9_\$]*)(::)(?=[a-zA-Z_\$])/,
-          'yellow', 'cyan'
         ],
         [
           // Arguments expansion
