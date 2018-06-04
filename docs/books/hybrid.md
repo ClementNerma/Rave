@@ -2304,11 +2304,11 @@ This is another type of members. Static members are not available from the insta
 ```sn
 class Product {
   private static unique_id = 0;
-  public static func increaseCounter () : int => ++ self::unique_id;
+  public static func increaseCounter () : int => ++ self.unique_id;
 }
 ```
 
-Here, `increaseCounter()` can only be accessed by using the `::` operator on the class itself, so we would write `CounterClass::increaseCounter()`. This will increase the private static attribute `counter`.
+Here, `increaseCounter()` can only be accessed by using the `.` operator on the class itself, so we would write `CounterClass.increaseCounter()`. This will increase the private static attribute `counter`.
 
 The `self` word refers to the current class, in a static context. This provides a way to access its static attributes. Let's populate the class with attributes for instances:
 
@@ -2318,7 +2318,7 @@ class Product {
   private static counter = 0;
 
   // Increase the global counter
-  public static func increaseCounter () : int => ++ self::counter;
+  public static func increaseCounter () : int => ++ self.counter;
 
   // The product's unique identifier
   public readonly unique_id: int;
@@ -2328,14 +2328,14 @@ class Product {
   // Initialize the instance
   public func %construct (@name: string) {
     // Generate a unique identifier from the static function
-    @unique_id = self::increaseCounter();
+    @unique_id = self.increaseCounter();
   }
 }
 ```
 
 Be aware though, writing `self` is not like writing the class' name (`Product` here). `self` is a reference that can only be used inside of a class, and which provides a way to access its private static members. If we had specified the class' name instead, we wouldn't have been able to access the `counter` attribute.
 
-When static members are private, that means they can only accessed through the `self` keyword, so from the inside of the class only. When they are public, they are available from the outisde of the class thanks to its name, followed by the static operator `::` and the attribute's name.
+When static members are private, that means they can only accessed through the `self` keyword, so from the inside of the class only. When they are public, they are available from the outisde of the class thanks to its name, followed by the static operator `.` and the attribute's name.
 
 ### Practice: Let's make a map!
 
@@ -2378,7 +2378,7 @@ class Map {
       println!("Cannot move outside the map.");
 
     // Check if the cell we are going to is a rock
-    elsif (@cells[y][x] is self::ROCK)
+    elsif (@cells[y][x] is self.ROCK)
       println!("There's a rock on your way.");
 
     // Else, move the player
@@ -2388,7 +2388,7 @@ class Map {
       @playerY = y;
 
       // If we fell in a trap, game over!
-      if (@cells[y][x] is self::TRAP) {
+      if (@cells[y][x] is self.TRAP) {
         println!("You've been trapped!");
         @trapped = true;
       }
@@ -2544,7 +2544,7 @@ class Product {
   private static counter: int = 0;
 
   public %construct(@name: string, @price: int) {
-    @unique_id = self::counter ++;
+    @unique_id = self.counter ++;
   }
 }
 ```
@@ -2562,7 +2562,7 @@ The overload will then be able to manipulate the target before returning it, in 
     println!(`Cloning a ${target.name}`);
 
     // Set a new unique identifier
-    target.uid = self::counter ++;
+    target.uid = self.counter ++;
 
     // Return the target
     return target;
@@ -2608,7 +2608,7 @@ class Product {
   public pln %lazy_clone = true;
 
   public %construct(@name: string, @price: int) {
-    @unique_id = self::counter ++;
+    @unique_id = self.counter ++;
   }
 }
 ```
@@ -2840,7 +2840,7 @@ class Product {
   private static counter = 0;
   private id: int;
 
-  public func %construct () => @unique_id = self::counter ++;
+  public func %construct () => @unique_id = self.counter ++;
 
   // Array a function as this class' friend
   friend getProductId(product: self) : int;
@@ -2860,10 +2860,7 @@ class Product {
   // Array a simple function as a friend
   friend func simpleFunction (product: self) : int;
 
-  // Array another class' static function as a friend
-  friend func AnotherClass::staticFunction(product: self) : int;
-
-  // Array a function from another class' instances as a friend
+  // Array a function from another class as a friend
   friend func AnotherClass.instanceFunction(product: self) : int;
 
   // Even a whole class can be listed as a friend!
@@ -3077,7 +3074,7 @@ child.callHello(); // Prints: "I am the child class."
 
 Here, we can use the `callHello()` method because `Child` inherits it from `Mother`. This method runs the `hello()` method of the _instance_'s class, not the current one. So it calls the `hello()` method from `Child` instead of of `Mother`. To call the method of the _current_ class, we should have used `self.hello()` instead.
 
-Note that these keywords can be used both in a dynamic and static way: we could write `this::staticMethod()` as well as `self.sayHello()`, which would have printed `"I am the mother class"`.
+Note that these keywords can be used both in a dynamic and static way: we could write `this.staticMethod()` as well as `self.sayHello()`, which would have printed `"I am the mother class"`.
 
 #### Calling overloads
 
@@ -3091,7 +3088,7 @@ class Test {
   private static readonly counter: int = 0;
 
   public func %construct () {
-    @id = ++ self::counter;
+    @id = ++ self.counter;
   }
 
   public func %construct (@name: string) {
@@ -5431,8 +5428,8 @@ class Hello {
 {
   val local_name = "Hello !";
 
-  Hello::printName!(); // Prints: "Hello"
-  Hello::printLocal!(); // ERROR because 'local_name' is not defined
+  Hello.printName!(); // Prints: "Hello"
+  Hello.printLocal!(); // ERROR because 'local_name' is not defined
 }
 ```
 
@@ -5470,11 +5467,11 @@ class Event {
   public static func trigger () => @handler();
 }
 
-Event::handle(lambda () => println!("Callback was triggered"));
-Event::trigger();
+Event.handle(lambda () => println!("Callback was triggered"));
+Event.trigger();
 ```
 
-If we don't have we source code of `Event`, we could think this is asynchronous because the function is not called directly but only when a specific even occur. But it's still synchronous, because the callback is ran in the `Event::trigger()` function.
+If we don't have we source code of `Event`, we could think this is asynchronous because the function is not called directly but only when a specific even occur. But it's still synchronous, because the callback is ran in the `Event.trigger()` function.
 
 In SilverNight, asynchronous functions happen in two cases:
 
@@ -5685,7 +5682,7 @@ async func sleep (delay: uint) {
   println!("A"); // Prints: "A"
 
   // Wait for the given delay...
-  await Scheduler::setTimeout(delay);
+  await Scheduler.setTimeout(delay);
 
   println!("B"); // Prints: "B"
 
