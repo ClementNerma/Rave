@@ -2805,6 +2805,10 @@ This works the same way for the other logical operators. A specificy with logica
 * Implementing `%equal`/`%inequal` + `%greater` will automatically implement `%smaller` ;
 * Implementing `%equal`/`%inequal` + `%smaller` will automatically implement `%greater`
 
+So, any class that implements either `%equal` or `%inequal` as well as `%greater` or `%smaller` automatically implements all comparison overloads.
+
+This also makes the class implementing the `Comparable` interface, which is useful when dealing with vectors for example: that allows to use the `.sort()` as well as the `.getIterator()` functions from `Vector`.
+
 #### Templating
 
 It's possible to use templates on overloads, but only if these templates are part of the type of at least one argument of the function. Here are some examples of signatures:
