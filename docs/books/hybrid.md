@@ -3648,6 +3648,35 @@ val list2: Array<int>;
 
 Also, always remember templates are _constants_: they cannot be modified in any case.
 
+### Segments
+
+Segments are class extensions that allow to provide some methods only if some conditions are matched about the templates. For example, we can consider the `Vector<T>` class that implements a `.sum()` function if `T` is a `Number`. Here is how it goes:
+
+```sn
+class Vector<T> {
+  // ...
+  public func %keys() : Array<T> { /* ... */ };
+  // ...
+  segment (T is int) {
+    public func sum () : int { /* ... */ };
+  }
+}
+```
+
+We specify between the parenthesis that follow the `segment` keyword the segment's _condition_. This means the segment will be applied **only if** the condition is satisfied.
+
+This also means the condition must be evaluable just by giving the class' templates. For example, `segment (this.data > 2) { /* ... */ }` wouldn't work because we are evaluating a non-predictable data.
+
+Also, a more sophisticated syntax for our class is the following one:
+
+```sn
+  // ...
+  segment (T extends Number) {
+    public func sum () : T { /* ... */ }
+  }
+  // ...
+```
+
 ## Dictionaries in depth
 
 Let's see the final part about classes: dictionaries. As you already, dictionaries in SilverNight are instances of the `Dictionary` class. But how do they really work? That's what we will see in this chapter, as well as how to make your own dictionary classes to store key/values (or more) dictionaries with a custom behaviour.
