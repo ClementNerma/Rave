@@ -519,6 +519,16 @@ scheme = {
           'purple', 'cyan', 'purple', 'orange'
         ],
         [
+          // Abstract classes don't exist
+          /\b(abstract)\s+(class)\b/,
+          'invalid', 'purple'
+        ],
+        [
+          // Virtual methods don't exist
+          /\b(virtual)\s+(func|iter|async)\b/,
+          'invalid', 'purple'
+        ],
+        [
           // Keywords
           /(?<!\.)\b(func|lambda|do|if|else|elsif|for|while|loop|unless|until|break|continue|match|default|try|catch|segment)(?!\s*:)\b/,
           'purple'
