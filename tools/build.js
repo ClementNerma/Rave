@@ -85,7 +85,7 @@ function say(message, evenIfQuiet = false) {
   // or if the message must be displayed even in quiet mode...
   if (! argv.quiet || evenIfQuiet)
     // Display the message in the console
-    console.log(message);
+    console.log(argv.verbose ? `[${Date.now()}] ` + message : message);
 
   // Log it anyway
   log(message);
