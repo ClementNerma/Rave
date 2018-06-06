@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.24.10',
+    VERSION: '0.24.11',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -399,7 +399,7 @@ scheme = {
           },
           patterns: [
             {
-              match: /([a-zA-Z_\$][a-zA-Z0-9_\$]*)(::)/,
+              match: /(?<!\\)(\\?[a-zA-Z_\$][a-zA-Z0-9_\$]*)(::)/,
               captures: {
                 '1': {
                   name: '${green}'
@@ -439,7 +439,7 @@ scheme = {
         ],
         [
           // IMPORT flex call (closed or not)
-          /\b(import!)\s*\((?:\s*([a-zA-Z_\$][a-zA-Z0-9_]*(?:(::)[a-zA-Z_\$][a-zA-Z0-9_]*)*)\s*[\)]?)?/,
+          /\b(import!)\s*\((?:\s*(\\?[a-zA-Z_\$][a-zA-Z0-9_]*(?:(::)[a-zA-Z_\$][a-zA-Z0-9_]*)*)\s*[\)]?)?/,
           'purple', 'green', 'cyan'
         ],
         {
@@ -455,7 +455,7 @@ scheme = {
           },
           patterns: [
             {
-              match: /([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=::)/,
+              match: /(?<!\\)(\\?[a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=::)/,
               captures: {
                 '1': {
                   name: '${green}'
@@ -494,8 +494,8 @@ scheme = {
           endCaptures: {}
         },
         [
-          // Usage of a package/module
-          /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(::)\b/,
+          // Usage of a namespace
+          /((?:\b|\\?)[a-zA-Z_\$][a-zA-Z0-9_\$]*)(::)\b/,
           'green', 'cyan'
         ],
         [
