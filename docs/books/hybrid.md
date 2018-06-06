@@ -1765,7 +1765,7 @@ Also, why do we need the `key` argument while we don't use it? It's simply becau
 
 ```sn
   // ...
-  public func filter (callback: func (value: T, key: int) : bool) : self<T>;
+  public func filter (callback: func (value: T, key: int) : bool) : _self<T>;
   // ...
 ```
 
@@ -2557,7 +2557,7 @@ The overload will then be able to manipulate the target before returning it, in 
 
 ```sn
   // ...
-  public func %clone (target: self) : self {
+  public func %clone (target: _self) : _self {
     // Print a simple message
     println!(`Cloning a ${target.name}`);
 
@@ -2570,7 +2570,7 @@ The overload will then be able to manipulate the target before returning it, in 
   // ...
 ```
 
-Note that `self`, as a type, refers to the current class. Even if we can't use it here, there is also the `this` keyword which refers to the _real_ class (for example if we make an instance of `Child` which inherits from `Mother`, inside the `Mother` class `self` will refer to `Mother` but `this` will refer to `Child`).
+Note that `_self` is a type that refers to the current class. Even if we can't use it here, there is also the `_this` yupr which refers to the _real_ class (for example if we make an instance of `Child` which inherits from `Mother`, inside the `Mother` class `_self` will refer to `Mother` but `_this` will refer to `Child`).
 
 The second signature takes no argument, and must manually return an instance of the current class (return type is omittable). That's especially useful when two objects with the same attributes can't exist both at the same time, for example. That's more specific but will be needed in some cases.
 
@@ -2621,7 +2621,7 @@ For that, we'll implement two overloads in our class. They are `@serialize` and 
 
 ```sn
   public func %serialize () : string;
-  public static func %unserialize (serial: string) : self;
+  public static func %unserialize (serial: string) : _self;
 ```
 
 Now let's implement them! First, how to implement serialization? We could produce a human-friendly string, like that:
@@ -2652,7 +2652,7 @@ But there is a problem here: first, the string is not optimized. One of the goal
       price: @price
     });
 
-  public static func %unserialize (serial: string) : self {
+  public static func %unserialize (serial: string) : _self {
     // Unserialize the serialized structure
     val obj: @Serialized = unserialize!(serial, @Serialized);
     // Make a new product instance and return it
@@ -2752,7 +2752,7 @@ class BankAccount {
   public func add (amount: int) => @money += amount;
   public func sub (amount: int) => @money -= amount;
 
-  public func %plus (cmp: self) : int {
+  public func %plus (cmp: _self) : int {
     return @money + cmp.money;
   }
 }
@@ -2791,7 +2791,7 @@ So, we could compare two bank accounts:
 ```sn
 class BankAccount {
   // ...
-  public func %equal (cmp: self) : bool {
+  public func %equal (cmp: _self) : bool {
     return @money is right.money;
   }
 }
@@ -2849,7 +2849,7 @@ class Product {
   public func %construct () => @unique_id = self.counter ++;
 
   // List a function as this class' friend
-  friend getProductId(product: self) : int;
+  friend getProductId(product: _self) : int;
 }
 
 // Define the class' friend function
@@ -2864,10 +2864,10 @@ There are several syntax to set a resource as friend:
 ```sn
 class Product {
   // List a simple function as a friend
-  friend func simpleFunction (product: self) : int;
+  friend func simpleFunction (product: _self) : int;
 
   // List a function from another class as a friend
-  friend func AnotherClass.instanceFunction(product: self) : int;
+  friend func AnotherClass.instanceFunction(product: _self) : int;
 
   // Even a whole class can be listed as a friend!
   friend class AnotherClass;
@@ -2908,7 +2908,7 @@ virtual class Hero {
   public %construct(@name: string, @hp: int, @attack: int) {}
 
   // Attack an ennemy
-  public func fight (ennemy: self) {
+  public func fight (ennemy: _self) {
     // Check if this hero is dead
     if (@hp is 0) {
       println!(`${@name} can't find because he's dead.`);
@@ -3330,11 +3330,11 @@ interface ConvertibleToInt {
 
 #### Self-references
 
-An interface can use the `self` keyword to refers to the class that is implemeting it. Here is an exemple:
+An interface can use the `_self` type to refers to the class that is implemeting it. Here is an exemple:
 
 ```sn
 interface Duplication {
-  func duplicate () : self;
+  func duplicate () : _self;
 }
 
 class Product {
@@ -3342,7 +3342,7 @@ class Product {
 
   public func %construct (@name: string) {};
 
-  public func duplicate () : self => new Product(@name);
+  public func duplicate () : _self => new Product(@name);
 }
 ```
 
@@ -3519,7 +3519,7 @@ This error happens because the program can't know what template to infer. Here, 
 
 Because of the program not being able to decide on the template to infer, an error is thrown because of template ambiguity. Be aware of that!
 
-Side note : in templated classes, `self` and `this` refer to their respective classes with all their templates. For example, if we make a new variable typed with `KindOfDict<string, int>`, the `self` type in `KindOfDict` would be `KindOfDict<string, int>`. If we provide templates following `self`, it will overwrite them (like `self<string, u32>`). Though, it is not possible to overwrite using the `this` type, as we cannot know what templates the child class accept.
+Side note : in templated classes, `_self` and `_this` refer to their respective classes with all their templates. For example, if we make a new variable typed with `KindOfDict<string, int>`, the `_self` type in `KindOfDict` would be `KindOfDict<string, int>`. If we provide templates following `_self`, it will overwrite them (like `_self<string, u32>`). Though, it is not possible to overwrite using the `_this` type, as we cannot know what templates the child class accept.
 
 ### Optional templates
 
@@ -3555,7 +3555,7 @@ class Working {
 
 // Make a class that doesn't work with the structure
 class NotWorking {
-  public func %construct () : self => println!("It's not working!");
+  public func %construct () : _self => println!("It's not working!");
 }
 ```
 
@@ -5868,7 +5868,7 @@ In SilverNight, packages are formed by a _package file_ and one or more _modules
 
 ### Creating a package
 
-First, create a new folder (with any name you want). Inside of it, create a `main.sn` file and open it in your favorite code editor: this will be our program's main file. Now, create a `_packages` folder, and inside it a `test_package` folder. Create a `package.toml` file and an `names.sn` file, open them in the same code editor.
+First, create a new folder (with any name you want). Inside of it, create a `main.sn` file and open it in your favorite code editor: _this will be our program's main file. Now, create a `_packages` folder, and inside it a `test_package` folder. Create a `package.toml` file and an `names.sn` file, open them in the same code editor.
 
 `main.sn` will be our main program, which will be ran. The two other files will constitute the _package_ we will use.
 
