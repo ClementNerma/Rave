@@ -418,8 +418,8 @@ scheme = {
           }
         },
         [
-          // Inheritance and aliases
-          /\b(extends|from|as)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
+          // Inheritance
+          /\b(extends)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
           'purple', 'green'
         ],
         [
@@ -443,7 +443,7 @@ scheme = {
           'purple', 'green', 'cyan'
         ],
         {
-          // Instanciation
+          // Imports
           begin: /\b(scope\s+)?(import)\s+\b/,
           beginCaptures: {
             '1': {
@@ -455,7 +455,7 @@ scheme = {
           },
           patterns: [
             {
-              match: /(?<!\\)(\\?[a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=::)/,
+              match: /([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=::)/,
               captures: {
                 '1': {
                   name: '${green}'
@@ -474,7 +474,7 @@ scheme = {
               }
             },
             {
-              match: /([a-z_][a-zA-Z0-9_\$]*)(?=\s*[,;]|\s*from|\s*as)/,
+              match: /([a-zA-Z_][a-zA-Z0-9_\$]*)(?=\s*[,;]|\s*from|\s*as)/,
               captures: {
                 '1': {
                   name: '${green}'
@@ -488,9 +488,17 @@ scheme = {
                   name: '${cyan}'
                 }
               }
+            },
+            {
+              match: /\b(from|as)\b/,
+              captures: {
+                '1': {
+                  name: '${purple}'
+                }
+              }
             }
           ],
-          end: /\s*(?=;|from|as)/,
+          end: /\s*(?=;)/,
           endCaptures: {}
         },
         [
