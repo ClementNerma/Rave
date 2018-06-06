@@ -5512,6 +5512,138 @@ iterate_tuple! (("Hello", 24), flex (value: Any) {
 });
 ```
 
+### Proxies
+
+Proxies allow to hide the real value of an assignable entity and to call a function when its value is read, written, or both. For example, we could imagine a variable called `counter` that can only be incremented by 1 each time. So, if it is equal to 3, we can only assign 4 to it, not 5 or 6. But we also want to be able to go back from 1 step, to go from 3 to 2 for example, but not from 3 to 1 directly.
+
+There are several signatures for proxies. Here is the most common, most complete (and most complex) one:
+
+```sn
+proxy var: class_name from {
+  value: T,
+  getter: func (v: *[mut] T) : T,
+  setter: func (v: *[mut] T, c: *X) : void
+};
+```
+
+With `[mut]` telling we _can_ use `mut` or omit it, and `X` an arbitrary type. That's a quite complicated model, for sure.
+
+First, we declare the proxy entity using the `proxy` keyword and we follow it by a tuple.
+
+The first element is a class: that's the _type_ of this assignable entity.
+
+The second one is an instance of this type, which is the _hidden value_ of the element. Only the tuple's values can access it, it is hidden from the outside. Note that the type of the hidden value can be a child of the proxy's type (we can choose `Number` as the type and have an `int` value).
+
+The third value is a function called the _getter_ that is called when we ask to read the entity and returns the value that will be returned.
+
+The fourth member is a function called the _setter_ that is ran when we try to assign something to the entity. It takes a pointer to the _candidate value_, which is the value we are trying to assign to the entity.
+
+Here is an example to illustrate this complex concept:
+
+```sn
+// Proxy's declaration and type
+proxy counter: int from {
+  // Default hidden value
+  value: 0,
+
+  // The getter
+  getter: func () : int {
+    // Return the hidden value without any changes
+    return @value;
+  },
+
+  // The setter
+  setter: func (c: *Primitive) : void {
+    // Convert the candidate to an integer
+    let result: int = c.toInteger();
+
+    // If the difference is valid...
+    if (result in [ -1, 0, 1 ])
+      // Set it
+      @value += result;
+  }
+);
+```
+
+A good point about this proxy is that we can do this:
+
+```sn
+counter = 1;
+counter ++;
+counter = "3";
+counter --;
+counter = true; // `true` is converted to `1`
+counter = false; // `false` is converted to `0`
+```
+
+It's of course impossible to assign a string where we expect an integer, but this proxy allows it by accepting any primitive and converting it manually to an integer.
+
+Note that type inference is allowed in proxies, so we can rewrite ours like this:
+
+```sn
+proxy counter: int from {
+  value: 0,
+
+  getter: () => @value,
+
+  setter: (c: *) => {
+    // Convert the candidate to an integer
+    let result: int = c.toInteger();
+
+    // If the difference is valid...
+    if (result in [ -1, 0, 1 ])
+      // Set it
+      @value += result;
+  }
+});
+```
+
+Note that the proxy can also use the `this` object to access its own members (like calling the setter in the getter or some things like this). But, we are not in a dictionary, so it isn't possible to add custom members on-the-fly. Still, we can declare some additional (hidden) properties in the proxy object:
+
+```sn
+proxy counter: int from {
+  value: 0,
+  someSampleProperty: 1,
+  // ...
+};
+```
+
+Other signatures of the proxies are derivative of the first one we've saw: while a proxy cannot omit its getter, it is not forced to have a setter - in this case, it is considered as a constant.
+
+```sn
+// Declare the model
+prxmodel counterModel = {
+  value: 0,
+
+  getter: () => @value,
+
+  setter: (c: *) => {
+    // Convert the candidate to an integer
+    let result: int = c.toInteger();
+
+    // If the difference is valid...
+    if (result in [ -1, 0, 1 ])
+      // Set it
+      @value += result;
+  }
+};
+
+// Create three proxies using it
+proxy counter1: int from counterModel;
+proxy counter2: int from counterModel;
+proxy counter3: int from counterModel;
+```
+
+Proxy objects must be declared using the `prxmodel` keyword. Also note that these objects are not readable: it's not possible to write `counterModel.value` for example.
+
+#### Prepared proxy objects
+
+When we want to make several proxies that have exactly the same members, it is for sure heavy and not really maintanable to copy and paste the same code again and again. So, we can use _proxy objects_ to solve this problem.
+
+They simply are objects, like the one we made for our counter, which can be specified after the `from` keyword. Here is an example:
+
+
+
 ## Asynchronous behaviour
 
 Sometimes we can't foretell when an even will occur. For example, if we are making a web server, we can't predict the incoming connections. But we still have to handle these events, and in order to do that we use _asynchronous_.
