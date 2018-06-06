@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.24.9',
+    VERSION: '0.24.10',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -336,7 +336,7 @@ scheme = {
         ],
         [
           // Namespace declaration
-          /\b(namespace)\s+([a-z_][a-zA-Z0-9_\$]*)\b/,
+          /\b(namespace)\s+([a-zA-Z_][a-zA-Z0-9_\$]*)\b/,
           'purple', 'green'
         ],
         [
