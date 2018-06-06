@@ -749,7 +749,7 @@ println!(jack[1]); // Prints: "true"
 Last but not least, let's imagine we want to associate the name of a person with its age. We want to be able to add or remove persons at anytime. A structure will of course not be adapted for this purpose. But there is a tool for this type of situations: the dictionaries. These act like arrays or lists, but this time indexes are not forced to be integers but any resource, even boolean or other dictionaries! They are of course extensible.
 
 ```sn
-let ages: Dictionary<string, int>;
+let ages: Map<string, int>;
 ```
 
 We can know add any property by doing `ages.Jack = 28;` or so on. To remove a property, we simply do `ages.unset();`. Here's a trap of dictionaries: all properties will return - if they exist - an instance of the second template (`int` here) but a few ones, like `unset` or `has`, will be functions. In order to avoid this problem with variables, writing `ages[anyIndexHere]` will return an `int`, whatever `anyIndexHere` is. We can even write `ages["unset"]` which does the same thing.
@@ -760,7 +760,7 @@ Also, there is a shortcut for dictionaries with `string` keys: the `Collection` 
 let ages: Collection<int>;
 ```
 
-Now `ages` map a `string` (key) to an `int` (value). Writing `Collection<T>` is exactly like writing `Dictionary<string, T>` - it's just a shortcut.
+Now `ages` map a `string` (key) to an `int` (value). Writing `Collection<T>` is exactly like writing `Map<string, T>` - it's just a shortcut.
 
 Showcase:
 
@@ -777,7 +777,7 @@ ages.Thomas = 32;
 We can also initialize the dictionary with values:
 
 ```sn
-let ages: Dictionary<string, int> = {
+let ages: Map<string, int> = {
   Jack: 20,
   Lucy: 21,
   Thomas: 32
@@ -788,7 +788,7 @@ Unlike structures, you can here use a variable for the index, so the following c
 
 ```sn
 let index = "Lucy";
-let ages: Dictionary<string, int> = {
+let ages: Map<string, int> = {
   Jack: 20,
   Lucy: 21,
   Thomas: 32
@@ -899,7 +899,7 @@ To fully understand the powerfulness of IST, let's think we want to make the `de
 
 _NOTE :_ We say that IST produces **on-the-fly structures**, which means it produces structures that were not declared before being used.
 
-`#dict` will turn `Array` objects into `List` ones and `struct` into `Dictionary<string, int>` here. Of course, this last step requires all the properties into `details` have the same type, else it wouldn't work.
+`#dict` will turn `Array` objects into `List` ones and `struct` into `Map<string, int>` here. Of course, this last step requires all the properties into `details` have the same type, else it wouldn't work.
 
 Note that it works with defined object too:
 
@@ -2829,7 +2829,7 @@ class BankAccount {
   public func %plus<T> (left: T, right: int) : bool;
 
   // Works fine
-  public func %plus<T> (left: string, right: Dictionary<int, T>) : string[];
+  public func %plus<T> (left: string, right: Map<int, T>) : string[];
 
   // ...
 }
@@ -3697,7 +3697,7 @@ Also, a more sophisticated syntax for our class is the following one:
 
 ## Dictionaries in depth
 
-Let's see the final part about classes: dictionaries. As you already, dictionaries in SilverNight are instances of the `Dictionary` class. But how do they really work? That's what we will see in this chapter, as well as how to make your own dictionary classes to store key/values (or more) dictionaries with a custom behaviour.
+Let's see the final part about classes: dictionaries. As you already, dictionaries in SilverNight are instances of the `Map` class. But how do they really work? That's what we will see in this chapter, as well as how to make your own dictionary classes to store key/values (or more) dictionaries with a custom behaviour.
 
 ### Dictionary classes
 
@@ -3748,10 +3748,10 @@ As always, the return type of these overloads is omittable, put they are written
 
 About `%keys` and `%values`, their behaviour is a little special. They can be called automatically, when iterating the dictionary through a loop (we'll see that soon), or manually thanks to a function.
 
-Most of the time, custom dictionaries should always inherit from the `Dictionary` class (the same one that is used when using `#dict` in a key/value association with IST). The syntax is the same as for classes:
+Most of the time, custom dictionaries should always inherit from the `Map` class (the same one that is used when using `#dict` in a key/value association with IST). The syntax is the same as for classes:
 
 ```sn
-dict Custom<K, V> extends Dictionary<K, V> {
+dict Custom<K, V> extends Map<K, V> {
   // Do some stuff here
 }
 ```
@@ -3762,10 +3762,10 @@ A specificity about dictionary overloads is that they can be implemented by **an
 
 #### Static templates
 
-Sometimes we want to force a template, like `Vec<T>` do: it's a `Dictionary<K, V>` which `K` **always** being a number and `V` being `T`. Because dictionaries must have two templates when declaring them the short way, we have to use the long notation by explicitly inheriting from the `Dictionary<K, V>` class:
+Sometimes we want to force a template, like `Vec<T>` do: it's a `Map<K, V>` which `K` **always** being a number and `V` being `T`. Because dictionaries must have two templates when declaring them the short way, we have to use the long notation by explicitly inheriting from the `Map<K, V>` class:
 
 ```sn
-dict Vec<T> extends Dictionary<int, T> { /* ... */ }
+dict Vec<T> extends Map<int, T> { /* ... */ }
 ```
 
 ### Iterators
@@ -3833,7 +3833,7 @@ Now, let's see how to use iterators in loops to explore dictionaries.
 
 As we saw before, dictionaries associate a key to a value. So, getting any index from the dictionary, like `mydict.someIndex` will return a key, whatever happens. But, what about public members?
 
-For example, the `Dictionary` class implements a `.fill()` function, so we can do `mydict.fill("hello")`. But then, `mydict.fill` won't return a value of the dictionary, right?
+For example, the `Map` class implements a `.fill()` function, so we can do `mydict.fill("hello")`. But then, `mydict.fill` won't return a value of the dictionary, right?
 
 This is a conception choice that hopefully has a solution if we want to access any index. In order to be assured to get the value corresponding to the key we have, we simply have to do: `mydict[index]`, where `index` is an instance of `K` (the dictionary's key type). Getting an index between brackets means we're explicitly trying to get an index, not a public member, while `mydict.index` means we are first trying to get a public member if it exists, else to get the value associated to this key (if it exists).
 
@@ -3868,7 +3868,7 @@ The last syntax (`for key : Value in ...`) we used is a syntax sugar, in reality
 for (key, value) in myArray.iterate() {
 ```
 
-The `iterate` function, implemented by default in all dictionary classes, returns for a `Dictionary<K, V>` an `Iterator<(K, V)>`.
+The `iterate` function, implemented by default in all dictionary classes, returns for a `Map<K, V>` an `Iterator<(K, V)>`.
 
 #### The case of vectors
 
@@ -3876,26 +3876,26 @@ This is very simple: a `Vec<T>` (`Array` or `List`) is a `<K is int, T>` diction
 
 #### Collections
 
-There is a native type called `Collection<T>`, which is a strict equivalent to `Dictionary<string, T>`.
+There is a native type called `Collection<T>`, which is a strict equivalent to `Map<string, T>`.
 
 #### Shortened typing
 
 A way to simplify the writing of dictionary names is to use the shortened syntax, as it follows:
 
 ```sn
-// Collection<double> <=> Dictionary<string, double>
+// Collection<double> <=> Map<string, double>
 val dict: { double };
 
-// Dictionary<string, int>
+// Map<string, int>
 val dict: { string, int };
 
-// Dictionary<string, Dictionary<int, float>>
+// Map<string, Map<int, float>>
 val dict: { string, { int, float } };
 
-// Dictionary<Dictionary<string, int>, float>
+// Map<Map<string, int>, float>
 val dict: { { string, int }, float };
 
-// Dictionary<Dictionary<Dictionary<string, int>, float>, string>
+// Map<Map<Map<string, int>, float>, string>
 val dict: { { { string, int }, float }, string };
 ```
 
@@ -5635,7 +5635,7 @@ Where promises are useful is when chaining several callbacks. Sometimes, because
 // Download a file from the web
 func fetch (url: string, callback: func (data: string, err: Error)) { /* ... */ };
 // Parse a JSON string as a dictionary (numbers and booleans are converted to strings)
-func parseJsonAsync (json: string) : Dictionary<string, string> { /* ... */ };
+func parseJsonAsync (json: string) : Map<string, string> { /* ... */ };
 
 // Here is the code:
 fetch("/api/last-article/author.json", (data, err) => {
