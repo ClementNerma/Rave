@@ -3751,7 +3751,7 @@ About `%keys` and `%values`, their behaviour is a little special. They can be ca
 Most of the time, custom dictionaries should always inherit from the `Map` class (the same one that is used when using `#dict` in a key/value association with IST). The syntax is the same as for classes:
 
 ```sn
-dict Custom<K, V> extends Map<K, V> {
+dict Custom<K, V> implements AbstractDictionary<K, V> {
   // Do some stuff here
 }
 ```
