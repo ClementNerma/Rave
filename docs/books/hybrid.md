@@ -1827,6 +1827,21 @@ val reduced = lambda { println!("Hello there!"); }
 callReducedLambda(reduced);
 ```
 
+Also note that functions _as a type_ don't require to provide arguments' names, like this:
+
+```sn
+// We don't provide the arguments' name for the function here
+func twoPlusFive (callback: func (int, int) : string) : string {
+  return callback(2, 5);
+}
+
+println!(twoPlusFive(
+  func (left: int, right: int) : string {
+    return string(left + right);
+  })
+); // Prints: "7"
+```
+
 So, lambdas are great to reduce the size of a program, but reduced lambdas put apart it's kind of heavy to use this syntax. This is why we can use the _arrow syntax_:
 
 ```sn
