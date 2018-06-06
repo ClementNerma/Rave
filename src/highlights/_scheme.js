@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.24.8',
+    VERSION: '0.24.9',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -515,7 +515,7 @@ scheme = {
         ],
         [
           // Iterator in `for`
-          /(for)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?:\s+(in)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*))?\b/,
+          /(for)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?:\s+(in|of)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*))?\b/,
           'purple', 'cyan', 'purple', 'orange'
         ],
         [
