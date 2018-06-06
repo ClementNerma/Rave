@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.24.12',
+    VERSION: '0.25.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -281,7 +281,7 @@ scheme = {
         ],
         [
           // Declaration of constants (plain or not)
-          /(val|pln|bindings)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /(val|pln|proxy|bindings|prxmodel)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'orange'
         ],
         [
@@ -301,7 +301,7 @@ scheme = {
         ],
         [
           // Declaration statement in classes for constants (plain or not)
-          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?(val|pln)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?(val|pln|proxy)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'purple', 'purple', 'purple', 'orange'
         ],
         [
@@ -543,7 +543,7 @@ scheme = {
         ],
         [
           // Keywords needing a separator
-          /(?<!\.)\b(let|pln|val|public|protected|private|friend|static|abstract|final|unique|virtual|extern|readonly|in|export|return|async|iter|yield|flex|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
+          /(?<!\.)\b(let|val|pln|proxy|public|protected|private|friend|static|abstract|final|unique|virtual|extern|readonly|in|export|return|async|iter|yield|flex|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
           'purple'
         ],
         [
