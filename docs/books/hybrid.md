@@ -1817,8 +1817,8 @@ val posArr = list.filter(myFunc);
 As void-typed functions that take no argument are called _reduced functions_, the same applies for lambdas with _reduced lambdas_, which allow to omit its parenthesis:
 
 ```sn
-// Use the short notation for reduced lambdas (as a type)
-func callReducedLambda (callback: func) => callback();
+// Declare a function that asks for a reduced lambda
+func callReducedLambda (callback: func ()) => callback();
 
 // Use the short notation for reduced lambdas (as an expression)
 val reduced = lambda { println!("Hello there!"); }
