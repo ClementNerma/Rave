@@ -1744,14 +1744,14 @@ But we have a problem here. We have to define `posArr` as an `List<int>` while `
 That's where lambdas come. There is a function called `filter` we can use on arrays, which takes a specific function as an argument. Here is how we use it:
 
 ```sn
-val posArr = list.filter(lambda (value: int, key: int) : bool { return value >= 0; });
+val posArr = list.filter(lambda (value: int) : bool { return value >= 0; });
 ```
 
 What happened here? Because it's a little cryptic, we'll re-write the code, with a greater spacing:
 
 ```sn
 val posArr = list.filter(
-  lambda (value: int, key: int) : bool {
+  lambda (value: int) : bool {
     return value >= 0;
   }
 );
@@ -1765,7 +1765,7 @@ Also, why do we need the `key` argument while we don't use it? It's simply becau
 
 ```sn
   // ...
-  public func filter (callback: func (value: T, key: int) : bool) : _self<T>;
+  public func filter (callback: func (value: T) : bool) : _self<T>;
   // ...
 ```
 
@@ -1776,7 +1776,7 @@ Note that, while the argument's number, type and the lambda's return type is dec
 There's another way to apply this filter on our array: declaring the function, and then using it as an argument. Because an example will be more clear than a big explanation:
 
 ```sn
-val myFunc = lambda (value: int, key: int) : bool {
+val myFunc = lambda (value: int) : bool {
   return value >= 0;
 };
 
@@ -1788,7 +1788,7 @@ This will do the same thing than the first version. Here, we declare a `myFunc` 
 In fact, this constant has an inferred type ; its full declaration would be:
 
 ```sn
-val myFunc: func (value: int, key: int) : bool = lambda (value: int, key: int) : bool {
+val myFunc: func (value: int) : bool = lambda (value: int) : bool {
   return value >= 0;
 }
 
