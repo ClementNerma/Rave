@@ -6189,7 +6189,7 @@ namespace Hello {
 Hello::world(); // Prints: "Hello world!"
 ```
 
-Note that, by default, all the code we write is located into a namespace called `_main`. Every single line of code is located in it, at the noticeable exception of the packages.
+Note that, by default, all the code we write is located into a namespace called `global`. Every single line of code is located in it, at the noticeable exception of the packages.
 
 So, when we import a package called, for example, `hello_world`, a namespace with the same name is automatically created (if we use the default import syntax).
 
