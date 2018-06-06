@@ -2570,6 +2570,8 @@ The overload will then be able to manipulate the target before returning it, in 
   // ...
 ```
 
+Note that `self`, as a type, refers to the current class. Even if we can't use it here, there is also the `this` keyword which refers to the _real_ class (for example if we make an instance of `Child` which inherits from `Mother`, inside the `Mother` class `self` will refer to `Mother` but `this` will refer to `Child`).
+
 The second signature takes no argument, and must manually return an instance of the current class (return type is omittable). That's especially useful when two objects with the same attributes can't exist both at the same time, for example. That's more specific but will be needed in some cases.
 
 ```sn
