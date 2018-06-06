@@ -5238,6 +5238,8 @@ This is all! We can now rewrite our `run` function:
 func run (callback: func #bind engineBindings) => callback();
 ```
 
+Note that these objects are not readable: it's not possible to write `engineBindings.sayHello` for example.
+
 ### Constrained types
 
 Sometimes we want to get restricted values from a specific type. For example, if we make a function named `treatCars` that takes a `Vehicle` instance as a parameter, we could only want to accept vehicles with four `wheels` or less.
@@ -5634,7 +5636,7 @@ proxy counter2: int from counterModel;
 proxy counter3: int from counterModel;
 ```
 
-Proxy objects must be declared using the `prxmodel` keyword. Also note that these objects are not readable: it's not possible to write `counterModel.value` for example.
+Proxy objects must be declared using the `prxmodel` keyword. Also note that, as bindings, these are special objects that are not readable (writing `counterModel.value` will not be considered as valid, for example).
 
 #### Prepared proxy objects
 
