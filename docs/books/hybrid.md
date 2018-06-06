@@ -1807,7 +1807,7 @@ println!(myFunc(-3)); // Prints: "false"
 We could also have declared it as a normal function:
 
 ```sn
-func myFunc (value: int, key: int) : bool {
+func myFunc (value: int) : bool {
   return value >= 0;
 };
 
