@@ -946,7 +946,7 @@ val jack = Hero {
 };
 ```
 
-Here, a `List<string>` is expected but an `Array<string>` is found. The valid code would be:
+Here, a `List<string>` is expected but an `Array<string>` (`string[]`) is found. The valid code would be:
 
 ```sn
 val jack = Hero {
@@ -1375,7 +1375,7 @@ But be aware when dealing with inline loops, this could accidentally result in i
 Inline generation is a useful feature when coming to generate an array of data. For example, let's say we want to generate an array of the cube of every number between 1 and 10. Intuitively, we could write this:
 
 ```sn
-let cubes: int[10]; // Array<int>
+let cubes: int[10]; // int[]
 
 for i in 1...10 {
   cubes.push(i * i * i);
@@ -1641,7 +1641,7 @@ func sum (...numbers: int) : int {
 println!(sum(2, 3, 4)); // Prints: "9"
 ```
 
-Here, `numbers` becomes a `Array<int>` because of the `...` symbol, and it will also accept any argument. Note that this feature can be used between before other arguments:
+Here, `numbers` becomes a `int[]` because of the `...` symbol, and it will also accept any argument. Note that this feature can be used between before other arguments:
 
 ```sn
 func sum (...numbers: int, coefficient: int) : int {
@@ -1696,7 +1696,7 @@ Functions can also be called using a list of arguments thanks to the _arguments 
 ```sn
 func sum (left: int, right: int) : int => left + right;
 
-// Declare a Array<int>
+// Declare a int[]
 val numbers = [ 2, 8 ];
 // Use the arguments expansion operator
 println!(sum(numbers...)); // Prints: "10"
@@ -1707,7 +1707,7 @@ Here, `numbers` is expanded as multiple arguments. It's like writing:
 ```sn
 func sum (left: int, right: int) : int => left + right;
 
-// Declare a Array<int>
+// Declare a int[]
 val numbers = [ 2, 8 ];
 // Print the sum of the numbers
 println!(sum(numbers[0], numbers[1])); // Prints: "10"
@@ -1739,7 +1739,7 @@ for i = 0; i < list.size; i ++ {
 }
 ```
 
-But we have a problem here. We have to define `posArr` as an `List<int>` while `list` is a `Array<int>`. This could introduce compatibility issues when we'll want to give it to functions that require an array. We can still convert `posArr` to an array by doing `posArr.toList()`, but this would involve to make a whole new array, which takes both memory and time.
+But we have a problem here. We have to define `posArr` as an `List<int>` while `list` is a `int[]`. This could introduce compatibility issues when we'll want to give it to functions that require an array. We can still convert `posArr` to an array by doing `posArr.toList()`, but this would involve to make a whole new array, which takes both memory and time.
 
 That's where lambdas come. There is a function called `filter` we can use on arrays, which takes a specific function as an argument. Here is how we use it:
 
@@ -1857,7 +1857,7 @@ But even with the arrow syntax, this is still heavy as we have to write the argu
 
 ICT works like IST but for functions. Instead of inferring a data's structure, it will infer a function's arugments and return type based on a signature.
 
-This may be appear complex, but let's take a simple example. Remember the `.filter` function we can apply on any `Array<T>` value? We gave it a lambda and we had to declare the lambda's arguments' type as well as a return type. But because these types are already specified in the `.filter` function's signature, we know that we'll have _exactly_ the sames types in our lambda's signature.
+This may be appear complex, but let's take a simple example. Remember the `.filter` function we can apply on any `T[]` value? We gave it a lambda and we had to declare the lambda's arguments' type as well as a return type. But because these types are already specified in the `.filter` function's signature, we know that we'll have _exactly_ the sames types in our lambda's signature.
 
 So there is a way to perform inferred typing on a lambda, for both its arguments' type and its return type. Here is it:
 
@@ -3673,7 +3673,7 @@ Segments are class extensions that allow to provide some methods only if some co
 ```sn
 class Vec<T> {
   // ...
-  public func %keys() : Array<T> { /* ... */ };
+  public func %keys() : T[] { /* ... */ };
   // ...
   segment (T is int) {
     public func sum () : int { /* ... */ };
@@ -4187,14 +4187,14 @@ Here is the program we want to make:
 3. If it's "true", fill the array with zeros
 4. If it's "false", fill the array with ones
 
-The problem is: if we simply declare the array with `val`, we create a `Array<Vehicle>` instance that will be filled with vehicles later. So this will generate 4096 instances of the `Vehicle` class at the same time the array is declared, and then we will make again 4096 instances in our `if` block. Performances are so divided by 2.
+The problem is: if we simply declare the array with `val`, we create a `Vehicle[]` instance that will be filled with vehicles later. So this will generate 4096 instances of the `Vehicle` class at the same time the array is declared, and then we will make again 4096 instances in our `if` block. Performances are so divided by 2.
 
 In order to avoid this problem, we can declare the array using an optional type. When the resource is declared, only an array instance is created, and we will only instanciate the vehicles in our conditional block, so "only" 4096 instances of `Vehicle` will be created, instead of 8192 with the previous method - that's a considerable speed up.
 
 Here is how it works:
 
 ```sn
-let array: Vehicle?[] = null; // Array<Vehicle?>
+let array: Vehicle?[] = null; // Vehicle?[]
 
 if (random!(bool))
   array.fill(new Car());
