@@ -3841,21 +3841,21 @@ This is a conception choice that hopefully has a solution if we want to access a
 
 #### Using loops to iterate dictionaries
 
-Loops are our best friend when exploring dictionaries. While we can still get access to the array of a dictionary's keys thanks to `mydict.keys()` and to its value with `mydict.values()`, the most simple remains to use the `for` loop:
+Loops are our best friend when exploring dictionaries. While we can still get access to the array of a dictionary's keys thanks to the `of` keyword and to its value with `in`, the most simple remains to use the `for` loop:
 
 ```sn
 // Explore a dictionary using its keys
-for key in myArray.keys() {
+for key of myArray {
   println!(key);
 }
 
 // Explore a dictionary using its values
-for value in myArray.values() {
+for value in myArray {
   println!(key);
 }
 
 // Explore a dictionary with both its keys and its values
-for key -> value in myArray.iterate() {
+for key -> value in myArray {
   println!(key, value);
 }
 ```
@@ -3917,7 +3917,7 @@ struct Point {
 }
 
 func getNilPoints (array: Point[]) : Point {
-  for point in array.values() {
+  for point in array {
     if (point.x is 0 and point.y is 0)
       return point;
   }
@@ -3972,7 +3972,7 @@ A strict equivalent to the function we saw would be:
 
 ```sn
 func getNilPoints (array: Point[]) : Point? {
-  for point in array.values() {
+  for point in array {
     if (point.x is 0 and point.y is 0)
       return point;
   }
@@ -3985,7 +3985,7 @@ This would achieve exatly the same thing. There's also a native value, named `nu
 
 ```sn
 func getNilPoints (array: Point[]) : Point? {
-  for point in array.values() {
+  for point in array {
     if (point.x is 0 and point.y is 0)
       return point;
   }
@@ -5777,7 +5777,7 @@ For functions, that's a bit more complex, because we document both the function 
 func sum (...numbers: int) : int {
   let summation = 0;
 
-  for num in numbers.values() {
+  for num in numbers {
     summation += num;
   }
 
@@ -5854,7 +5854,7 @@ Files can be documented as well, using three indicators: `@file`, which indicate
 func sum (...numbers: int) : int {
   let summation = 0;
 
-  for num in numbers.values() {
+  for num in numbers {
     summation += num;
   }
 
