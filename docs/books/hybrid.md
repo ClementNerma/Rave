@@ -4324,6 +4324,48 @@ The great point of `try` and `catch` blocks is that the error is, well, _catch_ 
 
 We can also use the `catch` block's argument to get additional informations about the error, like its message or traceback.
 
+There is also a block called `finally`, which goes just after the `catch` block and executes whatever happens in the `try`/`catch` block.
+
+This block matters because we can for example clear the `try`'s data after it is fully ran even though the `catch` block contains a `return` instruction or something:
+
+```sn
+func test () {
+  try {
+    println!("Hello from the try block.");
+    someInvalidCall();
+  }
+
+  catch (e: Error) {
+    println!("Hello from the catch block.");
+    return ;
+  }
+
+  println!("Hello from the end of the function.");
+}
+```
+
+If we run the code above and call the `test` function, the last `println!` won't show, because our `catch` block did exit the function. So, if we had some data from the test, we couldn't clear them.
+
+```sn
+func test () {
+  try {
+    println!("Hello from the try block.");
+    someInvalidCall();
+  }
+
+  catch (e: Error) {
+    println!("Hello from the catch block.");
+    return ;
+  }
+
+  finally {
+    println!("Hello from the finally block.");
+  }
+}
+```
+
+In this example though, the last `println!` is ran because the `finally` block is executed no matter what. This way.
+
 ### Sub-typing with errors
 
 Of course, as `catch` blocks ask for an error type, they support sub-typing. There are several numerous native error classes, like `ArithmeticError` or `OutOfMemoryError` (which occurs when the memory is filled). So, if we want to catch only some type of errors, we can use sub-typing in the `catch`, like this:
