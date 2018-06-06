@@ -520,12 +520,12 @@ scheme = {
         ],
         [
           // Abstract classes don't exist
-          /\b(abstract)\s+(class)\b/,
+          /\b(abstract)\s+(public|protected|private)\s+(class)\b/,
           'invalid', 'purple'
         ],
         [
           // Virtual methods don't exist
-          /\b(virtual)\s+(func|iter|async)\b/,
+          /\b(virtual)\s+(public|protected|private)\s+(func|iter|async)\b/,
           'invalid', 'purple'
         ],
         [
