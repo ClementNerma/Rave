@@ -6277,15 +6277,15 @@ Now, here is the structure of our folder:
 
 ```plain
 universe/
-|
+│
 ├── package.toml
 ├── planets/
-|   ├── earth.sn
-|   └── others.sn
+│   ├── earth.sn
+│   └── others.sn
 ├── life/
-|   ├── animals.sn
-|   ├── insects.sn
-|   └── humans.sn
+│   ├── animals.sn
+│   ├── insects.sn
+│   └── humans.sn
 ```
 
 Let's write these files:
