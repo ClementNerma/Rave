@@ -6172,6 +6172,75 @@ println!(universe::life::humans::isInsect); // Prints: "false"
 
 As you can see, importing a module automatically imports all its children. We can even do sub-sub-modules, and importing their parent (a sub-module) will import them all automatically.
 
+### Namespaces
+
+The `package::module::submodule::...` model is based on the concept of _namespace_. Basically, a namespace is a block (so it has a reserved scope) with a name. To access an entity from the outside of the namespace, we simply write `the_namespace_name::the_entity`. Here is an example:
+
+```sn
+// Declare a namespace
+namespace Hello {
+  // Declare a function in it
+  func world () {
+    println!("Hello world!");
+  }
+}
+
+// Call the function from the outside of the namespace
+Hello::world(); // Prints: "Hello world!"
+```
+
+Note that, by default, all the code we write is located into a namespace called `_main`. Every single line of code is located in it, at the noticeable exception of the packages.
+
+So, when we import a package called, for example, `hello_world`, a namespace with the same name is automatically created (if we use the default import syntax).
+
+#### Sub-namespaces
+
+Namespaces can also be imbricated: it's possible to declare a namespace called `B` inside another called `A` and so we access the entities using:
+
+```sn
+namespace A {
+  namespace B {
+    func world () { println!("Hello world!"); }
+
+    // From the inside of B
+    world();
+  }
+
+  // From the inside of A
+  //  but from the outside of B
+  B::world();
+}
+
+// From the outside of A
+A::B::world();
+```
+
+#### Accessing top namespaces
+
+Let's consider the following example:
+
+```sn
+namespace A {
+  val age = 18;
+}
+
+namespace B {
+  // I want to print `age` from the `A` namespace
+}
+```
+
+How could we achieve printing `age` that is located inside the `A` namespace? Simply by using the `\` symbol to indicate we want to access a root namespace:
+
+```sn
+namespace A {
+  val age = 18;
+}
+
+namespace B {
+  println!(\A::age);
+}
+```
+
 ### The package manager
 
 When you installed the toolchain at the beginning of this book, it came with the package manager in it, because it's part of the toolchain.
