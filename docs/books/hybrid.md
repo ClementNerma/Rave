@@ -6417,6 +6417,18 @@ namespace B {
 }
 ```
 
+To access global data, we can simply use the `global` namespace (which refers to the main scope):
+
+```sn
+val age = 16;
+
+namespace A {
+  val age = 18;
+
+  println!(\global::age); // Prints: "16"
+}
+```
+
 ### The package manager
 
 When you installed the toolchain at the beginning of this book, it came with the package manager in it, because it's part of the toolchain.
