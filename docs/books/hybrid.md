@@ -3864,7 +3864,7 @@ In fact, asking a dictionary for its keys or values will call its `%keys()` or `
 
 So, when we try to iterate an entity using a single iterator variable (like `value`), the `for` loop will require an `Iterator<T>`.
 
-The last syntax (`for key : Value in ...`) we used is a syntax sugar, in reality it translates to:
+The last syntax (`for key -> value in ...`) we used is a syntax sugar, in reality it translates to:
 
 ```sn
 for (key, value) in myArray.iterate() {
