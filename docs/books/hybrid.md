@@ -3519,6 +3519,8 @@ This error happens because the program can't know what template to infer. Here, 
 
 Because of the program not being able to decide on the template to infer, an error is thrown because of template ambiguity. Be aware of that!
 
+Side note : in templated classes, `self` and `this` refer to their respective classes with all their templates. For example, if we make a new variable typed with `KindOfDict<string, int>`, the `self` type in `KindOfDict` would be `KindOfDict<string, int>`. If we provide templates following `self`, it will overwrite them (like `self<string, u32>`). Though, it is not possible to overwrite using the `this` type, as we cannot know what templates the child class accept.
+
 ### Optional templates
 
 Many native functions use optional templates. They work exactly like optional arguments for functions:
