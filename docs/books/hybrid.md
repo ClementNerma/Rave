@@ -3115,11 +3115,11 @@ Here is an example:
 
 ```sn
 virtual class Hello {
-  abstract public sayHello() : string;
+  abstract public func sayHello() : string;
 }
 
 class World {
-  abstract public sayHello() : string {
+  abstract public func sayHello() : string {
     println!("Hello world!");
   }
 }
