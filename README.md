@@ -93,6 +93,8 @@ You can install an extension to grant support syntax highlighting to your favori
 
 *NOTE :* Only a few code editors are supported for now. You can list them with `yarn available-editors`.
 
+*NOTE :* The current syntax highlighting file has been made for the _One Dark Pro_ theme, and may not work great on other themes. Still, a new version which solves this problem will be released soon.
+
 Run the following commands in the repository's set up folder:
 
 ```bash
