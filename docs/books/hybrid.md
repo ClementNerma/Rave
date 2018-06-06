@@ -2809,7 +2809,7 @@ This works the same way for the other logical operators. A specificy with logica
 
 So, any class that implements either `%equal` or `%inequal` as well as `%greater` or `%smaller` automatically implements all comparison overloads.
 
-This also makes the class implementing the `Comparable` interface, which is useful when dealing with vectors for example: that allows to use the `.sort()` as well as the `.getIterator()` functions from `Vector`.
+This also makes the class implementing the `Comparable` interface, which is useful when dealing with vectors for example: that allows to use the `.sort()` as well as the `.getIterator()` functions from `Vec`.
 
 #### Templating
 
@@ -3668,10 +3668,10 @@ Also, always remember templates are _constants_: they cannot be modified in any 
 
 ### Segments
 
-Segments are class extensions that allow to provide some methods only if some conditions are matched about the templates. For example, we can consider the `Vector<T>` class that implements a `.sum()` function if `T` is a `Number`. Here is how it goes:
+Segments are class extensions that allow to provide some methods only if some conditions are matched about the templates. For example, we can consider the `Vec<T>` class that implements a `.sum()` function if `T` is a `Number`. Here is how it goes:
 
 ```sn
-class Vector<T> {
+class Vec<T> {
   // ...
   public func %keys() : Array<T> { /* ... */ };
   // ...
@@ -3707,7 +3707,7 @@ First, what's a dictionary, exactly? In SilverNight, a dictionary is any instanc
 
 #### The truth about vectors
 
-The `List` and `Array` classes are in fact dictionaries. They both inherits from the `Vector` dictionary class, which associates integers to any type of value. The integers in question cannot be manually manipulated, they are automatically handled by the dictionary class, to keep keys from 0 to any positive integer.
+The `List` and `Array` classes are in fact dictionaries. They both inherits from the `Vec` dictionary class, which associates integers to any type of value. The integers in question cannot be manually manipulated, they are automatically handled by the dictionary class, to keep keys from 0 to any positive integer.
 
 #### How to make dictionary classes
 
@@ -3721,7 +3721,7 @@ dict Custom<K, V> {
 }
 ```
 
-There are a special kind of classes. First, some overloads **must** be implemented. These are `%get`, `%set`, `%unset`, `%has`, `%keys` and `%values`, which are specific to dictionaries and can't be used in standard classes. All other overloads (like `%clone` or `%random`, even `%construct` and `%free`) can be implemented but are not required. Also, dictionary classes must take two templates (they can have any name) but they can force the type of keys and/or the type of values by writing a class' name instead (like `dict Vector<K is int, V>` for vectors).
+There are a special kind of classes. First, some overloads **must** be implemented. These are `%get`, `%set`, `%unset`, `%has`, `%keys` and `%values`, which are specific to dictionaries and can't be used in standard classes. All other overloads (like `%clone` or `%random`, even `%construct` and `%free`) can be implemented but are not required. Also, dictionary classes must take two templates (they can have any name) but they can force the type of keys and/or the type of values by writing a class' name instead (like `dict Vec<K is int, V>` for vectors).
 
 Let's detail these overloads:
 
@@ -3762,10 +3762,10 @@ A specificity about dictionary overloads is that they can be implemented by **an
 
 #### Static templates
 
-Sometimes we want to force a template, like `Vector<T>` do: it's a `Dictionary<K, V>` which `K` **always** being a number and `V` being `T`. Because dictionaries must have two templates when declaring them the short way, we have to use the long notation by explicitly inheriting from the `Dictionary<K, V>` class:
+Sometimes we want to force a template, like `Vec<T>` do: it's a `Dictionary<K, V>` which `K` **always** being a number and `V` being `T`. Because dictionaries must have two templates when declaring them the short way, we have to use the long notation by explicitly inheriting from the `Dictionary<K, V>` class:
 
 ```sn
-dict Vector<T> extends Dictionary<int, T> { /* ... */ }
+dict Vec<T> extends Dictionary<int, T> { /* ... */ }
 ```
 
 ### Iterators
@@ -3872,7 +3872,7 @@ The `iterate` function, implemented by default in all dictionary classes, return
 
 #### The case of vectors
 
-This is very simple: a `Vector<T>` (`Array` or `List`) is a `<K is int, T>` dictionary (with different members, though). That's as simple as that.
+This is very simple: a `Vec<T>` (`Array` or `List`) is a `<K is int, T>` dictionary (with different members, though). That's as simple as that.
 
 #### Collections
 
