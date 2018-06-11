@@ -4883,7 +4883,7 @@ func doubleRegister () : int {
 }
 ```
 
-Here, we don't know how to write the `doubleRegister()` function because we know we can't multiply an `Any` instance by 2. In order to solve this, we use _dynamic typecasting_:
+Here, we don't know how to write the `doubleRegister()` function because we know we can't multiply an `Any` instance by 2. In order to solve this, we use _static typecasting_:
 
 ```sn
 func doubleRegister () : int {
@@ -4891,7 +4891,7 @@ func doubleRegister () : int {
 }
 ```
 
-What happens here? We simply _dynamically_ convert `data` to an `int` and got a pointer to the value. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. The process is simple: if `num` is in reality an `int`, it converts it ; else it returns the `NULL` pointer.
+What happens here? We simply _statically_ convert `data` to an `int` and got a pointer to the value. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. The process is simple: if `num` is in reality an `int`, it converts it ; else it returns the `NULL` pointer.
 
 ```sn
 func multiplyByTwo (num: *Any) : int {
