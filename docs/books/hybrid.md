@@ -6,6 +6,8 @@ Welcome to _"The Hybrid Book"_, a feature-exhaustive tutorial to learn SilverNig
 
 **WARNING: Please note this language is not finished yet ; some features could and WILL be added, modified or removed at anytime. It's still a draft at this point and no feature or syntax is frozen.**
 
+**WARNING: This book has been edited a lot and hasn't been reviewed yet ; it could contain errors and contradictions. This problem should be fixed soon.**
+
 ### Why is it an hybrid book?
 
 This book is called "hybrid" because it provides a simple specification for the language but also acts as a tutorial for persons who want to learn it from the beginning to the very end.
