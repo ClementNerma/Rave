@@ -5,13 +5,13 @@
  */
 iter fibonacci () -> int {
   // n-2th term
-  let t1: int64 = 0;
+  let t1: i64 = 0;
   // n-1th term
-  let t2: int64 = 1;
+  let t2: i64 = 1;
   // nth term
-  let t3: int64;
+  let t3: i64;
   // Copy of the nth term
-  let t_: int64 = t3;
+  let t_: i64 = t3;
 
   // Yield the first term
   yield t1;
