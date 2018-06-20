@@ -17,16 +17,17 @@ Currently, the SilverNight programming language, as well as all its resources, i
 
 SilverNight is released using a system of **stages**:
 
-| Stage no. | Release name | Version |                   Requirements for the next release                  |
-|-----------|--------------|---------|----------------------------------------------------------------------|
-|     0     | Scratch      |    -    | First version of the syntax, redact The Hybrid Book                  |
-|     1     | Alpha        |  0.1.0  | Freeze the syntax, redact again The Hybrid Book, submit to reviewers |
-|     2     | Beta         |  0.x.0  | Freeze the native library                                            |
-|     3     | Stable       |  1.0.0  | Make an analyzer (normalizer, lexer, parser, checker)                |
-|     4     | Analyzable   |  1.0.0  | Make a compiler, an interpreter, transpilers (JavaScript, ...)       |
-|     5     | Prod-ready   |  1.0.0  |                                   -                                  |
+| Stage no. | Release name | Version |                     Requirements for the next release                    |
+|-----------|--------------|---------|--------------------------------------------------------------------------|
+|     0     | Scratch      |    -    | First version of the syntax, redact The Hybrid Book                      |
+|     1     | Alpha 1      |  0.1.0  | Second version of the syntax, redact again The Hybrid Book               |
+|     2     | Alpha 2      |  0.2.0  | Third version of the syntax (near of the final one), submit to reviewers |
+|     3     | Beta         |  0.x.0  | Freeze the native library                                                |
+|     4     | Stable       |  1.0.0  | Make an analyzer (normalizer, lexer, parser, checker)                    |
+|     5     | Analyzable   |  1.0.0  | Make a compiler, an interpreter, transpilers (JavaScript, ...)           |
+|     6     | Prod-ready   |  1.0.0  |                                   -                                      |
 
-Current stage is **Alpha**.
+Current stage is **Alpha 1**.
 
 ## Installation
 
