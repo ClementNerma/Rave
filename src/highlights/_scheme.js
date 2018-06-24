@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.25.2',
+    VERSION: '0.25.3',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -675,6 +675,11 @@ scheme = {
           // Constrained types
           /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(\?)?\s+(?=with\s+\()/,
           'yellow', 'cyan'
+        ],
+        [
+          // Inferred Structured Typing dictionary symbol
+          /#(?=[^a-zA-Z_])/,
+          'orange'
         ],
         [
           // Head directives
