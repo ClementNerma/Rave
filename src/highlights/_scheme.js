@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.25.0',
+    VERSION: '0.25.1',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -419,7 +419,7 @@ scheme = {
         },
         [
           // Inheritance
-          /\b(extends)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
+          /\b(inherits)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
           'purple', 'green'
         ],
         [
