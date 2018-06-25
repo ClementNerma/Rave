@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.25.11',
+    VERSION: '0.25.12',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -433,11 +433,6 @@ scheme = {
           'purple', 'green'
         ],
         [
-          // Extension
-          /\b(extends)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
-          'purple', 'green'
-        ],
-        [
           // Implementation
           /\b(implements)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.]*)*)\b/,
           'purple', 'green', 'green'
@@ -446,6 +441,11 @@ scheme = {
           // Implementation of traits
           /\b(use)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)(\s*,\s*([a-zA-Z_\$][a-zA-Z0-9_\$\.]*))*\s*;/,
           'purple', 'green', 'white', 'green'
+        ],
+        [
+          // Extension
+          /\bextension\b/,
+          'purple'
         ],
         [
           // 'instanceof' operator
