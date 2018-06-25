@@ -692,11 +692,6 @@ scheme = {
           'yellow', 'cyan'
         ],
         [
-          // Inferred Structured Typing dictionary symbol
-          /#(?=[^a-zA-Z_])/,
-          'orange'
-        ],
-        [
           // Head directives
           /#\[(module|extern)\] *;/,
           'orange'
@@ -730,6 +725,11 @@ scheme = {
           // All other directives
           /#([a-zA-Z_\$][a-zA-Z0-9_\$]+)( *;)?/,
           'invalid'
+        ],
+        [
+          // Inferred Structured Typing dictionary symbol
+          /#(?=[^a-zA-Z_])/,
+          'orange'
         ],
         [
           // Type names
