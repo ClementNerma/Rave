@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.25.7',
+    VERSION: '0.25.8',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -164,7 +164,7 @@ scheme = {
         },
         [
           // Numerical bounds
-          /[a-zA-Z0-9_\.\$]+\.\.\.?[a-zA-Z0-9_\.\$]+/,
+          /[a-zA-Z0-9_\.\$]+(u|u?[bslfd]?)\.\.\.?[a-zA-Z0-9_\.\$]+u?[bslfd]?/,
           'orange'
         ],
         [
@@ -174,22 +174,22 @@ scheme = {
         ],
         [
           // Constant numbers
-          /(?<!\.)\b(0_*d_*)?(\d_*)+(\._*(\d_*)+)?\b/,
+          /(?<!\.)\b(0_*d_*)?(\d_*)+(\._*(\d_*)+)?u?[bslfd]?\b/,
           'orange'
         ],
         [
           // Constant binary numbers
-          /(?<!\.)\b0_*b_*(([01]_*)+)(\._*([01]_*)+)?\b/,
+          /(?<!\.)\b0_*b_*(([01]_*)+)(\._*([01]_*)+)?u?[bslfd]?\b/,
           'orange'
         ],
         [
           // Constant octal numbers
-          /(?<!\.)\b0_*o_*(([0-7]_*)+)(\._*([0-7]_*)+)?\b/,
+          /(?<!\.)\b0_*o_*(([0-7]_*)+)(\._*([0-7]_*)+)?u?[bslfd]?\b/,
           'orange'
         ],
         [
           // Constant hexadecimal numbers
-          /(?<!\.)\b0_*x_*(([a-zA-Z0-9]_*)+)(\._*([a-zA-Z0-9]_*)+)?\b/,
+          /(?<!\.)\b0_*x_*(([a-zA-Z0-9]_*)+)(\._*([a-zA-Z0-9]_*)+)?u?[bslfd]?\b/,
           'orange'
         ],
         {
