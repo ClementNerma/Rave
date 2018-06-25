@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.25.4',
+    VERSION: '0.25.5',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -273,6 +273,11 @@ scheme = {
           // Class references
           /\b(this|self|super)\b/,
           'yellow'
+        ],
+        [
+          // Static context operator
+          /\bstatic(?= *<)/,
+          'purple'
         ],
         [
           // Declaration of variables
