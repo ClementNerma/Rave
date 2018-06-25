@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.25.3',
+    VERSION: '0.25.4',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -708,7 +708,7 @@ scheme = {
         ],
         [
           // Typed directives with templates for flexs
-          /#(pln|mustbe)(?=\s*<)/,
+          /#(pln|mustbe|class)(?=\s*<)/,
           'purple'
         ],
         [
