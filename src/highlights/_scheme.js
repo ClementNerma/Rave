@@ -356,6 +356,7 @@ scheme = {
         ],
         [
           // Match variable (_)
+          // 'with' value (_)
           /\b_\b/,
           'purple'
         ],
