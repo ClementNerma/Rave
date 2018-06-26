@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.25.14',
+    VERSION: '0.25.15',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -338,6 +338,11 @@ scheme = {
           // Overload declaration
           /\b(func|public|protected|private)\s+(static\s+)?(%)([a-zA-Z_\$][a-zA-Z0-9_]+)\b/,
           'purple', 'purple', 'red', 'cyan'
+        ],
+        [
+          // Overload call
+          /(?<=\.)(%)([a-zA-Z_\$][a-zA-Z0-9_]+)(?=\s*\()/,
+          'red', 'cyan'
         ],
         [
           // Entity's name
