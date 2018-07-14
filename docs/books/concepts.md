@@ -6,7 +6,7 @@ Welcome to the SilverNight's _Book of Concepts_. This book aims to provide a det
 
 If you are looking for a tutorial or the detailed functioning of the language, you should read [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html) instead.
 
-**WARNING: Please note this language is not finished yet ; some features could and WILL be added, modified or removed at anytime. It's still a draft at this point and no feature or syntax is frozen.**
+**WARNING: As the language is not finished yet, reading this book is discouraged because its content will highly change through time.**
 
 ## The toolchain
 
