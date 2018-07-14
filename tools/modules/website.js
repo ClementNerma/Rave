@@ -77,10 +77,9 @@ self = {
     // For each existing item at the root of the website's source folder...
     for (let item of readFolder(website_path))
       // If this is not the map file
-      if (item !== map_file) {
+      if (item !== map_file)
         // Copy the item
-        copy(website_path + '/' + item, output_folder + '/' + item, false, `keeping original website files`);
-      }
+        copy(website_path + '/' + item, output_folder + '/' + item, true, `keeping original website files`);
 
     // Determine the temporary build folder's path
     const tmp_build_folder = output_folder + '/' + map.buildPath;
