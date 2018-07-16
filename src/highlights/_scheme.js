@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.25.15',
+    VERSION: '0.25.16',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -534,7 +534,7 @@ scheme = {
         ],
         [
           // Special native types
-          /(?<!\.)\b(void|Any|lambda|T|X|Y|Z|K|V)(?!\s*:)\b/,
+          /(?<!\.)\b(void|Any|lambda|T|X|Y|Z|K|V|meta_(?:data|function|struct|interface|trait|class))(?!\s*:)\b/,
           'purple', 'cyan'
         ],
         [
