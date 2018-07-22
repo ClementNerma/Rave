@@ -98,6 +98,10 @@ You can install an extension to grant support syntax highlighting to your favori
 Run the following commands in the repository's set up folder:
 
 ```bash
+# First time only (must install with NPM)
+[sudo] npm install --global vsce
+
+# Install syntax highlighting support for a
 yarn install-extension atom    # For Atom
 yarn install-extension vscode  # For Visual Studio Code
 yarn install-extension sublime # For Sublime Text
