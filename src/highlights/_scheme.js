@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.25.20',
+    VERSION: '0.25.21',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -387,7 +387,7 @@ scheme = {
         ],
         [
           // Logical operators
-          /(<=|>=|<|>|==|!=|&&|\|\|)/,
+          /(<=|>=|<|>|==|!=|&&?|\|\|?)/,
           'cyan'
         ],
         [
