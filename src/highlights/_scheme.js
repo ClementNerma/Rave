@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.25.19',
+    VERSION: '0.25.20',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -569,7 +569,7 @@ scheme = {
         ],
         [
           // Keywords needing a separator
-          /(?<!\.)\b(let|val|pln|flexproxy|proxy|public|protected|private|friend|static|abstract|final|unique|virtual|open|extern|readonly|in|export|return|async|iter|yield|flex|await|resolve|reject|throw|with|new|include)(?=\s+|$)/,
+          /(?<!\.)\b(let|val|pln|flexproxy|proxy|public|protected|private|friend|static|abstract|final|unique|virtual|open|extern|readonly|in|export|return|async|iter|yield|flex|await|sync|resolve|reject|throw|with|new|include)(?=\s+|$)/,
           'purple'
         ],
         [
