@@ -61,7 +61,6 @@ yarn build-all      # Build everything
 yarn build-test     # Run the tests for the build tools
 yarn clean          # Clean build data
 yarn build website  # Build the website locally
-yarn build-dev-live # Build everything, watch for modifications, serve locally
 ```
 
 Some other commands are available in the [`package.json`](package.json) file, but these are the most common ones.
