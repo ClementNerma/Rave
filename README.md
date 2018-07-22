@@ -43,13 +43,13 @@ yarn # Install dependencies
 
 The repository's folder is now set up.
 
-**Troubleshooting:** Due to known issues with some dependencies, you may have to install the build tools package in order to make the SilverNight build tools work, by running:
+**Windows troubleshooting:** Due to known issues with some dependencies on Windows, you may have to install the build tools package in order to make the SilverNight build tools work, by running:
 
 ```bash
 npm install --global --production windows-build-tools
 ```
 
-In a terminal with `sudo` / Administrator rights.
+In a terminal with Administrator privileges.
 
 ### Build
 
