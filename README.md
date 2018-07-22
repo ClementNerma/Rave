@@ -49,7 +49,7 @@ The repository's folder is now set up.
 npm install --global --production windows-build-tools
 ```
 
-In a terminal with Administrator privileges.
+In a terminal with Administrator privileges. Note that using `npm` is required because the package must be available globally.
 
 ### Build
 
