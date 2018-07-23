@@ -89,13 +89,12 @@ source = {
           [ "(", ")" ]
         ],
         autoClosingPairs: [
-          [ "{", "}" ],
-          [ "[", "]" ],
-          [ "(", ")" ],
-          [ "'", "'" ],
-          [ '"', '"' ],
-          [ "`", "`" ],
-          [ "/**", " */" ]
+          { open: "{", close: "}", notIn: ["string"] },
+          { open: "[", close: "]", notIn: ["string"] },
+          { open: "(", close: ")", notIn: ["string"] },
+          { open: "'", close: "'", notIn: ["string", "comment"] },
+          { open: '"', close: '"', notIn: ["string", "comment"] },
+          { open: "/**", close: " */", notIn: ["string"] }
         ],
         surroundingPairs: [
           [ "{", "}" ],
@@ -103,8 +102,15 @@ source = {
           [ "(", ")" ],
           [ "'", "'" ],
           [ '"', '"' ],
-          [ "`", "`" ]
+          [ "`", "`" ],
+          [ "<", ">" ]
         ]
+      }
+    },
+
+    "snippets.json": {
+      content: {
+        // Empty for now
       }
     },
 
@@ -155,6 +161,12 @@ source = {
               embeddedLanguages: {
                 "meta.embedded.block.silvernight": "silvernight"
               }
+            }
+          ],
+          snippets: [
+            {
+              language: "${LOWERCASE_LANGUAGE}",
+              path: "./snippets.json"
             }
           ]
         }
