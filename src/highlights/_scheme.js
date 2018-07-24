@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.26.0',
+    VERSION: '0.27.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -534,7 +534,7 @@ scheme = {
         ],
         [
           // Native types and classes
-          /\b(Boolean|bool|[Nn]umber|(?:Unsigned)?Integer(?:|8|16|32|64)|u?int|[ui](?:8|16|32|64)|(?:Unsigned)?Byte|u?byte|[Ff]loat|[Dd]ouble|[Ss]tring|Primitive|BooleanConvertible|IntegerConvertible|FloatConvertible|Numerizable|Stringifyable|Clonable|Freezable|Serializable|Randomizable|Primitivable|Collection|Dictionary|Vector|Array|List|Error|ErrorStep|RegExp|console)(\?)?\b/,
+          /\b(Boolean|bool|[Nn]umber|VirtualInteger|VirtualFloatingPoint|SignedInteger|UnsignedInteger|(Unsigned?:)Integer(?:|8|16|32|64)|FloatingPoint(?:32|64)|[ui](?:8|16|32|64)|u?int|f(?:32|64)|[Ss]tring|Primitive|BooleanConvertible|IntegerConvertible|FloatConvertible|Numerizable|Stringifyable|Clonable|Freezable|Serializable|Randomizable|Primitivable|Collection|Dictionary|Vector|Array|List|Error|ErrorStep|RegExp|console)(\?)?\b/,
           'yellow', 'cyan'
         ],
         [
