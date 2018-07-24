@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.25.27',
+    VERSION: '0.26.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -447,6 +447,11 @@ scheme = {
           // Implementation of traits
           /\b(use)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)(\s*,\s*([a-zA-Z_\$][a-zA-Z0-9_\$\.]*))*\s*;/,
           'purple', 'green', 'white', 'green'
+        ],
+        [
+          // Throw declaration
+          /\b(throws)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.]*)*)\b/,
+          'purple', 'green', 'green'
         ],
         [
           // Extension
