@@ -718,6 +718,11 @@ scheme = {
           'orange'
         ],
         [
+          // Magic callable directives
+          /#__magic(?:_iterate_tuple|_clone|_serialize|_unserialize|_is_pointer|_cast|_cast_unsafe|_proxy|_flex_proxy|_is_same|_import)/,
+          'orange'
+        ],
+        [
           // Exact type indicator
           /#=/,
           'purple'
