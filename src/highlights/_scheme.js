@@ -449,6 +449,11 @@ scheme = {
           'purple', 'green', 'green'
         ],
         [
+          // Child checking
+          /\b(haschild)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
+          'purple', 'green'
+        ],
+        [
           // Implementation of traits
           /\b(use)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)(\s*,\s*([a-zA-Z_\$][a-zA-Z0-9_\$\.]*))*\s*;/,
           'purple', 'green', 'white', 'green'
@@ -464,8 +469,8 @@ scheme = {
           'purple'
         ],
         [
-          // 'instanceof' operator
-          /\s+(instanceof)\s+/,
+          // 'instanceof' and 'instanceofsuper' operator
+          /\s+(instanceof|instanceofsuper)\s+/,
           'purple'
         ],
         [
@@ -584,7 +589,7 @@ scheme = {
         ],
         [
           // Already specified keywords, written here to have partial syntax highlighting
-          /(?<!\.)\b(namespace|struct|class|type|dict|trait|interface|implements|inherits|scope|import|from|instanceof)(?!\s*:)\b/,
+          /(?<!\.)\b(namespace|struct|class|type|dict|trait|interface|implements|inherits|haschild|instanceofsuper|scope|import|from|instanceof)(?!\s*:)\b/,
           'purple'
         ],
         [
