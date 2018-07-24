@@ -225,6 +225,15 @@ self = {
 
           // Return the path of the copied file
           return '_static/raw/' + file;
+        })
+        .replace(/\${IMPORT:([^}]+?)}/, (m, file) => {
+          // If the file doesn't exist...
+          if (! fileExists(static_path + '/' + file))
+            // ERROR
+            error(`Provided builtin file "${file}" was not found`, 37);
+
+          // Return the content of the specified file
+          return readFile(static_path + '/' + file);
         });
     }
 
