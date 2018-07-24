@@ -536,7 +536,8 @@ const chalk = require('chalk'),
       minimist = require('minimist'),
       fs = require('fs-extra'),
       express = require('express'),
-      opn = require('opn');
+      opn = require('opn'),
+      fsWatch = require('node-watch');
 
 // Extract colors and styling functions from the "chalk" module
 const {
@@ -730,7 +731,7 @@ else if (argv.watch && ! CHILD) {
     folder = folder.replace(/\\,/g, ',');
 
     // Watch this folder
-    fs.watch(here(folder), { recursive: true }, (eventType, filename) => {
+    fsWatch(here(folder), { recursive: true }, (eventType, filename) => {
       // If the file is under the ".git", "build" or "node_modules" directory...
       if (path.resolve(filename).startsWith(here('.git')) ||
           path.resolve(filename).startsWith(here('build')) ||

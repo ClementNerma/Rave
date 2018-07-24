@@ -51,6 +51,7 @@
     "html-minifier": "^3.5.9",
     "markdown-it": "^8.4.1",
     "minimist": "^1.2.0",
+    "node-watch": "^0.5.8",
     "opn": "^5.2.0"
   }
 }
