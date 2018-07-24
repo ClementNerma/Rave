@@ -109,9 +109,7 @@ source = {
     },
 
     "snippets.json": {
-      content: {
-        // Empty for now
-      }
+      content: "${IMPORT:snippets.json}"
     },
 
     "package.json": {
