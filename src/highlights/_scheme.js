@@ -15,7 +15,7 @@ scheme = {
     LANGUAGE: 'SilverNight',
     LOWERCASE_LANGUAGE: 'silvernight',
     EXTENSION: 'sn',
-    VERSION: '0.27.0',
+    VERSION: '0.28.0',
     LICENSE: 'MIT',
     REPOSITORY_TYPE: 'git',
     REPOSITORY_URL: 'https://github.com/ClementNerma/SilverNight-draft',
@@ -382,8 +382,8 @@ scheme = {
         ],
         [
           // Pointers
-          /([\*&])(mut\b)?/,
-          'cyan', 'purple'
+          /([\*&])(\!?)(mut\b)?/,
+          'cyan', 'cyan', 'purple'
         ],
         [
           // Logical operators
