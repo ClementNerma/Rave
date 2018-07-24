@@ -66,6 +66,9 @@ function refreshActive() {
 
     // Give it a specific class
     link.classList.add('current');
+
+    // Scroll to it
+    link.scrollIntoView();
   }
 
   // For each title in the current section (reversed order to start from the bottom of the section)...
