@@ -719,7 +719,7 @@ scheme = {
         ],
         [
           // Magic callable directives
-          /#__magic_(?:iterate_tuple|clone|serialize|unserialize|is_pointer|cast|cast_unsafe|proxy|flex_proxy|is_same|import|level_of_pointer)/,
+          /#__magic_(?:iterate_tuple|clone|serialize|unserialize|is_pointer|cast|cast_unsafe|proxy|flex_proxy|is_same|import|reference_level)/,
           'orange'
         ],
         [
