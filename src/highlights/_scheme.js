@@ -544,7 +544,7 @@ scheme = {
         ],
         [
           // Native types and classes
-          /\b(Boolean|bool|[Nn]umber|VirtualInteger|VirtualFloatingPoint|SignedInteger|UnsignedInteger|(Unsigned?:)Integer(?:|8|16|32|64)|FloatingPoint(?:32|64)|[ui](?:8|16|32|64)|u?int|f(?:32|64)|[Ss]tring|Primitive|BooleanConvertible|IntegerConvertible|FloatConvertible|Numerizable|Stringifyable|Clonable|Freezable|Serializable|Randomizable|Primitivable|Collection|Dictionary|Vector|Array|List|Error|ErrorStep|RegExp|console)(\?)?\b/,
+          /\b(Boolean|bool|[Nn]umber|VirtualInteger|VirtualFloatingPoint|SignedInteger|UnsignedInteger|(Unsigned?:)Integer(?:|8|16|32|64)|FloatingPoint(?:32|64)|[ui](?:8|16|32|64)|u?int|f(?:32|64)|[ui]size|[Ss]tring|Primitive|BooleanConvertible|IntegerConvertible|FloatConvertible|Numerizable|Stringifyable|Clonable|Freezable|Serializable|Randomizable|Primitivable|Collection|Dictionary|Vector|Array|List|Error|ErrorStep|RegExp|console)(\?)?\b/,
           'yellow', 'cyan'
         ],
         [
