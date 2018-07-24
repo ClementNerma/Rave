@@ -79,7 +79,7 @@
     "description": "Plain tuple declaration"
   },
 
-  "Structure": {
+  "Structure_Declaration": {
     "prefix": "tuple",
     "body": [
       "/**",
@@ -88,7 +88,8 @@
       "struct ${1:Name} {",
       "  ${3:property}: ${4:Type};",
       "}"
-    ]
+    ],
+    "description": "Structure_Declaration"
   },
 
   "Map": {
@@ -204,7 +205,7 @@
     "body": [
       "(${1:i * i * i} for ${2:i} in ${3:0}..${4:10})"
     ],
-    "descrition": "Inline generation"
+    "description": "Inline generation"
   },
 
   "While_Loop": {
@@ -342,21 +343,24 @@
       "lambda (${1:arg}: ${2:Type}) : ${3:Type} {",
       "\t$0",
       "}"
-    ]
+    ],
+    "description": "Lambda"
   },
   
   "Arrow_Lambda": {
     "prefix": "arrow-lambda",
     "body": [
       "lambda (${1:arg}: ${2:Type}) : ${3:Type} => ${0:value}"
-    ]
+    ],
+    "description": "Lambda with arrow syntax"
   },
 
   "Inferred_Lambda": {
     "prefix": "inferred-lambda",
     "body": [
       "(${1:arg}) => ${0:value}"
-    ]
+    ],
+    "description": "Lambda with IST"
   },
 
   "Inferred_Lambda_Multi": {
@@ -365,7 +369,8 @@
       "(${1:arg}) => {",
       "\t${0:value}",
       "}"
-    ]
+    ],
+    "description": "Multi-instructions lambda with IST"
   },
 
   "Class": {
