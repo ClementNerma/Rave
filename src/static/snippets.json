@@ -416,6 +416,21 @@
     "description": "Class implementation"
   },
 
+  "Class_Extension": {
+    "prefix": "extension",
+    "body": [
+      "/**",
+      " * ${6:What the function does}",
+      " * @param $3 ${7:Description of the argument}",
+      " * @returns ${8:Description of the return value}",
+      " */",
+      "extension<${1:Type}> func ${2:name} (${3:arg}: ${4:Type}) : ${5:Type} {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Class extension"
+  },
+
   "Attribute": {
     "prefix": "attribute",
     "body": [
