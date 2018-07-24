@@ -373,17 +373,30 @@
     "description": "Multi-instructions lambda with IST"
   },
 
-  "Class": {
-    "prefix": "class",
+  "Interface_Declaration": {
+    "prefix": "interface",
+    "body": [
+      "/**",
+      " * ${2:Description of the interface}",
+      " */",
+      "interface ${1:InterfaceName} {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Interface declaration"
+  },
+
+  "Trait_Declaration": {
+    "prefix": "trait",
     "body": [
       "/**",
       " * ${2:Description of the class}",
       " */",
-      "class ${1:ClassName} {",
+      "trait ${1:TraitName} {",
       "\t$0",
       "}"
     ],
-    "description": "Class"
+    "description": "Trait declaration"
   },
 
   "Templated_Class": {
