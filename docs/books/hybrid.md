@@ -89,13 +89,13 @@ Showcase:
 ```sn
 // This a comment;
 
-println!("Hello"); // This is still one
+println!('Hello'); // This is still one
 
 /* This is a
    multi-line
    comment */
 
-println!(/* Even in the middle of a line */ "Hello");
+println!(/* Even in the middle of a line */ 'Hello');
 ```
 
 #### Displaying values
@@ -103,7 +103,7 @@ println!(/* Even in the middle of a line */ "Hello");
 We can display values inside the terminal (called _output_) by using the `println!` flex (we'll see what is a flex later in this book).
 
 ```sn
-println!("Hello !");
+println!('Hello !');
 ```
 
 ## Mutables
@@ -118,25 +118,25 @@ There's several ways to declare a resource in SilverNight. Let's take a look at 
 let hello: string;
 ```
 
-This will declare a mutable variable called "hello" with type `string`. When declared this way, an empty string is put in this (we call it an _instance_ of the "string" class).
+This will declare a mutable variable called 'hello' with type `string`. When declared this way, an empty string is put in this (we call it an _instance_ of the 'string' class).
 
 To assign a content, we use the `=` operator:
 
 ```sn
 let hello: string;
-hello = "I am a variable!";
+hello = 'I am a variable!';
 ```
 
 We can also assign a value in the declaration statement:
 
 ```sn
-let hello: string = "I am a variable!";
+let hello: string = 'I am a variable!';
 ```
 
 This syntax is kind of heavy. Because it's kind of repetitive to declare the type **and** the initial value of each variable, we can use a feature called _inferred typing_ which guesses the variable's type thanks to the value we assign to it:
 
 ```sn
-let hello = "I am a variable!";
+let hello = 'I am a variable!';
 ```
 
 In the above code, the builder understands we are trying to assign a string to `hello`, so it guesses its type is the same: `string`.
@@ -146,14 +146,14 @@ In the above code, the builder understands we are trying to assign a string to `
 Some datas are not intended to be modified. To store them, we use _constants_, which are declared like variables but with the `val` keyword. They main difference with mutables when declaring them is that we must give an initialization value:
 
 ```sn
-val constant = "I am a constant!";
+val constant = 'I am a constant!';
 ```
 
 We can also specify the constant's type if we want to be explicit. Here are some examples:
 
 ```sn
-val constant = "I am a constant!"; // Works fine
-val constant: string = "I am a constant!"; // Works fine
+val constant = 'I am a constant!'; // Works fine
+val constant: string = 'I am a constant!'; // Works fine
 val constant: string; // ERROR: Initialization value expected
 ```
 
@@ -161,21 +161,21 @@ Constants cannot have their value changed, so we can't use the `=` operator on t
 
 ```sn
 // Declare a variable
-let str = "I am a string!";
+let str = 'I am a string!';
 
 // Declare a constant
 val constant = str;
 
 // Assign a new value to the constant
-constant = "A new value"; // ERROR: Cannot assign a value to a constant
+constant = 'A new value'; // ERROR: Cannot assign a value to a constant
 ```
 
 ### Plain constants
 
-We can also declare "_plain constants_", which are explicit values that can be used by the builder to optimize some calls but also to perform additional tests about program's validity. Some functions also require plain constants, as we will see later. Basically, a plain constant is a constant that can contain only a single value that cannot come from a variable. This means we can't do this, for example:
+We can also declare '_plain constants_', which are explicit values that can be used by the builder to optimize some calls but also to perform additional tests about program's validity. Some functions also require plain constants, as we will see later. Basically, a plain constant is a constant that can contain only a single value that cannot come from a variable. This means we can't do this, for example:
 
 ```sn
-val msg = "Hello";
+val msg = 'Hello';
 pln hello = msg; // ERROR
 ```
 
@@ -183,15 +183,15 @@ The initialization value must be a _litteral_, which is an explicit value that i
 
 ```sn
 // Declare a plain constant
-pln MY_JOB = "Developer";
+pln MY_JOB = 'Developer';
 ```
 
-A naming convention for plain constants is to use a capitalized name, to make them distinctive from variables and "simple" constants. As always for constants, we can declare the value's type, but it's still optional.
+A naming convention for plain constants is to use a capitalized name, to make them distinctive from variables and 'simple' constants. As always for constants, we can declare the value's type, but it's still optional.
 
 Note that, even though we cannot take non-litteral values to initialize a plain constant, we can still take the value from another plain constant:
 
 ```sn
-pln MY_JOB = "Developer";
+pln MY_JOB = 'Developer';
 pln MY_REAL_JOB = MY_JOB; // Works fine
 ```
 
@@ -249,15 +249,15 @@ let num: int = 2;
 Strings are a suite of unique characters:
 
 ```sn
-let str1: string = "Hello world!";
+let str1: string = 'Hello world!';
 
 // Empty strings are allowed, too
-let str2: string = "";
+let str2: string = '';
 ```
 
 #### NIL values
 
-We call _NIL values_ the following values: `null` (NIL void), `false` (NIL boolean), `0` (NIL number), `""` (NIL string).
+We call _NIL values_ the following values: `null` (NIL void), `false` (NIL boolean), `0` (NIL number), `''` (NIL string).
 
 When a primitive variable is declared without an assignment, the NIL value associated to its type is used:
 
@@ -265,14 +265,14 @@ When a primitive variable is declared without an assignment, the NIL value assoc
 let var1: void  ; // null
 let var2: bool  ; // false
 let var3: int   ; // 0
-let var4: string; // ""
+let var4: string; // ''
 ```
 
 ## Numbers and operators
 
 ### Integers
 
-There is not only one type to represent numbers. The "default" one is `int`, an alias of `int32`, a signed 32-bit integer. It can handle any integer between `−2,147,483,648` and `2,147,483,647`.
+There is not only one type to represent numbers. The 'default' one is `int`, an alias of `int32`, a signed 32-bit integer. It can handle any integer between `−2,147,483,648` and `2,147,483,647`.
 
 Here is the table of types with their respective capacities:
 
@@ -320,7 +320,7 @@ In memory, `f32` costs 32 bits, while `f64` costs 64 bits.
 
 Note that calculations on `f64` numbers will be slower than `f32` numbers only if the program runs on a 32-bit processor, which is more and more rare. On 64-bit processors, it will even be a little bit faster.
 
-The "default" floating-point type will be `f64` with inferred typing, due to its higher precision.
+The 'default' floating-point type will be `f64` with inferred typing, due to its higher precision.
 
 ```sn
 let num = 0.0001; // f64
@@ -361,7 +361,7 @@ Also, if you explicitly want to get a `2` contained in a `u32` for example, ther
 // Showcase:
 let i = 2u; // u32 (Unsigned)
 i += 1;
-println!(i); // Prints: "3"
+println!(i); // Prints: '3'
 ```
 
 ### Numbers typecasting
@@ -451,7 +451,7 @@ The same behavior applies when dealing with the minimum numbers:
 ```sn
 let num: i8 = -127;
 num = num - 3;
-println!(num); // Prints: "126"
+println!(num); // Prints: '126'
 ```
 
 This is called an _underflow_.
@@ -528,10 +528,10 @@ Showcase:
 ```sn
 let variable = 0;
 
-println!(variable ++); // Prints: "0" ; variable = 1
-println!(++ variable); // Prints: "2" ; variable = 2
-println!(variable --); // Prints: "2" ; variable = 1
-println!(-- variable); // Prints: "0" ; variable = 0
+println!(variable ++); // Prints: '0' ; variable = 1
+println!(++ variable); // Prints: '2' ; variable = 2
+println!(variable --); // Prints: '2' ; variable = 1
+println!(-- variable); // Prints: '0' ; variable = 0
 ```
 
 ### Logical operators
@@ -604,7 +604,7 @@ A >> 2; // 0000 1111 : 15
 In SilverNight, the `+` (add) operator also acts as the _concatenation operator_. It provides a way to _concatenate_ two stringifyable entities, like a `string` and an `int`. For example, if we have a variable called `area` and we want to display its value with a message, we can do:
 
 ```sn
-println!("The area is: " + area);
+println!('The area is: ' + area);
 ```
 
 Concatenation only works when a string is on the left of the operator and a primitive on its right. So here, the builder will understand we want to do a concatenation because the first value is a string, and the second one a number (which is automatically converted to a string).
@@ -615,8 +615,8 @@ This operator is a little special because it wraps a content instead of being be
 
 ```sn
 val area = 8.5;
-println!("The area is: " + area); // "The area is: 8.5"
-println!(`The area is: ${area}`); // "The area is: 8.5"
+println!('The area is: ' + area); // 'The area is: 8.5'
+println!(`The area is: ${area}`); // 'The area is: 8.5'
 ```
 
 As you can see, here we use backquotes to delimit the string. In the last `println!` statement, `${...}` contains an expression that must be evaluated and returned in the string. Here, `area` is evaluated as `8.5`, converted to a string, then returned.
@@ -624,7 +624,7 @@ As you can see, here we use backquotes to delimit the string. In the last `print
 The code above would also work fine:
 
 ```sn
-println!(`This is ${'go' + 'od'}`); // "This is 'good'"
+println!(`This is ${'go' + 'od'}`); // 'This is 'good''
 ```
 
 The `'go' + 'od'` expression is simply evaluated and its result (`good`) returned in the string.
@@ -663,24 +663,24 @@ Here is their syntax:
 
 ```sn
 // Assigning values at declaration
-let array: string[3] = [ "Jack", "Lucy", "Thomas" ];
+let array: string[3] = [ 'Jack', 'Lucy', 'Thomas' ];
 
 // Assigning values after declaration
 let array: string[3];
-array = [ "Jack", "Lucy", "Thomas" ];
+array = [ 'Jack', 'Lucy', 'Thomas' ];
 
 // Assigning values one by one
 let array: string[3];
-array[0] = "Jack";
-array[1] = "Luy";
-array[2] = "Thomas";
+array[0] = 'Jack';
+array[1] = 'Luy';
+array[2] = 'Thomas';
 ```
 
 There's also a way to define an array when we don't know its length:
 
 ```sn
 // Assigning without knowing the length
-let array: string[] = [ "Jack", "Lucy", "Thomas" ];
+let array: string[] = [ 'Jack', 'Lucy', 'Thomas' ];
 ```
 
 This is not useful in this example, but it is when we will deal with functions later. Still, note that, in this example, the length of `array` is not predictable. This means that doing `array[3]` will not throw an error at build time, but it will when the program will be ran.
@@ -688,7 +688,7 @@ This is not useful in this example, but it is when we will deal with functions l
 We can also declare arrays without their type, thanks to type inference:
 
 ```sn
-let array = [ "Jack", "Lucy", "Thomas" ];
+let array = [ 'Jack', 'Lucy', 'Thomas' ];
 ```
 
 That's when we declare a fixed-length list of data. But when we know we'll have to add or remove data later, we use a _list_ :
@@ -701,20 +701,20 @@ We don't even have to declare a length because it is not fixed, so we can add an
 
 ```sn
 // Assigning values at declaration
-let list: List<string> = [ # "Jack", "Lucy", "Thomas" ];
+let list: List<string> = [ # 'Jack', 'Lucy', 'Thomas' ];
 
 // Assigning values after declaration
 let list: List<string>;
-list = [ # "Jack", "Lucy", "Thomas" ];
+list = [ # 'Jack', 'Lucy', 'Thomas' ];
 
 // Assigning values one by one
 let list: List<string>;
-list[] = "Jack";
-list[] = "Lucy";
-list[] = "Thomas";
+list[] = 'Jack';
+list[] = 'Lucy';
+list[] = 'Thomas';
 
 // Edit the 3rd item in the list
-list[2] = "Thomas";
+list[2] = 'Thomas';
 ```
 
 As you can see, if we don't give the length value, only the third way changed. We know _push_ new elements using the `list[] = data` syntax.
@@ -723,23 +723,23 @@ Note that we can also remove elements from the list:
 
 ```sn
 // Create a list
-let list: List<string> = [ # "Jack", "Lucy", "Thomas" ];
+let list: List<string> = [ # 'Jack', 'Lucy', 'Thomas' ];
 
-// Remove the second element ("Lucy")
+// Remove the second element ('Lucy')
 list.removeAt(1);
 
-// Remove "Thomas"
-list.remove("Thomas");
+// Remove 'Thomas'
+list.remove('Thomas');
 
 // Print the list's length
-println!(list.size); // Prints: "1"
+println!(list.size); // Prints: '1'
 ```
 
 Note that we use variables as indexes for every type of vectors:
 
 ```sn
 let value: int = 1;
-println!(list[value]); // Prints: "Lucy"
+println!(list[value]); // Prints: 'Lucy'
 ```
 
 ### Templated types
@@ -804,19 +804,19 @@ let list: string[] = new List<string>;
 Tuples are very similair to arrays, except the fact they can combine mixed types. They are defined as follows:
 
 ```sn
-val tuples: (int, f32, string) = (2, 4.8, "Hello");
+val tuples: (int, f32, string) = (2, 4.8, 'Hello');
 ```
 
 Thanks to inferred typing, we can simply write:
 
 ```sn
-val tuples = (2, 4.8, "Hello");
+val tuples = (2, 4.8, 'Hello');
 ```
 
 To get or set a value from a tuple, we simply use an index as for arrays:
 
 ```sn
-println!(tuples[2]); // Prints: "Hello"
+println!(tuples[2]); // Prints: 'Hello'
 ```
 
 Though, indexes must be plain numbers. They can't be a variable, because the type of each member of the tuple may be different.
@@ -832,7 +832,7 @@ pln index2 = 2;
 // Constants won't work
 println!(tuples[index1]); // ERROR
 // But plain constants will
-println!(tuples[index2]); // Prints: "Hello"
+println!(tuples[index2]); // Prints: 'Hello'
 ```
 
 Note that, as for arrays, tuples are considered as a single type (even if it can combine several values of different types). Also, tuples have the `Tuple` type, even though we can't do anything with it.
@@ -840,22 +840,22 @@ Note that, as for arrays, tuples are considered as a single type (even if it can
 We can also check if a value is contained in a tuple using the `in` keyword:
 
 ```sn
-val tuple = ( 18, "John", true );
+val tuple = ( 18, 'John', true );
 
-"John" in tuple; // Equal to true
-"Jack" in tuple; // Equal to false
+'John' in tuple; // Equal to true
+'Jack' in tuple; // Equal to false
 ```
 
 When we told previously that plain constants could only contain litterals, tuples are part of them. This means the following declaration is allowed:
 
 ```sn
 // Plain tuples
-pln MY_CONSTANT = ( 18, "John", true );
+pln MY_CONSTANT = ( 18, 'John', true );
 
 // Multi-level plain tuples
-pln MY_CONSTANT = ( 18, ( "John", "Lucy", "Thomas" ), true );
+pln MY_CONSTANT = ( 18, ( 'John', 'Lucy', 'Thomas' ), true );
 
-println!(MY_CONSTANT[1][2]); // Prints: "Lucy"
+println!(MY_CONSTANT[1][2]); // Prints: 'Lucy'
 ```
 
 ### Structures
@@ -878,7 +878,7 @@ We _instanciate_ it this way:
 
 ```sn
 let jack: Hero = Hero {
-  name: "Jack",
+  name: 'Jack',
   hp: 80,
   mp: 10,
   atk: 20,
@@ -909,9 +909,9 @@ val red  : usize = Color.RED;
 val green: usize = Color.GREEN;
 val blue : usize = Color.BLUE;
 
-println!(red); // Prints: "0"
-println!(green); // Prints: "1"
-println!(blue); // Prints: "2"
+println!(red); // Prints: '0'
+println!(green); // Prints: '1'
+println!(blue); // Prints: '2'
 ```
 
 It's also possible to force the value of the enumeration's members:
@@ -919,9 +919,9 @@ It's also possible to force the value of the enumeration's members:
 ```sn
 enum Color { RED, GREEN = 8, BLUE }
 
-println!(Color.RED); // Prints: "0"
-println!(Color.GREEN); // Prints: "8"
-println!(Color.BLUE); // Prints: "1"
+println!(Color.RED); // Prints: '0'
+println!(Color.GREEN); // Prints: '8'
+println!(Color.BLUE); // Prints: '1'
 ```
 
 #### Constant properties
@@ -957,10 +957,10 @@ struct Identity {
 
 // Another declaration syntax that uses type inference
 val jack = Identity {
-  name: "Jack"
+  name: 'Jack'
 };
 
-println!(jack.adult); // Prints: "false"
+println!(jack.adult); // Prints: 'false'
 ```
 
 Also, note that constantness of the entity that contains the object doesn't prevent its items from being written:
@@ -972,12 +972,12 @@ struct Identity {
 }
 
 val jack = Identity {
-  name: "Jack",
+  name: 'Jack',
   adult: true
 };
 
 jack.adult = false; // Works fine
-println!(jack.adult); // Prints: "false"
+println!(jack.adult); // Prints: 'false'
 ```
 
 #### Plain properties
@@ -991,7 +991,7 @@ struct Identify {
 }
 
 val jack = Identity {
-  name: "Jack",
+  name: 'Jack',
   adult: true
 };
 
@@ -1005,8 +1005,8 @@ struct PlainName {
   pln name: string;
 }
 
-let jack = Identity { name: "Hello" }; // ERROR
-val jack = Identity { name: "Hello" }; // Works fine
+let jack = Identity { name: 'Hello' }; // ERROR
+val jack = Identity { name: 'Hello' }; // Works fine
 ```
 
 #### Tuple structures
@@ -1016,10 +1016,10 @@ Structures can declare a tuple type, to avoid writing the full tuple's definitio
 ```sn
 struct Identity (string, bool);
 
-val jack = Identity { "Jack", true };
+val jack = Identity { 'Jack', true };
 
-println!(jack[0]); // Prints: "Jack"
-println!(jack[1]); // Prints: "true"
+println!(jack[0]); // Prints: 'Jack'
+println!(jack[1]); // Prints: 'true'
 ```
 
 ### Dictionaries
@@ -1032,7 +1032,7 @@ For example, if we want to connect integers (persons' age) to strings (persons' 
 let ages: Map<string, int>;
 ```
 
-We can know add any property by doing `ages.Jack = 28;`. To remove a property, we simply do `ages.unset();`. Here's a trap of dictionaries: all properties will return - if they exist - an instance of the second template (`int` here) but a few ones, like `unset` or `has`, will return functions. In order to avoid this problem with variables, writing `ages[anyIndexHere]` will return an `int`, whatever `anyIndexHere` is. We can even write `ages["unset"]` which does the same thing.
+We can know add any property by doing `ages.Jack = 28;`. To remove a property, we simply do `ages.unset();`. Here's a trap of dictionaries: all properties will return - if they exist - an instance of the second template (`int` here) but a few ones, like `unset` or `has`, will return functions. In order to avoid this problem with variables, writing `ages[anyIndexHere]` will return an `int`, whatever `anyIndexHere` is. We can even write `ages['unset']` which does the same thing.
 
 Also, there is a shortcut for dictionaries with `string` keys: the `Collection` type. It is basically a dictionary that has string keys:
 
@@ -1075,9 +1075,9 @@ let ages: Map<string, int> = {
   Thomas: 32
 };
 
-let index = "Lucy";
+let index = 'Lucy';
 
-println!(ages[index]); // Prints: "21"
+println!(ages[index]); // Prints: '21'
 ```
 
 #### The truth about vectors
@@ -1088,7 +1088,7 @@ This is why lists use the same `#` symbols as dictionaries. For arrays, that's a
 
 ### Inferred Structured Typing
 
-_Inferred Structured Typing_, or in its short form "IST", is a feature of the language that aims to provid type inference when dealing with more complex data.
+_Inferred Structured Typing_, or in its short form 'IST', is a feature of the language that aims to provid type inference when dealing with more complex data.
 
 Let's say we have to handle an object that is an array of books. Each book would be an instance of structure containing as properties a name, a realease year as well as the country it was initially released. We would simply put these instances into a list and manage them easily, which would result in the following code:
 
@@ -1109,21 +1109,21 @@ let books: List<Book>;
 
 // Add a first book
 books.push(Book {
-  name: "Harry Potter",
+  name: 'Harry Potter',
   details: BookDetails {
-    author: "J.K. Rowling",
-    year: "1997",
-    country: "United Kingdom"
+    author: 'J.K. Rowling',
+    year: '1997',
+    country: 'United Kingdom'
   }
 });
 
 // Add a second one
 books.push(Book {
-  name: "Eragon",
+  name: 'Eragon',
   details: BookDetails {
-    author: "Cristopher Paolini",
-    year: "2003",
-    country: "USA"
+    author: 'Cristopher Paolini',
+    year: '2003',
+    country: 'USA'
   }
 });
 ```
@@ -1137,20 +1137,20 @@ IST makes sense in our case because our code can be simplified a lot by not decl
 ```sn
 let books = [
   {
-    name: "Harry Potter",
+    name: 'Harry Potter',
     details: {
-      author: "J.K. Rowling",
-      year: "1997",
-      country: "United Kingdom"
+      author: 'J.K. Rowling',
+      year: '1997',
+      country: 'United Kingdom'
     }
   },
 
   {
-    name: "Eragon",
+    name: 'Eragon',
     details: {
-      author: "Cristopher Paolini",
-      year: "2003",
-      country: "U.S.A."
+      author: 'Cristopher Paolini',
+      year: '2003',
+      country: 'U.S.A.'
     }
   }
 ];
@@ -1167,20 +1167,20 @@ let books = [
   # // Makes the object extensible
 
   {
-    name: "Harry Potter",
+    name: 'Harry Potter',
     details: {
-      author: "J.K. Rowling",
-      year: "1997",
-      country: "United Kingdom"
+      author: 'J.K. Rowling',
+      year: '1997',
+      country: 'United Kingdom'
     }
   },
 
   {
-    name: "Eragon",
+    name: 'Eragon',
     details: {
-      author: "Cristopher Paolini",
-      year: "2003",
-      country: "U.S.A."
+      author: 'Cristopher Paolini',
+      year: '2003',
+      country: 'U.S.A.'
     }
   }
 ];
@@ -1192,32 +1192,32 @@ The `#` symbol indicates we are dealing with a dictionary. As you may think, arr
 
 Because this is a bit complex, here is an exhaustive list of all the different syntaxes supported by the IST:
 
-* `[ "Hello", "World" ]` makes an array (of strings)
-* `[ # "Hello", "World" ]` makes a list (of strings)
-* `{ name: "Hello" }` makes a ghost structure and applies it on the plain object
-* `{ # name: "Hello" }` makes a map (with string keys and string values)
+* `[ 'Hello', 'World' ]` makes an array (of strings)
+* `[ # 'Hello', 'World' ]` makes a list (of strings)
+* `{ name: 'Hello' }` makes a ghost structure and applies it on the plain object
+* `{ # name: 'Hello' }` makes a map (with string keys and string values)
 
 Here is a code equivalence:
 
 ```sn
 // What we write:
-let data = [ "Hello", "World" ];
+let data = [ 'Hello', 'World' ];
 
 // What IST does:
-let data = new Array<string>("Hello", "World");
+let data = new Array<string>('Hello', 'World');
 ```
 
 ```sn
 // What we write:
-let data = [ # "Hello", "World" ];
+let data = [ # 'Hello', 'World' ];
 
 // What IST does:
-let data = new List<string>("Hello", "World");
+let data = new List<string>('Hello', 'World');
 ```
 
 ```sn
 // What we write:
-let data = { name: "Hello" };
+let data = { name: 'Hello' };
 
 // What IST does:
 struct DataStruct {
@@ -1225,31 +1225,31 @@ struct DataStruct {
 }
 
 let data = DataStruct {
-  name: "Hello"
+  name: 'Hello'
 };
 ```
 
 ```sn
 // What we write:
-let data = { # name: "Hello" };
+let data = { # name: 'Hello' };
 
 // What IST does:
-let data = new Map<string, string>([ "name" ], [ "Hello" ]);
+let data = new Map<string, string>([ 'name' ], [ 'Hello' ]);
 
 // Which itself uses IST so in fact results it:
-let data = new Map<string, string>(new Array<string>("name"), new Array<string>("Hello"));
+let data = new Map<string, string>(new Array<string>('name'), new Array<string>('Hello'));
 ```
 
 Final word: IST allows you to write, for example:
 
 ```sn
-let data = { # name: "Hello" };
+let data = { # name: 'Hello' };
 ```
 
 Instead of:
 
 ```sn
-let data = new Map<string, string>(new Array<string>("name"), new Array<string>("Hello"));
+let data = new Map<string, string>(new Array<string>('name'), new Array<string>('Hello'));
 ```
 
 That's a lot simplier, isn't it?
@@ -1262,22 +1262,22 @@ IST also supports pre-defined objects, as long as they have exactly the same typ
 
 ```sn
 val harryPotter = {
-  name: "Harry Potter",
+  name: 'Harry Potter',
   details: {
       #
-      author: "J.K. Rowling",
-      year: "1997",
-      country: "United Kingdom"
+      author: 'J.K. Rowling',
+      year: '1997',
+      country: 'United Kingdom'
   }
 };
 
 val eragon = {
-  name: "Eragon",
+  name: 'Eragon',
   details: {
       #
-      author: "Cristopher Paolini",
-      year: "2003",
-      country: "U.S.A."
+      author: 'Cristopher Paolini',
+      year: '2003',
+      country: 'U.S.A.'
   }
 };
 
@@ -1299,8 +1299,8 @@ struct Hero {
 };
 
 val jack = Hero {
-  name: "Jack",
-  spells: [ "Fire", "Ice" ] // ERROR
+  name: 'Jack',
+  spells: [ 'Fire', 'Ice' ] // ERROR
 };
 ```
 
@@ -1308,8 +1308,8 @@ The error is caused by the fact a `List<string>` is expected but an `Array<strin
 
 ```sn
 val jack = Hero {
-  name: "Jack",
-  spells: [ # "Fire", "Ice" ] // Works fine
+  name: 'Jack',
+  spells: [ # 'Fire', 'Ice' ] // Works fine
 };
 ```
 
@@ -1319,7 +1319,7 @@ Objects - both structures and dictionaries - allow _multiple assignments_, which
 
 ```sn
 val hero = {
-  name: "John",
+  name: 'John',
   age: 20,
   warrior: true
 };
@@ -1421,8 +1421,8 @@ val (one, two) = tuple;
 val one = tuple[0],
     two = tuple[1];
 
-println!(one); // Prints: "1"
-println!(two); // Prints: "2"
+println!(one); // Prints: '1'
+println!(two); // Prints: '2'
 ```
 
 ## The blocks
@@ -1433,11 +1433,11 @@ Blocks provide ways to control the program's flow, as well as some tricks like s
 
 Conditional blocks are the most common type of blocks: they simply provide a way to run a set of instructions only if a condition is met.
 
-The first one is the `if` block. It runs the provided code if the given expression is anything different from the primitive `NIL` values (which are `null`, `false`, `0` and `""`). Its syntax is:
+The first one is the `if` block. It runs the provided code if the given expression is anything different from the primitive `NIL` values (which are `null`, `false`, `0` and `''`). Its syntax is:
 
 ```sn
 if 2 + 2 == 4 {
-  println!("Good.");
+  println!('Good.');
 }
 ```
 
@@ -1447,9 +1447,9 @@ If you want to do something if the expression _is_ a NIL value, you can use the 
 
 ```sn
 if 2 + 2 == 5 {
-  println!("What?");
+  println!('What?');
 } else {
-  println!("Good.");
+  println!('Good.');
 }
 ```
 
@@ -1458,16 +1458,16 @@ Here, the `2 + 2 == 5` expression returns `false`, which is a NIL value, so the 
 You can also have multiple conditions by combining `else` and `if` to form the `elsif` keyword:
 
 ```sn
-let name = "John";
+let name = 'John';
 
-if name == "Marco" {
-  println!("Your name is Marco!");
-} elsif name == "Paul" {
-  println!("You are Paul.");
-} elsif name == "John" {
-  println!("Welcome, John!");
+if name == 'Marco' {
+  println!('Your name is Marco!');
+} elsif name == 'Paul' {
+  println!('You are Paul.');
+} elsif name == 'John' {
+  println!('Welcome, John!');
 } else {
-  println!("I can't remember you...");
+  println!('I can't remember you...');
 }
 ```
 
@@ -1628,7 +1628,7 @@ This loop acts like a `while true`, but its point is to clearly indicate we are 
 
 ```sn
 loop {
-  println!("Hello !");
+  println!('Hello !');
 }
 ```
 
@@ -1641,14 +1641,14 @@ The `match` block returns a result depending on _switchs_ that relies on the val
 Let's imagine we have a person and want to run a little set of instructions depending on its name. Assuming we have a `name: string` variable, we could write:
 
 ```sn
-if name == "Paul" {
-  println!("Happy birthday, Paul!");
-} elsif name == "John" {
-  println!("How are you, John?");
-} elsif name == "Marc" {
-  println!("Hello there Marc!");
+if name == 'Paul' {
+  println!('Happy birthday, Paul!');
+} elsif name == 'John' {
+  println!('How are you, John?');
+} elsif name == 'Marc' {
+  println!('Hello there Marc!');
 } else {
-  println!("I don't know you...");
+  println!('I don't know you...');
 }
 ```
 
@@ -1656,10 +1656,10 @@ But this is kind of heavy. So we can perform a _match_ instead:
 
 ```sn
 match name {
-  "Paul"  -> println!("Happy birthday, Paul!");
-  "John"  -> println!("How are you, John?");
-  "Marc"  -> println!("Hello there Marc!");
-  default -> println!("I don't know you...");
+  'Paul'  -> println!('Happy birthday, Paul!');
+  'John'  -> println!('How are you, John?');
+  'Marc'  -> println!('Hello there Marc!');
+  default -> println!('I don't know you...');
 }
 ```
 
@@ -1670,9 +1670,9 @@ let adult: string;
 let age: uint = 2;
 
 match age {
-  _ < 20  -> adult = "No";
-  _ > 20  -> adult = "Yes";
-  default -> adult = "Kind of";
+  _ < 20  -> adult = 'No';
+  _ > 20  -> adult = 'Yes';
+  default -> adult = 'Kind of';
 }
 ```
 
@@ -1682,11 +1682,11 @@ You can also specify a set of instructions for a match by wrapping them between 
 let adult: string;
 
 match age {
-  _ < 20  -> adult = "No";
-  _ > 20  -> adult = "Yes";
+  _ < 20  -> adult = 'No';
+  _ > 20  -> adult = 'Yes';
   default -> {
-    adult = "Kind of";
-    println!("The end.");
+    adult = 'Kind of';
+    println!('The end.');
   }
 }
 ```
@@ -1698,8 +1698,8 @@ Note that the `break` instruction does nothing on this block, as it's not a loop
 _Ternary conditions_ are an alternative to simple conditions. They always return a value, depending on a condition. The syntax is `cond ? valueIfNotNIL : valueIfNIL`. Showcase:
 
 ```sn
-let name = "John";
-name = (name == "Marc") ? "Welcome Marc" : "I don't know who you are";
+let name = 'John';
+name = (name == 'Marc') ? 'Welcome Marc' : 'I don't know who you are';
 ```
 
 ### Inline blocks
@@ -1710,7 +1710,7 @@ Sometimes it's just more intuitive and redeable to write the condition _after_ t
 let name: string;
 
 // Set the name only if it is empty
-name = "John" if name == "";
+name = 'John' if name == '';
 ```
 
 There is also a _ternary form_:
@@ -1718,14 +1718,14 @@ There is also a _ternary form_:
 ```sn
 let name: string;
 
-name = if !name { "John" } else { "This overwrites the name" };
+name = if !name { 'John' } else { 'This overwrites the name' };
 // Long syntax
 ```
 
 This works with any instructions:
 
 ```sn
-println!("Hello world!") if world.exists();
+println!('Hello world!') if world.exists();
 ```
 
 You can do this with any condition or loop block:
@@ -1813,19 +1813,19 @@ if true {
 }
 ```
 
-Here, `i` belongs to our the scope defined by our `if` block. What "belongs" mean? Simply that, when the entity goes out of the scope, it is _dropped_ (we also say _freed_), so its reference is lost and we can't use it. Here is an example:
+Here, `i` belongs to our the scope defined by our `if` block. What 'belongs' mean? Simply that, when the entity goes out of the scope, it is _dropped_ (we also say _freed_), so its reference is lost and we can't use it. Here is an example:
 
 ```sn
 let i = 1;
-println!(i); // Prints: "1"
+println!(i); // Prints: '1'
 
 {
   let j = 2;
   i += j
-  println!(j); // Prints: "2"
+  println!(j); // Prints: '2'
 }
 
-println!(i); // Prints: "3"
+println!(i); // Prints: '3'
 println!(j); // ERROR ('j' is not defined)
 ```
 
@@ -1947,8 +1947,8 @@ func add (left: int, right: int) : (int, f32) {
 
 val result = add(2, 8);
 
-println!(result[0]); // Prints: "0"
-println!(result[1]); // Prints: "0.25"
+println!(result[0]); // Prints: '0'
+println!(result[1]); // Prints: '0.25'
 ```
 
 As they are single values too, we can return arrays, lists, vectors, dictionaries and every other type of value.
@@ -1957,7 +1957,7 @@ Note that void-typed functions (functions that return nothing) can omit their re
 
 ```sn
 func sayHello () {
-  println!("Hello !");
+  println!('Hello !');
 }
 ```
 
@@ -1974,24 +1974,24 @@ func sayHello (name: string, justTheName: bool = false) {
   }
 }
 
-sayHello("John", false); // "Hello, John!"
-sayHello("John", true); // "John"
+sayHello('John', false); // 'Hello, John!'
+sayHello('John', true); // 'John'
 
-sayHello("John"); // "Hello, John!"
+sayHello('John'); // 'Hello, John!'
 ```
 
 This is useful when we don't want to give a default value to arguments manually, in the function's body. Note that default values can be absolutely anything, even expressions:
 
 ```sn
 func getMarcName () : string {
-  return "Marc";
+  return 'Marc';
 }
 
-func sayHello (name: string = "Hello" + getMarcName()) {
+func sayHello (name: string = 'Hello' + getMarcName()) {
   println!(`Hello, ${name}!`);
 }
 
-sayHello(); // Prints: "Hello, Marc!"
+sayHello(); // Prints: 'Hello, Marc!'
 ```
 
 ### Infinite arguments
@@ -2009,7 +2009,7 @@ func sum (...numbers: int) : int {
   return sum;
 }
 
-println!(sum(2, 3, 4)); // Prints: "9"
+println!(sum(2, 3, 4)); // Prints: '9'
 ```
 
 In this function, `numbers` is an array because of the `...` symbols, so in our example it's an `int[]`.
@@ -2027,7 +2027,7 @@ func sum (...numbers: int, coefficient: int) : int {
   return sum * coefficient;
 }
 
-println!(sum(2, 3, 4, 5)); // Prints: "45"
+println!(sum(2, 3, 4, 5)); // Prints: '45'
 ```
 
 Or after it:
@@ -2043,7 +2043,7 @@ func sum (coefficient: int, ...numbers: int) : int {
   return sum * coefficient;
 }
 
-println!(sum(5, 2, 3, 4)); // Prints: "45"
+println!(sum(5, 2, 3, 4)); // Prints: '45'
 ```
 
 Or even between two other arguments:
@@ -2059,7 +2059,7 @@ func sum (coeff1: int, ...numbers: int, coeff2: int) : int {
   return sum * coeff1 * coeff2;
 }
 
-println!(sum(2, 2, 3, 4, 3)); // Prints: "54"
+println!(sum(2, 2, 3, 4, 3)); // Prints: '54'
 ```
 
 The only restriction is you can't put two infinite arguments with the same type in a function's signature. For example, the following code is not valid:
@@ -2078,7 +2078,7 @@ func sum (left: int, right: int) : int => left + right;
 // Declare a int[]
 val numbers = [ 2, 8 ];
 // Use the arguments expansion operator
-println!(sum(numbers...)); // Prints: "10"
+println!(sum(numbers...)); // Prints: '10'
 ```
 
 In this example, `numbers` is expanded as multiple arguments. It's like writing:
@@ -2099,10 +2099,10 @@ func calc (left: int, right: int, divide: int) : int {
 }
 
 val numbers = [ 2, 8 ];
-println!(calc(numbers..., 5)); // Prints: "2"
+println!(calc(numbers..., 5)); // Prints: '2'
 
 // Same as writing:
-println!(calc(numbers[0], numbers[1], 5)); // Prints: "2"
+println!(calc(numbers[0], numbers[1], 5)); // Prints: '2'
 ```
 
 ### Lambdas and callbacks
@@ -2182,8 +2182,8 @@ val posArr = list.filter(myFunc);
 We can now call `myFunc` as a standard function:
 
 ```sn
-println!(myFunc(2)); // Prints: "true"
-println!(myFunc(-3)); // Prints: "false"
+println!(myFunc(2)); // Prints: 'true'
+println!(myFunc(-3)); // Prints: 'false'
 ```
 
 We could also have declared it as a normal function:
@@ -2210,7 +2210,7 @@ println!(twoPlusFive(
   lambda (left: int, right: int) : string {
     return string(left + right);
   })
-); // Prints: "7"
+); // Prints: '7'
 ```
 
 You may have notice that we don't specify `callback`'s arguments' name in our example. That's because the function's type (`func (int, int) : string`) does not require it, it's purely optional. We could have written `func (left: int, right: int) : string` if we had wanted to.
@@ -2228,7 +2228,7 @@ This symbol can in fact even be used with functions, like:
 ```sn
 func returnTrue () : bool => true;
 
-println!(returnTrue()); // Prints: "true"
+println!(returnTrue()); // Prints: 'true'
 ```
 
 Here is a recap of all the functions' syntaxes:
@@ -2301,8 +2301,8 @@ func pointStr (x: f32, y: f32) : string => `(${x}, ${y})`;
 func pointStr (pt: Point) : string => `(${Point.x}, ${Point.y})`;
 
 // Let's try them!
-pointStr(2, 5); // Prints: "(2, 5)"
-pointStr(Point { x: 2, y: 5 }); // Prints: "(2, 5)"
+pointStr(2, 5); // Prints: '(2, 5)'
+pointStr(Point { x: 2, y: 5 }); // Prints: '(2, 5)'
 ```
 
 They work as expected and print the same result.
@@ -2419,7 +2419,7 @@ We can now _instanciate_ our heroes, meaning we use the `new` keyword to create 
 ```sn
 val jack = new Hero(); // ERROR: Expecting 5 arguments, found 0
 
-val jack = new Hero("Jack", 100, 5, 50, 10); // A great warrior
+val jack = new Hero('Jack', 100, 5, 50, 10); // A great warrior
 ```
 
 As soon as we use the `new` keyword on a type, we know it's a class. That means lists and arrays both are classes. In fact, all numbers types, as well as booleans, voids, and strings, are too.
@@ -2518,13 +2518,13 @@ To test it:
 
 ```sn
 // Make two warriors
-val jack = new Hero("Jack", 100, 5, 50, 10);
-val john = new Hero("John", 50, 5, 80, 5);
+val jack = new Hero('Jack', 100, 5, 50, 10);
+val john = new Hero('John', 50, 5, 80, 5);
 
 // Make them fight
-jack.fight(john); // Prints: "Jack is going to fight John!"
-                  //         "John is attacked by Jack and loses 45 HP!"
-                  //         "Jack is attacked by John and loses 70 HP!"
+jack.fight(john); // Prints: 'Jack is going to fight John!'
+                  //         'John is attacked by Jack and loses 45 HP!'
+                  //         'Jack is attacked by John and loses 70 HP!'
 ```
 
 Conventionally, name of classes must start with an uppercase letter (A to Z), while classes starting with a lowercase letter are the native types (`void`, `string`, `int`...).
@@ -2535,26 +2535,26 @@ We just saw two _accessor_ keywords for a class' members: `public` and `private`
 
 ```sn
 class Example {
-  public val hello = "world!";
+  public val hello = 'world!';
 }
 
 val instance = new Example();
-println!(instance.hello); // Prints: "world!"
+println!(instance.hello); // Prints: 'world!'
 ```
 
 Private members are restricted to the inside of the class, meaning they can be used only by code that is written between the `{` and `}` braces of the class. Here is an example:
 
 ```sn
 class Example {
-  public val hello = "world!";
-  private val secret = "I'm private!";
+  public val hello = 'world!';
+  private val secret = 'I'm private!';
 
   public func printSecret () => println!(this.secret);
 }
 
 val instance = new Example();
-println!(instance.hello); // Prints: "world!"
-println!(instance.printSecret()); // Prints: "I'm private!"
+println!(instance.hello); // Prints: 'world!'
+println!(instance.printSecret()); // Prints: 'I'm private!'
 println!(instance.secret); // ERROR (private member)
 ```
 
@@ -2564,8 +2564,8 @@ There is a specificy about private members, though. We can access an instance's 
 
 ```sn
 class Example {
-  public val hello = "Hello!";
-  private val secret = "No one can see me!";
+  public val hello = 'Hello!';
+  private val secret = 'No one can see me!';
 
   public func printAnotherSecret (other: Example) => println!(other.secret);
 }
@@ -2573,7 +2573,7 @@ class Example {
 val instance = new Example();
 val another  = new Example();
 
-println!(instance.printAnotherSecret(other)); // Prints: "No one can see me!"
+println!(instance.printAnotherSecret(other)); // Prints: 'No one can see me!'
 ```
 
 This is due to the fact a class is registered as a _friend_ of itself, but that's a notion we will see later.
@@ -2615,10 +2615,10 @@ val something = new Superthing(/* Arguments for the constructor */);
 Will fail, because we gave no argument instead of the one the constructor expected. But if we write:
 
 ```sn
-val something = new Superthing("Gamepad");
+val something = new Superthing('Gamepad');
 ```
 
-This will work fine and the constructor will get the `"Gamepad"` value in `theThingName`.
+This will work fine and the constructor will get the `'Gamepad'` value in `theThingName`.
 
 ### Methods
 
@@ -2643,10 +2643,10 @@ class Superthing {
 Here, the `getName()` function will return the thing's name. To use it, we simply have to do:
 
 ```sn
-val something = new Superthing("cake");
+val something = new Superthing('cake');
 
 println!(`The thing's name is ${something.getName()}.`);
-  // Prints: "The thing's name is cake."
+  // Prints: 'The thing's name is cake.'
 ```
 
 Another trick to use a member from the inside of the class is to use the `@` symbol:
@@ -2765,7 +2765,7 @@ When static members are private, that means they can only accessed through `_sel
 
 Let's now practice this concepts with a little exercice. We want to represent a RPG map with a class. Each cell has a number referring to an empty cell (0), a rock (1) or a trap (2). The map is given at its creation as a double list of integers. The map is a rectangle and has a fixed width and heigh deducted from the double list.
 
-We can move on this map a player, starting from a location given at the map's creation. The player can move up, down, left and right. It can't go on rock cells, and going to a trap will display a message "You've been trapped!" befre making the player unable to move.
+We can move on this map a player, starting from a location given at the map's creation. The player can move up, down, left and right. It can't go on rock cells, and going to a trap will display a message 'You've been trapped!' befre making the player unable to move.
 
 We have to represent it with a single class, with only private attributes or public read-only ones. At anytime, we should be able to access the player's current position, to get any cell's value, or to check if the player have been trapped already. The top-left position is (0, 0).
 
@@ -2794,18 +2794,18 @@ class Map {
     // If we fell in a trap before...
     if @trapped {
       // Move is forbidden
-      println("You can't move because you're trapped.");
+      println('You can't move because you're trapped.');
     }
 
     // Check if we are going outside of the map
     elsif x < 0 || x > @cells[0].length - 1 ||
           y < 0 || y > @cells.length    - 1 {
-      println!("Cannot move outside the map.");
+      println!('Cannot move outside the map.');
     }
 
     // Check if the cell we are going to is a rock
     elsif @cells[y][x] is _self.ROCK {
-      println!("There's a rock on your way.");
+      println!('There's a rock on your way.');
     }
 
     // Else, move the player
@@ -2816,7 +2816,7 @@ class Map {
 
       // If we fell in a trap, game over!
       if @cells[y][x] is _self.TRAP {
-        println!("You've been trapped!");
+        println!('You've been trapped!');
         @trapped = true;
       }
     }
@@ -2862,7 +2862,7 @@ class IntArray {
   private data: List<int>;
 
   public func %free () {
-    println!("I will be freed.");
+    println!('I will be freed.');
   }
 
   public func push (value: int) => @data.push(value);
@@ -2873,7 +2873,7 @@ let list = new IntArray();
 list.push(2);
 list.push(4);
 list.push(3);
-free list; // Prints: "I will be freed."
+free list; // Prints: 'I will be freed.'
 
 list.push(8); // ERROR (resource freed)
 ```
@@ -2900,8 +2900,8 @@ This works fine, but let's now try the following code:
 val array = [ 2, 7, 8 ];
 val squares = squareList(array);
 
-println!(squares[1]); // Prints: "49"
-println!(array[1]); // Prints: "49"
+println!(squares[1]); // Prints: '49'
+println!(array[1]); // Prints: '49'
 ```
 
 Did you understand what just happened? When we modified the values of the array in our `squareList` function, this also affected the original array. So the original and the result are exactly the same ones.
@@ -2913,18 +2913,18 @@ This behaviour is due to the fact SilverNight doesn't clone objects each time, b
 val jack = {
   hp: 100,
   atk: 20,
-  name: "Jack"
+  name: 'Jack'
 };
 
 // John is a hero, just like Jack is
 val john = jack;
 
 // Set John's name
-john.name = "John";
+john.name = 'John';
 
 // Surprise!
-println!(john.name); // Prints: "John"
-println!(jack.name); // Prints: "John"
+println!(john.name); // Prints: 'John'
+println!(jack.name); // Prints: 'John'
 ```
 
 The same thing applies for any object, so for any non-primitive values (anything that is not a `void`, a boolean, a number or a string). This is a big problem, but which has a very simple answer: cloning.
@@ -2935,8 +2935,8 @@ To solve our first problem, we simply have to do this:
 val array = [ 2, 7, 8 ];
 val squares = squareList(clone!(array));
 
-println!(squares[1]); // Prints: "49"
-println!(array[1]); // Prints: "7"
+println!(squares[1]); // Prints: '49'
+println!(array[1]); // Prints: '7'
 ```
 
 The `clone!` flex we use here simply creates a new array with the same values than the previous one. So, our initial array isn't affected.
@@ -3090,7 +3090,7 @@ Just like cloning, there is a lazy overload for serialization. It consists in a 
 
 ```sn
   // ...
-  public pln %lazy_serial_fields = ( "name", "price" );
+  public pln %lazy_serial_fields = ( 'name', 'price' );
   // ...
 ```
 
@@ -3109,7 +3109,7 @@ class Translator {
   public static func translate (text: string, lang: string) : string {
     // Do some translation stuff here
     // For the example we will return a constant string
-    return "Bonjour";
+    return 'Bonjour';
   }
 
   // Make the class callable
@@ -3117,7 +3117,7 @@ class Translator {
     @translate(text, lang);
 }
 
-println!(Translator("Hello", "fr")); // Prints: "Bonjour"
+println!(Translator('Hello', 'fr')); // Prints: 'Bonjour'
 ```
 
 Here, the `%call` overload made the class callable. We could implement it for instances:
@@ -3130,7 +3130,7 @@ class Calculator {
 }
 
 val calc = new Calculator();
-println!(calc(2, 5)); // Prints: "7"
+println!(calc(2, 5)); // Prints: '7'
 ```
 
 Remember: making the **class** callable as a function requires a static function, while it's not to make the **instances** callable as functions. We can also implement both the overloads in the same time, of course.
@@ -3174,7 +3174,7 @@ let account1 = new BankAccount(1000);
 let account2 = new BankAccount(2000);
 
 // Add them and print the result
-println!(account1 + account2); // Prints: "3000"
+println!(account1 + account2); // Prints: '3000'
 ```
 
 That's as simple as that. We could also implement a way to handle addition between bank accounts and numbers:
@@ -3188,7 +3188,7 @@ class BankAccount {
   // ...
 }
 
-println!(account1 + 20); // Prints: "1020"
+println!(account1 + 20); // Prints: '1020'
 ```
 
 Note that implemeting `%times` will automatically implement `%pow` as a succession of multiplications.
@@ -3210,8 +3210,8 @@ class BankAccount {
   }
 }
 
-println!(account1 == account2); // Prints: "false"
-println!(account1 == new BankAccount(1000)); // Prints: "true"
+println!(account1 == account2); // Prints: 'false'
+println!(account1 == new BankAccount(1000)); // Prints: 'true'
 ```
 
 A specificy with logical operators is they are reversable: if you implement `%equal`, this will also implement `%inequal` as its opposite. Here is the list:
@@ -3417,8 +3417,8 @@ Then, it implements a new method called `fireball()` to throw a fireball on the 
 Now we've done this, let's try our classes:
 
 ```sn
-let hegor = new Warrior("Hegor", 100, 30);
-let jack  = new Wizard("Jack", 120, 10, 35);
+let hegor = new Warrior('Hegor', 100, 30);
+let jack  = new Wizard('Jack', 120, 10, 35);
 
 hegor.fight(jack);
 println!('------------------');
@@ -3451,18 +3451,18 @@ There are several keywords to access other classes from a given one. These are t
 * `_self` refers to the class `self` is an instance of ;
 * `_super` refers to the class `super` is an instance of ;
 
-Besides, `static<obj>` allows us to get a class in a static context from any of its instances. This means that  `static<"Hello">` will return the `string` class, so we can access its static properties (like `string.NIL` which is the NIL value for this class, an empty string).
+Besides, `static<obj>` allows us to get a class in a static context from any of its instances. This means that  `static<'Hello'>` will return the `string` class, so we can access its static properties (like `string.NIL` which is the NIL value for this class, an empty string).
 
 Let's take a short example:
 
 ```sn
 open class Mother {
   public func helloFromMother () => this.hello();
-  public func hello () => println!("I am the mother class.");
+  public func hello () => println!('I am the mother class.');
 }
 
 class Child inherits Mother {
-  public func hello () => println!("I am the child class.");
+  public func hello () => println!('I am the child class.');
 }
 ```
 
@@ -3474,25 +3474,25 @@ But there is an important rule about `this`: if we write the following code:
 
 ```sn
 val child = new Child();
-child.helloFromMother(); // Prints: "I am the child class."
+child.helloFromMother(); // Prints: 'I am the child class.'
 ```
 
 We can use the `helloFromMother()` method because `Child` inherits it from `Mother`. This method runs the `hello()` method of the _instance_'s class, not the current one. So it calls the `hello()` method from `Child` instead of `Mother`. To call the method of the _current_ class, we should have used `self.hello()` instead:
 
-Note that these keywords can be used both in a dynamic and static way: we could write `this.staticMethod()` as well as `self.sayHello()`, which would have printed `"I am the mother class"`.
+Note that these keywords can be used both in a dynamic and static way: we could write `this.staticMethod()` as well as `self.sayHello()`, which would have printed `'I am the mother class'`.
 
 ```sn
 open class Mother {
   public func helloFromMother () => self.hello();
-  public func hello () => println!("I am the mother class.");
+  public func hello () => println!('I am the mother class.');
 }
 
 class Child inherits Mother {
-  public func hello () => println!("I am the child class.");
+  public func hello () => println!('I am the child class.');
 }
 
 val child = new Child();
-child.helloFromMother(); // Prints: "I am the mother class."
+child.helloFromMother(); // Prints: 'I am the mother class.'
 ```
 
 #### Calling overloads
@@ -3542,9 +3542,9 @@ class C inherits A {
 }
 
 // Doesn't inherit mother's constructors
-let b = new B("Hello !"); // ERROR (no such constructor)
+let b = new B('Hello !'); // ERROR (no such constructor)
 // Inherit them
-let c = new C("Hello !"); // Prints: "Hello !"
+let c = new C('Hello !'); // Prints: 'Hello !'
 ```
 
 #### Re-implementing the constructor
@@ -3579,7 +3579,7 @@ class Mother {
   protected func %construct () {}
 
   public func sayHello () {
-    println!("Hello!");
+    println!('Hello!');
   }
 }
 
@@ -3593,7 +3593,7 @@ new Mother(); // ERROR (no public constructor available)
 Child.getMotherObj(); // Works fine
 
 // Use the instance
-Child.getMotherObj().sayHello(); // Prints: "Hello!"
+Child.getMotherObj().sayHello(); // Prints: 'Hello!'
 ```
 
 ### Abstract methods
@@ -3611,7 +3611,7 @@ virtual class Hello {
 
 class World {
   abstract public func sayHello() : string {
-    println!("Hello world!");
+    println!('Hello world!');
   }
 }
 ```
@@ -3629,13 +3629,13 @@ Final methods are simply methods that can't be overwritten in children classes. 
 ```sn
 open class Mother {
   final public func sayHello () {
-    println!("Hello from the mother class!!");
+    println!('Hello from the mother class!!');
   }
 }
 
 class Child inherits Mother {
   public func sayHello() { // ERROR (overwritting a final method)
-    println!("Hello from the child class!");
+    println!('Hello from the child class!');
   }
 }
 ```
@@ -3662,13 +3662,13 @@ The keyword for this state is: `static`.
 
 #### Unique classes
 
-Unique classes are "self-instanciated" classes. Here is an example:
+Unique classes are 'self-instanciated' classes. Here is an example:
 
 ```sn
 unique class tr {
   public func translate (text: str, lang: str) : string {
     // Do some stuff here
-    return "Bonjour";
+    return 'Bonjour';
   }
 
   public func %call (text: str, lang: str) : string =>
@@ -3677,10 +3677,10 @@ unique class tr {
 
 // Let's try it!
 val instance = new Translation(); // ERROR
-Translation("Hello", "fr"); // ERROR
+Translation('Hello', 'fr'); // ERROR
 
-tr.translate("Hello", "fr"); // Returns: "Bonjour"
-tr("Hello", "tr"); // Returns: "Bonjour"
+tr.translate('Hello', 'fr'); // Returns: 'Bonjour'
+tr('Hello', 'tr'); // Returns: 'Bonjour'
 ```
 
 As you can see, the `Translation` class does not even exist, in reality. There is only the `tr` instance.
@@ -3714,19 +3714,19 @@ Here is an example:
 
 ```sn
 open class Vehicle {
-  public func accelerate () => println!("Vroom!");
+  public func accelerate () => println!('Vroom!');
 }
 
 class Motorcycle inherits Vehicle {
-  public func accelerate () => println!("vroom vroom!");
+  public func accelerate () => println!('vroom vroom!');
 }
 
 func acceleration (vehicle: Vehicle) {
   vehicle.accelerate();
 }
 
-acceleration(new Vehicle()); // Prints: "Vroom!"
-acceleration(new Motorcycle()); // Prints: "Vroom vroom!"
+acceleration(new Vehicle()); // Prints: 'Vroom!'
+acceleration(new Motorcycle()); // Prints: 'Vroom vroom!'
 ```
 
 As you can see, if you call an overwritten method from the mother type, it will call the child class' method instead (that's why `.accelerate()` doesn't produce the same effect for both `Vehicle` and `Motorcycle` even though they are both considered as a `Vehicle`).
@@ -3735,12 +3735,12 @@ Be aware though: when using a mother type, all members specific to its children 
 
 ```sn
 open class Vehicle {
-  public func accelerate () => println!("Vroom!");
+  public func accelerate () => println!('Vroom!');
 }
 
 class Motorcycle inherits Vehicle {
-  public func accelerate () => println!("vroom vroom!");
-  public func stunt () => println!("Wow!");
+  public func accelerate () => println!('vroom vroom!');
+  public func stunt () => println!('Wow!');
 }
 
 val motorcycle: Vehicle = new Motorcycle();
@@ -3761,7 +3761,7 @@ let car        : Vehicle    = new Vehicle();
 let motorcycle1: Vehicle    = new Motorcycle();
 let motorcycle2: Motorcycle = new Motorcycle();
 
-println!(precise(car));         // Prints: "Vroom!"
+println!(precise(car));         // Prints: 'Vroom!'
 println!(precise(motorcycle1)); // ERROR
 println!(precise(motorcycle2)); // ERROR
 ```
@@ -3856,7 +3856,7 @@ let num32 = 2;
 let num16 = <i16> num32;
 ```
 
-You now know how this "magic" typecasting work between integers.
+You now know how this 'magic' typecasting work between integers.
 
 #### Numbers implicit upcast
 
@@ -3901,7 +3901,7 @@ Here is an example:
 ```sn
 class HelloWorld {
   public func %to<string> () : string {
-    return "Hello world!";
+    return 'Hello world!';
   }
 }
 ```
@@ -3915,7 +3915,7 @@ let helloWorld = new HelloWorld();
 // Typecast it
 let str = <string> helloWorld;
 
-println!(str); // Prints: "Hello world!"
+println!(str); // Prints: 'Hello world!'
 ```
 
 ### Implicit typecasting
@@ -3926,7 +3926,7 @@ You may wonder why this code builds correctly:
 let num: u8 = 2;
 ```
 
-Indeed, in this code `2` is considered as an `int` (the "default" integer type), which is an alias for `i32`. But, as we saw, assigning an `i32` to an `u8` entity should be impossible as we should perform an explicit to go from `i32` to `i8` and then an explicit typecast to go from `i8` to `u8`. This should result in the following code:
+Indeed, in this code `2` is considered as an `int` (the 'default' integer type), which is an alias for `i32`. But, as we saw, assigning an `i32` to an `u8` entity should be impossible as we should perform an explicit to go from `i32` to `i8` and then an explicit typecast to go from `i8` to `u8`. This should result in the following code:
 
 ```sn
 // Downcast on signed integer + typecast
@@ -4069,7 +4069,7 @@ But, because it is empty, we can't use **any** member of the values we get from 
 
 ### Long safe typecasting
 
-_"Long"_ safe typecasting is a method that uses a typecast path to convert a value from a type to another. For example, let's say we have the following class:
+_'Long'_ safe typecasting is a method that uses a typecast path to convert a value from a type to another. For example, let's say we have the following class:
 
 ```sn
 class Money {
@@ -4094,7 +4094,7 @@ let money = new Money(1000);
 And now we want to convert it to a string. The simpliest way we saw to achieve this is to use a cast twice:
 
 ```sn
-let str = <string> <uint> money; // "1000"
+let str = <string> <uint> money; // '1000'
 ```
 
 We first convert the instance to an `uint`, as it's capable of, and then we turn the `uint` to a `string`, as it's capable of too. But, this syntax is a bit heavy, so we can instead perform a _long safe typecasting_. It basically consists in doing a unique cast. But, for that, we must define a _typecasting path_. In an interface, it has the following syntax:
@@ -4116,7 +4116,7 @@ Now, we can perform our long typecasting `<string>` on any `LongStringifyable` v
 let money: LongStringifyable = new Money(1000);
 
 // Long-typecast it
-println!(<string> money); // Prints: "1000"
+println!(<string> money); // Prints: '1000'
 ```
 
 Note that we couldn't perform this typecast directly on a `Money` object. If we dealt with such as value, we would have to typecast it first:
@@ -4131,7 +4131,7 @@ let strable = <LongStringifyable> money;
 let strable: LongStringifyable = money;
 
 // Long-typecast
-println!(<string> strable); // Prints: "1000"
+println!(<string> strable); // Prints: '1000'
 ```
 
 A concrete example of using this is when we want to convert any class that can be converted to an integer to a string. This is how the `Stringifyable` interface works. Here is its declaration:
@@ -4154,7 +4154,7 @@ The solution is to create an _extension_ of the class, which goes like this:
 
 ```sn
 extension<string> func reverse () : string {
-  let reversed = "";
+  let reversed = '';
 
   for i = this.length - 1; i >= 0; i -- {
     reversed += this.charAt(i);
@@ -4163,7 +4163,7 @@ extension<string> func reverse () : string {
   return reversed;
 }
 
-println!("!dlrow olleH".reverse()); // Prints: "Hello world!"
+println!('!dlrow olleH'.reverse()); // Prints: 'Hello world!'
 ```
 
 Note that extensions are available from the original class as well as from its children. Also, they are forbidden on dictionary classes.
@@ -4172,12 +4172,12 @@ Note that extensions are available from the original class as well as from its c
 
 Traits act like interfaces, expected they need to write the body of the function they declare.
 
-A good example of traits is when you want to inherit from multiple classes. This is absolutely impossible using any way we've seen so far, but there is a "cheat" that consists in implementing multiple traits. Here is how it goes:
+A good example of traits is when you want to inherit from multiple classes. This is absolutely impossible using any way we've seen so far, but there is a 'cheat' that consists in implementing multiple traits. Here is how it goes:
 
 ```sn
 trait Vehicle {
   val speed: f32;
-  func accelerate () : string => "Vroom !";
+  func accelerate () : string => 'Vroom !';
 }
 
 trait Wheeled {
@@ -4195,7 +4195,7 @@ We can now try it:
 // Sub-typing works fine
 let car: Vehicle = new Car();
 // Try a function
-printlnl!(car.accelerate()); // Prints: "Vroom!"
+printlnl!(car.accelerate()); // Prints: 'Vroom!'
 ```
 
 As you can see, there is no need to re-declare the members in the function. That's the second difference: while interfaces provides a model that needs to be implemented by a class, traits is more to consider like a small library that comes with methods and attributes.
@@ -4229,7 +4229,7 @@ struct ValueWithID<T> {
 
 val test = ValueWithID<string> {
   id: 1,
-  value: "Hello !"
+  value: 'Hello !'
 };
 ```
 
@@ -4238,7 +4238,7 @@ There's also a feature in SilverNight called _Inferred Templating_, which acts l
 ```sn
 val test = ValueWithID {
   id: 1,
-  value: "Hello !"
+  value: 'Hello !'
 };
 ```
 
@@ -4276,15 +4276,15 @@ class KindOfDict<K, V> {
 }
 ```
 
-Here, we use two templates for our class: `K`, which refers to the keys, and `V` for the values. We can know make a new "dictionary" like this:
+Here, we use two templates for our class: `K`, which refers to the keys, and `V` for the values. We can know make a new 'dictionary' like this:
 
 ```sn
 val myDict: KindOfDict<string, int[3]>;
 
-myDict.set("Key1", [ 2, 5, 7 ]);
-myDict.set("Key2", [ 4, 8, 3 ]);
+myDict.set('Key1', [ 2, 5, 7 ]);
+myDict.set('Key2', [ 4, 8, 3 ]);
 
-println!(myDict.get("Key1")[0]); // Prints: "2"
+println!(myDict.get('Key1')[0]); // Prints: '2'
 ```
 
 As you can see, templates can even accept other templated classes.
@@ -4368,12 +4368,12 @@ struct Data<T implements Stringifyable> {
 
 // Make a class that works with the structure
 class Working {
-  public func %to<string> () => "It's working!";
+  public func %to<string> () => 'It's working!';
 }
 
 // Make a class that doesn't work with the structure
 class NotWorking {
-  public func %construct () : _self => println!("It's not working!");
+  public func %construct () : _self => println!('It's not working!');
 }
 ```
 
@@ -4385,7 +4385,7 @@ val workingTest = Data<Working> {
   value: new Working();
 };
 
-println!(workingTest.stringify()); // Prints: "It's working!"
+println!(workingTest.stringify()); // Prints: 'It's working!'
 
 // This doesn't work
 val notWorkingTest = Data<NotWorking> {
@@ -4447,7 +4447,7 @@ For information, the `T`, `X`, `Y`, `Z`, `K` and `V` names are reserved to templ
 Most of the type-checking operators can also be applied on values. Showcase:
 
 ```sn
-let str = "Hello";
+let str = 'Hello';
 
 str instanceof string; // true
 str instanceof Primitive; // true
@@ -4458,7 +4458,7 @@ str uses SomeTrait;
 The short `~` operator also works there:
 
 ```sn
-let str = "Hello";
+let str = 'Hello';
 
 str ~ string; // true
 str ~ Primitive; // true
@@ -4505,7 +4505,7 @@ Templates can be used in lambdas using the following syntax:
 ```sn
 let arrayLength = <T> (value: T[]) : void => value.length;
 
-arrayLength([ 3, 5 ]); // Prints: "2"
+arrayLength([ 3, 5 ]); // Prints: '2'
 ```
 
 ### Templates are instances
@@ -4541,7 +4541,7 @@ val list1: Array<int, 8>;
 
 Also, always remember templates are _constants_: they cannot be modified in any case.
 
-**NOTE :** The fact templates can be of any type is the main reason why they aren't called "generics", unlike many programming languages.
+**NOTE :** The fact templates can be of any type is the main reason why they aren't called 'generics', unlike many programming languages.
 
 ### Segments
 
@@ -4570,10 +4570,10 @@ It's possible to use templates on overloads, but only if these templates are par
 class BankAccount {
   // ...
 
-  // Doesn't work because "T" cannot be guessed
+  // Doesn't work because 'T' cannot be guessed
   public func %plus<T> (left: string, right: int) : int[];
 
-  // Doesn't work because "T" cannot be guessed
+  // Doesn't work because 'T' cannot be guessed
   public func %plus<T> (left: string, right: int) : T;
 
   // Works fine
@@ -4729,7 +4729,7 @@ Now, let's see how to use iterators in loops to explore dictionaries.
 
 As we saw before, dictionaries associate a key to a value. So, getting any index from the dictionary, like `mydict.someIndex` will return a value. But, what about public members?
 
-For example, the `Map` class implements a `.fill()` function, so we can do `mydict.fill("hello")`. But then, `mydict.fill` doesn't return a value of the dictionary, right?
+For example, the `Map` class implements a `.fill()` function, so we can do `mydict.fill('hello')`. But then, `mydict.fill` doesn't return a value of the dictionary, right?
 
 This problem hopefully has a solution if we want to access any index. In order to be assured to get the value corresponding to the key we have, we simply have to do: `mydict[index]`, where `index` is an instance of `K` (the dictionary's key type). Getting an index between brackets means we're explicitly trying to get an index, not a public member, while `mydict.index` means we are first trying to get a public member if it exists, else to get the value associated to this key. Showcase:
 
@@ -4741,7 +4741,7 @@ let data = { # fill: 2 };
 println!(data.fill); // ERROR (argument is not Stringifyable)
 
 // Dynamic index notation
-println!(data['fill']); // Prints: "2"
+println!(data['fill']); // Prints: '2'
 ```
 
 #### Using loops to iterate dictionaries
@@ -4811,19 +4811,19 @@ Data in dictionaries can be manipulated several ways. The first one is using the
 let personsAge: { # me: 18 };
 
 // Get a value from a key
-personsAge.%get("me"); // Returns: 12
+personsAge.%get('me'); // Returns: 12
 
 // Associate a value to a key
-personsAge.%set("john", 24);
+personsAge.%set('john', 24);
 
 // Get the size of the dictionary
 personsAge.%size(); // Returns: 2
 
 // Delete a key(and the value it refers to)
-personsAge.%unset("john");
+personsAge.%unset('john');
 
 // Check if a key is known
-personsAge.%has("john"); // Returns: false
+personsAge.%has('john'); // Returns: false
 
 // Get the array of all keys
 personsAge.%keys(); // Returns an Iterator<K>
@@ -4837,21 +4837,21 @@ The other is to use native flexs, keywords and syntax sugars:
 ```sn
 // Get a value from a key
 personsAge.me;
-personsAge["me"];
+personsAge['me'];
 
 // Associate a value to a key
 personsAge.john = 24;
-personsAge["john"] = 24;
+personsAge['john'] = 24;
 
 // Get the size of the dictionary
 size!(personsAge); // Returns: 2
 
 // Delete a key (and the value it refers to)
 delete personsAge.john;
-delete personsAge["john"];
+delete personsAge['john'];
 
 // Check if a key is known
-"john" in personsAge; // Equal to 'false'
+'john' in personsAge; // Equal to 'false'
 
 // Get the array of all keys
 keys!(personsAge); // Iterator<K>
@@ -4983,8 +4983,8 @@ point = getNilPoints([]); // Works fine
 Now we've seen all this, let's try our function:
 
 ```sn
-val point1 = getNilPoints([ { name: "Test point", x: 0, y: 0 } ]);
-println!(point1.name); // Prints: "Test point"
+val point1 = getNilPoints([ { name: 'Test point', x: 0, y: 0 } ]);
+println!(point1.name); // Prints: 'Test point'
 
 val point2 = getNilPoints([]);
 println!(point2.name); // ERROR
@@ -4996,7 +4996,7 @@ The second call to `getNilPoints()` makes our program crash. Why? Simply because
 val point = getNilPoints([]);
 
 if point is null {
-  println!("No point found.");
+  println!('No point found.');
 } else {
   println!(`A point was found: ${point.name}`);
 }
@@ -5036,7 +5036,7 @@ val someData: Data? = null;
 val dataHero = someData?.hero; // dataHero == null
 
 // Prints the hero's name
-println!(dataHero?.name); // Prints: "" (stringified 'null' value)
+println!(dataHero?.name); // Prints: '' (stringified 'null' value)
 ```
 
 What happened here? Well, doing `data?.hero` returned `null` because `data` was null. Then, doing `dataHero?.name` also returned a `void` because `dataHero` was null. So the final expression between the `println!`'s parenthesis is a `string?` which is equal to `null`.
@@ -5087,8 +5087,8 @@ func sayHello (name: string, age?: int) {
   println!(`Hello ${name}` + (age is null ? '!' : `, you are ${age} year-old.`));
 }
 
-println!("Jack"); // Prints: "Hello Jack!"
-println!("John", 28); // Prints: "Hello John, you are 28 year-old."
+println!('Jack'); // Prints: 'Hello Jack!'
+println!('John', 28); // Prints: 'Hello John, you are 28 year-old.'
 ```
 
 Note that the `?` symbol has been put after the argument's name, and not after its type. If you had written `age: int?`, the argument wouldn't have been optional, but it would have accepted the `null` value.
@@ -5105,10 +5105,10 @@ struct Hero {
   age?: int
 }
 
-val jack = Hero { name: "Jack" };
+val jack = Hero { name: 'Jack' };
 
-println!(jack.name is "Jack"); // Prints: "true"
-println!(jack.age is null) // Prints: "true"
+println!(jack.name is 'Jack'); // Prints: 'true'
+println!(jack.age is null) // Prints: 'true'
 ```
 
 ### The null-checker operator
@@ -5119,8 +5119,8 @@ Another useful operator when dealing with nullable types is the `??` operator. H
 val a: int? = 0;
 val b: int? = null;
 
-println!(a || 1); // Prints: "1"
-println!(b || 1); // Prints: "1"
+println!(a || 1); // Prints: '1'
+println!(b || 1); // Prints: '1'
 ```
 
 But, as you can see, it even uses 1 when the entity is equal to 0, because, when converted to a boolean, 0 is equal to `false`, so the second member is used. The same applies for `null`, which is converted to `false` too.
@@ -5131,8 +5131,8 @@ So, the way to solve this problem without using a heavy ternary condition is to 
 val a: int? = 0;
 val b: int? = null;
 
-println!(a ?? 1); // Prints: "0"
-println!(b ?? 1); // Prints: "1"
+println!(a ?? 1); // Prints: '0'
+println!(b ?? 1); // Prints: '1'
 ```
 
 Or more technically:
@@ -5159,7 +5159,7 @@ Here is the program we want to make:
 
 The problem is: if we simply declare the array with `let` or `val`, we will create a `Vehicle[1000]` instance that will be filled with vehicles later. So this will generate 1000 instances of the `Vehicle` class at the same time the array is declared, and then we will make again 1000 instances in our `if` block. Performances are so divided by 2.
 
-In order to avoid this problem, we can declare the array using an optional type. When the resource is declared, only an array instance is created, and we will only instanciate the vehicles in our conditional block, so "only" 1000 instances of `Vehicle` will be created, instead of 2000 with the previous method - this near to doubles the performances.
+In order to avoid this problem, we can declare the array using an optional type. When the resource is declared, only an array instance is created, and we will only instanciate the vehicles in our conditional block, so 'only' 1000 instances of `Vehicle` will be created, instead of 2000 with the previous method - this near to doubles the performances.
 
 Here is how it works:
 
@@ -5198,7 +5198,7 @@ class ComplexClass {
   public func %construct (@name: string) {}
 }
 
-let cmp = new ComplexClass("John");
+let cmp = new ComplexClass('John');
 let var = new Container<ComplexClass>(cmp); // ERROR
 ```
 
@@ -5219,7 +5219,7 @@ class ComplexClass {
   public func %construct (@name: string) {}
 }
 
-let cmp = new ComplexClass("John");
+let cmp = new ComplexClass('John');
 let var = new Container<ComplexClass>(cmp); // Works fine
 ```
 
@@ -5243,7 +5243,7 @@ class ComplexClass {
   public func %construct (@name: string) {}
 }
 
-let cmp = new ComplexClass("John");
+let cmp = new ComplexClass('John');
 let var = new Container<ComplexClass>(cmp); // Works fine
 ```
 
@@ -5258,7 +5258,7 @@ Here is a chapter to understand how errors are thrown, work and can be handled t
 Throwing an error consists in throwing an _instance_ of an error class, which is simply a child class of the native `Error` class, or an instance of `Error` itself. After instanciating it, the error is thrown using the `throw` keyword, like this:
 
 ```sn
-throw new Error("Something bad happened.");
+throw new Error('Something bad happened.');
 ```
 
 The `throw` keyword indicates we want to throw as an error the value put on its right. So the instance we use here is the error we want to throw. If we write the code above in a program, it will crash with the error message we have specified.
@@ -5293,7 +5293,7 @@ func b () {
 }
 
 func c () throws Error {
-  throw new Error("Test");
+  throw new Error('Test');
 }
 
 a();
@@ -5306,9 +5306,9 @@ If the function may throw several types of errors, we indicate them all separate
 ```sn
 func c () : throws A, B {
   if rand!<bool> {
-    throw new A("Hello !");
+    throw new A('Hello !');
   } else {
-    throw new B("Goodbye !");
+    throw new B('Goodbye !');
   }
 }
 ```
@@ -5320,31 +5320,31 @@ If we run this script from a file named `src.sn`, `traceback`'s content will be:
 ```sn
 [
   ErrorStep {
-    file: "src.sn",
+    file: 'src.sn',
     line: 3,
     column: 20,
-    function: "global.c"
+    function: 'global.c'
   },
 
   ErrorStep {
-    file: "src.sn",
+    file: 'src.sn',
     line: 2,
     column: 20,
-    function: "global.b"
+    function: 'global.b'
   },
 
   ErrorStep {
-    file: "src.sn",
+    file: 'src.sn',
     line: 1,
     column: 20,
-    function: "global.a"
+    function: 'global.a'
   },
 
   ErrorStep {
-    file: "src.sn",
+    file: 'src.sn',
     line: 5,
     column: 1,
-    function: "global.main"
+    function: 'global.main'
   }
 ]
 ```
@@ -5375,7 +5375,7 @@ To catch errors, we use a couple of blocks named `try` and `catch`. In the first
 try {
   divide(2, 0);
 } catch (e: Error) {
-  println!("Division failed");
+  println!('Division failed');
 }
 ```
 
@@ -5392,16 +5392,16 @@ This block matters because we can for example clear the `try`'s data after it is
 ```sn
 func test () {
   try {
-    println!("Hello from the try block.");
+    println!('Hello from the try block.');
     someInvalidCall();
   }
 
   catch (e: Error) {
-    println!("Hello from the catch block.");
+    println!('Hello from the catch block.');
     return ;
   }
 
-  println!("Hello from the end of the function.");
+  println!('Hello from the end of the function.');
 }
 ```
 
@@ -5410,17 +5410,17 @@ If we run the code above and call the `test` function, the last `println!` won't
 ```sn
 func test () {
   try {
-    println!("Hello from the try block.");
+    println!('Hello from the try block.');
     someInvalidCall();
   }
 
   catch (e: Error) {
-    println!("Hello from the catch block.");
+    println!('Hello from the catch block.');
     return ;
   }
 
   finally {
-    println!("Hello from the finally block.");
+    println!('Hello from the finally block.');
   }
 }
 ```
@@ -5456,7 +5456,7 @@ try
   divide(2, 0);
 
 catch (e: OutOfMemoryError)
-  println!("Program is out of memory.");
+  println!('Program is out of memory.');
 ```
 
 We can also chain multiple `catch` blocks, to catch distinctly several types of error.
@@ -5466,10 +5466,10 @@ try
   divide(2, 0);
 
 catch (e: OutOfMemoryError)
-  println!("Program is out of memory.");
+  println!('Program is out of memory.');
 
 catch (e: ArithmeticError)
-  println!("Division failed because we can't divide by zero.");
+  println!('Division failed because we can't divide by zero.');
 ```
 
 Thanks to sub-typing (again), we can also use a final `catch` block that will catch absolutely any type of error:
@@ -5479,13 +5479,13 @@ try
   divide(2, 0);
 
 catch (e: OutOfMemoryError)
-  println!("Program is out of memory.");
+  println!('Program is out of memory.');
 
 catch (e: ArithmeticError)
-  println!("Division failed because we can't divide by zero.");
+  println!('Division failed because we can't divide by zero.');
 
 catch (e: Error) {
-  println!("An unknown error occured. Here is its message:");
+  println!('An unknown error occured. Here is its message:');
   println!(e.message);
 }
 ```
@@ -5497,7 +5497,7 @@ try
   divide(2, 0);
 
 catch (e) {
-  println!("Some error occured. Here is its message:");
+  println!('Some error occured. Here is its message:');
   println!(e.message);
 }
 ```
@@ -5509,7 +5509,7 @@ try
   divide(2, 0);
 
 catch
-  println!("Some error occured.");
+  println!('Some error occured.');
 ```
 
 ### Making custom errors
@@ -5519,7 +5519,7 @@ Throwing custom errors simply consists in throwing an instance of a child class 
 ```sn
 func divide (left: int, right: int) : f32 throws CustomError {
   if right is 0 {
-    throw new CustomError("Cannot divide by zero.");
+    throw new CustomError('Cannot divide by zero.');
   }
 
   return f32(left) / right;
@@ -5537,7 +5537,7 @@ class CustomError inherits Error {
 
   // A sample function
   public func why () : string =>
-    "This is a custom error class";
+    'This is a custom error class';
 }
 ```
 
@@ -5548,7 +5548,7 @@ try
   divide(5, 0);
 
 catch (e: CustomError)
-  println!(e.why()); // Prints: "This is a custom error class"
+  println!(e.why()); // Prints: 'This is a custom error class'
 ```
 
 Here, `CustomError` can be caught apart from other errors like `OutOfMemoryError`. Still, it inherits from `Error`, so catching with `catch (e: Error) {` will catch this error too.
@@ -5638,14 +5638,14 @@ func changeProperty (obj: Hero) {
 // Make a function
 func assignSomethingNew (obj: Hero) {
   obj = {
-    name: "John",
+    name: 'John',
     attack: 50
   };
 }
 
 // Create a 'Hero' object
 val hero = {
-  name: "Jack",
+  name: 'Jack',
   attack: 10
 };
 
@@ -5654,7 +5654,7 @@ changeProperty(hero);
 assignSomethingNew(hero);
 
 // Show the result
-println!(hero.name); // Prints: "Jack"
+println!(hero.name); // Prints: 'Jack'
 println!(hero.attack); // 20
 ```
 
@@ -5669,13 +5669,13 @@ But what if we wanted to make the whole `hero` object change within a function? 
 Note that, as tuples are primitives, their respective content is fully copied when being assigned to another entity for example:
 
 ```sn
-let tupleA = ( "A" );
+let tupleA = ( 'A' );
 let tupleB = tupleA;
 
-tupleB[0] = "B";
+tupleB[0] = 'B';
 
-println!(tupleA[0]); // Prints: "A"
-println!(tupleB[0]); // Prints: "B"
+println!(tupleA[0]); // Prints: 'A'
+println!(tupleB[0]); // Prints: 'B'
 ```
 
 This is why tuples can be used in plain constants, at the opposite of objects.
@@ -5689,10 +5689,10 @@ While entities simply share a OID referring to a specific object in the memory, 
 If we take the following entity:
 
 ```sn
-let person = { name: "Jack" };
+let person = { name: 'Jack' };
 ```
 
-The OID refers to `{ name: "Jack" }`, while the EID refers to `person`. That's the difference.
+The OID refers to `{ name: 'Jack' }`, while the EID refers to `person`. That's the difference.
 
 By default, each entity has its own EID. References are based on it: they provide a way to create a value that points to the EID of an existing entity. To create one, we use the `&` symbol followed by the entity's name, which returns a _reference_ pointing to the provided entity.
 
@@ -5700,7 +5700,7 @@ To create a reference, we first need an entity. We won't use inferred typing to 
 
 ```sn
 // Declare a sample entity
-let str: string = "Hello !";
+let str: string = 'Hello !';
 ```
 
 Then, we can make a reference from it using `&str`, and a pointer by assigning it to another entity:
@@ -5723,7 +5723,7 @@ We can now print the value of `str` by only using the reference stored in `ptr` 
 
 ```sn
 // Display the pointer's value
-println!(*ptr); // Prints: "Hello !"
+println!(*ptr); // Prints: 'Hello !'
 ```
 
 Writing `*ptr` indicates we are getting the entity pointed by the reference stored in `ptr`, which is `str` here.
@@ -5732,36 +5732,36 @@ If we change `str`'s value:
 
 ```sn
 // Change the referred's value
-str = "Goodbye !";
+str = 'Goodbye !';
 ```
 
 The value of `*ptr`, as it points on `str`, will be affected too:
 
 ```sn
 // The changes are reflected on the pointer
-println!(*ptr); // Prints: "Goodbye !"
+println!(*ptr); // Prints: 'Goodbye !'
 ```
 
 Note that, because our reference is constant, we can't write `str` by using `*ptr`:
 
 ```sn
-*ptr = "Hello !"; // ERROR (constant reference is not writable)
+*ptr = 'Hello !'; // ERROR (constant reference is not writable)
 ```
 
 But sometimes, we simply want to get a pointer we can write to change the referred's value. For that, we use the `&mut` symbol, still followed by the referred's name:
 
 ```sn
 // Declare a variable
-let hero: string = "Jack";
+let hero: string = 'Jack';
 
 // Create a *mutable* pointer to it
 let ptr: *mut string = &mut hero;
 
 // Assign a new value to the pointer
-*ptr = "John";
+*ptr = 'John';
 
 // The changes are reflected on the referred
-println!(hero); // Prints: "John"
+println!(hero); // Prints: 'John'
 ```
 
 In this example, because the reference is mutable, we can write the referred's value, still by using the `*` symbol.
@@ -5770,14 +5770,14 @@ Note that references work on entities, which includes an object's property or a 
 
 ```sn
 let hero = {
-  name: "Jack",
+  name: 'Jack',
   attack: 20
 };
 
 let ptr: *mut = &mut (hero.name);
-*ptr = "John";
+*ptr = 'John';
 
-println!(hero.name); // Prints: "John"
+println!(hero.name); // Prints: 'John'
 ```
 
 The syntax is as follows:
@@ -5858,8 +5858,8 @@ func printPointer (ptr: *int) : void {
 
 val n = 2;
 
-printPointer(& n); // Prints: "2"
-printPointer(&mut n); // Prints: "2"
+printPointer(& n); // Prints: '2'
+printPointer(&mut n); // Prints: '2'
 ```
 
 ### Pointers typecasting
@@ -5882,7 +5882,7 @@ func increment (counter: *mut int) => *counter += 1;
 
 let counter = 0;
 increment(&mut counter);
-println!(counter); // Prints: "1"
+println!(counter); // Prints: '1'
 ```
 
 Functions can also return references, of course:
@@ -5892,7 +5892,7 @@ func increment (counter: *int) : *int => & wrap!(*counter + 1);
 
 let ptr: * = increment(& wrap!(0));
 
-println!(*ptr); // Prints: "1"
+println!(*ptr); // Prints: '1'
 ```
 
 This example is a little bit complex. First, we define a function that takes a reference, and returns another. In its body, it creates a reference from the value of its argument, and adds 1 to it (without assigning anything). Then, it returns the new reference by transparently creating a new assignable entity containing this value and returning a reference to it. So `ptr` receives a new reference.
@@ -5953,16 +5953,16 @@ let ptr: *mut = &mut i;
 
 // Assign a new value to the pointer (its target remains the same)
 *ptr = 8;
-println!(i); // Prints: "8"
-println!(j); // Prints: "0"
+println!(i); // Prints: '8'
+println!(j); // Prints: '0'
 
 // Assign a new reference to the pointer
 ptr = &mut j;
 
 // Assign a new value to the pointer
 *ptr = 3;
-println!(i); // Prints: "8"
-println!(j); // Prints: "3"
+println!(i); // Prints: '8'
+println!(j); // Prints: '3'
 ```
 
 Commonly, the _pointer's referred_ is the entity pointed by the reference stored in the pointer, and the _pointer's value_ is the value of the referred.
@@ -5981,7 +5981,7 @@ let ptr: *mut = &mut wrap!(0);
   ptr = &i;
 } // 'i' is not dropped here as there is still a pointer referencing it
 
-println!(ptr); // Prints: "2"
+println!(ptr); // Prints: '2'
 
 free!(ptr); // 'i' is dropped here
             // because there are no reference to it anymore
@@ -5995,8 +5995,8 @@ It is possible to check if an entity is a pointer, thanks to the `is_ptr!` flex:
 let i = 0;
 let ptr: * = &i;
 
-println!(is_ptr!(i)); // Prints: "false"
-println!(is_ptr!(ptr)); // Prints: "true"
+println!(is_ptr!(i)); // Prints: 'false'
+println!(is_ptr!(ptr)); // Prints: 'true'
 ```
 
 The target of a pointer can also be checked using the equality operator, thanks to the fact a pointer and its referer always have the same EID:
@@ -6007,9 +6007,9 @@ let j = 0;
 
 let ptr: * = &i;
 
-println!(ptr is &i); // Prints: "true"
-println!(ptr is &j); // Prints: "false"
-println!(*ptr is 0); // Prints: "true"
+println!(ptr is &i); // Prints: 'true'
+println!(ptr is &j); // Prints: 'false'
+println!(*ptr is 0); // Prints: 'true'
 ```
 
 ### Reference's state
@@ -6090,26 +6090,26 @@ let ptr: *mut *mut = &mut &mut i;
 // `ptr` refers to an 'intermediate reference' itself referring to `i`
 
 **ptr = 8;
-println!(i); // Prints: "8"
+println!(i); // Prints: '8'
 
 ptr = &mut i; // ERROR
 ptr = &mut &mut j; // Works fine
 
-println!(**ptr); // Prints: "2"
+println!(**ptr); // Prints: '2'
 ```
 
 Now, let's take two examples to detail this because this is a bit complex:
 
 ```sn
 *ptr = &mut j; // Works fine
-println!(ptr); // Prints: "2"
+println!(ptr); // Prints: '2'
 ```
 
 This first code rewrites the _intermediate reference_ `ptr` was referring to. So, the value pointed by the reference contained in the intermediate reference (`*inter_ref`) and the value pointed by the intermediate reference of `ptr` (`**ptr`) will be the same.
 
 ```sn
 ptr = &mut &mut i; // Works fine
-println!(ptr); // Prints: "8"
+println!(ptr); // Prints: '8'
 ```
 
 This second code makes `ptr` referring to a brand new intermediate pointer, which refers to `i`. So it removes the intermediate pointer we had just before.
@@ -6126,7 +6126,7 @@ let ptr: *mut *mut = &mut &mut i;
 let inter: *mut = *ptr;
 
 *inter = 8;
-println!(**ptr); // Prints: "8"
+println!(**ptr); // Prints: '8'
 
 // The two lines above are strictly equivalent
 *ptr = &mut i;
@@ -6136,7 +6136,7 @@ inter = &mut i;
 ptr = &mut &mut i;
 
 *inter = 3;
-println!(**ptr); // Prints: "3"
+println!(**ptr); // Prints: '3'
 ```
 
 Even though `ptr` isn't using `inter` as its intermediate pointer anymore, it stills point to `i`, just like `inter`. So, when we affect something to `*inter`, it affects the given value to `i`. Then, when we access `**ptr`, which retrieves `i`, we see the value that was just assigned using `*inter`.
@@ -6162,8 +6162,8 @@ let i: int = *ptr;
 // Assign something to the mutable
 i = 5; // Works
 
-println!(i);   // Prints: "5"
-println!(*ptr); // Prints: "2"
+println!(i);   // Prints: '5'
+println!(*ptr); // Prints: '2'
 ```
 
 Here, the `& wrap!(2)` creates a reference to an invisible assignable entity containing an `int`. The reference is stored into a pointer called `ptr`. We then try to assign something to the referred, it fails because the reference stored in `ptr` is constant. Note that we could have changed the reference `ptr` contains, because the pointer itself is mutable.
@@ -6176,7 +6176,7 @@ Now, let's see a last example, with objects (which are not primitives):
 
 ```sn
 // Declare an objet
-let obj = { name: "Jack" };
+let obj = { name: 'Jack' };
 
 // Declare a pointer
 let ptr: * = &obj;
@@ -6185,10 +6185,10 @@ let ptr: * = &obj;
 let hero = *ptr;
 
 // Assign to a property
-hero.name = "John";
+hero.name = 'John';
 
-println!(hero.name); // Prints: "John"
-println!(*ptr.name); // Prints: "John"
+println!(hero.name); // Prints: 'John'
+println!(*ptr.name); // Prints: 'John'
 ```
 
 It works, despite the fact `ptr` contains a constant reference. How could this work?
@@ -6207,17 +6207,17 @@ Still, it's possible to make nullable pointers, by making a reference to a nulla
 // Make a nullable pointer
 let ptr: * = nullable!(2);
 
-println!(*ptr); // Prints: "2"
+println!(*ptr); // Prints: '2'
 
 // Change its referred
 ptr = & wrap!(3);
 
-println!(*ptr); // Prints: "3"
+println!(*ptr); // Prints: '3'
 
 // Null it
 ptr = NULL;
 
-println!(*ptr); // Prints: "" (stringified 'null')
+println!(*ptr); // Prints: '' (stringified 'null')
 ```
 
 In this code, we use the `NULL` pointer as it's a reference to the `null` value. Note that `NULL` contains a mutable reference, but it only accepts voids of course (which are all the same `null` value).
@@ -6280,9 +6280,9 @@ engine.run(() => {
   #bind engine not init, run;
 
   let init = 2;
-  let run = lambda () : void { println!("Hello world!"); }
+  let run = lambda () : void { println!('Hello world!'); }
 
-  run(); // Prints: "Hello world!"
+  run(); // Prints: 'Hello world!'
 });
 ```
 
@@ -6293,16 +6293,16 @@ Sometimes, we will want to use a piece of code for a specific platform or langua
 Here is an example:
 
 ```sn
-#if PROC_ARCH is "ARM"
-  println!("This program has been compiled for ARM.");
+#if PROC_ARCH is 'ARM'
+  println!('This program has been compiled for ARM.');
 #end
 
-#if OS is "Windows"
-  println!("You are using a Windows system.");
-#elsif OS is "Linux"
-  println!("You are using a Linux system.");
-#elsif OS is "Darwin"
-  println!("You are using a MacOS system.");
+#if OS is 'Windows'
+  println!('You are using a Windows system.');
+#elsif OS is 'Linux'
+  println!('You are using a Linux system.');
+#elsif OS is 'Darwin'
+  println!('You are using a MacOS system.');
 #end
 ```
 
@@ -6347,12 +6347,12 @@ func repeatedCall (callback: #reduced func (), times: int) {
 }
 
 repeatedCall (
-  (lambda (name: string) : void { println!(name); }, "Jack "),
+  (lambda (name: string) : void { println!(name); }, 'Jack '),
   2
-); // Prints: "Jack Jack "
+); // Prints: 'Jack Jack '
 ```
 
-Here, `callback` is a reduced function that can be called without any arguments. When it's called, the program will transparently call the real callback, which takes one argument, and gives it the name we gave in the tuple ("Jack").
+Here, `callback` is a reduced function that can be called without any arguments. When it's called, the program will transparently call the real callback, which takes one argument, and gives it the name we gave in the tuple ('Jack').
 
 Note that, because the callback hadn't a specific signature in the `repeatedCall`'s declaration, its arguments' type as well as its return type couldn't be guessed, so they must be provided - that's why we doesn't use ICT here.
 
@@ -6399,7 +6399,7 @@ println!(summation(
     // Its only argument (`coeff`)
     3
   )
-)); // Prints: "18"
+)); // Prints: '18'
 ```
 
 As we can see here, the callback's argument required in the `summation`'s signature must be its first argument. We couldn't have written `lambda (coeff: int, num: int) : int` for example.
@@ -6423,8 +6423,8 @@ flex sayHelloFlex (name: Any) : void {
   println!(name);
 }
 
-sayHello("John"); // ERROR
-sayHelloFlex!("John"); // Works
+sayHello('John'); // ERROR
+sayHelloFlex!('John'); // Works
 ```
 
 The first call fails while the second works. Why? In the first call, we use a standard function which provides an `Any` value to `println!`, which only accepts `Stringifyable` values. So, it fails.
@@ -6432,11 +6432,11 @@ The first call fails while the second works. Why? In the first call, we use a st
 But in the second one, the call to `sayHello!` is replaced by the flex's content, just like that:
 
 ```sn
-sayHello!("John");
+sayHello!('John');
 
 // The evaluated content will be like:
 {
-  val name: string = "John";
+  val name: string = 'John';
   println!(name);
 }
 ```
@@ -6451,7 +6451,7 @@ Be aware though: flexs' scope are the same as for standard functions: they can o
 
 ```sn
 class Hello {
-  private static name = "Hello";
+  private static name = 'Hello';
 
   public static flex printName () : void {
     println!(@name);
@@ -6463,9 +6463,9 @@ class Hello {
 }
 
 {
-  val local_name = "Hello !";
+  val local_name = 'Hello !';
 
-  Hello.printName!(); // Prints: "Hello"
+  Hello.printName!(); // Prints: 'Hello'
   Hello.printLocal!(); // ERROR because 'local_name' is not defined
 }
 ```
@@ -6483,11 +6483,11 @@ flex access_tuple_value (tuple: #raw<Tuple>, index: #raw<usize>) : Any {
   return tuple[index];
 }
 
-access_tuple_value! (( "Hello" ), 0); // Returns: "Hello"
+access_tuple_value! (( 'Hello' ), 0); // Returns: 'Hello'
 
 // Equivalent to:
-let tuple = ( "Hello" );
-tuple[0]; // Returns: "Hello"
+let tuple = ( 'Hello' );
+tuple[0]; // Returns: 'Hello'
 ```
 
 Note that plain constants have natively a `#raw<T>` type. There are the only entities having such a type. Still, `#raw<T>` works on flexs' arguments as well as functions' ones (to give them the possibility to pass such raw values to flexs that require them). This type describes an entity as containing a predictable **and** imutable value.
@@ -6499,7 +6499,7 @@ Note that flexs can be expressed as a type, using `flex` instead of `func`. For 
 flex iter_tuple (tuple: #raw<Tuple>, callback: flex (value: Any));
 
 // Showcase
-iter_tuple!(("Hello", 24), flex (value: Any) {
+iter_tuple!(('Hello', 24), flex (value: Any) {
   println!(value); // Works because all the values in the tuple are 'Stringifyable's
 });
 ```
@@ -6514,7 +6514,7 @@ flex returnTwo () : #raw<int> {
 }
 
 pln two = returnTwo!(); // Works fine
-println!(two); // Prints: "2"
+println!(two); // Prints: '2'
 ```
 
 This is useful when dealing with plain constants, or even when dealing with classes. Indeed, when we write a class name like `string` or `int` as a value, it is typed as a `#raw<Class>` (called a _raw class_). Only raw classes can be instanciated and get members available.
@@ -6532,7 +6532,7 @@ stringFunc().NIL; // ERROR
 stringFlex!().NIL; // Empty string
 ```
 
-A last "type", truly reserved to flexs this time (so functions cannot use it): the unknown-sized reference. It requires a reference and allows references, references of references, references of references of references, and so on. The given reference's level can be got using the `levelof!` flex, which returns a `#raw<usize>` value.
+A last 'type', truly reserved to flexs this time (so functions cannot use it): the unknown-sized reference. It requires a reference and allows references, references of references, references of references of references, and so on. The given reference's level can be got using the `levelof!` flex, which returns a `#raw<usize>` value.
 
 For this example, we will use several useful flexs that work on references:
 
@@ -6865,7 +6865,7 @@ counter ++; // 2
 counter = counter + 1; // 3
 counter += 1; // 4
 counter --; // 3
-counter = "2";
+counter = '2';
 ```
 
 It's of course impossible to assign a boolean or a string where we expect an integer, but this proxy allows it by accepting any primitive and converting it manually to an integer.
@@ -6978,14 +6978,14 @@ proxy! static<DATA: Any>: #raw<Class> {
 
 This definition is a bit ugly, as it mixes a flexible templated proxy and raw return types.
 
-So, this proxy takes a single template, `DATA`. Thanks to template inference, writing `static<"Hello">` works fine and, because we are using a flex proxy, `DATA` will be typed as a `string` (with a standard proxy, it would have been typed as an `Any`).
+So, this proxy takes a single template, `DATA`. Thanks to template inference, writing `static<'Hello'>` works fine and, because we are using a flex proxy, `DATA` will be typed as a `string` (with a standard proxy, it would have been typed as an `Any`).
 
 The proxy returns a raw class, meaning we can manipulate it as if we wrote its name directly. This is possible thanks to the proxy being flexible. Its getter also indicates, of course, an identical return type, and returns the class `DATA` is an instance of. This leads us to the following results:
 
 ```sn
-let str: static<""> = "Hello world!"; // Works fine
+let str: static<''> = 'Hello world!'; // Works fine
 
-static<"">.NIL; // Empty string
+static<''>.NIL; // Empty string
 ```
 
 Besides, the underscore types in classes are defined using the following statements:
@@ -7176,13 +7176,13 @@ It's possible to write a proxy that will be equivalent to a constrained type ent
 ```sn
 // Proxy version
 proxy str: string from {
-  value: "Hello",
+  value: 'Hello',
 
   getter: () => @value,
 
   setter: (c) throws Error => {
     if c.length == 0 {
-      throw new Error("A non-empty string is required");
+      throw new Error('A non-empty string is required');
     }
 
     @value = c;
@@ -7193,7 +7193,7 @@ proxy str: string from {
 But this is really heavy, and we cannot require it as a type for a function's argument. Besides, it has a greater performance cost, so a constrained types is clearly preferable:
 
 ```sn
-let str: string with (_.length > 0) = "Hello";
+let str: string with (_.length > 0) = 'Hello';
 ```
 
 #### Optimization problems
@@ -7231,7 +7231,7 @@ let val: ArrayThree<int> = [ 2, 5 ]; // ERROR (invalid length)
 Unsafe typecasting allows to convert any type to its real type. For example, in the following code:
 
 ```sn
-let unknown: Any = "Hello world!";
+let unknown: Any = 'Hello world!';
 ```
 
 Even though `unknown` is typed an entity contaning an `Any` value, the _real type_ of the value it contains here is `string`. So, unsafe typecasting will allow us to convert this `Any` entity to a `string`.
@@ -7243,11 +7243,11 @@ This cast has the same syntax than a safe cast. If the cast fails, it will throw
 Let's see the syntax:
 
 ```sn
-let unknown: Any = "Hello world!";
+let unknown: Any = 'Hello world!';
 
 let valid: string = cast_unsafe!<string>(unknown);
 
-println!(valid); // Prints: "Hello world!"
+println!(valid); // Prints: 'Hello world!'
 
 let invalid: i16  = cast_unsafe!<i16>(unknown); // ERROR
 ```
@@ -7358,7 +7358,7 @@ interface HasWheels {
 }
 
 func takeSomething (obj: HasMotor | HasWheels) {
-  println!(obj.isAnObject); // Prints: "true"
+  println!(obj.isAnObject); // Prints: 'true'
 }
 
 takeSomething(HasMotor {
@@ -7371,7 +7371,7 @@ A value using an union type makes available all the members commonly described b
 
 ```sn
 func takeSomething (obj: HasMotor | HasWheels) {
-  println!(obj.isAnObject); // Prints: "true"
+  println!(obj.isAnObject); // Prints: 'true'
 
   // println!(obj.horsesPower); // ERROR
   // println!(obj.wheels); // ERROR
@@ -7400,7 +7400,7 @@ class B {
 type C = A | B; // ERROR (conflict because of 'member')
 ```
 
-Note that type inference will **never** result either in an intersection type or an union type. Instead, the "Best Common Type" method is used to determine the type of, let's say, an array:
+Note that type inference will **never** result either in an intersection type or an union type. Instead, the 'Best Common Type' method is used to determine the type of, let's say, an array:
 
 ```sn
 virtual class Animal {}
@@ -7453,7 +7453,7 @@ For that, we use an anonymous class, as follows:
 ```sn
 takeHandler(new ~MouseClickHandler {
   public func onClick () : void {
-    println!("I've been clicked!");
+    println!('I've been clicked!');
   }
 });
 ```
@@ -7463,11 +7463,11 @@ The `~` symbol can be either followed by a class, an interface, or a trait. It c
 ```sn
 takeHandler(new ~MouseClickHandler & Stringifyable {
   public func onClick () : void {
-    println!("I've been clicked!");
+    println!('I've been clicked!');
   }
 
   public func %to<string> () : string {
-    return "Hello world!";
+    return 'Hello world!';
   }
 });
 ```
@@ -7484,7 +7484,7 @@ let hello = new ~Stringifyable {
 };
 
 hello.value = 8;
-println!(hello); // Prints: "8"
+println!(hello); // Prints: '8'
 ```
 
 ## Asynchronous behaviours
@@ -7510,7 +7510,7 @@ class Event {
   };
 }
 
-Event.handle(() => println!("Callback was triggered"));
+Event.handle(() => println!('Callback was triggered'));
 Event.trigger();
 ```
 
@@ -7543,12 +7543,12 @@ Promises are basically a software conception of tasks that can either return a r
 func readAsync (path: string) : Promise<int, FSError>;
 
 // Let's use it
-readAsync("hello.txt")
+readAsync('hello.txt')
   .then(lambda (content: string) => println!(`File's size is ${content.length} bytes.`))
   .catch(lambda (err: FSError) => println!(`Something went wrong: ${content.message}`));
 
 // And with ICT:
-readAsync("hello.txt")
+readAsync('hello.txt')
   .then(content => println!(`File's size is ${content.length} bytes.`))
   .catch(err => println!(`Something went wrong: ${content.message}`));
 ```
@@ -7565,7 +7565,7 @@ func readAsync (path: string) : Promise<string, Error> {
 
     // Read the file
     try
-      content = import!('fs').readFile(path, "utf8");
+      content = import!('fs').readFile(path, 'utf8');
 
     catch (e)
       // Failed
@@ -7593,7 +7593,7 @@ func readAsync (path: string) : Promise<string, FSError> =>
     let content: string;
 
     try
-      content = import!('fs').readFile(path, "utf8");
+      content = import!('fs').readFile(path, 'utf8');
 
     catch (e)
       resolve e;
@@ -7615,7 +7615,7 @@ The `async` keyword describes an asynchronous function - it's pretty explicit. I
 ```sn
 async func readAsync (path: string) : (string, FSError) => {
   try
-    resolve import!('fs').readFile(path, "utf8");
+    resolve import!('fs').readFile(path, 'utf8');
 
   catch (e)
     reject e;
@@ -7637,7 +7637,7 @@ async func readAsync (path: string) : (string, FSError) => {
       try
         // A 'return' would just terminate this lambda and not resolve anything
         // But a 'resolve' terminates this lambda *and* the 'readAsync' function
-        resolve import!('fs').readFile(path, "utf8");
+        resolve import!('fs').readFile(path, 'utf8');
 
       catch (e)
         reject e;
@@ -7652,7 +7652,7 @@ Also, when an error happens in an asynchronous functions, the error is automatic
 
 ```sn
 async func readAsync (path: string) : (string, FSError) {
-  resolve import!('fs').readFile(path, "utf8");
+  resolve import!('fs').readFile(path, 'utf8');
 }
 ```
 
@@ -7663,7 +7663,7 @@ Note that, even if the function's end is reached, the promise is not terminated 
 ```sn
 async func infinite () : (void, Error) {
   for i in 0..10 {
-    println!("Hello world!");
+    println!('Hello world!');
   }
 }
 ```
@@ -7680,7 +7680,7 @@ func takeAsyncCallback (callback: async func () : (string, Error)) {
     .then(message => println!(message));
 };
 
-takeAsyncCallback (async () => resolve "Hello world!");
+takeAsyncCallback (async () => resolve 'Hello world!');
 ```
 
 ### Error-free promises
@@ -7689,7 +7689,7 @@ Error-free promises are promises that will never throw any error. Their return t
 
 ```sn
 async func resolveHello () : string {
-  resolve "Hello world!";
+  resolve 'Hello world!';
 }
 ```
 
@@ -7700,7 +7700,7 @@ Also, void-typed error-free promises can fully omit their return type, like for 
 ```sn
 async func resolveHello () {
   for i in 0..10 {
-    println!("Hello world!");
+    println!('Hello world!');
   }
 
   // Resolve manually, else the promise will never end
@@ -7717,9 +7717,9 @@ The _single resolution_ way allows us to to chain promises and use only one call
 async func fetch (url: string) : string;
 
 Promise.all([
-  fetch("/api/last-article/author.json"),
-  fetch("/api/last-article/contributors.json"),
-  fetch("/api/last-article/sources.json")
+  fetch('/api/last-article/author.json'),
+  fetch('/api/last-article/contributors.json'),
+  fetch('/api/last-article/sources.json')
 ])
   // When all the promises are resolved, get their respective result
   .then(func (author: string, contributors: string, sources: string) : void {
@@ -7729,7 +7729,7 @@ Promise.all([
   // Else, get the error as well as the faulty promise
   .catch(func <T, X> (error: Error, faultyPromise: Promise<T, X>, fpIndex: uint) : void {
     println!(`Failed at promise ${fpIndex}.`);
-    println!("Error is: " + error.message);
+    println!('Error is: ' + error.message);
   });
 ```
 
@@ -7737,9 +7737,9 @@ With type inference:
 
 ```sn
 Promise.all([
-  fetch("/api/last-article/author.json"),
-  fetch("/api/last-article/contributors.json"),
-  fetch("/api/last-article/sources.json")
+  fetch('/api/last-article/author.json'),
+  fetch('/api/last-article/contributors.json'),
+  fetch('/api/last-article/sources.json')
 ])
   .then((author, contributors, sources) => {
     println!(author, contributors, sources)
@@ -7750,7 +7750,7 @@ Promise.all([
   //  as well as a common rejection type
   .catch((error, faultyPromise, fpIndex) => {
     println!(`Failed at promise ${fpIndex}.`);
-    println!("Error is: " + error.message);
+    println!('Error is: ' + error.message);
   });
 ```
 
@@ -7758,15 +7758,15 @@ Note that it's also possible to make a resolution callback that takes no argumen
 
 ```sn
 Promise.all([
-  fetch("/api/last-article/author.json"),
-  fetch("/api/last-article/contributors.json"),
-  fetch("/api/last-article/sources.json")
+  fetch('/api/last-article/author.json'),
+  fetch('/api/last-article/contributors.json'),
+  fetch('/api/last-article/sources.json')
 ])
-  .then(() => println!("It worked!"))
+  .then(() => println!('It worked!'))
   
   .catch((error, faultyPromise, faultyPromiseIndex) {
     println!(`Failed at promise ${faultyPromiseIndex}.`);
-    println!("Error is: " + error.message);
+    println!('Error is: ' + error.message);
   });
 ```
 
@@ -7775,9 +7775,9 @@ If all promises have the exact same resolution/rejection type, or have a resolut
 ```sn
 // Etablish a set of promises
 let promises: Promise<string, Error>[3] = [
-  fetch("/api/last-article/author.json"),
-  fetch("/api/last-article/contributors.json"),
-  fetch("/api/last-article/sources.json")
+  fetch('/api/last-article/author.json'),
+  fetch('/api/last-article/contributors.json'),
+  fetch('/api/last-article/sources.json')
 ];
 
 // Uniform resolution type
@@ -7792,9 +7792,9 @@ We are of course not forced to prepare the promises first. We can also ask for i
 // Uniform resolution type for a set of promises
 Promise
   .allInferred([
-    fetch("/api/last-article/author.json"),
-    fetch("/api/last-article/contributors.json"),
-    fetch("/api/last-article/sources.json")
+    fetch('/api/last-article/author.json'),
+    fetch('/api/last-article/contributors.json'),
+    fetch('/api/last-article/sources.json')
   ])
   .then(data => println!(json) for json in data); // data: string[3]
 ```
@@ -7811,19 +7811,19 @@ async func sleep (delay: uint);
 
 // Resolve a promise after a specific delay
 async func delayedPrint (delay: uint) {
-  println!("A"); // Prints: "A"
+  println!('A'); // Prints: 'A'
 
   // Wait for the given delay...
   await sleep(delay);
 
-  println!("B"); // Prints: "B" after 1 second
+  println!('B'); // Prints: 'B' after 1 second
 
   // Resolve the promise
   resolve ;
 }
 
-delayedPrint(1); // Prints: "A"
-                 // Prints: "B" after 1 second
+delayedPrint(1); // Prints: 'A'
+                 // Prints: 'B' after 1 second
 ```
 
 As we can see, `await` simply blocks the asynchronous function until the given promise is resolved. If it is rejected, it will simply throw an `AwaitRejectionError<T>` with `T` being the rejection type of the promise. Then, we can use its `.data` attribute to get the rejection error.
@@ -7846,7 +7846,7 @@ async func delayed_sub (left: int, right: int) : int {
 }
 
 delayed_sub(5, 2)
-  .then(result => println!(result) /* Prints: "3" after 1 second */);
+  .then(result => println!(result) /* Prints: '3' after 1 second */);
 ```
 
 Note that `await` cannot be used in non-asynchronous functions, even if they are themselves inside asynchronous functions. Example:
@@ -7866,7 +7866,7 @@ async func funcA () : void {
 
 As we saw, `await` is a great tool as it allows us to wait synchronously for a promise. But, it's unavailable when we are _outside_ an asynchronous function.
 
-In fact, the point of this keyword is not to make promises synchronous or to block the function's execution until the promise is either resolved or rejected ; it's simply a way to resolve a promise without all the `.then()` and `.catch()` stuff, but it **never** aims to block the execution of the program. That's why it only works in asynchronous functions: waiting for a promise in a function that is already asynchronous doesn't block the program, it only "blocks" the promise, which in all cases won't block the program itself.
+In fact, the point of this keyword is not to make promises synchronous or to block the function's execution until the promise is either resolved or rejected ; it's simply a way to resolve a promise without all the `.then()` and `.catch()` stuff, but it **never** aims to block the execution of the program. That's why it only works in asynchronous functions: waiting for a promise in a function that is already asynchronous doesn't block the program, it only 'blocks' the promise, which in all cases won't block the program itself.
 
 Still, there is cases when we explicitly want to block the program's execution while the promise is not resolved nor rejected. For example, let's consider we want to make a program that retrieves the ten last articles from a blog and displays them in the terminal. Getting the articles from the web is, of course, asynchronous.
 
@@ -7878,7 +7878,7 @@ Promise
   .then(articles =>
     println!(article) for article in articles;
   )
-  .catch(err => println!("Failed to fetch articles: " + err.message));
+  .catch(err => println!('Failed to fetch articles: ' + err.message));
 ```
 
 The main problem of this code is that we couldn't integrate it to a loop, for example. Let's imagine we have a `for` loop that does a lot of stuff and, in the middle of its body, retrieves the article, then do other stuff on it. We would have to transform the code in an asynchronous process that do the stuff while preparing each promise, and do the second stuff when they are resolved. That's heavy and isn't possible in all cases - for example if our loop is in a process that MUST be synchronous.
@@ -7887,7 +7887,7 @@ Another, more explicit example, of the limitations of `await` is when we deal wi
 
 To solve this problem, we can _make the promises synchronous_ thanks to the `sync` keyword. It does the same thing than `await`, but works even outside asynchronous functions. So, why do we have two different keywords?
 
-That's all a question of goal: while `await` aims to have a lighter and "synchronous" wait of promises inside of another promise, `sync` aims to **block** the execution while the promise is not resolved nor rejected.
+That's all a question of goal: while `await` aims to have a lighter and 'synchronous' wait of promises inside of another promise, `sync` aims to **block** the execution while the promise is not resolved nor rejected.
 
 Here is the syntax:
 
@@ -7897,7 +7897,7 @@ for i in 0..10 {
     println!(sync fetchArticle(i));
   
   catch (e)
-    println!(`Failed to fetch article "${i}": ` + err.message);
+    println!(`Failed to fetch article '${i}': ` + err.message);
 }
 ```
 
@@ -7906,7 +7906,7 @@ This way, the loop is ran a synchronous way. To take again our `.map` example:
 ```sn
 let articles = [ 2, 5, 8 ];
 let articlesBody = articles.map(
-  id => try sync fetchArticle(i) catch "Failed to fetch article: " + err.message
+  id => try sync fetchArticle(i) catch 'Failed to fetch article: ' + err.message
 );
 ```
 
@@ -7926,11 +7926,11 @@ First, let's make our package descriptor. It's a TOML ([Tom's Obvious Language](
 
 ```toml
 [package]
-name = "names_manager"
-version = "0.1.0"
-authors = [ "Your Name <you@example.com>" ]
-license = "MIT"
-modules = [ "names" ]
+name = 'names_manager'
+version = '0.1.0'
+authors = [ 'Your Name <you@example.com>' ]
+license = 'MIT'
+modules = [ 'names' ]
 
 [dependencies]
 ```
@@ -7960,7 +7960,7 @@ func readName () : string throws Error {
   if name {
     return name;
   } else {
-    throw new Error("Name is not defined.");
+    throw new Error('Name is not defined.');
   }
 }
 
@@ -7978,10 +7978,10 @@ Note that we can also write `export *;` to export **everything** from the module
 Because a package's source code can (and will often) be heavy, we can use the `#include` directive to import a file's content at its position. Here is an example:
 
 ```sn
-// File: "index.sn"
+// File: 'index.sn'
 #[module];
 
-#include "functions.sn";
+#include 'functions.sn';
 
 let name: string;
 
@@ -7991,7 +7991,7 @@ export { defineName, readName };
 Below is our functions file:
 
 ```sn
-// File: "functions.sn"
+// File: 'functions.sn'
 func defineName (newName: string with (_)) {
   name = newName;
 }
@@ -8000,7 +8000,7 @@ func readName () : string throws Error {
   if name {
     return name;
   } else {
-    throw new Error("Name is not defined.");
+    throw new Error('Name is not defined.');
   }
 }
 ```
@@ -8010,10 +8010,10 @@ Here, the content of `functions.sn` will be imported as it is right where the `#
 To manage better our inclusions, we can also include files using an alias:
 
 ```sn
-// File: "index.sn"
+// File: 'index.sn'
 #[module];
 
-#include "functions.sn" as Functions;
+#include 'functions.sn' as Functions;
 
 let name: string;
 
@@ -8033,8 +8033,8 @@ To import a package, we must use the `import` keyword followed by the package's 
 import names_manager;
 
 // Use its exported entities
-names_manager::names.defineName("John");
-println!(names_manager::names.readName()); // Prints: "John"
+names_manager::names.defineName('John');
+println!(names_manager::names.readName()); // Prints: 'John'
 
 // Try to access an entity not exported by the package
 println!(names_manager::names.name); // ERROR (because `name` hasn't been exported)
@@ -8046,8 +8046,8 @@ This is as simple as that. Also, because this package's name could be a little h
 // Import the package
 import names_manager as manager;
 
-manager::names.defineName("John");
-println!(manager::names.readName()); // Prints: "John"
+manager::names.defineName('John');
+println!(manager::names.readName()); // Prints: 'John'
 ```
 
 Note that `names_manager`'s content is strictly equivalent to the value exported by the package. Our one exported an object with two attributes referring to its functions, but it could have only exported a single function for example, so we would have been able to call `manager` as a function.
@@ -8058,8 +8058,8 @@ We can also use an alias to get only a module:
 // Import the package
 import names_manager::names as names;
 
-names.defineName("John");
-println!(names.readName()); // Prints: "John"
+names.defineName('John');
+println!(names.readName()); // Prints: 'John'
 ```
 
 Here, we only import the `names` module and alias it as `names`, so we don't have to write `names_manager::names` each time. Therefore, we still have a `names_manager` object available in our example, because we imported a part of the `names_manager` package anyway. But thanks to the alias, we don't have to write `names_manager::names` anymore.
@@ -8079,8 +8079,8 @@ Note that it's also possible to import several packages at once:
 // Import the packages
 import names_manager, another_package;
 
-names_manager::names.defineName("John");
-println!(names_manager::names.readName()); // Prints: "John"
+names_manager::names.defineName('John');
+println!(names_manager::names.readName()); // Prints: 'John'
 ```
 
 Or import several modules from the same package, like this:
@@ -8098,8 +8098,8 @@ A last version of import is the _scope_ import:
 ```sn
 scope import names_manager;
 
-names.defineName("John");
-println!(names.readName()); // Prints: "John"
+names.defineName('John');
+println!(names.readName()); // Prints: 'John'
 ```
 
 As you can see, scope imports act like standard imports but also _aliases_ all entity names to link them to the package's/module's ones in the _current scope_. So, we can access without writing the package's name all its entities from the current scope - this way, it prevents polluating the global scope. Be aware though to not overwrite some existing entities, this would result in an error, like declaring two entities of the same name. Also, because multiple packages could have entities with the same name, it's discouraged to import several packages in a given scope.
@@ -8129,15 +8129,15 @@ The `import!` flex allows to import a package directly as an object, so we can u
 ```sn
 val manager = import!(names_manager::names);
 
-manager.defineName("John");
-println!(manager.readName()); // Prints: "John"
+manager.defineName('John');
+println!(manager.readName()); // Prints: 'John'
 ```
 
 Also, the flex will not import the package several times, so we can perform multiple import on the same package without a problem:
 
 ```sn
-import!(names_manager).defineName("John");
-println!(import!(names_manager).readName()); // Prints: "John"
+import!(names_manager).defineName('John');
+println!(import!(names_manager).readName()); // Prints: 'John'
 ```
 
 This will work as expected. A good point about this flex is that the package isn't imported multiple times ; once you imported it, either with `import` or `import!`, it will just retrieve the imported data.
@@ -8148,16 +8148,16 @@ Sub-modules are modules written inside sub-folders of the package (called their 
 
 ```toml
 [package]
-name = "names_manager"
-version = "0.1.0"
-authors = [ "Your Name <you@example.com>" ]
-license = "MIT"
+name = 'names_manager'
+version = '0.1.0'
+authors = [ 'Your Name <you@example.com>' ]
+license = 'MIT'
 modules = [
-  "universe/planets/earth",
-  "universe/planets/others",
-  "universe/life/animals",
-  "universe/life/insects",
-  "universe/life/humans"
+  'universe/planets/earth',
+  'universe/planets/others',
+  'universe/life/animals',
+  'universe/life/insects',
+  'universe/life/humans'
 ]
 
 [dependencies]
@@ -8184,27 +8184,27 @@ Let's write these files:
 // _packages/universe/planets/earth.sn:
 #[module];
 
-export { type: "planet", isEarth: true};
+export { type: 'planet', isEarth: true};
 
 // _packages/universe/planets/others.sn:
 #[module];
 
-export { type: "planet", isEarth: false };
+export { type: 'planet', isEarth: false };
 
 // _packages/universe/life/animals.sn:
 #[module];
 
-export { type: "animal", isInsect: false };
+export { type: 'animal', isInsect: false };
 
 // _packages/universe/life/insects.sn:
 #[module];
 
-export { type: "insect", isInsect: true };
+export { type: 'insect', isInsect: true };
 
 // _packages/universe/life/humans.sn:
 #[module];
 
-export { type: "human", isInsect: false };
+export { type: 'human', isInsect: false };
 ```
 
 Here is our test file:
@@ -8219,8 +8219,8 @@ import universe::planets;
 // > import universe::planets::others;
 
 // Test:
-println!(universe::planets::earth::isEarth); // Prints: "true"
-println!(universe::planets::others::isEarth); // Prints: "false"
+println!(universe::planets::earth::isEarth); // Prints: 'true'
+println!(universe::planets::others::isEarth); // Prints: 'false'
 
 // => Import a sub-module with an alias
 import universe::life as life;
@@ -8230,9 +8230,9 @@ import universe::life as life;
 // > import universe::life::humans;
 
 // Test:
-println!(universe::life::animals::isInsect); // Prints: "false"
-println!(universe::life::insects::isInsect); // Prints: "true"
-println!(universe::life::humans::isInsect); // Prints: "false"
+println!(universe::life::animals::isInsect); // Prints: 'false'
+println!(universe::life::insects::isInsect); // Prints: 'true'
+println!(universe::life::humans::isInsect); // Prints: 'false'
 ```
 
 As you can see, importing a module automatically imports all its children. We can even do sub-sub-modules, and so importing their parent (a sub-module) will import them all automatically.
@@ -8246,7 +8246,7 @@ The `package::module::submodule::...` model is based on the concept of _namespac
 namespace Hello {
   // Declare a function in it
   func world () {
-    println!("Hello world!");
+    println!('Hello world!');
   }
 
   // Export the data from it
@@ -8254,7 +8254,7 @@ namespace Hello {
 }
 
 // Call the function from the outside of the namespace
-Hello::world(); // Prints: "Hello world!"
+Hello::world(); // Prints: 'Hello world!'
 ```
 
 Note that, by default, all the code we write is not located inside any namespace. But each package has its own namespace, and each module in it has its own namespace too.
@@ -8268,7 +8268,7 @@ Namespaces can also be imbricated: it's possible to declare a namespace called `
 ```sn
 namespace A {
   namespace B {
-    func world () { println!("Hello world!"); }
+    func world () { println!('Hello world!'); }
 
     // From the inside of B
     world();
@@ -8327,7 +8327,7 @@ val age = 16;
 namespace A {
   val age = 18;
 
-  println!(\global::age); // Prints: "16"
+  println!(\global::age); // Prints: '16'
 }
 ```
 
@@ -8371,11 +8371,11 @@ snt update
 
 #### Dependencies
 
-Remember the `dependencies` block we saw in our package descriptor sooner? It simply described the packages _required_ by our program. It's a suite of `package = "expected_version"` lines. Here is how it could look like:
+Remember the `dependencies` block we saw in our package descriptor sooner? It simply described the packages _required_ by our program. It's a suite of `package = 'expected_version'` lines. Here is how it could look like:
 
 ```toml
 [dependencies]
-hello-world = "^1.0.0"
+hello-world = '^1.0.0'
 ```
 
 The dependency we put here indicates we accept all versions compatible with the `1.0.0` version, which means every `1.x.y` version. It is inspired by the [Semantic Versioning 2.0](https://semver.org/), with versions using the `x.y.z` form.
@@ -8549,8 +8549,8 @@ The `@throws` descriptor allows us to describe each case of error throwing:
  * @returns The double value of the provided integer
  */
 func double (num: i32) : i32 throws ErrorType1, ErrorType2 {
-  throw new ErrorType1("Integer is negative") if num < 0;
-  throw new ErrorType2("Integer is zero") if num == 0;
+  throw new ErrorType1('Integer is negative') if num < 0;
+  throw new ErrorType2('Integer is zero') if num == 0;
   return num * 2;
 }
 ```
