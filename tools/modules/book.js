@@ -106,11 +106,22 @@ self = {
       modulePath: here(highlights_path)
     });
 
+    // Keep a counter of bytes highlighted per language
+    let highlighted = {};
+
     // Load the "markdown-it" module
     const mdIt = require('markdown-it')({
       // Custom syntax highlighting callback
       highlight: (str, lang) => {
-        verb(`Highlighting ${(str.length / 1024).toFixed(2)} Kb of language "${lang}"...`); 
+        verb(`Highlighting ${(str.length / 1024).toFixed(2)} Kb of language "${lang}"...`);
+
+        // If it's the first time this language is highlighted in this book...
+        if (! highlighted.hasOwnProperty(lang))
+          // Initialize its counter
+          highlighted[lang] = 0;
+
+        // Increase the highlighting counter for this language
+        highlighted[lang] += str.length;
 
         return highlighter.highlightSync({
           fileContents: str,
@@ -286,6 +297,14 @@ self = {
 
     // Remove the 'END OF LINE' title from the summary
     summary.pop();
+
+    // Display final informations about syntax highlighting
+    verb('====== Syntax highlighting summary =====');
+
+    for (let lang of Reflect.ownKeys(highlighted))
+      verb(`> Highlighted ${(highlighted[lang] / 1024).toFixed(2)} Kb of language "${lang}"...`);
+
+    verb('========================================');
 
     // Determine the template folder path
     const tpl_folder_path = 'src/book-template';
