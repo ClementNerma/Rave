@@ -327,7 +327,7 @@ scheme = {
         ],
         [
           // Declaration statement in classes for constants (plain or not)
-          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?(val|pln|proxy\!?)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct|enum)\s+)(readonly\s+)?(val|pln|proxy\!?)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'purple', 'purple', 'purple', 'orange'
         ],
         [
@@ -337,7 +337,7 @@ scheme = {
         ],
         [
           // Declaration statement in classes for not-assignable entities
-          /\b(public|protected|private)(\s+static)?(?=\s+struct|interface|trait)/,
+          /\b(public|protected|private)(\s+static)?(?=\s+struct|enum|interface|trait)/,
           'purple', 'purple', 'purple'
         ],
         [
@@ -347,7 +347,7 @@ scheme = {
         ],
         [
           // Declaration statement in classes for assignable entities
-          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct)\s+)(readonly\s+)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|getter|setter|struct|enum)\s+)(readonly\s+)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'purple', 'purple', 'cyan'
         ],
         [
@@ -362,7 +362,7 @@ scheme = {
         ],
         [
           // Entity's name
-          /\b(struct|class|type|dict|trait|interface)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(struct|enum|class|type|dict|trait|interface)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'yellow'
         ],
         [
@@ -568,7 +568,7 @@ scheme = {
         ],
         [
           // Special native types
-          /(?<!\.)\b(void|Any|lambda|T|X|Y|Z|K|V|Class|Function|Structure|Interface|Trait)\b/,
+          /(?<!\.)\b(void|Any|lambda|T|X|Y|Z|K|V|Class|Function|Structure|Enumeration|Interface|Trait)\b/,
           'purple', 'cyan'
         ],
         [
@@ -608,7 +608,7 @@ scheme = {
         ],
         [
           // Already specified keywords, written here to have partial syntax highlighting
-          /(?<!\.)\b(namespace|struct|class|type|dict|trait|interface|implements|uses|inherits|parentof|haschild|instanceofsuper|scope|import|from|instanceof)(?!\s*:)\b/,
+          /(?<!\.)\b(namespace|struct|enum|class|type|dict|trait|interface|implements|uses|inherits|parentof|haschild|instanceofsuper|scope|import|from|instanceof)(?!\s*:)\b/,
           'purple'
         ],
         [
