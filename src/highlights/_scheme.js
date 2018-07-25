@@ -61,7 +61,7 @@ scheme = {
           name: 'comment.line.double-slash.sn',
           patterns: [
             {
-              match: /\b(NOTE|TODO|FIXME|BUG)\b/,
+              match: /\b(NOTE|OPTIMIZE|TODO|HACK|FIXME|BUG)\b/,
               name: '${purple}'
             }
           ]
@@ -73,7 +73,7 @@ scheme = {
           name: '${gray}',
           patterns: [
             {
-              match: /\b(NOTE|TODO|FIXME|BUG)\b/,
+              match: /\b(NOTE|OPTIMIZE|TODO|HACK|FIXME|BUG)\b/,
               name: '${purple}'
             },
             {
@@ -168,7 +168,7 @@ scheme = {
           name: '${gray}',
           patterns: [
             {
-              match: /\b(NOTE|TODO|FIXME|BUG)\b/,
+              match: /\b(NOTE|OPTIMIZE|TODO|HACK|FIXME|BUG)\b/,
               name: '${purple}'
             }
           ]
