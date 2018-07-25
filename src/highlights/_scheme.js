@@ -392,7 +392,7 @@ scheme = {
         ],
         [
           // Logical operators
-          /(<=|>=|<|>|==|!=|&&?|\|\|?)/,
+          /(<=|>=|<|>|==|!=|&&?|~|\|\|?)/,
           'cyan'
         ],
         [
@@ -447,6 +447,11 @@ scheme = {
           // Implementation (interfaces) and usage (traits)
           /\b(implements|uses)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.]*)*)\b/,
           'purple', 'green', 'green'
+        ],
+        [
+          // Shortened typechecking
+          /(~)\s*([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.]*)*)\b/,
+          'cyan', 'green', 'green'
         ],
         [
           // Child checking
