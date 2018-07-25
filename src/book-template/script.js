@@ -112,13 +112,13 @@ function showSection(id) {
       return void (window.scrollTo(0, 0));
 
     // Hide the current section
-    currentSection.style.display = 'none';
+    currentSection.classList.add('inactive');
   }
 
   // Set the new current section
   currentSection = (id instanceof HTMLElement) ? id : q(`section[data-slug="${id}"]`);
   // Show this one
-  currentSection.style.display = 'block';
+  currentSection.classList.remove('inactive');
 
   // Save its number
   currentSectionID = sections.indexOf(currentSection);
@@ -126,20 +126,20 @@ function showSection(id) {
   // If this is the first section...
   if (currentSectionID === 0)
     // Hide the "Previous" link
-    previous.style.display = 'none';
+    previous.classList.add('hidden');
   // Else...
   else
     // Show it
-    previous.style.display = 'block';
+    previous.classList.remove('hidden');
 
   // If this is the last section...
   if (currentSectionID === sections.length - 1)
     // Hide the "Next" link
-    next.style.display = 'none';
+    next.classList.add('hidden');
   // Else...
   else
     // Show it
-    next.style.display = 'block';
+    next.classList.remove('hidden');
 
   // Get the current section's slug
   const currentSlug = currentSection.getAttribute('data-slug');
@@ -210,7 +210,7 @@ const sections = qa('body > article section');
 // For each section of the book...
 for (let section of sections)
   // Hide it
-  section.style.display = 'none';
+  section.classList.add('inactive');
 
 // Get all of the summary's links
 const nav_links = qa('nav a').slice(1) /* Ignore the main title */;

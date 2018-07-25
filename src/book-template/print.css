@@ -1,0 +1,114 @@
+
+/* Stylesheet for when the book is printed */
+@media print {
+  body {
+    width: auto!important;
+    margin: auto!important;
+    font-size: 12pt;
+    background-color: #fff!important;
+    color: #000!important;
+  }
+
+  h1, h2, h3, h4, h5, h6, ul, ol, p {
+    color: #000!important;
+    margin: auto!important;
+  }
+
+  h1 {
+    display: block;
+    padding-top: 50%;
+    font-size: 40px;
+    text-align: center;
+    page-break-after: always;
+  }
+
+  h1:after {
+    display: block;
+    padding-top: 100px;
+    content: "SilverNight";
+  }
+
+  h2 {
+    text-align: center;
+    page-break-before: always;
+    padding-bottom: 30px;
+  }
+
+  h3, h4 {
+    page-break-after: never;
+    padding-bottom: 15px;
+  }
+
+  h2, h3, h4 {
+    padding-top: 15px;
+  }
+
+  ol, ul {
+    padding-top: 10px;
+  }
+
+  p {
+    orphans: 3;
+    widows: 3;
+    padding-bottom: 10px;
+    /* We are in a book, so texts are justified */
+    text-align: justify;
+  }
+
+  nav a {
+    text-decoration: none;
+  }
+
+  /* Remove the blue color on the current part's link */
+  nav a.active {
+    color: #000!important;
+  }
+
+  article a {
+    color: #000!important;
+    text-decoration: underline;
+  }
+
+  article a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  pre, code {
+    font-size: 12pt;
+  }
+
+  pre {
+    border-left: 2px solid #D3D3D3;
+    padding-left: 15px;
+    page-break-inside: avoid;
+  }
+
+  pre a.copy {
+    display: none;
+  }
+
+  table {
+    margin-left: 15px;
+    margin-bottom: 15px;
+  }
+
+  nav {
+    position: relative;
+    width: 100%;
+  }
+
+  article {
+    position: relative;
+    left: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  section.inactive {
+    display: block;
+  }
+
+  #hide-summary, #previous, #next {
+    display: none;
+  }
+}

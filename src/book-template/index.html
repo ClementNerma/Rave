@@ -15,6 +15,9 @@
   <!-- Load the template's stylesheet -->
   {{{include "style.css"}}}
 
+  <!-- Load the printable stylesheet -->
+  {{{include "print.css"}}}
+
   <!-- View the page instantly if JavaScript is not loaded -->
   <noscript>
     <style type="text/css">
@@ -23,6 +26,8 @@
   </noscript>
 </head>
 <body class="body-hidden">
+  <h{{title.depth}}>{{{title.text}}}</h{{title.depth}}>
+
   <nav>
     <ul>
       {{#each summary}} {{#if is_max_subtitle}}
@@ -34,9 +39,7 @@
     </ul>
   </nav>
 
-  <article>
-    <h{{title.depth}}>{{{title.text}}}</h{{title.depth}}>
-  
+  <article>  
     {{#each sections}}
     <section data-slug="{{slug}}">
       {{#each content}} {{#if _TITLE}}
