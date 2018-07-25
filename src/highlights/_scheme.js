@@ -444,8 +444,8 @@ scheme = {
           'purple', 'green'
         ],
         [
-          // Implementation
-          /\b(implements)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.]*)*)\b/,
+          // Implementation (interfaces) and usage (traits)
+          /\b(implements|uses)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.]*)*)\b/,
           'purple', 'green', 'green'
         ],
         [
@@ -589,7 +589,7 @@ scheme = {
         ],
         [
           // Already specified keywords, written here to have partial syntax highlighting
-          /(?<!\.)\b(namespace|struct|class|type|dict|trait|interface|implements|inherits|haschild|instanceofsuper|scope|import|from|instanceof)(?!\s*:)\b/,
+          /(?<!\.)\b(namespace|struct|class|type|dict|trait|interface|implements|uses|inherits|haschild|instanceofsuper|scope|import|from|instanceof)(?!\s*:)\b/,
           'purple'
         ],
         [
