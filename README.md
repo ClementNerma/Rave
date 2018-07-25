@@ -27,7 +27,7 @@ SilverNight is released using a system of **stages**:
 |     5     | Analyzable   |  1.0.0  | Make a compiler, an interpreter, transpilers (JavaScript, ...)           |
 |     6     | Prod-ready   |  1.0.0  |                                   -                                      |
 
-Current stage is **Alpha 1**.
+Current stage is **Alpha 2**.
 
 ## Installation
 
