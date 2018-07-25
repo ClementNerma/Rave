@@ -1,34 +1,50 @@
 # The Hybrid Book
 
+## Foreword
+
+Welcome to the second version of _The Hybrid Book_. This book will teach you the SilverNight programming language, step by step, and introduce every single feature to make an exhaustive tutorial.
+
+But first, what is SilverNight?
+
+This language was designed to unify advantages taken from many programming languages and to reduce their downsides.
+
+Today, writing a low-level program is essentially done using C, C++ or Rust. The two first languages are very complex to handle, and have many downsides, like the requirement to type explicitly every single variable and constant. Also, they aren't safe, with many bugs being caused by their native features like the `NULL` pointer, references to any memory adress, or the very common undefined behavior. On Rust's side, we have a great safety and modern concepts, but it's still complicated to understand when you are not used to develop low-level programs.
+
+On the other side, high-level languages such as JavaScript and Python allow a great flexibility. But they have many downsides too: variables can't be typed, so if a function wants to work with a string, it must manually perform a typecheck. Programs are clearly slower than low-level languages' ones. On JavaScript's side, there are other problems inherent to the fact it wasn't design to be such a large-usage language: the uncomfortable iteration methods, the symbols and objects properties checking using the `.hasOwnProperty` method to avoid encountering the native methods like `.__defineGetter__`, plus the many incompatibilities between browsers, lead to a language that is finally complicated to handle.
+
+SilverNight borns to get the best from these languages: statically typed, but with a strong type inference system, it is highly meta-programmable and safe to use by reducing the risks factor: types are, by default, not nullable ; references are, still by default, constants. Besides, its behavior is very explicit, and learning the whole language is far easier than for most of the large-usage language. Learning every single obscure concept of C++ or JavaScript will take you weeks and weeks, but not for SilverNight. After reading this book, you will fully know every aspect of the language, in details.
+
+The polyvalence of the language is built upon four key-concepts: compilation, that allows to make an high-performance executable program to reach the level of performance of other low-level languages such as Rust ; transpiling, which allows to turn a SilverNight source code into a JavaScript or a Swift program for example, to be able to run your program on every platform ; interpretation that allows to run the program on any platform and access more powerful debug tools ; and frontend libraries that allow to use the exact same API to access filesystem, write multi-threading programs, etc. whatever the target transpiling language is or if the program is program or interpreted.
+
+Of course, this language has downsides itself: it isn't as fast as a well-written C program, isn't as safe as Rust especially when coming to multi-threading, and isn't as supple as dynamic-typed languages. But still, it has a simplier learning curve, is far more faster to learn exhaustively, and can either be compiled, interpreted or transpiled.
+
 ## Introduction
 
-Welcome to _"The Hybrid Book"_, a feature-exhaustive tutorial to learn SilverNight. SilverNight is borned from the wish to have a language almost as simple as JavaScript or Python but as powerful, safe and fast as Rust to cover most of developers' needs. It is a statically-typed, functional programming language. Intended for multi-platform development, it comes with great flexibility and a large native library.
+SilverNight is borned from the wish to have a language almost as simple as JavaScript or Python but as powerful as low-level languages, and as safe and languages like Rust to cover most of developers' needs. It is a statically-typed, functional programming language. Intended for multi-platform development, it comes with great flexibility and a large native library.
 
-**WARNING: Please note this language is not finished yet ; some features could and WILL be added, modified or removed at anytime. It's still a draft at this point and no feature or syntax is frozen.**
-
-**WARNING: This book has been edited a lot and hasn't been reviewed yet ; it could contain errors and contradictions. This problem should be fixed soon.**
-
-### Why is it an hybrid book?
+### Why does "hybrid" mean?
 
 This book is called "hybrid" because it provides a simple specification for the language but also acts as a tutorial for persons who want to learn it from the beginning to the very end.
+
+Though, it is not as simple as a tutorial because the concepts are not taught in the most intuitive order, but it's still a lot more simple as reading a simple specification document.
 
 ### For whom is this book?
 
 This book is for everyone who wants to learn all the features of SilverNight, or simply for developers who are curious to know how this language works.
 
-In order to fully understand this book, you should already know at least one other programming language (the lower level it is, the better), ideally with a good knowledge in Object-Oriented Programming (OOP) because SilverNight always deal with objects.
+In order to fully understand this book, you should already know at least one other programming language (the lower level it is, the better), ideally with a good knowledge in [Object-Oriented Programming (OOP)](https://en.wikipedia.org/wiki/Object-oriented_programming) because a huge part of SilverNight is centered around this concept.
 
-Please note if you simply want to learn the language, you should read **The SilverNight Book** (not published yet) instead. This hybrid book aims to provide a deep, complex view of the language with all of its detailed concepts.
+**WARNING: Please note this language is not finished yet ; some features could and WILL be added, modified or removed at anytime. It's still a draft at this point and no feature or syntax is frozen.**
 
 ### Who is this language for?
 
-SilverNight's purpose is to provide a multi-platform compatibility coupled with an expressive syntax. Because of that, this language is not designed for very low-level applications, like drivers or operating systems - though it's still possible to make them, it is not originally intended for. In order to make such low-level programs, you should use other programming languages such as [C++](https://en.wikipedia.org/wiki/C%2B%2B) or [Rust](https://www.rust-lang.org).
+Because of the simplicity allowed by the language, it is not designed for very low-level applications, like drivers or operating systems - though it's still possible to make them. In order to make such low-level programs, some other programming languages have better advantages: they are even faster, allow to deal with concepts very close to the hardware. One of the most known low-level languages is the [C++](https://en.wikipedia.org/wiki/C%2B%2B) you can use for this particular purpose.
 
 ### Setting up environment
 
 #### Installation
 
-**As the compiler is not done yet, your programs will not compile and you will not be able to run it. The book is here to detail the languages' concept and the way it works. Thanks for your understanding.**
+**As the builder is not done yet, programs cannot be compiled/interpreted/transpiled and there is no way to run them. This book simply exists to detail the languages' concept and the way it works. Thanks for your understanding.**
 
 As a pre-requisite you must have [Git](https://git-scm.com/) as well as [Node.js](https://nodejs.org) and [Yarn](https://yarnpkg.com) (or [NPM](https://www.npmjs.com)) installed on your computer.
 
@@ -36,11 +52,11 @@ Open a terminal and run the following commands:
 
 ```bash
 git clone https://github.com/ClementNerma/SilverNight-draft.git
-cd SilverNight/compiler
+cd SilverNight
 yarn install-tools # NPM: `npm run install-tools`
 ```
 
-_NOTE :_ As this program installs the tools on your computer, you may have to run the `install-tools` command with `sudo` on Linux systems.
+_NOTE :_ As this program installs the tools on your computer, you may have to run the `yarn install-tools` command with `sudo` on Linux systems.
 
 To check if all the tools were correctly installed, simply run this command in a terminal:
 
@@ -50,15 +66,19 @@ snt -v
 
 If it shows you a version number, the tools are available globally.
 
-#### Compiling programs
+#### Building programs
 
-You can write SilverNight with any text editor - even with the Windows' Notepad! But we advise you to use a code editor, like [Atom](https://atom.io) or [Visual Studio Code](https://code.visualstudio.com), and install the SilverNight [support extension](https://github.com/ClementNerma/SilverNight-draft#syntax-highlighting-support)  for them. This will highlight your code following different rules to make it more pleasant to see.
+You can write SilverNight with any text editor - even with the famous Windows' notepad! But we advise you to use a code editor, like [Atom](https://atom.io) or [Visual Studio Code](https://code.visualstudio.com), and install the SilverNight [syntax highlighting extension](https://github.com/ClementNerma/SilverNight-draft#syntax-highlighting-support) for them. This will highlight your code following different rules to make it more pleasant to see and write.
 
-Once you wrote your code, save it in a file with the `.sn` extension. Then, open a terminal and go into the folder in which your file is, and run `snt program.sn` (replace `program.sn` by the name of your file) to compile it. This will produce an executable file in the same directory (the name will depend on the platform you are using). You can run this executable directly on any computer that is under the same platform.
+Once you wrote your code, save it in a file with the `.sn` extension. Then, open a terminal and go into the folder in which your file is, and run `snt program.sn` (replace `program.sn` by the name of your file) to interpret it. The program will be built and then be interpreted to your machine - this avoids having to compile the program every time you modify it.
+
+If you look for better performances, you can compile the program with `snt -c program.sn` which will produce an `a.exe` / `a.run` program depending on your platform, or `snt -c program.sn -o program.exe` / `snt -c program.sn -o program.run` to have a custom-named output program. This program will run on the specific architecture you compile it on (e.g. Linux + x86 processor + 64-bit).
+
+SilverNight programs can either be compiled (producing an executable), interpreted (to run them step by step for example) or transpiled (converted to another programming language). That's a subject we'll cover later, but remember that for each of these processes, the program must first be _built_ using the toolchain's _builder_. It's a program that checks if your program is valid, optionally optimizes it, and give it to the compiler / interpreter / transpiler.
 
 #### Commenting your code
 
-SilverNight has several types of comments for different purposes, but the main ones are the single-line and the multiple-line comments. These are passive comments (which means they don't do anything and are completely ignored by the compiler).
+SilverNight has several types of comments for different purposes, but the main ones are the single-line and the multiple-line comments. These are passive comments (which means they don't do anything and are completely ignored by the builder).
 
 To write a single-line comment, write `//` just before your comment. Everything written **after** this double slash will be ignored until the end of the line.
 
@@ -80,29 +100,27 @@ println!(/* Even in the middle of a line */ "Hello");
 
 #### Displaying values
 
-We can display values to your terminal (called _output_) by using the `println!` flex (we'll see what is a flex later in this book).
+We can display values inside the terminal (called _output_) by using the `println!` flex (we'll see what is a flex later in this book).
 
 ```sn
 println!("Hello !");
 ```
 
-For now, consider we can display any value with it, only special values (like custom classes or conceptual resources) cannot be displayed, but we will see this in details before we encounter this problem.
+## Mutables
 
-## Variables and typing
-
-In SilverNight, everything is primitive or object. Even single numbers or strings, which are primitives, can use some features reserved to objects in many other programming languages. To describe what a primitive or an object is, we use a _type_. What is a type? That's simply a set of methods, properties and other tricks that provides tools to manipulate a resource, like a variable or a constant. You can also see it as a describer that indicates what kind of value a resource can take.
+In SilverNight, every single value is either a primitive or an object. To describe what a primitive or an object is, we use a _type_, which simply consists in set of methods, properties and other things that provides tools to manipulate an entity, like a variable or a constant. You can also see it as a describer that indicates what kind of value an entity can take.
 
 _Tip :_ For those who already programmed in Java, C, C++ or Rust, the concept of type is roughly the same in SilverNight.
 
-There's several way to declare a resource in SilverNight. Let's take a look at variables (mutable resources). We define it with the `let` keyword and give them a _type_ (the class that describes it).
+There's several ways to declare a resource in SilverNight. Let's take a look at variables (mutable resources). We define it with the `let` keyword and give them a _type_ (the class that describes it).
 
 ```sn
 let hello: string;
 ```
 
-This will declare a mutable string called "hello". When declared like this, an empty string is put in this (we call it an _instance_ of the "string" class).
+This will declare a mutable variable called "hello" with type `string`. When declared this way, an empty string is put in this (we call it an _instance_ of the "string" class).
 
-To assign a contant, use the `=` operator:
+To assign a content, we use the `=` operator:
 
 ```sn
 let hello: string;
@@ -115,23 +133,23 @@ We can also assign a value in the declaration statement:
 let hello: string = "I am a variable!";
 ```
 
-This syntax is kind of heavy. Because we don't want to declare a type and an initial value for each variable, we can use a feature called _inferred typing_ which guesses the variable's type thanks to the value we assign to it.
+This syntax is kind of heavy. Because it's kind of repetitive to declare the type **and** the initial value of each variable, we can use a feature called _inferred typing_ which guesses the variable's type thanks to the value we assign to it:
 
 ```sn
 let hello = "I am a variable!";
 ```
 
-In the above code, the compiler understands we are trying to assign a string to `hello`, so it guesses its type is `string`.
+In the above code, the builder understands we are trying to assign a string to `hello`, so it guesses its type is the same: `string`.
 
-### Mutability
+### Constants
 
-Some data are not intended to be modified. To store them, we use _constants_, which are declared like variables but with the `val` keyword:
+Some datas are not intended to be modified. To store them, we use _constants_, which are declared like variables but with the `val` keyword. They main difference with mutables when declaring them is that we must give an initialization value:
 
 ```sn
 val constant = "I am a constant!";
 ```
 
-We can also specify the constant's type, but we will have to give it an initialization value anyway.
+We can also specify the constant's type if we want to be explicit. Here are some examples:
 
 ```sn
 val constant = "I am a constant!"; // Works fine
@@ -139,7 +157,7 @@ val constant: string = "I am a constant!"; // Works fine
 val constant: string; // ERROR: Initialization value expected
 ```
 
-Constants cannot have their value changed, so we can't use the `=` operator on it. See them as read-only resources with a value that can't change through the time. Though, we can still use other resources to initialize them:
+Constants cannot have their value changed, so we can't use the `=` operator on them. Consider they are read-only resources with a value that can't change whatever happens. Though, we can still use other resources to initialize them:
 
 ```sn
 // Declare a variable
@@ -154,86 +172,161 @@ constant = "A new value"; // ERROR: Cannot assign a value to a constant
 
 ### Plain constants
 
-We can also declare "_plain constants_", which are explicit values that can be used by the compiler to optimize some calls but also to perform additional tests about program's validity. Some functions also require plain constants, as we will see later. Basically, a plain constant is a value that won't change whatever the program's running conditions are. That means it must not be impact by user's input, platform-dependent variables and behaviours, current time or geolocation, etc.
+We can also declare "_plain constants_", which are explicit values that can be used by the builder to optimize some calls but also to perform additional tests about program's validity. Some functions also require plain constants, as we will see later. Basically, a plain constant is a constant that can contain only a single value that cannot come from a variable. This means we can't do this, for example:
+
+```sn
+val msg = "Hello";
+pln hello = msg; // ERROR
+```
+
+The initialization value must be a _litteral_, which is an explicit value that is predictable without running the program.
 
 ```sn
 // Declare a plain constant
 pln MY_JOB = "Developer";
 ```
 
-A convention is to use a capitalized name for plain constants, to make them distinctive from variables and basic constants. As always, we can declare the value's type, but it's still optional. Note that we cannot assign any content taken from a variable or a standard constant here.
+A naming convention for plain constants is to use a capitalized name, to make them distinctive from variables and "simple" constants. As always for constants, we can declare the value's type, but it's still optional.
 
-```sn
-val MY_JOB = "Developer";
-pln MY_REAL_JOB = MY_JOB; // ERROR: Plain value expected
-```
-
-We can only assign values from other plain constants:
+Note that, even though we cannot take non-litteral values to initialize a plain constant, we can still take the value from another plain constant:
 
 ```sn
 pln MY_JOB = "Developer";
 pln MY_REAL_JOB = MY_JOB; // Works fine
 ```
 
-Prefer declaring values using plain (or simple) constants instead of mutables when you won't change their value. This prevents these theorically immutable datas from being modified by error. Plus, in some languages like JavaScript, it even makes the programs (a bit) faster.
-
-Plain constants can only contain primitives and tuples (containing themselves primitives and tuples).
+Always prefer declaring values using plain (or simple) constants instead of mutables when you won't change their value. This prevents these theorically immutable datas from being modified by error. Plus, in some languages like JavaScript, it even makes the programs (a bit) faster.
 
 ### Primitive types
 
+#### Voids
+
 There are two categories of types in SilverNight: _primitives_ and _objects_. The first ones are voids, booleans, numbers and strings. Everything else is not a primitive type.
 
-Primitive types can access additional features object types cannot use, such as the optional operator `.=`. It will assign the provided value on its right if and _only if_ the value is NIL (any value between: `null`, `false`, `0`, `""`). This doesn't work with the other types.
+Primitives are special because they are treated like objects even though they aren't. This means that every feature that can be used on objects can be used on primitives too, for example. There are other specificities we will see later.
 
-## Numbers
+The first primitive type is the voids, which are the simpliest type to handle because they can take only one value: `null`.
+
+```sn
+let void1: void = null;
+
+// With type inference
+let void1 = null;
+```
+
+Note that instanciating the `Void` class (alias of `void`) will create a new instance equal to `null`:
+
+```sn
+// This declaration:
+let void1 = new Void();
+// Is equivalent to this one:
+let void1 = null;
+```
+
+#### Booleans
+
+Booleans can only take two values: `true` or `false`.
+
+```sn
+let bool1: bool = true;
+let bool2: bool = false;
+
+// With type inference
+let bool1 = true;
+let bool2 = false;
+```
+
+#### Numbers
+
+Numbers are mainly represented by the `int` type, which contains signed integers (which means it can handle both positive and negative integers):
+
+```sn
+let num: int = 2;
+```
+
+#### Strings
+
+Strings are a suite of unique characters:
+
+```sn
+let str1: string = "Hello world!";
+
+// Empty strings are allowed, too
+let str2: string = "";
+```
+
+#### NIL values
+
+We call _NIL values_ the following values: `null` (NIL void), `false` (NIL boolean), `0` (NIL number), `""` (NIL string).
+
+When a primitive variable is declared without an assignment, the NIL value associated to its type is used:
+
+```sn
+let var1: void  ; // null
+let var2: bool  ; // false
+let var3: int   ; // 0
+let var4: string; // ""
+```
+
+## Numbers and operators
 
 ### Integers
 
-There is not only one type to represent numbers. The "default" one is **int**, also known as **i32**, a signed 32-bit integer. Basically, it can handle any number between `−2,147,483,648` and `2,147,483,647`.
+There is not only one type to represent numbers. The "default" one is `int`, an alias of `int32`, a signed 32-bit integer. It can handle any integer between `−2,147,483,648` and `2,147,483,647`.
 
 Here is the table of types with their respective capacities:
 
 |  Type   |            Minimum           |            Maximum           |
 |---------|------------------------------|------------------------------|
 | `i8`    | `-128`                       | `127`                        |
-| `ui8`   | `0`                          | `255`                        |
+| `u8`    | `0`                          | `255`                        |
 | `i16`   | `-32,768`                    | `32,767`                     |
-| `ui16`  | `0`                          | `65,535`                     |
+| `u16`   | `0`                          | `65,535`                     |
 | `i32`   | `−2,147,483,648`             | `2,147,483,647`              |
-| `ui32`  | `0`                          | `4,294,967,295`              |
+| `u32`   | `0`                          | `4,294,967,295`              |
 | `i64`   | `-9,223,372,036,854,775,808` | `9,223,372,036,854,775,807`  |
-| `ui64`  | `0`                          | `18,446,744,073,709,551,615` |
+| `u64`   | `0`                          | `18,446,744,073,709,551,615` |
 
-Note that, the more bits a number uses for its representation (for integers, this is the number written after `int`, like 32 bits for `i32`), the more memory it takes. By default, integers use the `i32` type, but if you don't need such big numbers, you can still use the `i16` type instead. This is especially important when making programs for platforms with a very limited amount of memory (like Arduino boards), in this case you can even use the `i8` (`byte`) type (handling from `-128` to `127`).
+Note that, the more bits a number uses for its representation, the more memory it takes. For example, `i32` takes, as its names indicates, 32 bits. But, `u16` will only take 16 bits - that's two times less ! -.
 
-To conclude, always use the smallest type number you have to. If you are dealing with numbers from `0` to `40,000`, instead of using a `i32`, simply use a `ui16` instead.
+By default, integers use the `i32` type, but if you don't need such big numbers, you can still use the `i16` type instead. This is especially important when making programs for platforms with a very limited amount of memory (like Arduino boards). For very small numbers, you can even use the `i8` (`byte`) type (handling from `-128` to `127`).
 
 Also, note that 64-bit numbers even work on 32-bit processors, as they are part of the language specifications.
 
+There is two additional types, called `isize` and `usize`, which are respectively a signed integer and an unsigned integer type. Their size is defined following the architecture of the processor: on a 32-bit processor, they will be 32-bit-long, but on a 64-bit one, they will be 64-bit-long. `usize` guarantees to be able to handle any memory adress and index in an array on the current platform, where an `u32` could be too short on 64-bit processors.
+
 ### Floating-point numbers
 
-SilverNight also supports floating-point numbers. There are two signed types for them, `float`, `double`. Unlike integers, there isn't unsigned floating-point number types.
+SilverNight also supports floating-point numbers. There are two signed types for them, `f32`, `f64`. Unlike integers, there isn't unsigned floating-point number types.
 
-Their ranges is huge but, where numbers have an exact value, these types have a limited precision:
+Their ranges is huge but, while integers have an exact value, these types have a limited precision:
 
-* `float` handles from `~ 1.2 * 10^-38` to `~ 3.4 * 10^+38` with a 6-decimal precision ;
-* `double` handles from `~ 2.3 * 10^-308` to `~ 1.7 * 10^+308` with a 15-decimal precision.
+* `f32` handles from `~ 1.2 * 10^-38` to `~ 3.4 * 10^+38` with a 6-decimal precision ;
+* `f64` handles from `~ 2.3 * 10^-308` to `~ 1.7 * 10^+308` with a 15-decimal to 17-decimal precision.
 
-As you can see, the floating-point types can handle huge ranges, but they don't have the same precision. For example, substracting `0.0000003` (7 decimals) to a `floating` will have no effect at all (but it will on `double`, which has a better precision).
-
-_Tip :_ `float` costs 32 bits in memory, while `double` costs 64 bits.
+As you can see, the floating-point types can handle huge ranges, but they don't have the same precision. For example, substracting `0.0000003` (7 decimals) to a `f32` will have no effect at all, but it will on `f64`, which has a better precision.
 
 ```sn
-let num: float = 1;
+let num: f32 = 1;
 num = num - 0.0000003; // num is still equal to 1
 num = num - 0.000003; // This time, the substracting affected it
 
-let longnum: double = floating; // Works fine
+let longnum: f64 = num; // Works fine
 longnum = longnum - 0.0000003; // This time it affects the variable because
-                               // `double` type has a better precision
+                               // `f64` type has a better precision
 ```
 
-### The floating-point problem
+In memory, `f32` costs 32 bits, while `f64` costs 64 bits.
+
+Note that calculations on `f64` numbers will be slower than `f32` numbers only if the program runs on a 32-bit processor, which is more and more rare. On 64-bit processors, it will even be a little bit faster.
+
+The "default" floating-point type will be `f64` with inferred typing, due to its higher precision.
+
+```sn
+let num = 0.0001; // f64
+```
+
+### Explicit typing
 
 A problem that low-level languages (like C or SilverNight) compilers often encounter is how to interpret user's numbers when doing several operations. For example, let's take this code:
 
@@ -241,15 +334,82 @@ A problem that low-level languages (like C or SilverNight) compilers often encou
 val result = 2 / 3;
 ```
 
-Why does the compiler understand here? It sees an integer divided by an integer, so the result should be an integer. But any human would understand the result should be here a `float` as the result is around `0.66666...`.
-
-Because of this confusion, the above code will produce `0`. An unexpected number that could result in strange behaviours in your programs. The simpliest and shortest way to indicate you are dealing with a `float` is to do explicit conversion:
+When seeing this code, you should predict the result is `0.6666...`. But, what the builder sees here is an integer divided by another an integer. And the result of such a calculation is another integer. That's why this code produces `0`. An unexpected number that could result in strange behaviours in your programs. The simpliest and shortest way to indicate you are dealing with a `f32` is to use the explicit notation:
 
 ```sn
 val result = 2.0 / 3.0;
 ```
 
-Giving a decimal part to a number indicates it's a `float` (or a `double` if it exceeds the range), even if it's `.0`.
+Giving a decimal part to a number indicates it's a `f64`, even if it's `.0`. So here, the type of `result` will be a `f64`.
+
+Note that the result of an operation between a given number type and another number type (whatever they are) will be the first number type. This means that we could have omitted the `.0` after the `3` in the previous example (but not after the `2`, as it clearly indicates we are dealing with a `f64`).
+
+Also, if you explicitly want to get a `2` contained in a `u32` for example, there is a lighter syntax than writing the type's name, using the _number type suffix_:
+
+```sn
+2b;  // i8 (Byte)
+2ub; // u8 (Unsigned Byte)
+2s;  // i16 (Short)
+2us; // u16 (Unsigned Short)
+2;   // i32
+2u;  // u32 (Unsigned)
+2l;  // i64 (Long)
+2ul; // u64 (Unsigned Long)
+2f;  // f32 (Float)
+2d;  // f64 (Double)
+
+// Showcase:
+let i = 2u; // u32 (Unsigned)
+i += 1;
+println!(i); // Prints: "3"
+```
+
+### Numbers typecasting
+
+Sometimes you will want to convert a number of a given type to another type, for example an `i16` to an `u16`. This will happen, most of the time, when dealing with functions' arguments as we will see later, but also when trying to assign to an entity that doesn't have the same number type.
+
+The operation to convert a value from a type to another is called _typecasting_. For numbers, upcasts are automatically performed, meaning that if we give an `i8` where an `i16` is expected, the value will be automatically typecasted. Here is the list of upcasts:
+
+* Converting an `i8` to an `i16` ;
+* Converting an `i16` to an `i32` ;
+* Converting an `i32` to an `i64` ;
+* Converting an `u8` to an `u16` ;
+* Converting an `u16` to an `u32` ;
+* Converting an `u64` to an `u64` ;
+* Converting a `f32` to a `f64`
+
+Any other conversion will result in an error:
+
+```sn
+let a: i32 = 2;
+let b: i64 = b; // Works (upcast: i32 -> i64)
+
+let c: i16 = 542;
+let d: i8  = c; // ERROR (downcast)
+
+let e: u8 = 250;
+let f: i8 = e; // ERROR (external cast)
+```
+
+The first error case, _downcast_, happens because the conversion could result in a loss of informations. For example, if we have an `i16` containing the `542` number, converting it to an `i8` would result in a loss because it can't store such a number.
+
+Still, we can perform this conversion using an _explicit typecast_:
+
+```sn
+let c: i16 = 542;
+let d: i8  = <i8> c; // Works (explicit downcast)
+```
+
+This works because we clearly indicate to the builder we know that informations may be lost during the conversion, but we want to do it anyway. In fact, the process behind this is not such magic, but it involves many concepts we will see far later in this book.
+
+The second error case is due to the same reason: if we store `250` in an `u8`, it exceeds the capacity of an `i8`. The solution here is also to perform an explicit cast:
+
+```sn
+let e: u8 = 250;
+let f: i8 = <u8> f; // Works (explicit external cast)
+```
+
+This part may appear complex, but be sure to understand it as it is a critical concept when dealing with numbers.
 
 ### Alternative bases
 
@@ -264,51 +424,49 @@ val oct = 0o675; // Octal
 val hex = 0xFFA; // Hexadecimal
 ```
 
-Note that all numbers, whatever is the representation you use, are converted to decimals and manipulated by the computer as bits. This is just a way to represent simply numbers in an alternative base.
+Note that all numbers, whatever is the representation you use, are converted to decimals and manipulated by the computer as bits. This is just a way to represent simply numbers in an alternative base. For example, writing `0xA` is _exactly_ the same as writing `0d10` or even `10`.
 
-### Underscore separator
-
-Representing large numbers can quickly become a big deal without a number separator. Because the comma `,` is reserved to separate arguments and the single quote `'` to delimit strings, we will use the underscore `_` symbol.
+Also, because representing large numbers can quickly become a big deal without a number separator, we can use the underscore `_` symbol to separate digits without ending the number:
 
 ```sn
 0b10000011;
 0b1000_0011; // Strictly equivalent
 ```
 
-When writing a plain number, all underscores are simply removed from its representation.
+When writing a plain number, all underscores are simply removed from its representation. Note that you cannot start a number with an underscore.
 
 ### Overflow and underflow
 
 A specificity about numbers is the concept of _overflow_ and the similar concept of _underflow_. When dealing with a `i8` for example, if we write:
 
 ```sn
-let num: i8 = -128;
-num = num - 1;
+let num: i8 = 127;
+num = num + 1;
 println!(num);
 ```
 
-The expected result is `-129`. But, because this type cannot handle it, it will _underflow_, and so it will come back to its maximum value, which is `+127`. So, the code above will print `127`, which is unexpected. Be aware of that!
-The same behavior applies when dealing with the upper limit of numbers.
+The expected result is `128`. But, because this type cannot handle it, it will _overflow_, and so it will come back to its minimum value, which is `-128`. So, the code above will print `-128`, which is unexpected. Be aware of that!
+The same behavior applies when dealing with the minimum numbers:
 
 ```sn
-let num: i8 = 125;
-num = num + 5;
-println!(num); // Prints: "-126"
+let num: i8 = -127;
+num = num - 3;
+println!(num); // Prints: "126"
 ```
 
-### Operators
+This is called an _underflow_.
 
-#### Mathematical operators
+### Mathematical operators
 
-_Operators_ are symbols that provides a way to add, substract, multiply or do some operations with one or several numbers. The most common ones are the addition `+`, the substraction `-`, the multiplication `*` and the division `/` operators. Here's how we use it:
+When we apply basic operations on values, like addition or division, we use _operators_. They are divided into several families, notably the mathematical operators, which includes the addition operator:
 
 ```sn
 val result = 2 + 5; // Perform an addition
 ```
 
-If we tell you `2` and `5` are both `int` resources, you can guess the `result` variable will have the same type. Mathematical operators always take two numbers and return a number.
+The type deduction we saw before guesses the result of `2 + 5` (an addition of two `int`) will be an `int` itself.  Mathematical operators always take two numbers and return a number.
 
-The array of mathematical operators is:
+Here is the list of all mathematical operators:
 
 * `+` (add)
 * `-` (substract)
@@ -328,11 +486,37 @@ Showcase:
 8 ** 4; // 4096
 ```
 
-_NOTE :_ As we will see later, mathematical operators can in fact handle any type if some pre-requisites are done. Manipulating numbers is their elementary usage.
+#### Assignment operators
+
+Unlike operators above that create a value from two other ones, assignment operators directly affect the variable they are used on.
+
+The list is:
+
+* `+=` (add)
+* `-=` (substract)
+* `*=` (multiply)
+* `/=` (divide)
+* `%` (modulate)
+* `**=` (pow).
+
+For example, doing `var += 5` is exactly like `var = var + 5`. The same thing applies for all assignment operators.
+
+Showcase:
+
+```sn
+let value: int = 0;
+
+value += 8; // value == 8
+value -= 6; // value == 2
+value *= 9; // value == 28
+value /= 4; // value == 7
+value %= 5; // value == 2
+value **= 3; // value == 8
+```
 
 #### Incremental operators
 
-There only two incremental operators, they only take a variable (not a constant or a plain value) and change its value depending on the operator. We can write the operator before or after the variable's name but be aware, this will change the operator's effect.
+There only two incremental operators, which take a single variable (not a constant or a plain value) and change its value. We can write the operator before or after the variable's name but be aware, this will change the operator's effect.
 
 * `variable ++` (post-increment operator, increment `variable` and return its old value)
 * `++ variable` (pre-increment operator, increment `variable` and return its new value)
@@ -350,11 +534,48 @@ println!(variable --); // Prints: "2" ; variable = 1
 println!(-- variable); // Prints: "0" ; variable = 0
 ```
 
+### Logical operators
+
+Logical operators take one or two entities, which are converted to booleans (`false` if they are NIL values, `true` else), and return a boolean.
+
+The logical operators are:
+
+* `&&` / `and` (and)
+* `||` / `or` (or)
+* `>` (greater than)
+* `<` (less than)
+* `>=` (greater than or equal to)
+* `<=` (less than or equal to)
+* `==` / `is` (equal to)
+* `!=` / `isnt` (not equal to)
+* `nand` (not and)
+* `nor` (not or)
+* `xor` (exclusive or)
+* `!` / `not` (not) - takes a single value
+
+Showcase:
+
+```sn
+pln A = 0_b_0011_1100;
+pln B = 0_b_0000_1101;
+
+A && B; // true
+A || B; // true
+A > B; // true
+A < B; // false
+A >= B; // true
+A <= B; // false
+A == B; // false
+A != B; // true
+A nand B; // false
+A nor B; // true
+A xor B; // false
+! A; // false
+```
+
 #### Bitwise operators
 
-These are bit-by-bit operators - operators that work on each single bit of numbers. They take two number and return a number.
-
-They are:
+Bitwise operators are bit-by-bit operators - they work on each single bit of numbers. They take two number and return another. Here is the list:
 
 * `&` (bit-by-bit and)
 * `|` (bit-by-bit or)
@@ -378,67 +599,7 @@ A << 2; // 1111 0000 : 240
 A >> 2; // 0000 1111 : 15
 ```
 
-#### Logical operators
-
-These are operators that take one or two entities they convert to booleans (`false` if it's a NIL value, `true` else) and return a boolean.
-
-The logical operators are:
-
-* `&&` (and, alias: `and`)
-* `||` (or, alias: `or`)
-* `>` (greater than)
-* `<` (less than)
-* `>=` (greater than or equal to)
-* `<=` (less than or equal to)
-* `==` (equal to)
-* `!=` (not equal to)
-* `nand` (not and)
-* `nor` (not or)
-* `xor` (exclusive or)
-* `!` (not) - which takes only one value (alias: `not`)
-
-Showcase:
-
-```sn
-pln A = 0_b_0011_1100;
-pln B = 0_b_0000_1101;
-
-A && B; // true
-A || B; // true
-A > B; // true
-A < B; // false
-A >= B; // true
-A <= B; // false
-A == B; // false
-A != B; // true
-A nand B; // false
-A nor B; // true
-A xor B; // false
-! A; // false
-```
-
-#### Assignment operators
-
-Unlike operators above that create a value from two other ones, assignment operators directly affect to the variable they are applied on.
-
-The array is: `+=` (add), `-=` (substract), `*=` (multiply), `/=` (divide), `%` (modulate), `**=` (pow).
-
-For example, doing `var += 5` is exactly like `var = var + 5`. The same thing applies for all assignment operators.
-
-Showcase:
-
-```sn
-let value: int = 0;
-
-value += 8; // value == 8
-value -= 6; // value == 2
-value *= 9; // value == 28
-value /= 4; // value == 7
-value %= 5; // value == 2
-value **= 3; // value == 8
-```
-
-#### Concatenation
+### String concatenation
 
 In SilverNight, the `+` (add) operator also acts as the _concatenation operator_. It provides a way to _concatenate_ two stringifyable entities, like a `string` and an `int`. For example, if we have a variable called `area` and we want to display its value with a message, we can do:
 
@@ -446,11 +607,11 @@ In SilverNight, the `+` (add) operator also acts as the _concatenation operator_
 println!("The area is: " + area);
 ```
 
-Here, the compiler will understand we want to do a concatenation because the first value is a string, and the second one a number. So it will perform the concatenation.
+Concatenation only works when a string is on the left of the operator and a primitive on its right. So here, the builder will understand we want to do a concatenation because the first value is a string, and the second one a number (which is automatically converted to a string).
 
-#### Bonus: String expressions
+### String expressions
 
-Here is a useful trick when using strings: we can _evaluate an expression_ from the inside of a string and get its result directly. Let's try it:
+This operator is a little special because it wraps a content instead of being before or inside it. It allows to _evaluate an expression_ from the inside of a string and get its result directly:
 
 ```sn
 val area = 8.5;
@@ -458,7 +619,7 @@ println!("The area is: " + area); // "The area is: 8.5"
 println!(`The area is: ${area}`); // "The area is: 8.5"
 ```
 
-As you can see, here we use backquotes to delimit the string. In the last `println!` statement, `${...}` indicates an expression that must be evaluated and returned in the string. Here, `area` is evaluated as `8.5`, converted to a string, then returned.
+As you can see, here we use backquotes to delimit the string. In the last `println!` statement, `${...}` contains an expression that must be evaluated and returned in the string. Here, `area` is evaluated as `8.5`, converted to a string, then returned.
 
 The code above would also work fine:
 
@@ -466,7 +627,7 @@ The code above would also work fine:
 println!(`This is ${'go' + 'od'}`); // "This is 'good'"
 ```
 
-Because the `'go' + 'od'` expression is evaluated and its result (`good`) returned in the string.
+The `'go' + 'od'` expression is simply evaluated and its result (`good`) returned in the string.
 
 Think about this feature when using strings with dynamic values!
 
@@ -474,9 +635,9 @@ Think about this feature when using strings with dynamic values!
 
 ### Vectors
 
-When we want to represent an array of data in SilverNight, we use _vectors_. First, they are **arrays**, which have a fixed length, and **lists**, which are extensible.
+Vectors are the most simple way to represent a list of data. There are several type of vectors ; the most simple to handle are **arrays** which have a fixed length, and **lists** which are extensible.
 
-Let's declare an array of 3 names:
+Let's declare an array containing three names:
 
 ```sn
 let names: string[3];
@@ -490,13 +651,15 @@ println!(names[1]); // Second element
 println!(names[2]); // Third element
 ```
 
-As you can see, indexes start at `0`. That's a standard implementation of vectors in almost any programming language. If we run the code above, it will display three empty strings, because we haven't initialized our array yet. We know have several choices:
+As you can see, indexes start at `0`, which is the first string. To access the second one, we use index `1`, and so on.
+
+If we run the code above, it will display three empty strings, because we haven't initialized our array yet. We know have several choices:
 
 * Assigning values at declaration ;
 * Assigning them _after_ declaration ;
 * Assigning them one by one
 
-Here is how to implement all of them:
+Here is their syntax:
 
 ```sn
 // Assigning values at declaration
@@ -513,22 +676,22 @@ array[1] = "Luy";
 array[2] = "Thomas";
 ```
 
-There's also a way to define an array when we don't know its type:
+There's also a way to define an array when we don't know its length:
 
 ```sn
 // Assigning without knowing the length
 let array: string[] = [ "Jack", "Lucy", "Thomas" ];
 ```
 
-This is not useful in this example, we especially useful when we will deal with _functions_.
+This is not useful in this example, but it is when we will deal with functions later. Still, note that, in this example, the length of `array` is not predictable. This means that doing `array[3]` will not throw an error at build time, but it will when the program will be ran.
 
-We can also declare arrays without their type:
+We can also declare arrays without their type, thanks to type inference:
 
 ```sn
 let array = [ "Jack", "Lucy", "Thomas" ];
 ```
 
-To define a list, we do like this:
+That's when we declare a fixed-length list of data. But when we know we'll have to add or remove data later, we use a _list_ :
 
 ```sn
 let list: List<string>;
@@ -538,23 +701,41 @@ We don't even have to declare a length because it is not fixed, so we can add an
 
 ```sn
 // Assigning values at declaration
-let list: List<string> = [ "Jack", "Lucy", "Thomas" ];
+let list: List<string> = [ # "Jack", "Lucy", "Thomas" ];
 
 // Assigning values after declaration
 let list: List<string>;
-list = [ "Jack", "Lucy", "Thomas" ];
+list = [ # "Jack", "Lucy", "Thomas" ];
 
 // Assigning values one by one
 let list: List<string>;
-list.push("Jack");
-list.push("Lucy");
-list.push("Thomas");
+list[] = "Jack";
+list[] = "Lucy";
+list[] = "Thomas";
+
+// Edit the 3rd item in the list
 list[2] = "Thomas";
 ```
 
-As you can see, if we except the length value, only the third way changed. We know _push_ new elements, instead of assigning them. We can also remove the last pushed element by doing `list.pop();` which also returns this element (so we can do `val last = list.pop();`).
+As you can see, if we don't give the length value, only the third way changed. We know _push_ new elements using the `list[] = data` syntax.
 
-We can also access indexes with variables:
+Note that we can also remove elements from the list:
+
+```sn
+// Create a list
+let list: List<string> = [ # "Jack", "Lucy", "Thomas" ];
+
+// Remove the second element ("Lucy")
+list.removeAt(1);
+
+// Remove "Thomas"
+list.remove("Thomas");
+
+// Print the list's length
+println!(list.size); // Prints: "1"
+```
+
+Note that we use variables as indexes for every type of vectors:
 
 ```sn
 let value: int = 1;
@@ -563,12 +744,9 @@ println!(list[value]); // Prints: "Lucy"
 
 ### Templated types
 
-Let's now see what vectors _really_ are. They are in fact represented by two classes, `Array` and `List`. There are different on some little points:
+Let's now see what vectors _really_ are. They are in fact represented by two classes, `Array` and `List`.
 
-* `Array` is a fixed-length array. We cannot extend it or remove some elements, we can just do some operations on the elements it contains ;
-* `List` is an extensible array.
-
-We will be able to access exactly the same functions for both the `Array` and the `List` type, excepted there are some additional ones for `List` (like extension or elements removing).
+We will be able to access exactly the same functions for both the `Array` and the `List` type, excepted there are some additional ones for `List` (like extension or elements removing). This means that every function that works on an `Array` object will work on a `List` too.
 
 There is a specificity about these types, though. If we simply try to create variables with them, like for an array of names:
 
@@ -576,28 +754,29 @@ There is a specificity about these types, though. If we simply try to create var
 let names: Array; // ERROR
 ```
 
-Iyr program won't work. Why? Because these types are called _templated_ types. This mean they need _another type_ to work correctly. In fact, vectors need to know what _type_ of values they will handle. In our case, we want to store an array of names, which are strings, so let's declare it:
+Our program won't work. Why? Because these types are _templated_, which means they need a _template_ in order to work. In fact, vectors need to know what _type_ of values they will handle. In our case, we want to store an array of names, which are strings:
 
 ```sn
 let names: Array<string>;
 ```
 
-Here, `Array` is called a _templated type_ and `string` is called its _template_. There's still a problem though: while lists have a flexible length, arrays have a fixed one. So we know have an empty `names` array we cannot anything with. Let's say we have 3 names:
+In this example, `string` is the _template_ of `Array`. But, this program still won't build, because this class has two templates. The first one is the type we gave to it, and the second one (which is specific to arrays) is the length of the vector:
 
 ```sn
-let names: Array<string> = new Array<string, 3>;
+// Array with a length of 3
+let names: Array<string, 3>;
 ```
 
-Here's a keyword we don't know: `new`. It simply creates an _instance_ of a type, and returns it. An instance is always an object, excepted for primitive types that are very special - in their case it returns a primitive.
-
-We give one argument to `Array` here: `3` is the length of the array. But this syntax is still heavy, so let's shorten this declaration:
+We give one additional template to `Array` here: `3` is the length of the array. But this syntax is still heavy, so let's shorten this declaration:
 
 ```sn
 // Inferred type allows us to omit the type
 let names = new Array<string, 3>;
-// There is also a syntax sugar for arrays:
+// Short notation:
 let names: string[3];
 ```
+
+Here's a keyword we don't know: `new`. It simply creates an _instance_ of a type.
 
 The second line above works exactly like the first one: they both declare a new array with 3 values.
 
@@ -612,12 +791,20 @@ let names = new List<string>;
 
 We can now use them as we saw previously.
 
-### Tuples
-
-Tuples are arrays that can combine mixed types. They are defined as follows:
+Note that there is a common type for both lists and arrays, which are vectors:
 
 ```sn
-val tuples: (int, float, string) = (2, 4.8, "Hello");
+// Declare two vectors: a list and an array
+let array: string[] = new Array<string, 3>;
+let list: string[] = new List<string>;
+```
+
+### Tuples
+
+Tuples are very similair to arrays, except the fact they can combine mixed types. They are defined as follows:
+
+```sn
+val tuples: (int, f32, string) = (2, 4.8, "Hello");
 ```
 
 Thanks to inferred typing, we can simply write:
@@ -632,25 +819,50 @@ To get or set a value from a tuple, we simply use an index as for arrays:
 println!(tuples[2]); // Prints: "Hello"
 ```
 
-Though, indexes must be plain numbers. They can't be a variable, because the type of each member of the tuple may be different. An exception is plain constants, which can be used for indexes:
+Though, indexes must be plain numbers. They can't be a variable, because the type of each member of the tuple may be different.
+
+Note that plain constants are still considered as plain data, so it's possible to use them as tuples' indexes:
 
 ```sn
+// Constant
 val index1 = 1;
+// Plain constant
 pln index2 = 2;
 
+// Constants won't work
 println!(tuples[index1]); // ERROR
+// But plain constants will
 println!(tuples[index2]); // Prints: "Hello"
 ```
 
-Note that, as for arrays, tuples are considered as a single type (even if it can combine several values of different types).
+Note that, as for arrays, tuples are considered as a single type (even if it can combine several values of different types). Also, tuples have the `Tuple` type, even though we can't do anything with it.
 
-Also, tuples have the `Tuple` type.
+We can also check if a value is contained in a tuple using the `in` keyword:
+
+```sn
+val tuple = ( 18, "John", true );
+
+"John" in tuple; // Equal to true
+"Jack" in tuple; // Equal to false
+```
+
+When we told previously that plain constants could only contain litterals, tuples are part of them. This means the following declaration is allowed:
+
+```sn
+// Plain tuples
+pln MY_CONSTANT = ( 18, "John", true );
+
+// Multi-level plain tuples
+pln MY_CONSTANT = ( 18, ( "John", "Lucy", "Thomas" ), true );
+
+println!(MY_CONSTANT[1][2]); // Prints: "Lucy"
+```
 
 ### Structures
 
-We now want to represent a video game hero. It has a name, Health Points (HP), Magic Points (MP), attack and defense points. How could we describe this? A first idea would be to make an array of five elements, the first element referring to the name, the second one to the HP, the third one to the MP, and so on. But this is not very readable and hard to maintain.
+Let's say we now want to represent a video game hero. It has a name, health points (HP), magic points (MP), attack and defense points. How could we describe this? A first idea would be to make an array or a tuple of five elements, the first element referring to the name, the second one to the HP, the third one to the MP, and so on. But this is not very readable and hard to maintain.
 
-A great tool to make custom objects is the _structure_. It acts like a class, but we define its properties and methods. It is not exactly a class, but we'll do as if it was one - for now, at least. Here's how it works:
+A great tool to solve our problem is _structures_. They work as tuples with string indexes : we can't extend them, and we cannot access them using variable indexes. Here is an example of a simple structure:
 
 ```sn
 struct Hero {
@@ -662,18 +874,10 @@ struct Hero {
 }
 ```
 
-Now, we can instanciate it like we would do with any other type:
+We _instanciate_ it this way:
 
 ```sn
-let jack: Hero;
-```
-
-All the structure's properties have been initialized to their NIL value: the name is an empty string, the hp, mp, attack and defense are equal to 0.
-
-Let's remediate to that by giving values at declaration time!
-
-```sn
-let jack: Hero = {
+let jack: Hero = Hero {
   name: "Jack",
   hp: 80,
   mp: 10,
@@ -682,7 +886,47 @@ let jack: Hero = {
 };
 ```
 
-All properties can be assigned anytime. We could do `jack.hp += 5;` whenever we want. But we want to name to be constant. So, in the structure, we change:
+Not that we can omit the structure's name before the opening bracket `({)` but it's conventional to put it to clearly indicate what structure we are using for this object.
+
+### Enumerations
+
+Enumerations allows to use a set of identifiers. Values using the enumeration type can only contain one of the enumeration's identifiers. It goes like this:
+
+```sn
+enum Color { RED, GREEN, BLUE }
+
+val red  : Color = Color.RED;
+val green: Color = Color.GREEN;
+val blue : Color = Color.BLUE;
+
+val somethingElse: Color = 2; // ERROR
+```
+
+Note that all enumeration values are also `usize` values:
+
+```sn
+val red  : usize = Color.RED;
+val green: usize = Color.GREEN;
+val blue : usize = Color.BLUE;
+
+println!(red); // Prints: "0"
+println!(green); // Prints: "1"
+println!(blue); // Prints: "2"
+```
+
+It's also possible to force the value of the enumeration's members:
+
+```sn
+enum Color { RED, GREEN = 8, BLUE }
+
+println!(Color.RED); // Prints: "0"
+println!(Color.GREEN); // Prints: "8"
+println!(Color.BLUE); // Prints: "1"
+```
+
+#### Constant properties
+
+All the properties of a structure instance can be assigned anytime, so can do `jack.hp += 5;` whenever we want for example. But let's admit we want the name to be constant, so we can't change it after declaration. We just have to change this:
 
 ```sn
   // ...
@@ -690,7 +934,7 @@ All properties can be assigned anytime. We could do `jack.hp += 5;` whenever we 
   // ...
 ```
 
-To:
+Into:
 
 ```sn
   // ...
@@ -698,17 +942,20 @@ To:
   // ...
 ```
 
-And the property will be constant! Be aware though, we absolutely need to initialize `jack`'s declaration. Else, an error will be thrown by the compiler, saying the object was not initialized.
+And the property will be constant! Be aware though, we absolutely need to initialize `jack` at declaration time. Else, an error will be thrown by the builder, saying the object has not been initialized.
 
 But we can still make some properties optionals, so we won't have to specify them when initializing the structure:
 
 ```sn
 struct Identity {
+  // Constant property
   val name: string;
+
+  // Optional property
   adult: bool = false;
 }
 
-// Another syntax that uses type inference
+// Another declaration syntax that uses type inference
 val jack = Identity {
   name: "Jack"
 };
@@ -716,7 +963,7 @@ val jack = Identity {
 println!(jack.adult); // Prints: "false"
 ```
 
-Also, note that constantness doesn't prevent structure's items from being written:
+Also, note that constantness of the entity that contains the object doesn't prevent its items from being written:
 
 ```sn
 struct Identity {
@@ -733,9 +980,38 @@ jack.adult = false; // Works fine
 println!(jack.adult); // Prints: "false"
 ```
 
+#### Plain properties
+
+Structures can also ask for plain values:
+
+```sn
+struct Identify {
+  pln name: string;
+  adult: bool;
+}
+
+val jack = Identity {
+  name: "Jack",
+  adult: true
+};
+
+pln Jack_Name = jack.name; // Works fine
+```
+
+Note that declaring a property as a plain constant makes the structure assignable only to constant entities. This is due to the fact a mutable can take as its value several instances of the structure, at different time. This makes the property unpredictable, and so it wouldn't be a plain constant.
+
+```sn
+struct PlainName {
+  pln name: string;
+}
+
+let jack = Identity { name: "Hello" }; // ERROR
+val jack = Identity { name: "Hello" }; // Works fine
+```
+
 #### Tuple structures
 
-Structures can declare a tuple type, to avoid writing the full tuple's definition all the time. Here is how it goes:
+Structures can declare a tuple type, to avoid writing the full tuple's definition all the time:
 
 ```sn
 struct Identity (string, bool);
@@ -748,15 +1024,17 @@ println!(jack[1]); // Prints: "true"
 
 ### Dictionaries
 
-Last but not least, let's imagine we want to associate the name of a person with its age. We want to be able to add or remove persons at anytime. A structure will of course not be adapted for this purpose. But there is a tool for this type of situations: the dictionaries. These act like arrays or lists, but this time indexes are not forced to be integers but any resource, even boolean or other dictionaries! They are of course extensible.
+Last but not least, let's imagine we want to associate the name of a person with its age. We want to be able to add or remove persons at anytime. A structure will of course not be adapted for this purpose. But there is a tool for this type of situations: the dictionaries. These act like lists, but they are doubly-templated: we can choose both the type of the values **and** the type of the keys.
+
+For example, if we want to connect integers (persons' age) to strings (persons' name), we do like this:
 
 ```sn
 let ages: Map<string, int>;
 ```
 
-We can know add any property by doing `ages.Jack = 28;` or so on. To remove a property, we simply do `ages.unset();`. Here's a trap of dictionaries: all properties will return - if they exist - an instance of the second template (`int` here) but a few ones, like `unset` or `has`, will be functions. In order to avoid this problem with variables, writing `ages[anyIndexHere]` will return an `int`, whatever `anyIndexHere` is. We can even write `ages["unset"]` which does the same thing.
+We can know add any property by doing `ages.Jack = 28;`. To remove a property, we simply do `ages.unset();`. Here's a trap of dictionaries: all properties will return - if they exist - an instance of the second template (`int` here) but a few ones, like `unset` or `has`, will return functions. In order to avoid this problem with variables, writing `ages[anyIndexHere]` will return an `int`, whatever `anyIndexHere` is. We can even write `ages["unset"]` which does the same thing.
 
-Also, there is a shortcut for dictionaries with `string` keys: the `Collection` type. Here is how it goes:
+Also, there is a shortcut for dictionaries with `string` keys: the `Collection` type. It is basically a dictionary that has string keys:
 
 ```sn
 let ages: Collection<int>;
@@ -780,60 +1058,69 @@ We can also initialize the dictionary with values:
 
 ```sn
 let ages: Map<string, int> = {
+  # // Indicates a dictionary
   Jack: 20,
   Lucy: 21,
   Thomas: 32
 };
 ```
 
-Unlike structures, you can here use a variable for the index, so the following code will work as expected:
+Unlike structures and like lists, variables can be used as indexes:
 
 ```sn
-let index = "Lucy";
 let ages: Map<string, int> = {
+  #
   Jack: 20,
   Lucy: 21,
   Thomas: 32
 };
+
+let index = "Lucy";
 
 println!(ages[index]); // Prints: "21"
 ```
 
-But a new trap comes here. If you try to omit the type in the declaration above, you will have some surprise at compilation time because `ages` would now be a structure with three properties, `Jack` `Lucy` and `Thomas`! Why does this happen? Because Inferred Structured Typing (IST) we will see now.
+#### The truth about vectors
+
+Arrays and lists are in fact dictionaries. Their keys are integers, while their values is the type we gave as a template to the class.
+
+This is why lists use the same `#` symbols as dictionaries. For arrays, that's a little bit complex, as we'll see now.
 
 ### Inferred Structured Typing
 
-IST is a feature of the SilverNight language that aims to simplify data typing.
+_Inferred Structured Typing_, or in its short form "IST", is a feature of the language that aims to provid type inference when dealing with more complex data.
 
-Let's say we have to handle an object that is an array of books. This would be a list of objects, each with the name of a book and a "details" object that would contain the author's name, the release year as well as the country it was initially released. We want to have two books inside it initially. Because we have a list, containing a specific object, we would write the following code:
+Let's say we have to handle an object that is an array of books. Each book would be an instance of structure containing as properties a name, a realease year as well as the country it was initially released. We would simply put these instances into a list and manage them easily, which would result in the following code:
 
 ```sn
 struct Book {
   name: string;
-  details: {
-    author: string;
-    year: string;
-    country: string;
-  }
+  details: BookDetails;
+}
+
+struct BookDetails {
+  author: string;
+  year: string;
+  country: string;
 }
 
 // Make an array of books
 let books: List<Book>;
 
 // Add a first book
-books.push({
+books.push(Book {
   name: "Harry Potter",
-  details: {
-      author: "J.K. Rowling",
-      year: "1997",
-      country: "United Kingdom"
+  details: BookDetails {
+    author: "J.K. Rowling",
+    year: "1997",
+    country: "United Kingdom"
   }
 });
 
 // Add a second one
-books.push({
+books.push(Book {
   name: "Eragon",
-  details: {
+  details: BookDetails {
     author: "Cristopher Paolini",
     year: "2003",
     country: "USA"
@@ -841,9 +1128,11 @@ books.push({
 });
 ```
 
-That's pretty heavy, right? That's why SilverNight supports IST. Here's how the compiler implements it: when you specify the type of a resource, the compiler attemps to see exactly the same structure in the initialization part (if there is one). That's why you can do the same assignment for a `Array` and an `List` variable, even though there don't have the same type. The compiler understands you are trying to assign an array of data and do the required stuff in the background.
+That's pretty heavy, right? This is where IST comes.
 
-IST takes sense when you have more complex structures like this and don't want to define a whole structure. It analyses your object and guesses its type to make what it calls an _on-the-fly_ structure, a structure that wasn't defined explicitly. Here's an example for our problem:
+Basically, IST consists in analyzing a plain object to deduce a structure that would have the same properties as the object. That's the feature which allows us to initialize arrays and lists without providing any class.
+
+IST makes sense in our case because our code can be simplified a lot by not declaring a structure for our books and simply creating a book containing some. Here is the resulting code:
 
 ```sn
 let books = [
@@ -867,13 +1156,15 @@ let books = [
 ];
 ```
 
-We didn't defined any structure, and yet the compiler guesses the type of the `books` variable. There's only one problem here: the compiler will understand you are making a _structure_, so nothing is extensible here. You can still change a book's name, the country it was originally published in, but not add new books.
+We didn't defined any structure, and yet the builder guessed the type of the `books` variable. In the background, the builder makes _ghost structures_, called this way because they don't appear in our code, and apply them on our objects.
 
-To solve this problem, we write `#dict` (names beginning by a `#` symbol are called _directives_) at the beginning of the object we want to make extensible.
+But there's still one problem here: the builder is understanding that `books` is an array, so we won't be able to add any book. Books' names, as well as their original country, author or publishing year will be editable, but nothing will be extensible.
+
+To solve this, we have to indicate we are dealing with a list here. So we just have to add the `#` at the beginning of the list to make it extensible:
 
 ```sn
 let books = [
-  #dict;
+  # // Makes the object extensible
 
   {
     name: "Harry Potter",
@@ -897,19 +1188,83 @@ let books = [
 
 Now all works fine!
 
-To fully understand the powerfulness of IST, let's think we want to make the `details` object extensible, to add _optional_ new informations about the book. We would have to add `#dict` at the beginning of each `details` object, but that would be too heavy. So we simply have to write it at the beginning of the very first `details` object and it will affect all the other ones. It's as simple as that.
+The `#` symbol indicates we are dealing with a dictionary. As you may think, arrays are dictionaries too, so why don't we use this symbol when we are creating ones? Simply because IST have different syntaxes that don't do the same thing.
 
-_NOTE :_ We say that IST produces **on-the-fly structures**, which means it produces structures that were not declared before being used.
+Because this is a bit complex, here is an exhaustive list of all the different syntaxes supported by the IST:
 
-`#dict` will turn `Array` objects into `List` ones and `struct` into `Map<string, int>` here. Of course, this last step requires all the properties into `details` have the same type, else it wouldn't work.
+* `[ "Hello", "World" ]` makes an array (of strings)
+* `[ # "Hello", "World" ]` makes a list (of strings)
+* `{ name: "Hello" }` makes a ghost structure and applies it on the plain object
+* `{ # name: "Hello" }` makes a map (with string keys and string values)
 
-Note that it works with defined object too:
+Here is a code equivalence:
+
+```sn
+// What we write:
+let data = [ "Hello", "World" ];
+
+// What IST does:
+let data = new Array<string>("Hello", "World");
+```
+
+```sn
+// What we write:
+let data = [ # "Hello", "World" ];
+
+// What IST does:
+let data = new List<string>("Hello", "World");
+```
+
+```sn
+// What we write:
+let data = { name: "Hello" };
+
+// What IST does:
+struct DataStruct {
+  name: string;
+}
+
+let data = DataStruct {
+  name: "Hello"
+};
+```
+
+```sn
+// What we write:
+let data = { # name: "Hello" };
+
+// What IST does:
+let data = new Map<string, string>([ "name" ], [ "Hello" ]);
+
+// Which itself uses IST so in fact results it:
+let data = new Map<string, string>(new Array<string>("name"), new Array<string>("Hello"));
+```
+
+Final word: IST allows you to write, for example:
+
+```sn
+let data = { # name: "Hello" };
+```
+
+Instead of:
+
+```sn
+let data = new Map<string, string>(new Array<string>("name"), new Array<string>("Hello"));
+```
+
+That's a lot simplier, isn't it?
+
+This part is complex, and as it's an important point don't hesitate to read it again until you fully understand it.
+
+#### Pre-defined objects
+
+IST also supports pre-defined objects, as long as they have exactly the same type (ghost structure or vector type):
 
 ```sn
 val harryPotter = {
   name: "Harry Potter",
   details: {
-      #dict;
+      #
       author: "J.K. Rowling",
       year: "1997",
       country: "United Kingdom"
@@ -919,7 +1274,7 @@ val harryPotter = {
 val eragon = {
   name: "Eragon",
   details: {
-      #dict;
+      #
       author: "Cristopher Paolini",
       year: "2003",
       country: "U.S.A."
@@ -927,14 +1282,15 @@ val eragon = {
 };
 
 let books = [
-  #dict;
-  harryPotter, eragon
+  #
+  harryPotter,
+  eragon
 ];
 ```
 
-Here, because we create an array from two distinct objects, they must have the `#dict` directive on their `details` field.
+In this example, because we create an array from two distinct objects, they must **both** have the `#` directive on their `details` field. Else, one would use a ghost structure for this field, while the other would use a map - which makes them incompatible, so not usable in `books` with the syntax we used.
 
-Be awayre though, if no `#dict` directive is present the vector is considered as an array, else it's a list. So, the following example will not work:
+Below is a code that doesn't work because of type incompatibility:
 
 ```sn
 struct Hero {
@@ -948,18 +1304,18 @@ val jack = Hero {
 };
 ```
 
-Here, a `List<string>` is expected but an `Array<string>` (`string[]`) is found. The valid code would be:
+The error is caused by the fact a `List<string>` is expected but an `Array<string>` (`string[]`) is found instead. The valid code would be:
 
 ```sn
 val jack = Hero {
   name: "Jack",
-  spells: [ #dict; "Fire", "Ice" ] // ERROR
+  spells: [ # "Fire", "Ice" ] // Works fine
 };
 ```
 
 ### Multiple assignments
 
-Objects allow _multiple assignments_, which means we can make several assignments at once. Let's consider the following object:
+Objects - both structures and dictionaries - allow _multiple assignments_, which means we can make several assignments at once. Let's consider the following object:
 
 ```sn
 val hero = {
@@ -983,12 +1339,13 @@ But that's a bit long, so there's a syntax to shorten that in a single line:
 val { name, age, warrior } = hero;
 ```
 
-What we've done here is to extract some properties of `hero` and store them into constants of the same name. The array of the properties to extract (which is also the array of constant to make) is specified between braces (`{}`).
+What we've done here is to extract some properties of `hero` and store them into constants of the same name. The array of the properties to extract (which is also the array of the constants to make) is specified between braces (`{}`).
 
 Multiple assignments also work the other way: we can make an object from an array of entities, like this
 
 ```sn
 val hero_copy = { name, age, warrior };
+
 // Strictly equivalent to:
 val hero_copy = {
   name: name,
@@ -1001,20 +1358,20 @@ This syntax can also be mixed with other properties:
 
 ```sn
 val new_hero = {
-  name,
-  age,
-  warrior: false
+  name, // Implicit value
+  age, // Implicit value
+  warrior: false // Explicit value
 };
 ```
 
-Note that there is a similar syntax for lists:
+There is also a similar syntax for lists:
 
 ```sn
 // Make a sample list
 val list = [ 2, 5, 8, 9 ];
 
 // Extract from list
-val (n1, n2, n3, n4) = list;
+val [ n1, n2, n3, n4 ] = list;
 // Equivalent to:
 val n1 = list[0],
     n2 = list[1],
@@ -1022,22 +1379,22 @@ val n1 = list[0],
     n4 = list[3];
 
 // Left splice
-val (...first, n4) = list;
+val [ ...first, n4 ] = list;
 // Equivalent to:
-val first = list.slice(0, 3),
+val first = [ list[0], list[1], list[2] ],
     n4 = list[3];
 
 // Right splice
-val (n1, ...last) = list;
+val [ n1, ...last ] = list;
 // Equivalent to:
 val n1 = list[0],
-    last = list.slice(1, 3);
+    last = [ list[1], list[2], list[3] ];
 
 // Middle splice
-val (n1, ...middle, n4) = list;
+val [ n1, ...middle, n4 ] = list;
 // Equivalent to:
 val n1 = list[0],
-    middle = list.slice(2, 2),
+    middle = [ list[1], list[2] ],
     n4 = list[3];
 ```
 
@@ -1045,104 +1402,82 @@ Note that there is also the `...` symbol to ignore some entries in the list:
 
 ```sn
 // Middle splice
-val (n1, ..., n4) = list;
+val [ n1, ..., n4 ] = list;
 // Equivalent to:
 val n1 = list[0],
     n4 = list[3];
 ```
 
-This avoids making a useless entity that takes time and memory for nothing if we don't need it.
+This avoids making a useless entity to store the middle values.
 
-The same syntax applies to tuples:
+Here is a last syntax, for tuples this time:
 
 ```sn
-func invert (left: int, right: int) : (int, int) {
-  return (right, left);
-}
+val tuple = (1, 2);
 
-val (two, one) = invert(1, 2);
+// Extract from tuple
+val (one, two) = tuple;
+// Equivalent to:
+val one = tuple[0],
+    two = tuple[1];
 
-println!(two); // Prints: "2"
 println!(one); // Prints: "1"
+println!(two); // Prints: "2"
 ```
 
 ## The blocks
 
+Blocks provide ways to control the program's flow, as well as some tricks like scoping.
+
 ### Conditional blocks
 
-There are several types of _blocks_ in SilverNight. One of them are the conditional blocks, they provide a way to run a set of instructions only if a condition is met.
+Conditional blocks are the most common type of blocks: they simply provide a way to run a set of instructions only if a condition is met.
 
-The first one is the `if` block. It runs a provided code if the expression between parenthesis is anything different from the primitives' type `NIL` value. Its syntax is:
+The first one is the `if` block. It runs the provided code if the given expression is anything different from the primitive `NIL` values (which are `null`, `false`, `0` and `""`). Its syntax is:
 
 ```sn
-if (2 + 2 == 4) {
+if 2 + 2 == 4 {
   println!("Good.");
 }
 ```
 
-Let's look at what happens here. First, the `2 + 2 == 4` expression is evaluated. As it's using the `==` logical operator, the result is `true`. Because it's a value different from the four NIL value we saw above, the instructions set is ran.
+Let's look at what happens here. First, the `2 + 2 == 4` expression is evaluated. As it's using the `==` logical operator, the result is `true`. Because it's a value different from the four NIL values, the instructions set is ran.
 
 If you want to do something if the expression _is_ a NIL value, you can use the `else` block to revert the condition:
 
 ```sn
-if (2 + 2 == 5) {
+if 2 + 2 == 5 {
   println!("What?");
 } else {
   println!("Good.");
 }
 ```
 
-Here, the `2 + 2 == 5` returns `false`, which is a NIL value, so the instructions set is not ran. But the `else` block reverts the condition and, because it was `false` before, it becomes `true`, so its own instructions set is ran. You will see a `Good.` message in your console if you run it.
+Here, the `2 + 2 == 5` expression returns `false`, which is a NIL value, so the instructions set is not ran. But the `else` block reverts the condition and, because it was `false` before, it becomes `true`, so its own instructions set is ran. You will see a `Good.` message in your console if you run it.
 
-You can also have multiple conditions by combining `else` and `if`:
+You can also have multiple conditions by combining `else` and `if` to form the `elsif` keyword:
 
 ```sn
 let name = "John";
 
-if (name == "Marco") {
+if name == "Marco" {
   println!("Your name is Marco!");
-} elsif (name == "Paul") {
+} elsif name == "Paul" {
   println!("You are Paul.");
-} elsif (name == "John") {
+} elsif name == "John" {
   println!("Welcome, John!");
 } else {
   println!("I can't remember you...");
 }
 ```
 
-_Tip :_ When the instructions set of a block is made of a single instruction, you can remove the `{` and `}` symbols, like this:
+Note that there isn't a special syntax for single-instruction, like in other programming languages (e.g. `if (condition) instruction;`). That's because this last syntax easily leads to errors when braces have been forgotten (e.g. after adding a second instruction but forgetting to add the braces after that), and to have a unique development style (no condition wraps its expression between parenthesis).
 
-```sn
-let name = "John";
+### `for`: incremental repetition
 
-if (name == "Marco")
-  println!("Your name is Marco!");
-elsif (name == "Paul")
-  println!("You are Paul.");
-elsif (name == "John")
-  println!("Welcome, John!");
-else
-  println!("I can't remember you...");
-```
+Loop blocks are blocks that repeat a set of instructions zero, one or several times depending on the condition we provide to them.
 
-_Tip :_ Unlike some other languages, the compiler doesn't care about the indentation. So, can you also write:
-
-```sn
-let name = "John";
-
-if (name == "Marco") println!("Your name is Marco!");
-elsif (name == "Paul") println!("You are Paul.");
-elsif (name == "John") println!("Welcome, John!");
-else println!("I can't remember you...");
-```
-
-This will work fine.
-
-### `for` for incremental repeat
-
-A general concept you will find in almost every language is the concept of _loops_. A loop is a block that repeats a set of instructions under certain conditions. Let's see how they work.
-
-The `for` block repeats the instructions a given amount of times. It needs an _iterator variable_ (which is a variable with any `number` type - integer or not), an optional start value, a condition and an incremental expression. Here is how we write it:
+The `for` block repeats the instructions a given amount of times. It needs an _iterator variable_ (which is a variable with any number type, integer or not), an optional start value, a condition and an incremental expression:
 
 ```sn
 for i = 0; i < 5; i ++ {
@@ -1150,13 +1485,13 @@ for i = 0; i < 5; i ++ {
 }
 ```
 
-What does this code do? First, it automatically declares a local variable called `i` and infers its type as `int`. The loop starts by giving it a first value (the _start value_) to 0. The loop indicates it will run **until** its condition is true (`i < 5`). Then, it specifies its _incremental expression_, an expression which is evaluated each time the loop is runned (excluding the first time).
+What does this code do? First, it automatically declares a local variable called `i` and infers its type as `int`. The loop starts by giving it a first value (the _start value_) which is 0. A `for` loop always run **until** its condition is not NIL (`i < 5` returns a boolean), so while it's a NIL value. Then, it specifies its _incremental expression_, an expression which is evaluated each time the loop is ran (excluding the first time).
 
-So, the loop starts by setting 0 to `i`. The condition is checked, and is evaluated to `true`, so the instructions set will be executed. The program displays `0`. Then, the incremental expression is evaluated so `i` is now equal to `1`. We check again the condition which is still `true`, the expression is ran, the incremental expression is evaluated a second time so `i` is equal to `2`, and so on until, after running the incremental expression, the condition became a NIL value.
+So, the loop starts by setting 0 to `i`. The condition is checked, and is evaluated to `true`, so the instructions set will be executed (for this time, at least). The program displays `0`. Then, the incremental expression is evaluated so `i` is now equal to `1`. We check again the condition which is still `true`, the expression is ran, the incremental expression is evaluated a second time so `i` is equal to `2`, and so on until, after running the incremental expression, the condition becomes a NIL value.
 
-The loop above will therefore display `0`, `1`, `2`, `3` and `4`. That's all.
+The loop above will therefore display `0`, `1`, `2`, `3` and `4` ; then terminate.
 
-Note that you could also write the variable's declaration directly in the loop's head:
+Note that we could also write the variable's declaration directly in the loop's head:
 
 ```sn
 for i: int = 0; i < 5; i ++ {
@@ -1166,16 +1501,16 @@ for i: int = 0; i < 5; i ++ {
 
 Whatever is the way we use, the iterator variable will be _scoped_ to this block, which means we can use it only inside the block and that the variable will be deleted outside. If an `i` variable already exists in the main scope, it will simply be ignored and a new, local variable will be made.
 
-Another thing is about the incremental expression. It can be absolutely any expression, like `i --` to decrement it:
+Note that the incremental expression can be **any** valid expression, like `i --` to make a decremental loop:
 
 ```sn
-// This loop does exactly the same thing than the previous one
+// Prints: 4 3 2 1 0
 for i = 4; i >= 0; i -- {
   println!(i);
 }
 ```
 
-Or `i += 5`, or whatever you want. There is also an alternative syntax made to replace the one we saw above. This is called the _range syntax_:
+It could also be `i += 5`, or whatever you want. There is also an alternative syntax made to iterate from an integer to another using ranges:
 
 ```sn
 for i in 0..5 {
@@ -1209,13 +1544,43 @@ for i in 5..0 {
 }
 ```
 
-This will result in printing: `5` `4` `3` `2` `1`.
+This will print: `5` `4` `3` `2` `1`.
 
-### `while` for conditional repeat
+### `break` and `continue` loops
 
-A useful loop every developer has ever used is the `while` block. It repeats a set of instructions _while_ its condition is not a NIL value.
+When dealing with a loop, you can want to exit it if a specific even happens. For example, if we have an `hadError` function that returns a boolean to indicate an error happened, we could want to exit the loop.
 
-The syntax is:
+Let's try it:
+
+```sn
+for i in 1..10 {
+  println!(i);
+
+  if hadError() {
+    break; // Exit the loop
+  }
+}
+```
+
+There, if `hadError` returns `true`, the `break` instruction will be executed and the loop will break - so its next iterations will be ignored.
+
+Another useful loop keyword is `continue` that provides a way to ignore all instructions below it but only one time.
+
+```sn
+for i in 1..10 {
+  if hadError() {
+    continue;
+  }
+
+  println!(i);
+}
+```
+
+This code will check each time if there was an error. If so, it will ignore all instructions above `continue` and iterate the loop a new time. Else, it will run the `println!` flex, just as expected.
+
+### `while`: conditional repetition
+
+The `while` block is another loop block, which repeats a set of instructions _while_ its condition does not evaluate to a NIL value.
 
 ```sn
 let counter = 8;
@@ -1226,16 +1591,16 @@ while counter > 1 {
 }
 ```
 
-This code will print `counter`'s value and then divide it by 2, while it's higher than 1. So it will display: `8` `4` `2`. Then `counter` is equal to 1 so the loop ends.
+This code will print `counter`'s value and then divide it by 2, and that while it's higher than 1. So it will display `8` `4` `2`, then `counter` will be equal to 1 and terminate the loop.
 
 ### `while` variant: `until`
 
-The `until` loop is the exact inverse of `while`: it runs the set of instructions _until_ its condition become anything else than a NIL value.
+The `until` loop is the exact opposite of `while`: it runs the set of instructions _until_ its condition evaluates to anything that **is not** a NIL value.
 
 ```sn
 let counter = 8;
 
-until counter <= 1 {
+until counter <= 1 { // equivalent to `while counter > 1`
   println!(counter);
   counter /= 2;
 }
@@ -1245,14 +1610,14 @@ This code will do exactly the same thing than we saw with the `while` block.
 
 ### `while` variant: `do`...`while`
 
-A variant of the `while` loop is the `do`...`while` loop. It does exactly the same thing excepted the condition is not evaluated when the loop begins, but when the set of instructions has been run, so you are sure your set will be ran _at least_ one time.
+Another variant of the `while` loop is the `do`...`while` loop. It does exactly the same thing excepted the condition is not evaluated when the loop begins, but after the set of instructions has been ran, so we are sure our code will be ran _at least_ one time.
 
 ```sn
 let counter = 1;
 
 do {
   println!(counter);
-} while (counter != 1);
+} while (counter < 0);
 ```
 
 This code will display `1` before the loops ends, because the condition is evaluated _after_ the set of instructions.
@@ -1269,21 +1634,22 @@ loop {
 
 Will print `Hello !` undefinitely.
 
-### `when` for matches
+### `match` for matches
 
-Another useful block is `when`. It returns a result depending on _switchs_ that relies on the value you gave to it.
+The `match` block returns a result depending on _switchs_ that relies on the value you gave to it. In the case you are wondering, this is not a loop block.
 
 Let's imagine we have a person and want to run a little set of instructions depending on its name. Assuming we have a `name: string` variable, we could write:
 
 ```sn
-if (name == "Paul")
+if name == "Paul" {
   println!("Happy birthday, Paul!");
-elsif (name == "John")
+} elsif name == "John" {
   println!("How are you, John?");
-elsif (name == "Marc")
+} elsif name == "Marc" {
   println!("Hello there Marc!");
-else
+} else {
   println!("I don't know you...");
+}
 ```
 
 But this is kind of heavy. So we can perform a _match_ instead:
@@ -1297,164 +1663,139 @@ match name {
 }
 ```
 
-If you want to specify a condition, you can write it between parenthesis. You will have access to the `_` variable which refers to the value given in the block's head.
+Conditions are also supported before the `->` symbol. You can use the `_` variable in them, which refers to the value given in the block's head (here, `age`).
 
 ```sn
-let adult: string = match age {
-  (_ < 20) -> "No";
-  (_ > 20) -> "Yes";
-  default  -> "Kind of";
-}
-```
+let adult: string;
+let age: uint = 2;
 
-You can also specify a set of expressions for a match, but you will have to return manually the value:
-
-```sn
-let adult: string = match age {
-  (_ < 20) -> "No";
-  (_ > 20) -> "Yes";
-  default  -> { println!("Default value taken."); return "Kind of"; }
-}
-```
-
-Note that the `break` instruction does nothing on this block. The `when` block can also be used without assignment:
-
-```sn
 match age {
-  (_ < 20) -> adult = "No";
-  (_ > 20) -> adult = "Yes";
-  default  -> adult = "Kind of";
+  _ < 20  -> adult = "No";
+  _ > 20  -> adult = "Yes";
+  default -> adult = "Kind of";
 }
 ```
+
+You can also specify a set of instructions for a match by wrapping them between braces:
+
+```sn
+let adult: string;
+
+match age {
+  _ < 20  -> adult = "No";
+  _ > 20  -> adult = "Yes";
+  default -> {
+    adult = "Kind of";
+    println!("The end.");
+  }
+}
+```
+
+Note that the `break` instruction does nothing on this block, as it's not a loop.
 
 ### Ternary conditions
 
-A variant of inline conditions it _ternary conditions_. It returns a value depending on a condition. The syntax is `<condition> ? <value if not NIL> : <value if NIL>`.
-
-Showcase:
+_Ternary conditions_ are an alternative to simple conditions. They always return a value, depending on a condition. The syntax is `cond ? valueIfNotNIL : valueIfNIL`. Showcase:
 
 ```sn
 let name = "John";
-name = (name == "") ? "John" : "This overwrites the name";
+name = (name == "Marc") ? "Welcome Marc" : "I don't know who you are";
 ```
 
 ### Inline blocks
 
-Sometimes it is useful to write the condition after the instruction. This is why we have the _inline conditions_ syntax that allows it:
+Sometimes it's just more intuitive and redeable to write the condition _after_ the instruction. This is where we use _inline conditions_:
 
 ```sn
 let name: string;
 
 // Set the name only if it is empty
-name = "John" if (name == "");
+name = "John" if name == "";
 ```
 
-You can also use an extended syntax for conditions:
+There is also a _ternary form_:
 
 ```sn
 let name: string;
 
-name = if (! name) "John" else "This overwrites the name";
+name = if !name { "John" } else { "This overwrites the name" };
+// Long syntax
 ```
 
-This works with any instruction (exclusing declarations and blocks' head):
+This works with any instructions:
 
 ```sn
-println!("Hello world!") if (world.exists());
-println!("Goodbye world!") if (world.willDestroy()) else println!("Good morning world!");
+println!("Hello world!") if world.exists();
 ```
 
-You can do this with any condition or loop block, but the block's head will then need to be wrapped between parenthesis:
+You can do this with any condition or loop block:
 
 ```sn
-println!(i) for (i = 0; i < 5; i ++);
+let i: uint = 5;
+
+println!(++ i) while i < 5;
 ```
 
-But be aware when dealing with inline loops, this could accidentally result in inline generation and make your program crash, as we will see now.
+But be aware when dealing with inline loops, this could accidentally result in an inline generation and make your program crash, as we will see now.
 
 ### Inline generation
 
-Inline generation is a useful feature when coming to generate an array of data. For example, let's say we want to generate an array of the cube of every number between 1 and 10. Intuitively, we could write this:
+Inline generation is a useful feature when coming to generate an array of data. For example, let's say we want to generate an array of the cube of every number between 1 and 10 (included). Intuitively, we may write this:
 
 ```sn
-let cubes: int[10]; // int[]
+let cubes: int[10];
 
 for i in 1...10 {
-  cubes.push(i * i * i);
+  cubes[i] = i * i * i;
 }
 ```
 
-But there is another, simplier way to generate this array.
+But there is another, simplier way to generate this array, using _inline generation_:
 
 ```sn
-let cubes: int[10] = (i * i * i) for (i in 1...10);
+let cubes: int[10] = (i * i * i for i in 1...10);
 ```
 
-This will do exactly the same thing. Because the compiler has a great support of inferred typing, you can also omit the `cubes`' explicit type:
+The result will be the same. Because the builder has a great support of inferred typing, you can also omit the `cubes`' explicit type:
 
 ```sn
-let cubes = (i * i * i) for (i in 1...10);
+let cubes = (i * i * i for i in 1...10);
 ```
 
-This is also why we told you should be careful when using inline loops. All inline loops generate a vector (`Array` for explicit `for` loops like ranges or simple incremental / decremental expressions, `List` for anything else).
+This is also why we told you should be careful when using inline loops. All inline loops generate a vector: `Array` exclusively for `for` loops with predictable number of iterations like ranges or elementary incremental / decremental expressions, `List` for anything else.
 
-Note that inline loops will not perform a generation if a `void` is returned (not any NIL value, only this one). So, if you do:
+Note that inline loops will not perform a generation if a `void` is returned (not any NIL value, only this one), or if the generation is not wrapped by parenthesis. So, if you do:
 
 ```sn
-println!(i) for (i in 1...10)
+// No generation (println! is void-typed)
+(println!(i) for i in 1...10);
+
+// No generation (no parenthesis)
+println!(i) for i in 1...10;
 ```
 
 Nothing will be generated. Also, nothing will be generated if you don't give the result to a function or assign it to a variable.
 
-### `break` and `continue` loops
-
-When dealing with a loop, you can want to exit it if a specific even happens. For example, if we have an `hadError` function that returns a boolean to indicate an error happened, we could want to exit the loop.
-
-Let's try it:
-
-```sn
-for i in 1..10 {
-  println!(i);
-
-  if (hadError())
-    break; // Exit the loop
-}
-```
-
-This will work as expected: if `hadError` returns `true`, the `break` instruction will be executed and the loop will break.
-
-Another keyword is `continue` that provides a way to ignore all instructions below it but only one time.
-
-```sn
-for i in 1..10 {
-  if (hadError())
-    continue;
-
-  println!(i);
-}
-```
-
-This code will check each time if there had an error. If so, it will ignore all instructions above `continue` and iterate the loop a new time. Else, it will run the `println!` flex, just as expected.
-
 ### Entities are block-scoped
 
-In SilverNight, a _scope_ is any piece of code between an opening bracket `{` and a closing bracket `}`. For blocks, it also includes the block's head. For inline blocks, it starts from their head to the end of the block's single instruction.
+In SilverNight, a _scope_ is any piece of code between an opening bracket `{` and a closing bracket `}`. For blocks, their head is considered being inside the scope. For inline blocks, it starts from the instruction they apply to to their very end - including their head.
 
-We can also make scopes without any block using the `{ /* scope code here */ }` syntax: it's called a _flying scope_.
+We can also make scopes without specifying the name of any block nor any head. We write it `{ /* scope code here */ }` and it's called a _flying scope_.
 
 Here are some examples of scope:
 
 ```sn
 // Blocks
-if (true) {
+if true {
   imInScope();
   imInScope(); // Still into
 }
 
 // Inline blocks
-if (true)
+if true {
   imInScope();
-  imNot(); // Out of the 'if'
+}
+imNot(); // Out of the 'if'
 
 // Flying scopes
 { // <- begin
@@ -1463,10 +1804,10 @@ if (true)
 imNot();
 ```
 
-When we declare an entity in SilverNight, it is _block-scoped_, which means it belongs to the scope it was declared in. For example:
+When we declare an entity, it is _block-scoped_, which means it belongs to the scope it was declared in. For example:
 
 ```sn
-if (true) {
+if true {
   let i = 2;
   println!(i);
 }
@@ -1480,35 +1821,37 @@ println!(i); // Prints: "1"
 
 {
   let j = 2;
+  i += j
   println!(j); // Prints: "2"
 }
 
-println!(i); // Prints: "1"
+println!(i); // Prints: "3"
 println!(j); // ERROR ('j' is not defined)
 ```
 
-The last line throws an error, because `j` is not defined. This is due to the fact we defined `j` in a flying scope, and that scope ended before our instruction, so `j` was dropped - we can't use it anymore.
+The last line throws an error, because `j` is not defined. This is due to the fact we defined `j` in a flying scope, but that scope ended before our instruction, so `j` was dropped a few lines before - we can't use it anymore.
 
-Now, question is: what entities can I access from a scope? The answer is simple: we can access all entities declared in the current scope, plus every entity that belongs to (that are declared in) a _parent scope_ (a scope that contains, directly or indirectly, the current one). For example:
+Now, question is: what entities can I access from a scope? The answer is simple: you can access all entities declared in the current scope, plus every entity that belongs to (e.g. that are declared in) a _parent scope_ (a scope that contains, directly or indirectly, the current one). For example:
 
 ```sn
 // Global scope (scope 0)
+// Entities: i
 let i = 1;
 
 {
   // Scope 1
+  // Entities: i, j
   let j = 2;
 
   {
     // Scope 2
+    // Entities: i, j, k
     let k = 3;
   }
 }
 ```
 
-The **global scope**, which is transparently defined, has no parent scope. It cannot access any other entity than the ones declared in its body. Because all our code is put somewhere in the global scope, we can always access entities that are declared in them (they are called _global entities_).
-
-So:
+In the code above:
 
 * Scope 0 can only access its own entities (`i`) ;
 * Scope 1 can access its own ones plus scope 0's ones (`j` and `i`) ;
@@ -1516,44 +1859,55 @@ So:
 
 As you can see, a scope is considered as a parent of a given one even if it's not its _direct_ parent: it also works if it's an _indirect_ parent, meaning it contains a scope that itself contains the given one.
 
+The **global scope**, which is transparently defined, has no parent scope. It cannot access any other entity than the ones declared in its body. Because all our code is put somewhere in the global scope, you can always access entities that are declared in them (they are called _global entities_).
+
 Remember these rules about scopes (entities availability, drops, parent scopes, flying scopes), because all the language is ruled by it. Don't hesitate to read these explanations again as they may not be very simple.
 
 ## Functions
 
-Another common concept in almost every programming language is the concept of _functions_. A function is a special block that can is not ran by default but that can be called manually. It eventually takes values called _arguments_ and generally return a value called the _return value_.
+Functions are another key-concept of the language. They are special blocks that are not ran by default and requires to be called manually. They optionally take values called _arguments_ and may return a value called the _return value_.
 
 ### Declaration
 
-Let's imagine I want to calculate the area of a triangle depending on its base and its height, then print it and store the result in a constant.
+Let's imagine you want to calculate the area of a triangle depending on its base and its height, then print it and store the result in a constant.
 
-This is very simple and can be achieved very simply, but imagine we have to do this dozens of time. This would be heavy to repeat again and again the same instructions. Each time, we will have to rename the variable. And if we wanted to change anything to the algorithm, we would have to reflect the changes in all our files - which could be very long and introduce new errors.
+This is very simple and can be achieved very simply:
 
-In order to avoid copy-pasting this block of code again and again, we can use a general programming concept known as _function_.
+```sn
+let base = 2.5;
+let height = 3.5;
 
-A function is declared using the `func` keyword. We give it a name, and its arguments between parenthesis, separated by commands. An argument is basically a couple of a name and a type, written as `argname: type` (though we will see later this is not the only syntax for arguments). We then write a double point `:` symbol and the function's return type - the type of the value which is returned by the function.
+let area = base * height / 2;
+```
+
+But now, let's imagine we have to do this dozens of time. This would be heavy to repeat again and again the same instructions, and to rename the result variable to store the new result. Plus, if we want to change anything in the algorithm (for example, if we did an error in the formula), we would have to reflect the changes in all our files - which could be very long and introduce new errors.
+
+In order to avoid copy-pasting this block of code again and again, we can use a general programming concept known as _functions_.
+
+A function is declared using the `func` keyword. We give it a name, and its arguments between parenthesis, separated by commands. An argument is simply a couple formed of a name and a type, written as `argname: type` (though we will see later this is not the only syntax for arguments). We then write a double point `:` symbol and the function's return type - the type of the value it returns.
 
 Let's write the block's head:
 
 ```sn
-func triangle_area (base: float, height: float) : float {
+func triangle_area (base: f32, height: f32) : f32 {
   // Function's body
 }
 ```
 
-The very first line (without the `{` symbol) is called the function's _prototype_. It declares what the function's name is, what are its arguments, and the type of value it returns. We commonly say that the _prototype_ (the line we saw) _declares_ the function's _signature_ (its name, arguments, their types, and the return type).
+The very first line (without the `{` symbol) is called the function's _prototype_. It declares what the function's name is, what are its arguments (if there are), and the type of value it returns (if it returns one). We say that the _prototype_ (the line we saw) _declares_ the function's _signature_ (its name, arguments, their types, and the return type).
 
-We want to first calculate the triangle's area. Let's do this:
+Let's get back to our example: we want to calculate the triangle's area. Here is a function that does it:
 
 ```sn
-func triangle_area (base: float, height: float) : float {
+func triangle_area (base: f32, height: f32) : f32 {
   val area = 0.5 * base * height;
 }
 ```
 
-Now we want to print it:
+Let's print the result:
 
 ```sn
-func triangle_area (base: float, height: float) : float {
+func triangle_area (base: f32, height: f32) : f32 {
   val area = 0.5 * base * height;
   println!(`The triangle's area is: ${area}`);
 }
@@ -1564,7 +1918,7 @@ Now we want to assign it a variable each time we calculate the area. So we will 
 There's a simple way to achieve this called the _return statement_. It uses the `return` keyword to return a value from the function. This value can then be assigned to an assignable entity like a variable or a constant. Let's do it!
 
 ```sn
-func triangle_area (base: float, height: float) : float {
+func triangle_area (base: f32, height: f32) : f32 {
   val area = 0.5 * base * height;
   println!(`The triangle's area is: ${area}`);
   return area;
@@ -1572,22 +1926,22 @@ func triangle_area (base: float, height: float) : float {
 
 val first  = triangle_area(2, 8);
 val second = triangle_area(3, 7);
-val third  = triangle_area(4, 12);
+let third  = triangle_area(4, 12);
 ```
 
-You can now use the three constants. Consider the return value of this function acts exactly like a `float`, because _it is_ a `float`.
+We can now use the three entities. All of them has the `f32` type, as we used inferred typing on the function, which returns a `f32`.
 
-Here, the return type of the function **must** describe the type of the value it returns. If you try to return an integer, it will throw an error. If you try to return a string, the same thing will happen.
+Here, the return type of the return value **must** match the function's return type. If we try to return an integer in our function, it will throw an error. The same if we try to return a string.
 
-As tuples being a single type, functions can also return them:
+Also, even though functions can originally only return a single value, it's possible to cheat with tuples, as they are considered as a single value (`Tuple<T>` type):
 
 ```sn
-func add (left: int, right: int) : (int, float) {
+func add (left: int, right: int) : (int, f32) {
   return (
     // Divide as integers
     left / right,
     // Divide as floating-point numbers
-    float(left) / float(right)
+    f32(left) / f32(right)
   );
 }
 
@@ -1597,7 +1951,9 @@ println!(result[0]); // Prints: "0"
 println!(result[1]); // Prints: "0.25"
 ```
 
-Note that void-typed functions (functions that return nothing) can omit their return type, like this:
+As they are single values too, we can return arrays, lists, vectors, dictionaries and every other type of value.
+
+Note that void-typed functions (functions that return nothing) can omit their return type:
 
 ```sn
 func sayHello () {
@@ -1607,14 +1963,15 @@ func sayHello () {
 
 ### Optional arguments
 
-Optional arguments are... optional. Well, that's pretty explicit, at least. When declaring a function's arguments, we array them with their respective types. But, we can also make some of them _omittable_ by giving them a _default value_. Let's try it:
+This one is pretty explicit, at least. It's possible to make some arguments omittable by giving them default values. These arguments are called _optional_ as you are not forced to specify them when calling the function:
 
 ```sn
 func sayHello (name: string, justTheName: bool = false) {
-  if (justTheName)
+  if justTheName {
     println!(name);
-  else
+  } else {
     println!(`Hello, ${name}!`);
+  }
 }
 
 sayHello("John", false); // "Hello, John!"
@@ -1623,18 +1980,30 @@ sayHello("John", true); // "John"
 sayHello("John"); // "Hello, John!"
 ```
 
-This is useful when we don't want to give a default value to arguments. Note that default values can be absolutely anything, even expressions.
+This is useful when we don't want to give a default value to arguments manually, in the function's body. Note that default values can be absolutely anything, even expressions:
+
+```sn
+func getMarcName () : string {
+  return "Marc";
+}
+
+func sayHello (name: string = "Hello" + getMarcName()) {
+  println!(`Hello, ${name}!`);
+}
+
+sayHello(); // Prints: "Hello, Marc!"
+```
 
 ### Infinite arguments
 
-Sometimes we simply want a function to accept any number of arguments, without making a list to have a lighter syntax. This can be done using infinite arguments:
+Infinite arguments allow a function to take from zero to an infinity of arguments, without using a list to get a lighter syntax.
 
 ```sn
 func sum (...numbers: int) : int {
   let sum = 0;
 
-  for i = 0; i < numbers.size; i ++ {
-    sum += i;
+  for i = 0; i < numbers.length; i ++ {
+    sum += numbers[i];
   }
 
   return sum;
@@ -1643,13 +2012,15 @@ func sum (...numbers: int) : int {
 println!(sum(2, 3, 4)); // Prints: "9"
 ```
 
-Here, `numbers` becomes a `int[]` because of the `...` symbol, and it will also accept any argument. Note that this feature can be used between before other arguments:
+In this function, `numbers` is an array because of the `...` symbols, so in our example it's an `int[]`.
+
+Note that we can mix an infinite argument with other arguments, like before another one:
 
 ```sn
 func sum (...numbers: int, coefficient: int) : int {
   let sum = 0;
 
-  for i = 0; i < numbers.size; i ++ {
+  for i = 0; i < numbers.length; i ++ {
     sum += i;
   }
 
@@ -1659,13 +2030,13 @@ func sum (...numbers: int, coefficient: int) : int {
 println!(sum(2, 3, 4, 5)); // Prints: "45"
 ```
 
-Or after:
+Or after it:
 
 ```sn
 func sum (coefficient: int, ...numbers: int) : int {
   let sum = 0;
 
-  for i = 0; i < numbers.size; i ++ {
+  for i = 0; i < numbers.length; i ++ {
     sum += i;
   }
 
@@ -1675,13 +2046,13 @@ func sum (coefficient: int, ...numbers: int) : int {
 println!(sum(5, 2, 3, 4)); // Prints: "45"
 ```
 
-Or even between:
+Or even between two other arguments:
 
 ```sn
 func sum (coeff1: int, ...numbers: int, coeff2: int) : int {
   let sum = 0;
 
-  for i = 0; i < numbers.size; i ++ {
+  for i = 0; i < numbers.length; i ++ {
     sum += i;
   }
 
@@ -1691,9 +2062,15 @@ func sum (coeff1: int, ...numbers: int, coeff2: int) : int {
 println!(sum(2, 2, 3, 4, 3)); // Prints: "54"
 ```
 
+The only restriction is you can't put two infinite arguments with the same type in a function's signature. For example, the following code is not valid:
+
+```sn
+func sum (...nums1: int, ...nums2: int) : int { /* ... */ }
+```
+
 #### Arguments expansion
 
-Functions can also be called using a list of arguments thanks to the _arguments expansion_ operator. It goes like this:
+Functions can also be called using an array of a list of argmuents using the _arguments expansion_ operator:
 
 ```sn
 func sum (left: int, right: int) : int => left + right;
@@ -1704,44 +2081,47 @@ val numbers = [ 2, 8 ];
 println!(sum(numbers...)); // Prints: "10"
 ```
 
-Here, `numbers` is expanded as multiple arguments. It's like writing:
+In this example, `numbers` is expanded as multiple arguments. It's like writing:
 
 ```sn
-func sum (left: int, right: int) : int => left + right;
+// The normal way
+sum(numbers[0], numbers[1])); // Returns: 10
 
-// Declare a int[]
-val numbers = [ 2, 8 ];
-// Print the sum of the numbers
-println!(sum(numbers[0], numbers[1])); // Prints: "10"
+// Using the arguments expansion operator
+sum(numbers...); // Returns: 10
 ```
 
 This operator can also be used with other arguments:
 
 ```sn
-func sum (left: int, right: int, divide: int) : int {
+func calc (left: int, right: int, divide: int) : int {
   return (left + right) / divide;
 }
 
 val numbers = [ 2, 8 ];
-println!(sum(numbers..., 5)); // Prints: "2"
+println!(calc(numbers..., 5)); // Prints: "2"
+
+// Same as writing:
+println!(calc(numbers[0], numbers[1], 5)); // Prints: "2"
 ```
 
 ### Lambdas and callbacks
 
 We saw that functions can be declared with a name, an array of arguments, a return type and a body. But there are some functions that omit the name, called _lambdas_.
 
-What is their point? The more simple is to take an exemple: let's say we have an array of signed integers, and we want to keep only the positive values called `list`. The first idea we could have would be to write:
+What is their point? Well, let's say we have a list called `signed` of signed integers, and we want to keep only the positive values in an array called `positive`. The first idea we could have would be to write:
 
 ```sn
-val posArr: List<int>;
+val positive: List<int>;
 
-for i = 0; i < list.size; i ++ {
-  if (list[i] >= 0)
-    posArr.push(list[i]);
+for i = 0; i < signed.size; i ++ {
+  if signed[i] >= 0 {
+    positive.push(signed[i]);
+  }
 }
 ```
 
-But we have a problem here. We have to define `posArr` as an `List<int>` while `list` is a `int[]`. This could introduce compatibility issues when we'll want to give it to functions that require an array. We can still convert `posArr` to an array by doing `posArr.toList()`, but this would involve to make a whole new array, which takes both memory and time.
+But we have a problem here. We have to define `positive` as a list to push values in it, while we simply want an array. This could introduce compatibility issues when we'll want to give this object to functions that require an array. We can still convert `positive` to an array by using the `positive.toList()` method, but this would involve to make a whole new array, which takes memory and time.
 
 That's where lambdas come. There is a function called `filter` we can use on arrays, which takes a specific function as an argument. Here is how we use it:
 
@@ -1749,7 +2129,7 @@ That's where lambdas come. There is a function called `filter` we can use on arr
 val posArr = list.filter(lambda (value: int) : bool { return value >= 0; });
 ```
 
-What happened here? Because it's a little cryptic, we'll re-write the code, with a greater spacing:
+What happened here? Because it's a little cryptic, we'll re-write the code, with a clearer indentation:
 
 ```sn
 val posArr = list.filter(
@@ -1759,11 +2139,11 @@ val posArr = list.filter(
 );
 ```
 
-Here, we declare a _lambda_ with two arguments `value` and `key` which both are integers, and we say it will return a boolean. Then, we write the function's body, which simply evaluates an expression (returns `true` if `value` is positive, `false` else).
+Here, we used a _lambda_ with takes a single argument called `value` which is an integer, and we told it returns a boolean. Then, we wrote the function's body, which simply evaluates an expression (returns `true` if `value` is positive, `false` else).
 
-Because this function does not have a name, it's called a lambda: it could not be declared like a standard function which require a name.
+Because this function does not have a name, it's called a lambda: it cannot be declared like a standard function which requires a name.
 
-Also, why do we need the `key` argument while we don't use it? It's simply because the `filter` function requires it. Let's see the declaration of this function:
+Let's now see the declaration of the `filter` function:
 
 ```sn
   // ...
@@ -1771,9 +2151,11 @@ Also, why do we need the `key` argument while we don't use it? It's simply becau
   // ...
 ```
 
-Let's just concentrate on the function's only argument: called `callback`, it is described as a function that takes a `value` and a `key` argument, then returns a boolean. That's why we gave these specific types to our lambda. If we had specificied a `string` for the `key` argument for example, an error would have been throw at compilation.
+Let's just concentrate on the function's only argument: called `callback`, it is described as a function that takes a `value` argument, then returns a boolean. That's why we gave this specific argument and type to our lambda. If we had specificied a `string` type for the `value` argument for example, an error would have been thrown at build time.
 
-Note that, while the argument's number, type and the lambda's return type is declared in the function's signature and cannot be changed, you can still change their names to take your own ones. We could have called them `num` and `k` if we wanted to.
+Note that, while the numbers of arguments, their type and the lambda's return type are declared in the function's signature and cannot be changed, we can still change their names to take our own ones. We could have called our lambda's only argument `num` if we had wanted to.
+
+The `filter` functions simply calls the function (callback) it takes as an argument by giving it a value for each item in the list. Then, it makes an array from these data and return all of it.
 
 There's another way to apply this filter on our array: declaring the function, and then using it as an argument. Because an example will be more clear than a big explanation:
 
@@ -1787,7 +2169,7 @@ val posArr = list.filter(myFunc);
 
 This will do the same thing than the first version. Here, we declare a `myFunc` variable that works exactly like the lambda we made before, then we use it as an argument for the `.filter` function.
 
-In fact, this constant has an inferred type ; its full declaration would be:
+Note that we inferred this lambda ; its full declaration would be:
 
 ```sn
 val myFunc: func (value: int) : bool = lambda (value: int) : bool {
@@ -1797,9 +2179,7 @@ val myFunc: func (value: int) : bool = lambda (value: int) : bool {
 val posArr = list.filter(myFunc);
 ```
 
-This is where inferred typing is _really_ great!
-
-An interesting point here is that we can _call_ `myFunc` like this:
+We can now call `myFunc` as a standard function:
 
 ```sn
 println!(myFunc(2)); // Prints: "true"
@@ -1816,20 +2196,9 @@ func myFunc (value: int) : bool {
 val posArr = list.filter(myFunc);
 ```
 
-As void-typed functions that take no argument are called _reduced functions_, the same applies for lambdas with _reduced lambdas_, which allow to omit its parenthesis:
+### Callback arguments
 
-```sn
-// Declare a function that asks for a reduced lambda
-func callReducedLambda (callback: func ()) => callback();
-
-// Use the short notation for reduced lambdas (as an expression)
-val reduced = lambda { println!("Hello there!"); }
-
-// Give it as an argument
-callReducedLambda(reduced);
-```
-
-Also note that functions _as a type_ don't require to provide arguments' names, like this:
+As we saw with `filter`, functions can be arguments of other functions. Here is the syntax:
 
 ```sn
 // We don't provide the arguments' name for the function here
@@ -1838,87 +2207,102 @@ func twoPlusFive (callback: func (int, int) : string) : string {
 }
 
 println!(twoPlusFive(
-  func (left: int, right: int) : string {
+  lambda (left: int, right: int) : string {
     return string(left + right);
   })
 ); // Prints: "7"
 ```
 
-So, lambdas are great to reduce the size of a program, but reduced lambdas put apart it's kind of heavy to use this syntax. This is why we can use the _arrow syntax_:
+You may have notice that we don't specify `callback`'s arguments' name in our example. That's because the function's type (`func (int, int) : string`) does not require it, it's purely optional. We could have written `func (left: int, right: int) : string` if we had wanted to.
+
+The problem of the above code is that the lambda usage is kind of heavy. We can replace it with the _arrow syntax_:
 
 ```sn
-val posArr = list.filter((value: int, key: int) : bool => value >= 0);
+val posArr = list.filter(lambda (value: int, key: int) : bool => value >= 0);
 ```
 
-We don't have the `func` keyword anymore, but the `=>` one appeared. This symbol means that the value on its right is automatically returned by the function. This symbol can in fact even be used with functions, like `function returnTrue() : bool => true;`. We can also use the `{` and `}` symbols while omitting the `func` keyword to use several instructions, but we'll then have to use manually the `return` keyword.
+We don't have the `func` keyword anymore, but the `=>` one appeared. This symbol implicitly indicates a lambda and tells that the value on its right is automatically returned by the function.
 
-Showcase:
+This symbol can in fact even be used with functions, like:
+
+```sn
+func returnTrue () : bool => true;
+
+println!(returnTrue()); // Prints: "true"
+```
+
+Here is a recap of all the functions' syntaxes:
 
 ```sn
 // Classic functions
 func returnTrue () : bool { return true; }
+
+// Function with arrow syntax
 func returnTrue () : bool => true;
 
-// Classic lambdas
-val returnTrue = lambda () : bool { return true; }
-val returnTrue = lambda () : bool => true;
+// Classic lambda
+val returnTrue = lambda () : bool { return true; };
 
-// Arrow syntax
-val returnTrue = () : bool { return true; }
-val returnTrue = () : bool => true;
+// Lambda with arrow syntax
+val returnTrue = lambda () : bool => true;
 ```
 
-But even with the arrow syntax, this is still heavy as we have to write the arguments' type as well as the lambda's return type. So there is a last feature called **ICT** for **I**nferred **C**allback **T**yping we will see now.
+But, even with the arrow syntax, lambdas still are heavy to write as we have to specify the arguments' type as well as the lambda's return type. To solve this problem, we can infer the arguments' type as well as the lambda's return type using the _Inferred Callback Typing_.
 
 ### Inferred Callback Typing
 
-ICT works like IST but for functions. Instead of inferring a data's structure, it will infer a function's arugments and return type based on a signature.
+ICT works like IST but for functions. Instead of inferring a data's structure, it will infer a function's arguments' type as well as its return type based on a signature.
 
-This may be appear complex, but let's take a simple example. Remember the `.filter` function we can apply on any `T[]` value? We gave it a lambda and we had to declare the lambda's arguments' type as well as a return type. But because these types are already specified in the `.filter` function's signature, we know that we'll have _exactly_ the sames types in our lambda's signature.
+Remember the `.filter` function we can apply on any `T[]` value? We gave it a lambda and we had to declare the lambda's arguments' type as well as its return type. But because these types are already specified in the `.filter` function's signature, we know that we'll have _exactly_ the sames types in our lambda's signature.
 
-So there is a way to perform inferred typing on a lambda, for both its arguments' type and its return type. Here is it:
+So, we can infer the lambda's arguments' type and its return type, like this:
 
 ```sn
 // Classic lambda
 val posArr = list.filter(lambda (value: int, key: int) : bool { return value >= 0; });
 
 // Arrow syntax
-val posArr = list.filter((value: int, key: int) : bool => value >= 0);
+val posArr = list.filter(lambda (value: int, key: int) : bool => value >= 0);
 
 // Inferred callback typing
 val posArr = list.filter((value, key) => value >= 0);
 ```
 
-This last syntax is clearly lighter as it avoids to declare the types. But be careful though to read carefully the signature of the function you are giving this lambda to ; else you could have some... surprises, at compilation time.
+This last syntax, called a _light lambda_, is clearly lighter as it avoids using the `lambda` keyword and, more important, to declare the types. But be sure to read carefully the signature of the function you are giving your lambda to ; else you could have some surprises at build time.
 
-Also, note this will only work with lambdas that are directly given as arguments. These are known as _"on-the-fly lambdas"_ in reference to the fact they are declared before being used. That means you can't use ICT if you declare a constant that contains this lambda, and then use this constant as an argument for a function. This is simply because this directive guesses the function's type based on the signature of the function it is gave to, so it wouldn't work with anything that is not a on-the-fly lambda.
+Note that you can run several instructions from a light lambda. In this case, the `=>` symbol will remain:
 
-While we have inferred typing without looking at any signature for data structure, you may be wondering why functions can't have an inferred typing for their arguments and return type too based on their body. For example, if a function only returns booleans, its return type could be inferred.
+```sn
+val posArr = list.filter((value, key) => { return value >= 0; });
+```
 
-To answer this question, there is a directive that allows inferred typing for anything, from variables to functions, even to more complex data structures (like interfaces or classes). But like we'll see later, this has some (really) serious downsides and considerably slows down the compilation. Global inferred typing is only useful when some conditions are met, so for now let's put it aside and only consider inferred typing is supported for variables/constants/plain values, on-the-fly structures and on-the-fly lambdas.
+Also, note that this will only work with lambdas that are directly given as arguments. These are known as _flying lambdas_ in reference to the fact they are not declared before being used. That means you can't use ICT if you declare a constant that contains this lambda, and then use this constant as an argument for a function. This is simply because this directive guesses the function's type based on the signature of the function it is given to, so it wouldn't work with anything that is not a flying lambda.
+
+While we have inferred typing without looking at any signature for data structure, you may be wondering why non-lambda functions couldn't have an inferred typing for their arguments and return type too based on their body. For example, if a function only returns booleans, its return type could be inferred.
+
+To answer this question, there is a directive that allows inferred typing for anything, from variables to functions, even to more complex data structures (like interfaces or classes). But like we'll see later, this has some (really) serious downsides and it considerably slows down the build. Global inferred typing is only useful when some conditions are met, so for now let's put it aside.
 
 ### Polymorphism
 
-When declaring a method, we sometimes want to make them callable by several ways. For example, let's say we want to give the coordinates, as a string, of a point. A point is a couple of floating-point numbers, the first one representing X, the second one Y. But, we also want to support the `Point` structure, which has two members `x` and `y`, which the same function name. How could we do that?
+When declaring a method, we sometimes want it to handle several type of arguments. For example, let's say we want to make a function that returns the coordinates of a given 2-dimension point in a string format. It would take two arguments, the first one representing X, the second one Y. But, we also want to support the `Point` structure, which has two members `x` and `y`. And, because we want to do the same thing with these two syntaxes, we don't want to make a distinct function.
 
-The answer to this problem is called _polymorphism_: we declare several functions with the same name, but with different signatures.
-
-Here is how it works:
+To solve this problem, we can use _polymorphism_, which consists in declaring the same function several times, each time with a new signature:
 
 ```sn
 // Make the 'Point' structure
 struct Point {
-  x: float;
-  y: float;
+  x: f32;
+  y: f32;
 }
 
 // Declare the two functions with polymorphism
-func pointStr (x: float, y: float) : string => `(${x}, ${y})`;
-func pointStr (pt: Point) => `(${Point.x}, ${Point.y})`;
+func pointStr (x: f32, y: f32) : string => `(${x}, ${y})`;
+
+func pointStr (pt: Point) : string => `(${Point.x}, ${Point.y})`;
 
 // Let's try them!
 pointStr(2, 5); // Prints: "(2, 5)"
-pointStr({ x: 2, y: 5 }); // Prints: "(2, 5)"
+pointStr(Point { x: 2, y: 5 }); // Prints: "(2, 5)"
 ```
 
 They work as expected and print the same result.
@@ -1926,27 +2310,27 @@ They work as expected and print the same result.
 A specific case is when we have two definitions that fit a same call:
 
 ```sn
-func something (arg: Any) : void {}
+func something (arg: number) : void {}
 func something (arg: int) : void {}
 
 something(2);
 ```
 
-Which function should be called? The two are valid, so the program will simply choose the more precise one (e.g. the one that defines the nearest type from the given one). Here, it's the second function, because it asks for an `int` while the first signature simply ask for any type of argument. This behaviour is called _polymorphism priority_.
+Which function should be called? The two are valids, so the program will simply choose the more precise one (e.g. the one that defines the nearest type from the given one). Here, it's the second function, because it asks for an `int` while the first signature simply ask for any type of number. This behaviour is called _polymorphism priority_.
 
 ## Object-oriented programming
 
+Object-oriented programming, oftenly shortened in OOP, is a fundamental concept of the language - and the most important one -.
+
 ### The concept of class
 
-Here we are. We will now talk about the most important concept in SilverNight, which is also the most complex one: **Object-Oriented Programming**.
+Like we saw before, everything in SilverNight is an object. Though primitive types like `string` or `int` are special ones, they follow a strict behavior rules because of their type.
 
-Like we saw before, everything in SilverNight is an object. Though primitive types like `string` or `int` are special ones, they follow a strict behavior rules by their _type_.
-
-To introduce the OOP concept, let's see the concept of _class_. Think to classes like advanced structures: they are a set of properties that can be functions. But were classes are brillant is where structures are limited.
+To introduce the OOP concept, let's see the concept of _class_. Think to classes like advanced structures: they can protect some of their members (e.g. making them invisible from the outside), make themselves convertible to strings or numbers, support mathematical operations, etc.
 
 ### I need a hero!
 
-Let's imagine we want to represent a hero like we saw before.
+Let's go back to a previous problem: we want to represent a hero.
 
 > We now want to represent a video game hero. It has a name, Health Points (HP), Magic Points (MP), attack and defense points. How could we describe this?
 
@@ -1974,9 +2358,9 @@ struct Hero {
 }
 ```
 
-But now imagine we want to make a function that allows a hero to fight another. This is impossible. Why? Because we can't both make the structure's properties constant **and** change them from inside a function. That's where structures suck.
+But now imagine we want to make a function that allows a hero to fight another. This is impossible. Why? Because, while structures can contain function members (using lambdas for example), we can't both make the health points constants **and** editable at the same time.
 
-So, what can we do? Well, we do classes. Here is the syntax:
+So, what can we do? Answer is: classes. Here is one:
 
 ```sn
 class Hero {
@@ -1988,9 +2372,9 @@ class Hero {
 }
 ```
 
-First, we _declare_ the class with `class Hero`. This creates a _type_ named `Hero` (that's the first verity about types, every type outside structures is in reality a class). Then, we set up its _members_, an equivalent to structures' properties. But look at the `private` keyword. This indicates that this members are available only from _the inside_ of the class ; that means no one will be able to access these members outside the class. So, how can we do our fight function?
+First, we _declare_ the class with the `class` keyword. Like for structures, this creates a type named `Hero`. Then, we set up its _members_, an equivalent to structures' properties. But look at the `private` keyword. This indicates that this members are available only from _the inside_ of the class: only its members can modify them ; that means no one will be able to access these members outside the class.
 
-Well, here is how it goes:
+Now, we just have to make a _public_ function which allows our hero to fight another. But first, we need to make a function that sets the hero's attributes (name, health points, ...). Else, all will be set to 0 and the name will be empty. For that, we use a _constructor_:
 
 ```sn
 class Hero {
@@ -2010,9 +2394,11 @@ class Hero {
 }
 ```
 
-That becomes a little more complicated here. We start by declaring the `%construct` function which is called the _constructor_. This function is called when a resource (variable or constant) is created with the `Hero` type. Because any return value would be lost from it there is an exception in the language's rules that allow us to not give it a return type (it will implicitly be `void`), without any directive.
+We start by declaring the `%construct` function which is the class' constructor. This function is called when a resource is created with the `Hero` type. Note that it doesn't return any value.
 
-The constructor will take as an argument a name, an amount of HP and MP, an attack and a defense. Then, it will assign these given values to its _members_, which are not available from outside the class.
+The constructor will take as an argument a name, an amount of HP and MP, an attack and a defense. Then, it will assign these given values to its _members_, which are not available from the outside the class.
+
+Let's continue our class by implementing two methods, which are function attributes:
 
 ```sn
   // ...
@@ -2026,16 +2412,19 @@ The constructor will take as an argument a name, an amount of HP and MP, an atta
   // ...
 ```
 
-Here, we define a `getAttack()` and a `beAttacked()` functions publicly, which means everyone can access it, even outside the class. `getAttack()` returns the `attack` member from the current class, while `beAttacked()` runs `getAttack()` from the provided ennemy and decreases its own HP depending on it.
+Here, we define a `getAttack()` and a `beAttacked()` functions publicly, which means everyone can access it, even outside the class. `getAttack()` returns the `attack` member from the current class, while `beAttacked()` gets the attack points of the ennemy and substracts it from our hero's health points.
 
-Here is how we instanciate our heroes:
+We can now _instanciate_ our heroes, meaning we use the `new` keyword to create one. We then give the constructor's arguments to it:
 
 ```sn
 val jack = new Hero(); // ERROR: Expecting 5 arguments, found 0
-val jack = new Hero("Jack", 100, 5, 50, 10); // Let's declare a warrior
+
+val jack = new Hero("Jack", 100, 5, 50, 10); // A great warrior
 ```
 
-If we want to consider the defense now:
+As soon as we use the `new` keyword on a type, we know it's a class. That means lists and arrays both are classes. In fact, all numbers types, as well as booleans, voids, and strings, are too.
+
+If we want to consider the defense of our hero now:
 
 ```sn
   // ...
@@ -2045,7 +2434,7 @@ If we want to consider the defense now:
   // ...
 ```
 
-Here we consider our defense. But now we have to assure HP loss is not negative. That would be weird to win HP while _being attacked_ by an ennemy.
+But now, we have to assure HP loss is not negative. That would be weird to win HP while _being attacked_ by an ennemy. Let's fix it:
 
 ```sn
   // ...
@@ -2053,7 +2442,7 @@ Here we consider our defense. But now we have to assure HP loss is not negative.
     // Calculate the loss
     val loss = ennemy.getAttack() - this.def;
     // Decrease HP
-    this.hp -= loss;
+    this.hp -= loss if loss > 0;
   }
   // ...
 ```
@@ -2066,7 +2455,7 @@ Here we are! Now, let's write a `fight()` function!
     // Calculate the loss
     val loss = ennemy.getAttack() - this.def;
     // Decrease HP
-    this.hp -= loss;
+    this.hp -= loss if loss > 0;
   }
 
   public func fight (ennemy: Hero) {
@@ -2106,7 +2495,8 @@ class Hero {
 
   public func beAttacked (ennemy: Hero) {
     // Calculate the loss
-    val loss = ennemy.getAttack() - this.def;
+    // Can't lose a negative amount of health points
+    val loss = max(0, ennemy.getAttack() - this.def);
     // Tell what happens
     println!(`${this.name} is attacked by ${ennemy.getName()} and loses ${loss} HP!`);
     // Decrease HP
@@ -2145,28 +2535,30 @@ We just saw two _accessor_ keywords for a class' members: `public` and `private`
 
 ```sn
 class Example {
-  public val hello = "Hello!";
+  public val hello = "world!";
 }
 
 val instance = new Example();
-println!(instance.hello); // Prints: "Hello!"
+println!(instance.hello); // Prints: "world!"
 ```
 
 Private members are restricted to the inside of the class, meaning they can be used only by code that is written between the `{` and `}` braces of the class. Here is an example:
 
 ```sn
 class Example {
-  public val hello = "Hello!";
-  private val secret = "No one can see me!";
+  public val hello = "world!";
+  private val secret = "I'm private!";
 
   public func printSecret () => println!(this.secret);
 }
 
 val instance = new Example();
-println!(instance.hello); // Prints: "Hello!"
-println!(instance.printSecret()); // Prints: "No one can see me!"
-println!(instance.secret); // ERROR
+println!(instance.hello); // Prints: "world!"
+println!(instance.printSecret()); // Prints: "I'm private!"
+println!(instance.secret); // ERROR (private member)
 ```
+
+In other terms, a class is a _scope_ which can make some of its resources public.
 
 There is a specificy about private members, though. We can access an instance's private members from the inside of a class even if it's not the current instance.
 
@@ -2230,7 +2622,7 @@ This will work fine and the constructor will get the `"Gamepad"` value in `theTh
 
 ### Methods
 
-Let's now see the _methods_ more in details. This will be pretty simple in fact: methods in classes act like simple lambdas in structures, but they can also access the classes' private attributes and use a few keywords, like `this` which refers to the current class.
+This part will be pretty simple: methods in classes act like simple lambdas in structures, but they can also access the classes' private attributes and use a few keywords, like `this` which refers to the current class.
 
 Note that all attributes and methods of a class (called its _members_) can be accessed only through the `this` keyword or the instance name. For example:
 
@@ -2281,9 +2673,13 @@ class Superthing {
 }
 ```
 
+This will automatically set the value of the private `name` members when we'll instanciate the class.
+
 ### Readonly attributes
 
-When declaring class' attributes, we sometimes want to make it private because we don't want anyone to change it without control, but we also want a developer to read it. So, this would be a read-only attributes from the class' outside, and a classic attribute from the inside (both readable and writable). Here is how we could implement it:
+When declaring class' attributes, we sometimes want to make it private because we don't want anyone to change it without control, but we also want outside code to read it. So, this would be a read-only attributes from the class' outside, and a classic attribute from the inside (both readable and writable).
+
+A first implementation could be:
 
 ```sn
 class SomeClass {
@@ -2295,7 +2691,7 @@ class SomeClass {
 }
 ```
 
-This is perfectly valid and works as expected. But doing this can be heavy to write, especially if we have several attributes like this one. So, there is a lighter syntax to achieve this:
+This is perfectly valid and works as expected. But doing this can be heavy to write, especially if we have several attributes like this one. This forces us to call a function with a longer name than the attribute's one, plus to write the method for each argument we want to make readable from the outside. So, there is a lighter syntax to achieve this:
 
 ```sn
 class SomeClass {
@@ -2311,23 +2707,34 @@ class SomeClass {
 }
 
 let instance = new SomeClass();
-instance.attr.sub = 2; // ERROR
+instance.attr = { sub: 2 }; // ERROR
 ```
 
 ### Static members
 
-This is another type of members. Static members are not available from the instances, but only from the class itself. Let's see an example to be more clear:
+This is another type of members. Static members are not available from the instances, but only from the class itself:
 
 ```sn
 class Product {
   private static unique_id = 0;
-  public static func increaseCounter () : int => ++ self.unique_id;
+  public static func increaseCounter () : int => ++ _self.unique_id;
 }
 ```
 
-Here, `increaseCounter()` can only be accessed by using the `.` operator on the class itself, so we would write `CounterClass.increaseCounter()`. This will increase the private static attribute `counter`.
+Here, `increaseCounter()` can only be accessed by using the `.` operator on the class itself:
 
-The `self` word refers to the current class, in a static context. This provides a way to access its static attributes. Let's populate the class with attributes for instances:
+```sn
+Product.increaseCounter(); // Works fine
+
+let product = new Product();
+product.increaseCounter(); // ERROR (static method)
+```
+
+The `self` keyword refers to the current class as an instance (like `this` but with only the members of the current class), and `static` makes it static, meaning we can access its static members and only them.
+
+But, there are three shortcuts for this object: `_self`, which refers to `_self` ; `_this`, which refers to `static<this>` ; and `_super`, which refers to `static<super>`.
+
+Let's populate the class with non-static attributes:
 
 ```sn
 class Product {
@@ -2335,7 +2742,7 @@ class Product {
   private static counter = 0;
 
   // Increase the global counter
-  public static func increaseCounter () : int => ++ self.counter;
+  public static func increaseCounter () : int => ++ _self.counter;
 
   // The product's unique identifier
   public readonly unique_id: int;
@@ -2345,26 +2752,26 @@ class Product {
   // Initialize the instance
   public func %construct (@name: string) {
     // Generate a unique identifier from the static function
-    @unique_id = self.increaseCounter();
+    @unique_id = _self.increaseCounter();
   }
 }
 ```
 
-Be aware though, writing `self` is not like writing the class' name (`Product` here). `self` is a reference that can only be used inside of a class, and which provides a way to access its private static members. If we had specified the class' name instead, we wouldn't have been able to access the `counter` attribute.
+Be aware though, writing `_self` is not like writing the class' name (`Product` here). `_self` is a reference that can only be used inside of a class, and which provides a way to access its private (and public) static members. If we had specified the class' name instead, we wouldn't have been able to access the `counter` attribute as it's private.
 
-When static members are private, that means they can only accessed through the `self` keyword, so from the inside of the class only. When they are public, they are available from the outisde of the class thanks to its name, followed by the static operator `.` and the attribute's name.
+When static members are private, that means they can only accessed through `_self`, so from the inside of the class only. When they are public, they are available from the outisde of the class using the class' name, followed by the static operator `.` and the attribute's name.
 
 ### Practice: Let's make a map!
 
-Let's now practice with a little exercice. We want to represent a RPG map with a class. Each cell has a number referring to an empty cell (0), a rock (1) or a trap (2). The map is given at its creation, as a double list of integers. The map is a rectangle and has a fixed width and heigh deducted from the double list.
+Let's now practice this concepts with a little exercice. We want to represent a RPG map with a class. Each cell has a number referring to an empty cell (0), a rock (1) or a trap (2). The map is given at its creation as a double list of integers. The map is a rectangle and has a fixed width and heigh deducted from the double list.
 
-We can move on this map a player, starting from a location given at the map's creation. The player can move up, down, left and right. It can't go on rock cells, and going to a trap will display a message "You've been trapped!" and make the player unable to move.
+We can move on this map a player, starting from a location given at the map's creation. The player can move up, down, left and right. It can't go on rock cells, and going to a trap will display a message "You've been trapped!" befre making the player unable to move.
 
-We have to represent it with a single class, with only private attributes (they can be readable, though). At anytime, we should be able to access to current player's position, to get any cell's value, or to check if the player has been trapped already.
+We have to represent it with a single class, with only private attributes or public read-only ones. At anytime, we should be able to access the player's current position, to get any cell's value, or to check if the player have been trapped already. The top-left position is (0, 0).
 
 The problem seems to be complex but it is mostly simple to achieve. Read the solution below when you're ready. If you can't solve it, try to read again what we saw before and think about the structure of the class.
 
-Here is the solution:
+#### Solution
 
 ```sn
 class Map {
@@ -2373,7 +2780,7 @@ class Map {
   private static readonly ROCK  = 1;
   private static readonly TRAP  = 2;
 
-  // Private attributes
+  // Read-only attributes
   public readonly playerX: int;
   public readonly playerY: int;
   public readonly trapped: bool = false;
@@ -2384,19 +2791,22 @@ class Map {
 
   // Move the hero
   private func move (x: int, y: int) {
-    // If we fall in a trap before...
-    if (@trapped)
+    // If we fell in a trap before...
+    if @trapped {
       // Move is forbidden
       println("You can't move because you're trapped.");
+    }
 
-    // Check if we are outside the map
-    elsif (x < 0 || x > @cells[0].size - 1 ||
-             y < 0 || y > @cells.size - 1)
+    // Check if we are going outside of the map
+    elsif x < 0 || x > @cells[0].length - 1 ||
+          y < 0 || y > @cells.length    - 1 {
       println!("Cannot move outside the map.");
+    }
 
     // Check if the cell we are going to is a rock
-    elsif (@cells[y][x] is self.ROCK)
+    elsif @cells[y][x] is _self.ROCK {
       println!("There's a rock on your way.");
+    }
 
     // Else, move the player
     else {
@@ -2405,7 +2815,7 @@ class Map {
       @playerY = y;
 
       // If we fell in a trap, game over!
-      if (@cells[y][x] is self.TRAP) {
+      if @cells[y][x] is _self.TRAP {
         println!("You've been trapped!");
         @trapped = true;
       }
@@ -2423,29 +2833,11 @@ class Map {
 }
 ```
 
-Here it is! This code answers to the problem.
+Here it is! This code is a good answer to the problem.
 
 Of course, your solution could be different, as there are many ways to solve it. This anwser is well optimized and relatively short. Try to compare you own solution to this one and see the differences.
 
-A short note about accessibility now: as you can see, `cells` is not cloned when assigned using the constructor. This means that if an pre-defined list is gave to the constructor, changing it from the outside will also affects the class' attribute.
-Another point is that `cells` is also readable and not declared as a constant, so anyone from the outside can access it and change its values.
-
-Here is a corrected version of the class that fixes this mistakes:
-
-```sn
-class Map {
-  // ...
-  public readonly val cells: int[][];
-  // ...
-
-  // ...
-  public func %construct (cells: int[][], @playerX: int, @playerY: int) =>
-    // Clone the given cells to avoid them from being frozen
-    @cells = clone!(cells);
-}
-```
-
-Here, if we didn't clone `cells`, the original list would have been frozen too! So that's important to clone it here.
+A short note about read-only attributes mutability: even though `cells` is set as read-only, this only affects the attribute itself, and not its sub-structures. This means that, even though we can't do `map.cells = /* something */` we can still do `map.cells[0][1] = Map.EMPTY` for example. Keep this problem in mind while dealing with dictionaries (the same problem applies by structures).
 
 ## Classes in depth
 
@@ -2453,21 +2845,17 @@ Now we've acquired the basis of classes, this part will teach you more complex f
 
 ### The destructor
 
-A word about overloads:
-
-We saw before the constructor, a special method called when the instance is created. This method can't be ran the normal way, meaning you can't do `myInstance.construct()` or `myInstance.%construct()` for example. Such a method, and every method we will see beginning by the `%` symbol, are called _overloads_.
+We saw before the constructor, a special method called when the instance is created. This method can't be ran the normal way, meaning you can't do `myInstance.construct()` or `myInstance.%construct()` for example. Such a method, and every method we will see beginning by the `%` symbol, is called an _overload_, because it _overloads_ the class' behavior.
 
 By default, when we instanciate a class, nothing is done (excepted creating the object itself). The constructor overwrites this behavior by running its own code.
 
-The destructor is a special function you probably won't use very often, but it is still useful in some cases. Like the constructor, it's an overload, and is written `%free`. It takes no argument and must be `void`-typed, so its return type can also be omitted.
-
-Now, a word about freeing:
+The destructor is a special function you probably won't use very often, but it is still useful in some cases. Like the constructor, it's an overload, called `%free`. It takes no argument and must be `void`-typed, so its return type can also be omitted.
 
 When dealing with heavy objects, or simply when using a low-level languages, developers often _free_ their variables themselves. Freeing a variable means its value is definitely removed, so it doesn't take memory anymore. Of course, after a resource is freed, using it will result in an error.
 
-A resource can be freed several ways. The first one is with the _garbage collector_, a little tool that detects what resource isn't used anymore and free it because it knows it won't be used anymore. This is done automatically in JavaScript or Python for example, two interpreted high-level languages. Languages such as Rust have other tools instead that does the same thing, but that insert a piece of code to free the resource when compiling the source code. Some other languages, finally, like C or C++, doesn't have this feature and resources must be freed manually.
+A resource can be freed several ways. The first one is with the _garbage collector_, a little tool that detects what resource isn't used anymore and free it because it knows it won't be used anymore. This is done automatically in JavaScript or Python for example, two interpreted high-level languages. Languages such as Rust have other tools instead that does the same thing, but that insert a piece of code to free the resource when building the sources. Some other languages, finally, like C or C++, doesn't have this feature and resources must be freed manually.
 
-In our case, the destructor is called when the instance is manually freed, using the `free!` flex. Here is how it looks like:
+In the language, the destructor is called when the instance is freed, no matter what the way is (garbage collection, manual free, ...). It goes like this:
 
 ```sn
 class IntArray {
@@ -2477,26 +2865,28 @@ class IntArray {
     println!("I will be freed.");
   }
 
-  public func add (value: int) => @data.push(value);
+  public func push (value: int) => @data.push(value);
   public func pop () : bool => @data.pop();
 }
 
 let list = new IntArray();
-list.add(2);
-list.add(4);
-list.add(3);
-free!(list); // Prints: "I will be freed."
+list.push(2);
+list.push(4);
+list.push(3);
+free list; // Prints: "I will be freed."
+
+list.push(8); // ERROR (resource freed)
 ```
 
-This overloads aims to provide a way to run a specific code when the developer explicitly says it doesn't need the instance anymore. After the destructor is ran, the instance is freed and any usage of it will result in an error.
+This overload aims to prepare the instance to being destroyed. After the destructor is ran, the instance is freed and any usage of it will result in an error, like the last line in the above example.
 
 ### Cloning
 
-Let's imagine we have an array of integers. We make a function that calculate, for each number, its square, and return a final array with these numbers. Here is how we would implement it:
+Let's imagine we have an array of integers. We make a function that calculates, for each number, its square, and return a final array with the result. A first implementation of this idea could be:
 
 ```sn
 func squareList (array: int[]) : int[] {
-  for i = 0; i < array.size; i ++ {
+  for i = 0; i < array.length; i ++ {
     array[i] *= array[i];
   }
 
@@ -2549,28 +2939,33 @@ println!(squares[1]); // Prints: "49"
 println!(array[1]); // Prints: "7"
 ```
 
-This works perfectly fine. We simply added a `clone!` instruction, and our problem is solved because we explicitly tell we want to make a brand _new_ array with the same values than the first one.
+The `clone!` flex we use here simply creates a new array with the same values than the previous one. So, our initial array isn't affected.
 
-But cloning is not magic. We can't simply clone data like this. Imagine a class contains an `unique_id` attribute that aims to be a unique number. Cloning it like that would throw this rule away. This is why, by default, instances can't be cloned until they implement the `%clone` overload. Let's consider this class:
+But cloning doesn't work on any class. For example, if we have a class representing a product in an enterprise with a `unique_id` attribute, cloning could have bad consequences.  This is why, by default, instances can't be cloned until they implement the `%clone` overload. Let's consider this class:
 
 ```sn
 class Product {
+  // Instances' attributes
   public readonly unique_id: int;
   public readonly name: string;
   public readonly price: int;
+
+  // Class' static attribute
   private static counter: int = 0;
 
   public %construct(@name: string, @price: int) {
-    @unique_id = self.counter ++;
+    @unique_id = _self.counter ++;
   }
 }
 ```
 
 It can't be cloned because the cloning overload is not present in the class.
 
-For this one we can choose between two signatures: a function which takes ones argument (let's call it `target`), and must return an instance of the current class (return type is omittable). In this case, the program will automatically clone the instance by creating a new object with the same methods and attributes, and assign the values to the new instance's attributes (even private ones) by cloning the original's ones. Note that the constructor is not called when the instance is automatically cloned.
+The cloning overload can take two different signatures. The first one is a function taking one argument (let's call it `target`) and returning an instance of the current class. In this case, the program will automatically clone the instance by creating a new object with the same methods and attributes, and assign the old instance's attributes' values to the new instance's attributes' ones (even private ones) by cloning each attribute.
 
-The overload will then be able to manipulate the target before returning it, in order for example to change unique identifiers or other things. Here is how it could look like:
+The overload function will then be called and its argument will be the automatically-cloned new instance. It will then be expected to return an instance of the class that will be the clone returned by the `clone!` flex, so the overload function will be able to manipulate the instance like, for example, generating a new unique identifier in our case, before returning it.
+
+Note that the constructor is not called when the instance is automatically cloned.
 
 ```sn
   // ...
@@ -2579,7 +2974,7 @@ The overload will then be able to manipulate the target before returning it, in 
     println!(`Cloning a ${target.name}`);
 
     // Set a new unique identifier
-    target.uid = self.counter ++;
+    target.uid = _self.counter ++;
 
     // Return the target
     return target;
@@ -2587,9 +2982,13 @@ The overload will then be able to manipulate the target before returning it, in 
   // ...
 ```
 
-Note that `_self` is a type that refers to the current class. Even if we can't use it here, there is also the `_this` yupr which refers to the _real_ class (for example if we make an instance of `Child` which inherits from `Mother`, inside the `Mother` class `_self` will refer to `Mother` but `_this` will refer to `Child`).
+The `_self` keyword is a type that refers to the current class.
 
-The second signature takes no argument, and must manually return an instance of the current class (return type is omittable). That's especially useful when two objects with the same attributes can't exist both at the same time, for example. That's more specific but will be needed in some cases.
+This cloning way is simple but implies two problems, though. The first one is that, for a moment, an exact clone of the instance exists. This can be a problem is some specific situations, so we have to be careful about this point. The second one is that this doesn't work on classes which has non-clonable attributes.
+
+For example, if we have in our class a `Superthing` instance, with the `Superthing` class not being clonable, an error will be thrown at build time.
+
+So, we have another choice: make an overload function that takes no argument, and returns an instance of the current class. It will have to create itself the instance and then return the result. This way, cloning will always work, and the cloning function can ensure there won't ever be two instances of the class with the same unique identifier. And, because we can modify another instance's private members in its original class, the manipulation will be easy.
 
 ```sn
   // ...
@@ -2597,7 +2996,7 @@ The second signature takes no argument, and must manually return an instance of 
   // ...
 ```
 
-Be aware, in the case you manually create an instance, don't forget to clone lists if you give some to the new instance from the current one (same with objects and instances from other classes) - else you could encounter some unexpected behaviour like modifying an instance changes an other too. Conceptually, the goal of a clone is to have the same behaviour than the original (same values...) but to be independant from it.
+Be aware, in the case you manually create an instance, don't forget to clone arrays and lists if you give some to the new instance from the current one (same with objects and instances from other classes) - else you could encounter some unexpected behaviour like modifying an instance changes another too. Conceptually, the goal of a clone is to have the same behaviour than the original (same values...) but to be **fully** independant from it.
 
 #### The lazy way
 
@@ -2609,32 +3008,35 @@ There is a third and last way to grant cloning support to your class. It's calle
   // ...
 ```
 
-If we write that, instances of the class will support cloning but we won't be able to do anything when this happen, or even be notified of that. All the attributes of the original instance will automatically be cloned to be assigned to the new one (like the first `%clone` we saw before). This is perfect for classes that don't have to worry about duplicate instances.
+If we write that, instances of the class will support cloning but the class won't be able to do anything when this happens, or even to be notified of the cloning. All the attributes of the original instance will automatically be cloned to be assigned to the new one (like the first `%clone` we saw before). This is perfect for classes that don't have to worry about duplicate instances.
+
+Of course, the same problems that applies to the `%clone (clone: _self) : _self` method applies here too.
 
 ### Serialization
 
-Serialization is a concept you probably won't use very often, but which can help you in some cases. Basically, serialization consists in converting a value to a string. It goes with the unserialization process, which converts a string to a value.
+Serialization consists in converting a class instance to a string, in order to transmit it over the network or to write it to a file, for example. It implies an unserialization process, which converts the string to an instance of the same class.
 
-For instance, we could imagine we have the same `Product` class as we saw before. Here is its source code at this point of the book:
+We will take again our product example. Below is the source code of the `Product` class at this point:
 
 ```sn
 class Product {
+  // Instances' attributes
   public readonly unique_id: int;
   public readonly name: string;
   public readonly price: int;
+
+  // Class' static attribute
   private static counter: int = 0;
 
-  public pln %lazy_clone = true;
-
   public %construct(@name: string, @price: int) {
-    @unique_id = self.counter ++;
+    @unique_id = _self.counter ++;
   }
 }
 ```
 
-We could now imagine we want to transmit a product over the network, or simply save it to a file. This requires to convert the instance as a string, or at least as an array of bits (because all informations in a computer are written with bits). We also want to be able to make an instance from the transmitted/saved string in order to use the product. So we need to _serialize_ the instance and then _unserialize_ the produced string.
+The serialization process requires to convert the instance to a string. We also want to be able to make an instance from any serialized string our classe produces in order to use the products. So we need to _serialize_ the instance and then _unserialize_ the produced string.
 
-For that, we'll implement two overloads in our class. They are `@serialize` and `@unserialize`, which is pretty explicit, and use the following signature:
+For that, we'll implement two overloads in our class: `%serialize` and `%unserialize`. They have the following signatures:
 
 ```sn
   public func %serialize () : string;
@@ -2651,11 +3053,11 @@ Now let's implement them! First, how to implement serialization? We could produc
   // ...
 ```
 
-But there is a problem here: first, the string is not optimized. One of the goal of serializing instances is to produce a small string to fit in a small disk space / be fast to transfer over a network. The second one, which is more annoying, is that'll be complicated to make an instance from these strings. So we can use a trick that is serializing a structure:
+But there is a problem: first, the string is not optimized. One of the goal of serializing instances is to produce a small string to fit in a small disk space / be fast to transfer over a network. The second one, which is more annoying, is that it will be complicated to make an instance from such a string. So we can use a trick that is serializing a structure:
 
 ```sn
   // ...
-  public struct Serialized {
+  public static struct Serialized {
     val name: string;
     val price: int;
   }
@@ -2664,7 +3066,7 @@ But there is a problem here: first, the string is not optimized. One of the goal
     // Make an object containing the data we want to serialize
     // (thanks to IST)
     // Then serialize it and return the result
-    serialize!(@Serialize {
+    serialize!(_self.Serialize {
       name: @name,
       price: @price
     });
@@ -2678,26 +3080,13 @@ But there is a problem here: first, the string is not optimized. One of the goal
   // ...
 ```
 
+Any resource can be a class' member, like structures, or even other classes (though they must be public).
+
 Note that not-assignable entities (like structures) are considered as constants when declared as a class' member. So, it's impossible to do something like `Product.Serialized = anotherStruct`.
 
 #### The lazy way (again)
 
-Exactly like cloning, there is a lazy overload for serialization. More exactly, there are two lazy overloads: one for serializing, and another for unserializing.
-
-If we use lazy serialization, all the members (even private ones) of our class will be put in a structure that will be converted to a string. If we use lazy unserialization, it will attempt to unserialize the given string as a structure made of all the class' members (even private ones), and make a new instance from it before returning it.
-
-Here is the syntax:
-
-```sn
-  // ...
-  // Implement lazy serialization
-  public pln %lazy_serialize = true;
-  // Implement lazy serialization
-  public pln %lazy_unserialize = true;
-  // ...
-```
-
-It's also possible to customize the fields that have to be serialized and unserialized. This way, we can avoid to put in a string that would go over the network or be written on a hard drive some confidential informations contained in the private members - or simply to remove some useless informations. It must be an array of strings, like this one:
+Just like cloning, there is a lazy overload for serialization. It consists in a single attribute, called `%lazy_serial_fields`, which is a tuple of strings indicating the class' attributes to serialize. This way, we don't have to implement any serialization function.
 
 ```sn
   // ...
@@ -2705,15 +3094,13 @@ It's also possible to customize the fields that have to be serialized and unseri
   // ...
 ```
 
-You now know everything about serialization!
+Be aware though when you put private attributes in the serialized fields, because they can be unserialized to. This means that, if you put the product's ID in the tuple for example, any piece of code could produce a string with the product ID it wants and then unserialize it to produce a product with a duplicate ID and/or an ID reserved to special products (such has high-importance products).
 
 ### Inline calls
 
-Inline calls allow us to make a class callable, just like a function. It can takes whatever arguments it wants to and use any return type.
+Inline calls consists in calling a class like it is a function. It can takes whatever arguments it wants to and use any return type.
 
-There are two overloads for inline calls: the first one is common to each instance, making the instances callable, and the second one is static and allows the class itself to be called.
-
-Let's take an example:
+There are two overloads for inline calls: the first one is common to each instance, making the instances callable, and the second one is static and allows the class itself to be called:
 
 ```sn
 class Translator {
@@ -2738,6 +3125,7 @@ Here, the `%call` overload made the class callable. We could implement it for in
 ```sn
 class Calculator {
   public func add (left: int, right: int) : int => left + right;
+
   public func %call (left: int, right: int) : int => @add(left, right);
 }
 
@@ -2745,11 +3133,13 @@ val calc = new Calculator();
 println!(calc(2, 5)); // Prints: "7"
 ```
 
-Remember: making the **class** callable as a function requires a static function, while it won't be to make the **instances** callable as a function. We can also implement both the overloads in the same time, of course.
+Remember: making the **class** callable as a function requires a static function, while it's not to make the **instances** callable as functions. We can also implement both the overloads in the same time, of course.
 
 ### Overloading operators
 
-Operators are overloadable in classes. How does this work? It simply consists in re-writing the behaviour of an operator when using an instance of the current class, coupled with another data. For example, overloading the addition operator will allow to add an instance of our class plus a number (or anything else), and return a result of any type (we can return an integer, a new instance of the class, an array...). Here is the list of operators overloads:
+We can also overload operators in classes. This allows to add, substract or divide instances of the class with any other type. It can be another instance of the class, a number, or anything else. The result can also be of any type, and it doesn't have to respect commutativity or anything else.
+
+The list of overloadable operators is:
 
 * `%plus` (`+`)
 * `%less` (`-`)
@@ -2758,35 +3148,42 @@ Operators are overloadable in classes. How does this work? It simply consists in
 * `%modulo` (`%`)
 * `%pow` (`**`)
 
-You can see the matching operator on the right of the corresponding overload. Each of them take two arguments, and return a new value. Let's see an example: we have a class called `BankAccount`, with a public readonly member called `money` and a method to add and substract money from the account. We now want to be able to add two bank accounts. Here is how we could do it:
+You can see the matching operator on the right of the corresponding overload. Each of them takes two arguments, and return any value. Let's see an example: we have a class called `BankAccount`, with a public read-only member called `money` and a method to add and substract money from the account. We now want to be able to add two bank accounts. Here is how we could do it:
 
 ```sn
 class BankAccount {
+  // The money on the account
   public readonly money: uint;
 
+  // A simple constructor
   public func %construct (@money: int) {}
 
+  // Add money to the account
   public func add (amount: int) => @money += amount;
+  // Remove money from the account
   public func sub (amount: int) => @money -= amount;
 
+  // Add two accounts by returning the sum of their content
   public func %plus (cmp: _self) : int {
     return @money + cmp.money;
   }
 }
 
+// Make two instances
 let account1 = new BankAccount(1000);
 let account2 = new BankAccount(2000);
 
+// Add them and print the result
 println!(account1 + account2); // Prints: "3000"
 ```
 
-That's as simple as that. We could also implement a way to handle operations between bank accounts and numbers:
+That's as simple as that. We could also implement a way to handle addition between bank accounts and numbers:
 
 ```sn
 class BankAccount {
   // ...
   public func %plus (cmp: number) : number {
-    return @money + cmp;
+    return cmp + @money;
   }
   // ...
 }
@@ -2798,8 +3195,8 @@ Note that implemeting `%times` will automatically implement `%pow` as a successi
 
 There are though some operators that can't return any type. These are the logical operators, which must return a boolean. They are:
 
-* `%equal` (`==`)
-* `%inequal` (`!=`)
+* `%equal` (`==` / `is`)
+* `%inequal` (`!=` / `isnt`)
 * `%greater` (`>`)
 * `%smaller` (`<`)
 
@@ -2817,56 +3214,30 @@ println!(account1 == account2); // Prints: "false"
 println!(account1 == new BankAccount(1000)); // Prints: "true"
 ```
 
-This works the same way for the other logical operators. A specificy with logical operators are they are reversable: if you implement `%equal`, this will also implement `%inequal` as its opposite.
+A specificy with logical operators is they are reversable: if you implement `%equal`, this will also implement `%inequal` as its opposite. Here is the list:
 
 * Implementing `%equal` will automatically implement `%inequal` ;
 * Implementing `%inequal` will automatically implement `%equal` ;
-* Implementing `%equal`/`%inequal` + `%greater` will automatically implement `%smaller` ;
-* Implementing `%equal`/`%inequal` + `%smaller` will automatically implement `%greater`
+* Implementing either `%equal` or `%inequal`, with `%greater`, will automatically implement `%smaller` ;
+* Implementing either `%equal` or `%inequal`, with `%smaller`, will automatically implement `%greater`
 
 So, any class that implements either `%equal` or `%inequal` as well as `%greater` or `%smaller` automatically implements all comparison overloads.
 
-This also makes the class implementing the `Comparable` interface, which is useful when dealing with vectors for example: that allows to use the `.sort()` as well as the `.getIterator()` functions from `Vec`.
-
-#### Templating
-
-It's possible to use templates on overloads, but only if these templates are part of the type of at least one argument of the function. Here are some examples of signatures:
-
-```sn
-class BankAccount {
-  // ...
-
-  // Doesn't work because "T" cannot be guessed
-  public func %plus<T> (left: string, right: int) : int[];
-
-  // Doesn't work because "T" cannot be guessed
-  public func %plus<T> (left: string, right: int) : T;
-
-  // Works fine
-  public func %plus<T> (left: T, right: int) : bool;
-
-  // Works fine
-  public func %plus<T> (left: string, right: Map<int, T>) : string[];
-
-  // ...
-}
-```
-
-In more precise terms, if the template cannot be _inferred_, the overload's signature will be rejected.
+This also makes the class implementing the `Comparable` interface, which is useful when dealing with vectors for example: that allows to use the `.sort()` as well as the `.getIterator()` functions from `Vector`.
 
 ### Friends
 
-Another concept of accessibility is the _friends_. These are resources, listed in a class, that can access its private attributes. Here is how it goes:
+_Friends_ are part of the concept of accessibility. These are resources, listed in a class, that can access its private attributes.
 
 ```sn
 class Product {
   private static counter = 0;
   private id: int;
 
-  public func %construct () => @unique_id = self.counter ++;
+  public func %construct () => @unique_id = _self.counter ++;
 
   // List a function as this class' friend
-  friend getProductId(product: _self) : int;
+  friend getProductId (product: _self) : int;
 }
 
 // Define the class' friend function
@@ -2883,14 +3254,11 @@ class Product {
   // List a simple function as a friend
   friend func simpleFunction (product: _self) : int;
 
-  // List a function from another class as a friend
+  // List a function (either static or not) from another class as a friend
   friend func AnotherClass.instanceFunction(product: _self) : int;
 
-  // Even a whole class can be listed as a friend!
+  // Even a whole class can be listed as a friend
   friend class AnotherClass;
-
-  // And even structures!
-  friend struct SomeStructure;
 }
 ```
 
@@ -2898,36 +3266,34 @@ As we will see later, this also works for interfaces, traits and other things.
 
 ## Cross-typing
 
-Cross-typing is a very important concept in classes. SilverNight is largely based on it, as it features many useful sub-concepts for programming. In this chapter, we'll them all, before going to the final chapter about classes: the dictionnaries.
+Cross-typing an important part of the language, as it features many useful concepts for programming. In this part, we will see them all, before going to the final chapter about classes: the dictionaries.
 
 ### Inheritance
 
 Here is the big part of classes: inheritance. That's a very important concept so be sure to understand it fully.
 
-When declaring a class, we sometimes encounter a problem when we want to make specific instances. For instance, let's say we have a `Hero` class. With it we want to describe a warrior, which has no `mp` but a `rage` attribute that increases when he receives damages which increases its attack points. At the opposite, we have wizards, who don't have `rage` but `mp` to use spell on their target.
+When declaring a class, we sometimes encounter a problem when we want to make specific instances. For instance, let's say we have a `Hero` class. With it we want to describe a warrior, which has no `mp` but a `rage` attribute that increases when he receives damages which increases its attack points. At the opposite, we have wizards, who don't have `rage` but `mp` to use spells on their target.
 
 The warrior could have a `rage` attribute to check if their rage level, and the wizard could have a `fireball()` method to throw a fireball to the ennemy.
 
-Of course, we could implement this in a single class, by having a `type` attribute for instance that describes if the hero is a warrior or a wizard, and do the check in the two methods we just saw to forbid warriors using fireballs and always keep a nil rage for wizards. But that'd make our code less clear and less maintable, and that'll be even worse if we add new type of heroes (like a dragon that can fly to avoid attacks, or a demon that invokes some demoniac creatures).
+Of course, we could implement this in a single class, by having a `type` attribute for instance that describes if the hero is a warrior or a wizard, and do the check in the two methods we just saw to forbid warriors using fireballs and always keep a nil rage for wizards. But that would make our code less clear and less maintable, and that would be even worse if we wanted to add new type of heroes (like a dragon that can fly to avoid attacks, or a demon that invokes some demoniac creatures).
 
-A solution to this problem is the _inheritance_. How does it work? Well, it's mostly simple to understand: we will declare a new class that _inherits_ from another called the _mother class_. These classes will be called the _children classes_. In our example, the `Hero` class would be the mother, while two `Warrior` and `Wizard` classes would be the children that _inherits_ from `Hero`.
+A solution to this problem is _inheritance_. The concept is mostly simple: we will declare a new class that _inherits_ from another called the _mother class_. These classes will be called the _children classes_. In our example, the `Hero` class would be the mother, while two `Warrior` and `Wizard` classes would be the children that _inherits_ from `Hero`.
 
-A class inheriting from another will receive all of its members, including overloads. That means any method that works on the mother class will work on this children. But the specificity of children classes it that they can implement their own members, and rewrite their parent's ones (though they can't remove them). For instance, if the `Hero` class has an `fight()` method, `Warrior` and `Wizard` could rewrite its body (what it does) but not its signature ; they will be forced to have a method with the same signature, even if they rewrite it. But, thanks to polymorphism, they can still define a new method with the same name if it has other arguments (and potentially another return type) - but the mother's method will be inherited anyway.
+A class inheriting from another will receive all of its members, including overloads. That means any method that works on the mother class will work on this children. But the specificity of children classes it that they can implement their own members, and rewrite their parent's ones (though they can't remove them). For instance, if the `Hero` class has an `fight()` method, `Warrior` and `Wizard` could rewrite its body (what it does) but not its signature ; they will be forced to have a method with the same signature, even if they rewrite it. But, thanks to polymorphism, they can still define a new method with the same name but with other arguments (and potentially another return type) - but the mother's method will be inherited anyway.
 
 Now we saw the concept, let's implement it step by step. First, we'll make a skeleton for the mother class:
 
 ```sn
-virtual class Hero {
+open class Hero {
   public readonly name: string;
   public readonly hp: int;
   public readonly attack: int;
 
-  public %construct(@name: string, @hp: int, @attack: int) {}
-
   // Attack an ennemy
   public func fight (ennemy: _self) {
     // Check if this hero is dead
-    if (@hp is 0) {
+    if @hp is 0 {
       println!(`${@name} can't find because he's dead.`);
       return ;
     }
@@ -2936,7 +3302,7 @@ virtual class Hero {
     ennemy.receiveDamages(@attack, @name);
 
     // Check if the ennemy died
-    if (ennemy.hp is 0) {
+    if ennemy.hp is 0 {
       println!(`${@name} killed ${ennemy.name}!`);
       return ;
     }
@@ -2948,7 +3314,7 @@ virtual class Hero {
   // Receive damages from an ennemy
   public func receiveDamages (amount: int, ennemyName: string) {
     // Check if this hero is dead
-    if (@hp is 0) {
+    if @hp is 0 {
       println!(`${@name} did not receive any damage because he's dead.`);
       return ;
     }
@@ -2956,7 +3322,7 @@ virtual class Hero {
     println!(`${ennemyName} fights ${@name}.`);
 
     // Check if the damages are higher than the remaining HP
-    if (amount > @hp) {
+    if amount > @hp {
       @hp = 0;
       println!(`${@name} dies.`);
       return ;
@@ -2970,15 +3336,17 @@ virtual class Hero {
 }
 ```
 
-A little subtlety here is the presence of the `virtual` keyword before the `class` one. It's called a _class state_, a concept we'll see later. This one simply indicates the class can't be instanciated, so you can't do `new Hero();` or `val someone: Hero;` - both will throw an error. Instead, we will instanciate the `Hero`'s children classes, if they are not defined as `virtual` too.
+A little subtlety here is the presence of the `open` keyword at the beginning. It's called a _class state_, and this one allows our class to be _inherited_. By default, classes are _sealed_, so it's impossible to make children class from them ; they need to be _opened_ using the `open` keyword to allow it.
 
-Another thing: the `protected` keyword. It kind of acts like `private`, as the member it prefixes will only be available from the inside of the class. But, `private` is a special keyword that, in addition to making the attribute writable only from the inside of the class, will not make it available from its children class. So `Warrior` and `Wizard` wouldn't be able to write it. That's not really a problem, since these attributes don't aim to be modified, but that's a thing we need to think to when making a class that will be inherited by anothers. The `protected` keyword does the same thing than `private` excepted that it makes it available for children classes.
+Another thing: the `protected` keyword. It kind of acts like `private`, as the member it prefixes will only be available from the inside of the class. But, `private` is a special keyword that, in addition to making the attribute available only from the inside of the class, will not make it available from its children class. So `Warrior` and `Wizard` wouldn't be able to read or write it. That's a thing we need to think to when making a class that will be inherited by other ones. The `protected` keyword does the same thing than `private` excepted that it makes the attribute available from children classes.
 
-So, now we seen that, let's make our children classes:
+So, now we've seen that, let's make a first children class:
 
 ```sn
-class Warrior extends Hero {
+class Warrior inherits Hero {
   public readonly rage: int;
+
+  public %construct(@name: string, @hp: int, @attack: int) {}
 
   public func receiveDamages (amount: int, ennemyName: string) {
     // Call the parent class' `receiveDamages()` method
@@ -2986,7 +3354,7 @@ class Warrior extends Hero {
 
     // Check if the warrior rage will exceed 20 points
     //  by adding the damages just received
-    if (@rage + amount > 20) {
+    if @rage + amount > 20 {
       // Limit them
       @attack += 20 - @rage;
       @rage = 20;
@@ -2999,21 +3367,27 @@ class Warrior extends Hero {
 }
 ```
 
-What happens in this class? First, we tell to the class to inherit from `Hero`, so it keeps all its attributes and methods (including overloads). Next, we declare a new `rage` attribute, which this time is set as `private` because there won't be any class inheriting from it. Then, we redefine the `receiveDamages` method. In it, we use a brand new keyword: `super`. It is the same as `this`, excepted it refers to the parent class as an instance. For example, `super.receiveDamages()` will call the `receiveDamages()` method of the **parent class**. This way, we don't have to rewrite the calculation of damages and other checkings - which would make a code duplicate, which is a thing to avoid absolutely in development.
+First, we create a `Warrior` declared as a child class of `Hero`, so it keeps all its attributes and methods (including overloads).
 
-Then, the redefined method increases the rage counter (with a maximum of 20 points) and increases the warrior's attack points, so his attack points will be up to his original value plus 20 points.
+Next, we declare a new `rage` attribute, which this time is `private` because there won't be any class inheriting from this one.
 
-We can now write our `Wizard` class:
+Then, we declare a constructor for the class. If you look at the mother class, it doesn't have any constructors. If we doesn't make one, the class will be instanciable without any argument, which would set HP, attack etc. to their NIL value. This is a fundamental rule: if the class has no constructor, it can be instanciated without any argument ; if it has one or more constructors, the instanciation must use any of the declared constructors.
+
+Finally, we re-define the `receiveDamages` method. The `super` keyword we use in it refers to the mother class of the current one, as an instance. For example, `super.receiveDamages()` will call the `receiveDamages()` method of the **parent class** applied to our instance. This way, we don't have to rewrite the calculation of the damages and other checkings - which would make a duplicate code, which is a thing to avoid in development.
+
+The redefined method increases the rage counter (with a maximum of 20 points) and increases the warrior's attack points, so his attack points will be up to his original value plus 20 points.
+
+We can now write our `Wizard` class, still inheriting from `Hero`:
 
 ```sn
-class Wizard extends Hero {
+class Wizard inherits Hero {
   public readonly mp: int;
 
   public func %construct (@name: int, @hp: int, @attack: int, @mp: int) {}
 
   public func fireball (ennemy: Hero) {
     // Check if remaining MP are enough
-    if (@mp < 10) {
+    if @mp < 10 {
       println!(`${name} can't throw a fireball because he doesn't have enough MP.`);
       return ;
     }
@@ -3025,7 +3399,7 @@ class Wizard extends Hero {
     ennemy.receiveDamages(@attack * 2, @name);
 
     // Check if the ennemy died
-    if (ennemy.hp is 0) {
+    if ennemy.hp is 0 {
       println!(`${@name} killed ${ennemy.name}!`);
       return ;
     }
@@ -3038,7 +3412,7 @@ class Wizard extends Hero {
 
 The `Wizard` class also inherits from `Hero`, and adds a new `mp` attribute (private, like `rage` for `Warrior`). It also redefines the constructor, as it now needs a new attribute.
 
-Then, it implements a new method called `fireball()` to throw a fireball on the ennemy, which doubles its attack points for this attack. Pretty powerful.
+Then, it implements a new method called `fireball()` to throw a fireball on the ennemy, inflicting double damages. Pretty powerful.
 
 Now we've done this, let's try our classes:
 
@@ -3050,54 +3424,76 @@ hegor.fight(jack);
 println!('------------------');
 jack.fireball(hegor);
 
-/*
- * Hegor fights Jack.
- * Jack loses 30 HP.
- * Jack fights Hegor.
- * Hegor loses 10 HP.
- * ------------------
- * Jack fights Hegor.
- * Hegor loses 20 HP.
- * Hegor fights Jack.
- * Jack loses 50 HP.
+/* Prints:
+
+   Hegor fights Jack.
+   Jack loses 30 HP.
+   Jack fights Hegor.
+   Hegor loses 10 HP.
+   ------------------
+   Jack fights Hegor.
+   Hegor loses 20 HP.
+   Hegor fights Jack.
+   Jack loses 50 HP.
 */
 ```
 
-Here we are! We implemented a mother class with two children.
+Here we are! We implemented a mother class with two children. This may appear complex as it's the first time we're doing this, but as you use inheritance in your own programs you'll get used to it.
 
 ### Resolution keywords
 
-In a class, we can use a several keywords to access classes.
+There are several keywords to access other classes from a given one. These are the _resolution keywords_. Briefly:
 
-Briefly, `this` refers to the current instance's class, `self` refers to the current class, `super` refers to `self`'s parent.
+* `this` refers to the real class as an instance (the real object we are manipulating) ;
+* `self` refers to the current class as an instance ;
+* `super` refers to the mother of the current class as an instance ;
+* `_this` refers to the class `this` is an instance of ;
+* `_self` refers to the class `self` is an instance of ;
+* `_super` refers to the class `super` is an instance of ;
+
+Besides, `static<obj>` allows us to get a class in a static context from any of its instances. This means that  `static<"Hello">` will return the `string` class, so we can access its static properties (like `string.NIL` which is the NIL value for this class, an empty string).
 
 Let's take a short example:
 
 ```sn
-class Mother {
-  public func callHello () => this.hello();
+open class Mother {
+  public func helloFromMother () => this.hello();
   public func hello () => println!("I am the mother class.");
 }
 
-class Child extends Mother {
+class Child inherits Mother {
   public func hello () => println!("I am the child class.");
 }
 ```
 
 * `this` refers to the current instance whatever the class it is written in is. ;
 * `self` will refer to `Child` inside the `Child` class, and to `Mother` inside the `Mother` class ;
-* `super` will refer to `Mother` inside the `Child` class, and throw an error if used in the `Mother` class.
+* `super` will refer to `Mother` inside the `Child` class, and throw an error inside the `Mother` class
 
 But there is an important rule about `this`: if we write the following code:
 
 ```sn
 val child = new Child();
-child.callHello(); // Prints: "I am the child class."
+child.helloFromMother(); // Prints: "I am the child class."
 ```
 
-Here, we can use the `callHello()` method because `Child` inherits it from `Mother`. This method runs the `hello()` method of the _instance_'s class, not the current one. So it calls the `hello()` method from `Child` instead of of `Mother`. To call the method of the _current_ class, we should have used `self.hello()` instead.
+We can use the `helloFromMother()` method because `Child` inherits it from `Mother`. This method runs the `hello()` method of the _instance_'s class, not the current one. So it calls the `hello()` method from `Child` instead of `Mother`. To call the method of the _current_ class, we should have used `self.hello()` instead:
 
 Note that these keywords can be used both in a dynamic and static way: we could write `this.staticMethod()` as well as `self.sayHello()`, which would have printed `"I am the mother class"`.
+
+```sn
+open class Mother {
+  public func helloFromMother () => self.hello();
+  public func hello () => println!("I am the mother class.");
+}
+
+class Child inherits Mother {
+  public func hello () => println!("I am the child class.");
+}
+
+val child = new Child();
+child.helloFromMother(); // Prints: "I am the mother class."
+```
 
 #### Calling overloads
 
@@ -3115,20 +3511,96 @@ class Test {
   }
 
   public func %construct (@name: string) {
-    this.construct(id);
+    this.%construct(id);
   }
 }
 ```
 
-This work for all overloads with all resolution keywords (`this`, `self` and `super`).
+This works for all overloads (even the constructor and the destructor) with all resolution keywords (`this`, `self` and `super`, as well as their `_this` `_self` and `_super` static equivalents).
 
-Also, be aware that some languages use `this(...)` to call the current class' overload (the same applies for the other resolution keywords), but in SilverNight it calls the instance (with `this` and `super`) or the class (with `self`) as a function using the `%call` overloads - which throws an error if it's not implemented.
+Note that these overloads methods can only be accessed from the inside of the class, or from the inside of its children classes. Also, the call must be explicit: you cannot write `(true ? this : self).%construct()` for example.
+
+Also, be aware that some languages use `this(...)` to call the current class' constructor (the same applies for the other resolution keywords), but here it calls the instance (with `this` and `super`) or the class (with `self`) as a function using the `%call` overload - which throws an error if it's not implemented.
+
+### Constructor inheritance
+
+A specificity about the constructor is that it is not inherited by default ; you will have to re-write your own constructor in every child class. But hopefully, it is possible to call the parent class' constructor, as we will see soon.
+
+Still, if you _really_ want to inherit the constructors of the parent class (e.g. in the case there are many constructors to re-define in the child class), you can still use the `#supercstr` directive, which inherits from the constructors of the direct mother class (not the constructors of the grand-mother class):
+
+```sn
+class A {
+  public func %construct (message: string) {
+    println!(message);
+  }
+}
+
+class B inherits A {}
+
+class C inherits A {
+  #supercstr;
+}
+
+// Doesn't inherit mother's constructors
+let b = new B("Hello !"); // ERROR (no such constructor)
+// Inherit them
+let c = new C("Hello !"); // Prints: "Hello !"
+```
+
+#### Re-implementing the constructor
+
+As we saw the constructor couldn't be inherited, we can use overloads calling to redefine it simply. For example, if we have a child class which wants to have exactly the same constructor as its mother, we can do:
+
+```sn
+open class Mother {
+  protected name: string;
+
+  public func %construct (@name: string) {
+    println!(`Hello ${name}!`);
+  }
+}
+
+class Child inherits Mother {
+  public func %construct (name: string) {
+    // Call the mother's existing constructor
+    super.%construct(name);
+  }
+}
+```
+
+#### Private overloads
+
+Like standard methods, overloads can be declared as protected or private. In this case, the overload will work only from the inside of the class.
+
+For example, we could imagine a class we don't want to be instanciated from the outside: only its children classes can instanciate it. For that, we can declare the constructor of this class as protected, and call it only from the children classes:
+
+```sn
+class Mother {
+  protected func %construct () {}
+
+  public func sayHello () {
+    println!("Hello!");
+  }
+}
+
+class Child inherits Mother {
+  public static func getMotherObj () : _super =>
+    new Mother(); // Works fine
+}
+
+// Instanciate the mother class
+new Mother(); // ERROR (no public constructor available)
+Child.getMotherObj(); // Works fine
+
+// Use the instance
+Child.getMotherObj().sayHello(); // Prints: "Hello!"
+```
 
 ### Abstract methods
 
-Let's see a new prefix for class' methods: `abstract`. We already saw what a virtual class was, but now let's see what an abstract a method (because attributes cannot be abstraced) is.
+Like virtual classes are classes that must be inherited, abstract methods are methods that must be re-implemented in the children classes.
 
-Basically, abstracting a method means that its signature is written in the class, but its body is not forced to. It also forces any children of this class to implement its own version of the method, and this method will be usable in the parent even though its body is in a child.
+Basically, abstracting a method means that its signature is written in the class, but its body is not forced to. It also forces any children of this class to implement its own version of the method, and this method will be usable in the parent even though its body is in the child class.
 
 Here is an example:
 
@@ -3144,32 +3616,56 @@ class World {
 }
 ```
 
-The first difference we can see between these two classes is that the first one is abstract and not the second one. Why? Because, when we declare an abstract method without its body, it can't of course be used from this class - because the program doesn't know what to do. So it can't be instanciated, and because of it it is stated as a virtual class.
+The first difference we can see between these two classes is that the first one is virtual and not the second one. Why? Because, when we declare an abstract method without its body, it can't of course be used from this class - because the program doesn't know what to do. So it can't be instanciated, and because of it it is stated as a virtual class.
 
-The second class declares an abstract method but with a body, this time. That means any child class will be forced to implement its own version of this method, but the class is still instanciable because we written the method's body in the class.
+The second class declares an abstract method but with a body, this time. That means that any child class will be forced to implement its own version of this method, but the class is still instanciable because we written the method's body in the class. In this case, the class will be able able to use its `sayHello()` method from its own body, and it will use the body of the abstract function if we use `self`, or maybe the body of the re-implemented function in a child class if we use `this`.
+
+Note that abstraction is reserved to methods ; attributes can't be abstracted.
+
+#### Final methods
+
+Final methods are simply methods that can't be overwritten in children classes. They are prefixed with the `final` keyword and ensures the behavior will not be changed in any child class.
+
+```sn
+open class Mother {
+  final public func sayHello () {
+    println!("Hello from the mother class!!");
+  }
+}
+
+class Child inherits Mother {
+  public func sayHello() { // ERROR (overwritting a final method)
+    println!("Hello from the child class!");
+  }
+}
+```
 
 ### Stated classes
 
-As methods can be prefixed in a class, there are also prefixes for classes themselves. _Stated_ classes are standard classes with a keyword prefixing the `class` one, called the _class' state_. There are a few ones:
+_Stated_ classes have a keywording prefix the `class` one, called the _class' state_. They allow to change the behavior of the class, and notably to modify the way it can (or not) be inherited.
 
-#### `virtual` classes
+#### Opened classes
 
-We already saw this state, it means the class cannot be instanciated, so it must have at least one child class that will be instanciable (if it isn't prefixed with the same keyword too).
+The `open` state allows the class it prefixes to be inherited.
 
-#### `final` classes
+#### Virtual classes
 
-Final classes are classes that can't be inherited. They can be instanciated, though.
+Virtual classes cannot be instanciated, so it must have at least one non-virtual child class. The class is automatically set as `open` to allow inheritance.
 
-#### `static` classes
+The keyword for this state is: `virtual`.
 
-Static classes are both `abstract` and `final` classes. They are not instanciable and not inheritable. This means all the class' members **must** be static.
+#### Static classes
 
-#### `unique` classes
+Static classes are virtual and as they are sealed by default (like any class) they are not instanciable and not inheritable. This implies all the members of the class to be static.
 
-Unique classes are a special case where the class has one unique instance and cannot be instanciated later. Here is an example with a translation class:
+The keyword for this state is: `static`.
+
+#### Unique classes
+
+Unique classes are "self-instanciated" classes. Here is an example:
 
 ```sn
-unique class Translation as tr {
+unique class tr {
   public func translate (text: str, lang: str) : string {
     // Do some stuff here
     return "Bonjour";
@@ -3189,72 +3685,39 @@ tr("Hello", "tr"); // Returns: "Bonjour"
 
 As you can see, the `Translation` class does not even exist, in reality. There is only the `tr` instance.
 
-#### `readonly` classes
+Because of the self-instanciation, such classes can't have a constructor, or if they have they must have an empty one (which takes no argument).
 
-Read-only classes are classes that can't be written from the outside of the class. All attributes must be set as read-only or be protected/private. Protected and private attributes that are not marked as read-only won't available from the outside of the class (as for a standard class).
+#### Read-only classes
 
-### Typecasting
+Read-only classes are classes that can't be written from the outside of the class. All attributes must be set as read-only or be protected/private. Declaring public non-read-only attributes will result in an error.
 
-In SilverNight, typecasting is the concept of converting a given type into a primitive type, for example converting a string to an integer or a structure to a string. But it's not magic, types need to have a _transtyping overload_ for each primitive type they want to be typecastable to.
+#### A little table
 
-These overloads have to following signature:
+|  Keyword  | Instanciable ? | Inheritable ? |
+|-----------|----------------|---------------|
+| `static`  |        No      |       No      |
+| `virtual` |        No      |      Yes      |
+| _nothing_ |       Yes      |       No      |
+|  `open`   |       Yes      |      Yes      |
 
-```sn
-  [public|protected|private] %toType() : Type;
-```
-
-If they are public, casting will work anywhere. If they are protected/private, they will work only from the inside of the class (and not in children if private).
-
-For examlple, casting a type to a boolean (`bool` or `Boolean` type) requires the `%toBoolean` overload. Here is an example:
-
-```sn
-class MyInteger {
-  private value: int;
-
-  public func set (@value: int) {}
-  public func get () : int => @value;
-
-  public func %toBoolean () : bool => @value isnt 0;
-}
-```
-
-Now, `MyInteger` instances can be casted to booleans (`false` if they are equal to 0, `true` else).
-
-Here is the array of all typecasting overloads:
-
-```sn
-  // ...
-  public func %toBoolean ()   : bool;
-  public func %toInteger ()   : int;
-  public func %toFloat ()     : float;
-
-  public func %toString ()    : string;
-  public func %toNumber ()    : number;
-  // ...
-```
-
-There two last overloads can be automatically available even if they are not written by hand: `%toNumber` and `%toString`. The first one returns a `number` instance but exists if and only if either `%toInteger` and/or `%toFloat` is implemented. If `%toFloat` exists, it will return its result, else it will return `%toInteger`'s one.
-
-The `%toString` overload will simply return a string if **any** typecasting overload is implemented. It will give priority to `%toNumber`, then to `%toBoolean`. That's as simple as that. It can be useful in some cases like in interfaces and/or traits like we'll see later.
-
-**NOTE :** `number` is the mother class of both `int` and `float`, themselves respectively mothers of all integers types like `ui8` or `i32` for the first one and floating-points types like `ufloat` or `double` for the second one.
-
-A concrete example of using these overloads is when using the `println!` flex. It takes as an argument any instance implementing `%toPrimitive`, gets this overload's result, and prints it in the output. There are several usages of it, but most are to use them in interfaces and traits.
+The `unique` keyword doesn't affect a class itself but makes an object from a ghost class, that's why it isn't in the table.
 
 ### Sub-typing
 
-Here is a very useful feature that simply acts like this: any children class will be accepted if one of its ancestors is required.
+Sub-typing is a very useful feature simply consisting in the following statement:
 
-To put it clearly: if a function asks for a `Vehicle` and we make a `Motorcycle` child class that inherits from `Vehicle`, the function will accept `Motorcycle` instances.
+Any children class will be accepted if one of its ancestors is required.
+
+To put it clearly: if a function asks for a `Vehicle` and we make a `Motorcycle` child class that inherits from `Vehicle`, the function will accept `Motorcycle` instances as well.
 
 Here is an example:
 
 ```sn
-class Vehicle {
+open class Vehicle {
   public func accelerate () => println!("Vroom!");
 }
 
-class Motorcycle extends Vehicle {
+class Motorcycle inherits Vehicle {
   public func accelerate () => println!("vroom vroom!");
 }
 
@@ -3266,14 +3729,16 @@ acceleration(new Vehicle()); // Prints: "Vroom!"
 acceleration(new Motorcycle()); // Prints: "Vroom vroom!"
 ```
 
-Be aware though: when declaring a resource as a type and using a child type instead, you won't be able to use its new members. The only difference can come from the rewritten methods that already existed in the type we declared, these ones will use the code of the child type.
+As you can see, if you call an overwritten method from the mother type, it will call the child class' method instead (that's why `.accelerate()` doesn't produce the same effect for both `Vehicle` and `Motorcycle` even though they are both considered as a `Vehicle`).
+
+Be aware though: when using a mother type, all members specific to its children classes becomes unavailable:
 
 ```sn
-class Vehicle {
+open class Vehicle {
   public func accelerate () => println!("Vroom!");
 }
 
-class Motorcycle extends Vehicle {
+class Motorcycle inherits Vehicle {
   public func accelerate () => println!("vroom vroom!");
   public func stunt () => println!("Wow!");
 }
@@ -3282,10 +3747,14 @@ val motorcycle: Vehicle = new Motorcycle();
 motorcycle.stunt(); // ERROR because `stunt` is not part of the `Vehicle` class
 ```
 
-That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept. Also, note there is a way to ask for a specific type and not its children, thanks to the `#mustbe<T>` directive. Yes, directive can be templated. Here is an exemple:
+That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept. Also, note there is a way to ask for a specific type and not its children, thanks to the `#exact<T>` directive. Yes, directives can be templated too. A shorter version of it is to prefix the type with the equality operator `#=`. Here is an exemple:
 
 ```sn
-func precise (vehicle: #mustbe<Vehicle>) =>
+func precise (vehicle: #exact<Vehicle>) =>
+  vehicle.accelerate();
+
+// Shorter syntax:
+func precise (vehicle: #=Vehicle) =>
   vehicle.accelerate();
 
 let car        : Vehicle    = new Vehicle();
@@ -3297,31 +3766,222 @@ println!(precise(motorcycle1)); // ERROR
 println!(precise(motorcycle2)); // ERROR
 ```
 
-### Interfaces
+#### Sub-typing with structures
 
-Because understanding the concrete point of an interfaces isn't always easy, let's take an example to introduce the concept.
-
-Let's say we have a function that takes two arguments of any type, and add them as integers. In order to perform the addition, they need to be convertible to integers, of course. So our function will take any argument that implements the `%toInteger` overload. But how can we do that?
-
-The first idea would be to make a virtual class called `ConvertibleToInt` with an abstract method called `%toInteger`, like this:
+Structures support sub-typing too, but in a very simplier way: any object that fully respects the structure's model is considered as being of the same type. Showcase:
 
 ```sn
-virtual class ConvertibleToInt {
-  abstract func %toInteger () : int;
+struct A {
+  x: i32;
+  y: i32;
+}
+
+struct B {
+  x: i32;
+  y: i32;
+}
+
+let a: A = A { x: 1, y: 2 };
+let b: B = a; // Works fine
+
+b = B { x: 3, y: 4 };
+a = b; // Works fine
+```
+
+Be aware though, the structure must **perfectly** respected: if a member is described as constant, it must be respected. Same thing if it is described as being a plain value:
+
+```sn
+struct A {
+  x: i32;
+  val y: i32;
+}
+
+let a = A {
+  x: 2,
+  y: 3
+};
+
+let b = { x: 2, y: 3 };
+
+a = b; // ERROR
+```
+
+This example results in an error because, while `a` is typed as an `A`, so an `{ x: i32, val y: i32 }`, `b` is typed as an `{ x: i32, y: i32 }` (its `y` member is not forced to be constant). This is why an error happens.
+
+Note that the following declaration would also fail:
+
+```sn
+let c: A = {
+  x: 2,
+  y: 3
+};
+```
+
+As the object does not respect the constantness of `y`. But, this one works:
+
+```sn
+let c: A = A {
+  x: 2,
+  y: 3
+};
+```
+
+Writing the structure's name before the opening brace makes an automatic check to fit the structure's exact definition.
+
+### Safe typecasting
+
+Typecasting allows to convert a value from a given type to another. But typecasting can either be safe or unsafe.
+
+Safe typecasting consists in converting a value from a given type to a value from one of its parent types, or from a typecast-capable class. The first one allows, for example, to convert an `i16` to a `number`.
+
+The second one uses the _typecast overload_, which indicates that a class can be typecasted to a specific type. For example, integers are typecast-capable between all of them, meaning an `i16` can be converted to an `u32`, even though they are separate classes.
+
+The high point of safe typecasting is that it is checked at build time: if a conversion is determined as valid by the builder, it could **never** fail at runtime. In the case it is not valid (e.g. trying to convert a `string` to a `i16`), the build fails.
+
+Here is the syntax for safe typecasting:
+
+```sn
+let num32: i32 = 2;
+let num16: i16 = cast!<i16>(num32);
+
+// With inferred typing:
+let num32 = 2;
+let num16 = cast!<i16>(num32);
+```
+
+There is a shorter syntax we often encountered since the beginning of this book:
+
+```sn
+let num32 = 2;
+let num16 = <i16> num32;
+```
+
+You now know how this "magic" typecasting work between integers.
+
+#### Numbers implicit upcast
+
+When we give to a function that expects a given type a value of one of its child type, an implicit typecast is performed. This is also why we can give an `i16` where an `i32` is expected, as `i32` is a mother class of `i16`.
+
+The type hierarchy of numbers is the following: `i8` is a child of `i16`, itself child of `i32` which is child of `i64`. Finally, it inherits from `SignedInteger`. On its side, `u8` inherits from `u16`, itself child of `u32` whilch is child of `u64`. Finally, it inherits from `UnsignedInteger`.
+
+Both `SignedInteger` and `UnsignedInteger` inherits from `VirtualInteger`, which itself inherits from `Number`. Here is a little schema to summarize this complex inheritance model:
+
+```plain
+Number
+|
+|- VirtualInteger
+|
+|-- SignedInteger
+|--- i64
+|---- i32 (int)
+|----- i16
+|------ i8
+|
+|-- UnsignedInteger
+|--- u64
+|---- u32 (uint)
+|----- u16
+|------ u8
+|
+|- VirtualFloatingPoint
+|--- f64
+|---- f32
+```
+
+### Typecasting overloads
+
+Typecasting overloads are defined this way:
+
+```sn
+  [public|protected|private] func %to<Type> () : Type { /* code */ }
+```
+
+Here is an example:
+
+```sn
+class HelloWorld {
+  public func %to<string> () : string {
+    return "Hello world!";
+  }
 }
 ```
 
-But that would be a very bad idea. Why? Because all classes would have to inherit from it to be used in our function so it would restrict the accepted type of arguments to the only classes that implement it. Right from the start it excludes all the native types (which doesn't inherit from your own class, of course) plus all the classes you haven't made yourself (which are part of a library, for example) and the classes that already inherits from a class, because a class can't have multiple mother classes. This also would be very heavy to write.
+We can now typecast any instance of this class:
 
-So, the solution to this problem is to use an interface. An interface is simply an array of functions and attributes a class **must** implement - it can't write the body of functions. When declaring a class, you explicitly tell what interface(s) it uses, and not implementing any of the interface's members will result in an error.
+```sn
+// Instanciate the class
+let helloWorld = new HelloWorld();
 
-Also, and that's the great point about interfaces, any class that implements all of its members (with the exact same signature, accessibility etc.) will be considered as implementing the interface itself. If we use it with sub-typing, you could easily imagine to solve our problem.
+// Typecast it
+let str = <string> helloWorld;
 
-Try to find the solution by yourself. The solution is just below:
+println!(str); // Prints: "Hello world!"
+```
+
+### Implicit typecasting
+
+You may wonder why this code builds correctly:
+
+```sn
+let num: u8 = 2;
+```
+
+Indeed, in this code `2` is considered as an `int` (the "default" integer type), which is an alias for `i32`. But, as we saw, assigning an `i32` to an `u8` entity should be impossible as we should perform an explicit to go from `i32` to `i8` and then an explicit typecast to go from `i8` to `u8`. This should result in the following code:
+
+```sn
+// Downcast on signed integer + typecast
+let num: u8 = <u8> (<i8> 2);
+
+// Or: typecast + downcast on unsigned integer
+let num: u8 = <u8> (<u32> 2);
+```
+
+A shorter way would be to perform a single explicit cast, as all type numbers support direct typecasting to any other type number:
+
+```sn
+// Explicit typecast
+let num: u8 = <u8> 2;
+```
+
+But we don't have to perform such a typecast when we assign our value. This is due to the fact assignments automatically trigger typecasting overloads if needed.
+
+Because number types implement all the required typecasting overloads (so we can directly convert an `i32` to an `u8`), this overload is triggered at assignment time. So, while we write this:
+
+```sn
+let num: u8 = 2;
+```
+
+The builder understands this:
+
+```sn
+let num: u8 = <u8> i32(2);
+```
+
+### Interfaces
+
+Because understanding the concrete point of interfaces isn't always easy, let's take an example to introduce the concept.
+
+Let's say we have a function that takes two arguments of any type, and add them as integers, then returns the result. In order to perform the addition, the two arguments need to be convertible to integers, of course. So our function will take any argument that implements the `%to<int> ()` overload. But how can we do that?
+
+The first idea would be to make a virtual class called `ConvertibleToInt` with an abstract method called `%to<int> ()`, like this:
+
+```sn
+virtual class ConvertibleToInt {
+  abstract func %to<int> () : int;
+}
+```
+
+But that's a very bad idea because all classes would have to inherit from it to be used in our function so it would restrict the accepted type of arguments to the only classes that implement it. Right from the start it excludes all the native types (which doesn't inherit from your own class, of course) plus all the classes you haven't made yourself (which are part of a library, for example) and the classes that already inherits from a class, because a class can't inherit from more than one mothe rclass. Besides, this would be very heavy to write.
+
+So, the solution is to use an interface. An interface is simply a list of functions and attributes a class **must** implement - though it can't write the body of functions. When declaring a class, you explicitly tell what interface(s) it uses, and not implementing any of the interface's members will result in an error.
+
+Also, and that's the great point about interfaces, any class that implements all of its members (with the exact same signature) will be considered as implementing the interface itself. If we use it with sub-typing, you could easily imagine how to solve our problem.
+
+Try to find the solution by yourself, we've what we just saw. Below is the solution:
 
 ```sn
 interface ConvertibleToInt {
-  func %toInteger () : int;
+  func %to<int> () : int;
 }
 
 func add (left: ConvertibleToInt, right: ConvertibleToInt) : int {
@@ -3331,7 +3991,7 @@ func add (left: ConvertibleToInt, right: ConvertibleToInt) : int {
 
 An important point here is that interfaces can only declare public members ; that's why there is no accessibility keyword before them. Also, because all members are abstract (they must be implemented in every class that implements them), there is no `abstract` keyword before members.
 
-**NOTE :** Writing `int(value)` calls the `int` class as a function with `value` as an argument to convert it to an integer. It accepts any value implementing the `%toInteger` value, like our interface.
+**NOTE :** Writing `int(value)` calls the `int` class as a function with `value` as an argument to convert it to an integer. It accepts any value implementing the `%to<int> ()` value, like our interface.
 
 If we try this code, it works perfectly fine.
 
@@ -3339,9 +3999,9 @@ We can also declare attributes in interfaces, and even give them a default value
 
 ```sn
 interface ConvertibleToInt {
-  value: int;
+  value: int = 5;
 
-  func %toInteger() : int;
+  func %to<int> () : int;
 }
 ```
 
@@ -3354,7 +4014,7 @@ interface Duplication {
   func duplicate () : _self;
 }
 
-class Product {
+class Product implements Duplication {
   public readonly name: string;
 
   public func %construct (@name: string) {};
@@ -3363,39 +4023,39 @@ class Product {
 }
 ```
 
-The `super` keyword is also available.
+The `_this` type is also available and refers to the real class as a type. Be aware, `_super` is not available.
 
 #### Native typecasting interfaces
 
 Here are some native typecasting interfaces we can use in our programs:
 
-* `BooleanConvertible`
-* `IntegerConvertible`
-* `FloatConvertible`
-* `NumberConvertible`
-* `Stringifyable`
+* `BooleanConvertible`: typecastable to a boolean
+* `IntegerConvertible`: typecastable to any integer, exposes `%to<u64>` (prefers `u64`) and `%to<i64>` (prefers `i64`)
+* `FloatConvertible`: typecastable to any floating-point number, exposes `%to<f64>`
+* `NumberConvertible`: typecastable to any number, exposes `%to<u64>`, `%to<i64>` and `%to<f64>`
+* `Stringifyable`: typecastable to a string
+
+#### Native manipulation interfaces
+
 * `Clonable`
-* `Freezable`
 * `Serializable`
-* `Randomizable`
+* `Randomizable`: forces to implement the `%random` overload that returns a random element of the current class.
 
-**NOTE :** `Randomizable` forces to implement the `%random` overload that generates a random element of the current class, and `Stringifyable` to implement any `%toXXX()` overload.
+#### Implementing interfaces in a class
 
-#### Implemeting interfaces in a class
-
-To implement an interface in a class, simply use the `implements` keyword like the `extends` one:
+To implement an interface in a class, simply use the `implements` keyword like the `inherits` one:
 
 ```sn
-class Two implements ConvertibleToInt {
-  public func %toInteger () => 2;
+class Two implements IntegerConvertible {
+  public func %to<int> () => 2;
 }
 ```
 
-Think to it if you have to accept any type of value that simply implements some attributes and/or methods.
+Even though the class will automatically implement the interface if it respects its signature, it's always more clear to indicate that this class has this implementation in mind. Plus, it avoids to forget to implement any member of the interface (because it would throw an error at build time).
 
 #### The `Any` interface
 
-The smallest interface in SilverNight is the `Any` interface. It allows us to take absolutely any instance of any class as an argument. Here is its full declaration:
+The smallest interface in SilverNight is `Any`. It allows us to take absolutely any instance of any class as an argument. Here is its full declaration:
 
 ```sn
 interface Any {
@@ -3403,19 +4063,120 @@ interface Any {
 }
 ```
 
-Yes, this interface is empty. Because it is empty, every single class implements it. So every class will match the requirement of implementing the `Any` interface, and we can use it in our programs!
+Yes, this interface is empty. Because it is empty, every single class implements it. So every class will match the requirement of implementing the `Any` interface, so we can accept any kind of value with it.
 
-But, because it is empty, we can't use **any** member of the values we get from it. So, how could we ever need it? That's because of things like reflection we'll later, that can grant information on absolutely any type, and with some flexs. But most of the time, we simply won't use it. Simply remember that if you need to accept any type of value in one of your functions for instance, this interface exists.
+But, because it is empty, we can't use **any** member of the values we get from it. So, how could we ever need it? That's mainly for flexs, like we'll see later. But most of the time, we simply won't use it. Simply remember that if you need to accept any type of value in one of your functions (or variable), this interface exists.
+
+### Long safe typecasting
+
+_"Long"_ safe typecasting is a method that uses a typecast path to convert a value from a type to another. For example, let's say we have the following class:
+
+```sn
+class Money {
+  public amount = 0u;
+
+  public func %construct (@money: uint) {};
+  
+  public func %to<u64> () : u64 => @value;
+
+  public func %to<u32> () : u32 => @value;
+
+  public func %to<u16> () : u16 => @value;
+}
+```
+
+We instanciate it:
+
+```sn
+let money = new Money(1000);
+```
+
+And now we want to convert it to a string. The simpliest way we saw to achieve this is to use a cast twice:
+
+```sn
+let str = <string> <uint> money; // "1000"
+```
+
+We first convert the instance to an `uint`, as it's capable of, and then we turn the `uint` to a `string`, as it's capable of too. But, this syntax is a bit heavy, so we can instead perform a _long safe typecasting_. It basically consists in doing a unique cast. But, for that, we must define a _typecasting path_. In an interface, it has the following syntax:
+
+```sn
+interface LongStringifyable {
+  func %to<string> = u64 || i64 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
+}
+```
+
+This indicates that, when the want to perform a long typecast to `string`, we first have to try to typecast the given value to a `string` (which is our destination type), else to an `u64` (the more precise type, which is the more respectful of the value). If we can't, we try the `i64` typecasting, and then the `u32` one, until we reach `bool` (1-bit only, the more lossy type).
+
+Also, the interface accepts all classes that implement either `%to<string>`, `%to<u64>`, ... or `%to<bool>`. But, we won't be able to use any of the overloads described in the path ; only the one the path leads to (here, `string`).
+
+Now, we can perform our long typecasting `<string>` on any `LongStringifyable` value. It goes like this:
+
+```sn
+// Declare a 'LongStringifyable' object
+let money: LongStringifyable = new Money(1000);
+
+// Long-typecast it
+println!(<string> money); // Prints: "1000"
+```
+
+Note that we couldn't perform this typecast directly on a `Money` object. If we dealt with such as value, we would have to typecast it first:
+
+```sn
+// Declare a 'Money' object
+let money: Money = new Money(1000);
+
+// Explicit typecast
+let strable = <LongStringifyable> money;
+// Implicit typecast
+let strable: LongStringifyable = money;
+
+// Long-typecast
+println!(<string> strable); // Prints: "1000"
+```
+
+A concrete example of using this is when we want to convert any class that can be converted to an integer to a string. This is how the `Stringifyable` interface works. Here is its declaration:
+
+```sn
+interface Stringifyable {
+  func %to<string> = u64 || i64 || u32 || i32 || u16 || i16 || u8 || i8 || bool || void;
+}
+```
+
+The `println!` flex uses this interface to display values in the console.
+
+### Extensions
+
+Extensions are functions we add to a class. They are public and cannot access the protected neither the private members of the function ; they also can't overwrite an existing method of the class.
+
+An example of the usefulness of extensions is if we often have to reverse strings. If we want this modification to be available from everywhere and to be usable as a method of the class (like `myString.reverse()`) we need to make a child class. But that's not very convenient and `string` is sealed, so we're blocked.
+
+The solution is to create an _extension_ of the class, which goes like this:
+
+```sn
+extension<string> func reverse () : string {
+  let reversed = "";
+
+  for i = this.length - 1; i >= 0; i -- {
+    reversed += this.charAt(i);
+  }
+
+  return reversed;
+}
+
+println!("!dlrow olleH".reverse()); // Prints: "Hello world!"
+```
+
+Note that extensions are available from the original class as well as from its children. Also, they are forbidden on dictionary classes.
 
 ### Traits
 
-Traits act like interfaces, but with the possibility to write the body of the function they define. They aim to provide _horizontal reuse_, while virtual classes aim to provide _vertical reuse_ (plus the fact they can implement static members).
+Traits act like interfaces, expected they need to write the body of the function they declare.
 
-A good example of traits is when you want to inherit from multiple classes. This is absolutely impossible in SilverNight, but you implement multiple traits. Here is how it goes:
+A good example of traits is when you want to inherit from multiple classes. This is absolutely impossible using any way we've seen so far, but there is a "cheat" that consists in implementing multiple traits. Here is how it goes:
 
 ```sn
 trait Vehicle {
-  val speed: float;
+  val speed: f32;
   func accelerate () : string => "Vroom !";
 }
 
@@ -3437,15 +4198,17 @@ let car: Vehicle = new Car();
 printlnl!(car.accelerate()); // Prints: "Vroom!"
 ```
 
+As you can see, there is no need to re-declare the members in the function. That's the second difference: while interfaces provides a model that needs to be implemented by a class, traits is more to consider like a small library that comes with methods and attributes.
+
 ## Templates
 
-Here we are, another of the most important concepts of Object-Oriented Programming: the templates. In fact, you won't use them explicitly very often, but you will use them _implicitly_. To be exact, you already do this as arrays and lists use templates, as we will see now.
+Here we are, another important concepts of Object-Oriented Programming: the templates. In many other programming languages, this concept is called **generics** instead of **templates**, but we'll see why later.
 
-Remember when we talked about `Array` and `List` as _templated_ types? This meant these two classes take a class reference, called a _template_, to work.
+Templates are used _implicitly_ a lot. To be exact, you already use them implicitly as arrays and lists use templates. Remember when we talked about `Array` and `List` as _templated_ types? This meant these two classes were taking a class reference, called a _template_, to work - plus an integer for `Array`.
 
-Basically, a template is the name of a class. Any class, function, structure... can use one or several templates to work, and it will register it as an _alias_.
+To put it simply, a template is a value the class can used in its signature. For example, if we use a class template, one of our function can tell it will return an instance of the given class - which is of course not possible if the class was an argument of the constructor, for example.
 
-To take an example, let's say I have a structure that aims to associate any kind of value with an identifier. With what we saw until now, we can't do that because there is no way to accept any type in a structure. That's where the templates come.
+To take an example, let's say we have a structure which associates any value with an identifier, and still allows us to use the members of the value (so `Any` is not a possible way). With what we saw until now, it's impossible. This is where we use templates:
 
 ```sn
 struct ValueWithID<T> {
@@ -3454,7 +4217,7 @@ struct ValueWithID<T> {
 }
 ```
 
-Let's detail this. We have a structure, called `ValueWithID`, with two attributes: `id` (which is an integer) and `value`, which is an instance of `T`. Both are constants to ensure they won't change after the structure's creation.
+Here, we have a structure, called `ValueWithID`, with two attributes: `id`, which is an integer, and `value`, which is an instance of `T`. Both are constants to ensure they won't change after the structure's creation.
 
 Here, `T` is called the structure's _template_. When a structure is declared with a template, we can't just write `val something: ValueWithID`, but `val something: ValueWithID<SomeClass>`. Then, `T` will simply refer to `SomeClass`, so `value` will need to be an instance of `SomeClass`. Here is an example:
 
@@ -3464,64 +4227,69 @@ struct ValueWithID<T> {
   val value: T;
 }
 
-val test: ValueWithID<string> = {
+val test = ValueWithID<string> {
   id: 1,
   value: "Hello !"
 };
 ```
 
-There's also a feature in SilverNight called _Inferred Templating_, which acts like IST for structures and ICT for callbacks: it _guesses_ the template's type, and can be combined with both IST and ICT. So, we can declare our `test` constant like this:
+There's also a feature in SilverNight called _Inferred Templating_, which acts like IST for structures and ICT for callbacks: it _guesses_ the template's type, and can be combined with both IST and ICT. It allows to declare our `test` constant like this:
 
 ```sn
-val test = {
+val test = ValueWithID {
   id: 1,
   value: "Hello !"
 };
 ```
 
-That's more simple, right? Now, let's see an application in classes. We will make a class that acts as a dictionary: it will associate a key (of any type) to a value (of any type). Here is how it could look like:
+That's more simple, right? Now, let's see an application in classes. We will make a class that acts like a dictionary: it will associate a key (of any type) to a value (of any type). Here is how it could look like:
 
 ```sn
 class KindOfDict<K, V> {
+  // The list of keys
   private keys: List<K>;
+  // The list of values
   private values: List<V>;
 
+  // Check if a key exists
   public func has (key: K) : bool => @keys.has(key);
 
+  // Associate a value to a key
   public func set (key: K, value: V) {
     // If this key is not already known...
-    if (not @has(key)) {
+    if not @has(key) {
       // Create it
-      @keys.push(key);
+      @keys[] = key;
       // Add the new value
-      @values.push(value);
-    } else
+      @values[] = value;
+    } else {
       // Else, associate the new value to the existing key
       @values[@keys.indexOf(key)] = value;
+    }
   }
 
-  public func get (key: K) : V =>
+  // Get a value from a given key
+  public func get (key: K) : V {
     // Return the value associated to the key
-    @values[@keys.indexOf(key)];
+    return @values[@keys.indexOf(key)];
+  }
 }
 ```
-
-**NOTE :** As for a real dictionary, an error will be thrown if someone tries to get the value associated to an unknown key. The `has()` function is here in order to avoid such a thing to happen.
 
 Here, we use two templates for our class: `K`, which refers to the keys, and `V` for the values. We can know make a new "dictionary" like this:
 
 ```sn
-val myDict: KindOfDict<List<int>, string>;
+val myDict: KindOfDict<string, int[3]>;
 
-myDict.set([ 2, 5 ], "Message 1");
-myDict.set([ 4, 8, 3 ], "Message 2");
+myDict.set("Key1", [ 2, 5, 7 ]);
+myDict.set("Key2", [ 4, 8, 3 ]);
 
-println!(myDict.get([ 2, 5 ])); // Prints: "Message 1"
+println!(myDict.get("Key1")[0]); // Prints: "2"
 ```
 
-As you can see, templates you can even be other templated classes. Because, yes, both `List` and `Array` are templated types - they are in reality custom dictionary classes this chapter aims to present.
+As you can see, templates can even accept other templated classes.
 
-A final word about template inferring: be **really** aware about ambiguities that prevent the code from working. For example, the following code wouldn't work:
+A final word about template inference: be **really** aware about ambiguities that prevent the code from working. For example, the following code is considered as invalid:
 
 ```sn
 class KindOfDict<K, V> {
@@ -3529,34 +4297,67 @@ class KindOfDict<K, V> {
   public func %construct (theFirstValue: V) { /* ... */ }
 }
 
-new KindOfDict(2); // ERROR: Template inferring ambiguity
+new KindOfDict(2); // ERROR: Template inference ambiguity
 ```
 
-This error happens because the program can't know what template to infer. Here, `K` could be an `int` and so the first constructor is called, but it could also be `V` and so the second constructor should be called instead.
+This error happens because the builder can't guess what template to infer. Here, `K` could be an `int` and so the first constructor should be called, but it could also be `V` and so the second constructor should be called instead.
 
 Because of the program not being able to decide on the template to infer, an error is thrown because of template ambiguity. Be aware of that!
 
-Side note : in templated classes, `_self` and `_this` refer to their respective classes with all their templates. For example, if we make a new variable typed with `KindOfDict<string, int>`, the `_self` type in `KindOfDict` would be `KindOfDict<string, int>`. If we provide templates following `_self`, it will overwrite them (like `_self<string, u32>`). Though, it is not possible to overwrite using the `_this` type, as we cannot know what templates the child class accept.
+Another ambiguity problem is when we deal with this kind of code:
+
+```sn
+func newValue (value: int) : int {
+  return value * 2;
+}
+
+func newValue<T inherits number> (value: T) : T {
+  return value * 4;
+}
+
+doubleValue(8); // ERROR: Template inference ambiguity
+```
+
+The above code can't be built because of a template inference ambiguity. We saw a moment before the builder chooses the most precise function to call, but in this case they're both precise. So, how to decide on the one we should call?
+
+To avoid an error, we must explicitly tell the templates we want to give to the function. If we want to call the first function, we explicitly tell we don't want any templates to be given (so no template inference will be performed). In the second case, we simply explicitly tell the type of number we are using:
+
+```sn
+// Call the first function
+newValue<>(8); // Returns: 16
+
+// Call the second function
+newValue<int>(8); // Returns: 32
+```
+
+The first syntax is called a _void-templating_. This feature is also useful for the resolution keywords, as they refer to their respective classes with all their templates. To get the class without them, suffix them with `<>`:
+
+```sn
+class KindOfDict<string, int> {
+  // _this   == KindOfDict<string, int>
+  // _this<> == KindOfDict
+}
+```
 
 ### Optional templates
 
-Many native functions use optional templates. They work exactly like optional arguments for functions:
+Optional templates work the same way than optional arguments for functions:
 
 ```sn
-struct Data<T = float> {
+struct Data<T = f32> {
   val id: int;
   val value: T;
 }
 
-val test: Data = {
+val test = Data {
   id: 5,
   value: 2.8
-}; // Works fine
+}; // Would work fine even without inferred templating
 ```
 
 ### Restricting templates
 
-Because the chosen template will always vary, we can't instanciate it nor use its methods/attributes. But we may want to interact with the template or its instances, by ensuring it implements some methods or attributes. That's possible, and here is the syntax:
+Because the chosen template is not predictable, we can't instanciate it nor use its methods/attributes. But we may want to interact with the template or its instances, by ensuring it implements some methods or attributes. That's possible, and here is the syntax:
 
 ```sn
 // Make a structure
@@ -3567,7 +4368,7 @@ struct Data<T implements Stringifyable> {
 
 // Make a class that works with the structure
 class Working {
-  public func %toString () => "It's working!";
+  public func %to<string> () => "It's working!";
 }
 
 // Make a class that doesn't work with the structure
@@ -3580,52 +4381,100 @@ Let's try this code:
 
 ```sn
 // This works
-val workingTest: Data<Working> = {
+val workingTest = Data<Working> {
   value: new Working();
 };
 
 println!(workingTest.stringify()); // Prints: "It's working!"
 
 // This doesn't work
-val notWorkingTest: Data<NotWorking> = {
+val notWorkingTest = Data<NotWorking> {
   value: new NotWorking()
-}; // ERROR because `NotWorking` does not implement `ConvertibleToString`
+}; // ERROR (`NotWorking` does not implement `Stringifyable`)
 ```
 
 Here are some examples of constrained templates:
 
 ```sn
-T extends SomeClass;
+// Inheritance (class)
+T inherits SomeClass;
 
+// Reversed inheritance (class)
+// `true` if `T` is the given class or one of its parents
+T parentof SomeClass;
+
+// Implementation (interface)
 T implements SomeInterface;
 T implements SomeInterface1, SomeInterface2;
 
-T use SomeTrait;
-T use SomeTrait1, SomeTrait2;
+// Implementation (trait)
+T uses SomeTrait;
+T uses SomeTrait1, SomeTrait2;
 
-T extends SomeClass implements SomeInterface use SomeTrait;
+// Exclusion (class, interface, trait, ...)
+T isnt SomeForbiddenClass;
+
+// A mix
+T isnt SomeForbiddenClass inherits SomeClass implements SomeInterface uses SomeTrait;
 ```
 
-Pretty powerful, right? We can this syntax to force the templates to do codes like this:
+Pretty powerful, right? We can use this to make very specialized classes, like this:
 
 ```sn
-class StringDict<K, V implements Stringifyable> extends KindOfDict<K, V> {
-  public stringify(key: T) : string => string(@values[@keys.indexOf(key)]);
+// open class KindOfDict<K, V> { /* ... */ }
+
+class StringDict<K, V implements Stringifyable> inherits KindOfDict<K, V> {
+  public func stringify(key: T) : string => string(@values[@keys.indexOf(key)]);
 }
 ```
 
-Note that inheritance is a little but special with templates: writing `T extends SomeClass` will of course accept all classes inheriting from `SomeClass`, but also `SomeClass` itself. Be aware of that. Writing `T` alone will be an equivalent of writing `T extends Any`.
+Note that inheritance is a little special with templates: writing `T inherits SomeClass` will of course accept all classes inheriting from `SomeClass`, but also `SomeClass` itself. Be aware of that. Writing `T` alone will accept anything.
 
-That's all!
+Also, there is a shortened syntax to mix several type checkings that checks inheritance, implementation, and usage all at a time:
 
-For information, the `T`, `X`, `Y`, `Z`, `K` and `V` names are reserved to templates.
+```sn
+// open class KindOfDict<K, V> { /* ... */ }
+
+class StringDict<K, V ~ Stringifyable> inherits KindOfDict<K, V> {
+  public func stringify(key: T) : string => string(@values[@keys.indexOf(key)]);
+}
+```
+
+For information, the `T`, `X`, `Y`, `Z`, `K` and `V` names are reserved to templates, so you can use it as you want. Conventionally, `T` is used when there is only one template to use, `T` and `X` for two templates, `T` `X` `Y` for three templates, `T` `X` `Y` `Z` for four templates, and `K` and `V` for keys and values.
+
+#### Type-checking operators on values
+
+Most of the type-checking operators can also be applied on values. Showcase:
+
+```sn
+let str = "Hello";
+
+str instanceof string; // true
+str instanceof Primitive; // true
+str implements Stringifyable; // true
+str uses SomeTrait;
+```
+
+The short `~` operator also works there:
+
+```sn
+let str = "Hello";
+
+str ~ string; // true
+str ~ Primitive; // true
+str ~ Stringifyable; // true
+str ~ SomeTrait;
+```
 
 ### Dynamic return types
 
-Here is a problem we may encounter soon: we have a function, that takes a single argument of any type, do some things with it (like putting it in a list or something) and return an instance of the exact same type. A first idea would be to do this:
+Here is a problem we may encounter soon: we have a function, that takes a single argument of any type, do some things with it (like putting it in a list or something) and returns an instance of the exact same type. A first implementation of this idea could be this one:
 
 ```sn
-func treat (something: Any) : Any;
+func treat (something: Any) : Any {
+  // Do some stuff
+  return something;
+}
 ```
 
 But we're wrong, because the following code won't work:
@@ -3638,15 +4487,28 @@ height = treat(hello); // ERROR
 An error will be thrown because `height` is typed as an `int` but `treat` returns an instance of `Any`. This is where we block: the function tells it can return absolutely any type of values. To solve this problem, we'll simply use templates with inferred templating:
 
 ```sn
-func treat<T> (something: T) : T;
+func treat<T> (something: T) : T {
+  // Do some stuff
+  return something;
+}
 
 let height = 8;
 height = treat(hello); // Works fine
 ```
 
-Here, this works because when we call the `treat()` function, inferred templating guesses that `T` refers to `int` thanks to `something` being an `int`. So, this function's call will return a `T`. That's as simple as that.
+This works because when we call the `treat()` function, inferred templating guesses that `T` refers to `int` thanks to `something` being one. So, this function's call will return an `int`.
 
-### Template instances
+#### Templates in lambdas
+
+Templates can be used in lambdas using the following syntax:
+
+```sn
+let arrayLength = <T> (value: T[]) : void => value.length;
+
+arrayLength([ 3, 5 ]); // Prints: "2"
+```
+
+### Templates are instances
 
 In reality, templates are instances of a class. Consider the following code:
 
@@ -3655,19 +4517,19 @@ In reality, templates are instances of a class. Consider the following code:
 func something<T> () : void {}
 
 // Is strictly equivalent to:
-func something<T: class> () : void {}
+func something<T: #raw<Class>> () : void {}
 ```
 
-This specifies the template's _type_. Here, `T` is an instance of the `class` class, which is a special class that refers to an existing class. But we can also specify other types:
+We are specifying the template's _type_. Here, `T` is an instance of the `Class` class, which is a special class that refers to an existing class. The `#raw<T>` directive indicates it must be a raw type: we must explicitly tell the class we want to use as a template. But we can also specify other types:
 
 ```sn
-func createEmptyList<T, SIZE: int> () : T[SIZE] { /* ... */ }
+func createEmptyList<T, SIZE: uint> () : T[SIZE] { /* ... */ }
 
 val list1: int[8] = createEmptyList<int, 8>();
 val list2: int[]  = createEmptyList<int, 8>();
 ```
 
-This will work as expected. This also explains how the `Array` type work:
+This will work as expected. This is also how the `Array` type work:
 
 ```sn
 // Writing this:
@@ -3675,72 +4537,86 @@ val list1: int[8];
 
 // Is exactly the same than:
 val list1: Array<int, 8>;
-
-// And for this one;
-val list2: int[];
-
-// Here is its equivalent;
-val list2: Array<int>;
 ```
 
 Also, always remember templates are _constants_: they cannot be modified in any case.
 
+**NOTE :** The fact templates can be of any type is the main reason why they aren't called "generics", unlike many programming languages.
+
 ### Segments
 
-Segments are class extensions that allow to provide some methods only if some conditions are matched about the templates. For example, we can consider the `Vec<T>` class that implements a `.sum()` function if `T` is a `Number`. Here is how it goes:
+Segments are parts of a class that provides some methods only if some conditions are matched about the templates. For example, we can consider the `Vector<T>` class that implements a `.sum()` function if `T` is a `Number`. Here is how it goes:
 
 ```sn
-class Vec<T> {
+class Vector<T> {
   // ...
-  public func %keys() : T[] { /* ... */ };
+  public func %keys() : List<T> { /* ... */ };
   // ...
-  segment (T is int) {
-    public func sum () : int { /* ... */ };
+  segment (T inherits number) {
+    public func sum () : T { /* ... */ };
   }
 }
 ```
 
-We specify between the parenthesis that follow the `segment` keyword the segment's _condition_. This means the segment will be applied **only if** the condition is satisfied.
+We specify between the parenthesis that follow the `segment` keyword the segment's _condition_. This means the segment will be available **only if** the condition is satisfied.
 
-This also means the condition must be evaluable just by giving the class' templates. For example, `segment (this.data > 2) { /* ... */ }` wouldn't work because we are evaluating a non-predictable data.
+This also means the condition must be evaluable just by giving the class' templates. For example, `segment (self.data > 2) { /* ... */ }` wouldn't work because we are evaluating a non-predictable data.
 
-Also, a more sophisticated syntax for our class is the following one:
+### Templated overloads
+
+It's possible to use templates on overloads, but only if these templates are part of the type of at least one argument of the function. Here are some examples of valid and invalid templated overloads:
 
 ```sn
+class BankAccount {
   // ...
-  segment (T extends Number) {
-    public func sum () : T { /* ... */ }
-  }
+
+  // Doesn't work because "T" cannot be guessed
+  public func %plus<T> (left: string, right: int) : int[];
+
+  // Doesn't work because "T" cannot be guessed
+  public func %plus<T> (left: string, right: int) : T;
+
+  // Works fine
+  public func %plus<T> (left: T, right: int) : bool;
+
+  // Works fine
+  public func %plus<T> (left: string, right: Map<int, T>) : string[];
+
   // ...
+}
 ```
+
+In more precise terms, if the template cannot be inferred_ the overload's signature will be invalid.
 
 ## Dictionaries in depth
 
-Let's see the final part about classes: dictionaries. As you already, dictionaries in SilverNight are instances of the `Map` class. But how do they really work? That's what we will see in this chapter, as well as how to make your own dictionary classes to store key/values (or more) dictionaries with a custom behaviour.
+Let's see the final part about classes: dictionaries. As you already know, dictionaries link unique keys with values. We will see how they work in this chapter, as well as how to make our own dictionary classes to change the behaviour of dictionaries.
 
 ### Dictionary classes
 
-Here is an heavy part of this chapter: how to make custom dictionaries.
+First, what's a dictionary, exactly? A dictionary is any instance of a special class called a _dictionary class_, which provides a way to link keys and values.
 
-First, what's a dictionary, exactly? In SilverNight, a dictionary is any instance of a dictionary class. These classes provides an instance that aims to associate a key to a value, whatever their type and content are, but with a single type for keys and a single type for values.
+#### A deeper view of vectors
 
-#### The truth about vectors
-
-The `List` and `Array` classes are in fact dictionaries. They both inherits from the `Vec` dictionary class, which associates integers to any type of value. The integers in question cannot be manually manipulated, they are automatically handled by the dictionary class, to keep keys from 0 to any positive integer.
+The `List` and `Array` classes are in fact dictionary classes. They both inherit* from the `Vector` dictionary class, which associates integers to any type of value. The integers in question cannot be directly manipulated, they are handled by the dictionary class, which keep keys from 0 to any positive integer.
 
 #### How to make dictionary classes
 
-Dictionary classes (also called custom dictionaries) are defined this way:
+Dictionary classes are defined this way:
 
 ```sn
 // K = type for keys
 // V = type for values
-dict Custom<K, V> {
+dict Custom<K, V> inherits Dictionary<K, V> {
   // Code here
 }
 ```
 
-There are a special kind of classes. First, some overloads **must** be implemented. These are `%get`, `%set`, `%unset`, `%has`, `%keys` and `%values`, which are specific to dictionaries and can't be used in standard classes. All other overloads (like `%clone` or `%random`, even `%construct` and `%free`) can be implemented but are not required. Also, dictionary classes must take two templates (they can have any name) but they can force the type of keys and/or the type of values by writing a class' name instead (like `dict Vec<K is int, V>` for vectors).
+Dictionary classes have two specificities: first, they need to inherit from the `Dictionary<K, V>` interface, which considers `K` as being the type for the keys and `V` as the type for the values. This is in the case you would want to specify more than two templates, or invert them, etc.
+
+The second point is the syntax sugar we can use on them, but we'll see this a bit later.
+
+The members specified by the `Dictionary` interface are only overloads. These are `%get`, `%set`, `%size`, `%unset`, `%has`, `%keys` and `%values`, which are specific to dictionaries and can't be used in standard classes. All other overloads (like `%clone` or `%random`, even `%construct` and `%free`) can be implemented but are not required.
 
 Let's detail these overloads:
 
@@ -3752,6 +4628,8 @@ dict Custom<K, V> {
   public func %get (key: K) : V;
   // Associate a value to a key
   public func %set (key: K, value: V);
+  // Get the size of the dictionary
+  public func %size () : usize;
   // Delete a key (and the value it refers to)
   public func %unset (key: K);
   // Check if a key is known
@@ -3763,38 +4641,36 @@ dict Custom<K, V> {
 }
 ```
 
-As always, the return type of these overloads is omittable, put they are written here to see their complete signature.
-
-About `%keys` and `%values`, their behaviour is a little special. They can be called automatically, when iterating the dictionary through a loop (we'll see that soon), or manually thanks to a function.
-
-Most of the time, custom dictionaries should always inherit from the `Map` class (the same one that is used when using `#dict` in a key/value association with IST). The syntax is the same as for classes:
+Most of the time, custom dictionaries should inherit from the `Map` class (the same one that is used by the builder when using `#` in a key/value association thanks to IST). The syntax is the same as for classes:
 
 ```sn
-dict Custom<K, V> implements AbstractDictionary<K, V> {
+dict Custom<K, V> inherits Map<K, V> {
   // Do some stuff here
 }
 ```
 
-This will inherits all functions that comes with basic dictionaries, like `.filter()` or `.map()`. It will grant access to two protected members, `keys` and `values`, which are lists referring respectively to the dictionary's keys and its values, as well as all overloads you can implement in a dictionary with no restricted template.
+This will inherits all functions that comes with basic dictionaries, like `.filter()` or `.map()`. It will grant access to two protected members, `keys` and `values`, which are lists referring respectively to the dictionary's keys and its values, plus many additional functions and overloads.
 
-A specificity about dictionary overloads is that they can be implemented by **any** standard class. This is why we can use integer indexes on a string even though that's not a dictionary, for example. The `dict` keyword simply indicates the class implements every overloads required for a dictionary and explicitly indicates its use.
+Also, because `Map<K, V>` inherits itself from `Dictionary<K, V>`, you won't have to specify this inheritance - `Map` always dit it.
 
 #### Static templates
 
-Sometimes we want to force a template, like `Vec<T>` do: it's a `Map<K, V>` which `K` **always** being a number and `V` being `T`. Because dictionaries must have two templates when declaring them the short way, we have to use the long notation by explicitly inheriting from the `Map<K, V>` class:
+Sometimes we want to force one of the dictionary's types, like `Vector<T>` do.
+
+Basically, `Vector<T>` inherits from `Map<K, V>` with `K` **always** being an integer and `V` being `T`:
 
 ```sn
-dict Vec<T> extends Map<int, T> { /* ... */ }
+open dict Vector<T> inherits Map<int, T> { /* ... */ }
 ```
 
 ### Iterators
 
-The `%keys()` and `%values()` overloads respectively return an `Iterator<K>` and an `Iterator<V>`. It's simply a class that implements a few members, like a `next()` function that returns the next iterated value. To put it simply, iterators can be _iterated_ and at each step return a new _value_, until they are _done_.
+The `%keys()` and `%values()` overloads respectively return an `Iterator<K>` and an `Iterator<V>`. It's simply a class that implements a few members, like a `next()` function that returns the next iterated value. To put it simply, iterators can be _iterated_ and at each step they return a new _value_, until they are _done_.
 
-Iterators can be defined like this:
+Iterators are defined like this:
 
 ```sn
-class MySuperIterator<T> extends Iterator<T> {
+class MySuperIterator<T> inherits Iterator<T> {
   // Start a counter
   private counter = 0;
 
@@ -3802,12 +4678,13 @@ class MySuperIterator<T> extends Iterator<T> {
   public func next () : Iteration<T> {
     // Increase the counter
     // If it's lower than 10...
-    if (++ @counter < 10)
+    if ++ @counter < 10 {
       // Return this value
       return { value: @counter, done: false };
-    else
+    } else {
       // Else, return a null value and tell the iterator is done
       return { value: null, done: true };
+    }
   }
 }
 ```
@@ -3830,19 +4707,19 @@ loop {
 }
 ```
 
-But the syntax of the iterator is kind of heavy... So, there's a syntax sugar to write iterators as functions:
+But the syntax of the iterators is really heavy... So, there's a syntax sugar to write iterators as functions:
 
 ```sn
-iter func mySuperIterator () : int {
+iter mySuperIterator () : int {
   for i in 0..10 {
     yield i;
   }
 }
 ```
 
-This code is equivalent to the class we wrote before. We'll, its a lot more simplier here, write? Let's detail this.
+This code is equivalent to the class we wrote before. We'll, its a lot more simplier here, right? Let's detail this.
 
-The function is marked with the `iter` keyword to indicate it's an iterator, as well as the `func` keyword because it's a function (even if it will be converted to an `Iterator<T>`). Its signature also tells it returns an iteration. In its body, it simply makes a loop that _yields_ some values. To be exact, each time the `yield` keyword is encountered, the value is returned and the function is _paused_ until the program asks to generate values again. So, all resources locally defined by the function stays in memory.
+The function is marked with the `iter` keyword to indicate it's an iterator, as well as the `func` keyword because it's a function (even if it will be converted to an `Iterator<T>` class). Its signature also tells it returns an iteration. In its body, it simply makes a loop that _yields_ some values. To be exact, each time the `yield` keyword is encountered, the value is returned and the function is _paused_ until the program asks to generate values again. So, all resources locally defined by the function stays in memory.
 
 Now, let's see how to use iterators in loops to explore dictionaries.
 
@@ -3850,15 +4727,26 @@ Now, let's see how to use iterators in loops to explore dictionaries.
 
 #### Dealing with public members
 
-As we saw before, dictionaries associate a key to a value. So, getting any index from the dictionary, like `mydict.someIndex` will return a key, whatever happens. But, what about public members?
+As we saw before, dictionaries associate a key to a value. So, getting any index from the dictionary, like `mydict.someIndex` will return a value. But, what about public members?
 
-For example, the `Map` class implements a `.fill()` function, so we can do `mydict.fill("hello")`. But then, `mydict.fill` won't return a value of the dictionary, right?
+For example, the `Map` class implements a `.fill()` function, so we can do `mydict.fill("hello")`. But then, `mydict.fill` doesn't return a value of the dictionary, right?
 
-This is a conception choice that hopefully has a solution if we want to access any index. In order to be assured to get the value corresponding to the key we have, we simply have to do: `mydict[index]`, where `index` is an instance of `K` (the dictionary's key type). Getting an index between brackets means we're explicitly trying to get an index, not a public member, while `mydict.index` means we are first trying to get a public member if it exists, else to get the value associated to this key (if it exists).
+This problem hopefully has a solution if we want to access any index. In order to be assured to get the value corresponding to the key we have, we simply have to do: `mydict[index]`, where `index` is an instance of `K` (the dictionary's key type). Getting an index between brackets means we're explicitly trying to get an index, not a public member, while `mydict.index` means we are first trying to get a public member if it exists, else to get the value associated to this key. Showcase:
+
+```sn
+// Declare a Map<string, int>
+let data = { # fill: 2 };
+
+// Dot notation
+println!(data.fill); // ERROR (argument is not Stringifyable)
+
+// Dynamic index notation
+println!(data['fill']); // Prints: "2"
+```
 
 #### Using loops to iterate dictionaries
 
-Loops are our best friend when exploring dictionaries. While we can still get access to the array of a dictionary's keys thanks to the `of` keyword and to its value with `in`, the most simple remains to use the `for` loop:
+Loops are our best friends when exploring dictionaries. The most simple way is to use a `for` loop:
 
 ```sn
 // Explore a dictionary using its keys
@@ -3877,66 +4765,122 @@ for key -> value in myArray {
 }
 ```
 
-In fact, asking a dictionary for its keys or values will call its `%keys()` or `%values()` overload. These ones return an `Iterator<T>`, remember? Well, an iterator is simply an object with a `next()` function that returns a new value, until it goes out of data. number ranges use them: `0...10` for example is automatically converted to `(new RangeIterator<uint>(0, 10))`.
+Asking a dictionary for its keys or values using a `for` loop will call its `%keys()` and/or `%values()` overloads. They then respectively return an `Iterator<K>` and an `Iterator<V>`, remember? The `for in` and `for of` loop acts on these iterators.
 
-So, when we try to iterate an entity using a single iterator variable (like `value`), the `for` loop will require an `Iterator<T>`.
+In fact, there are three syntaxes for this loop:
 
-The last syntax (`for key -> value in ...`) we used is a syntax sugar, in reality it translates to:
+```sn
+// Simple iteration
+for i = 0; i < 10; i ++ { /* ... */ }
+
+// Iterating an iterator
+for value in 0..10 { /* ... */ }
+
+// Exploring a dictionary
+for key          of dict { /* ... */ }
+for value        in dict { /* ... */ }
+for key -> value in dict { /* ... */ }
+```
+
+As you can see, number ranges produce, in reality, an iterator (of integers, in our case).
+
+The last syntax (`for key -> value in ...`) we used is a syntax sugar, which gets translated to:
 
 ```sn
 for (key, value) in myArray.iterate() {
 ```
 
-The `iterate` function, implemented by default in all dictionary classes, returns for a `Map<K, V>` an `Iterator<(K, V)>`.
-
-#### The case of vectors
-
-This is very simple: a `Vec<T>` (`Array` or `List`) is a `<K is int, T>` dictionary (with different members, though). That's as simple as that.
+The `iterate` function, implemented by default in all dictionary classes, returns for a `Dictionary<K, V>` an `Iterator<(K, V)>`.
 
 #### Collections
 
-There is a native type called `Collection<T>`, which is a strict equivalent to `Map<string, T>`.
+There is a native type called `Collection<T>`, which is a strict equivalent to `Map<string, T>`. This is, in reality, the one used by IST on extensible objects, as keys must be plain strings in these objects.
 
-#### Shortened typing
+So, to recap all syntaxes of dictionaries IST:
 
-A way to simplify the writing of dictionary names is to use the shortened syntax, as it follows:
+* `[ a1, a2 ]` produces a `Array<T>` ;
+* `[ # a1, a2 ]` produces a `List<T>` ;
+* `{ a1, a2 }` produces a ghost structure ;
+* `{ # key: a1 }` produces a `Collection<T>`
+
+### Manipulating dictionaries
+
+Data in dictionaries can be manipulated several ways. The first one is using their overloads:
 
 ```sn
-// Collection<double> <=> Map<string, double>
-val dict: { double };
+let personsAge: { # me: 18 };
 
-// Map<string, int>
-val dict: { string, int };
+// Get a value from a key
+personsAge.%get("me"); // Returns: 12
 
-// Map<string, Map<int, float>>
-val dict: { string, { int, float } };
+// Associate a value to a key
+personsAge.%set("john", 24);
 
-// Map<Map<string, int>, float>
-val dict: { { string, int }, float };
+// Get the size of the dictionary
+personsAge.%size(); // Returns: 2
 
-// Map<Map<Map<string, int>, float>, string>
-val dict: { { { string, int }, float }, string };
+// Delete a key(and the value it refers to)
+personsAge.%unset("john");
+
+// Check if a key is known
+personsAge.%has("john"); // Returns: false
+
+// Get the array of all keys
+personsAge.%keys(); // Returns an Iterator<K>
+
+// Get the array of all values
+personsAge.%values(); // Returns an Iterator<V>
 ```
+
+The other is to use native flexs, keywords and syntax sugars:
+
+```sn
+// Get a value from a key
+personsAge.me;
+personsAge["me"];
+
+// Associate a value to a key
+personsAge.john = 24;
+personsAge["john"] = 24;
+
+// Get the size of the dictionary
+size!(personsAge); // Returns: 2
+
+// Delete a key (and the value it refers to)
+delete personsAge.john;
+delete personsAge["john"];
+
+// Check if a key is known
+"john" in personsAge; // Equal to 'false'
+
+// Get the array of all keys
+keys!(personsAge); // Iterator<K>
+
+// Get the array of all values
+values!(personsAge); // Iterator<V>
+```
+
+Be aware: if we provide a tuple on the right of the `in` keyword, it will check if the provided value is contained inside, but in the case of dictionaries it will look for the key and not for the value.
 
 ## Nullable types
 
-Here is a short chapter to show another of the most useful concepts in SilverNight: the nullable types. Basically, nullable types are types that can either be an instance of the class they refer to, or `null`. What's the point? Simply to provide a way of returning _nothing_.
+Here is a short chapter to show another of the most useful concepts of the language: the nullable types. These are types that can either be an instance of the class they refer to, or the `null` value, so they provide a way to not initialize an entity or to return nothing from a function.
 
 ### An example with points
 
-To take an example, let's imagine we have a function that look for a point with `x` and `y` attributes equal to zero. It could look like this:
+To take an example, let's imagine we have a function that look for a point with `x` and `y` attributes both equals to zero. It could look like this:
 
 ```sn
 struct Point {
-  name: string;
   x: int;
   y: int;
 }
 
 func getNilPoints (array: Point[]) : Point {
   for point in array {
-    if (point.x is 0 and point.y is 0)
+    if point.x == 0 && point.y == 0 {
       return point;
+    }
   }
 }
 ```
@@ -3947,13 +4891,13 @@ This works fine. Now, what if we run this code:
 val point: Point = getNilPoints([]);
 ```
 
-Our program will crash because `getNilPoints` returned a `void` while a `Point` was expected. This is simply due to the fact no point matched the condition in the `for` loop, so the function ended without returning nothing (which is equivalent to returning an instance of `void`). So, in order to make this function works anyway, and without returning a whole structure with a `success` boolean or something ugly, we can use a nullable type:
+Our program will crash because `getNilPoints` returned a `void` while a `Point` was expected. This is simply due to the fact no point matched the condition in the `for` loop, so the function ended without returning anything (which is equivalent to returning an instance of `void`). So, in order to make this function work anyway, and without returning a whole structure with a `success` boolean or anything ugly, we can use a nullable type:
 
 ```sn
-func getNilPoints (array: Point[]) : Point?;
+func getNilPoints (array: Point[]) : Point? {
 ```
 
-This allows the function to return a `Point` instance **or** a `void` instance. But, our program will still crash with an error message telling that `Point?` cannot be converted to `Point`. That's simply because we declared our constant with the `Point` type, but we must now tell it can also contain a `void`:
+This allows the function to return a `Point` instance **or** a `void` instance. But, our program will still crash with an error message telling that a `void` cannot be converted to a `Point`. That's simply because we declared our constant with the `Point` type, but we must now tell it can also contain a `void`:
 
 ```sn
 val point: Point? = getNilPoints();
@@ -3975,43 +4919,48 @@ Will, as for a standard type, be understood as this:
 
 ```sn
 val point: Point? = new Point?();
+
+// Strict equivalent to:
+val point: Point? = null;
 ```
 
 Instanciating a nullable type will return the `null` value by default.
 
-Like constrained types, nullable types are type extensions, meaning we can give an `int` where an `int?` is expected, or an `int?` where an `int` was expected (though in this last case the program will check that our value is not `null`): nullable types can be automatically typecasted to standard types, as well as the opposite.
+Our example would have worked even with `point` being a `Point` value, if the function hadn't return a `null`. That's only because of that we had to give it the `Point?` type.
 
 ### The `null` value
 
-As we saw, the `getNilPoints()` function can now return an instance of `void`. But what's that, exactly? That's simply a special SilverNight value with no member at all, excepted some overloads like `%toString()` or `%clone()`.
+As we saw, the `getNilPoints()` function can now return an instance of `void` (the famous `null` value).
 
 A strict equivalent to the function we saw would be:
 
 ```sn
 func getNilPoints (array: Point[]) : Point? {
   for point in array {
-    if (point.x is 0 and point.y is 0)
+    if point.x is 0 and point.y is 0 {
       return point;
+    }
   }
 
   return new void();
 }
 ```
 
-This would achieve exatly the same thing. There's also a native value, named `null`, which is an instance of `void`:
+This would do exactly the same thing. There's also a native value, named `null`, which is an instance of `void`. We can use it, as all instances of `void` are the same:
 
 ```sn
 func getNilPoints (array: Point[]) : Point? {
   for point in array {
-    if (point.x is 0 and point.y is 0)
+    if point.x is 0 and point.y is 0 {
       return point;
+    }
   }
 
   return null;
 }
 ```
 
-The function still works as expected. In fact, `null` is defined natively with the following instruction:
+The function still works as expected. In fact, `null` is defined natively with the following statement:
 
 ```sn
 val null = new void();
@@ -4024,9 +4973,14 @@ let point = null;
 point = getNilPoints([]); // ERROR
 ```
 
-This will result in an error because inferred typing gave the `void` type to `point`, so it can't receive a `Point?` value.
+This will result in an error because inferred typing gave the `void` type to `point`, so it can't receive a `Point?` value. Replace this code with:
 
-Now we've saw all this, let's try our function:
+```sn
+let point = new Point?();
+point = getNilPoints([]); // Works fine
+```
+
+Now we've seen all this, let's try our function:
 
 ```sn
 val point1 = getNilPoints([ { name: "Test point", x: 0, y: 0 } ]);
@@ -4036,20 +4990,21 @@ val point2 = getNilPoints([]);
 println!(point2.name); // ERROR
 ```
 
-The second call to `getNilPoints()` makes our program crash. Why? Simply because `point2` is a `void` instance, so it has no `name` member. We have to check first if our constant contains a `null` value or not, thanks to the equality operator `==` or the difference operator `!=`. This can be done thanks the fact two instances of the same class can be compared with these two operators (we'll see that in details in the pointers chapter). So we can write:
+The second call to `getNilPoints()` makes our program crash. Why? Simply because `point2` is a `void` instance, so it has no `name` member. We have to check first if our constant contains a `null` value or not, thanks to the equality operator `==` or the difference operator `!=`. This can be done thanks to the fact two instances of the same class can be compared with these two operators (we'll see that in details in the pointers chapter). So we can write:
 
 ```sn
 val point = getNilPoints([]);
 
-if (point is null)
+if point is null {
   println!("No point found.");
-else
+} else {
   println!(`A point was found: ${point.name}`);
+}
 ```
 
-Also, thanks to `void` implementing a `%toBoolean` overload which always return `false`, we can do use some native operators like `!` or `point ? doSomething() : doSomethingElse()` on our constant.
+Also, thanks to `void` implementing a `%to<bool> ()` overload which always return `false`, we can use some native operators like `!` or `point ? doSomething() : doSomethingElse()` on our constant.
 
-### The null object operator
+### The nullable operator
 
 Here is an operator we can use to do something only if the value is not null. Here is an example:
 
@@ -4058,7 +5013,7 @@ val point = getNilPoints([]);
 println!(point?.name);
 ```
 
-Here, because `point` is null, the program won't try to access its `name` property thanks to the `?` operator. Instead, it will return a `void`, so the return type of the expression, whatever `name` is null or not, will be `string?`. This operator avoids crashes when accessing a value's attribute, and will always return null if the value it is applied (the value on its left) on is null.
+Here, because `point` is null, the program won't try to access its `name` property thanks to the `?` operator. Instead, it will return a `void`, so the return type of the expression, whatever `name` is null or not, will be `string?`. This operator avoids crashes when accessing a value's attribute, and will always return null if the value it is applied on (the value on its left) is `null` - not NIL, it won't have this behavior with `false` or `0`, for instance.
 
 ```sn
 // Make a 'Hero' structure
@@ -4081,14 +5036,14 @@ val someData: Data? = null;
 val dataHero = someData?.hero; // dataHero == null
 
 // Prints the hero's name
-println!(dataHero?.name); // Prints: "" (== string(null))
+println!(dataHero?.name); // Prints: "" (stringified 'null' value)
 ```
 
-What happened here? Well, doing `data?.hero` returned `null` because `data` was null. Then, doing `dataHero?.name` also returned a `void` because `dataHero` was null. So the final expression between the `println!`'s parenthesis is a `string?`.
+What happened here? Well, doing `data?.hero` returned `null` because `data` was null. Then, doing `dataHero?.name` also returned a `void` because `dataHero` was null. So the final expression between the `println!`'s parenthesis is a `string?` which is equal to `null`.
 
-### Automatic typecasting
+### Automatic conversion
 
-Let's take an example for this one: we have a function that takes a `string` as an argument, but we want to give it a constant that was declared as a `string?`. Because the function may not be able to handle the `null` value, this should result in an error.
+Let's take an example for this one: we have a function that takes a `string` as an argument, but we want to use on it a constant that was declared as a `string?`. Because the function may not be able to handle the `null` value, this should result in an error.
 
 But there's a specific typecasting for nullable types. When giving a nullable type where a standard type is expected, it is automatically cast into the standard type, and an error will be thrown if the value was `null`. Let's take an example:
 
@@ -4105,29 +5060,23 @@ val nothing: int? = null;
 val result = inc(nothing); // ERROR
 ```
 
-Note that `two` and `four` automatically gets the `int` type, which is the `inc`'s return type, not `int?`.
+Note that `two` and `four` automatically gets the `int` type, which is `inc`'s return type, not `int?`.
 
-The last call to `inc` fails because a `null` value was gave, so typecasting to an `int` failed to be done. In order for this instruction to work, typecasting must be done manually, using:
-
-```sn
-val result = inc(int(nothing)); // Returns: 1
-```
-
-This works only because both `null` implements `%toInteger()` (which returns `0`).
+The last call to `inc` fails because a `null` value was gave, so the typecasting to an `int` failed.
 
 ### Nullables typecasting
 
-There's two flexs available to turn a nullable value into a standard value, which is `strict!`, and another to turn a standard value into a nullable value, which is `nullable!`. Here is how they go:
+There is a flex to turn a nullable value into a standard value without any assignment, which is `strict!`, and another to turn a standard value into a nullable value still without any assignment, which is `nullable!`. Here is how they go:
 
 ```sn
 val standard: int = 1;
 val nullable: int? = 2;
 
-val one = nullable!(standard);
-val two = strict!(nullable);
+val one = nullable!(standard) + 3;
+val two = strict!(nullable) + 3;
 ```
 
-Now, `one` has nullable `int?` type and `two` has standard `int` type.
+Now, `one` has the nullable type `int?` and `two` has the standard `int` type.
 
 ### Really optional arguments
 
@@ -4142,13 +5091,13 @@ println!("Jack"); // Prints: "Hello Jack!"
 println!("John", 28); // Prints: "Hello John, you are 28 year-old."
 ```
 
-Note that the `?` symbol has been put after the argument's name, and not after its type. If you had written `age: int?`, the argument wouldn't have been optional, but it would have accepted the `null` value (though we would have had to specify it explicitly).
+Note that the `?` symbol has been put after the argument's name, and not after its type. If you had written `age: int?`, the argument wouldn't have been optional, but it would have accepted the `null` value.
 
 Here, `age` is an `int?` that can also be omitted (in this case it is equal to `null`). That's as simple as that.
 
 ### Nullable members
 
-The same applies for structures: while we can provide a default value for structures' members, we can also make really optional ones:
+The same applies for structures: while we can provide a default value for structures' members, we can also make really optional members:
 
 ```sn
 struct Hero {
@@ -4162,7 +5111,7 @@ println!(jack.name is "Jack"); // Prints: "true"
 println!(jack.age is null) // Prints: "true"
 ```
 
-### The nullable operator
+### The null-checker operator
 
 Another useful operator when dealing with nullable types is the `??` operator. How does it work? Well, that's really simple: let's imagine we have an entity with a nullable type, and that we want to use a value _only if_ the entity contains `null`. Here is a first idea:
 
@@ -4174,9 +5123,9 @@ println!(a || 1); // Prints: "1"
 println!(b || 1); // Prints: "1"
 ```
 
-But, as we can see, it even uses 1 when the entity is equal to 0, because, when converted to a boolean, 0 is equal to `false` (so the second member is used). The same applies for `null`, which is converted to `false` too.
+But, as you can see, it even uses 1 when the entity is equal to 0, because, when converted to a boolean, 0 is equal to `false`, so the second member is used. The same applies for `null`, which is converted to `false` too.
 
-So, the way to solve this problem is to use the `??` operator:
+So, the way to solve this problem without using a heavy ternary condition is to use the `??` operator:
 
 ```sn
 val a: int? = 0;
@@ -4195,55 +5144,124 @@ null || 1; // 1
 null ?? 1  // 1
 ```
 
+Note that the value specified on the right of the operator must be of the same type than the value on its left. So here, it must be an `int?` (meaning it can be an `int` or a `void` too).
+
 ### A concrete example
 
 A concrete example of nullable types usage: the problem of array initialization.
 
 Here is the program we want to make:
 
-1. Declare an array of integers with 4096 cells.
-2. Generate a random boolean.
-3. If it's "true", fill the array with zeros
-4. If it's "false", fill the array with ones
+1. Create a virtual `Vehicle` class representing a vehicle
+2. Creating two sealed classes `Car` and `Motorcycle`, both inheriting from `Vehicle`
+3. Declare an array of `Vehicle` instances with 1000 cells.
+4. Fill the the array with randomly `Car`s and `Motorcycle`s
 
-The problem is: if we simply declare the array with `val`, we create a `Vehicle[]` instance that will be filled with vehicles later. So this will generate 4096 instances of the `Vehicle` class at the same time the array is declared, and then we will make again 4096 instances in our `if` block. Performances are so divided by 2.
+The problem is: if we simply declare the array with `let` or `val`, we will create a `Vehicle[1000]` instance that will be filled with vehicles later. So this will generate 1000 instances of the `Vehicle` class at the same time the array is declared, and then we will make again 1000 instances in our `if` block. Performances are so divided by 2.
 
-In order to avoid this problem, we can declare the array using an optional type. When the resource is declared, only an array instance is created, and we will only instanciate the vehicles in our conditional block, so "only" 4096 instances of `Vehicle` will be created, instead of 8192 with the previous method - that's a considerable speed up.
+In order to avoid this problem, we can declare the array using an optional type. When the resource is declared, only an array instance is created, and we will only instanciate the vehicles in our conditional block, so "only" 1000 instances of `Vehicle` will be created, instead of 2000 with the previous method - this near to doubles the performances.
 
 Here is how it works:
 
 ```sn
-let array: Vehicle?[] = null; // Vehicle?[]
+// Declare an array of 1000 instances of 'Vehicle?'
+// Which is equivalent to getting 1000 'null' values (no instanciation)
+let array: Vehicle?[1000];
 
-if (random!(bool))
-  array.fill(new Car());
-else
-  array.fill(new Motorcycle());
+for i in 0..1000 {
+  array[i] = rand!<bool> ? new Car() : new Motorcycle();
+}
 ```
 
 But, because it's always preferable to avoid using nullable types as they can cause errors if not manipulated correctly, and because the code above is not optimized, we should write this one instead:
 
 ```sn
-val array = (new Vehicle?[4096]).fill(
-  random!(bool) ? new Car() : new Motorcycle()
-);
+val array = (rand!<bool> ? new Car() : new Motorcycle() for i in 0..1000);
 ```
 
-Even though this code is not pretty, it's better optimized and avoid using a nullable type. Plus, our `array` resource is now a constant instead of being a mutable.
+Even though this code is not pretty, it's more optimized and avoid using a nullable type. Plus, our `array` resource is now a constant instead of being a mutable. Always think of other solutions when dealing with nullable types, to avoid getting errors due to the value being `null`.
+
+### Constructable attributes
+
+Because attributes are instantly instanciated in classes, some require to be nullable to avoid errors. Example:
+
+```sn
+class Container<T> {
+  public value: T;
+
+  public func %construct (@value: T) {}
+}
+
+class ComplexClass {
+  public readonly name: string;
+
+  public func %construct (@name: string) {}
+}
+
+let cmp = new ComplexClass("John");
+let var = new Container<ComplexClass>(cmp); // ERROR
+```
+
+An error is thrown when we instanciate `Container<ComplexClass>`, because `ComplexClass` cannot be instanciated without any argument. Its only constructor **requires** a string and so this code doesn't work.
+
+A solution could be to make the `value` attribute nullable:
+
+```sn
+class Container<T> {
+  public value: T?;
+
+  public func %construct (@value: T) {}
+}
+
+class ComplexClass {
+  public readonly name: string;
+
+  public func %construct (@name: string) {}
+}
+
+let cmp = new ComplexClass("John");
+let var = new Container<ComplexClass>(cmp); // Works fine
+```
+
+But that's a bad practice, as the `null` value could be assigned to the attribute anywhere. Plus, it forces the program to typecast the attribute when we want to assign it to a `T` entity, for example.
+
+So, the solution is to use the `#future` directive, which makes the attribute nullable _until_ the end of the constructor. This means that, from the instanciation to the end of the constructor, it will have the `T?` type, and then constructor ends it will be a `T`.
+
+Of course, we must then be aware to not assign a value to the attribute, else an `NullFutureAttributeError` error will be thrown at the end of the constructor.
+
+```sn
+class Container<T> {
+  #future
+  public value: T;
+
+  public func %construct (@value: T) {}
+}
+
+class ComplexClass {
+  public readonly name: string;
+
+  public func %construct (@name: string) {}
+}
+
+let cmp = new ComplexClass("John");
+let var = new Container<ComplexClass>(cmp); // Works fine
+```
 
 ## Errors
 
-In SilverNight, behaviours that can't natively be handled throw errors. For instance, dividing a number by zero will throw an error because the program doesn't know how to handle it.
+In the language, behaviours that can't natively be handled throw errors. For instance, dividing a number by zero will throw an error because the program doesn't know how to handle it - we can't let the division return a `0` for instance, as it's an incorrect value. And, if we don't do anything, such errors make the program crash.
+
+Here is a chapter to understand how errors are thrown, work and can be handled to avoid these crashes.
 
 ### How errors are thrown
 
-Throwing an error consists in throwing an _instance_ of an error class. What's that? This is simply a child class of the native `Error` class, or `Error` itself. After instanciating it, the error is thrown using the `throw` keyword, like this:
+Throwing an error consists in throwing an _instance_ of an error class, which is simply a child class of the native `Error` class, or an instance of `Error` itself. After instanciating it, the error is thrown using the `throw` keyword, like this:
 
 ```sn
 throw new Error("Something bad happened.");
 ```
 
-Here, `throw` indicates it will throw an error. The instance written on its right is the error we want to throw. If we write the code above in our programs, they will crash with this error message (if debugging is enabled).
+The `throw` keyword indicates we want to throw as an error the value put on its right. So the instance we use here is the error we want to throw. If we write the code above in a program, it will crash with the error message we have specified.
 
 Here is the signature of the `Error` class (and the structure it uses):
 
@@ -4258,47 +5276,71 @@ struct ErrorStep {
 class Error {
   public readonly message: string;
   public readonly traceback: ErrorStep[];
-  public func %construct (@message: string);
-  public func %toString ();
+  public func %construct (@message: string, @traceback: ErrorStep[]);
+  public func %to<string> ();
 }
 ```
 
-As you can see, an error instance has a `message` attribute that is the message we give to it when we instanciate the class, and a `traceback` which is an array of functions that were ran until the error. Here is an example:
+As you can see, an error instance has a `message` attribute that is the message we give to it when we instanciate the class, and a `traceback` attribute which is a trace of all functions that were ran until the error. Here is an example:
 
 ```sn
-func a () => b();
-func b () => c();
-func c () => throw new Error("Test");
+func a () {
+  b();
+}
+
+func b () {
+  c();
+}
+
+func c () throws Error {
+  throw new Error("Test");
+}
 
 a();
 ```
 
-If we run this script from a file named `src.sn`, `traceback` will be equal to the following object:
+NOte that functions must always declare the type of error they may throw using the `throws` keyword. Errors thrown by superoverloads are excluded - doing a division doesn't require us to dedclare an `ArithmeticError` throw in the function's signature ; as well as _native errors_ (which inherits from `RuntimeError`) that are triggered automatically by the program like `OutOfMemoryError`.
+
+If the function may throw several types of errors, we indicate them all separated by a comma:
+
+```sn
+func c () : throws A, B {
+  if rand!<bool> {
+    throw new A("Hello !");
+  } else {
+    throw new B("Goodbye !");
+  }
+}
+```
+
+Also, we can throw as many errors as we want in the main scope.
+
+If we run this script from a file named `src.sn`, `traceback`'s content will be:
 
 ```sn
 [
-  {
+  ErrorStep {
     file: "src.sn",
     line: 3,
     column: 20,
     function: "global.c"
   },
 
-  {
+  ErrorStep {
     file: "src.sn",
     line: 2,
     column: 20,
     function: "global.b"
   },
 
-  {
+  ErrorStep {
     file: "src.sn",
     line: 1,
     column: 20,
     function: "global.a"
   },
 
-  {
+  ErrorStep {
     file: "src.sn",
     line: 5,
     column: 1,
@@ -4307,25 +5349,27 @@ If we run this script from a file named `src.sn`, `traceback` will be equal to t
 ]
 ```
 
-The `global` object refers to resources that are defined in a global context, which means they aren't defined inside a class for example. The `line` and `column` refers to the moment the current `function` calls another one. For the last function, it refers to the location of the `throw` keyword that has been ran.
+The `global` object refers to resources that are defined in a global context, which means they aren't defined inside a class for example. The `line` and `column` values refer to the location where the current `function` called another one. For the last function, it refers to the location of the `throw` keyword that thrown this error.
 
-### `try` and `catch` errors
+### How to handle errors
 
-Errors can either be automatically thrown (e.g. when dividing by 0) or manually (thanks to the `throw` keyword). But errors does not only aim to make the program crash when something goes wrong ; it also provides a way to understand something hasn't worked as expected and do something in consequence.
+Errors can either be automatically thrown (e.g. when dividing by 0) or manually (thanks to the `throw` keyword). But errors does not only aim to make the program crash when something goes wrong ; it also provides a way to understand that something hasn't worked as expected and do something in consequence.
 
-For exampe, we could imagine using a function to read a file. Reading the file could fail because of numerous reasons (file does not exist, error while reading the disk, invalid files table, etc.). Still, we don't want our program to stop just because the reading failed.
+For exampe, we could imagine using a function to read a file in a notepad application. Reading the file could fail because of numerous reasons (file does not exist, error while reading the disk, invalid files table, etc.). Still, we don't want our program to stop just because the reading failed - instead, we'll show an error message telling what happened.
 
-The same thing applies if we do a division, we could want to be able handle division errors. Here is an example:
+The same thing applies if we do a division, we want to be able handle division errors. In this example:
 
 ```sn
-func divide (left: int, right: int) : float =>
-  float(left) / right;
+func divide (left: int, right: int) : f32 =>
+  f32(left) / right;
 
 divide(2, 5); // Returns: 0.4
 divide(2, 0); // ERROR
 ```
 
-To catch the errors, we use a couple of blocks named `try` and `catch`. In the first one, which has no block head, we put the code that could throw an error. In the second one, which takes a single parameter (the error which could have been thrown) we put a code that is ran only if an error was thrown. If no error occured, this code will simply be ignored. Here is how it goes:
+We didn't catch the error, and so the program crashed.
+
+To catch errors, we use a couple of blocks named `try` and `catch`. In the first one, which has no block head, we put the code that _could_ throw an error. In the second one, which takes a single parameter (the error which _could_ have been thrown) we put a code that is ran only if an error was thrown. If no error occured, this code will simply be ignored. Here is how it goes:
 
 ```sn
 try {
@@ -4335,13 +5379,13 @@ try {
 }
 ```
 
-Here, a message will be displayed because an error has been automatically thrown when `divide` attempted to divided two by zero.
+In this example, a message is displayed because an error has been automatically thrown when `divide` attempted to divide two by zero. But the program doesn't crash.
 
-The great point of `try` and `catch` blocks is that the error is, well, _catch_ by the second block, so our program won't crash.
+The great point of `try` and `catch` blocks is that the error is _caught_ by the second block, so our program won't crash.
 
 We can also use the `catch` block's argument to get additional informations about the error, like its message or traceback.
 
-There is also a block called `finally`, which goes just after the `catch` block and executes whatever happens in the `try`/`catch` block.
+There is also a third block called `finally`, which goes just after the `catch` block and executes whatever happens in the `try`/`catch` block.
 
 This block matters because we can for example clear the `try`'s data after it is fully ran even though the `catch` block contains a `return` instruction or something:
 
@@ -4381,66 +5425,91 @@ func test () {
 }
 ```
 
-In this example though, the last `println!` is ran because the `finally` block is executed no matter what. This way.
+In this example though, the last `println!` call is ran because the `finally` block is executed no matter what. This way, it's possible to clear some data (like entities) used by the `try` block (or even the `catch` one).
 
-### Sub-typing with errors
-
-Of course, as `catch` blocks ask for an error type, they support sub-typing. There are several numerous native error classes, like `ArithmeticError` or `OutOfMemoryError` (which occurs when the memory is filled). So, if we want to catch only some type of errors, we can use sub-typing in the `catch`, like this:
+If the block contains only one condition, its braces can be omitted:
 
 ```sn
-try {
-  divide(2, 0);
-} catch (e: OutOfMemoryError) {
-  println!("Program is out of memory.");
+func test () {
+  try
+    unsafeStuff();
+
+  catch (e)
+    treatError();
+}
+
+// Or even:
+func test () {
+  try unsafeStuff();
+  catch (e) treatError();
 }
 ```
 
-Unless we really fill the memory up, this `catch` block will never display anything. But, we can also chain multiple `catch` blocks, to catch distinctly several types of error.
+The only requirement is there must be at least one space or one new line between the end of the block's name (`try`, `catch` or `finally`) and the instruction to run.
+
+### Sub-typing with errors
+
+As `catch` blocks ask for an error type, they support sub-typing. There are several native error classes, like `ArithmeticError` or `OutOfMemoryError` (which occurs when the memory is filled). So, if we want to catch only some type of errors, we can use sub-typing in the `catch`, like this:
 
 ```sn
-try {
+try
   divide(2, 0);
-} catch (e: OutOfMemoryError) {
+
+catch (e: OutOfMemoryError)
   println!("Program is out of memory.");
-} catch (e: ArithmeticError) {
+```
+
+We can also chain multiple `catch` blocks, to catch distinctly several types of error.
+
+```sn
+try
+  divide(2, 0);
+
+catch (e: OutOfMemoryError)
+  println!("Program is out of memory.");
+
+catch (e: ArithmeticError)
   println!("Division failed because we can't divide by zero.");
-}
 ```
 
 Thanks to sub-typing (again), we can also use a final `catch` block that will catch absolutely any type of error:
 
 ```sn
-try {
+try
   divide(2, 0);
-} catch (e: OutOfMemoryError) {
+
+catch (e: OutOfMemoryError)
   println!("Program is out of memory.");
-} catch (e: ArithmeticError) {
+
+catch (e: ArithmeticError)
   println!("Division failed because we can't divide by zero.");
-} catch (e: Error) {
+
+catch (e: Error) {
   println!("An unknown error occured. Here is its message:");
   println!(e.message);
 }
 ```
 
-Also, thanks to inferred typing, if we give no type to the block's argument, it will be considered as `Error` automatically:
+Also, thanks to inferred typing, if we give no type to the block's argument, it will automatically be considered as an `Error`:
 
 ```sn
-try {
+try
   divide(2, 0);
-} catch (e) {
+
+catch (e) {
   println!("Some error occured. Here is its message:");
   println!(e.message);
 }
 ```
 
-A last version of this syntax is if we don't care about getting an error object. In this case, we can simply omit the block's head:
+A last version of this syntax is if we don't care about getting the error object. In this case, we can simply omit the block's head:
 
 ```sn
-try {
+try
   divide(2, 0);
-} catch {
+
+catch
   println!("Some error occured.");
-}
 ```
 
 ### Making custom errors
@@ -4448,47 +5517,52 @@ try {
 Throwing custom errors simply consists in throwing an instance of a child class of `Error`. This allows us to make a distinction between native error types and our own ones. Here is an exemple:
 
 ```sn
-func divide (left: int, right: int) : float {
-  if (right is 0)
+func divide (left: int, right: int) : f32 throws CustomError {
+  if right is 0 {
     throw new CustomError("Cannot divide by zero.");
+  }
 
-  return float(left) / right;
+  return f32(left) / right;
 }
 ```
 
 The `CustomError` class could look like this:
 
 ```sn
-class CustomError extends Error {
+class CustomError inherits Error {
+  // Make a constructor
+  public func %construct (message: string, traceback: ErrorStep[]) =>
+    // Call the parent constructor
+    super.%construct(message, traceback);
+
   // A sample function
   public func why () : string =>
     "This is a custom error class";
 }
 ```
 
-Here is a usage example:
+We can now use our custom error class:
 
 ```sn
-try {
+try
   divide(5, 0);
-} catch (e: CustomError) {
+
+catch (e: CustomError)
   println!(e.why()); // Prints: "This is a custom error class"
-}
 ```
 
-Here, `CustomError` can be caught apart from other errors like `OutOfMemoryError`.
+Here, `CustomError` can be caught apart from other errors like `OutOfMemoryError`. Still, it inherits from `Error`, so catching with `catch (e: Error) {` will catch this error too.
 
-### Inline `try` and `catch`
+### Inline catching
 
-These blocks are quite useful, but they can be heavy to write. Like `for` or `while` loops, there is an _inline_ version of `try` and `catch` blocks. Here is how it goes:
+These blocks are quite useful, but they can be heavy to write. Like `for` and `while` loops, there is an _inline_ version of the `try` and `catch` blocks. Here is how it goes:
 
 ```sn
 // Classic way
-try {
+try
   divide(5, 0);
-} catch (e: CustomError) {
+catch (e: CustomError)
   println!(e.why());
-}
 
 // Inline way
 try divide(5, 0) catch (e: CustomError) {
@@ -4499,57 +5573,53 @@ try divide(5, 0) catch (e: CustomError) {
 That's as simmple as that. There's also a syntax even lighter for single-instruction blocks:
 
 ```sn
-try divide(5, 0) catch (e: CustomError) => println!(e.why());
+try divide(5, 0) catch (e: CustomError) println!(e.why());
 ```
 
 Also, if the function returns something, we can use its result, like this:
 
 ```sn
-val result = try divide(5, 0) catch (e: CustomError) => println!(e.why());
+val result = try divide(5, 0) catch (e: CustomError) println!(e.why());
 
 val result = try divide(5, 0)
-             catch (e: CustomError) =>
+             catch (e: CustomError)
                println!(e.why());
 ```
 
-But be aware here. Because the `catch` block does not return anything, the return value could be nothing. In this case, the `null` value is returned, which makes the return data either the specified type (here, `float`) or a `void`. See the problem? Yes, the mix of a single type and a `void` is a _nullable type_, so `result` will be typed as a `float?` instead of a `float`. Remember this, else this could lead to unexpected behaviours when using these inline blocks.
+But be aware here. Because the `catch` block does not return anything, the return value could be nothing. In this case, the `null` value is returned, which makes the return data either the specified type (here, `f32`) or a `void`. See the problem? Yes, the mix of a single type and a `void` is a _nullable type_, so `result` will be typed as a `f32?` instead of a `f32`. Remember this, else this could lead to unexpected behaviours when using these inline blocks.
 
-Except this point, this will work as expected. If we don't care about getting an error object, we can omit the `catch`'s argument:
+Note that type inferring works here because the `try` block is followed by a **single** instruction. So, its return type is fixed and can be guessed ; it wouldn't work with a `try` containing several instructions - that's why we can't do an assignment from a multiple-instructions `try` block.
+
+Except this point, this will work as expected. If you don't care about getting an error object, you can omit the `catch` block's head:
 
 ```sn
-val result = try divide(5, 0) catch => println!(e.why());
+val result = try divide(5, 0) catch println!(e.why());
 ```
 
 Note that this last block can also return a value. Thanks to this, if an error occurs, it is still possible to return an alternative value:
 
 ```sn
-val result = try divide(5, 0) catch () : float => {
+val result = try divide(5, 0) catch () : f32 => {
   println!(e.why());
   return 0;
 };
 ```
 
-This syntax is a little heavier but it also fixes the type of `result`. It won't be a `float?` anymore but a strict `float` because in all cases it receives a floating-point number.
+This syntax is a little heavier but it also fixes the type of `result`. It won't be a `f32?` anymore but a strict `f32` because in all cases it receives a floating-point number.
 
-Please note that the `catch` block must of course the same type of data than the `try` one, else an error will be thrown due to incompatible types.
+Please note that the `catch` block must of course be of the same type of data than the `try` one, else an error will be thrown due to incompatible types.
 
 ## Pointers
 
 ### The Object Identifier
 
-In SilverNight, each object (not primitives) has a unique identifier associated to it, called the OID (Object Identifier), whch is unique. This means that when we do a `new SomeClass()` or create an object from a structure (flying or not), an invisible identifier is put on it. It is not available to the program itself, but allows to compare if two objects are equal, by comparing their OID.
+In SilverNight, each object (expecting primitives) has a unique identifier associated to it, called the OID (Object Identifier), which is unique. This means that when we do a `new SomeClass()` or create an object from a structure (ghost or not), an invisible identifier is put on it. We cannot access it ourselves, but it allows the program to compare if two objects are equal, by comparing their OID.
 
-Here is the signature of the native `%equal` superoverload:
+The native `is_same!` flex compares two objects (it doesn't work with primitives) and tells if they are identical by comparing their OID. Of course, this could not be done manually because we can't access the OID, but this is a native flex so the builder understands it.
 
-```sn
-func %equal<T> (left: T, right: T) : bool;
-```
+One of the key-concepts of SilverNight is the OESM (Object-Entity Sharing Model) that shares equal objects across entities. To take an example, when an object is gave to a function, the object is not cloned automatically, so it keeps the same OID. That's why modifying an object given as an argument inside a function will also modify the original one.
 
-It can compare two instances of the same class and tell if they are identical by comparing their OID. Of course, this could not be done manually because we can't access the OID, but this is a native superoverload so the analyzer can implement it itself.
-
-One of the key-concepts of SilverNight is the OESM (Object-Entity Sharing Model) that shares equal objects across entities. To take an example, when an object is gave to a function, the object is not cloned automatically, so it keeps the same OID. That's why modifying an object inside a function will also modify the original one that was gave to it.
-
-Primitives don't have this problem, has they are very special classes. When a primitive is gave to a function or assigned to another resource, it will automatically be cloned - and there's no way to prevent it.
+Primitives don't have this problem, has they are very special classes. When a primitive is gave to a function or assigned to another resource, it is automatically be cloned - and there's no way to prevent it.
 
 Pointers aim to provide a new way to deal with OESM. Let's take the following code:
 
@@ -4588,45 +5658,97 @@ println!(hero.name); // Prints: "Jack"
 println!(hero.attack); // 20
 ```
 
-So, what happens here? After creating a hero object, we sent it to the `changeProperty` function. But technically, only a link to `hero` was sent to the function, which was assigned to its `obj` arguments. This way, when the function changed one of the `obj`'s properties, it also changed `hero`, because they are exactly the same object.
+So, what happens here? After creating a `hero` object, we send it to the `changeProperty` function. But technically, only a link to `hero` was sent to the function, which was assigned to its `obj` argument. This way, when the function changed one of the `obj`'s properties, it also changed `hero`'s one, because they are exactly the same object.
 
-In the second function, `assignSomethingNew`, only a link to `hero` was also sent and assigned to `obj`. But no changes were made to the original `hero`. Why? Because the two entities only share the same _OID_, they are still two separate entities. So assigning something new to `obj` grants it a new OID that replaces the previous one.
+In the second function, `assignSomethingNew`, another link to `hero` is sent and assigned to `obj`. But no changes is made to the original `hero`. Why? Because, while the two entities share the same _OID_, they are still two separate entities. So assigning something new to `obj` grants it a new OID that replaces the previous one (note that, if we assigned a primitive to it, it wouldn't have an OID at all).
 
 But what if we wanted to make the whole `hero` object change within a function? Well, for that, we use _references_.
 
-### References and pointers
+#### The tuples case
 
-While entities simply share a OID referring to a specific object in the memory, pointers share an EID, which stands for Entity Identifier - unique like the OID. The difference between an OID and an EID is that a OID simply refers to an object, while an EID refers to an entity - including primitives.
-
-By default, each entity has its own EID. That's where references come: they provide a way to create a value that points to the EID of an existing entity. To create one, we use the `&` symbol followed by the entity's name, which returns a _reference_ pointing to the provided entity.
+Note that, as tuples are primitives, their respective content is fully copied when being assigned to another entity for example:
 
 ```sn
-// Declare a variable
-let str: string = "Hello !";
+let tupleA = ( "A" );
+let tupleB = tupleA;
 
-// Create a *constant* pointer to it
-let ptr: *string = &str;
+tupleB[0] = "B";
 
-// Display the pointer's value
-println!(ptr); // Prints: "Hello !"
-
-// Change the referred's value
-str = "Goodbye !";
-
-// The changes are reflected on the pointer
-println!(*ptr); // Prints: "Goodbye !"
-
-// Change the pointer's value
-*ptr = "Yeah !"; // ERROR
+println!(tupleA[0]); // Prints: "A"
+println!(tupleB[0]); // Prints: "B"
 ```
 
-In this example, we first declare an entity containing string (which is a primitive). Then, we create a reference to it with `&str`. This is called a **constant** reference, meaning we can only _read_ the entity through the reference but not assign anything to it. Note that the entity a reference targets is called the _referred_.
+This is why tuples can be used in plain constants, at the opposite of objects.
 
-Now we have our reference, we can put it into a _pointer_. This is simply an assignable entity that contains a reference. The special thing about them is that they have an additional syntax for assignments (for pointers containing a mutable reference), as we'll see soon.
+This behavior is also why primitives are immutables: each time we manipulate a primitive, it is cloned to avoid being modified. That's why writing `2 + 1` doesn't modify a `2` value, but creates a whole new number, `3`, that is the result of the addition.
 
-After creating a pointer, we want to display its referred's value. But we have to use a special syntax for that: when we write `ptr`, we use the pointer's value, which is a reference. The problem is we don't want to display the reference itself, but the reference's value. For that, we have to use the `*` symbol before the reference we want to get the value of. In our case, because it's stored in `ptr`, we write `*ptr`. This is called _depointerization_. In fact, when we write `*ptr`, it is understood as `*(&str)` here, because the pointer is simply made of a value (which is a reference), and the `*` symbol works on values (references), not entities. This means it would be fine to write `println!(*(&str));`.
+### References and pointers
 
-References can be constant, but they can be mutable to. Sometimes, we simply want to get a pointer we can write to change the referred's value. For that, we use the `&mut` symbol, still followed by the referred's name:
+While entities simply share a OID referring to a specific object in the memory, pointers share an EID, which stands for Entity Identifier - unique like the OID. The difference between an OID and an EID is that a OID simply refers to an object, while an EID refers to an entity - including entities containing primitives.
+
+If we take the following entity:
+
+```sn
+let person = { name: "Jack" };
+```
+
+The OID refers to `{ name: "Jack" }`, while the EID refers to `person`. That's the difference.
+
+By default, each entity has its own EID. References are based on it: they provide a way to create a value that points to the EID of an existing entity. To create one, we use the `&` symbol followed by the entity's name, which returns a _reference_ pointing to the provided entity.
+
+To create a reference, we first need an entity. We won't use inferred typing to make the examples more clear:
+
+```sn
+// Declare a sample entity
+let str: string = "Hello !";
+```
+
+Then, we can make a reference from it using `&str`, and a pointer by assigning it to another entity:
+
+```sn
+// Create a reference
+// Then assign it to a pointer
+let ptr: *string = &str;
+```
+
+Note the `*` symbol before the type: it indicates that `ptr` is a _pointer entity_, which means it can (and must) contain a reference.
+
+By using the `&` symbol immediatly followed by the entity's name, we create a **constant** reference, meaning we can't change the value of `str` by using this reference.
+
+We can now print the value of `str`. But we have to use a special syntax for that: when we write `ptr`, we get the pointer's value, which is a reference. The problem is we don't want to display the reference itself, but the reference's value.
+
+To display the reference's value, we have to use the `*` symbol before the reference we want to get the value of. In our case, because it's stored in `ptr`, we write `*ptr`. This is called a _depointerization_. In fact, when we write `*ptr`, it is an equivalent to writing `*(&str)` here, because the pointer is simply made of a value (which is a reference), and the `*` symbol works on values (references), and on entities _by extension_. This means it would be fine to write `println!(*(&str));`.
+
+We can now print the value of `str` by only using the reference stored in `ptr` (`str` is then called the _referred_):
+
+```sn
+// Display the pointer's value
+println!(*ptr); // Prints: "Hello !"
+```
+
+Writing `*ptr` indicates we are getting the entity pointed by the reference stored in `ptr`, which is `str` here.
+
+If we change `str`'s value:
+
+```sn
+// Change the referred's value
+str = "Goodbye !";
+```
+
+The value of `*ptr`, as it points on `str`, will be affected too:
+
+```sn
+// The changes are reflected on the pointer
+println!(*ptr); // Prints: "Goodbye !"
+```
+
+Note that, because our reference is constant, we can't write `str` by using `*ptr`:
+
+```sn
+*ptr = "Hello !"; // ERROR (constant reference is not writable)
+```
+
+But sometimes, we simply want to get a pointer we can write to change the referred's value. For that, we use the `&mut` symbol, still followed by the referred's name:
 
 ```sn
 // Declare a variable
@@ -4642,9 +5764,9 @@ let ptr: *mut string = &mut hero;
 println!(hero); // Prints: "John"
 ```
 
-Here, because the reference is mutable, we can write the referred's value, still using the `*` symbol. That's the "extended assignment syntax" we were talking about sooner.
+In this example, because the reference is mutable, we can write the referred's value, still by using the `*` symbol.
 
-Note that, because references work on entity (that are not limited to _declared_ assignable entities but also _implicit_ assignable entities, like an object's property), pointers can also be made on a class' or a structure's member:
+Note that references work on entities, which includes an object's property or a class' member:
 
 ```sn
 let hero = {
@@ -4661,18 +5783,18 @@ println!(hero.name); // Prints: "John"
 The syntax is as follows:
 
 ```sn
-&object.property;   // Make a pointer to `object` and get `property`
-&(object).property; // Make a pointer to `object` and get `property`
-(&object).property; // Make a pointer to `object` and get `property`
+&object.property;   // Make a pointer to `object` and get `property` from it
+&(object).property; // Make a pointer to `object` and get `property` from it
+(&object).property; // Make a pointer to `object` and get `property` from it
 &(object.property); // Make a pointer to `object.property`
 
-&mut object.property;   // Make a pointer to `object` and get `property`
-&mut (object).property; // Make a pointer to `object` and get `property`
-(&mut object).property; // Make a pointer to `object` and get `property`
+&mut object.property;   // Make a pointer to `object` and get `property` from it
+&mut (object).property; // Make a pointer to `object` and get `property` from it
+(&mut object).property; // Make a pointer to `object` and get `property` from it
 &mut (object.property); // Make a pointer to `object.property`
 ```
 
-A specificity about references is that they can only be half-type-infered. What does that mean? Simply that their type (e.g. `int`, `string`...) can be type-infered, but not their nature (e.g. `&mut`, ...), so this last one have to be written explicitly:
+A specificity about references is that they can only be half-type-inferred. This means that their type (e.g. `int`, `string`...) can be type-infered, but not their pointer nature (e.g. `&mut`, ...), so this last one have to be written explicitly:
 
 ```sn
 let i = 1;
@@ -4688,29 +5810,30 @@ let ptr2: *mut int = &i;
 let ptr2: *mut = &i;
 ```
 
-This allows to keep a clarity in the code about what assignable entity is a pointer or not. An exception, though, is for properties: we can assign a pointer to a on-the-fly structure without specifying it's a pointer.
+This allows to keep the code clear about what assignable entity is a pointer or not. An exception, though, is for properties: we can assign a pointer to a flying structure without specifying it's a pointer.
 
 Here is a recap of the terminology:
 
-* A _reference_ refers to an entity called the _referred_. It is created using the `&` symbol (eventually followed by `mut`). It can either be mutable, which means we can set the value of the entity if refers to, or constant, so we can only read it.
+* A _reference_ refers to an entity called the _referred_. It can either be mutable (`&mut`), which means we can set the value of the entity if refers to, or constant (`&`), so we can only read it.
 * A _pointer_ is an entity (variable or constant) containing a pointer.
 
 ### References on values
 
-Sometimes we want to create pointers from simple values, not an assignable entity. For that, we can use the `fly_ptr!` as well as the `flu_mut_ptr!` to make a constant or a mutable pointer. Here is how it goes:
+It is also possible to create references from simple values. For that, we can use the `wrap!` flex, which creates an entity containing the value we give to it and allows us to make a reference from this entity:
 
 ```sn
 // Create a constant pointer
-let ptr1: * = fly_ptr!(2);
+let ptr1: * = & wrap!(2);
+
 // Create a mutable pointer
-let ptr2: *mut = fly_mut_ptr!(2);
+let ptr2: *mut = &mut wrap!(2);
 ```
 
 These flexs create a new assignable entity (variable or constant) and return a reference to it so we can read and eventually write it.
 
 ### Type compatibility
 
-Type compatibility is simple with pointers: mutable pointers can be used as constant pointers, but constants pointers cannot be used as mutables - which is logic. Here is an example:
+Type compatibility is simple with pointers: mutable pointers can be used as constant pointers, but constants pointers cannot be used as mutables - which is logic, because we want to be able to write the referred's value. Here is an example:
 
 ```sn
 let i = 1;
@@ -4724,13 +5847,35 @@ let val_ptr: *    = ptr1; // Works fine
 let val_ptr: *    = ptr2; // Works fine
 ```
 
-In fact, when a mutable pointer is found where a constant pointer is expected, it is automatically cast.
+To be exact, when a mutable pointer is found where a constant pointer is expected, it is automatically cast.
+
+This behavior makes that, if we want to make a function that takes both constant pointers and mutable pointers, we simply have to make a function that accepts constant ones - mutable pointers will be automatically typecasted:
+
+```sn
+func printPointer (ptr: *int) : void {
+  println!(*ptr);
+}
+
+val n = 2;
+
+printPointer(& n); // Prints: "2"
+printPointer(&mut n); // Prints: "2"
+```
+
+### Pointers typecasting
+
+Note that safe typecasting works between equivalent pointers: it's possible to convert an `*i16` to an `*i32` or an `*mut i16` to an `*mut i32`:
+
+```sn
+<*i16> & wrap!(2);
+<*mut i16> &mut wrap!(2);
+```
 
 ### Pointers in functions
 
 First of all, by langage abuse, we often say that a function requires a pointer where it asks for a reference. Technically, a function **cannot** ask for a pointer because a pointer is an entity and a function cannot ask for entities but only for values, so it can ask for references but not for pointers. When you read that a function asks for a pointer, it's in reality a reference - but the argument, as being an entity itself, will be a pointer whatever.
 
-So, references can be used to manipulate data in functions. Here is how it goes:
+So, references can be used to manipulate data in functions:
 
 ```sn
 func increment (counter: *mut int) => *counter += 1;
@@ -4740,20 +5885,19 @@ increment(&mut counter);
 println!(counter); // Prints: "1"
 ```
 
-They can also return references:
+Functions can also return references, of course:
 
 ```sn
-func increment (counter: *int) : *int => fly_ptr! (counter + 1);
+func increment (counter: *int) : *int => & wrap!(*counter + 1);
 
-let ptr: * = increment(fly_ptr! (0));
-// let ptr: *int = ...
+let ptr: * = increment(& wrap!(0));
 
-println!(ptr); // Prints: "1"
+println!(*ptr); // Prints: "1"
 ```
 
-This example is a little bit complex. First, we define a function that takes as an argument a reference, and returns another. In its body, it adds 1 to the counter on-the-fly (without assigning anything). This results in making a brand new integer, which is not a reference but a simple value. Then, it makes a reference from this new value and returns it, by transparently creating a new assignable entity containing this value and returning a reference to it. So `ptr` receives a new reference.
+This example is a little bit complex. First, we define a function that takes a reference, and returns another. In its body, it creates a reference from the value of its argument, and adds 1 to it (without assigning anything). Then, it returns the new reference by transparently creating a new assignable entity containing this value and returning a reference to it. So `ptr` receives a new reference.
 
-Of course, the function could also have returned a simple number, without making a pointer from it: assigning a simple integer to `ptr` would automatically have turned it into a pointer, but that's for the example.
+Of course, the function could also have returned a simple number, without making a pointer from it, but it would then have been needed to make turn this integer into a pointer in order to assign it to `ptr`.
 
 Also, be aware of depointerization: when a function asks for an `int` for example, it won't accept an `*int`!
 
@@ -4797,7 +5941,7 @@ add (*i_ptr, *j_ptr); // Returns: 7
 
 ### Reassigning pointers
 
-A pointer can be reassigned to a new entity easily. Here is how it goes:
+A pointer can be reassigned to a new entity easily:
 
 ```sn
 // Make two simple integers
@@ -4812,7 +5956,7 @@ let ptr: *mut = &mut i;
 println!(i); // Prints: "8"
 println!(j); // Prints: "0"
 
-// Assign a new target to the pointer
+// Assign a new reference to the pointer
 ptr = &mut j;
 
 // Assign a new value to the pointer
@@ -4821,153 +5965,7 @@ println!(i); // Prints: "8"
 println!(j); // Prints: "3"
 ```
 
-### The `NULL` pointer
-
-Sometimes we simply want to make a pointer referring to nothing, after using it. In fact, using `free!` on a pointer may not free the value it refers to (it depends on its scope usage) but it will make assign the `NULL` pointer to the current pointer, which is constant, so nothing can be assigned to it.
-
-```sn
-let i = 0;
-
-let ptr: *mut = &mut i;
-*ptr = 8; // Works fine
-
-free!(ptr);
-*ptr = 3; // ERROR because the pointer was freed
-
-ptr = &i; // ERROR because the pointer was freed
-```
-
-This can also be done using a manual assignment, if we want to re-use the pointer later by assigning a new target to it:
-
-```sn
-let i = 0;
-
-let ptr: &mut = &mut i;
-*ptr = 8; // Works fine
-
-ptr = NULL;
-*ptr = 3; // ERROR because the pointer refers to `null`
-
-*ptr; // ERROR because pointer has no valid target
-
-ptr = &mut i; // Works fine
-*ptr = 2; // Works fine
-
-println!(i); // Prints: "2"
-```
-
-This behaviour is due to the fact all pointers all nullable. A pointer to an `int` resource will be implicitly typed as `int?`, even though the pointed resource has a different type. This allows to use the `NULL` pointer which works both with constant and mutable pointers.
-
-Also, because we sometimes want to have pointers that refer to a real value, and not `null`, we can use the `NonNullPtr<T>` and `NonNullMutPtr<T>` types. They provide a way to ensure our pointers aren't null.
-
-```sn
-func readName (name: NonNullPtr<T>) {
-  println!(`Name is ${name}`);
-}
-
-readName (fly_ptr!("John")); // Prints: "Name is John";
-readName (NULL); // ERROR
-```
-
-Note that both `NonNullPtr<T>` and `NonNullMutPtr<T>` _are_ pointers and not classes. Their definition makes them aliases of respectively constant pointers and mutable pointers which are not referring to `null`.
-
-### Static typecasting
-
-A problem we often encounter with the `Any` type is when we want to use some properties of its real type. For instance, let's take the following code:
-
-```sn
-let data: Any;
-
-func register (new_data: Any) => data = new_data;
-
-func doubleRegister () : int {
-  // Multiply the register by 2 and return the result
-}
-```
-
-Here, we don't know how to write the `doubleRegister()` function because we know we can't multiply an `Any` instance by 2. In order to solve this, we use _static typecasting_:
-
-```sn
-func doubleRegister () : int {
-  return *(cast!<int>(&data)) * 2;
-}
-```
-
-What happens here? We simply _statically_ convert `data` to an `int` and got a pointer to the value. This cast is evaluated at runtime: when a call to `cast!` is encountered, it will return a `int` object that represents `data`. The process is simple: if `num` is in reality an `int`, it converts it ; else it returns the `NULL` pointer.
-
-```sn
-func multiplyByTwo (num: *Any) : int {
-  let casted: * = cast!<int>(num); // *int
-
-  if (casted is NULL) {
-    println!("An integer was expected");
-    return -1;
-  } else
-    return *casted * 2;
-}
-
-multiplyByTwo (fly_ptr!(2)); // Returns: 4
-multiplyByTwo (fly_ptr!("Hello")); // Returns: -1
-```
-
-Dynamic typecasting is especially useful when coupled with the `instanceof` operator, which checks if a value is instance of a given class. Here is how it goes:
-
-```sn
-func doubleRegister () : int {
-  if (data instanceof int)
-    return *(cast!<int>(&data)) * 2;
-  else {
-    println!("The provided data is not an integer.");
-    return 0;
-  }
-}
-```
-
-To know if a type is of a specific type, we simply have to use the templated directive `#mustbe<T>`:
-
-```sn
-func doubleRegister () : int {
-  if (data instanceof #mustbe<int>)
-    return *(cast!<int>(&data)) * 2;
-  else {
-    println!("The provided data is not an integer.");
-    return 0;
-  }
-}
-```
-
-Also, as `cast!` takes a pointer, it respects its state: if a constant pointer is gave, it returns a constant pointer, else it returns a mutable pointer.
-
-The point of getting a pointer from the casted value is to reflect all changes we could make on the casted value on the original resource. For example:
-
-```sn
-// Declare a number as 'Any'
-let i: Any = 2;
-// Cast it to an 'int'
-let j: *mut int = cast!<int>(&mut i);
-
-// Modify the casted value
-*j = 8;
-
-// Cast a new time the original value to print it
-println!(cast!<int>(&i)); // Prints: "8"
-```
-
-### Dynamic typecasting
-
-An alternative to `cast!<T>` is the `dynamic_cast!<T>` flex. It works the same way, except it uses the sub-typing scheme: if the real type of the provided data is the template or one of its children classes, it'll work, else it'll return a `NULL` pointer. Here is an example:
-
-```sn
-class A {}
-class B extends A {}
-
-dynamic_cast!<A>(new A()); // Returns a *mut A
-dynamic_cast!<A>(new B()); // Returns a *mut A
-dynamic_cast!<B>(new A()); // Returns a *mut void
-dynamic_cast!<B>(new B()); // Returns a *mut B
-```
-
-Be aware though, while `cast!<T>` is fast, `dynamic_cast!<T>` is a lot slower because it also converts the instance to an instance of another class.
+Commonly, the _pointer's referred_ is the entity pointed by the reference stored in the pointer, and the _pointer's value_ is the value of the referred.
 
 ### Impact on scope dropping
 
@@ -4976,16 +5974,16 @@ When a reference is created on an entity, the entity will not be dropped until t
 Here is an example to clarify this behaviour:
 
 ```sn
-let ptr: *mut = NULL;
+let ptr: *mut = &mut wrap!(0);
 
 {
   let i = 2;
   ptr = &i;
-} // 'i' is not dropped here
+} // 'i' is not dropped here as there is still a pointer referencing it
 
 println!(ptr); // Prints: "2"
 
-ptr = NULL; // 'i' is dropped here
+free!(ptr); // 'i' is dropped here
             // because there are no reference to it anymore
 ```
 
@@ -5014,11 +6012,13 @@ println!(ptr is &j); // Prints: "false"
 println!(*ptr is 0); // Prints: "true"
 ```
 
-### Referred's state
+### Reference's state
 
-Like any entities, pointers have a state (variable or constant), that is not related to the state of their reference's target.
+Like any entities, pointers have a state (mutable or constant), though it is not related to the state of their reference.
 
-For example, the pointer itself can either be mutable, which means we can change its reference and so its target, or constant, to make its reference immutable.
+For example, the pointer itself can either be mutable, which means we can change its reference and so its target, or constant, to make its reference immutable. Still, the reference it contains can either be mutable or a constant. And, though in the first case the referred must be mutable, in the second case it can either be mutable or constant.
+
+Showcase:
 
 ```sn
 let i = 1;
@@ -5036,8 +6036,8 @@ ptr2 = &j; // ERROR (pointer is constant)
 let ptr3: * = &i;
 val ptr3: * = &i;
 
-*ptr3 = 5; // ERROR (referred is constant)
-*ptr4 = 6; // ERROR (referred is constant)
+*ptr3 = 5; // ERROR (reference is constant)
+*ptr4 = 6; // ERROR (reference is constant)
 
 ptr3 = &j; // Works fine
 ptr4 = &j; // ERROR (pointer is constant)
@@ -5065,22 +6065,37 @@ val obj = {
 let ptr: *mut = &mut (obj.value); // ERROR
 ```
 
+Summary of possible states:
+
+|          Pointer       |    Reference    |         Referred        |
+|------------------------|-----------------|-------------------------|
+| Mutable  `let pointer` | Mutable  `&mut` | Mutable  `let referred` |
+| Mutable  `let pointer` | Constant `&`    | Mutable  `let referred` |
+| Mutable  `let pointer` | Constant `&`    | Constant `val referred` |
+| Constant `val pointer` | Mutable  `&mut` | Mutable  `let referred` |
+| Constant `val pointer` | Constant `&`    | Mutable  `let referred` |
+| Constant `val pointer` | Constant `&`    | Constant `val referred` |
+
+The only impossible situation is when we have a pointer (mutable or constant) containing a mutable reference to a constant entity, simply because we can't make mutable references on constant entities.
+
 ### Multiple-level pointers
 
-Pointers can refer to an entity, but they can also refer to other pointers (which also are entities, after all). Here is how it goes:
+Pointers can refer to an entity, but they can also refer to other pointers (which also are entities, after all). In this second case, though, we have to consider they are pointer and a level to ours. Here is how it goes:
 
 ```sn
 let i = 1;
 let j = 2;
 
 let ptr: *mut *mut = &mut &mut i;
-// `ptr` refers to an unnamed pointer itself refering to `i`
+// `ptr` refers to an 'intermediate reference' itself referring to `i`
 
 **ptr = 8;
 println!(i); // Prints: "8"
 
 ptr = &mut i; // ERROR
-ptr = &mut &mut i; // Works fine (changes nothing)
+ptr = &mut &mut j; // Works fine
+
+println!(**ptr); // Prints: "2"
 ```
 
 Now, let's take two examples to detail this because this is a bit complex:
@@ -5090,16 +6105,16 @@ Now, let's take two examples to detail this because this is a bit complex:
 println!(ptr); // Prints: "2"
 ```
 
-This code rewrites the target of the pointer `ptr` is itself referring to, let's call it the intermediate pointer. So this code rewrites the target of the intermediate pointer, and because `ptr` is referring to it, its value will be the same.
+This first code rewrites the _intermediate reference_ `ptr` was referring to. So, the value pointed by the reference contained in the intermediate reference (`*inter_ref`) and the value pointed by the intermediate reference of `ptr` (`**ptr`) will be the same.
 
 ```sn
 ptr = &mut &mut i; // Works fine
 println!(ptr); // Prints: "8"
 ```
 
-This code makes `ptr` referring to a brand new unnamed pointer, itself referring to `i`. So it removes the intermediate pointer we had just before.
+This second code makes `ptr` referring to a brand new intermediate pointer, which refers to `i`. So it removes the intermediate pointer we had just before.
 
-Note that the `*` symbol, when not used as the name of an entity in its declaration, allows to retrieve the entity it refers to:
+Note that the `*` symbol, when used on a reference, retrieves the referred itself, which allows us to retrieve the intermediate pointer:
 
 ```sn
 let i = 1;
@@ -5111,30 +6126,32 @@ let ptr: *mut *mut = &mut &mut i;
 let inter: *mut = *ptr;
 
 *inter = 8;
-println!(ptr); // Prints: "8"
+println!(**ptr); // Prints: "8"
 
 // The two lines above are strictly equivalent
 *ptr = &mut i;
-*inter = &mut i;
+inter = &mut i;
 
 // Use a brand new intermediate pointer
 ptr = &mut &mut i;
 
 *inter = 3;
-println!(ptr); // Prints: "8"
+println!(**ptr); // Prints: "3"
 ```
+
+Even though `ptr` isn't using `inter` as its intermediate pointer anymore, it stills point to `i`, just like `inter`. So, when we affect something to `*inter`, it affects the given value to `i`. Then, when we access `**ptr`, which retrieves `i`, we see the value that was just assigned using `*inter`.
 
 This part is complex, so don't hesitate to read it again until you understand it.
 
-### Depointerization
+### Depointerization dangers
 
-Depointerization, as we already saw, consists in getting the referred from a reference. But here is the thing: when we _write_ through a reference, we retrieve its referred to change the referred's value. But, when we _read_ through a reference, we retrieve its referred's value, and not the referred itself (because we don't want to get an entity but a value to deal with it). Because of that, when we read through a reference, there's no EID involved, only a (potential) OID.
+Depointerization, as we already saw, consists in getting the referred of a reference. But here is the thing: when we _write_ through a reference, we retrieve its referred to change the referred's value. But, when we _read_ through a reference, we retrieve its referred's value, and not the referred itself (because we don't want to get an entity but a value to deal with it). Because of that, when we read through a reference, there's no EID involved, only a (potential) OID.
 
 But what does this change, after all? Simply the fact we can, in the case it's a primitive, for example, make a mutable from a constant reference, or anything related. Here is an example:
 
 ```sn
 // Declare a pointer
-let ptr: *int = fly_ptr!(2);
+let ptr: *int = & wrap!(2);
 
 // Assign something to the pointer
 *ptr = 8; // ERROR (referred is constant)
@@ -5146,16 +6163,16 @@ let i: int = *ptr;
 i = 5; // Works
 
 println!(i);   // Prints: "5"
-println!(ptr); // Prints: "2"
+println!(*ptr); // Prints: "2"
 ```
 
-Here, the `fly_ptr!` flex creates a reference to an invisible assignable entity containing an `int`. The reference is stored into a pointer called `ptr`. We then try to assign something to the referred, but because the reference stored in `ptr` is constant, this fails. Note that we could have changed the reference `ptr` contains, because the pointer itself is mutable.
+Here, the `& wrap!(2)` creates a reference to an invisible assignable entity containing an `int`. The reference is stored into a pointer called `ptr`. We then try to assign something to the referred, it fails because the reference stored in `ptr` is constant. Note that we could have changed the reference `ptr` contains, because the pointer itself is mutable.
 
-Then, we depointerize `ptr` (meaning we get its reference's referred's value, which is the transparent assignable entity's value). We then assign it to a mutable called `i`, of the same `int` type, and we assign it a new number just after.
+In a second time, we depointerize `ptr` (meaning we get its reference's referred's value, which is the transparent assignable entity's value). We then assign it to a mutable called `i`, of the same `int` type, and we assign it a new number just after.
 
-At the end, we print both `i` and `ptr`, which have two distinct values, because they are not related - each of them have their own EID, thanks to depointerization returning the value of the referred, not a reference to it.
+At the end, we print both `i` and `ptr`, which have two distinct values, because they are not related - each of them has its own EID, thanks to depointerization returning the value of the referred, not a reference to it.
 
-Now, let's see a last example:
+Now, let's see a last example, with objects (which are not primitives):
 
 ```sn
 // Declare an objet
@@ -5171,24 +6188,51 @@ let hero = *ptr;
 hero.name = "John";
 
 println!(hero.name); // Prints: "John"
-println!(ptr.name); // Prints: "John"
+println!(*ptr.name); // Prints: "John"
 ```
 
 It works, despite the fact `ptr` contains a constant reference. How could this work?
 
-Well, the object `ptr` targets is not defined as constant, even if the reference we assign to the pointer is. So, if we get a reference to this object, we can modify its value. This is why having a constant pointer does not mean having a constant referred. Be aware of this!
+Well, the object `ptr` targets is not defined as constant, even if the reference we assign to the pointer is. So, if we get a reference to this object, we can modify its value. This is why having a constant pointer does not mean having a constant referred or preventing any modification on it. Be aware of this!
+
+Conventionally, even if you only want to modify an object's property and not assign something new to the object itself, you should ask for a mutable pointer, to clearly indicate you will modify the object.
+
+### Nullable pointers
+
+By design, pointers aren't nullable, unlike some languages does. The famous `NULL` pointer, which is used to indicate a pointer doesn't refer to anything, is a common source of bugs and requires to check too often if the pointer refers to an entity or not.
+
+Still, it's possible to make nullable pointers, by making a reference to a nullable type. This simple trick works as expected:
+
+```sn
+// Make a nullable pointer
+let ptr: * = nullable!(2);
+
+println!(*ptr); // Prints: "2"
+
+// Change its referred
+ptr = & wrap!(3);
+
+println!(*ptr); // Prints: "3"
+
+// Null it
+ptr = NULL;
+
+println!(*ptr); // Prints: "" (stringified 'null')
+```
+
+In this code, we use the `NULL` pointer as it's a reference to the `null` value. Note that `NULL` contains a mutable reference, but it only accepts voids of course (which are all the same `null` value).
 
 ## Advanced concepts
 
-Here is a transitional chapter between the end of object-oriented programming and deeper concepts of SilverNight like errors, pointers or packages. The notions we will see here may not be used in every single program, be they can still be useful.
+The notions we will see here may not be used in every single program, be they can still be useful.
 
-### Bindings
+### Scope bindings
 
-A useful concept when using libraries with a lot of resources is the _bindings_. It consists in applying an alias object on a function to extract resources in the local scope.
+A useful concept when using libraries with a lot of resources is the _scope binding_. It consists in making an alias for each attribute in an object (class, structure, ...).
 
-Let's imagine we have an `engine` class instance with a `run` function, which takes as an argument a function. This game engine runs the function but it also wants to provide a huge number of functions to manage the scene, the collisions, the geometry, the physics, etc.
+For example, let's imagine we have an `engine` class instance with a `run` function, which takes as an argument a function. This game engine runs the function but it also wants to provide a huge number of functions to manage the scene, the collisions, the geometry, the physics, etc.
 
-A first solution would be to provide them each one after another as an argument. But this would result in a lambda with thousands of arguments, so that's not a good idea, even with the ICT (because we still have to write the argument's name and order).
+A first solution would be to provide every function as a single argument. But this would result in a lambda with thousands of arguments, so that's not a good idea, even with the ICT (because we still have to write the argument's name and order).
 
 Another solution would be to make a structure with functions in it, like:
 
@@ -5203,133 +6247,48 @@ struct EngineFunctions {
 val functions: EngineFunctions;
 ```
 
-This works but involves to create a large structure, and then make an object with it, then give it as an argument. Putting aside the fact it is really heavy, all the functions would need to be called with `functions.init()`, `functions.createScene()` etc. which is long to write and heavy too if we call them multiple times. Plus, there's no difference between writing `engine.init()` or `engine.createScene()`.
+This works but involves to create a large structure, and then make an object with it, then give it as an argument.  Putting aside the fact it is really heavy, all the functions would need to be called with `functions.init()`, `functions.createScene()` etc. which is long to write and heavy too if we call them multiple times. Plus, there's no difference between writing `engine.init()` than `functions.init()`.
 
-That's where we use bindings. Bindings act like plain structure that links a name to a resource. Let's take an example:
-
-```sn
-func run (callback: func #bind
-  {
-    printInConsole: "println!",
-    sayHello: "println!(\"Hello \" + ${1})",
-    sayHappyBirthday: "println!('Happy birthday ' + ${1} + ' you are now ' + ${2} + ' years old!')"
-  })
-  => callback();
-```
-
-Here, `myBindings` generates several links.
-
-* The first one simply aliases `println!` as `printInConsole`, s we can do `printInConsole("Hello")`.
-* The second one uses `${1}` in its body, so it acts as a function and takes one, and only one argument, that cannot be omitted. Doing `sayHello("Jack")` will result in `println!("Hello" + "Jack")`.
-* The third one acts like the first one, but with two arguments. So writing `sayHappyBirthday("Jack", 28)` will result in `println!('Happy birthday ' + 'Jack' + ' you are now ' + 20 + ' years old!')`. Thanks to typecasting, `20` will be understood to `"20"`.
-
-So, we can use the `run` function like this:
+That's where we use scope bindings:
 
 ```sn
-run(() => {
-  #bind;
+engine.run(() => {
+  #bind engine;
 
-  printInConsole("Hello, world!");
-  sayHello("Jack");
-  happyBirthday("Jack", 28);
+  init(); // Works fine
 });
 ```
 
-This will work as expected, even if the three functions we use in the callback don't really exist but are part of the bindings object. Note that `#bind` directive at the beginning of the callback: it means we know a bindings object will be applied to it and that we accept it. This is needed because bindings can also rewrite the native functions/flexs, so the program needs to be sure we really want to perform the binding.
+The scope binding must be the very first instruction of the function, as must be followed by an explicit object (we can't write `#bind (rand<bool> ? firstObject : secondObject)`). Also, it only accepts _static objects_, which means a dictionary won't be allowed for example.
 
-#### Using a declared bindings object
+Note that attributes are simply _aliased_ here. This means that writing `init()` will in reality be understood as `engine.init()`.
 
-Because writing bindings is heavy in a function's signature (like we saw), and because we may want to re-use bindings several times, we can declare the bindings as an object to use them later. The bindings object is a plain structure linking a string (the name) to another string (the resource). Here is how it goes:
+Also, be aware of conflicts, you can't re-define an existing entity:
 
 ```sn
-bindings engineBindings = {
-  printInConsole: "println!",
-  sayHello: "println!(\"Hello \" + ${1})",
-  sayHappyBirthday: "println!('Happy birthday ' + ${1} + ' you are now ' + ${2} + ' years old!')"
-};
+engine.run(() => {
+  #bind engine;
+
+  let init = 2; // ERROR ('init' already declared)
+});
 ```
 
-This is all! We can now rewrite our `run` function:
+In this specific case, we can exclude some attributes from the scope binding:
 
 ```sn
-func run (callback: func #bind engineBindings) => callback();
-```
+engine.run(() => {
+  #bind engine not init, run;
 
-Note that these objects are not readable: it's not possible to write `engineBindings.sayHello` for example.
+  let init = 2;
+  let run = lambda () : void { println!("Hello world!"); }
 
-### Constrained types
-
-Sometimes we want to get restricted values from a specific type. For example, if we make a function named `treatCars` that takes a `Vehicle` instance as a parameter, we could only want to accept vehicles with four `wheels` or less.
-
-This time, because we haven't seen any feature that could achieve it, let's just see how it we could do it: with _constrained types_. Assuming we have this code:
-
-```sn
-class Vehicle {
-  public readonly wheels: int;
-  public func %construct (@wheels: int);
-}
-
-val car = new Vehicle(4);
-val motorcycle = new Vehicle(2);
-```
-
-Our function will have this look:
-
-```sn
-func treatCars (car: Vehicle with (c => c.wheels <= 4)) =>
-  println!(`This vehicle has ${car.wheels} wheels.`);
-```
-
-Here, the `with` keywords indicates a constrained type. At its left, we write the type we want to constraint, and at its right a callback (the constraint).
-
-But how does it work? This is simple: when we read the value, it acts exactly like if we didn't put a constraint on its type. But when we try to write it (assign something else), the callback will be ran with an argument, the value we are trying to assign. It could also receive a second argument, which would then be the current value of the resource. As you can see, ICT works in the constraint callback because arguments' types as well as its return type can be guessed.
-
-If we put aside the fact that writing is controlled by a callback, constrained types act **exactly** like standard types: sub-typing work with them (in the example above, writing `Vehicle` instead of its constrained version would accept it as well).
-
-Type constraints are called _type extension_, which are bidirectionaly compatible with their original type. For example, if a function asks for an `int`, we can give an `int with (c => c > 5)` instead. Also, if a function asks for an `int with (c => c < 8)`, we can give it an `int` instead (the constraint will be triggered to ensure we give a valid integer, though). Constrained types can be automatically typecasted to standard types, as well as the opposite.
-
-Here is an exemple to better understand the concept:
-
-```sn
-func treatCars (car: Vehicle with (c => c.wheels <= 4)) {
-  c = new Vehicle(2); // Works fine
-  c = new Vehicle(4); // Works fine
-  c = new Vehicle(8); // ERROR because the constraint returned `false`
-}
-
-treatCars(new Vehicle(4));
-```
-
-When the resource is written, the callback receives its value (plus the current value of the resource if it takes two arguments), and returns a boolean. If it accepts the changes, it will return `true` (in our case, this will happen only if the vehicle has four wheels or less). Else, it will return `false` and the writing will be rejected, which will result in an error.
-
-But, because of the need to match the constraint, constrained resources cannot be declared without an initialization value. Here is an example:
-
-```sn
-let car: Vehicle with (c => c.wheels is 4); // ERROR
-let car: Vehicle with (c => c.wheels is 4) = new Vehicle(4); // Works fine
-```
-
-Also, because we could want to re-use a constrained type later, the `type` keyword allows us to register:
-
-```sn
-type Car is Vehicle with (c => c.wheels is 4);
-
-let car: Car;                  // ERROR
-let car: Car = new Vehicle(2); // ERROR
-let car: Car = new Vehicle(4); // Works fine
-```
-
-A last thing about this concept is the _short notation_ it allows: because writing a `c => ...` can be a bit heavy, we can omit the arrow syntax and simply use the `_` entity to refer as the candidate value. Here is an example:
-
-```sn
-type Car is Vehicle with (c => c.wheels is 4);
-// *Strict* equivalent:
-type Car is Vehicle with (_.wheels is 4);
+  run(); // Prints: "Hello world!"
+});
 ```
 
 ### Conditional directives
 
-Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the _conditional directives_: `#if`, `#else`, `#elif`, `#end`. These directives use a boolean, like their block equivalent. Their specificity is that the code located in them will simply be removed from the source code if the condition is (or is not) filled. They can use build constants, giving the type of conversion (compilation, interpretation, transpiling), the platform (x86_64, ARM...).
+Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the _conditional directives_: `#if`, `#else`, `#elsif`, `#end`. These directives use a boolean, like their block equivalent. Their specificity is that the code located in them will simply be removed from the source code if the condition is (or is not) filled. They can use build constants, giving the type of conversion (compilation, interpretation, transpiling), the platform (x86_64, ARM...). Conditions must compare a plain value to another (plain constants defined in the program are supported).
 
 Here is an example:
 
@@ -5347,13 +6306,13 @@ Here is an example:
 #end
 ```
 
-That's as simple as it.
+That's as simple as that.
 
 ### Superoverloads
 
-Superoverloads are overloads that don't act only as a class level, but as the whole program's level. Some of them work with some concepts we haven't seen yet, so we'll only see operators superoverloads.
+Superoverloads are overloads that don't act only as a class level, but as the whole program's level.
 
-How do they work? That's simple: each operator superoverload overwrites the behaviour of an operator, but globally. For example, defining a `%plus` function globally will act in the whole program. The point is mainly to implement operators on classes that don't implement it natively, plus to allow assignments from the right: when overloading the `+` operator in a class with `%plus(cmp: int)`, for example, it will only support operations with the form `myInstance + 2` but not `2 + myInstance`. Superoverloads allow to reverse it:
+How do they work? That's simple: each operator superoverload overwrites the behaviour of an operator, but globally. For example, defining a `%plus` function globally will act in the whole program. The point is mainly to implement operators on classes that don't implement them natively, plus to allow operations from the right: when overloading the `+` operator in a class with `%plus(cmp: int)`, for example, it will only support operations with the `myInstance + 2` syntax but not with `2 + myInstance`. Superoverloads allow to reverse this behavior:
 
 ```sn
 class MyClass {
@@ -5369,18 +6328,18 @@ func %plus (cmp: int, inst: MyClass) : int {
 }
 ```
 
-Otherwise, operators superoverloads work exactly as operators overloads for classes, though globally.
+Otherwise, operators superoverloads work exactly as operators overloads for classes.
 
 ### The reduction directive
 
-Sometimes we want a function to take as an argument a callback that could not be a reduced lambda, as well as its arguments, in order to be able to call it later.
+Sometimes we want a function to take as an argument any function, as well as its arguments, in order to be able to call it later.
 
-Problem is: there is no type to catch every existing function. We would have to use the `Any` type, that opens the door to non-function types. So, we wouldn't be able to call the function later. The second problem is that our arguments would have to be an array of `Any`, so the analyzer would reject the call to the callback because arguments' type would not fit the `Any` type.
+Problem is: there is no type to catch every existing function. We would have to use the `Any` type, that opens the door to non-function types. So, we wouldn't be able to call the function later. The second problem is that the arguments we would want to give to the function later would have to be an array of `Any`, so the builder would reject the call because its arguments may not fit the `Any` type.
 
-The solution to this problem is to use the `#reduced` directive. Used as the type of a single argument, it allows to call a function with the callback and all of its arguments, as a tuple. Then, the argument is turned into a reduced lambda that can be called without worrying about arguments. To make this more clear, let's take an example:
+The solution to this problem is to use the `#reduced` directive. Prefixing the `func` keyword in the argument's type, it allows to call the function with a tuple contaning the callback and all of its arguments, prepared in advance. Then, the argument is turned into a lambda with no arguments that can be called without worrying about arguments. To make this more clear, let's take an example:
 
 ```sn
-func repeatedCall (callback: #reduced, times: int) {
+func repeatedCall (callback: #reduced func (), times: int) {
   // Do some amazing stuff here
   for i in 0..times {
     callback();
@@ -5393,14 +6352,14 @@ repeatedCall (
 ); // Prints: "Jack Jack "
 ```
 
-Here, `callback` is a reduced function that can be called without any arguments. When it's called, the program will transparently call the real callback, which takes one argument, and gives it the name we gave in the call to `repeatedCall()`. Then, next arguments can be used for something else, like the `times` argument.
+Here, `callback` is a reduced function that can be called without any arguments. When it's called, the program will transparently call the real callback, which takes one argument, and gives it the name we gave in the tuple ("Jack").
 
-Note that, because the callback hadn't a specific signature in the `repeatedCall`'s declaration, its arguments' type as well as its return type couldn' tbe guessed, so they must be provided.
+Note that, because the callback hadn't a specific signature in the `repeatedCall`'s declaration, its arguments' type as well as its return type couldn't be guessed, so they must be provided - that's why we doesn't use ICT here.
 
 It's also possible to ask for a specific return type in a returned function:
 
 ```sn
-func summation (callback: #reduced : int, times: int) : int {
+func summation (callback: #reduced func () : int, times: int) : int {
   let sum = 0;
 
   for i in 0..times {
@@ -5411,24 +6370,18 @@ func summation (callback: #reduced : int, times: int) : int {
 }
 ```
 
-As you can guess, `#reduced` is an equivalent to `#reduced : void`. In fact, `#reduced` is simply an equivalent to `func(...anything...)`, so it's even possible to write:
+If we want to match absolutely any possible reduced function:
 
 ```sn
-func summation (callback: unsafe #reduced : int, times: int) : int {
-  let sum = 0;
-
-  for i in 0..times {
-    sum += callback();
-  }
-
-  return sum;
+func takeAny<T> (callback: #reduced func () : T, times: int) : T[] {
+  return (callback() for i in 0..times);
 }
 ```
 
 A last use is when we want to be able to give some data to the callback, so we want to require it having some arguments. Here is an examplpe:
 
 ```sn
-func summation (callback: #reduced (num: int) : int, times: int) : int {
+func summation (callback: #reduced func (num: int) : int, times: int) : int {
   let sum = 0;
 
   for i in 0..times {
@@ -5449,13 +6402,13 @@ println!(summation(
 )); // Prints: "18"
 ```
 
-As we can see here, the callback's argument required in the `summation`'s signature must be placed at the very beginning of the callback's arguments. We couldn't have written `lambda (coeff: int, num: int) : int` for example.
+As we can see here, the callback's argument required in the `summation`'s signature must be its first argument. We couldn't have written `lambda (coeff: int, num: int) : int` for example.
 
 ### Flexs
 
-Remember when we saw `println!` at the beginning? We told that it was a _macro_. And it's now time to see what's this!
+Remember when we saw `println!` at the beginning? We told that it was a _flex_. And it's now time to see what's this!
 
-Flexs, as their long name _flexible functions_ indicates, are functions. And as functions, they take argument, define a return type, as well as a body.
+Flexs, as their long name _flexible functions_ indicates, are functions. And as functions, they take arguments, use a return type, as get a body.
 
 Still, flexs have a double specificity (in addition to the fact we write a `!` after their name to call them). First, their content is evaluated only when they are called. Secondly, type checking is done only at this time.
 
@@ -5466,45 +6419,45 @@ func sayHello (name: Any) : void {
   println!(name);
 }
 
-flex sayHello (name: Any) : void {
+flex sayHelloFlex (name: Any) : void {
   println!(name);
 }
 
 sayHello("John"); // ERROR
-sayHello!("John"); // Works
+sayHelloFlex!("John"); // Works
 ```
 
-The first call fails while the second works. Why? In the first call, we use a standard function which provides an `Any` to `println!`, which only accepts `Primitivable` values. So, it fails.
+The first call fails while the second works. Why? In the first call, we use a standard function which provides an `Any` value to `println!`, which only accepts `Stringifyable` values. So, it fails.
 
 But in the second one, the call to `sayHello!` is replaced by the flex's content, just like that:
 
 ```sn
 sayHello!("John");
 
-// The evaluated content will be:
+// The evaluated content will be like:
 {
   val name: string = "John";
   println!(name);
 }
 ```
 
-In flexs, arguments' type is only an _indicator_, it simply tells the accepted type. But, when the function is compiled, its real type (which is `string`) is used instead of this indicator. This means that `name` is, here, a `string` and not an `Any`.
+In flexs, arguments' type are only _indicators_, they simply tells an absolute mother type. But, when the function is built, their real type (here, a simple `string`) is used instead of this indicator. This means that `name` is, here, a `string` and not an `Any`.
 
 That's where flexs shine: they provide a way to accept all kind of arguments and use them depending on their real type, thanks to types being checked only at usage.
 
-Our `sayHello!` flex _could be_ invalid in some cases, but because type checking is performed only at calls, it won't be reported at invalid. That's as simple as that.
+Our `sayHello!` flex _could be_ invalid in some cases, but because type checking is performed only at calls, it won't be reported at invalid in our case. That's as simple as that. Of course, if we call it with a non-stringifyable type, it won't work.
 
-Be aware though: flexs' scope are the same as for standard functions. That means, if they are declared in a class for example, they will be able to use `this` or `self`. This also means they won't be able to access the scope from where they are called (like standard functions). Let's take an example:
+Be aware though: flexs' scope are the same as for standard functions: they can only access the scope they are defined in, plus all its parent scopes and their own scope (which contains their code). This means that, if they are declared in a class for example, they will be able to use `this` and `self`. This also means they won't be able to access the scope from where they are called (just tlike standard functions). Let's take an example:
 
 ```sn
 class Hello {
   private static name = "Hello";
 
-  public static flex printName() {
+  public static flex printName () : void {
     println!(@name);
   };
 
-  public static flex printLocal() {
+  public static flex printLocal () : void {
     println!(local_name);
   }
 }
@@ -5517,19 +6470,336 @@ class Hello {
 }
 ```
 
-Here, flexs are able to access their declaration scope (the scope of `Hello`) plus their own scope (remember, functions have a reserved scope delimited by their brackets), but they aren't able to access the local scope in which we define a `local_name` constant.
+Here, flexs are able to access their scope they are declared in (the scope of `Hello` plus all of its parents) as well as their own scope (remember, functions have a reserved scope delimited by their brackets), but they aren't able to access the local scope in which we define a `local_name` constant and from which we call them.
 
-Note that flexs can be expressed as a type, using `flex` instead of `func`. For example, the native `iterate_tuple` flex requires a flex as a callback:
+Another point: the `#raw<T>` typed. It's called a _templated type directive_, and only accepts plain values. Its goal is to be able to manipulate, for example, tuples:
+
+```sn
+flex access_tuple_value (tuple: #raw<Tuple>, index: #raw<usize>) : Any {
+  // The following line works because:
+  // - The length and type of every element in the tuple
+  //     are known as it's a plain tuple
+  // - 'index' is known as it's a plain number
+  return tuple[index];
+}
+
+access_tuple_value! (( "Hello" ), 0); // Returns: "Hello"
+
+// Equivalent to:
+let tuple = ( "Hello" );
+tuple[0]; // Returns: "Hello"
+```
+
+Note that plain constants have natively a `#raw<T>` type. There are the only entities having such a type. Still, `#raw<T>` works on flexs' arguments as well as functions' ones (to give them the possibility to pass such raw values to flexs that require them). This type describes an entity as containing a predictable **and** imutable value.
+
+Note that flexs can be expressed as a type, using `flex` instead of `func`. For example, the native `iter_tuple` flex requires another flex as a callback:
 
 ```sn
 // Flex's signature
-flex iterate_tuple (tuple: Tuple, callback: flex (value: Any));
+flex iter_tuple (tuple: #raw<Tuple>, callback: flex (value: Any));
 
 // Showcase
-iterate_tuple! (("Hello", 24), flex (value: Any) {
-  println!(value); // Works because all the values in the tuple are Primitivable
+iter_tuple!(("Hello", 24), flex (value: Any) {
+  println!(value); // Works because all the values in the tuple are 'Stringifyable's
 });
 ```
+
+Note that flexs must be raw, meaning you can't store a flex in a variable to use it later (except in a plain constant, of course, and as an argument because flexs are implicitly raw).
+
+Another particular point about flexs is that their return type can be a raw type:
+
+```sn
+flex returnTwo () : #raw<int> {
+  return 2;
+}
+
+pln two = returnTwo!(); // Works fine
+println!(two); // Prints: "2"
+```
+
+This is useful when dealing with plain constants, or even when dealing with classes. Indeed, when we write a class name like `string` or `int` as a value, it is typed as a `#raw<Class>` (called a _raw class_). Only raw classes can be instanciated and get members available.
+
+```sn
+func stringFunc () : Class {
+  return string;
+}
+
+flex stringFlex () : #raw<Class> {
+  return string;
+}
+
+stringFunc().NIL; // ERROR
+stringFlex!().NIL; // Empty string
+```
+
+A last "type", truly reserved to flexs this time (so functions cannot use it): the unknown-sized reference. It requires a reference and allows references, references of references, references of references of references, and so on. The given reference's level can be got using the `levelof!` flex, which returns a `#raw<usize>` value.
+
+For this example, we will use several useful flexs that work on references:
+
+* `typeof_ref!` takes a reference and return the type of its referred ;
+* `iter_ref!` takes a reference and a flex callback. It iterates the pointer by depointerizing it. Each time, it calls the callback with the depointerized pointer and indicate its current level.
+
+```sn
+flex getFinalReferred (ptr: *+ Any) : int {
+  let ret: typeof_ref!(ptr)?; // Nullable to avoid instanciation
+
+  iter_ref!(ptr, flex (ptr: *+ Any, level: usize) : void {
+    ift ptr ~ *typeof_ref!(ptr) {
+      ret = *ptr;
+    }
+  });
+
+  return ret;
+}
+
+val i = getFinalReferred(& wrap!(2)); // Returns: 2
+val j = getFinalReferred(&mut wrap!(2)); // Returns: 2
+val k = getFinalReferred(&&& wrap!(2)); // Returns: 2
+val l = getFinalReferred(& &mut & wrap!(2)); // Returns: 2
+```
+
+Another news: flexs can be used to type an entity, as long as they return a `#raw<Class>` of course. Also, mutable pointers are considered as instances of their non-mutable version (so a `*mut int` is considered as being an instance of both `*mut int` and `* int`).
+
+This example is complex but demonstrates the powerfulness of references manipulation using flexs.
+
+**NOTE :** The flex we've just created already exists in fact: its name is `depointerize!` and it takes an unknown-sized reference to return its final referred's value.
+
+#### A word about optimization
+
+Using flexs has a large cost on performances, because each time we call a flex, its code is fully pasted. Here is an example, using our `getFinalReferred` flex:
+
+```sn
+// This code:
+val i = getFinalReferred(& wrap!(2)); // Returns: 2
+val j = getFinalReferred(&mut wrap!(2)); // Returns: 2
+val k = getFinalReferred(&&& wrap!(2)); // Returns: 2
+val l = getFinalReferred(& &mut & wrap!(2)); // Returns: 2
+
+// Produces, in reality, a code like this one:
+
+// val i = getFinalReferred(& wrap!(2)); // Returns: 2
+
+// getFinalReferred! call
+let _wrapper_0: int = 2;
+let _arg_0: *int = & _wrapper_0;
+let _ret_0: int?;
+
+// iter_ref! call
+let _level_1: u8 = 1;
+let _ptr_1: *int = _arg_0;
+
+// Callback call
+ift _ptr_1 ~ * int {
+  _ret_0 = *_ptr_1;
+}
+
+// Flex's return value
+val i = _ret_0;
+
+// val j = getFinalReferred(&mut wrap!(2)); // Returns: 2
+
+// getFinalReferred! call
+let _wrapper_1: int = 2;
+let _arg_1: *mut int = &mut _wrapper_1;
+let _ret_1: int?;
+
+// iter_ref! call
+let _level_2: u8 = 1;
+let _ptr_2: *mut int = _arg_1;
+
+// Callback call
+ift _ptr_2 ~ * int {
+  _ret_1 = *_ptr_2;
+}
+
+// Flex's return value
+val j = _ret_1;
+
+// val k = getFinalReferred(&&& wrap!(2)); // Returns: 2
+
+// getFinalReferred! call
+let _wrapper_2: int = 2;
+let _arg_2: ***int = &&& _wrapper_2;
+let _ret_2: int?;
+
+// iter_ref! call
+let _level_3: u8 = 3;
+let _ptr_3: *** int = _arg_2;
+
+// Callback call
+ift _ptr_3 ~ * int {
+  _ret_2 = *_ptr_3;
+}
+
+// iter_ref! call
+let _level_4: u8 = 2;
+let _ptr_4: ** int = *_ptr_3;
+
+// Callback call
+ift _ptr_4 ~ * int {
+  _ret_2 = *_ptr_4;
+}
+
+// iter_ref! call
+let _level_5: u8 = 1;
+let _ptr_5: * int = *_ptr_4;
+
+// Callback call
+ift _ptr_5 ~ * int {
+  _ret_2 = *_ptr_5;
+}
+
+// Flex's return value
+val k = _ret_2;
+
+// val l = getFinalReferred(& &mut & wrap!(2)); // Returns: 2
+
+// getFinalReferred! call
+let _wrapper_3: int = 2;
+let _arg_3: * *mut *int = & &mut & _wrapper_3;
+let _ret_3: int?;
+
+// iter_ref! call
+let _level_6: u8 = 3;
+let _ptr_6: * *mut * int = _arg_3;
+
+// Callback call
+ift _ptr_6 ~ * int {
+  _ret_3 = *_ptr_6;
+}
+
+// iter_ref! call
+let _level_7: u8 = 2;
+let _ptr_7: * *mut int = *_ptr_6;
+
+// Callback call
+ift _ptr_7 ~ * int {
+  _ret_3 = *_ptr_7;
+}
+
+// iter_ref! call
+let _level_8: u8 = 1;
+let _ptr_8: * int = *_ptr_7;
+
+// Callback call
+ift _ptr_8 ~ * int {
+  _ret_3 = *_ptr_8;
+}
+
+// Flex's return value
+val l = _ret_3;
+```
+
+This code is quite unredeable and unoptimized, as well as really large for such a simple flex. This is what happens when a flex isn't optimized. Here, thanks to `iter_flex!` being very well optimized, the produced code is, in reality, more like this:
+
+```sn
+// val i = getFinalReferred(& wrap!(2)); // Returns: 2
+
+// getFinalReferred! call
+let _wrapper_0: int = 2;
+let _arg_0: *int = & _wrapper_0;
+let _ret_0: int?;
+
+// Callback call
+let _ptr_0: *int = _arg_0;
+
+ift _ptr_0 ~ *int {
+  _ret_0 = *_ptr_0;
+}
+
+// Flex's return value
+val i = _ret_0;
+
+// val j = getFinalReferred(&mut wrap!(2)); // Returns: 2
+
+// getFinalReferred! call
+let _wrapper_1: int = 2;
+let _arg_1: *mut int = &mut _wrapper_1;
+let _ret_1: int?;
+
+// Callback call
+let _ptr_1: *mut int = _arg_1;
+
+ift _ptr_1 ~ *int {
+  _ret_1 = *_ptr_1;
+}
+
+// Flex's return value
+val j = _ret_1;
+
+// val k = getFinalReferred(&&& wrap!(2)); // Returns: 2
+
+// getFinalReferred! call
+let _wrapper_2: int = 2;
+let _arg_2: ***int = &&& _wrapper_2;
+let _ret_2: int?;
+
+// Callback call
+let _ptr_2: ***int = _arg_2;
+
+ift _ptr_2 ~ *int {
+  _ret_2 = *_ptr_2;
+}
+
+// Callback call
+let _ptr_3: *int = *_ptr_2;
+
+ift _ptr_3 ~ *int {
+  _ret_2 = *_ptr_3;
+}
+
+// Callback call
+let _ptr_4: *int = *_ptr_3;
+
+ift _ptr_4 ~ *int {
+  _ret_2 = *_ptr_4;
+}
+
+// Flex's return value
+val k = _ret_2;
+
+// val l = getFinalReferred(& &mut & wrap!(2)); // Returns: 2
+
+// getFinalReferred! call
+let _wrapper_3: int = 2;
+let _arg_3: ***int = &&& _wrapper_3;
+let _ret_3: int?;
+
+// Callback call
+let _ptr_5: ***int = _arg_3;
+
+ift _ptr_5 ~ *int {
+  _ret_3 = *_ptr_5;
+}
+
+// Callback call
+let _ptr_6: *int = *_ptr_5;
+
+ift _ptr_6 ~ *int {
+  _ret_3 = *_ptr_6;
+}
+
+// Callback call
+let _ptr_7: *int = *_ptr_6;
+
+ift _ptr_7 ~ *int {
+  _ret_3 = *_ptr_7;
+}
+
+// Flex's return value
+val k = _ret_3;
+```
+
+At build time, this code can easily be optimized, by removing predictable conditions (like `_ptr_0 ~ *int`) and useless intermediate variables (e.g. `let _i = 1; _i = 2; val j = _i;` will produce `val j = 2;` instead). So, the final code will, in reality, more look like this:
+
+```sn
+val i: int = 2;
+val j: int = 2;
+val k: int = 2;
+val l: int = 2;
+```
+
+The final code is, in this specific case, perfectly optimized. But, that won't always be the case, and that's even more true if you deal with large flexs. That's why flexs should be as tiny as possible, and call functions to perform the more possible tasks. Never hesistate to mix flexs with simple functions to optimize your program!
 
 ### Proxies
 
@@ -5538,48 +6808,51 @@ Proxies allow to hide the real value of an assignable entity and to call a funct
 There are several signatures for proxies. Here is the most common, most complete (and most complex) one:
 
 ```sn
-proxy var: class_name from {
+proxy var: some_class from {
   value: T,
-  getter: func (v: *[mut] T) : T,
-  setter: func (v: *[mut] T, c: *X) : void
+  getter: func (v: T) : T,
+  setter: func (v: T, c: X) : void
 };
 ```
 
-With `[mut]` telling we _can_ use `mut` or omit it, and `X` an arbitrary type. That's a quite complicated model, for sure.
+With `X` being an arbitrary type. The object located just after the `from` keyword is called the _proxy model_.
 
-First, we declare the proxy entity using the `proxy` keyword and we follow it by a tuple.
+In this example, we first declare the proxy entity using the `proxy` keyword and we follow it by a tuple.
 
-The first element is a class: that's the _type_ of this assignable entity.
+The first element (`some_element`) is a class: that's the _type_ of this assignable entity.
 
 The second one is an instance of this type, which is the _hidden value_ of the element. Only the tuple's values can access it, it is hidden from the outside. Note that the type of the hidden value can be a child of the proxy's type (we can choose `Number` as the type and have an `int` value).
 
-The third value is a function called the _getter_ that is called when we ask to read the entity and returns the value that will be returned.
+The third value is a function called the _getter_ that is called when we ask to read the entity and returns the value corresponding to the entity.
 
 The fourth member is a function called the _setter_ that is ran when we try to assign something to the entity. It takes a pointer to the _candidate value_, which is the value we are trying to assign to the entity.
 
-Here is an example to illustrate this complex concept:
+The candidate value is not forced to have the same type than the proxy itself (that's why `X` is an arbitrary type). Also, this function can be polymorphed: it's perfectly possible to have a setter with a `string` candidate and a one with a `bool` candidate, for example.
+
+Here is an example of our counter, made with a proxy:
 
 ```sn
 // Proxy's declaration and type
-proxy counter: int from {
+proxy counter: uint from {
   // Default hidden value
   value: 0,
 
   // The getter
-  getter: func () : int {
+  getter: func () : uint {
     // Return the hidden value without any changes
     return @value;
   },
 
   // The setter
-  setter: func (c: *Primitive) : void {
+  setter: func (c: IntegerConvertible) : void {
     // Convert the candidate to an integer
-    let result: int = c.toInteger();
+    let result = <uint> c;
 
     // If the difference is valid...
-    if (result in [ -1, 0, 1 ])
+    if @value + result in [ -1, 0, 1 ] {
       // Set it
       @value += result;
+    }
   }
 );
 ```
@@ -5587,17 +6860,19 @@ proxy counter: int from {
 A good point about this proxy is that we can do this:
 
 ```sn
-counter = 1;
-counter ++;
-counter = "3";
-counter --;
-counter = true; // `true` is converted to `1`
-counter = false; // `false` is converted to `0`
+counter = true; // 1
+counter ++; // 2
+counter = counter + 1; // 3
+counter += 1; // 4
+counter --; // 3
+counter = "2";
 ```
 
-It's of course impossible to assign a string where we expect an integer, but this proxy allows it by accepting any primitive and converting it manually to an integer.
+It's of course impossible to assign a boolean or a string where we expect an integer, but this proxy allows it by accepting any primitive and converting it manually to an integer.
 
-Note that type inference is allowed in proxies, so we can rewrite ours like this:
+**NOTE :** When trying to convert a `string` to any number type, if the string does not contain a valid number, its value will be `0`. Be aware of that.
+
+Note that type inference can be performed on proxy models, so we can rewrite ours like this:
 
 ```sn
 proxy counter: int from {
@@ -5605,19 +6880,17 @@ proxy counter: int from {
 
   getter: () => @value,
 
-  setter: (c: *) => {
-    // Convert the candidate to an integer
-    let result: int = c.toInteger();
-
+  setter: c => {
     // If the difference is valid...
-    if (result in [ -1, 0, 1 ])
+    if @value + c in [ -1, 0, 1 ] {
       // Set it
-      @value += result;
+      @value += c;
+    }
   }
 });
 ```
 
-Note that the proxy can also use the `this` object to access its own members (like calling the setter in the getter or some things like this). But, we are not in a dictionary, so it isn't possible to add custom members on-the-fly. Still, we can declare some additional (hidden) properties in the proxy object:
+Note that the proxy can also use the `this` object to access its own members (like calling the setter in the getter or some things like this). But, we are not in a dictionary, so it isn't possible to add custom members flying. Still, we can declare some additional (hidden) properties in the proxy object:
 
 ```sn
 proxy counter: int from {
@@ -5627,23 +6900,27 @@ proxy counter: int from {
 };
 ```
 
-Other signatures of the proxies are derivative of the first one we've saw: while a proxy cannot omit its getter, it is not forced to have a setter - in this case, it is considered as a constant.
+Other signatures of the proxies are derivatives of the first one we've saw: while a proxy cannot omit its getter, it is not forced to have a setter - in this case, it is considered as a constant.
+
+#### Prepared proxy models
+
+When we want to make several proxies that have exactly the same members, it is for sure heavy and not really maintanable to copy and paste the same code again and again. That's where we use _prepared proxy models_.
+
+They simply are proxy models, like the one we made for our counter, which can be specified after the `from` keyword. Here is an example:
 
 ```sn
 // Declare the model
-prxmodel counterModel = {
+prxmodel counterModel: int = {
   value: 0,
 
   getter: () => @value,
 
-  setter: (c: *) => {
-    // Convert the candidate to an integer
-    let result: int = c.toInteger();
-
+  setter: c => {
     // If the difference is valid...
-    if (result in [ -1, 0, 1 ])
+    if @value + c in [ -1, 0, 1 ] {
       // Set it
-      @value += result;
+      @value += c;
+    }
   }
 };
 
@@ -5653,69 +6930,622 @@ proxy counter2: int from counterModel;
 proxy counter3: int from counterModel;
 ```
 
-Proxy objects must be declared using the `prxmodel` keyword. Also note that, as bindings, these are special objects that are not readable (writing `counterModel.value` will not be considered as valid, for example).
+Prepared proxy models must be declared using the `prxmodel` keyword. Also note these are special objects that are not readable (writing `counterModel.value` will not be considered as valid, for example).
 
-#### Prepared proxy objects
+#### Templated proxies
 
-When we want to make several proxies that have exactly the same members, it is for sure heavy and not really maintanable to copy and paste the same code again and again. So, we can use _proxy objects_ to solve this problem.
+Proxies can take one or several templates, but then they can't have an hidden value.
 
-They simply are objects, like the one we made for our counter, which can be specified after the `from` keyword. Here is an example:
+```sn
+proxy randOf<T inherits int>: T from {
+  // The getter
+  getter: func () : T {
+    return random!(T.MINIMUM, T.MAXIMUM);
+  }
+};
 
+randOf<i64>; // Random 'i64' value
+randOf<u32>; // Random 'u32' value
+```
 
+Prepared version:
 
-## Asynchronous behaviour
+```sn
+prxmodel randOfModel<T inherits int>: T {
+  getter: func () : T {
+    return random!(T.MINIMUM, T.MAXIMUM);
+  }
+};
 
-Sometimes we can't foretell when an even will occur. For example, if we are making a web server, we can't predict the incoming connections. But we still have to handle these events, and in order to do that we use _asynchronous_.
+proxy randOf<T inherits int>: T from randOfModel;
+```
 
-Asynchronous features such as promises are also very useful when dealing with multi-threading: a great tool that allows our code to run several functions simultaneously.
+### Flexible proxies
+
+Also called _flex proxies_, flexible proxies are a mix between flexible functions and proxies. They allow us, for example, to return raw values (like raw classes).
+
+They are defined the same way as standard proxies, except we use the `proxy!` keyword instead of the `proxy` one, and that the getter and setter are flexs instead of simple functions.
+
+To understand the usefulness of flexible proxies, know that the `static` object is in reality a flexible proxy itself. Here is its definition:
+
+```sn
+proxy! static<DATA: Any>: #raw<Class> {
+  getter: flex () : #raw<Class> {
+    return typeof!(DATA);
+  }
+};
+```
+
+This definition is a bit ugly, as it mixes a flexible templated proxy and raw return types.
+
+So, this proxy takes a single template, `DATA`. Thanks to template inference, writing `static<"Hello">` works fine and, because we are using a flex proxy, `DATA` will be typed as a `string` (with a standard proxy, it would have been typed as an `Any`).
+
+The proxy returns a raw class, meaning we can manipulate it as if we wrote its name directly. This is possible thanks to the proxy being flexible. Its getter also indicates, of course, an identical return type, and returns the class `DATA` is an instance of. This leads us to the following results:
+
+```sn
+let str: static<""> = "Hello world!"; // Works fine
+
+static<"">.NIL; // Empty string
+```
+
+Besides, the underscore types in classes are defined using the following statements:
+
+```sn
+type _this is static<this>;
+type _self is static<self>;
+type _super is static<super>;
+```
+
+Thanks to the `type` keyword declaring an _alias_ instead of creating a whole new type, this works perfectly.
+
+### Type assertion
+
+Here is a very nice feature when we want to manipulate some members on a value that is described as a mother of their real type that doesn't implement these members:
+
+```sn
+func convertToString (arg: Any) : string? {
+  // Convert the argument to a string using its `%to<string>` overload
+  // If it doesn't have any, return 'null'
+}
+```
+
+A first idea for this function's body could be to use typecasting, like this:
+
+```sn
+func convertToString (arg: Any) : string? {
+  try
+    return cast_unsafe!<string>(arg);
+
+  catch
+    return null;
+}
+```
+
+But this doesn't work if the real type of the data isnt `string`. In order to avoid this problem, we can perform a _type assertion_: it's a conditional block where we specify one or several conditions, like `arg` is an instance of the `Primitive` class. If the condition successes, the block is executed considering, this time, all the members described by `Primitive`:
+
+```sn
+func convertToString (arg: Any) : string? {
+  ift arg ~ Primitive {
+    // Here, 'arg' is considered as being a 'Primitive'
+    return <string> arg;
+  } else {
+    return null;
+  }
+}
+```
+
+Note that this code can be fastened using an exact type if we expect one, as the program doesn't have to check all the type hierarchy:
+
+```sn
+func convertToString (arg: Any) : string? {
+  ift arg ~ #=u16 {
+    // Here, 'arg' is considered as being EXACTLY an 'u16'
+    return <string> arg;
+  } else {
+    return null;
+  }
+}
+```
+
+For more flexibility, we can simply accept any type that is typecastable to a string:
+
+```sn
+func convertToString (arg: Any) : string? {
+  ift arg implements Stringifyable {
+    return <string> arg;
+  } else {
+    return null;
+  }
+}
+```
+
+It also works inline:
+
+```sn
+func convertToString (arg: Any) : string? {
+  return ift arg ~ Stringifyable { <string> arg } else { null };
+}
+```
+
+Though this second syntax is often heavier and more difficult to read.
+
+The assumption condition must be take the following form:
+
+```sn
+[entity] [instanceof | instanceofsuper | implements | uses | ~] [class]
+```
+
+Or a combination of several assumption conditions using the `&&` operator. The `instanceofsuper` operator returns `true` if the entity is an instance of the class itself or one of its parent. That's the opposite of `instanceof` which returns `true` if the entity is an instance of the class itself or one of its _children_.
+
+Here, the `~` syntax is still the shorter one:
+
+```sn
+func convertToString (arg: Any) : string? {
+  ift arg ~ int {
+    return <string> arg;
+  } else {
+    return null;
+  }
+}
+```
+
+### Constrained types
+
+Sometimes we want to get restricted values from a specific type. For example, if we make a function called `treatCars` that takes a `Vehicle` instance as a parameter, we could only want to accept vehicles with four `wheels` or less.
+
+This time, because we haven't seen any feature that could achieve it, let's skip to the solution: we'll use _constrained types_. Assuming we have this code:
+
+```sn
+class Vehicle {
+  public readonly wheels: int;
+  public func %construct (@wheels: int);
+}
+
+val car = new Vehicle(4);
+val motorcycle = new Vehicle(2);
+```
+
+Our function will have this look:
+
+```sn
+func treatCars (car: Vehicle with (c => c.wheels <= 4)) {
+  println!(`This vehicle has ${car.wheels} wheels.`);
+}
+```
+
+Here, the `with` keywords indicates a constrained type. On its left, we write the type we want to constraint, and on its right a callback (the constraint).
+
+So, how does it work? This is simple: when we read the value, it returns it without doing any treatment. But when we try to write it (assign something else), the callback will be ran with the value we are trying to assign (called the _candidate value_, like in proxies). It could also receive a second argument, which would then be the current value of the resource. As you can see, ICT works in the constraint callback because arguments' types as well as its return type can be guessed.
+
+If we put aside the fact that writing is controlled by a callback, constrained types act **exactly** like standard types. Constrained types are considered as children of their original type (in our example, asking for a `Vehicle` instead of its constrained version would accept it as well).
+
+Type constraints are a form of _type variation_, which are bidirectionaly compatible with their original type. For example, if a function asks for an `int`, we can give an `int with (c => c > 5)` instead. Also, if a function asks for an `int with (c => c < 8)`, we can give it an `int` instead (the constraint will be triggered to ensure we give a valid integer, though). Constrained types can be automatically typecasted to standard types, as well as the opposite - just like nullable types, which are another form of type variation.
+
+Here is an exemple to better understand the concept:
+
+```sn
+func treatCars (car: Vehicle with (func (c: string) : string => c.wheels <= 4)) {
+  c = new Vehicle(2); // Works fine
+  c = new Vehicle(4); // Works fine
+  c = new Vehicle(8); // ERROR because the constraint returned `false`
+}
+
+treatCars(new Vehicle(4));
+```
+
+When the resource is written, the callback receives its value (plus the current value of the resource if it takes two arguments), and returns a boolean. If it accepts the changes, it will return a non-NIL value (in our case, `true`, which will happen only if the vehicle has four wheels or less). Else, it will return a NIL value (in our case, `false`) and the writing will be rejected, which will result in an `RejectedAssignmentError` error (note that this error is a native one, so we don't have to catch it).
+
+But, because of the need to match the constraint, constrained resources may not be declared without an initialization value. Here is an example:
+
+```sn
+// We use ICT here
+let car: Vehicle with (c => c.wheels is 4); // ERROR
+let car: Vehicle with (c => c.wheels is 4) = new Vehicle(4); // Works fine
+```
+
+Also, because we could want to re-use a constrained type later, the `type` keyword allows us to register an alias on it:
+
+```sn
+type Car = Vehicle with (c => c.wheels is 4);
+
+let car: Car;                  // ERROR
+let car: Car = new Vehicle(2); // ERROR
+let car: Car = new Vehicle(4); // Works fine
+```
+
+A last thing about this concept is the _short notation_ it allows: because writing a `c => ...` can be a bit heavy, we can omit the arrow syntax and simply use the `_` entity to refer as the candidate value. Here is an example:
+
+```sn
+type Car = Vehicle with (c => c.wheels is 4);
+// *Strict* equivalent:
+type Car = Vehicle with (_.wheels is 4);
+```
+
+Here is another concrete example:
+
+```sn
+type Object = Any with (not _ instanceof Primitive);
+```
+
+Yes, this is how the generic `Object` type is defined: it allows _any_ value that _is not_ a primitive.
+
+#### Proxy equivalence
+
+It's possible to write a proxy that will be equivalent to a constrained type entity:
+
+```sn
+// Proxy version
+proxy str: string from {
+  value: "Hello",
+
+  getter: () => @value,
+
+  setter: (c) throws Error => {
+    if c.length == 0 {
+      throw new Error("A non-empty string is required");
+    }
+
+    @value = c;
+  }
+};
+```
+
+But this is really heavy, and we cannot require it as a type for a function's argument. Besides, it has a greater performance cost, so a constrained types is clearly preferable:
+
+```sn
+let str: string with (_.length > 0) = "Hello";
+```
+
+#### Optimization problems
+
+Assigning a new value to a constrained entity requires to call a function, and that each time. This can have a big performance cost if the constraint is an heavy function - that's why type constraints should be as light as possible.
+
+#### About the `type` keyword
+
+The `type` keyword allows to _alias_ a type with another. In our previous example, we defined `Object` as the `Any with (not _ instanceof Primitive)` type.
+
+In reality, this doesn't create a new type ; it simply makes an _alias_ to it:
+
+```sn
+// Set up an alias
+type Object = Any with (not _ instanceof Primitive);
+
+// This declaration:
+let var: Object = {};
+// Equivalent to this one:
+let val: Any with (not _ instanceof Primitive) = {};
+```
+
+It can also be used with templates:
+
+```sn
+// Set up a templated alias
+type ArrayThree<T> = T[3];
+
+let val: ArrayThree<int> = [ 2, 5, 8 ]; // Works fine
+let val: ArrayThree<int> = [ 2, 5 ]; // ERROR (invalid length)
+```
+
+### Unsafe typecasting
+
+Unsafe typecasting allows to convert any type to its real type. For example, in the following code:
+
+```sn
+let unknown: Any = "Hello world!";
+```
+
+Even though `unknown` is typed an entity contaning an `Any` value, the _real type_ of the value it contains here is `string`. So, unsafe typecasting will allow us to convert this `Any` entity to a `string`.
+
+Still, it has two big downsides: first, it is not checked at build time, and can perfectly fail at runtime (it fails if and only if the destination type is not the real type of the value we are trying to typecast). Second, it has a bigger performance cost than static cast.
+
+This cast has the same syntax than a safe cast. If the cast fails, it will throw an `InvalidCastError`.
+
+Let's see the syntax:
+
+```sn
+let unknown: Any = "Hello world!";
+
+let valid: string = cast_unsafe!<string>(unknown);
+
+println!(valid); // Prints: "Hello world!"
+
+let invalid: i16  = cast_unsafe!<i16>(unknown); // ERROR
+```
+
+Final word: if you want to convert, for example, a `number` entity which contains in reality an `i16` to an `u8`, you must combine both safe and unsafe casts:
+
+```sn
+let num: Any = 2ul;
+let byte: u8 = cast!<u8>(cast_unsafe!<u64>(num));
+
+// Shorter version:
+let byte: u8 = <u8> cast_unsafe!<u64>(num);
+```
+
+Type assertion uses an unsafe cast but catches the result when it fails and simply ignore the condition's body in that case.
+
+### Intersection types
+
+Intersection types is a feature that enforces a value to respect several types (either to be an instance of a class and implement one or several interfaces or traits, or simply to implement several interfaces or traits). It goes like this:
+
+```sn
+interface HasMotor {
+  isAnObject: bool;
+  horsesPower: uint;
+}
+
+interface HasWheels {
+  isAnObject: bool;
+  wheels: uint;
+}
+
+func takeCar (car: HasMotor & HasWheels) {
+  println!(car.wheels);
+}
+
+takeCar({
+  isAnObject: true,
+  horsesPower: 1,
+  wheels: 5
+});
+```
+
+Type intersection gives to the value all the members described by every type given. Here, `car` in the `takeCar` function has all the members described by `HasMotor` as well as those described by `HasWheels`.
+
+Note that our call to `takeCar`, though it's valid, is not conventional. We should have indicated its type explicitly instead, like we do for structures:
+
+```sn
+takeCar((HasMotor & HasWheels) {
+  isAnObject: true,
+  horsesPower: 1,
+  wheels: 5
+});
+```
+
+Besides, we can shorten our definition using the `type` keyword:
+
+```sn
+interface HasMotor {
+  isAnObject: bool;
+  horsesPower: uint;
+}
+
+interface HasWheels {
+  isAnObject: bool;
+  wheels: uint;
+}
+
+type Car = HasMotor & HasWheels;
+
+func takeCar (car: Car) {
+  println!(car.wheels);
+}
+
+takeCar(Car {
+  isAnObject: true,
+  horsesPower: 1,
+  wheels: 5
+});
+```
+
+Be aware: if two entities of the intersection define a member with the same name but with a different type, an error is thrown. For example, the following code won't work:
+
+```sn
+class A {
+  member: int;
+}
+
+class B {
+  member: string;
+}
+
+type C = A & B; // ERROR (conflict because of 'member')
+```
+
+### Union types
+
+Union types are the opposite of intersection types: they describe a value as being of a type OR another one. Example:
+
+```sn
+interface HasMotor {
+  isAnObject: bool;
+  horsesPower: uint;
+}
+
+interface HasWheels {
+  isAnObject: bool;
+  wheels: uint;
+}
+
+func takeSomething (obj: HasMotor | HasWheels) {
+  println!(obj.isAnObject); // Prints: "true"
+}
+
+takeSomething(HasMotor {
+  isAnObject: true,
+  horsesPower: 1
+});
+```
+
+A value using an union type makes available all the members commonly described by all the types of the union. Here, this means only `isAnObject` is available. To access `horsesPower` or `wheels`, we must ensure our type is typecastable:
+
+```sn
+func takeSomething (obj: HasMotor | HasWheels) {
+  println!(obj.isAnObject); // Prints: "true"
+
+  // println!(obj.horsesPower); // ERROR
+  // println!(obj.wheels); // ERROR
+
+  ift obj ~ HasMotor {
+    println!(obj.motors);
+  }
+  
+  ift obj ~ HasWheels {
+    println!((HasWheels) obj.wheels);
+  }
+}
+```
+
+As for intersections, if two entities of the union define a member with the same name but with a different type, an error is thrown. For example, the following code won't work:
+
+```sn
+class A {
+  member: int;
+}
+
+class B {
+  member: string;
+}
+
+type C = A | B; // ERROR (conflict because of 'member')
+```
+
+Note that type inference will **never** result either in an intersection type or an union type. Instead, the "Best Common Type" method is used to determine the type of, let's say, an array:
+
+```sn
+virtual class Animal {}
+
+// These three types have in common their 'Animal' parent
+class Lion inherits Animal {}
+class Rhino inherits Animal {}
+class Bear inherits Animal {}
+
+let array = [ new Lion(), new Rhino(), new Bear() ];
+// 'array' is of type 'Animal[]'
+```
+
+When there is no common type, the union must be explicitly specified:
+
+```sn
+class Lion {}
+class Rhino {}
+class Bear {}
+
+// ERROR (no common type)
+let array = [ new Lion(), new Rhino(), new Bear() ];
+
+// Works (explicit union typecasting)
+let array = (Lion | Rhino | Bear)[3] ([ new Lion(), new Rhino(), new Bear() ]);
+```
+
+### Anonymous classes
+
+Anonymous classes are for classes the equivalent of lambdas for functions. These are class, without a name, that are mainly used when they are used a single time.
+
+Note that anonymous classes can be created like this ; they must either inherit from another class, implement an interface, use a trait, or a mix of these.
+
+Let's consider the following code:
+
+```sn
+virtual class MouseClickHandler {
+  abstract public func onClick () : void;
+}
+
+func takeHandler (handler: MouseClickHandler) {
+  handler.onClick();
+}
+```
+
+We want to make a click handler for a specific scenario. For that, the only solution we've seen is to make a new class that inherits from `MouseClickHandler`. But this forces us to declare and then instanciate the class, where we only want to use it a single time.
+
+For that, we use an anonymous class, as follows:
+
+```sn
+takeHandler(new ~MouseClickHandler {
+  public func onClick () : void {
+    println!("I've been clicked!");
+  }
+});
+```
+
+The `~` symbol can be either followed by a class, an interface, or a trait. It can also mixes several of them by being followed by an intersection type:
+
+```sn
+takeHandler(new ~MouseClickHandler & Stringifyable {
+  public func onClick () : void {
+    println!("I've been clicked!");
+  }
+
+  public func %to<string> () : string {
+    return "Hello world!";
+  }
+});
+```
+
+Note that the class is instantly instanciated. Type inferring also works with anonymous classes:
+
+```sn
+let hello = new ~Stringifyable {
+  public value: int;
+
+  public func %to<string> () {
+    return @value;
+  }
+};
+
+hello.value = 8;
+println!(hello); // Prints: "8"
+```
+
+## Asynchronous behaviours
+
+Sometimes we can't foretell when an event will occur. For example, if we are making a web server, we can't predict _when_ there will be incoming connections. This is called an _asynchronous behaviour_ and can be handled several ways.
+
+Some of the concepts we will see in this chapter, like promises, are also very useful when dealing with multi-treading, a great tool that allows our code to run several pieces of code simultaneously.
 
 ### The problem
 
-Some events are synchronous even though they appear to be asynchronous. For example, errors handling with the `%error` superoverload may appear to be asynchronous becacuse it is called only when an error occured, and implicitly. But in fact, it is called synchronously, because the analyzer turns all `throw` instructions in the code by a call to `%error` (which is not possible manually). So, `%error` is fully synchronous.
+Some events are synchronous even though they appear to be asynchronous. For example, `catch` blocks call may appear to be asynchronous becacuse they are called only if a n error occured, and implicitly. But in fact, they are called synchronously, because the analyzer turns all `throw` instructions inside a `try` block to a jump to the `catch` one  (which is not possible manually). So, the `catch` block works synchronously.
 
 Another case is callbacks. In the following code:
 
 ```sn
 class Event {
-  private static handler: func;
+  private static handler: func ();
 
-  public static func handle (@handler: func) {}
-  public static func trigger () => @handler();
+  public static func handle (@handler: func ()) {}
+
+  public static func trigger () {
+    @handler();
+  };
 }
 
-Event.handle(lambda () => println!("Callback was triggered"));
+Event.handle(() => println!("Callback was triggered"));
 Event.trigger();
 ```
 
-If we don't have we source code of `Event`, we could think this is asynchronous because the function is not called directly but only when a specific even occur. But it's still synchronous, because the callback is ran in the `Event.trigger()` function.
+If we don't have the source code of `Event`, we could think this is asynchronous because the function is not called directly but only when a specific event occurs. But it's still synchronous, because the callback is ran in the `Event.trigger()` function.
 
-In SilverNight, asynchronous functions happen in two cases:
+In SilverNight, asynchronous functions happen in three cases:
 
 * When dealing with multi-threading ;
-* When the program is going to be transpiled in an asynchronous language
+* When the program is going to be transpiled in an asynchronous language ;
+* When using asynchronous API in frontend or third-party APIs
 
-The first point is about threads, a concept we will see that in details later, but for now we'll put it aside. The second point, though, is interesting.
+The first point is about threads, a concept we will see in another book, so for now we'll put it aside. The second point, though, is interesting.
 
-In some languages, such as JavaScript, several functions can be ran at the same time automatically. For example, the `setTimeout()` function that takes a callback and a delay runs the given function after the delay expires, even if the program is already running some tasks. This will not block the main tasks' execution, because the callback will run in parallel of the main tasks. This specificity makes JavaScript a _non-blocking language_, which means it can run several functions at the same time without blocking one.
+In some languages, such as JavaScript, several functions can be ran at the same time automatically. For example, the `setTimeout()` function that takes a callback and a delay in miliseconds runs the given function after the specified delay, even if the program is already running some tasks. This will not block the main tasks' execution, because the callback will run in parallel of the main tasks. This specificity makes JavaScript a _non-blocking language_, which means it can run several functions at the same time without blocking another.
 
-Node.js takes advantage of this feature to allow JavaScript being used in servers. When five clients connect at the same time to the server, they can be delivered simultaneously. In a synchronous language, the first client would be served first, and when it's done the second client would be served, then the third one, and so on... That makes a long waiting time for the last users, though. That's why synchronous languages are never used to deliver resources on a server.
+The Node.js platform takes advantage of this feature to allow JavaScript being used in servers. When five clients connect at the same time to the server, they can be delivered simultaneously. In a synchronous language, the first client would be served first, and when it's done it would be the second client's turn, then the third one, and so on... That makes a long waiting time for the last clients, though. That's why synchronous languages are never used to deliver resources on a server.
 
 Because SilverNight supports transpiling, it can take advantage of this using asynchronous functions.
+
+About the last point, it requires to understand the language's build process, so we will see it later.
 
 ### Promises
 
 Before talking about asynchronous functions, let's talk about promises. Promises are a great tool when coming to asynchronous actions. It is modeled as a templated class, `Promise<T, X = Error>`, which takes at instanciation time two lambdas, the first one taking a single `T` value, the second one taking a single `X` argument.
 
-Promises are basically a software conception of tasks that can either return a result or throw an error. Here is an example of promises, when dealing with filesystem:
+Promises are basically a software conception of tasks that can either return a result or throw an error. Here is an example of promises, when dealing with filesystem tasks:
 
 ```sn
 // We admit the function below is already defined
-func readAsync (path: string) : Promise<int, Error>;
+func readAsync (path: string) : Promise<int, FSError>;
 
 // Let's use it
 readAsync("hello.txt")
   .then(lambda (content: string) => println!(`File's size is ${content.length} bytes.`))
-  .catch(lambda (err: Error) => println!(`Something went wrong: ${content.message}`));
+  .catch(lambda (err: FSError) => println!(`Something went wrong: ${content.message}`));
 
 // And with ICT:
 readAsync("hello.txt")
@@ -5723,66 +7553,67 @@ readAsync("hello.txt")
   .catch(err => println!(`Something went wrong: ${content.message}`));
 ```
 
-Here, the `then()` function simply registers the callback for the case the promise succeeds, and `catch()` the callback for the case it fails. Here, a great point is we don't have to use any `try`/`catch` block to handle potential errors ; there is callback for that.
+Here, the `then()` function simply registers the callback which will be called if the promise succeeds, while `catch()` registers the callback for the case it fails. Here, we don't use any `try`/`catch` block to handle potential errors ; there is callback for that.
 
-Now we've seen how to use the promise, let's write the `readAsync()` function:
+Let's now write the `readAsync()` function:
 
 ```sn
 func readAsync (path: string) : Promise<string, Error> {
   // Make a new promise and return it
-  return new Promise<string, Error>(lambda (resolve: func (content: string), reject: func (err: Error)) {
+  return new Promise<string, FSError>(lambda (resolve: func (content: string), reject: func (err: FSError)) {
     let content: string;
 
     // Read the file
-    try {
+    try
       content = import!('fs').readFile(path, "utf8");
-    } catch (e) {
+
+    catch (e)
       // Failed
-      reject e;
-    }
+      reject(e);
 
     // Success
-    resolve content;
+    resolve(content);
   });
 }
 ```
 
-Quite heavy, right? Let's still see how this works.
+Quite heavy, right? Let's see how this works.
 
-First, we define a function that returns our promise. `T` (here, `string`) is its _success type_, and `X` (here, `Error`) is its _error type_. This function directly returns an instance of this promise class, and give it a callback that takes two arguments.
+First, we define a function that returns our promise. Here, `string` is its _success type_, and `Error` its _error type_. This function directly returns an instance of this promise class, and give it a callback that takes two arguments.
 
-The first argument is the callback triggered in the case the promise succeeds, which must take a single argument with the `T` type. The second one is the same for the case the promise fails, and must take a single argument with the `X` type.
+The first argument is the callback triggered in the case the promise succeeds, which must take a single argument with the `string` type. The second one is the same for the case the promise fails, and must take a single argument with the `Error` type.
 
 Now we've seen the detailed syntax of this function, let's rewrite it with ICT:
 
 ```sn
-func readAsync (path: string) : Promise<string, Error> =>
+func readAsync (path: string) : Promise<string, FSError> =>
   // Make a new promise and return it
-  new Promise<string, Error>((resolve, reject) => {
+  return new Promise<string, FSError>((resolve, reject) => {
     // Read the file and handle errors
     let content: string;
 
-    try {
+    try
       content = import!('fs').readFile(path, "utf8");
-    } catch (e) {
+
+    catch (e)
       resolve e;
-    }
 
     // Resolve the promise if the reading worked fine
-    if (content isnt null)
+    if content isnt null {
       resolve content;
+    }
   });
 }
 ```
 
-This is a lot simplier already, but still heavy. This is why we'll now see the `async` keyword.
+This is a lot simplier already, but still heavy. A solution to make this function lighter is to use the `async` keyword, as we will see now.
 
 ### `async` functions
 
-The `async` keyword describes an asynchronous function in a syntaxical way - it's pretty explicit. This means the function's signature must return a promise and work only in it. To understand the concept, let's rewrite our `readAsync` function with this new keyword:
+The `async` keyword describes an asynchronous function - it's pretty explicit. It forces the function's to return a promise and work only in it. To understand the concept, let's rewrite our `readAsync` function with this new keyword:
 
 ```sn
-async func readAsync (path: string) : string => {
+async func readAsync (path: string) : (string, FSError) => {
   try
     resolve import!('fs').readFile(path, "utf8");
 
@@ -5791,128 +7622,213 @@ async func readAsync (path: string) : string => {
 }
 ```
 
-Many things changed here, but this function works exactly as the original.
+Many things changed here, but this function works exactly as the original - though it's a clearly lighter.
 
-To begin, the return type changed from `Promise<string, Error>` to `string`. If we would have wanted to use a different error type than `Error`, we would have written a tuple `(string, Error)` to indicate the error type too.
+To begin, the return type changed from `Promise<string, FSError>` to the `(string, FSError)` tuple, because an asynchronous function implicitly returns a promise.
 
-Then, because the `async` keyword indicates our function is asynchronous, it transparently wraps it into a promise, with the callbacks.
+Then, because the `async` keyword indicates our function is asynchronous, its body is transparently wrapped into a promise, with the callbacks binded to the `resolve` and the `reject` keywords. They call the callback they are related to and stop the function after that.
 
-Finally, the `resolve` and `reject` keyword respectively call the callback they are related to and stop the function.
-
-Note that an asynchronous function can also use the `return` keyword ; it will have the same effect as `resolve` if used in the function's root (not in sub-functions like callbacks, of course). Here is an example:
+The powerfulness of these keywords is also they can be used inside a sub-function, like this:
 
 ```sn
-async func readAsync (path: string) : string => {
+async func readAsync (path: string) : (string, FSError) => {
   try
-    return import!('fs').readFile(path, "utf8");
+    (lambda throws FSError () {
+      try
+        // A 'return' would just terminate this lambda and not resolve anything
+        // But a 'resolve' terminates this lambda *and* the 'readAsync' function
+        resolve import!('fs').readFile(path, "utf8");
+
+      catch (e)
+        reject e;
+    })();
 
   catch (e)
     reject e;
 }
 ```
 
-Also, when an error happens in an asynchronous functions, the error is automatically caught and transformed into a rejection. If the error is not compatible with the rejection type (e.g. if the rejection type is `int`), an error is thrown (for real, this time). So we could write our function like this:
+Also, when an error happens in an asynchronous functions, the error is automatically caught and transformed into a rejection. So, we could write our code like that:
 
 ```sn
-async func readAsync (path: string) : string =>
-  import!('fs').readFile(path, "utf8");
+async func readAsync (path: string) : (string, FSError) {
+  resolve import!('fs').readFile(path, "utf8");
+}
 ```
 
-If the filesystem fails to read the file, an error will be thrown, but because our function use `Error` as its rejection type (because, as we saw, specifying no rejection type use it as default) the error will be turned into a simple promise rejection.
+If the filesystem fails to read the file, an error will be thrown, but because our function uses `FSError` as its rejection type the error will be turned into a simple promise rejection.
 
-So, this keyword is pretty powerful when coming to simplify asynchronous functions. Plus, it makes clear for developpers and documentation systems the function is asynchronous.
-
-### Promises chaining
-
-Where promises are useful is when chaining several callbacks. Sometimes, because of using many imbricated callbacks, our code can quickly become unreadable. Here is an example when fetching a user from a website:
+Note that, even if the function's end is reached, the promise is not terminated until it encounters a `resolve` or a `reject` keyword. For example, in the code below:
 
 ```sn
-// Download a file from the web
-func fetch (url: string, callback: func (data: string, err: Error)) { /* ... */ };
-// Parse a JSON string as a dictionary (numbers and booleans are converted to strings)
-func parseJsonAsync (json: string) : Map<string, string> { /* ... */ };
+async func infinite () : (void, Error) {
+  for i in 0..10 {
+    println!("Hello world!");
+  }
+}
+```
 
-// Here is the code:
-fetch("/api/last-article/author.json", (data, err) => {
-  if (err)
-    return println!(err.message);
+A call to the `infinite` function will return a promise which will never end.
 
-  parseJsonAsync(data, (user, err) => {
-    if (err)
-      return println!(err.message);
+This specificity excepted, the `async` keyword is pretty powerful when coming to simplify asynchronous functions. Plus, it makes clear for developpers and documentation systems that the function is asynchronous.
 
-    fetch("https://api.github.com/users/" + user.name, (githubData, err) => {
-      if (err)
-        return println!(err.message);
+Note that there is also an asynchronous syntax for lambdas:
 
-      parseJsonAsync(githubData, (githubUser, err) => {
-        if (err)
-          return println!(err.message);
+```sn
+func takeAsyncCallback (callback: async func () : (string, Error)) {
+  callback()
+    .then(message => println!(message));
+};
 
-        println!(`This author has ${githubUser.public_repos} public repositories.`);
-      });
-    });
+takeAsyncCallback (async () => resolve "Hello world!");
+```
+
+### Error-free promises
+
+Error-free promises are promises that will never throw any error. Their return type is replaced by a single resolution type, like this:
+
+```sn
+async func resolveHello () : string {
+  resolve "Hello world!";
+}
+```
+
+This allows to avoid wrapping their call inside a `try`/`catch` block.
+
+Also, void-typed error-free promises can fully omit their return type, like for standard functions:
+
+```sn
+async func resolveHello () {
+  for i in 0..10 {
+    println!("Hello world!");
+  }
+
+  // Resolve manually, else the promise will never end
+  resolve ;
+}
+```
+
+### Single resolution
+
+The _single resolution_ way allows us to to chain promises and use only one callback for the chain's resolution and one for the chain's rejection. It goes like this:
+
+```sn
+// Considering the following function:
+async func fetch (url: string) : string;
+
+Promise.all([
+  fetch("/api/last-article/author.json"),
+  fetch("/api/last-article/contributors.json"),
+  fetch("/api/last-article/sources.json")
+])
+  // When all the promises are resolved, get their respective result
+  .then(func (author: string, contributors: string, sources: string) : void {
+    println!(author, contributors, sources)
+  })
+  
+  // Else, get the error as well as the faulty promise
+  .catch(func <T, X> (error: Error, faultyPromise: Promise<T, X>, fpIndex: uint) : void {
+    println!(`Failed at promise ${fpIndex}.`);
+    println!("Error is: " + error.message);
   });
-});
 ```
 
-See the problem? And this is a tiny example, things would be even worse in a more complex program.
-
-That's where we use _chained promises_. Assuming our functions now return promises instead of taking a callback, here is the same code, rewritten:
+With type inference:
 
 ```sn
-// Fetch the author's JSON profile
-fetch("/api/last-article/author.json")
-  // Parse it
-  .then(data  => parseJsonAsync(data))
-  // Get informations about this author on GitHub
-  .then(user  => fetch("https://api.github.com/users/" + user.name))
-  // Parse the received JSON data
-  .then(gdata => parseJsonAsync(gdata))
-  // Display the number of public repositories for this author
-  .then(guser => println!(`This author has ${githubUser.public_repos} public repositories.`))
-  // If any of the above promises failed, catch the error
-  .catch(err  => println!(`An error occured: ` + err.message));
+Promise.all([
+  fetch("/api/last-article/author.json"),
+  fetch("/api/last-article/contributors.json"),
+  fetch("/api/last-article/sources.json")
+])
+  .then((author, contributors, sources) => {
+    println!(author, contributors, sources)
+  })
+
+  // We use an alternative syntax with no template here,
+  //  as all the promises have a common resolution type
+  //  as well as a common rejection type
+  .catch((error, faultyPromise, fpIndex) => {
+    println!(`Failed at promise ${fpIndex}.`);
+    println!("Error is: " + error.message);
+  });
 ```
 
-Let's detail what happen here. First, the `fetch()` function returns a promise. When this promise is resolved, a callback is triggered to parse the data as JSON. And here is the first specificity of this code: instead of returning nothing, it returns a new promise. To be honest, we could have written this line like this:
+Note that it's also possible to make a resolution callback that takes no argument, if don't want to get the resolution data:
 
 ```sn
-  // Parse it
-  .then<{ string }, Error>(lambda (data: string) { return parseJson(data); });
+Promise.all([
+  fetch("/api/last-article/author.json"),
+  fetch("/api/last-article/contributors.json"),
+  fetch("/api/last-article/sources.json")
+])
+  .then(() => println!("It worked!"))
+  
+  .catch((error, faultyPromise, faultyPromiseIndex) {
+    println!(`Failed at promise ${faultyPromiseIndex}.`);
+    println!("Error is: " + error.message);
+  });
 ```
 
-In fact, the `then()` function can take two templates, and if so takes as its single argument a callback that returns a new promise with the templates being respectively its resolution and rejection type.
+If all promises have the exact same resolution/rejection type, or have a resolution/rejection type that have a common parent class (like `Vector<string>` if they return either an `Array<string>` or a `List<string>`), it's possible to get the resolution data as an array:
 
-The final `catch()` call will be triggered if _any_ of the promise fails. Also, it will prevent the next ones from being ran.
+```sn
+// Etablish a set of promises
+let promises: Promise<string, Error>[3] = [
+  fetch("/api/last-article/author.json"),
+  fetch("/api/last-article/contributors.json"),
+  fetch("/api/last-article/sources.json")
+];
 
-### `await` with promises
+// Uniform resolution type
+Promise
+  .all(promises)
+  .then(data => println!(json) for json in data); // data: string[3]
+```
 
-Sometimes we have to make some asynchronous action in order for the program to continue. For example, this can happen when loading a resource from the web or waiting for a user's input. In these cases, our program would be wrapped inside the callback took by the Promise's `then()` function.
+We are of course not forced to prepare the promises first. We can also ask for inferring the chain's common type:
+
+```sn
+// Uniform resolution type for a set of promises
+Promise
+  .allInferred([
+    fetch("/api/last-article/author.json"),
+    fetch("/api/last-article/contributors.json"),
+    fetch("/api/last-article/sources.json")
+  ])
+  .then(data => println!(json) for json in data); // data: string[3]
+```
+
+### Waiting for promises
+
+Sometimes we have to perform some asynchronous actions and wait for their completion in order for the program to continue. For example, this can happen when loading a resource from the web or waiting for a user's input.
 
 In order to solve this problem, we can use the `await` keyword, but **only** in asynchronous functions. Here is how it goes:
 
 ```sn
+// Considering the following function:
+async func sleep (delay: uint);
+
 // Resolve a promise after a specific delay
-async func sleep (delay: uint) {
+async func delayedPrint (delay: uint) {
   println!("A"); // Prints: "A"
 
   // Wait for the given delay...
-  await Scheduler.setTimeout(delay);
+  await sleep(delay);
 
-  println!("B"); // Prints: "B"
+  println!("B"); // Prints: "B" after 1 second
 
   // Resolve the promise
   resolve ;
 }
 
-sleep(1); // Prints: "A"
-          // And after 1 second, prints: "B"
+delayedPrint(1); // Prints: "A"
+                 // Prints: "B" after 1 second
 ```
 
-As we can see, `await` simply blocks the async function until the given promise is resolved. If it's rejected, it will simply throw a `PromiseError`. This error class is a little special since its constructor takes a `Stringifyable` argument and converts it into a string so we can use its `str_data` attribute to read it.
+As we can see, `await` simply blocks the asynchronous function until the given promise is resolved. If it is rejected, it will simply throw an `AwaitRejectionError<T>` with `T` being the rejection type of the promise. Then, we can use its `.data` attribute to get the rejection error.
 
-Also, `await` returns the resolution value of the promise (if there is one). So, the following code works:
+Also, `await` returns the resolution value of the promise:
 
 ```sn
 // Add two numbers after a second
@@ -5920,154 +7836,93 @@ async func delayed_add (left: int, right: int) : int {
   // Sleep for 1 second
   await sleep(1);
   // Perform the addition and return the result
-  return left + right;
+  resolve left + right;
 }
 
-delayed_add(2, 5)
-  .then(result => println!(result) /* Prints: "7" */);
+// Substract two after two seconds
+async func delayed_sub (left: int, right: int) : int {
+  // Perform the substraction as an addition and return the result
+  resolve await delayed_add (0 - left, right);
+}
+
+delayed_sub(5, 2)
+  .then(result => println!(result) /* Prints: "3" after 1 second */);
 ```
 
-We've now finished with promises and asynchronous behaviours.
-
-## Documenting the code
-
-Making code is great, but it's even better if it's documented. When you are using a library (e.g. a package downloaded from the official repository), it's always better to know how functions work, right? So, we have several solutions:
-
-* Write the documentation by hand ;
-* Document the code and generate the documentation automatically
-
-The second solution is, most of the time, the better. Why? Because, when we document we code directly, we have some advantages:
-
-* The documentation is located under a single location ;
-* We don't have to search through the web how it works ;
-* IDEs and some code editors will provide help and auto-complete.
-
-So, let's see how this work.
-
-### Assignable entities
-
-The syntax of documentation is pretty the same than many other languages: a multi-line comment, starting with a `*` symbol. Let's see how we make it with assignable entities:
+Note that `await` cannot be used in non-asynchronous functions, even if they are themselves inside asynchronous functions. Example:
 
 ```sn
-/**
- * The name of a person
- */
-let name: string;
-```
+// Asynchronous function
+async func funcA () : void {
 
-The first line contains two `*` symbols, meaning this is a _documentation comment_. Every next line will start by optional spaces (for indentation) then by another `*` symbol and a content depending on what we want to do. Conventionally, the first line describes the entity (what it contains/does). Because it's an assignable entity, we write what it contains: The name of a person.
-
-### Functions and arguments
-
-For functions, that's a bit more complex, because we document both the function itself (including its return value), and its arguments. Here is an example of a summation function:
-
-```sn
-/**
- * Make a summation from a list of numbers
- * @param numbers A list of numbers
- * @returns The summation
- */
-func sum (...numbers: int) : int {
-  let summation = 0;
-
-  for num in numbers {
-    summation += num;
-  }
-
-  return summation;
+  // Not asynchronous function
+  (func () {
+    await somePromise; // ERROR (cannot use 'await' here)
+  })();
 }
 ```
 
-The first line, as usual, describes the function (what it does): Make a summation from a list of numbers. Then, we describe each argument (the only one) using `@param`, followed by the argument's name, and what it contains: A list of numbers. To finish, we indicate what the function returns using `@returns` followed by the returned value: The summation.
+### Get synchronous promises
 
-Note that we don't have to use `@returns` for void-typed functions.
+As we saw, `await` is a great tool as it allows us to wait synchronously for a promise. But, it's unavailable when we are _outside_ an asynchronous function.
 
-### Nested functions
+In fact, the point of this keyword is not to make promises synchronous or to block the function's execution until the promise is either resolved or rejected ; it's simply a way to resolve a promise without all the `.then()` and `.catch()` stuff, but it **never** aims to block the execution of the program. That's why it only works in asynchronous functions: waiting for a promise in a function that is already asynchronous doesn't block the program, it only "blocks" the promise, which in all cases won't block the program itself.
 
-To document nested functions (functions as arguments), we document them as usual functions using a `>` symbol:
+Still, there is cases when we explicitly want to block the program's execution while the promise is not resolved nor rejected. For example, let's consider we want to make a program that retrieves the ten last articles from a blog and displays them in the terminal. Getting the articles from the web is, of course, asynchronous.
+
+A first idea to achieve this would be to make ten promises, and when they are all resolved or rejected, display the result in a terminal. Considering a function to retrieve an article from the web (`async func getArticle (id: uint) : string`), here is the code:
 
 ```sn
-/**
- * Make a summation from a generation function
- * @param generation The generator to make the summation from
- * > @returns A list of values
- * @returns The summation
- */
-func sum (generation: func : int[]) : int {
-  let summation = 0;
+Promise
+  .all(fetchArticle(i) for i in 0..10)
+  .then(articles =>
+    println!(article) for article in articles;
+  )
+  .catch(err => println!("Failed to fetch articles: " + err.message));
+```
 
-  for num in generation() {
-    summation += num;
-  }
+The main problem of this code is that we couldn't integrate it to a loop, for example. Let's imagine we have a `for` loop that does a lot of stuff and, in the middle of its body, retrieves the article, then do other stuff on it. We would have to transform the code in an asynchronous process that do the stuff while preparing each promise, and do the second stuff when they are resolved. That's heavy and isn't possible in all cases - for example if our loop is in a process that MUST be synchronous.
 
-  return summation;
+Another, more explicit example, of the limitations of `await` is when we deal with synchronous callbacks. For example, if we have an array of strings, and for each of them we want to return the content of an article (still in a process that must be synchronous), we are blocked because the callback of `.map()` (for instance) must be synchronous.
+
+To solve this problem, we can _make the promises synchronous_ thanks to the `sync` keyword. It does the same thing than `await`, but works even outside asynchronous functions. So, why do we have two different keywords?
+
+That's all a question of goal: while `await` aims to have a lighter and "synchronous" wait of promises inside of another promise, `sync` aims to **block** the execution while the promise is not resolved nor rejected.
+
+Here is the syntax:
+
+```sn
+for i in 0..10 {
+  try
+    println!(sync fetchArticle(i));
+  
+  catch (e)
+    println!(`Failed to fetch article "${i}": ` + err.message);
 }
 ```
 
-If we had double-nested functions (like a function), we would have used two `> >` symbols to described the callback's callback.
-
-### Functions' templates
-
-Templates are documented like arguments, but with `@template`:
+This way, the loop is ran a synchronous way. To take again our `.map` example:
 
 ```sn
-/**
- * Make a summation from an iterator
- * @template T The numbers' type
- * @param iterator The iterator to make the summation from
- * @returns The summation
- */
-func sum<T extends number> (iterator: Iterator<T>) : T {
-  let summation: T = 0;
-
-  for num in iterator {
-    summation += num;
-  }
-
-  return summation;
-}
-```
-
-### Files
-
-Files can be documented as well, using three indicators: `@file`, which indicates what the file contains and does, `@author` which describes its author(s), and `@license` which gives informations about the license the file uses. Here is how it does:
-
-```sn
-/**
- * @file Provides a summation function
- * @author Your Name
- * @license MIT
- */
-
-/**
- * Make a summation from a list of numbers
- * @param numbers A list of numbers
- * @returns The summation
- */
-func sum (...numbers: int) : int {
-  let summation = 0;
-
-  for num in numbers {
-    summation += num;
-  }
-
-  return summation;
-}
+let articles = [ 2, 5, 8 ];
+let articlesBody = articles.map(
+  id => try sync fetchArticle(i) catch "Failed to fetch article: " + err.message
+);
 ```
 
 ## Packages
 
-In SilverNight, packages are formed by a _package file_ and one or more _modules file_. It located in a specific folder, with a `package.toml` as the package file, and `*.sn` files as its modules' source code - though their can be additional source files.
+In SilverNight, packages are formed by a folder containing _package descriptor_ called `package.toml` and one or more _modules files_ which are source code files - plus, optionally, other files like binaries or sounds. They are located under the `_packages` folder.
 
 ### Creating a package
 
-First, create a new folder (with any name you want). Inside of it, create a `main.sn` file and open it in your favorite code editor: _this will be our program's main file. Now, create a `_packages` folder, and inside it a `test_package` folder. Create a `package.toml` file and an `names.sn` file, open them in the same code editor.
+First, create a new folder (with the name you want) which will be your project's directory. Inside of it, create a `main.sn` file and open it in your favorite code editor: this is our project's main file. Now, create a `_packages` folder, and inside it a `names_manager` folder. Create a `package.toml` and an `names.sn` files in it, then open them in the same code editor.
 
-`main.sn` will be our main program, which will be ran. The two other files will constitute the _package_ we will use.
+`main.sn` will be our main program, which will be ran when we will execute our program. The two other files will constitute the _package_ we will use.
 
-#### The package file
+#### The package descriptor
 
-First, let's make our package file. It's a TOML ([Tom's Obvious Language](https://github.com/toml-lang/toml)) file we will fill as follows:
+First, let's make our package descriptor. It's a TOML ([Tom's Obvious Language](https://github.com/toml-lang/toml)) file we will fill as follows:
 
 ```toml
 [package]
@@ -6080,15 +7935,17 @@ modules = [ "names" ]
 [dependencies]
 ```
 
-This tells that our package's name is `names_manager` (so it will be located in a `names_manager` directory when downloaded from the package manager - we'll see that soon) and gives informations about its version (which is very important as we'll see soon) and the array of authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now).
+This tells that our package's name is `names_manager` (that's why it is located in a `names_manager` directory) and gives informations about its version (which is very important as we'll see soon) as well as the list of its authors, plus the license it uses (you're free to change it, but since it's an example, there's no real point to do that now).
 
-Next, it gives the list of the package's _modules_. Each module is a part of a package and is represented by a single file. In our case, because we have a `names` module, the program will look for a `names.sn` file. We could also use sub-modules, like `names/index` and `names/list` for example, with their respective source code files: `names/index.sn` and `names/list.sn` - but we will see this special case later.
+Next, it gives the list of the package's _modules_. Each module is a part of a package and is represented by a single file. In our case, because we have a `names` module, the program will look for a `names.sn` file. We could also use sub-modules, like `names/index` and `names/list` for example, with their respective source code files: `names/index.sn` and `names/list.sn` - but we will see this later.
 
-To finish, it gives the _dependencies_ of this package, and ends by giving the filename of the package's main file. For now, don't worry about the file's content, we'll see it in details later.
+Finally, it gives the _dependencies_ of the package (which are the packages required by this one).
 
-#### The package source code
+There are other fields that can be present in the package descriptor, but they require to know the language's build process - which is to taught in this book. So, we will simply but them aside.
 
-Now we've written our package file, we can write the package's source, which will be written in `names.sn` as specified in the package file. Here is an example:
+#### The package's source code
+
+Now we've written our package descriptor, we can write the package's `names` module as specified in the descriptor, which will be written in `names.sn`:
 
 ```sn
 #[module];
@@ -6099,11 +7956,12 @@ func defineName (newName: string with (_)) {
   name = newName;
 }
 
-func readName () : string {
-  if (name)
+func readName () : string throws Error {
+  if name {
     return name;
-  else
+  } else {
     throw new Error("Name is not defined.");
+  }
 }
 
 export { defineName, readName };
@@ -6111,7 +7969,7 @@ export { defineName, readName };
 
 First, the `#[module]` directive tells this is a module of the package. It defines a `name` variable, with two functions, one to set it, one to read it. Note that directives with a name between braces are called _head directives_, they describe a whole file and so must be placed at its head ; it wouldn't work if we placed it below the declaration of `name`, for example.
 
-_Tip :_ Because `_` is a constraint callback, it must return a boolean. Strings does implement the `%toBoolean` overload, which returns `false` if they are empty, and `true` else. So this constraint simply ensures the string is not empty.
+_Tip :_ As empty strings are NIL values and not non-empty strings, the `(_)` constraint only accepts non-empty strings.
 
 The last line of the file **exports** some entities. This simply creates an object that will be available from the outside of the package, so `name` won't be available from the outside.
 
@@ -6128,23 +7986,28 @@ Because a package's source code can (and will often) be heavy, we can use the `#
 let name: string;
 
 export { defineName, readName };
+```
 
+Below is our functions file:
+
+```sn
 // File: "functions.sn"
 func defineName (newName: string with (_)) {
   name = newName;
 }
 
-func readName () : string {
-  if (name)
+func readName () : string throws Error {
+  if name {
     return name;
-  else
+  } else {
     throw new Error("Name is not defined.");
+  }
 }
 ```
 
 Here, the content of `functions.sn` will be imported as it is right where the `#include` directive is. This way, we can split our source code into several files.
 
-To manage better our packages, we can also include files using an alias:
+To manage better our inclusions, we can also include files using an alias:
 
 ```sn
 // File: "index.sn"
@@ -6157,7 +8020,7 @@ let name: string;
 export Functions;
 ```
 
-Here, `Functions` is a structure that contains all resources defined in `functions.sn`.
+Here, `Functions` is an object that contains all resources defined in `functions.sn`. All its members are constants, and thanks to type inference, we can export raw data like plain constants.
 
 _Tip :_ The `#include` directive can be used everywhere, even outside a package. Think to it to structure your code!
 
@@ -6174,10 +8037,10 @@ names_manager::names.defineName("John");
 println!(names_manager::names.readName()); // Prints: "John"
 
 // Try to access an entity not exported by the package
-println!(names_manager::names.name); // ERROR because `name` hasn't been exported
+println!(names_manager::names.name); // ERROR (because `name` hasn't been exported)
 ```
 
-This is as simple as that. Also, because this name could be a little heavy, we can make an alias:
+This is as simple as that. Also, because this package's name could be a little heavy, we can set up an alias during the import:
 
 ```sn
 // Import the package
@@ -6220,46 +8083,7 @@ names_manager::names.defineName("John");
 println!(names_manager::names.readName()); // Prints: "John"
 ```
 
-A last version of import is the _scope_ import:
-
-```sn
-scope import names_manager;
-
-names.defineName("John");
-println!(names.readName()); // Prints: "John"
-```
-
-As you can see, scope imports act like standard imports but also _alias_ all entity names to link them to the package's/module's ones in the _current scope_. So, we can access without writing the package's name all its entities from the current scope - this way, it prevents polluating the global scope. Be aware though to not overwrite some existing entities, this will result in an error, like declaring two constants of the same name. Also, because multiple packages could have entities with the same name, it's discouraged to import several packages in a given scope.
-
-Note the analyzer transparently adds the following line to all programs (at their beginning, so it's located in the global scope):
-
-```sn
-scope import frontend::native;
-```
-
-This imports the`frontend::native` module that provides all the native stuff like `string` or `Array` and link them to global entities (meaning we don't have to write `frontend::native::i32` for example).
-
-#### The `import!` flex
-
-The `import!` flex allows to import a package as an object, so we can use it as we want. Here is an example:
-
-```sn
-val manager = import!(names_manager::names);
-
-manager.defineName("John");
-println!(manager.readName()); // Prints: "John"
-```
-
-Also, the flex will never the package several times, so we can write:
-
-```sn
-import!(names_manager).defineName("John");
-println!(import!(names_manager).readName()); // Prints: "John"
-```
-
-This will work as expected. A good point about this flex is that the package isn't imported multiple times ; once you imported it, either with `import` or `import!`, it will just retrieve the imported data.
-
-Note that we can also import several items from a package, like this:
+Or import several modules from the same package, like this:
 
 ```sn
 // This...
@@ -6269,9 +8093,58 @@ import frontend::filesystem;
 import console, filesystem from frontend;
 ```
 
+A last version of import is the _scope_ import:
+
+```sn
+scope import names_manager;
+
+names.defineName("John");
+println!(names.readName()); // Prints: "John"
+```
+
+As you can see, scope imports act like standard imports but also _aliases_ all entity names to link them to the package's/module's ones in the _current scope_. So, we can access without writing the package's name all its entities from the current scope - this way, it prevents polluating the global scope. Be aware though to not overwrite some existing entities, this would result in an error, like declaring two entities of the same name. Also, because multiple packages could have entities with the same name, it's discouraged to import several packages in a given scope.
+
+Note the analyzer transparently adds the following line to all programs (at their beginning, so it's located in the global scope):
+
+```sn
+scope import frontend::std;
+```
+
+This imports the `std` module from the `frontend` package (which is built in the toolchain, so every program can access it), whichs provides all the native stuff like `i32` or `Array` and link them to global entities (meaning we don't have to write `frontend::std::i32` for example).
+
+#### Same level import
+
+It is also possible to import a module that comes from the same level than the current one. For example, admitting we are in the `sub/one` module, we can access the `sub/two` module using the following syntax:
+
+```sn
+import local::two;
+```
+
+In a package, `local` refers to the parent module, so here to the `sub` module. Importing `local::two` is equivalent to importing `package_name::sub::two`. We can now use `local::two` as we want.
+
+#### The `import!` flex
+
+The `import!` flex allows to import a package directly as an object, so we can use it as we want. Here is an example:
+
+```sn
+val manager = import!(names_manager::names);
+
+manager.defineName("John");
+println!(manager.readName()); // Prints: "John"
+```
+
+Also, the flex will not import the package several times, so we can perform multiple import on the same package without a problem:
+
+```sn
+import!(names_manager).defineName("John");
+println!(import!(names_manager).readName()); // Prints: "John"
+```
+
+This will work as expected. A good point about this flex is that the package isn't imported multiple times ; once you imported it, either with `import` or `import!`, it will just retrieve the imported data.
+
 ### Sub-modules hierarchy
 
-Sub-modules are modules themselves written inside modules (called their _parent_). When we import the parent module, it also imports all its sub-modules (called its _children_). To illustrate the concept, let's imagine we have package called `universe`, which has two modules: `planets` and `life`. `planets` has two sub-modules: `earth` and `others`, while `life` has `animals`, `insects` and `humans`. Here is our package file:
+Sub-modules are modules written inside sub-folders of the package (called their _parent_). When we import the parent module, it also imports all its sub-modules (called its _children_). To illustrate the concept, let's imagine we have package called `universe`, which contains two modules: `planets` and `life`. `planets` contains two sub-modules: `earth` and `others`, while `life` contains `animals`, `insects` and `humans`. Here is our package descriptor:
 
 ```toml
 [package]
@@ -6351,11 +8224,10 @@ println!(universe::planets::others::isEarth); // Prints: "false"
 
 // => Import a sub-module with an alias
 import universe::life as life;
-// Same as doing:
+// Same as doing (without the alias):
 // > import universe::life::animals;
 // > import universe::life::insects;
 // > import universe::life::humans;
-// With an alias
 
 // Test:
 println!(universe::life::animals::isInsect); // Prints: "false"
@@ -6363,9 +8235,9 @@ println!(universe::life::insects::isInsect); // Prints: "true"
 println!(universe::life::humans::isInsect); // Prints: "false"
 ```
 
-As you can see, importing a module automatically imports all its children. We can even do sub-sub-modules, and importing their parent (a sub-module) will import them all automatically.
+As you can see, importing a module automatically imports all its children. We can even do sub-sub-modules, and so importing their parent (a sub-module) will import them all automatically.
 
-### Namespaces
+### Namespaces hierarchy
 
 The `package::module::submodule::...` model is based on the concept of _namespace_. Basically, a namespace is a block (so it has a reserved scope) with a name. To access an entity from the outside of the namespace, we simply write `the_namespace_name::the_entity`. Here is an example:
 
@@ -6376,15 +8248,18 @@ namespace Hello {
   func world () {
     println!("Hello world!");
   }
+
+  // Export the data from it
+  export { world };
 }
 
 // Call the function from the outside of the namespace
 Hello::world(); // Prints: "Hello world!"
 ```
 
-Note that, by default, all the code we write is located into a namespace called `global`. Every single line of code is located in it, at the noticeable exception of the packages.
+Note that, by default, all the code we write is not located inside any namespace. But each package has its own namespace, and each module in it has its own namespace too.
 
-So, when we import a package called, for example, `hello_world`, a namespace with the same name is automatically created (if we use the default import syntax).
+So, when we import a package called, for example, `hello_world`, it creates a namespace with the same name (if we use the default import syntax).
 
 #### Sub-namespaces
 
@@ -6397,11 +8272,17 @@ namespace A {
 
     // From the inside of B
     world();
+
+    // Export a function from B
+    export { world };
   }
 
   // From the inside of A
   //  but from the outside of B
   B::world();
+
+  // Export a whole namespace from A
+  export { B };
 }
 
 // From the outside of A
@@ -6415,6 +8296,8 @@ Let's consider the following example:
 ```sn
 namespace A {
   val age = 18;
+
+  export { age };
 }
 
 namespace B {
@@ -6427,6 +8310,8 @@ How could we achieve printing `age` that is located inside the `A` namespace? Si
 ```sn
 namespace A {
   val age = 18;
+
+  export { age };
 }
 
 namespace B {
@@ -6448,9 +8333,7 @@ namespace A {
 
 ### The package manager
 
-When you installed the toolchain at the beginning of this book, it came with the package manager in it, because it's part of the toolchain.
-
-This tool aims to provide a way to simply manage the packages used by our program, so we can in a single line download and install a new package from the official repository, update and remove the installed packages, etc.
+As the package manager is part of the language's toolchain, it is installed on your machine since you installed the toolchain at the beginning of this book. It provides a way to simply manage the packages used by our program, so we can in a single line download and install a new package from the official repository, update and remove the installed packages, etc.
 
 #### Installing a new package
 
@@ -6460,7 +8343,9 @@ To install a new package, simply a terminal, go into our project's folder, and r
 snt add hello-world
 ```
 
-This will download the package which has the `hello-world` slug in the official repository, then install it into the `_packages/hello-world` folder, so we can use it in our programs. We can of course replace `hello-world` by any other package name.
+This will download the package called `hello-world` in the official repository, and then install it into the `_packages/hello-world` folder, so we can use it in our programs. We can of course replace `hello-world` by any other package name.
+
+**NOTE :** Anyone can submit packages in the official repository, which means some packages may contain malicious code like viruses. That's why you should only install your own packages plus the ones you absolutely trust.
 
 #### Removing a package
 
@@ -6481,45 +8366,319 @@ snt update hello-world
 We can also update all packages at once, by doing:
 
 ```bash
-snt upgrade
+snt update
 ```
 
 #### Dependencies
 
-Remember the `dependencies` block we saw in our package file sooner? It simply described the packages _required_ by our program in order to make it work. It's an array of `package = "expected_version"` lines. Here is how it could look like:
+Remember the `dependencies` block we saw in our package descriptor sooner? It simply described the packages _required_ by our program. It's a suite of `package = "expected_version"` lines. Here is how it could look like:
 
 ```toml
 [dependencies]
 hello-world = "^1.0.0"
 ```
 
-The dependency we put here indicates we accept all versions compatible with the `1.0.0` version, which means every `1.x.y` version. It is based on the following semantic versioning:
+The dependency we put here indicates we accept all versions compatible with the `1.0.0` version, which means every `1.x.y` version. It is inspired by the [Semantic Versioning 2.0](https://semver.org/), with versions using the `x.y.z` form.
 
-* A patch release, which only fixes some bugs in the package, increments once the third digit of the version ;
-* A minor release, which grants new features without breaking backward compatibility, increments once the second digit of the version ;
-* A major release, which grants new features and breaks some of the backward compatibility, increments once the first digit of the version
+* A patch release (`z`), which only fixes some bugs in the package, increments once the third digit of the version ;
+* A minor release (`y`), which grants new features without breaking backward compatibility, increments once the second digit of the version ;
+* A major release (`x`), which grants new features and breaks backward compatibility, increments once the first digit of the version
 
-We can use the following version names in the `dependencies` section of the package file:
+We can use the following version names in the `dependencies` section of the package descriptor:
 
 * `=1.0.0` or `1.0.0`: accepts only the specific `1.0.0` version (rarely used) ;
-* `~1.0.0` or `1.0.x` or `1.0`: accepts any `1.0.x` version (patch releases) ;
-* `^1.0.0` or `1.x` or `1`: accepts any `1.x.y` version (patch and minor releases) ;
-* `latest` or `*`: accepts any version
+* `~1.0.0` or `1.0.x` or `1.0`: accepts any `1.0.z` version (patch releases) ;
+* `^1.0.0` or `1.x` or `1`: accepts any `1.y.z` version (patch and minor releases) ;
+* `>1.0.0` or `>1.x` or `>1`: accepts any version, but not versions under `1.0.0` ;
+* `latest` or `*`: accepts every version ;
 
-When downloading a package, the package manager will get the latest version accepted by the version we gave in our package file. For instance, if a package releases `1.0.5` and `1.1.0` versions, and as a dependency we specify the `~1.0.5` version, it will download the `1.1.0` version instead.
+When downloading a package, the package manager will get the latest version matching the requirement we gave in our package descriptor. For instance, if a package releases `1.0.5`, `1.0.6` and `1.1.0` versions:
 
-This is why we told previously that version numbers were so important: our package file declares the slug, name, license etc. but also the version of our package, meaning that if we publish it, the programs from other developers that will depend on it will expect us from respecting this semantic versioning. Be aware of this!
+* Specifying `=1.0.5` will download the `1.0.5` version ;
+* Specifying `~1.0.5` will download the `1.0.6` version ;
+* Specifying `^1.0.5` will download the `1.1.0` version ;
+* Specifying `>1.0.5` will download the `1.1.0` version
+
+This is why we told previously that version numbers were so important: our package descriptor declares the name, license etc. but also the version of our package, meaning that if we publish it, the programs from other developers that will depend on it will expect us from respecting this semantic versioning. Publishing, after a given `1.1.0` version a new one called `1.2.0` that breaks backward compatibility will result in many errors in other developers' programs. Be aware of this!
 
 ### Project as a package
 
-Did you know that any project we make could be considered as a package? For that, all we have to do is to create the package file `package.toml` in our project's root folder, and so we can manage its dependencies. When you need some package, simply use `snt add <package_name>` and so on.
+Did you know that any project we make could be considered as a package? For that, all we have to do is to create the package descriptor `package.toml` in our project's root folder, and so we can manage its dependencies. When you need some package, simply use `snt add <package_name>` and so on.
 
-When someone will get your project, we maybe won't want to transfer all the packages we use (some can be very heavy), especially if publishing on a public repository or something. So, we can simply release the project folder, without the `_packages` directory, and any person wanting to run the project will simply have to run `snt install` inside the project's root folder to download all its dependencies.
+When someone will get your project, we may not want to transfer all the packages you use (some can be very heavy), especially if publishing on a public repository for example. So, we can simply release the project folder, without the `_packages` directory, and any person wanting to run the project will simply have to run `snt install` inside the project's root folder to download all its dependencies, thanks to the _lockfile_.
 
 ### The lockfile
 
+_Tip :_ For those who are familiar to the Node.js platform, the package's manager lockfile works more or less the same way than NPM's and Yarn's ones.
+
 When a package is downloaded, updated or removed by the package manager, it edits a little file called `packages_lock.toml` inside the project's root folder. This file specifies the exact version of all the modules we use. What's the point?
 
-Let's admit we are using version `1.0.1` of a module that treats web requests. We accept any `1.x` version, and we send the source code to a person using the project. She run `snt install` in the folder and, surprise, there is a new version called `1.1.0` that was released a few hours before. That's not a bad deal, you'll say, after all we accepted minor changes. But, let's imagine the person who made the package didn't followed the semantic versioning convention, or that a bug appeared in the package, making it unable to work properly? The person using our source code will not be able to test it and will think it's buggy because of a not-working package.
+Let's admit we are using version `1.0.1` of a module that treats web requests. We accept any `1.x` version, and we send the source code to a person using the project. She run `snt install` in the folder and, surprise, there is a new version called `1.1.0` that was released a few hours before. That's not a bad deal, you'll say, after all we accepted minor changes. But, what if the developer who released this new version accidentally introduced a bug in it, making it unable to work properly? The person using our source code will not be able to test it and will think it's buggy because of a not-working package.
 
-That's where the lockfile comes: it stores the exact version of every package downloaded from the package manager, plus some other little informations. Because it's an important file that aims to provide a way to test and run our project at the exact same state than its original developer, the lockfile is not placed under `_packages` but in the project's root folder, so we won't forget to send it to the persons who use it.
+That's where the lockfile comes: it stores the exact version of every package downloaded from the package manager, plus some other little informations. Because it's an important file that aims to provide a way to test and run our project at the exact same state than its original developer, the lockfile is not placed under the `_packages` folder but in the project's root folder, so we won't forget to send it to the person who uses it.
+
+## Documenting the code
+
+Making code is great, but it's even better if it's documented. When you are using a library (e.g. a package downloaded from the official repository), it's always better to know how functions work, right? So, we have several solutions:
+
+* Write the documentation by hand ;
+* Document the code and generate the documentation automatically
+
+The second solution is, most of the time, the better. Why? Because, when we document our code directly, we and our program's users (as developers) get several advantages:
+
+* The documentation is located under a single location ;
+* It's directly integrated in the source code and makes it more readable ;
+* It's faster to write than a whole document ;
+* We don't have to search through the web how it works ;
+* IDEs and some code editors will provide help and auto-complete ;
+* It doesn't require to manipulate another documentation-generation tool
+
+So, let's see how this works.
+
+### Assignable entities
+
+The syntax of documentation is pretty the same than in many other languages: a multi-line comment, starting with a double `*` symbol. Here is the syntax for assignable entities:
+
+```sn
+/**
+ * The name of a person
+ */
+let name: string;
+```
+
+The first line contains two `*` symbols, meaning it's a _documentation comment_. Every next line will start by optional spaces (for indentation) then by another `*` symbol and a content depending on what we want to do. Conventionally, the first line describes the entity (what it contains/does). Because it's an assignable entity, we write what it contains: the name of a person.
+
+### Functions and arguments
+
+For functions, we have to document what the function does, what is its return value, and each of its arguments. Here is an example of a summation function:
+
+```sn
+/**
+ * Make a summation from a list of numbers
+ * @param numbers A list of numbers
+ * @returns The summation
+ */
+func sum (...numbers: int) : int {
+  let summation = 0;
+
+  for num in numbers {
+    summation += num;
+  }
+
+  return summation;
+}
+```
+
+The first line describes, as usual, the function (what it does): Make a summation from a list of numbers. Then, we describe each argument using `@param` (it's called a _descriptor_), followed by the argument's name, and what it contains: A list of numbers. Finally, we indicate what the function returns using `@returns` followed by the returned value: the summation.
+
+Note that we don't have to use `@returns` for void-typed functions.
+
+### Nested functions
+
+To document nested functions (e.g. callbacks), we document them as usual functions using a `>` symbol, with the argument's descriptor being the callback's descriptor:
+
+```sn
+/**
+ * Make a summation from a generation function
+ * @param generation The generator to make the summation from
+ * > @returns A list of values
+ * @returns The summation
+ */
+func sum (generation: func () : int[]) : int {
+  let summation = 0;
+
+  for num in generation() {
+    summation += num;
+  }
+
+  return summation;
+}
+```
+
+If we had double-nested functions (like a function), we would have used two `>` symbols to describes the callback's callback.
+
+### Functions' templates
+
+Templates are documented like arguments, but with `@template`:
+
+```sn
+/**
+ * Make a summation from an iterator
+ * @template T The numbers' type
+ * @param iterator The iterator to make the summation from
+ * @returns The summation
+ */
+func sum<T inherits number> (iterator: Iterator<T>) : T {
+  let summation: T = 0;
+
+  for num in iterator {
+    summation += num;
+  }
+
+  return summation;
+}
+```
+
+### Examples
+
+The `@example` descriptor gives an example on how to use the function:
+
+```sn
+/**
+ * Increment an integer through a reference
+ * @param num A mutable reference to an integer
+ * @example let i = 0; increment (&mut i); i == 1;
+ */
+func increment (num: *mut int) {
+  *num += 1;
+}
+```
+
+Examples aim to be as short and as explicit as possible. Note that it's possible to give several examples for the same function.
+
+### Errors throwing
+
+The `@throws` descriptor allows us to describe each case of error throwing:
+
+```sn
+/**
+ * Double a positive integer
+ * @param num The integer to double
+ * @throws ErrorType1 If the integer is negative
+ * @throws ErrorType2 If the integer is equal to 0
+ * @returns The double value of the provided integer
+ */
+func double (num: i32) : i32 throws ErrorType1, ErrorType2 {
+  throw new ErrorType1("Integer is negative") if num < 0;
+  throw new ErrorType2("Integer is zero") if num == 0;
+  return num * 2;
+}
+```
+
+### Conditions
+
+The `@condition` descriptor indicates a condition that must be matched in order for the function to work properly. It is useful to indicate conditions required to avoid runtime errors, that aren't declared using the `throws` keyword.
+
+```sn
+/**
+ * Get a value from an array
+ * @param arr The array to get a value from
+ * @param index The index of the value to get
+ * @returns The requested value
+ * @condition 0 <= index <= arr.length
+ */
+func getValue (arr: int[], index: usize) : int {
+  return arr[index];
+}
+```
+
+### Polymorph functions
+
+Polymorph functions that does exactly the same actions but on different types can use the `@samedef` descriptor to keep the exact same description across its definitions:
+
+```sn
+/**
+ * Get a value from an array
+ * @param arr The array to get a value from
+ * @param index The index of the value to get
+ * @returns The requested value
+ * @condition 0 <= index <= arr.length
+ * @samedef
+ */
+func getValue (arr: int[], index: usize) : int {
+  return arr[index];
+}
+
+func getValue (arr: string[], index: usize) : string {
+  return arr[index];
+}
+```
+
+### Classes, interfaces, traits
+
+Classes are described like assignable entities. Their templates can be described using `@template`:
+
+```sn
+/**
+ * Container for an integer value
+ */
+class A {
+  public value: int = 0;
+}
+
+/**
+ * Container for a value of an arbitrary type
+ * @template T Type of the value
+ */
+interface B<T> {
+  public value: T;
+}
+```
+
+### Namespaces
+
+Namespaces are described like assignable entities:
+
+```sn
+/**
+ * Mathematic functions
+ */
+namespace SuperMath {
+  /**
+   * Increment an integer through a reference
+   * @param num A mutable reference to an integer
+   * @example let i = 0; increment (&mut i); i == 1;
+   */
+  func increment (num: *mut int) {
+    *num += 1;
+  }
+
+  // Export the function
+  export { increment };
+}
+```
+
+### Files
+
+Files can be documented as well, using three indicators: `@file`, which indicates what the file contains and does, `@author` which describes its author(s), and `@license` which gives informations about the license the file uses. Here is how it does:
+
+```sn
+/**
+ * @file Provides a summation function
+ * @author Your Name
+ * @license MIT
+ */
+
+/**
+ * Make a summation from a list of numbers
+ * @param numbers A list of numbers
+ * @returns The summation
+ */
+func sum (...numbers: int) : int {
+  let summation = 0;
+
+  for num in numbers {
+    summation += num;
+  }
+
+  return summation;
+}
+```
+
+### Inline descriptors
+
+Inline descriptors are part of the language and describe a part of the program. There must be placed at the beginning of a single-line comment, or at the beginning of the first non-empty line of a multi-line comment.
+
+```sn
+// NOTE: This part may not work under specific circumstances
+
+// OPTIMIZE: This part needs to be optimized
+
+// TODO: Improve this part
+
+// HACK: This code is not proper but works fine
+
+// FIXME: This part doesn't work properly
+
+// BUG: There is this specific bug: ...
+```
