@@ -217,7 +217,7 @@ th, td {
 }
 
 /* Stylesheet for desktop devices and large-width mobile devices */
-@media screen and (min-width: 1281px) {
+@media not all and (handheld) {
   #previous, #next {
     position: fixed;
     top: 50%;
@@ -239,7 +239,7 @@ th, td {
 }
 
 /* Stylesheet for mobile devices */
-@media screen and (max-width: 1280px) {
+@media handheld {
   body {
     padding-bottom: 70px;
   }
