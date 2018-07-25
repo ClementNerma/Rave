@@ -290,9 +290,6 @@ self = {
     // Remove the 'END OF LINE' title from the summary
     summary.pop();
 
-    // Remove the syntax package
-    rmdir(highlights_path);
-
     // Determine the template folder path
     const tpl_folder_path = 'src/book-template';
 
