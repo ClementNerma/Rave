@@ -399,7 +399,20 @@
     "description": "Trait declaration"
   },
 
-  "Templated_Class": {
+  "Class_Declaration": {
+    "prefix": "class",
+    "body": [
+      "/**",
+      " * ${2:Description of the class}",
+      " */",
+      "class ${1:ClassName} {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Class declaration"
+  },
+
+  "Templated_Class_Declaration": {
     "prefix": "templated-class",
     "body": [
       "/**",
@@ -410,7 +423,7 @@
       "\t$0",
       "}"
     ],
-    "description": "Templated class"
+    "description": "Templated class declaration"
   },
 
   "Inheritance": {
