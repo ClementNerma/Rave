@@ -88,6 +88,17 @@ scheme = {
               }
             },
             {
+              match: /(@throws)\s+([A-Z_\$][a-zA-Z0-9_\$]*)\s+/,
+              captures: {
+                '1': {
+                  name: '${purple}'
+                },
+                '2': {
+                  name: '${green}'
+                }
+              }
+            },
+            {
               match: /@(note|samedef)\s+/,
               name: '${purple}'
             },
