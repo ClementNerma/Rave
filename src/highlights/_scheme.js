@@ -439,8 +439,8 @@ scheme = {
           }
         },
         [
-          // Inheritance
-          /\b(inherits)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
+          // Inheritance and reversed inheritance
+          /\b(inherits|parentof)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
           'purple', 'green'
         ],
         [
@@ -589,7 +589,7 @@ scheme = {
         ],
         [
           // Already specified keywords, written here to have partial syntax highlighting
-          /(?<!\.)\b(namespace|struct|class|type|dict|trait|interface|implements|uses|inherits|haschild|instanceofsuper|scope|import|from|instanceof)(?!\s*:)\b/,
+          /(?<!\.)\b(namespace|struct|class|type|dict|trait|interface|implements|uses|inherits|parentof|haschild|instanceofsuper|scope|import|from|instanceof)(?!\s*:)\b/,
           'purple'
         ],
         [
