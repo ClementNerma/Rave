@@ -423,10 +423,13 @@ scheme = {
         ],
         {
           // Instanciation
-          begin: /\b(new)\b/,
+          begin: /\b(new)( *~)?\b/,
           beginCaptures: {
             '1': {
               name: '${purple}'
+            },
+            '2': {
+              name: '${cyan}'
             }
           },
           patterns: [
