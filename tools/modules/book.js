@@ -119,9 +119,6 @@ self = {
       }
     });
 
-    // Is a section opened?
-    let opened = false;
-
     // Generate the summary
     let summary = [];
 
