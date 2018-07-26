@@ -561,21 +561,21 @@ The logical operators are:
 Showcase:
 
 ```sn
-pln A = 0_b_0011_1100;
-pln B = 0_b_0000_1101;
+pln a = 0_b_0011_1100;
+pln b = 0_b_0000_1101;
 
-A && B; // true
-A || B; // true
-A > B; // true
-A < B; // false
-A >= B; // true
-A <= B; // false
-A == B; // false
-A != B; // true
-A nand B; // false
-A nor B; // true
-A xor B; // false
-! A; // false
+a && b; // true
+a || b; // true
+a > b; // true
+a < b; // false
+a >= b; // true
+a <= b; // false
+a == b; // false
+a != b; // true
+a nand b; // false
+a nor b; // true
+a xor b; // false
+! a; // false
 ```
 
 #### Bitwise operators
@@ -593,15 +593,15 @@ The last bitwise operator takes a single number and returns a number: that's the
 Showcase:
 
 ```sn
-pln A = 60; // A = 0011 1100
-pln B = 13; // B = 0000 1101
+pln a = 60; // a = 0011 1100
+pln b = 13; // b = 0000 1101
 
-A & B;  // 0000 1100 : 12
-A | B;  // 0011 1101 : 61
-A ^ B;  // 0011 0001 : 49
-~ A;    // 1100 0100 : -60 (for signed integers - two's complement form)
-A << 2; // 1111 0000 : 240
-A >> 2; // 0000 1111 : 15
+a & b;  // 0000 1100 : 12
+a | b;  // 0011 1101 : 61
+a ^ b;  // 0011 0001 : 49
+~ a;    // 1100 0100 : -60 (for signed integers - two's complement form)
+a << 2; // 1111 0000 : 240
+a >> 2; // 0000 1111 : 15
 ```
 
 ### String concatenation
