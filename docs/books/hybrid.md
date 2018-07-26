@@ -366,7 +366,12 @@ println!(i); // Prints: '3'
 
 ### Numbers typecasting
 
-Sometimes you will want to convert a number of a given type to another type, for example an `i16` to an `u16`. This will happen, most of the time, when dealing with functions' arguments as we will see later, but also when trying to assign to an entity that doesn't have the same number type.
+Sometimes you will want to convert a number of a given type to another type, for example an `i16` to an `u16`. This will happen, most of the time, when dealing with functions' arguments as we will see later, but also when trying to assign to an entity that doesn't have the same number type:
+
+```sn
+let i: int = 8;
+let j: u16 = i; // ERROR (incompatible types)
+```
 
 The operation to convert a value from a type to another is called _typecasting_. For numbers, upcasts are automatically performed, meaning that if we give an `i8` where an `i16` is expected, the value will be automatically typecasted. Here is the list of upcasts:
 
@@ -384,10 +389,10 @@ Any other conversion will result in an error:
 let a: i32 = 2;
 let b: i64 = b; // Works (upcast: i32 -> i64)
 
-let c: i16 = 542;
+let c: i16 = 542s;
 let d: i8  = c; // ERROR (downcast)
 
-let e: u8 = 250;
+let e: u8 = 250u;
 let f: i8 = e; // ERROR (external cast)
 ```
 
@@ -405,7 +410,7 @@ This works because we clearly indicate to the builder we know that informations 
 The second error case is due to the same reason: if we store `250` in an `u8`, it exceeds the capacity of an `i8`. The solution here is also to perform an explicit cast:
 
 ```sn
-let e: u8 = 250;
+let e: u8 = 250ub;
 let f: i8 = <u8> e; // Works (explicit external cast)
 ```
 
@@ -440,7 +445,7 @@ When writing a plain number, all underscores are simply removed from its represe
 A specificity about numbers is the concept of _overflow_ and the similar concept of _underflow_. When dealing with a `i8` for example, if we write:
 
 ```sn
-let num: i8 = 127;
+let num: i8 = 127b;
 num = num + 1;
 println!(num);
 ```
@@ -449,7 +454,7 @@ The expected result is `128`. But, because this type cannot handle it, it will _
 The same behavior applies when dealing with the minimum numbers:
 
 ```sn
-let num: i8 = -127;
+let num: i8 = -127b;
 num = num - 3;
 println!(num); // Prints: '126'
 ```
@@ -3778,13 +3783,13 @@ Structures support sub-typing too, but in a very simplier way: any object that f
 
 ```sn
 struct A {
-  x: i32;
-  y: i32;
+  x: int;
+  y: int;
 }
 
 struct B {
-  x: i32;
-  y: i32;
+  x: int;
+  y: int;
 }
 
 let a: A = A { x: 1, y: 2 };
@@ -3798,8 +3803,8 @@ Be aware though, the structure must **perfectly** respected: if a member is desc
 
 ```sn
 struct A {
-  x: i32;
-  val y: i32;
+  x: int;
+  val y: int;
 }
 
 let a = A {
@@ -3812,7 +3817,7 @@ let b = { x: 2, y: 3 };
 a = b; // ERROR
 ```
 
-This example results in an error because, while `a` is typed as an `A`, so an `{ x: i32, val y: i32 }`, `b` is typed as an `{ x: i32, y: i32 }` (its `y` member is not forced to be constant). This is why an error happens.
+This example results in an error because, while `a` is typed as an `A`, so an `{ x: int, val y: int }`, `b` is typed as an `{ x: int, y: int }` (its `y` member is not forced to be constant). This is why an error happens.
 
 Note that the following declaration would also fail:
 
@@ -3922,45 +3927,6 @@ let helloWorld = new HelloWorld();
 let str = <string> helloWorld;
 
 println!(str); // Prints: 'Hello world!'
-```
-
-### Implicit typecasting
-
-You may wonder why this code builds correctly:
-
-```sn
-let num: u8 = 2;
-```
-
-Indeed, in this code `2` is considered as an `int` (the 'default' integer type), which is an alias for `i32`. But, as we saw, assigning an `i32` to an `u8` entity should be impossible as we should perform an explicit to go from `i32` to `i8` and then an explicit typecast to go from `i8` to `u8`. This should result in the following code:
-
-```sn
-// Downcast on signed integer + typecast
-let num: u8 = <u8> (<i8> 2);
-
-// Or: typecast + downcast on unsigned integer
-let num: u8 = <u8> (<u32> 2);
-```
-
-A shorter way would be to perform a single explicit cast, as all type numbers support direct typecasting to any other type number:
-
-```sn
-// Explicit typecast
-let num: u8 = <u8> 2;
-```
-
-But we don't have to perform such a typecast when we assign our value. This is due to the fact assignments automatically trigger typecasting overloads if needed.
-
-Because number types implement all the required typecasting overloads (so we can directly convert an `i32` to an `u8`), this overload is triggered at assignment time. So, while we write this:
-
-```sn
-let num: u8 = 2;
-```
-
-The builder understands this:
-
-```sn
-let num: u8 = <u8> i32(2);
 ```
 
 ### Interfaces
@@ -5878,8 +5844,8 @@ printPointer(&mut n); // Prints: '2'
 Note that safe typecasting works between equivalent pointers: it's possible to convert an `*i16` to an `*i32` or an `*mut i16` to an `*mut i32`:
 
 ```sn
-<*i16> & wrap!(2);
-<*mut i16> &mut wrap!(2);
+<*i16> & wrap!(2s);
+<*mut i16> &mut wrap!(2s);
 ```
 
 ### Pointers in functions
@@ -6596,7 +6562,7 @@ let _arg_0: *int = & _wrapper_0;
 let _ret_0: int?;
 
 // iter_ref! call
-let _level_1: u8 = 1;
+let _level_1: u8 = 1b;
 let _ptr_1: *int = _arg_0;
 
 // Callback call
@@ -6615,7 +6581,7 @@ let _arg_1: *mut int = &mut _wrapper_1;
 let _ret_1: int?;
 
 // iter_ref! call
-let _level_2: u8 = 1;
+let _level_2: u8 = 1ub;
 let _ptr_2: *mut int = _arg_1;
 
 // Callback call
@@ -6634,7 +6600,7 @@ let _arg_2: ***int = &&& _wrapper_2;
 let _ret_2: int?;
 
 // iter_ref! call
-let _level_3: u8 = 3;
+let _level_3: u8 = 3ub;
 let _ptr_3: *** int = _arg_2;
 
 // Callback call
@@ -6643,7 +6609,7 @@ ift _ptr_3 ~ * int {
 }
 
 // iter_ref! call
-let _level_4: u8 = 2;
+let _level_4: u8 = 2ub;
 let _ptr_4: ** int = *_ptr_3;
 
 // Callback call
@@ -6652,7 +6618,7 @@ ift _ptr_4 ~ * int {
 }
 
 // iter_ref! call
-let _level_5: u8 = 1;
+let _level_5: u8 = 1ub;
 let _ptr_5: * int = *_ptr_4;
 
 // Callback call
@@ -6671,7 +6637,7 @@ let _arg_3: * *mut *int = & &mut & _wrapper_3;
 let _ret_3: int?;
 
 // iter_ref! call
-let _level_6: u8 = 3;
+let _level_6: u8 = 3ub;
 let _ptr_6: * *mut * int = _arg_3;
 
 // Callback call
@@ -6680,7 +6646,7 @@ ift _ptr_6 ~ * int {
 }
 
 // iter_ref! call
-let _level_7: u8 = 2;
+let _level_7: u8 = 2ub;
 let _ptr_7: * *mut int = *_ptr_6;
 
 // Callback call
@@ -6689,7 +6655,7 @@ ift _ptr_7 ~ * int {
 }
 
 // iter_ref! call
-let _level_8: u8 = 1;
+let _level_8: u8 = 1ub;
 let _ptr_8: * int = *_ptr_7;
 
 // Callback call
@@ -7260,7 +7226,7 @@ let valid: string = cast_unsafe!<string>(unknown);
 
 println!(valid); // Prints: 'Hello world!'
 
-let invalid: i16  = cast_unsafe!<i16>(unknown); // ERROR
+let invalid: i16 = cast_unsafe!<i16>(unknown); // ERROR
 ```
 
 Final word: if you want to convert, for example, a `number` entity which contains in reality an `i16` to an `u8`, you must combine both safe and unsafe casts:
@@ -8125,7 +8091,7 @@ Note the analyzer transparently adds the following line to all programs (at thei
 scope import frontend::std;
 ```
 
-This imports the `std` module from the `frontend` package (which is built in the toolchain, so every program can access it), whichs provides all the native stuff like `i32` or `Array` and link them to global entities (meaning we don't have to write `frontend::std::i32` for example).
+This imports the `std` module from the `frontend` package (which is built in the toolchain, so every program can access it), whichs provides all the native stuff like `int` or `Array` and link them to global entities (meaning we don't have to write `frontend::std::int` for example).
 
 #### Same level import
 
@@ -8563,7 +8529,7 @@ The `@throws` annotation allows us to describe each case of error throwing:
  * @throws ErrorType2 If the integer is equal to 0
  * @returns The double value of the provided integer
  */
-func double (num: i32) : i32 throws ErrorType1, ErrorType2 {
+func double (num: int) : int throws ErrorType1, ErrorType2 {
   throw new ErrorType1('Integer is negative') if num < 0;
   throw new ErrorType2('Integer is zero') if num == 0;
   return num * 2;
