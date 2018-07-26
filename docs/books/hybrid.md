@@ -357,6 +357,7 @@ Also, if you explicitly want to get a `2` contained in a `u32` for example, ther
 2ul; // u64 (Unsigned Long)
 2f;  // f32 (Float)
 2d;  // f64 (Double)
+2p;  // usize (Unsigned Pointer)
 
 // Showcase:
 let i = 2u; // u32 (Unsigned)
