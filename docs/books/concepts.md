@@ -56,7 +56,7 @@ Primitives are the only type of value that is immutable, meaning their content c
 
 Also, values can be written as _raw values_ or as _unpredictable values_. The first ones are explicit values, meaning they are predictable and won't change whatever happens. The second ones can depend on the program's state. In this chapter, we will only talk about raw values.
 
-### Voids, booleans and numbers
+### Voids and booleans
 
 Voids' type is `void`. There is only one possible void value: `null`.
 
@@ -84,6 +84,8 @@ Integer types starting with an `i` are signed integers, meaning they can handle 
 The number following the first letter of the type indicates how must bits it takes in memory.
 
 Raw integers are a suite of digits from `0` to `9`, optionally separated by underscores (_) which are separators and are ignored. Note that numbers cannot start or end with an underscore symbol.
+
+There is also the `usize` type, which is an unsigned integer with the same number of bytes as the processor the program is running on (32 or 64 bits). It guarantees to be able to handle any memory adress and index.
 
 There are two "default" types for integers: `int`, which is an alias for `i32`, and `uint`, which is an alias for `u32`.
 
