@@ -3555,7 +3555,7 @@ let c = new C('Hello !'); // Prints: 'Hello !'
 
 #### Re-implementing the constructor
 
-As we saw the constructor couldn't be inherited, we can use overloads calling to redefine it simply. For example, if we have a child class which wants to have exactly the same constructor as its mother, we can do:
+As we saw, the constructor can't be inherited, but we can use still call it from a child class. For example, if we have a child class which wants to have exactly the same constructor than its mother, we can do:
 
 ```sn
 open class Mother {
