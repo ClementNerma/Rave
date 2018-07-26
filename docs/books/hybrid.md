@@ -743,7 +743,7 @@ println!(list.size); // Prints: '1'
 Note that we use variables as indexes for every type of vectors:
 
 ```sn
-let value: int = 1;
+let value: usize = 1;
 println!(list[value]); // Prints: 'Lucy'
 ```
 
@@ -1089,9 +1089,11 @@ println!(ages[index]); // Prints: '21'
 
 #### The truth about vectors
 
-Arrays and lists are in fact dictionaries. Their keys are integers, while their values is the type we gave as a template to the class.
+Arrays and lists are in fact dictionaries. Their keys are `usize` values, while their values is the type we gave as a template to the class.
 
 This is why lists use the same `#` symbols as dictionaries. For arrays, that's a little bit complex, as we'll see now.
+
+There is though a syntax sugar that allows us to use raw `int` values as indexes, to avoid having to write the `p` suffix each time we try to access a vector's value.
 
 ### Inferred Structured Typing
 
