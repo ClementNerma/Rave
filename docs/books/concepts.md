@@ -733,6 +733,8 @@ Lists work exactly like arrays, but we can also add and remove mutables from the
 let numbers: List<int>;
 ```
 
+This new type syntax is called a _templated type_: the _base type_ is `List`, and it takes a _template type_, which is `int` here.
+
 When not initialized, lists are empty. They can be expressed as values using the same syntax than arrays, but with a sharp symbol (#) after the opening bracket:
 
 ```sn
