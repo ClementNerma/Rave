@@ -509,14 +509,14 @@ For example, doing `var += 5` is exactly like `var = var + 5`. The same thing ap
 Showcase:
 
 ```sn
-let value: int = 0;
+let num: int = 0;
 
-value += 8; // value == 8
-value -= 6; // value == 2
-value *= 9; // value == 28
-value /= 4; // value == 7
-value %= 5; // value == 2
-value **= 3; // value == 8
+num += 8; // num == 8
+num -= 6; // num == 2
+num *= 9; // num == 28
+num /= 4; // num == 7
+num %= 5; // num == 2
+num **= 3; // num == 8
 ```
 
 #### Incremental operators
@@ -531,12 +531,12 @@ There only two incremental operators, which take a single variable (not a consta
 Showcase:
 
 ```sn
-let variable = 0;
+let num = 0;
 
-println!(variable ++); // Prints: '0' ; variable = 1
-println!(++ variable); // Prints: '2' ; variable = 2
-println!(variable --); // Prints: '2' ; variable = 1
-println!(-- variable); // Prints: '0' ; variable = 0
+println!(num ++); // Prints: '0' ; num = 1
+println!(++ num); // Prints: '2' ; num = 2
+println!(num --); // Prints: '2' ; num = 1
+println!(-- num); // Prints: '0' ; num = 0
 ```
 
 ### Logical operators
