@@ -406,7 +406,7 @@ The second error case is due to the same reason: if we store `250` in an `u8`, i
 
 ```sn
 let e: u8 = 250;
-let f: i8 = <u8> f; // Works (explicit external cast)
+let f: i8 = <u8> e; // Works (explicit external cast)
 ```
 
 This part may appear complex, but be sure to understand it as it is a critical concept when dealing with numbers.
