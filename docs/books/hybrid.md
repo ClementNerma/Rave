@@ -1382,45 +1382,45 @@ val new_hero = {
 There is also a similar syntax for lists:
 
 ```sn
-// Make a sample list
-val list = [ 2, 5, 8, 9 ];
+// Make a sample array
+val arr = [ 2, 5, 8, 9 ];
 
-// Extract from list
-val [ n1, n2, n3, n4 ] = list;
+// Extract from the array
+val [ n1, n2, n3, n4 ] = arr;
 // Equivalent to:
-val n1 = list[0],
-    n2 = list[1],
-    n3 = list[2],
-    n4 = list[3];
+val n1 = arr[0],
+    n2 = arr[1],
+    n3 = arr[2],
+    n4 = arr[3];
 
 // Left slice
-val [ ...first, n4 ] = list;
+val [ ...first, n4 ] = arr;
 // Equivalent to:
-val first = [ list[0], list[1], list[2] ],
-    n4 = list[3];
+val first = [ arr[0], arr[1], arr[2] ],
+    n4 = arr[3];
 
 // Right slice
-val [ n1, ...last ] = list;
+val [ n1, ...last ] = arr;
 // Equivalent to:
-val n1 = list[0],
-    last = [ list[1], list[2], list[3] ];
+val n1 = arr[0],
+    last = [ arr[1], arr[2], arr[3] ];
 
 // Middle slice
-val [ n1, ...middle, n4 ] = list;
+val [ n1, ...middle, n4 ] = arr;
 // Equivalent to:
-val n1 = list[0],
-    middle = [ list[1], list[2] ],
-    n4 = list[3];
+val n1 = arr[0],
+    middle = [ arr[1], arr[2] ],
+    n4 = arr[3];
 ```
 
-Note that there is also the `...` symbol to ignore some entries in the list:
+Note that there is also the `...` symbol to ignore some entries in the array:
 
 ```sn
 // Middle slice
-val [ n1, ..., n4 ] = list;
+val [ n1, ..., n4 ] = arr;
 // Equivalent to:
-val n1 = list[0],
-    n4 = list[3];
+val n1 = arr[0],
+    n4 = arr[3];
 ```
 
 This avoids making a useless entity to store the middle values.
