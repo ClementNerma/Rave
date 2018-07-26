@@ -4951,6 +4951,9 @@ This will result in an error because inferred typing gave the `void` type to `po
 
 ```sn
 let point = new Point?();
+// Or:
+let point: Point?;
+
 point = getNilPoint([]); // Works fine
 ```
 
