@@ -589,6 +589,21 @@ i -= 1;
 i; // 255
 ```
 
+### Type inference
+
+When we make an expression, the builder can determine its type following the operators' typing and the values used by them. This is called type inference and can be used to omit a container's type when it is declared with an initialization value:
+
+```sn
+let i = null; // void
+
+val j = true; // bool
+
+let k = 2; // i32
+val l = 2s; // i8
+
+pln m = 'Hello'; // string
+```
+
 ## Syntaxic types
 
 _Syntaxic types_ are types that can be defined with a special, reserved syntax.
