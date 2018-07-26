@@ -374,3 +374,166 @@ jack.hp += 10; // Works
 ```
 
 Also, note that models are values, as we will see later.
+
+## Expressions
+
+Expressions are a suite of one or more values, each separated by a single _value operator_, which must start and end with a value.
+
+```sn
+[value1] [op1] [value2] [op2] ... [valueN]
+```
+
+Note that, wherever something asks for a value, it also accepts expressions, as they always produce a value. So, it also accepts an entity, as entities can also be considered as expressions.
+
+They are two types of operators: _value operators_, which produce a value from one or several ones, and _affectation operators_, which work from an entity and a value to change the entity's value.
+
+### Value operators
+
+Value operators are divided into several families ; the first one is the _mathematical operators_ family. They produce a number from two other numbers and use the following syntax: `[num1] [op] [num2]`. Here is the list:
+
+* `+` (add)
+* `-` (substract)
+* `*` (multiply)
+* `/` (divide)
+* `%` (modulo)
+* `**` (pow)
+
+```sn
+// e.g.
+6 + 2 // 8
+6 - 2 // 6
+6 * 2 // 12
+6 / 3 // 2
+6 % 3 // 0
+6 ** 3 // 216
+```
+
+Note that the result of these operators has the same type as the left value:
+
+```sn
+6us / 2f; // u8 value
+```
+
+_Logical operators_ take one or two values to produce a boolean. Their syntax is `[value1] [op] [value2]`. Here is the list:
+
+* `&&` / `and` (and)
+* `||` / `or` (or)
+* `>` (greater than)
+* `<` (less than)
+* `>=` (greater than or equal to)
+* `<=` (less than or equal to)
+* `==` / `is` (equal to)
+* `!=` / `isnt` (not equal to)
+* `nand` (not and)
+* `nor` (not or)
+* `xor` (exclusive or)
+
+```sn
+pln a: int = 0_b_0011_1100;
+pln b: int = 0_b_0000_1101;
+
+a && b; // true
+a || b; // true
+a > b; // true
+a < b; // false
+a >= b; // true
+a <= b; // false
+a == b; // false
+a != b; // true
+a nand b; // false
+a nor b; // true
+a xor b; // false
+```
+
+There is a last logical operator, which takes only one value:
+
+* `!` / `not` (not) - takes a single value
+
+Its syntax is `! [value]`.
+
+```sn
+pln a: int = 0_b_0011_1100;
+
+! a; // false
+```
+
+_Bitwise operators_ use the same syntax. Here is the list:
+
+* `&` (bit-by-bit and)
+* `|` (bit-by-bit or)
+* `^` (bit-by-bit exclusive or)
+* `<<` (binary left shift operator)
+* `>>` (binary right shift operator)
+
+```sn
+pln a: int = 60; // a = 0011 1100
+pln b: int = 13; // b = 0000 1101
+
+a & b;  // 0000 1100 : 12
+a | b;  // 0011 1101 : 61
+a ^ b;  // 0011 0001 : 49
+a << 2; // 1111 0000 : 240
+a >> 2; // 0000 1111 : 15
+~ a;    // 1100 0100 : -60 (for signed integers - two's complement form)
+```
+
+There is a last bitwise operator, which takes only one value:
+
+* `~` (one's complement) - takes a single number
+
+```sn
+pln a: int = 60; // a = 0011 1100
+
+~ a; // 1100 0100 : -60 (for signed integers - two's complement form)
+```
+
+There is also an operator working on string, called the _concatenation operator_. Its syntax is the same as the addition operator `+`:
+
+```sn
+'Hello' + 'world!'; // 'Hello world!'
+```
+
+Another, special operator, is the _strings template operator_. It works only inside multi-line strings and wraps a value: `${[value]}`. The provided value is then returned, as a string:
+
+```sn
+val something: string = 'world';
+
+`Hello ${something}!`; // 'Hello world!'
+`Hello ${something + '!'}`; // 'Hello world!'
+```
+
+Such strings are called _templated strings_.
+
+### Affectation operators
+
+The most known affectation operator is the assignment operator, `=`. It assigns a value to an entity, and its syntax is `[entity] = [value];`.
+
+There are then _shortened mathematic assignment operators_, which are a combination of a mathematical operator with the assignment operator. They use the following syntax: `[entity] [op] [value];`.
+
+```sn
+let num: int = 0;
+
+// e.g.
+num += 8; // num == 8
+num -= 6; // num == 2
+num *= 9; // num == 28
+num /= 4; // num == 7
+num %= 5; // num == 2
+num **= 3; // num == 8
+```
+
+Finally, there are the incremental operators, which use the following syntax: `[entity] [op];`.
+
+* `variable ++` (post-increment operator, increment `variable` and return its old value)
+* `++ variable` (pre-increment operator, increment `variable` and return its new value)
+* `variable --` (post-decrement `variable` and return its old value)
+* `-- variable` (pre-decrement `variable` and return its old value)
+
+```sn
+let num = 0;
+
+val i: int = num ++; // i == '0' ; num == 1
+val j: int = ++ num; // j == '2' ; num == 2
+val k: int = num --; // k == '2' ; num == 1
+val l: int = -- num; // l =='0' ; num == 0
+```
