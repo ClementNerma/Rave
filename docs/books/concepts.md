@@ -751,6 +751,14 @@ Note that, as for all types, arrays support type inference:
 let arr = [ 2u, 3u, 4u ]; // uint[3]
 ```
 
+Also, note that using a vector's out-of-bound index results in an error:
+
+```sn
+let arr = [ 2u, 3u, 4u ];
+
+arr[3]; // ERROR
+```
+
 #### Lists
 
 Lists work exactly like arrays, but we can also add and remove mutables from them. Their type is `List<Type>`:
@@ -826,6 +834,12 @@ personsAge.Jack; // 25
 ```
 
 In fact, vectors are dictionaries with a key type forced to be a `usize`.
+
+Note that getting an unexisting element will result in an error, as for vectors:
+
+```sn
+personsAge.unknown; // ERROR
+```
 
 To remove an element, we also use the `delete` keyword like for lists:
 
