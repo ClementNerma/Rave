@@ -672,7 +672,7 @@ If the entity is not initialized, all the entities inside the array take their t
 
 #### Arrays
 
-An array's mutables can be accessed using an _index_, which must be understood between 0 and the array's size, less 1. It goes like this:
+A vector's mutables can be accessed using an _index_, which must be a `usize` value strictly lower than the array's size. It goes like this:
 
 ```sn
 [container] [ [index] ]
@@ -681,7 +681,7 @@ An array's mutables can be accessed using an _index_, which must be understood b
 messages[1] // ''
 ```
 
-As vectors contain mutables, these can be assigned too:
+As these are mutables, they can also be assigned:
 
 ```sn
 messages[1] = 'Hello world!';
