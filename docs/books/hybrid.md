@@ -5285,22 +5285,22 @@ class Error {
 As you can see, an error instance has a `message` attribute that is the message we give to it when we instanciate the class, and a `traceback` attribute which is a trace of all functions that were ran until the error. Here is an example:
 
 ```sn
-func a () {
+func a () throws Error {
   b();
 }
 
-func b () {
+func b () throws Error {
   c();
 }
 
 func c () throws Error {
   throw new Error('Test');
 }
-
-a();
 ```
 
-NOte that functions must always declare the type of error they may throw using the `throws` keyword. Errors thrown by superoverloads are excluded - doing a division doesn't require us to dedclare an `ArithmeticError` throw in the function's signature ; as well as _native errors_ (which inherits from `RuntimeError`) that are triggered automatically by the program like `OutOfMemoryError`.
+Note that functions must always declare the type of error they may throw using the `throws` keyword. Errors thrown by superoverloads are excluded - doing a division doesn't require us to dedclare an `ArithmeticError` throw in the function's signature ; as well as _native errors_ (which inherits from `RuntimeError`) that are triggered automatically by the program like `OutOfMemoryError`.
+
+As `c` throws an error automatically, it indicates it in its declaration. But then, because `b` calls `c`, it may throw the same error. And that's also the case for `a`, which calls `b` that indicates it may throw an error.
 
 If the function may throw several types of errors, we indicate them all separated by a comma:
 
@@ -5316,7 +5316,7 @@ func c () : throws A, B {
 
 Also, we can throw as many errors as we want in the main scope.
 
-If we run this script from a file named `src.sn`, `traceback`'s content will be:
+If we call the `a` function at the end of the file, named `src.sn`, an error will appear at build time because we don't _catch_ the error ; we will see that soon. But if we did, `traceback`'s content would be:
 
 ```sn
 [
@@ -5448,6 +5448,8 @@ func test () {
 ```
 
 The only requirement is there must be at least one space or one new line between the end of the block's name (`try`, `catch` or `finally`) and the instruction to run.
+
+Note that, when a function declares it may throw an error, the call **must** be wrapped inside a `try`/`catch` block to prevent it making the program crash. This means we must catch any non-`RuntimeError` error.
 
 ### Sub-typing with errors
 
