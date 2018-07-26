@@ -3119,8 +3119,9 @@ class Translator {
   }
 
   // Make the class callable
-  public static func %call (text: string, lang: string) : string =>
-    @translate(text, lang);
+  public static func %call (text: string, lang: string) : string {
+    return @translate(text, lang);
+  }
 }
 
 println!(Translator('Hello', 'fr')); // Prints: 'Bonjour'
@@ -3590,8 +3591,9 @@ class Mother {
 }
 
 class Child inherits Mother {
-  public static func getMotherObj () : _super =>
-    new Mother(); // Works fine
+  public static func getMotherObj () : _super {
+    return new Mother(); // Works fine
+  }
 }
 
 // Instanciate the mother class
@@ -3677,8 +3679,9 @@ unique class tr {
     return 'Bonjour';
   }
 
-  public func %call (text: str, lang: str) : string =>
-    @translate(text, lang);
+  public func %call (text: str, lang: str) : string {
+    return @translate(text, lang);
+  }
 }
 
 // Let's try it!
@@ -3756,12 +3759,14 @@ motorcycle.stunt(); // ERROR because `stunt` is not part of the `Vehicle` class
 That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept. Also, note there is a way to ask for a specific type and not its children, thanks to the `#exact<T>` directive. Yes, directives can be templated too. A shorter version of it is to prefix the type with the equality operator `#=`. Here is an exemple:
 
 ```sn
-func precise (vehicle: #exact<Vehicle>) =>
+func precise (vehicle: #exact<Vehicle>) {
   vehicle.accelerate();
+}
 
 // Shorter syntax:
-func precise (vehicle: #=Vehicle) =>
+func precise (vehicle: #=Vehicle) {
   vehicle.accelerate();
+}
 
 let car        : Vehicle    = new Vehicle();
 let motorcycle1: Vehicle    = new Motorcycle();
@@ -4025,7 +4030,9 @@ class Product implements Duplication {
 
   public func %construct (@name: string) {};
 
-  public func duplicate () : _self => new Product(@name);
+  public func duplicate () : _self {
+    return new _self(@name);
+  }
 }
 ```
 
@@ -5366,8 +5373,9 @@ For exampe, we could imagine using a function to read a file in a notepad applic
 The same thing applies if we do a division, we want to be able handle division errors. In this example:
 
 ```sn
-func divide (left: int, right: int) : f32 =>
-  f32(left) / right;
+func divide (left: int, right: int) : f32 {
+  return (<f32> left) / right;
+}
 
 divide(2, 5); // Returns: 0.4
 divide(2, 0); // ERROR
@@ -5537,13 +5545,15 @@ The `CustomError` class could look like this:
 ```sn
 class CustomError inherits Error {
   // Make a constructor
-  public func %construct (message: string, traceback: ErrorStep[]) =>
+  public func %construct (message: string, traceback: ErrorStep[]) {
     // Call the parent constructor
     super.%construct(message, traceback);
+  }
 
   // A sample function
-  public func why () : string =>
-    'This is a custom error class';
+  public func why () : string {
+    return 'This is a custom error class';
+  }
 }
 ```
 
@@ -7598,7 +7608,7 @@ Now we've seen the detailed syntax of this function, let's rewrite it with ICT:
 ```sn
 func readAsync (path: string) : Promise<string, FSError> =>
   // Make a new promise and return it
-  return new Promise<string, FSError>((resolve, reject) => {
+  new Promise<string, FSError>((resolve, reject) => {
     // Read the file and handle errors
     let content: string;
 
