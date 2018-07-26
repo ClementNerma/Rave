@@ -544,6 +544,31 @@ val k: int = num --; // k == '2' ; num == 1
 val l: int = -- num; // l =='0' ; num == 0
 ```
 
+### Numbers typecasting
+
+Type numbers are incompatible with them, meaning the following code is not valid:
+
+```sn
+let i: int = 2;
+let j: u16 = i; // ERROR
+```
+
+This is to avoid loss of data during the conversion: an `int` can handle numbers an `u16` cannot, so their would be a loss.
+
+To force the conversion of a number to another type, we use _explicit typecasting_:
+
+```sn
+let i: int = 2;
+let j: u16 = <int> i;
+```
+
+Also, _upcasts_ (converting from a type to another of the same family - signed or unsigned - with a larger number of bytes) is performed automatically:
+
+```sn
+let i: int = 2;
+let j: i64 = i; // Works
+```
+
 ## Syntaxic types
 
 _Syntaxic types_ are types that can be defined with a special, reserved syntax.
