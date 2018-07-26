@@ -537,3 +537,99 @@ val j: int = ++ num; // j == '2' ; num == 2
 val k: int = num --; // k == '2' ; num == 1
 val l: int = -- num; // l =='0' ; num == 0
 ```
+
+## Syntaxic types
+
+_Syntaxic types_ are types that can be defined with a special, reserved syntax.
+
+### Vectors
+
+A _vector_ is a suite of mutables of the same type. It has a _size_ which defines the number of entities they contain. Its entities are called _elements_.
+
+There are two types of vectors: _arrays_, with a fixed length, and _lists_, with a dynamic one.
+
+Here is how arrays are defined:
+
+```sn
+[container]: [type] [ [size] ];
+
+// e.g.
+let messages: string[3];
+```
+
+If the entity is not initialized, all the entities inside the array take their type's default value, so here `messages` is an array of three empty strings.
+
+#### Arrays
+
+An array's mutables can be accessed using an _index_, which must be understood between 0 and the array's size, less 1. It goes like this:
+
+```sn
+[container] [ [index] ]
+
+// e.g.
+messages[1] // ''
+```
+
+As vectors contain mutables, these can be assigned too:
+
+```sn
+messages[1] = 'Hello world!';
+
+messages[1]; // 'Hello world'
+```
+
+Arrays can be expressed directly as values, using the following syntax:
+
+```sn
+[ [value1], [value2], ..., [valueN] ]
+
+// e.g.
+[ 2, 5, 8 ] // int[3]
+```
+
+Note we can use the universal `[type] [ ]` type to indicate an _unknown-sized array_, which is an array with an unknown size:
+
+```sn
+let numbers: int[];
+
+numbers = []; // Works
+numbers = [ 2 ]; // Works
+numbers = [ 2, 5 ]; // Works
+numbers = [ 2, 5, 8 ]; // Works
+```
+
+When not initialized, unknown-sized arrays contain an empty array.
+
+#### Lists
+
+Lists work exactly like arrays, but we can also add and remove mutables from them. Their type is `List<Type>`:
+
+```sn
+let numbers: List<int>;
+```
+
+When not initialized, lists are empty. They can be expressed as values using the same syntax than arrays, but with a sharp symbol (#) after the opening bracket:
+
+```sn
+[ # 2, 5, 8 ] // List<int>
+```
+
+We can add items to a list by assigning a value to the _unindexed mutable_, which is the syntax has for mutables but without providing an index between the brackets:
+
+```sn
+let numbers: List<int>;
+
+numbers[] = 5;
+
+numbers[0] // 5
+```
+
+To remove an element, we use the `delete` keyword followed by the entity to remove. The elements after it (if there are) see their index decremented:
+
+```sn
+let numbers: List<int> = [ # 2, 5 ];
+
+delete numbers[0];
+
+numbers[0] // 5
+```
