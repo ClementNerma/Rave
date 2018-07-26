@@ -5429,26 +5429,6 @@ func test () {
 
 In this example though, the last `println!` call is ran because the `finally` block is executed no matter what. This way, it's possible to clear some data (like entities) used by the `try` block (or even the `catch` one).
 
-If the block contains only one condition, its braces can be omitted:
-
-```sn
-func test () {
-  try
-    unsafeStuff();
-
-  catch (e)
-    treatError();
-}
-
-// Or even:
-func test () {
-  try unsafeStuff();
-  catch (e) treatError();
-}
-```
-
-The only requirement is there must be at least one space or one new line between the end of the block's name (`try`, `catch` or `finally`) and the instruction to run.
-
 Note that, when a function declares it may throw an error, the call **must** be wrapped inside a `try`/`catch` block to prevent it making the program crash. This means we must catch any non-`RuntimeError` error.
 
 ### Sub-typing with errors
@@ -5456,37 +5436,45 @@ Note that, when a function declares it may throw an error, the call **must** be 
 As `catch` blocks ask for an error type, they support sub-typing. There are several native error classes, like `ArithmeticError` or `OutOfMemoryError` (which occurs when the memory is filled). So, if we want to catch only some type of errors, we can use sub-typing in the `catch`, like this:
 
 ```sn
-try
+try {
   divide(2, 0);
+}
 
-catch (e: OutOfMemoryError)
+catch (e: OutOfMemoryError) {
   println!('Program is out of memory.');
+}
 ```
 
 We can also chain multiple `catch` blocks, to catch distinctly several types of error.
 
 ```sn
-try
+try {
   divide(2, 0);
+}
 
-catch (e: OutOfMemoryError)
+catch (e: OutOfMemoryError) {
   println!('Program is out of memory.');
+}
 
-catch (e: ArithmeticError)
-  println!('Division failed because we can't divide by zero.');
+catch (e: ArithmeticError) {
+  println!('Division failed because we can\'t divide by zero.');
+}
 ```
 
 Thanks to sub-typing (again), we can also use a final `catch` block that will catch absolutely any type of error:
 
 ```sn
-try
+try {
   divide(2, 0);
+}
 
-catch (e: OutOfMemoryError)
+catch (e: OutOfMemoryError) {
   println!('Program is out of memory.');
+}
 
-catch (e: ArithmeticError)
-  println!('Division failed because we can't divide by zero.');
+catch (e: ArithmeticError) {
+  println!('Division failed because we can\'t divide by zero.');
+}
 
 catch (e: Error) {
   println!('An unknown error occured. Here is its message:');
@@ -5497,8 +5485,9 @@ catch (e: Error) {
 Also, thanks to inferred typing, if we give no type to the block's argument, it will automatically be considered as an `Error`:
 
 ```sn
-try
+try {
   divide(2, 0);
+}
 
 catch (e) {
   println!('Some error occured. Here is its message:');
@@ -5509,11 +5498,13 @@ catch (e) {
 A last version of this syntax is if we don't care about getting the error object. In this case, we can simply omit the block's head:
 
 ```sn
-try
+try {
   divide(2, 0);
+}
 
-catch
+catch {
   println!('Some error occured.');
+}
 ```
 
 ### Making custom errors
@@ -5550,62 +5541,44 @@ class CustomError inherits Error {
 We can now use our custom error class:
 
 ```sn
-try
+try {
   divide(5, 0);
+}
 
-catch (e: CustomError)
+catch (e: CustomError) {
   println!(e.why()); // Prints: 'This is a custom error class'
+}
 ```
 
 Here, `CustomError` can be caught apart from other errors like `OutOfMemoryError`. Still, it inherits from `Error`, so catching with `catch (e: Error) {` will catch this error too.
 
 ### Inline catching
 
-These blocks are quite useful, but they can be heavy to write. Like `for` and `while` loops, there is an _inline_ version of the `try` and `catch` blocks. Here is how it goes:
+These blocks are quite useful, but they can be heavy to write. Like `for` and `while` loops, there is an _inline_ version of the `try` and `catch` blocks. The value expressed in the `try` block is automatically returned by the block - if no error is thrown in it, of course. It goes like this:
 
 ```sn
-// Classic way
-try
-  divide(5, 0);
-catch (e: CustomError)
-  println!(e.why());
+val result = try { divide(5, 0); } catch (e: CustomError) { println!(e.why()); };
 
-// Inline way
-try divide(5, 0) catch (e: CustomError) {
-  println!(e.why());
-}
-```
-
-That's as simmple as that. There's also a syntax even lighter for single-instruction blocks:
-
-```sn
-try divide(5, 0) catch (e: CustomError) println!(e.why());
-```
-
-Also, if the function returns something, we can use its result, like this:
-
-```sn
-val result = try divide(5, 0) catch (e: CustomError) println!(e.why());
-
-val result = try divide(5, 0)
-             catch (e: CustomError)
+val result = try { divide(5, 0); }
+             catch (e: CustomError) {
                println!(e.why());
+             }
 ```
 
-But be aware here. Because the `catch` block does not return anything, the return value could be nothing. In this case, the `null` value is returned, which makes the return data either the specified type (here, `f32`) or a `void`. See the problem? Yes, the mix of a single type and a `void` is a _nullable type_, so `result` will be typed as a `f32?` instead of a `f32`. Remember this, else this could lead to unexpected behaviours when using these inline blocks.
+But be aware here. Because the `catch` block does not return anything, the return value could be nothing. In this case, the `null` value is returned, which makes the return data either the specified type (here, `f32`) or a `void`. See the problem? This makes our return value having a _nullable type_, so `result` will be typed as a `f32?` instead of a `f32`. Remember this, else this could lead to unexpected behaviours when using these inline blocks.
 
 Note that type inferring works here because the `try` block is followed by a **single** instruction. So, its return type is fixed and can be guessed ; it wouldn't work with a `try` containing several instructions - that's why we can't do an assignment from a multiple-instructions `try` block.
 
 Except this point, this will work as expected. If you don't care about getting an error object, you can omit the `catch` block's head:
 
 ```sn
-val result = try divide(5, 0) catch println!(e.why());
+val result = try { divide(5, 0); } catch { println!(e.why()); };
 ```
 
 Note that this last block can also return a value. Thanks to this, if an error occurs, it is still possible to return an alternative value:
 
 ```sn
-val result = try divide(5, 0) catch () : f32 => {
+val result = try { divide(5, 0); } catch () : f32 => {
   println!(e.why());
   return 0;
 };
@@ -7608,12 +7581,14 @@ func readAsync (path: string) : Promise<string, Error> {
     let content: string;
 
     // Read the file
-    try
+    try {
       content = import!('fs').readFile(path, 'utf8');
+    }
 
-    catch (e)
+    catch (e) {
       // Failed
       reject(e);
+    }
 
     // Success
     resolve(content);
@@ -7636,11 +7611,13 @@ func readAsync (path: string) : Promise<string, FSError> =>
     // Read the file and handle errors
     let content: string;
 
-    try
+    try {
       content = import!('fs').readFile(path, 'utf8');
+    }
 
-    catch (e)
+    catch (e) {
       resolve e;
+    }
 
     // Resolve the promise if the reading worked fine
     if content isnt null {
@@ -7658,11 +7635,13 @@ The `async` keyword describes an asynchronous function - it's pretty explicit. I
 
 ```sn
 async func readAsync (path: string) throws FSError : string => {
-  try
+  try {
     resolve import!('fs').readFile(path, 'utf8');
+  }
 
-  catch (e)
+  catch (e) {
     reject e;
+  }
 }
 ```
 
@@ -7676,19 +7655,17 @@ The powerfulness of these keywords is also they can be used inside a sub-functio
 
 ```sn
 async func readAsync (path: string) throws FSError : string => {
-  try
-    (lambda throws FSError () {
-      try
-        // A 'return' would just terminate this lambda and not resolve anything
-        // But a 'resolve' terminates this lambda *and* the 'readAsync' function
-        resolve import!('fs').readFile(path, 'utf8');
+  (lambda throws FSError () {
+    try {
+      // A 'return' would just terminate this lambda and not resolve anything
+      // But a 'resolve' terminates this lambda *and* the 'readAsync' function
+      resolve import!('fs').readFile(path, 'utf8');
+    }
 
-      catch (e)
-        reject e;
-    })();
-
-  catch (e)
-    reject e;
+    catch (e) {
+      reject e;
+    }
+  })();
 }
 ```
 
