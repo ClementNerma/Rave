@@ -175,7 +175,7 @@ scheme = {
         },
         [
           // Numerical bounds
-          /[a-zA-Z0-9_\.\$]+(u|u?[bslfd]?)\.\.\.?[a-zA-Z0-9_\.\$]+u?[bslfd]?/,
+          /[a-zA-Z0-9_\.\$]+(u|(?:p|u?[bslfd]?))\.\.\.?[a-zA-Z0-9_\.\$]+(?:p|u?[bslfd]?)/,
           'orange'
         ],
         [
@@ -185,17 +185,17 @@ scheme = {
         ],
         [
           // Constant numbers
-          /(?<!\.)\b(0_*d_*)?(\d_*)+(\._*(\d_*)+)?u?[bslfd]?\b/,
+          /(?<!\.)\b(0_*d_*)?(\d_*)+(\._*(\d_*)+)?(?:p|u?[bslfd]?)\b/,
           'orange'
         ],
         [
           // Constant binary numbers
-          /(?<!\.)\b0_*b_*(([01]_*)+)(\._*([01]_*)+)?u?[bslfd]?\b/,
+          /(?<!\.)\b0_*b_*(([01]_*)+)(\._*([01]_*)+)?(?:p|u?[bslfd]?)\b/,
           'orange'
         ],
         [
           // Constant octal numbers
-          /(?<!\.)\b0_*o_*(([0-7]_*)+)(\._*([0-7]_*)+)?u?[bslfd]?\b/,
+          /(?<!\.)\b0_*o_*(([0-7]_*)+)(\._*([0-7]_*)+)?(?:p|u?[bslfd]?)\b/,
           'orange'
         ],
         [
