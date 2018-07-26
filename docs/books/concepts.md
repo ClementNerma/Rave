@@ -666,6 +666,12 @@ numbers = [ 2, 5, 8 ]; // Works
 
 When not initialized, unknown-sized arrays contain an empty array.
 
+Note that, as for all types, arrays support type inference:
+
+```sn
+let arr = [ 2u, 3u, 4u ]; // uint[3]
+```
+
 #### Lists
 
 Lists work exactly like arrays, but we can also add and remove mutables from them. Their type is `List<Type>`:
@@ -698,4 +704,10 @@ let numbers: List<int> = [ # 2, 5 ];
 delete numbers[0];
 
 numbers[0] // 5
+```
+
+We can of course use type inference with lists:
+
+```sn
+let numbers = [ # 2u, 5u ]; // List<uint>
 ```
