@@ -381,6 +381,49 @@ jack.hp += 10; // Works
 
 Also, note that models are values, as we will see later.
 
+### Tuples
+
+Tuples are a special type of value that can contain several mutables at once. Each value in a tuple can have a different type ; it is defined using the following syntax:
+
+```sn
+[container]: ( [type1], [type2], ... [typeN] );
+
+// e.g.
+let person: (string, uint) = ('Jack', 24);
+```
+
+The entities it contains are called its _elements_. They can be retrieved using an _index_, which must be a raw `usize` value:
+
+```sn
+[tuple] [ [index] ]
+
+// e.g.
+person[0]; // 'Jack'
+```
+
+As a tuple's elements are mutables, we can perform an assignment on them:
+
+```sn
+person[0] = 'John';
+
+person[0]; // 'John'
+```
+
+The tuple's full type can be shortened using a _structure tuple_:
+
+```sn
+struct [name] [tuple type];
+
+// e.g.
+struct Person (string, uint);
+
+let person: Person = Person { 'Jack', 24 };
+
+person[0]; // 'Jack'
+```
+
+Here, the structure's fields are `usize` values instead of standard entity names.
+
 ## Expressions
 
 Expressions are a suite of one or more values, each separated by a single _value operator_, which must start and end with a value.
