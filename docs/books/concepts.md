@@ -54,7 +54,7 @@ A value can either be a _primitive_ or an _object_.
 
 Primitives are the only type of value that is immutable, meaning their content can never change.
 
-Also, values can be written as _raw values_ or as _unpredictable values_. The first ones are explicit values, meaning they are predictable and won't change whatever happens. The second ones can depend on the program's state. In this chapter, we will only talk about raw values.
+Also, values can be written as _raw values_ (also called _plain values_) or as _unpredictable values_. The first ones are explicit values, meaning they are predictable and won't change whatever happens. The second ones can depend on the program's state. In this chapter, we will only talk about raw values.
 
 ### Voids and booleans
 
