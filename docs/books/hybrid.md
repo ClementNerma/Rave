@@ -8484,13 +8484,13 @@ func sum (...numbers: int) : int {
 }
 ```
 
-The first line describes, as usual, the function (what it does): Make a summation from a list of numbers. Then, we describe each argument using `@param` (it's called a _descriptor_), followed by the argument's name, and what it contains: A list of numbers. Finally, we indicate what the function returns using `@returns` followed by the returned value: the summation.
+The first line describes, as usual, the function (what it does): Make a summation from a list of numbers. Then, we describe each argument using `@param` (it's called a _documentation annotation_), followed by the argument's name, and what it contains: A list of numbers. Finally, we indicate what the function returns using `@returns` followed by the returned value: the summation.
 
 Note that we don't have to use `@returns` for void-typed functions.
 
 ### Nested functions
 
-To document nested functions (e.g. callbacks), we document them as usual functions using a `>` symbol, with the argument's descriptor being the callback's descriptor:
+To document nested functions (e.g. callbacks), we document them as usual functions using a `>` symbol, with the argument's annotation being the callback's one:
 
 ```sn
 /**
@@ -8536,7 +8536,7 @@ func sum<T inherits number> (iterator: Iterator<T>) : T {
 
 ### Examples
 
-The `@example` descriptor gives an example on how to use the function:
+The `@example` annotation gives an example on how to use the function:
 
 ```sn
 /**
@@ -8553,7 +8553,7 @@ Examples aim to be as short and as explicit as possible. Note that it's possible
 
 ### Errors throwing
 
-The `@throws` descriptor allows us to describe each case of error throwing:
+The `@throws` annotation allows us to describe each case of error throwing:
 
 ```sn
 /**
@@ -8572,7 +8572,7 @@ func double (num: i32) : i32 throws ErrorType1, ErrorType2 {
 
 ### Conditions
 
-The `@condition` descriptor indicates a condition that must be matched in order for the function to work properly. It is useful to indicate conditions required to avoid runtime errors, that aren't declared using the `throws` keyword.
+The `@condition` annotation indicates a condition that must be matched in order for the function to work properly. It is useful to indicate conditions required to avoid runtime errors, that aren't declared using the `throws` keyword.
 
 ```sn
 /**
@@ -8589,7 +8589,7 @@ func getValue (arr: int[], index: usize) : int {
 
 ### Polymorph functions
 
-Polymorph functions that does exactly the same actions but on different types can use the `@samedef` descriptor to keep the exact same description across its definitions:
+Polymorph functions that does exactly the same actions but on different types can use the `@samedef` annotation to keep the exact same description across its definitions:
 
 ```sn
 /**
@@ -8680,9 +8680,9 @@ func sum (...numbers: int) : int {
 }
 ```
 
-### Inline descriptors
+### Inline annotations
 
-Inline descriptors are part of the language and describe a part of the program. There must be placed at the beginning of a single-line comment, or at the beginning of the first non-empty line of a multi-line comment.
+Inline annotations are part of the language and describe a part of the program. There must be placed at the beginning of a single-line comment, or at the beginning of the first non-empty line of a multi-line comment.
 
 ```sn
 // NOTE: This part may not work under specific circumstances
