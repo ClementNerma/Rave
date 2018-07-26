@@ -3756,14 +3756,9 @@ val motorcycle: Vehicle = new Motorcycle();
 motorcycle.stunt(); // ERROR because `stunt` is not part of the `Vehicle` class
 ```
 
-That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept. Also, note there is a way to ask for a specific type and not its children, thanks to the `#exact<T>` directive. Yes, directives can be templated too. A shorter version of it is to prefix the type with the equality operator `#=`. Here is an exemple:
+That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept. Also, note there is a way to ask for a specific type and not its children, thanks to the `#=T` directive:
 
 ```sn
-func precise (vehicle: #exact<Vehicle>) {
-  vehicle.accelerate();
-}
-
-// Shorter syntax:
 func precise (vehicle: #=Vehicle) {
   vehicle.accelerate();
 }
