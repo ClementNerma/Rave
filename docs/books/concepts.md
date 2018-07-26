@@ -855,3 +855,137 @@ let personsAge = {
 'Jack' in personsAge; // true
 delete personsAge; // Works
 ```
+
+## Multi-assignments and slices
+
+### Multi-assignment
+
+The _multi-assignment_ feature allows to perform several assignments at once. Considering the following object:
+
+```sn
+val hero = {
+  name: 'John',
+  age: 20,
+  warrior: true
+};
+```
+
+We can store its properties in three constants, `name`, `age` and `warrior`, in a single instruction:
+
+```sn
+val { name, age, warrior } = hero;
+
+age; // 20
+```
+
+This also works with dictionaries:
+
+```sn
+val ages = { # jack: 24, john: 32 };
+
+val { jack, john } = ages;
+```
+
+Note that retrieving an unexisting property from the dictionary will result in an error:
+
+```sn
+val ages = { # jack: 24 };
+
+val { jack, john } = ages; // ERROR ('john' not found)
+```
+
+This also works with arrays:
+
+```sn
+val arr = [ 2, 5, 8, 9 ];
+
+val [ n1, n2, n3, n4 ] = list;
+
+n2; // 5
+```
+
+And with tuples:
+
+```sn
+val numbers = (2, 5, 8, 9);
+
+val (n1, n2, n3, n4) = list;
+
+n3; // 8
+```
+
+Note that performing a multiple assignment with a vector or a tuple that doesn't have the exact same size will result in an error:
+
+```sn
+val arr = [ 2 ];
+val [ n1, n2 ] = arr; // ERROR (too short vector)
+
+val arr = [ 2, 5, 8 ],
+val [ n1, n2] = arr; // ERROR (too long vector)
+```
+
+### Fields auto-filling
+
+Fields can be _auto-filled_, meaning we can implicitly deduce their value, using the following syntax:
+
+```sn
+let name = 'Jack';
+val age = 24;
+pln warrior = true;
+
+val hero = { name, age, warrior };
+
+hero.name; // 'Jack'
+```
+
+### Slices
+
+A _left slice_ allow to assign part of a vector's elements, from the left:
+
+```sn
+val [ ...first, n4 ] = arr;
+
+// Equivalent to:
+val first = [ arr[0], arr[1], arr[2] ];
+val n4 = arr[3];
+```
+
+Here, `first` is called the slice's _expansion entity_.
+
+We can also perform left slice's opposite, a _right slice_:
+
+```sn
+val [ n1, ...last ] = arr;
+
+// Equivalent to:
+val n1 = arr[0];
+val last = [ arr[1], arr[2], arr[3] ];
+```
+
+Or even a _middle slice_:
+
+```sn
+val [ n1, ...middle, n4 ] = arr;
+
+// Equivalent to:
+val n1 = arr[0];
+val middle = [ arr[1], arr[2] ];
+val n4 = arr[3];
+```
+
+It's also possible to perform an _anonymous slice_, which consists in providing no expansion entity:
+
+```sn
+val [ ..., last ] = arr;
+val [ left, ... ] = arr;
+val [ left, ..., right ] = arr;
+```
+
+Note that all slices can have an infinite amount of elements between the declaration's brackets but only one expansion entity.
+
+Also, slicing a too short vector will result in an error:
+
+```sn
+val arr = [ 2 ];
+val [ left, ...middle, right ] = arr; // ERROR (too short vector)
+```
