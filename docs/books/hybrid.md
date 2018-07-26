@@ -4850,7 +4850,7 @@ struct Point {
   y: int;
 }
 
-func getNilPoints (array: Point[]) : Point {
+func getNilPoint (array: Point[]) : Point {
   for point in array {
     if point.x == 0 && point.y == 0 {
       return point;
@@ -4862,25 +4862,25 @@ func getNilPoints (array: Point[]) : Point {
 This works fine. Now, what if we run this code:
 
 ```sn
-val point: Point = getNilPoints([]);
+val point: Point = getNilPoint([]);
 ```
 
-Our program will crash because `getNilPoints` returned a `void` while a `Point` was expected. This is simply due to the fact no point matched the condition in the `for` loop, so the function ended without returning anything (which is equivalent to returning an instance of `void`). So, in order to make this function work anyway, and without returning a whole structure with a `success` boolean or anything ugly, we can use a nullable type:
+Our program will crash because `getNilPoint` returned a `void` while a `Point` was expected. This is simply due to the fact no point matched the condition in the `for` loop, so the function ended without returning anything (which is equivalent to returning an instance of `void`). So, in order to make this function work anyway, and without returning a whole structure with a `success` boolean or anything ugly, we can use a nullable type:
 
 ```sn
-func getNilPoints (array: Point[]) : Point? {
+func getNilPoint (array: Point[]) : Point? {
 ```
 
 This allows the function to return a `Point` instance **or** a `void` instance. But, our program will still crash with an error message telling that a `void` cannot be converted to a `Point`. That's simply because we declared our constant with the `Point` type, but we must now tell it can also contain a `void`:
 
 ```sn
-val point: Point? = getNilPoints();
+val point: Point? = getNilPoint();
 ```
 
 This now works fine. Also, inferred typing can do it automatically, like this:
 
 ```sn
-val point = getNilPoints();
+val point = getNilPoint();
 ```
 
 Note that writing:
@@ -4904,12 +4904,12 @@ Our example would have worked even with `point` being a `Point` value, if the fu
 
 ### The `null` value
 
-As we saw, the `getNilPoints()` function can now return an instance of `void` (the famous `null` value).
+As we saw, the `getNilPoint()` function can now return an instance of `void` (the famous `null` value).
 
 A strict equivalent to the function we saw would be:
 
 ```sn
-func getNilPoints (array: Point[]) : Point? {
+func getNilPoint (array: Point[]) : Point? {
   for point in array {
     if point.x is 0 and point.y is 0 {
       return point;
@@ -4923,7 +4923,7 @@ func getNilPoints (array: Point[]) : Point? {
 This would do exactly the same thing. There's also a native value, named `null`, which is an instance of `void`. We can use it, as all instances of `void` are the same:
 
 ```sn
-func getNilPoints (array: Point[]) : Point? {
+func getNilPoint (array: Point[]) : Point? {
   for point in array {
     if point.x is 0 and point.y is 0 {
       return point;
@@ -4944,30 +4944,30 @@ Be aware though, using inferred typing with `null` could result in the following
 
 ```sn
 let point = null;
-point = getNilPoints([]); // ERROR
+point = getNilPoint([]); // ERROR
 ```
 
 This will result in an error because inferred typing gave the `void` type to `point`, so it can't receive a `Point?` value. Replace this code with:
 
 ```sn
 let point = new Point?();
-point = getNilPoints([]); // Works fine
+point = getNilPoint([]); // Works fine
 ```
 
 Now we've seen all this, let's try our function:
 
 ```sn
-val point1 = getNilPoints([ { name: 'Test point', x: 0, y: 0 } ]);
+val point1 = getNilPoint([ { name: 'Test point', x: 0, y: 0 } ]);
 println!(point1.name); // Prints: 'Test point'
 
-val point2 = getNilPoints([]);
+val point2 = getNilPoint([]);
 println!(point2.name); // ERROR
 ```
 
-The second call to `getNilPoints()` makes our program crash. Why? Simply because `point2` is a `void` instance, so it has no `name` member. We have to check first if our constant contains a `null` value or not, thanks to the equality operator `==` or the difference operator `!=`. This can be done thanks to the fact two instances of the same class can be compared with these two operators (we'll see that in details in the pointers chapter). So we can write:
+The second call to `getNilPoint()` makes our program crash. Why? Simply because `point2` is a `void` instance, so it has no `name` member. We have to check first if our constant contains a `null` value or not, thanks to the equality operator `==` or the difference operator `!=`. This can be done thanks to the fact two instances of the same class can be compared with these two operators (we'll see that in details in the pointers chapter). So we can write:
 
 ```sn
-val point = getNilPoints([]);
+val point = getNilPoint([]);
 
 if point is null {
   println!('No point found.');
@@ -4983,7 +4983,7 @@ Also, thanks to `void` implementing a `%to<bool> ()` overload which always retur
 Here is an operator we can use to do something only if the value is not null. Here is an example:
 
 ```sn
-val point = getNilPoints([]);
+val point = getNilPoint([]);
 println!(point?.name);
 ```
 
