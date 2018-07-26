@@ -947,16 +947,16 @@ Into:
   // ...
 ```
 
-And the property will be constant! Be aware though, we absolutely need to initialize `jack` at declaration time. Else, an error will be thrown by the builder, saying the object has not been initialized.
+And the field will be constant! Be aware though, we absolutely need to initialize `jack` at declaration time. Else, an error will be thrown by the builder, saying the object has not been initialized.
 
 But we can still make some properties optionals, so we won't have to specify them when initializing the structure:
 
 ```sn
 struct Identity {
-  // Constant property
+  // Constant field
   val name: string;
 
-  // Optional property
+  // Optional field
   adult: bool = false;
 }
 
@@ -1003,7 +1003,7 @@ val jack = Identity {
 pln Jack_Name = jack.name; // Works fine
 ```
 
-Note that declaring a property as a plain constant makes the structure assignable only to constant entities. This is due to the fact a mutable can take as its value several instances of the structure, at different time. This makes the property unpredictable, and so it wouldn't be a plain constant.
+Note that declaring a field as a plain constant makes the structure assignable only to constant entities. This is due to the fact a mutable can take as its value several instances of the structure, at different time. This makes the field unpredictable, and so it wouldn't be a plain constant.
 
 ```sn
 struct PlainName {
@@ -1037,7 +1037,7 @@ For example, if we want to connect integers (persons' age) to strings (persons' 
 let ages: Map<string, int>;
 ```
 
-We can know add any property by doing `ages.Jack = 28;`. To remove a property, we simply do `ages.unset();`. Here's a trap of dictionaries: all properties will return - if they exist - an instance of the second template (`int` here) but a few ones, like `unset` or `has`, will return functions. In order to avoid this problem with variables, writing `ages[anyIndexHere]` will return an `int`, whatever `anyIndexHere` is. We can even write `ages['unset']` which does the same thing.
+We can know add any key/value pair by doing `ages.Jack = 28;`. To remove an existing key and its associated value, we simply do `ages.unset();`. Here's a trap of dictionaries: all properties will return - if they exist - an instance of the second template (`int` here) but a few ones, like `unset` or `has`, will return functions. In order to avoid this problem with variables, writing `ages[anyIndexHere]` will return an `int`, whatever `anyIndexHere` is. We can even write `ages['unset']` which does the same thing.
 
 Also, there is a shortcut for dictionaries with `string` keys: the `Collection` type. It is basically a dictionary that has string keys:
 
@@ -4987,7 +4987,7 @@ val point = getNilPoints([]);
 println!(point?.name);
 ```
 
-Here, because `point` is null, the program won't try to access its `name` property thanks to the `?` operator. Instead, it will return a `void`, so the return type of the expression, whatever `name` is null or not, will be `string?`. This operator avoids crashes when accessing a value's attribute, and will always return null if the value it is applied on (the value on its left) is `null` - not NIL, it won't have this behavior with `false` or `0`, for instance.
+Here, because `point` is null, the program won't try to access its `name` field thanks to the `?` operator. Instead, it will return a `void`, so the return type of the expression, whatever `name` is null or not, will be `string?`. This operator avoids crashes when accessing a value's attribute, and will always return null if the value it is applied on (the value on its left) is `null` - not NIL, it won't have this behavior with `false` or `0`, for instance.
 
 ```sn
 // Make a 'Hero' structure
@@ -5607,7 +5607,7 @@ struct Hero {
   attack: int;
 }
 
-// Make a function that changes a single property of the function
+// Make a function that changes a single field of the function
 func changeProperty (obj: Hero) {
   obj.attack = 20;
 }
@@ -5743,7 +5743,7 @@ println!(hero); // Prints: 'John'
 
 In this example, because the reference is mutable, we can write the referred's value, still by using the `*` symbol.
 
-Note that references work on entities, which includes an object's property or a class' member:
+Note that references work on entities, which includes an object's field or a class' member:
 
 ```sn
 let hero = {
@@ -5760,15 +5760,15 @@ println!(hero.name); // Prints: 'John'
 The syntax is as follows:
 
 ```sn
-&object.property;   // Make a pointer to `object` and get `property` from it
-&(object).property; // Make a pointer to `object` and get `property` from it
-(&object).property; // Make a pointer to `object` and get `property` from it
-&(object.property); // Make a pointer to `object.property`
+&object.field;   // Make a pointer to `object` and get `field` from it
+&(object).field; // Make a pointer to `object` and get `field` from it
+(&object).field; // Make a pointer to `object` and get `field` from it
+&(object.field); // Make a pointer to `object.field`
 
-&mut object.property;   // Make a pointer to `object` and get `property` from it
-&mut (object).property; // Make a pointer to `object` and get `property` from it
-(&mut object).property; // Make a pointer to `object` and get `property` from it
-&mut (object.property); // Make a pointer to `object.property`
+&mut object.field;   // Make a pointer to `object` and get `field` from it
+&mut (object).field; // Make a pointer to `object` and get `field` from it
+(&mut object).field; // Make a pointer to `object` and get `field` from it
+&mut (object.field); // Make a pointer to `object.field`
 ```
 
 A specificity about references is that they can only be half-type-inferred. This means that their type (e.g. `int`, `string`...) can be type-infered, but not their pointer nature (e.g. `&mut`, ...), so this last one have to be written explicitly:
@@ -6161,7 +6161,7 @@ let ptr: * = &obj;
 // Depointerize
 let hero = *ptr;
 
-// Assign to a property
+// Assign to a field
 hero.name = 'John';
 
 println!(hero.name); // Prints: 'John'
@@ -6172,7 +6172,7 @@ It works, despite the fact `ptr` contains a constant reference. How could this w
 
 Well, the object `ptr` targets is not defined as constant, even if the reference we assign to the pointer is. So, if we get a reference to this object, we can modify its value. This is why having a constant pointer does not mean having a constant referred or preventing any modification on it. Be aware of this!
 
-Conventionally, even if you only want to modify an object's property and not assign something new to the object itself, you should ask for a mutable pointer, to clearly indicate you will modify the object.
+Conventionally, even if you only want to modify an object's field and not assign something new to the object itself, you should ask for a mutable pointer, to clearly indicate you will modify the object.
 
 ### Nullable pointers
 
