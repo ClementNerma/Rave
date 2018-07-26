@@ -1037,7 +1037,9 @@ For example, if we want to connect integers (persons' age) to strings (persons' 
 let ages: Map<string, int>;
 ```
 
-We can know add any key/value pair by doing `ages.Jack = 28;`. To remove an existing key and its associated value, we simply do `ages.unset();`. Here's a trap of dictionaries: all properties will return - if they exist - an instance of the second template (`int` here) but a few ones, like `unset` or `has`, will return functions. In order to avoid this problem with variables, writing `ages[anyIndexHere]` will return an `int`, whatever `anyIndexHere` is. We can even write `ages['unset']` which does the same thing.
+We can know add any key/value pair by doing `ages.Jack = 28;`. To remove an existing key and its associated value, we simply do `delete ages['Jack'];`.
+
+Also, there is a trap when dealing with dictionaries: all properties will return - if they exist - an instance of the second template (`int` here) but a few ones, like `filter` or `map`, will return functions. In order to avoid this problem with variables, writing `ages[anyIndexHere]` will return an `int`, whatever `anyIndexHere` is. We can also write `ages['unset']` which does the same thing.
 
 Also, there is a shortcut for dictionaries with `string` keys: the `Collection` type. It is basically a dictionary that has string keys:
 
