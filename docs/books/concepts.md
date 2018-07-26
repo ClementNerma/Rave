@@ -562,7 +562,7 @@ let i: int = 2;
 let j: u16 = <int> i;
 ```
 
-Also, _upcasts_ (converting from a type to another of the same family - signed or unsigned - with a larger number of bytes) is performed automatically:
+Also, _upcasts_ (converting from a type to another of the same family - signed, unsigned or floating-point - with a larger number of bytes) is performed automatically:
 
 ```sn
 let i: int = 2;
