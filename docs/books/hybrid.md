@@ -7491,6 +7491,20 @@ hello.value = 8;
 println!(hello); // Prints: '8'
 ```
 
+#### Automatic inheritance
+
+Any union that contains only children of a given class will be considered as one of its children too. Example:
+
+```sn
+virtual class A {}
+
+class B inherits A {}
+class C inherits A {}
+
+let b: B | C = new B();
+let a: A = b; // Works
+```
+
 #### `catch`'s case
 
 When wrapping a call to a function using a `try`/`catch` block but not declaring the error type in the `catch`, the inferred type will be an union of all the error types that may be thrown in the `try` block:
