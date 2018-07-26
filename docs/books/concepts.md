@@ -385,6 +385,8 @@ Expressions are a suite of one or more values, each separated by a single _value
 
 Note that, wherever something asks for a value, it also accepts expressions, as they always produce a value. So, it also accepts an entity, as entities can also be considered as expressions.
 
+When an expression is only made of raw values and operators, it produces a raw values. When there is at least one unpredictable value, it produces an unpredictable value.
+
 They are two types of operators: _value operators_, which produce a value from one or several ones, and _affectation operators_, which work from an entity and a value to change the entity's value.
 
 ### Value operators
