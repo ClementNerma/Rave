@@ -4979,7 +4979,7 @@ if point is null {
 }
 ```
 
-Also, thanks to `void` implementing a `%to<bool> ()` overload which always return `false`, we can use some native operators like `!` or `point ? doSomething() : doSomethingElse()` on our constant.
+Note that we can still use some native operators like `!` or `point ? doSomething() : doSomethingElse()` on our constant, as they don't care about the value's type - only if it's NIL or not.
 
 ### The nullable operator
 
