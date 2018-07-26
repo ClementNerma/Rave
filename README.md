@@ -21,7 +21,8 @@ SilverNight is released using a system of **stages**:
 |-----------|--------------|---------|--------------------------------------------------------------------------|
 |     0     | Scratch      |    -    | First version of the syntax, redact The Hybrid Book                      |
 |     1     | Alpha 1      |  0.1.0  | Second version of the syntax, redact again The Hybrid Book               |
-|     2     | Alpha 2      |  0.2.0  | Submit the project to reviewers                                          |
+|     2     | Alpha 2      |  0.2.0  | Redact the Specifications Book                                           |
+|     3     | Alpha 3      |  0.3.0  | Submit the project to reviewers                                          |
 |     3     | Beta         |  0.x.0  | Freeze the syntax, freeze the native library                             |
 |     4     | Stable       |  1.0.0  | Make an analyzer (normalizer, lexer, parser, checker)                    |
 |     5     | Analyzable   |  1.0.0  | Make a compiler, an interpreter, transpilers (JavaScript, ...)           |
