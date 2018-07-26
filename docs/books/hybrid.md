@@ -7664,9 +7664,19 @@ func takeAsyncCallback (callback: async func () : (string, Error)) {
 takeAsyncCallback (async () => resolve 'Hello world!');
 ```
 
-### Error-free declaration
+### Error-free promises
 
-Error-free asynchronous functions declare they will never throw any error. This happens when they never use the `reject` keyword and don't have any `throws` indicator. Their return type is replaced by a single resolution type, like this:
+Error-free promises are promises that cannot perform a reject. They don't have a `reject` callback and are defined like this:
+
+```sn
+let promise = new Promise<string>((resolve) => {
+  resolve('Hello world!');
+});
+```
+
+Note that it's still possible to perform a `.catch()` on error-free promises. The provided callback will simply never be executed.
+
+Asynchronous functions can also be error-free. This happens when they never use the `reject` keyword and don't have any `throws` indicator. Their return type is replaced by a single resolution type, like this:
 
 ```sn
 async func resolveHello () : string {
@@ -7674,7 +7684,7 @@ async func resolveHello () : string {
 }
 ```
 
-This allows to avoid wrapping their call inside a `try`/`catch` block and makes more clear for other developers that the function will never fail.
+This allows to avoid wrapping their call inside a `try`/`catch` block and makes more clear for other developers that the function will never fail. Also, instead of returning a standard promise, they return an error-free one.
 
 Also, void-typed error-free promises can fully omit their return type, like for standard functions:
 
