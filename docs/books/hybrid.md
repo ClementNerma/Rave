@@ -1236,8 +1236,11 @@ let data = { # name: 'Hello' };
 // What IST does:
 let data = new Map<string, string>([ 'name' ], [ 'Hello' ]);
 
-// Which itself uses IST so in fact results it:
-let data = new Map<string, string>(new Array<string>('name'), new Array<string>('Hello'));
+// Which itself uses IST so in fact results in:
+let data = new Map<string, string>(
+  new Array<string>('name'),
+  new Array<string>('Hello')
+);
 ```
 
 Final word: IST allows you to write, for example:
@@ -1249,7 +1252,10 @@ let data = { # name: 'Hello' };
 Instead of:
 
 ```sn
-let data = new Map<string, string>(new Array<string>('name'), new Array<string>('Hello'));
+let data = new Map<string, string>(
+  new Array<string>('name'),
+  new Array<string>('Hello')
+);
 ```
 
 That's a lot simplier, isn't it?
@@ -7560,7 +7566,11 @@ Let's now write the `readAsync()` function:
 ```sn
 func readAsync (path: string) : Promise<string, Error> {
   // Make a new promise and return it
-  return new Promise<string, FSError>(lambda (resolve: func (content: string), reject: func (err: FSError)) {
+  return new Promise<string, FSError>(lambda (
+      resolve: func (content: string),
+      reject: func (err: FSError)
+    ) {
+
     let content: string;
 
     // Read the file
@@ -7727,7 +7737,7 @@ Promise.all([
   })
   
   // Else, get the error as well as the faulty promise
-  .catch(func <T, X> (error: Error, faultyPromise: Promise<T, X>, fpIndex: uint) : void {
+  .catch(func <T, X> (error: Error, errorAt: Promise<T, X>, fpIndex: uint) : void {
     println!(`Failed at promise ${fpIndex}.`);
     println!('Error is: ' + error.message);
   });
