@@ -650,6 +650,26 @@ val l = 2s; // i8
 pln m = 'Hello'; // string
 ```
 
+### Inferred Structured Typing
+
+_Inferred Structured Typing_, or _IST_, is a feature that implicitly deduces the model of an object:
+
+```sn
+let person = {
+  name: 'Jack',
+  age: 24
+};
+```
+
+Here, `person`'s type is a _ghost structure_, an implicit structure that have the following definition:
+
+```sn
+struct _Ghost {
+  name: string;
+  age: int;
+}
+```
+
 ## Syntaxic types
 
 _Syntaxic types_ are types that can be defined with a special, reserved syntax.
