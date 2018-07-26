@@ -4916,7 +4916,7 @@ func getNilPoint (array: Point[]) : Point? {
     }
   }
 
-  return new void();
+  return null;
 }
 ```
 
