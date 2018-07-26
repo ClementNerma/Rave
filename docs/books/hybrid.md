@@ -4521,6 +4521,26 @@ Also, always remember templates are _constants_: they cannot be modified in any 
 
 **NOTE :** The fact templates can be of any type is the main reason why they aren't called 'generics', unlike many programming languages.
 
+**NOTE :** In classes, methods are raw functions. This means that the following code:
+
+```sn
+class A {
+  public func hello () : string {
+    println!("Hello world!");
+  }
+}
+```
+
+Is equivalent to:
+
+```sn
+class A {
+  public pln hello = func () : string {
+    println!("Hello world!");
+  }
+}
+```
+
 ### Segments
 
 Segments are parts of a class that provides some methods only if some conditions are matched about the templates. For example, we can consider the `Vector<T>` class that implements a `.sum()` function if `T` is a `Number`. Here is how it goes:
