@@ -608,7 +608,7 @@ scheme = {
         ],
         [
           // Already specified keywords, written here to have partial syntax highlighting
-          /(?<!\.)\b(namespace|struct|enum|class|type|dict|trait|interface|implements|uses|inherits|parentof|haschild|instanceofsuper|scope|import|from|instanceof)(?!\s*:)\b/,
+          /(?<!\.)\b(namespace|struct|enum|class|type|dict|trait|interface|implements|throws|use|uses|inherits|parentof|haschild|instanceofsuper|scope|import|from|instanceof)(?!\s*:)\b/,
           'purple'
         ],
         [
