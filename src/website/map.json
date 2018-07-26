@@ -9,7 +9,7 @@
   "removeBuild": true,
   "map": {
     "docs/book/hybrid.html": "tmp/book/hybrid.book.html",
-    "docs/book/concepts.html": "tmp/book/concepts.book.html"
+    "docs/book/specs.html": "tmp/book/specs.book.html"
   },
   "index": "index.html"
 }

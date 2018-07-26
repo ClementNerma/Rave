@@ -1,8 +1,8 @@
-# The Book of Concepts
+# The Specifications Book
 
 ## Foreword
 
-Welcome to the SilverNight's _Book of Concepts_. This book aims to provide a detailed view of how the language works, as well as the tools coming with it, and act as a specification document. This document presents many technical aspects and is NOT designed to be a tutorial.
+Welcome to the SilverNight's _Specifications Book_. This book aims to provide a detailed view of how the language works, as well as the tools coming with it, and act as a specification document. This document presents many technical aspects and is NOT designed to be a tutorial.
 
 If you are looking for a tutorial or for the detailed functioning of the language, you should read [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html) instead.
 

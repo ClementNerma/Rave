@@ -83,7 +83,7 @@ yarn build-dev-live
 
 You can take a look at the language's syntax and its current state by reading [The Hybrid Book](https://silvernight.netlify.com/docs/book/hybrid.html).
 
-To know how the toolchain works in a detailed view, and also get all the language's specifications, you can read [The Book of Concepts](https://silvernight.netlify.com/docs/book/concepts.html).
+To know how the toolchain works in a detailed view, and also get all the language's specifications, you can read [The Specifications Book](https://silvernight.netlify.com/docs/book/specs.html).
 
 You can also get the book locally to read it at anytime by running `yarn read-book hybrid`. This way, you can read it without an access to the web.
 
