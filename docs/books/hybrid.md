@@ -5607,7 +5607,7 @@ struct Hero {
   attack: int;
 }
 
-// Make a function that changes a single field of the function
+// Make a function that changes a single field of the object
 func changeProperty (obj: Hero) {
   obj.attack = 20;
 }
