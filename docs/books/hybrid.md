@@ -989,7 +989,7 @@ println!(jack.adult); // Prints: 'false'
 Structures can also ask for plain values:
 
 ```sn
-struct Identify {
+struct Identity {
   pln name: string;
   adult: bool;
 }
