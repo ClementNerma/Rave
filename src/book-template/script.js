@@ -67,8 +67,16 @@ function refreshActive() {
     // Give it a specific class
     link.classList.add('current');
 
-    // Scroll to it
-    link.scrollIntoView();
+    // For unhandheld devices only...
+    if (Math.max(
+      document.body.scrollWidth,
+      document.documentElement.scrollWidth,
+      document.body.offsetWidth,
+      document.documentElement.offsetWidth,
+      document.documentElement.clientWidth
+    ) > 640)
+      // Scroll to the current part's link to always keep it visible
+      link.scrollIntoView();
   }
 
   // For each title in the current section (reversed order to start from the bottom of the section)...
