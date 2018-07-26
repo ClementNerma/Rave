@@ -569,6 +569,26 @@ let i: int = 2;
 let j: i64 = i; // Works
 ```
 
+### Overflow and underflow
+
+When an operation exceeds a number type's maximum bound, it causes an _overflow_ that makes it going back to its minimum bound:
+
+```sn
+let i: u8 = 255us;
+i += 2;
+
+i; // 1
+```
+
+When it exceeds the minimum bound, it causes an _underflow_ that makes it going back to its maximum bound:
+
+```sn
+let i: u8 = 0us;
+i -= 1;
+
+i; // 255
+```
+
 ## Syntaxic types
 
 _Syntaxic types_ are types that can be defined with a special, reserved syntax.
