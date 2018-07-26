@@ -7491,6 +7491,26 @@ hello.value = 8;
 println!(hello); // Prints: '8'
 ```
 
+#### `catch`'s case
+
+When wrapping a call to a function using a `try`/`catch` block but not declaring the error type in the `catch`, the inferred type will be an union of all the error types that may be thrown in the `try` block:
+
+```sn
+func mayThrow () throws AError, BError {
+  if rand!<bool> {
+    throw new AError("Hello");
+  } else {
+    throw new BError("Hello");
+  }
+}
+
+try {
+  mayThrow();
+} catch (e) {
+  // 'e' is typed as an 'AError | BError'
+}
+```
+
 ## Asynchronous behaviours
 
 Sometimes we can't foretell when an event will occur. For example, if we are making a web server, we can't predict _when_ there will be incoming connections. This is called an _asynchronous behaviour_ and can be handled several ways.
