@@ -188,7 +188,7 @@ Containers have a type and contain a value described as their _content_. The act
 
 #### Mutables
 
-Mutable containers can have a dynamic content, meaning we can perform several assignment separetly on them. They are defined using the `let` keyword:
+Mutable containers contain an unpredictable value and have a dynamic content, meaning we can perform several assignment separetly on them. They are declared using the `let` keyword:
 
 ```sn
 let [name]: [type];
@@ -254,6 +254,8 @@ age = 8; // ERROR
 
 Finally, constants are mutables that can cannot be assigned twice and require an initialization value.
 
+Note that constants are considered as unpredictable.
+
 #### Plain constants
 
 Plain constants are constants with a predictable value, meaning that the value won't change whatever the execution conditions are and what the other contains contain. Otherwise, they work exactly like constants and are declared using the `pln` keyword:
@@ -261,6 +263,8 @@ Plain constants are constants with a predictable value, meaning that the value w
 ```sn
 pln age: uint = 5;
 ```
+
+Plain constants only accept raw values, and are so considered as containing raw values themselves.
 
 ### Models
 
