@@ -756,3 +756,66 @@ We can of course use type inference with lists:
 ```sn
 let numbers = [ # 2u, 5u ]; // List<uint>
 ```
+
+### Dictionaries
+
+A _dictionary_ is a suite of _key_/_value_ pair. The keys share the same type, and the values share another one (which can be, or not, be the same). Its type is `Map<[KeyType], [ValueType]>`:
+
+```sn
+let personsAge: Map<string, uint>;
+```
+
+By default, a dictionary has no key and no value. As each key is a mutable, we can add some by using the following syntax:
+
+```sn
+[dictionary] [ [key] ] = [value];
+
+// e.g.
+personsAge['Jack'] = 25;
+```
+
+If the key type is `string`, we can use a shorter syntax:
+
+```sn
+[dictionary].[key] = [value];
+
+// e.g.
+personsAge.Jack = 25;
+```
+
+To read it, we use the same syntax without the assignment part:
+
+```sn
+personsAge.Jack; // 25
+```
+
+In fact, vectors are dictionaries with a key type forced to be a `usize`.
+
+To remove an element, we also use the `delete` keyword like for lists:
+
+```sn
+delete personsAge.Jack;
+// Or:
+delete personsAge['Jack'];
+```
+
+And to check if an element is contained in a dictionary, there is the `in` operator which returns a boolean (`true` if the key is found in the dictionary, `false` else):
+
+```sn
+[key] in [dictionary];
+
+// e.g.
+'inexisting' in personsAge; // false
+```
+
+Dictionaries can also be expressed like a structure, but with a sharp symbol (#) following the opening brace:
+
+```sn
+let personsAge = {
+  #
+  Jack: 25
+};
+
+'Jack' in personsAge; // true
+delete personsAge; // Works
+```
