@@ -7621,7 +7621,7 @@ This is a lot simplier already, but still heavy. A solution to make this functio
 The `async` keyword describes an asynchronous function - it's pretty explicit. It forces the function's to return a promise and work only in it. To understand the concept, let's rewrite our `readAsync` function with this new keyword:
 
 ```sn
-async func readAsync (path: string) : (string, FSError) => {
+async func readAsync (path: string) throws FSError : string => {
   try
     resolve import!('fs').readFile(path, 'utf8');
 
@@ -7632,14 +7632,14 @@ async func readAsync (path: string) : (string, FSError) => {
 
 Many things changed here, but this function works exactly as the original - though it's a clearly lighter.
 
-To begin, the return type changed from `Promise<string, FSError>` to the `(string, FSError)` tuple, because an asynchronous function implicitly returns a promise.
+To begin, the return type changed from `Promise<string, FSError>` to a simple `string` and the function may throw an `FSError` error.
 
 Then, because the `async` keyword indicates our function is asynchronous, its body is transparently wrapped into a promise, with the callbacks binded to the `resolve` and the `reject` keywords. They call the callback they are related to and stop the function after that.
 
 The powerfulness of these keywords is also they can be used inside a sub-function, like this:
 
 ```sn
-async func readAsync (path: string) : (string, FSError) => {
+async func readAsync (path: string) throws FSError : string => {
   try
     (lambda throws FSError () {
       try
@@ -7659,7 +7659,7 @@ async func readAsync (path: string) : (string, FSError) => {
 Also, when an error happens in an asynchronous functions, the error is automatically caught and transformed into a rejection. So, we could write our code like that:
 
 ```sn
-async func readAsync (path: string) : (string, FSError) {
+async func readAsync (path: string) throws FSError : string {
   resolve import!('fs').readFile(path, 'utf8');
 }
 ```
@@ -7669,7 +7669,7 @@ If the filesystem fails to read the file, an error will be thrown, but because o
 Note that, even if the function's end is reached, the promise is not terminated until it encounters a `resolve` or a `reject` keyword. For example, in the code below:
 
 ```sn
-async func infinite () : (void, Error) {
+async func infinite () throws FSError : void {
   for i in 0..10 {
     println!('Hello world!');
   }
@@ -7683,7 +7683,7 @@ This specificity excepted, the `async` keyword is pretty powerful when coming to
 Note that there is also an asynchronous syntax for lambdas:
 
 ```sn
-func takeAsyncCallback (callback: async func () : (string, Error)) {
+func takeAsyncCallback (callback: async func () throws FSError : string) {
   callback()
     .then(message => println!(message));
 };
@@ -7703,7 +7703,7 @@ let promise = new Promise<string>((resolve) => {
 
 Note that it's still possible to perform a `.catch()` on error-free promises. The provided callback will simply never be executed.
 
-Asynchronous functions can also be error-free. This happens when they never use the `reject` keyword and don't have any `throws` indicator. Their return type is replaced by a single resolution type, like this:
+Asynchronous functions can also be error-free. This happens when they never use the `reject` keyword and don't have any `throws` indicator. They keep the same declaration syntax but may not throw error anymore:
 
 ```sn
 async func resolveHello () : string {
