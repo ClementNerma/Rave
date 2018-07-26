@@ -136,6 +136,7 @@ Raw numbers can be followed with a _numerical suffix_, which allows them to be o
 2u;  // u32 (Unsigned)
 2l;  // i64 (Long)
 2ul; // u64 (Unsigned Long)
+2p;  // usize (Unsigned Pointer)
 2f;  // f32 (Float)
 2d;  // f64 (Double)
 ```
