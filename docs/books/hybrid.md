@@ -7025,7 +7025,7 @@ But this doesn't work if the real type of the data isnt `string`. In order to av
 
 ```sn
 func convertToString (arg: Any) : string? {
-  ift arg ~ Primitive {
+  ift arg instanceof Primitive {
     // Here, 'arg' is considered as being a 'Primitive'
     return <string> arg;
   } else {
@@ -7038,7 +7038,7 @@ Note that this code can be fastened using an exact type if we expect one, as the
 
 ```sn
 func convertToString (arg: Any) : string? {
-  ift arg ~ #=u16 {
+  ift arg instanceof #=u16 {
     // Here, 'arg' is considered as being EXACTLY an 'u16'
     return <string> arg;
   } else {
@@ -7063,7 +7063,7 @@ It also works inline:
 
 ```sn
 func convertToString (arg: Any) : string? {
-  return ift arg ~ Stringifyable { <string> arg } else { null };
+  return ift arg implements Stringifyable { <string> arg } else { null };
 }
 ```
 
@@ -7077,7 +7077,7 @@ The assumption condition must be take the following form:
 
 Or a combination of several assumption conditions using the `&&` operator. The `instanceofsuper` operator returns `true` if the entity is an instance of the class itself or one of its parent. That's the opposite of `instanceof` which returns `true` if the entity is an instance of the class itself or one of its _children_.
 
-Here, the `~` syntax is still the shorter one:
+Note that we can also use the `~` operator here:
 
 ```sn
 func convertToString (arg: Any) : string? {
