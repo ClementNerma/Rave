@@ -1393,19 +1393,19 @@ val n1 = list[0],
     n3 = list[2],
     n4 = list[3];
 
-// Left splice
+// Left slice
 val [ ...first, n4 ] = list;
 // Equivalent to:
 val first = [ list[0], list[1], list[2] ],
     n4 = list[3];
 
-// Right splice
+// Right slice
 val [ n1, ...last ] = list;
 // Equivalent to:
 val n1 = list[0],
     last = [ list[1], list[2], list[3] ];
 
-// Middle splice
+// Middle slice
 val [ n1, ...middle, n4 ] = list;
 // Equivalent to:
 val n1 = list[0],
@@ -1416,7 +1416,7 @@ val n1 = list[0],
 Note that there is also the `...` symbol to ignore some entries in the list:
 
 ```sn
-// Middle splice
+// Middle slice
 val [ n1, ..., n4 ] = list;
 // Equivalent to:
 val n1 = list[0],
