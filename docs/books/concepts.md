@@ -690,6 +690,13 @@ messages[1] = 'Hello world!';
 messages[1]; // 'Hello world'
 ```
 
+Unlike tuples, the index is not forced to be a raw index:
+
+```sn
+let i = 1p;
+messages[i]; // 'Hello world'
+```
+
 Arrays can be expressed directly as values, using the following syntax:
 
 ```sn
