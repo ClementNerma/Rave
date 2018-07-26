@@ -7698,9 +7698,9 @@ func takeAsyncCallback (callback: async func () : (string, Error)) {
 takeAsyncCallback (async () => resolve 'Hello world!');
 ```
 
-### Error-free promises
+### Error-free declaration
 
-Error-free promises are promises that will never throw any error. Their return type is replaced by a single resolution type, like this:
+Error-free asynchronous functions declare they will never throw any error. This happens when they never use the `reject` keyword and don't have any `throws` indicator. Their return type is replaced by a single resolution type, like this:
 
 ```sn
 async func resolveHello () : string {
@@ -7708,7 +7708,7 @@ async func resolveHello () : string {
 }
 ```
 
-This allows to avoid wrapping their call inside a `try`/`catch` block.
+This allows to avoid wrapping their call inside a `try`/`catch` block and makes more clear for other developers that the function will never fail.
 
 Also, void-typed error-free promises can fully omit their return type, like for standard functions:
 
