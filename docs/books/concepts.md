@@ -679,6 +679,12 @@ A vector's mutables can be accessed using an _index_, which must be a `usize` va
 [container] [ [index] ]
 
 // e.g.
+messages[1p] // ''
+```
+
+There is a syntax sugar for indexes: we can use a raw `int` value as an index:
+
+```sn
 messages[1] // ''
 ```
 
