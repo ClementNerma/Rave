@@ -5429,7 +5429,9 @@ func test () {
 
 In this example though, the last `println!` call is ran because the `finally` block is executed no matter what. This way, it's possible to clear some data (like entities) used by the `try` block (or even the `catch` one).
 
-Note that, when a function declares it may throw an error, the call **must** be wrapped inside a `try`/`catch` block to prevent it making the program crash. This means we must catch any non-`RuntimeError` error.
+Note that, when we call a function which indicates it may throw an error, we must either wrap the call inside a `try`/`catch` block (which is the best thing to do) or indicates the function we are calling the function from may also throw the same error type - in this case, if an error is thrown during the call, it will immediatly stop our function's execution too. That's exactly what we did in our first `a`/`b`/`c` example previously.
+
+Also, if we call a function that may throw an error inside the main scope, we must wrap the call between a `try`/`catch` block, as we cannot indicate the main scope may throw an error itself.
 
 ### Sub-typing with errors
 
