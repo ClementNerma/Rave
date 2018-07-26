@@ -587,8 +587,7 @@ Bitwise operators are bit-by-bit operators - they work on each single bit of num
 * `^` (bit-by-bit exclusive or)
 * `<<` (binary left shift operator)
 * `>>` (binary right shift operator)
-
-The last bitwise operator takes a single number and returns a number: that's the one's complement `~` operator.
+* `~` (one's complement) - takes a single number
 
 Showcase:
 
@@ -599,9 +598,9 @@ pln b = 13; // b = 0000 1101
 a & b;  // 0000 1100 : 12
 a | b;  // 0011 1101 : 61
 a ^ b;  // 0011 0001 : 49
-~ a;    // 1100 0100 : -60 (for signed integers - two's complement form)
 a << 2; // 1111 0000 : 240
 a >> 2; // 0000 1111 : 15
+~ a;    // 1100 0100 : -60 (for signed integers - two's complement form)
 ```
 
 ### String concatenation
