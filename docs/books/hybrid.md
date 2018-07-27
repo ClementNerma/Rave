@@ -3077,10 +3077,12 @@ For that, we'll implement two overloads in our class: `%serialize` and `%unseria
 
 ```sn
   public func %serialize () : string;
-  public static func %unserialize (serial: string) : _self;
+  public static func %unserialize (serial: string) throws UnserializationError : _self;
 ```
 
-Now let's implement them! First, how to implement serialization? We could produce a human-friendly string, like that:
+For now, we won't talk about the `throws UnserializationError` part as it requires other concepts we will see later.
+
+Now let's implement these overloads! First, how to implement serialization? We could produce a human-friendly string, like that:
 
 ```sn
   // ...
@@ -3108,7 +3110,7 @@ But there is a problem: first, the string is not optimized. One of the goal of s
       price: @price
     });
 
-  public static func %unserialize (serial: string) : _self {
+  public static func %unserialize (serial: string) throws UnserializationError : _self {
     // Unserialize the serialized structure
     val obj: @Serialized = unserialize!(serial, @Serialized);
     // Make a new product instance and return it
