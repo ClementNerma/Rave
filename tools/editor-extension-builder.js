@@ -64,7 +64,7 @@ self = {
     let source_path = 'src/editors-extension';
 
     // Determine the static folder
-    let static_path = 'src/editors-extension/static';
+    let static_path = source_path + '/static';
 
     // Determine its path
     let target_path = `${source_path}/${name}.js`;
@@ -93,7 +93,7 @@ self = {
     }
 
     // Determine its path
-    let scheme_path = `src/editors-extension/_scheme.js`;
+    let scheme_path = source_path + '/_scheme.js';
 
     // If the file does not exist...
     if (!fileExists(scheme_path))
