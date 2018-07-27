@@ -1685,9 +1685,9 @@ let adult: string;
 let age: uint = 2;
 
 match age {
-  _ < 20  -> adult = 'No';
-  _ > 20  -> adult = 'Yes';
-  default -> adult = 'Kind of';
+  (_ < 20) -> adult = 'No';
+  (_ > 20) -> adult = 'Yes';
+  default  -> adult = 'Kind of';
 }
 ```
 
@@ -1697,9 +1697,9 @@ You can also specify a set of instructions for a match by wrapping them between 
 let adult: string;
 
 match age {
-  _ < 20  -> adult = 'No';
-  _ > 20  -> adult = 'Yes';
-  default -> {
+  (_ < 20) -> adult = 'No';
+  (_ > 20) -> adult = 'Yes';
+  default  -> {
     adult = 'Kind of';
     println!('The end.');
   }
