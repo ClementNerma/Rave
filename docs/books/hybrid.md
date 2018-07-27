@@ -1717,6 +1717,8 @@ let name = 'John';
 name = (name == 'Marc') ? 'Welcome Marc' : 'I don\'t know who you are';
 ```
 
+Note that the two values must be of the same type.
+
 ### Inline blocks
 
 Sometimes it's just more intuitive and redeable to write the condition _after_ the instruction. This is where we use _inline conditions_:
