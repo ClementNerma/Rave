@@ -4,7 +4,7 @@ import frontend::console as console;
 // A container for user's guess
 let guess = -1;
 // The secret number to guess
-let secret = random!(uint);
+let secret = rand!<int>;
 // Remaining lives
 let lives = 10;
 
