@@ -1632,7 +1632,7 @@ let counter = 1;
 
 do {
   println!(counter);
-} while (counter < 0);
+} while counter < 0;
 ```
 
 This code will display `1` before the loops ends, because the condition is evaluated _after_ the set of instructions.
