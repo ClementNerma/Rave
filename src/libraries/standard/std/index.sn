@@ -793,3 +793,103 @@ class f32 inherits f64 {
   /** @superdoc */
   public static pln SIZE = 32;
 }
+
+// ==================== Strings ==================== //
+
+/**
+ * String type (primitive)
+ */
+class string inherits Primitive {
+  /** @superdoc */
+  public static pln NIL = '';
+
+  /** @superdoc */
+  public func %construct () {};
+  
+  /** @superdoc */
+  public func %construct<T ~ Primitive> (prim: T) => #__magic_set_primitive(this, prim);
+  
+  /** @superdoc */
+  public func %to<bool> () : bool => this.length > 0;
+  
+  /** @superdoc */
+  public func %to<i64> () : i64 => #__magic_parse_string(this, i64);
+  
+  /** @superdoc */
+  public func %to<u64> () : u64 => #__magic_parse_string(this, u64);
+  
+  /** @superdoc */
+  public func %to<f64> () : f64 => #__magic_parse_string(this, f64);
+  
+  /** @superdoc */
+  public func %to<string> () : string => this;
+  
+  /** @superdoc */
+  public func %serialize () : string => this ? '"' + this.replace('\\', '\\\\').replace('"', '\\"');
+  
+  /** @superdoc */
+  public static func %unserialize (serialized: string) throws UnserializationError : bool {
+    if serialized.charAt(0) != '"' || serialized.lastChar() != '"' {
+      throw new UnserializationError("Serialized strings start and end with a double quote");
+    }
+
+    let str = '';
+    let willEscape = false;
+
+    for i = 0; i < serialized.length; i++ {
+      let char = serialized.charAt(i);
+
+      if char == '\\' {
+        if willEscape {
+          willEscape = false;
+          str += char;
+        } else {
+          willEscape = true;
+        }
+      } else {
+        if willEscape {
+          willEscape = false;
+        }
+
+        str += char;
+      }
+    }
+
+    return str;
+  }
+
+  /** @superdoc */
+  public func %equal (another: bool) : bool {
+    return false if @size != another.size;
+
+    for i in 0...@size {
+      return false if @getCharCodeAt(i) != another.getCharCodeAt(i);
+    }
+
+    return true;
+  };
+  
+  /** @superdoc */
+  public func %greater (another: bool) : bool {
+    val smallest_size = min!(@length, another.length);
+
+    for i in 0..smallest_size {
+      val this_code = @charCodeAt(i);
+      val other_code = another.charCodeAt(i);
+
+      return true if this_code > other_code;
+      return false if other_code > this_code;
+    }
+
+    return (@length > another.length);
+  }
+  
+  /** @superdoc */
+  public func %smaller (another: bool) : bool => {
+    return false if this.%equal(another);
+    return false if this.%greater(another);
+  };
+  
+  /** @superdoc */
+  public static func %call<T ~ Primitive> (prim: T) : string => <string> prim;
+}
