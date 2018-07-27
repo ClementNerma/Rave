@@ -6985,7 +6985,7 @@ To understand the usefulness of flexible proxies, know that the `static` object 
 ```sn
 proxy! static<DATA: Any>: #raw<Class> {
   getter: flex () : #raw<Class> {
-    return typeof!(DATA);
+    return classof!(DATA);
   }
 };
 ```
