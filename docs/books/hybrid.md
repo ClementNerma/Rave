@@ -1773,7 +1773,9 @@ But there is another, simplier way to generate this array, using _inline generat
 let cubes: List<int> = (i * i * i for i in 1...10);
 ```
 
-The result will be the same. Because the builder has a great support of inferred typing, you can also omit the `cubes`' explicit type:
+The only downside is that we know have a `List<int>` instead of an `Array<int, 10>`. We can still convert the list to an array using lists' `toArray` method, but this has a performance cost and will return an `int[]` instead of our original `int[10]`.
+
+Because the builder has a great support of inferred typing, you can also omit the `cubes`' explicit type:
 
 ```sn
 let cubes = (i * i * i for i in 1...10);
