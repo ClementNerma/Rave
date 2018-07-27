@@ -77,10 +77,18 @@ scheme = {
               name: '${purple}'
             },
             {
-              match: /@(class|superdoc)\b/,
+              match: /@class\b/,
               captures: {
                 '0': {
                   name: '${green}'
+                }
+              }
+            },
+            {
+              match: /@superdoc\b/,
+              captures: {
+                '0': {
+                  name: '${purple}'
                 }
               }
             },
