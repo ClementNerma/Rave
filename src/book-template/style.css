@@ -271,4 +271,10 @@ th, td {
     right: 20px;
     bottom: 20px;
   }
+
+  pre {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+  }
 }
