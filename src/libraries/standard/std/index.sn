@@ -406,7 +406,6 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
   /** @superdoc(boolean) */
   public static pln NIL = false;
 
-
   /** @superdoc(boolean) */
   public func %construct () {};
   
@@ -494,7 +493,7 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
  * NOTE: This class is not inheritable outside of this file
  */
 virtual class number inherits Primitive implements Randomizable, RandomizableWithBounds {
-    /** @superdoc */
+  /** @superdoc */
   final public func %construct () {};
   
   /** @superdoc */
