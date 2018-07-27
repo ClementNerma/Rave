@@ -1879,6 +1879,27 @@ The **global scope**, which is transparently defined, has no parent scope. It ca
 
 Remember these rules about scopes (entities availability, drops, parent scopes, flying scopes), because all the language is ruled by it. Don't hesitate to read these explanations again as they may not be very simple.
 
+#### `for`'s case
+
+The `for` loop accepts, in reality, any instruction instead of an assignment to an iterator. This means that the following code is perfectly valid:
+
+```sn
+for true; true; true {
+  println!('Hello world!'); // Prints: 'Hello world!' 1 time
+  break ;
+}
+```
+
+A special case, though, is the following syntax is used:
+
+```sn
+for [iterator] = [expression]; [condition]; [instruction] {
+```
+
+The iterator is then implicitly declared as a mutable variable, of the same type than the assigned expression.
+
+Another specificity is that the iterator is implicitly declared inside the loop's scope, even though it first appears outside. This is to help code writing and allow to have a loop's block-scoped iterator, which is hard to make otherwise.
+
 ## Functions
 
 Functions are another key-concept of the language. They are special blocks that are not ran by default and requires to be called manually. They optionally take values called _arguments_ and may return a value called the _return value_.
