@@ -8364,91 +8364,11 @@ namespace A {
 }
 ```
 
-### The package manager
-
-As the package manager is part of the language's toolchain, it is installed on your machine since you installed the toolchain at the beginning of this book. It provides a way to simply manage the packages used by our program, so we can in a single line download and install a new package from the official repository, update and remove the installed packages, etc.
-
-#### Installing a new package
-
-To install a new package, simply a terminal, go into our project's folder, and run the following command:
-
-```bash
-snt add hello-world
-```
-
-This will download the package called `hello-world` in the official repository, and then install it into the `_packages/hello-world` folder, so we can use it in our programs. We can of course replace `hello-world` by any other package name.
-
-**NOTE :** Anyone can submit packages in the official repository, which means some packages may contain malicious code like viruses. That's why you should only install your own packages plus the ones you absolutely trust.
-
-#### Removing a package
-
-To remove a package that is locally installed, simply write:
-
-```bash
-snt remove hello-world
-```
-
-#### Update a package
-
-To update a single package installed locally, do:
-
-```bash
-snt update hello-world
-```
-
-We can also update all packages at once, by doing:
-
-```bash
-snt update
-```
-
-#### Dependencies
-
-Remember the `dependencies` block we saw in our package descriptor sooner? It simply described the packages _required_ by our program. It's a suite of `package = 'expected_version'` lines. Here is how it could look like:
-
-```toml
-[dependencies]
-hello-world = '^1.0.0'
-```
-
-The dependency we put here indicates we accept all versions compatible with the `1.0.0` version, which means every `1.x.y` version. It is inspired by the [Semantic Versioning 2.0](https://semver.org/), with versions using the `x.y.z` form.
-
-* A patch release (`z`), which only fixes some bugs in the package, increments once the third digit of the version ;
-* A minor release (`y`), which grants new features without breaking backward compatibility, increments once the second digit of the version ;
-* A major release (`x`), which grants new features and breaks backward compatibility, increments once the first digit of the version
-
-We can use the following version names in the `dependencies` section of the package descriptor:
-
-* `=1.0.0` or `1.0.0`: accepts only the specific `1.0.0` version (rarely used) ;
-* `~1.0.0` or `1.0.x` or `1.0`: accepts any `1.0.z` version (patch releases) ;
-* `^1.0.0` or `1.x` or `1`: accepts any `1.y.z` version (patch and minor releases) ;
-* `>1.0.0` or `>1.x` or `>1`: accepts any version, but not versions under `1.0.0` ;
-* `latest` or `*`: accepts every version ;
-
-When downloading a package, the package manager will get the latest version matching the requirement we gave in our package descriptor. For instance, if a package releases `1.0.5`, `1.0.6` and `1.1.0` versions:
-
-* Specifying `=1.0.5` will download the `1.0.5` version ;
-* Specifying `~1.0.5` will download the `1.0.6` version ;
-* Specifying `^1.0.5` will download the `1.1.0` version ;
-* Specifying `>1.0.5` will download the `1.1.0` version
-
-This is why we told previously that version numbers were so important: our package descriptor declares the name, license etc. but also the version of our package, meaning that if we publish it, the programs from other developers that will depend on it will expect us from respecting this semantic versioning. Publishing, after a given `1.1.0` version a new one called `1.2.0` that breaks backward compatibility will result in many errors in other developers' programs. Be aware of this!
-
 ### Project as a package
 
 Did you know that any project we make could be considered as a package? For that, all we have to do is to create the package descriptor `package.toml` in our project's root folder, and so we can manage its dependencies. When you need some package, simply use `snt add <package_name>` and so on.
 
 When someone will get your project, we may not want to transfer all the packages you use (some can be very heavy), especially if publishing on a public repository for example. So, we can simply release the project folder, without the `_packages` directory, and any person wanting to run the project will simply have to run `snt install` inside the project's root folder to download all its dependencies, thanks to the _lockfile_.
-
-### The lockfile
-
-_Tip :_ For those who are familiar to the Node.js platform, the package's manager lockfile works more or less the same way than NPM's and Yarn's ones.
-
-When a package is downloaded, updated or removed by the package manager, it edits a little file called `packages_lock.toml` inside the project's root folder. This file specifies the exact version of all the modules we use. What's the point?
-
-Let's admit we are using version `1.0.1` of a module that treats web requests. We accept any `1.x` version, and we send the source code to a person using the project. She run `snt install` in the folder and, surprise, there is a new version called `1.1.0` that was released a few hours before. That's not a bad deal, you'll say, after all we accepted minor changes. But, what if the developer who released this new version accidentally introduced a bug in it, making it unable to work properly? The person using our source code will not be able to test it and will think it's buggy because of a not-working package.
-
-That's where the lockfile comes: it stores the exact version of every package downloaded from the package manager, plus some other little informations. Because it's an important file that aims to provide a way to test and run our project at the exact same state than its original developer, the lockfile is not placed under the `_packages` folder but in the project's root folder, so we won't forget to send it to the person who uses it.
 
 ## Documenting the code
 
