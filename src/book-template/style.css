@@ -277,4 +277,10 @@ th, td {
     overflow-y: hidden;
     white-space: nowrap;
   }
+
+  /* The 'Copy' button is useless on mobile devices
+     and hides some examples' code */
+  pre a.copy {
+    display: none;
+  }
 }
