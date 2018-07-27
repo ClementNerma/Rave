@@ -578,12 +578,12 @@ scheme = {
         ],
         [
           // Key + value iterators in `for`
-          /(for)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s*(->)\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?:\s+(in)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*))?\b/,
+          /(for)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s*(->)\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?:\s+(in)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*))?\b/,
           'purple', 'cyan', 'purple', 'cyan', 'purple', 'orange'
         ],
         [
           // Iterator in `for`
-          /(for)(?:\s*\(\s*|\s+)([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?:\s+(in|of)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*))?\b/,
+          /(for)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?:\s*=|\s+(in|of)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*\b)?)/,
           'purple', 'cyan', 'purple', 'orange'
         ],
         [
