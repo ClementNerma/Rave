@@ -3049,6 +3049,8 @@ If we write that, instances of the class will support cloning but the class won'
 
 Of course, the same problems that applies to the `%clone (clone: _self) : _self` method applies here too.
 
+Note that implementing any of the cloning ways make the `%clone () : _self` overload available in the class.
+
 ### Serialization
 
 Serialization consists in converting a class instance to a string, in order to transmit it over the network or to write it to a file, for example. It implies an unserialization process, which converts the string to an instance of the same class.
@@ -3134,6 +3136,8 @@ Just like cloning, there is a lazy overload for serialization. It consists in a 
 ```
 
 Be aware though when you put private attributes in the serialized fields, because they can be unserialized to. This means that, if you put the product's ID in the tuple for example, any piece of code could produce a string with the product ID it wants and then unserialize it to produce a product with a duplicate ID and/or an ID reserved to special products (such has high-importance products).
+
+Note that, as for cloning, implementing any of the cloning ways make the `%clone () : _self` overload available in the class.
 
 ### Inline calls
 
