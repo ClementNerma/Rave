@@ -1788,7 +1788,7 @@ Note that inline loops will not performif the generation is not wrapped by paren
 println!(i) for i in 1...10;
 ```
 
-Nothing will be generated. Also, nothing will be generated if you don't give the result to a function or assign it to a variable.
+Nothing will be generated.
 
 ### Entities are block-scoped
 
