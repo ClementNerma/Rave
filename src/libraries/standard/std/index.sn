@@ -621,7 +621,7 @@ open class i64 inherits vsint {
   public static pln NIL = 0l;
 
   /** @superdoc */
-  public static pln SIZE = 64;
+  public static pln SIZE = 64p;
 
   /** @superdoc */
   public static pln MINIMUM = -9_223_372_036_854_775_808l;
@@ -641,7 +641,7 @@ open class i32 inherits i64 {
   public static pln NIL = 0;
 
   /** @superdoc */
-  public static pln SIZE = 32;
+  public static pln SIZE = 32p;
 
   /** @superdoc */
   public static pln MINIMUM = -2_147_483_648;
@@ -661,7 +661,7 @@ open class i16 inherits i32 {
   public static pln NIL = 0s;
 
   /** @superdoc */
-  public static pln SIZE = 16;
+  public static pln SIZE = 16p;
 
   /** @superdoc */
   public static pln MINIMUM = -32_768s;
@@ -680,7 +680,7 @@ class i8 inherits i16 {
   public static pln NIL = 0b;
 
   /** @superdoc */
-  public static pln SIZE = 8;
+  public static pln SIZE = 8p;
 
   /** @superdoc */
   public static pln MINIMUM = -128b;
@@ -712,7 +712,7 @@ open class u64 inherits vuint {
   public static pln NIL = 0ul;
 
   /** @superdoc */
-  public static pln SIZE = 64;
+  public static pln SIZE = 64p;
 
   /** @superdoc */
   public static pln MINIMUM = 0ul;
@@ -732,7 +732,7 @@ open class u32 inherits u64 {
   public static pln NIL = 0u;
 
   /** @superdoc */
-  public static pln SIZE = 32;
+  public static pln SIZE = 32p;
 
   /** @superdoc */
   public static pln MINIMUM = 0u;
@@ -752,7 +752,7 @@ open class u16 inherits u32 {
   public static pln NIL = 0us;
 
   /** @superdoc */
-  public static pln SIZE = 16;
+  public static pln SIZE = 16p;
 
   /** @superdoc */
   public static pln MINIMUM = 0us;
@@ -771,7 +771,7 @@ class u8 inherits u16 {
   public static pln NIL = 0ub;
 
   /** @superdoc */
-  public static pln SIZE = 8;
+  public static pln SIZE = 8p;
 
   /** @superdoc */
   public static pln MINIMUM = 0ub;
@@ -804,7 +804,7 @@ open class f64 inherits vfloat {
   #supercstr;
 
   /** @superdoc */
-  public static pln SIZE = 64;
+  public static pln SIZE = 64p;
 }
 
 /**
@@ -814,7 +814,7 @@ class f32 inherits f64 {
   #supercstr;
 
   /** @superdoc */
-  public static pln SIZE = 32;
+  public static pln SIZE = 32p;
 }
 
 // ==================== Strings ==================== //
@@ -894,7 +894,7 @@ class string inherits Primitive {
   
   /** @superdoc */
   public func %greater (another: bool) : bool {
-    val smallest_size = min!(@length, another.length);
+    val smallest_size = minp!(@length, another.length);
 
     for i in 0..smallest_size {
       val this_code = @charCodeAt(i);
