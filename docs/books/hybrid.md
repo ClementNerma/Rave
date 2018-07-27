@@ -1781,12 +1781,9 @@ let cubes = (i * i * i for i in 1...10);
 
 This is also why we told you should be careful when using inline loops. All inline loops generate a vector: `Array` exclusively for `for` loops with predictable number of iterations like ranges or elementary incremental / decremental expressions, `List` for anything else.
 
-Note that inline loops will not perform a generation if a `void` is returned (not any NIL value, only this one), or if the generation is not wrapped by parenthesis. So, if you do:
+Note that inline loops will not performif the generation is not wrapped by parenthesis. So, if you do:
 
 ```sn
-// No generation (println! is void-typed)
-(println!(i) for i in 1...10);
-
 // No generation (no parenthesis)
 println!(i) for i in 1...10;
 ```
