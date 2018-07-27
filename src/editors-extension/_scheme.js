@@ -77,6 +77,14 @@ scheme = {
               name: '${purple}'
             },
             {
+              match: /@class\b/,
+              captures: {
+                '0': {
+                  name: '${green}'
+                }
+              }
+            },
+            {
               match: /(@(?:param|template))\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s+/,
               captures: {
                 '1': {
