@@ -1717,7 +1717,7 @@ let name = 'John';
 name = (name == 'Marc') ? 'Welcome Marc' : 'I don\'t know who you are';
 ```
 
-Note that the two values must be of the same type.
+Note that the two values must be compatible, which means you can choose an `u16` and an `u64` value, but not an `int` and a `string` for example.
 
 ### Inline blocks
 
