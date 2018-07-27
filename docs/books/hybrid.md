@@ -2564,7 +2564,9 @@ jack.fight(john); // Prints: 'Jack is going to fight John!'
                   //         'Jack is attacked by John and loses 70 HP!'
 ```
 
-Conventionally, name of classes must start with an uppercase letter (A to Z). Primitive types (`void`, `string`, `int`...) start with a lowercase letter to recognize them more easily and distinguish them from object types.
+When declaring a class, its name must start with an uppercase letter (A to Z), an underscore (_) or a dollar symbol ($) ; starting it with another symbol (e.g. a lowercase letter) will result in an error at build time.
+
+Primitive types (`void`, `string`, `int`...) start with a lowercase letter to recognize them more easily and distinguish them from object types.
 
 ### Members accessibility
 
