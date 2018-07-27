@@ -4655,10 +4655,10 @@ Also, because `Map<K, V>` inherits itself from `Dictionary<K, V>`, you won't hav
 
 Sometimes we want to force one of the dictionary's types, like `Vector<T>` do.
 
-Basically, `Vector<T>` inherits from `Map<K, V>` with `K` **always** being an integer and `V` being `T`:
+Basically, `Vector<T>` inherits from `Map<K, V>` with `K` **always** being a `usize` integer and `V` being `T`:
 
 ```sn
-open dict Vector<T> inherits Map<int, T> { /* ... */ }
+open dict Vector<T> inherits Map<usize, T> { /* ... */ }
 ```
 
 ### Iterators
