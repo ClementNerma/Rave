@@ -486,3 +486,310 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
     }
   }
 }
+
+// ==================== Numbers ==================== //
+
+/**
+ * Virtual number type (primitive)
+ * NOTE: This class is not inheritable outside of this file
+ */
+virtual class number inherits Primitive implements Randomizable, RandomizableWithBounds {
+    /** @superdoc */
+  public func %construct () {};
+  
+  /** @superdoc */
+  public func %construct<T ~ Primitive> (prim: T) => #__magic_set_primitive(self, prim);
+  
+  /** @superdoc */
+  public func %to<bool> () : bool => self != 0;
+  
+  /** @superdoc */
+  public func %to<i64> () : i64 => #__magic_cast(i64, self);
+  
+  /** @superdoc */
+  public func %to<u64> () : u64 => #__magic_cast(u64, self);
+  
+  /** @superdoc */
+  public func %to<f64> () : f64  => #__magic_cast(f64, self);
+  
+  /** @superdoc */
+  public func %to<string> () : string => #__magic_cast(string, self);
+  
+  /** @superdoc */
+  public func %serialize () : string => #__magic_cast(string, self);
+  
+  /** @superdoc */
+  public static func %unserialize (serialized: string) throws UnserializationError : i64 {
+    #__magic_unserialize(i64, serialized);
+  }
+  
+  /** @superdoc */
+  public func %equal (another: i64) : bool => self == another;
+  
+  /** @superdoc */
+  public func %greater (another: _i64) : i64 => self > another;
+  
+  /** @superdoc */
+  public func %smaller (another: i64) : i64 => self < another;
+  
+  /** @superdoc */
+  public static func %call<T ~ Primitive> (prim: T) : i64 => #__magic_cast(i64, prim);
+
+  /** @superdoc */
+  public static func %random () : i64 => #__magic_random_primitive(i64);
+
+  /** @superdoc */
+  public static pln MINIMUM = TODO;
+
+  /** @superdoc */
+  public static pln MAXIMUM = TODO;
+
+  /** @superdoc */
+  public static func %random (low: i64, up: i64) : i64 => #__magic_random_primitive(i64);
+
+  /**
+   * Is this number type signed?
+   */
+  abstract public static pln SIGNED: bool;
+  
+  /**
+   * Does this number type handle floating-point numbers?
+   */
+  abstract public static pln HANDLE_FLOATS: bool;
+
+  /**
+   * On how many bits this number type fits?
+   */
+  abstract public static pln SIZE: usize;
+
+  /**
+   * Generate a random @class
+   * @returns A random @class
+   */
+  abstract public static func %random () : _self;
+
+  /**
+   * The lowest @class value
+   */
+  abstract public static pln MINIMUM: _self;
+
+  /**
+   * The highest @class value
+   */
+  abstract public static pln MAXIMUM: _self;
+
+  /**
+   * Generate a random @class value between two bounds
+   * @param low The lower bound
+   * @param up The upper bound
+   * @returns A random @class between the provided bounds
+   */
+  abstract public static func %random (low: _self, up: _self) : _self;
+}
+
+/**
+ * Virtual integer type (primitive)
+ * NOTE: This class is not inheritable outside of this file
+ */
+open class vint inherits number {
+  #superabstract;
+  #supercstr;
+
+  /** @superdoc */
+  final public static pln HANDLE_FLOATS = false;
+}
+
+/**
+ * Virtual signed integer type (primitive)
+ * NOTE: This class is not inheritable outside of this file
+ */
+open class vsint inherits vint {
+  #superabstract;
+  #supercstr;
+
+  /** @superdoc */
+  final public static pln SIGNED = true;
+}
+
+/**
+ * 64-bit signed integer type (primitive)
+ * NOTE: This class is not inheritable outside of this file
+ */
+open class i64 inherits vsint {
+  #supercstr;
+
+  /** @superdoc */
+  public static pln SIZE = 64;
+
+  /** @superdoc */
+  static pln MINIMUM = -9_223_372_036_854_775_808l;
+
+  /** @superdoc */
+  static pln MAXIMUM = 9_223_372_036_854_775_807l;
+}
+
+/**
+ * 32-bit signed integer type (primitive)
+ * NOTE: This class is not inheritable outside of this file
+ */
+open class i32 inherits i64 {
+  #supercstr;
+
+  /** @superdoc */
+  public static pln SIZE = 32;
+
+  /** @superdoc */
+  static pln MINIMUM = -2_147_483_648;
+
+  /** @superdoc */
+  static pln MAXIMUM = 2_147_483_647;
+}
+
+/**
+ * 16-bit signed integer type (primitive)
+ * NOTE: This class is not inheritable outside of this file
+ */
+open class i16 inherits i32 {
+  #supercstr;
+
+  /** @superdoc */
+  public static pln SIZE = 16;
+
+  /** @superdoc */
+  static pln MINIMUM = -32_768s;
+
+  /** @superdoc */
+  static pln MAXIMUM = 32_767s;
+}
+
+/**
+ * 8-bit signed integer type (primitive)
+ */
+class i8 inherits i16 {
+  #supercstr;
+
+  /** @superdoc */
+  public static pln SIZE = 8;
+
+  /** @superdoc */
+  static pln MINIMUM = -128b;
+
+  /** @superdoc */
+  static pln MAXIMUM = 127b;
+}
+
+/**
+ * Virtual unsigned integer type (primitive)
+ * NOTE: This class is not inheritable outside of this file
+ */
+open class vuint inherits vint {
+  #superabstract;
+  #supercstr;
+
+  /** @superdoc */
+  final public static pln SIGNED = false;
+}
+
+/**
+ * 64-bit unsigned integer type (primitive)
+ * NOTE: This class is not inheritable outside of this file
+ */
+open class u64 inherits vuint {
+  #supercstr;
+
+  /** @superdoc */
+  public static pln SIZE = 64;
+
+  /** @superdoc */
+  static pln MINIMUM = 0ul;
+
+  /** @superdoc */
+  static pln MAXIMUM = 18_446_744_073_709_551_615ul;
+}
+
+/**
+ * 32-bit unsigned integer type (primitive)
+ * NOTE: This class is not inheritable outside of this file
+ */
+open class u32 inherits u64 {
+  #supercstr;
+
+  /** @superdoc */
+  public static pln SIZE = 32;
+
+  /** @superdoc */
+  static pln MINIMUM = 0u;
+
+  /** @superdoc */
+  static pln MAXIMUM = 4_294_967_295u;
+}
+
+/**
+ * 16-bit unsigned integer type (primitive)
+ * NOTE: This class is not inheritable outside of this file
+ */
+open class u16 inherits u32 {
+  #supercstr;
+
+  /** @superdoc */
+  public static pln SIZE = 16;
+
+  /** @superdoc */
+  static pln MINIMUM = 0us;
+
+  /** @superdoc */
+  static pln MAXIMUM = 65_535us;
+}
+
+/**
+ * 8-bit unsigned integer type (primitive)
+ */
+class u8 inherits u16 {
+  #supercstr;
+
+  /** @superdoc */
+  public static pln SIZE = 8;
+
+  /** @superdoc */
+  static pln MINIMUM = 0ub;
+
+  /** @superdoc */
+  static pln MAXIMUM = 255ub;
+}
+
+
+/**
+ * Virtual signed floating-point number type (primitive)
+ * NOTE: This class is not inheritable outside of this file
+ */
+open class vfloat inherits number {
+  #superabstract;
+  #supercstr;
+
+  /** @superdoc */
+  final public static pln SIGNED = true;
+
+  /** @superdoc */
+  final public static pln HANDLE_FLOATS = true;
+}
+
+/**
+ * 64-bit signed floating-point number type (primitive)
+ * NOTE: This class is not inheritable outside of this file
+ */
+open class f64 inherits vfloat {
+  #supercstr;
+
+  /** @superdoc */
+  public static pln SIZE = 64;
+}
+
+/**
+ * 32-bit signed floating-point number type (primitive)
+ */
+class f32 inherits f64 {
+  #supercstr;
+
+  /** @superdoc */
+  public static pln SIZE = 32;
+}
