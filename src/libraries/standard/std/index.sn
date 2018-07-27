@@ -894,7 +894,7 @@ class string inherits Primitive {
   
   /** @superdoc */
   public func %greater (another: bool) : bool {
-    val smallest_size = minp!(@length, another.length);
+    val smallest_size = min!(@length, another.length);
 
     for i in 0..smallest_size {
       val this_code = @charCodeAt(i);
