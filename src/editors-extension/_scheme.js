@@ -759,12 +759,12 @@ scheme = {
         ],
         [
           // Future attributes indicator
-          /#future(?=| *;)/,
+          /#future(?= +|\r|\n| *;)/,
           'orange'
         ],
         [
           // Super abstraction indicator
-          /#superabstract(?=| *;)/,
+          /#superabstract(?= +|\r|\n| *;)/,
           'orange'
         ],
         [
