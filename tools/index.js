@@ -476,11 +476,11 @@ function getHelp (mod) {
  */
 function listModules() {
   // Read the folder
-  return readFolder('tools/modules')
+  return readFolder('tools')
     // Keep only JavaScript files
-    .filter(filename => filename.endsWith('.js'))
+    .filter(filename => filename.endsWith('-builder.js'))
     // Remove file extension
-    .map(filename => path.basename(filename, path.extname(filename)));
+    .map(filename => filename.replace(/-builder\.js$/, ''));
 }
 
 /**
@@ -491,7 +491,7 @@ function listModules() {
  */
 function loadModule(name, argv) {
   // Get the path of the module's script
-  const mod_path = `tools/modules/${name}.js`;
+  const mod_path = `tools/${name}-builder.js`;
 
   // If the target's file is not found...
   if (!fileExists(mod_path))
@@ -837,7 +837,7 @@ else if (typeof argv.module !== 'string') {
     say('Syntax:\n  yarn build <module> <...options>\n  npm run build -- <module> <...options>\n\nTo see more help, write "yarn build --help" / "npm run build -- --help"');
 } else {
   // If the specified module is unknown...
-  if (!fileExists('tools/modules/' + argv.module + '.js'))
+  if (!fileExists('tools/' + argv.module + '-builder.js'))
     // ERROR
     error(`Unknown build module "${argv.module}"`, 3);
 

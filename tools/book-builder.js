@@ -84,15 +84,15 @@ self = {
     // Determine the output folder
     const output_folder = argv.output || 'build/books';
 
-    // Determine the highlights folder
-    const highlights_path = output_folder + '/syntax-package';
+    // Determine the syntax highlighting folder
+    const highlighter_path = output_folder + '/syntax-package';
 
     // Build the syntax highlighting package
     say('Loading the syntax highlighting package...');
 
-    loadModule('highlights', {
+    loadModule('editor-extension', {
       target: 'atom',
-      output: highlights_path,
+      output: highlighter_path,
       SYS_NO_EXIT: true
     }, true).build();
 
@@ -103,7 +103,7 @@ self = {
     verb('Loading the grammars package in the syntax highlighter...');
 
     highlighter.requireGrammarsSync({
-      modulePath: here(highlights_path)
+      modulePath: here(highlighter_path)
     });
 
     // Keep a counter of bytes highlighted per language
@@ -307,7 +307,7 @@ self = {
     verb('========================================');
 
     // Determine the template folder path
-    const tpl_folder_path = 'src/book-template';
+    const tpl_folder_path = 'src/books-template';
 
     // If the template folder is not found...
     if (! folderExists(tpl_folder_path))

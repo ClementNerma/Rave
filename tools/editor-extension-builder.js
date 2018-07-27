@@ -41,7 +41,7 @@ self = {
    * Clean function
    * @returns {void}
    */
-  clean: () => rmdir('build/highlights'),
+  clean: () => rmdir('build/editor-extension'),
 
   /**
    * Build function
@@ -61,10 +61,10 @@ self = {
       error(`Unknown editor "${name}"`, 19);
 
     // Determine the source folder
-    let source_path = 'src/highlights';
+    let source_path = 'src/editors-extension';
 
     // Determine the static folder
-    let static_path = 'src/static';
+    let static_path = 'src/editors-extension/static';
 
     // Determine its path
     let target_path = `${source_path}/${name}.js`;
@@ -93,7 +93,7 @@ self = {
     }
 
     // Determine its path
-    let scheme_path = `src/highlights/_scheme.js`;
+    let scheme_path = `src/editors-extension/_scheme.js`;
 
     // If the file does not exist...
     if (!fileExists(scheme_path))
@@ -158,7 +158,7 @@ self = {
     // Determine the output path
     const output_path = self.argv.output
       ? path.normalize(self.argv.output)
-      : `build/highlights/${name}-${BUILD_CONSTANTS.VERSION}`;
+      : `build/editor-extension/${name}-${BUILD_CONSTANTS.VERSION}`;
 
     // If this folder exists...
     if (folderExists(output_path))

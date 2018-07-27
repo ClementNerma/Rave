@@ -25,18 +25,18 @@
     "node": ">=6.12.3"
   },
   "scripts": {
-    "test": "node tools/build.js --test",
-    "build": "node tools/build.js",
-    "clean": "node tools/build.js --clean",
-    "build-test": "node tools/build.js --test",
-    "build-all": "node tools/build.js --all",
-    "build-live": "node tools/build.js --watch --live-reload --all",
-    "build-dev-live": "node tools/build.js --watch --live-reload --fast --all --module",
-    "read-book": "node tools/build.js --module book --open --book",
-    "install-extension": "node tools/build.js --module highlights --auto-install --target",
-    "manually-install-extension": "node tools/build.js --module highlights --install-help --target",
-    "available-editors": "node tools/build.js --module highlights --list",
-    "website": "node tools/build.js --module website --serve"
+    "test": "node tools/index.js --test",
+    "build": "node tools/index.js",
+    "clean": "node tools/index.js --clean",
+    "build-test": "node tools/index.js --test",
+    "build-all": "node tools/index.js --all",
+    "build-live": "node tools/index.js --watch --live-reload --all",
+    "build-dev-live": "node tools/index.js --watch --live-reload --fast --all --module",
+    "read-book": "node tools/index.js --module book --open --book",
+    "install-extension": "node tools/index.js --module editor-extension --auto-install --target",
+    "manually-install-extension": "node tools/index.js --module editor-extension --install-help --target",
+    "available-editors": "node tools/index.js --module editor-extension --list",
+    "website": "node tools/index.js --module website --serve"
   },
   "dependencies": {
     "babel-core": "^6.26.0",
