@@ -396,3 +396,93 @@ class void inherits Primitive implements Randomizable, RandomizableWithBounds {
    */
   public static func %random (low: void, up: void) : void => null;
 }
+
+// ==================== Booleans ==================== //
+
+/**
+ * Boolean type (primitive)
+ */
+class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
+  /** @superdoc(boolean) */
+  public static pln NIL = false;
+
+
+  /** @superdoc(boolean) */
+  public func %construct () {};
+  
+  /** @superdoc(boolean) */
+  public func %construct<T ~ Primitive> (prim: T) => #__magic_set_primitive(this, prim);
+  
+  /** @superdoc(boolean) */
+  public func %to<bool> () : bool => this;
+  
+  /** @superdoc(boolean) */
+  public func %to<i64> () : i64 => this ? 1l : 0l;
+  
+  /** @superdoc(boolean) */
+  public func %to<u64> () : u64 => this ? 1ul : 0ul;
+  
+  /** @superdoc(boolean) */
+  public func %to<f64> () : f64 => this ? 1d : 0d;
+  
+  /** @superdoc(boolean) */
+  public func %to<string> () : string => this ? 'true' : 'false';
+  
+  /** @superdoc(boolean) */
+  public func %serialize () : string => this ? 'true' : 'false';
+  
+  /** @superdoc(boolean) */
+  public static func %unserialize (serialized: string) throws UnserializationError : bool {
+    if serialized == 'true' {
+      return true;
+    } elsif serialized == 'false' {
+      return false;
+    } else {
+      throw new UnserializationError("Serialized boolean can be either 'true' or 'false'");
+    }
+  }
+  
+  /** @superdoc(boolean) */
+  public func %equal (another: bool) : bool => this == another;
+  
+  /** @superdoc(boolean) */
+  public func %greater (another: bool) : bool => (this == true && another == false);
+  
+  /** @superdoc(boolean) */
+  public func %smaller (another: bool) : bool => (this == false && another == true);
+  
+  /** @superdoc(boolean) */
+  public static func %call<T ~ Primitive> (prim: T) : bool => prim != T.NIL;
+
+  /**
+   * Generate a random boolean
+   * @returns A random boolean
+   */
+  public static func %random () : bool => #__magic_random_primitive(bool);
+
+  /**
+   * The lowest boolean value
+   */
+  public static pln MINIMUM = false;
+
+  /**
+   * The highest boolean value
+   */
+  public static pln MAXIMUM = true;
+
+  /**
+   * Generate a random boolean value between two bounds
+   * @param low The lower bound
+   * @param up The upper bound
+   * @returns A random boolean between the provided bounds
+   */
+  public static func %random (low: bool, up: bool) : bool {
+    if (low == true && up == false) ||
+       (low == false && up == true) {
+      return #__magic_random_primitive(bool);
+    } else {
+      // low == up
+      return low;
+    }
+  }
+}
