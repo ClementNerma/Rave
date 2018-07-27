@@ -621,10 +621,10 @@ open class i64 inherits vsint {
   public static pln SIZE = 64;
 
   /** @superdoc */
-  static pln MINIMUM = -9_223_372_036_854_775_808l;
+  public static pln MINIMUM = -9_223_372_036_854_775_808l;
 
   /** @superdoc */
-  static pln MAXIMUM = 9_223_372_036_854_775_807l;
+  public static pln MAXIMUM = 9_223_372_036_854_775_807l;
 }
 
 /**
@@ -638,10 +638,10 @@ open class i32 inherits i64 {
   public static pln SIZE = 32;
 
   /** @superdoc */
-  static pln MINIMUM = -2_147_483_648;
+  public static pln MINIMUM = -2_147_483_648;
 
   /** @superdoc */
-  static pln MAXIMUM = 2_147_483_647;
+  public static pln MAXIMUM = 2_147_483_647;
 }
 
 /**
@@ -655,10 +655,10 @@ open class i16 inherits i32 {
   public static pln SIZE = 16;
 
   /** @superdoc */
-  static pln MINIMUM = -32_768s;
+  public static pln MINIMUM = -32_768s;
 
   /** @superdoc */
-  static pln MAXIMUM = 32_767s;
+  public static pln MAXIMUM = 32_767s;
 }
 
 /**
@@ -671,10 +671,10 @@ class i8 inherits i16 {
   public static pln SIZE = 8;
 
   /** @superdoc */
-  static pln MINIMUM = -128b;
+  public static pln MINIMUM = -128b;
 
   /** @superdoc */
-  static pln MAXIMUM = 127b;
+  public static pln MAXIMUM = 127b;
 }
 
 /**
@@ -700,10 +700,10 @@ open class u64 inherits vuint {
   public static pln SIZE = 64;
 
   /** @superdoc */
-  static pln MINIMUM = 0ul;
+  public static pln MINIMUM = 0ul;
 
   /** @superdoc */
-  static pln MAXIMUM = 18_446_744_073_709_551_615ul;
+  public static pln MAXIMUM = 18_446_744_073_709_551_615ul;
 }
 
 /**
@@ -717,10 +717,10 @@ open class u32 inherits u64 {
   public static pln SIZE = 32;
 
   /** @superdoc */
-  static pln MINIMUM = 0u;
+  public static pln MINIMUM = 0u;
 
   /** @superdoc */
-  static pln MAXIMUM = 4_294_967_295u;
+  public static pln MAXIMUM = 4_294_967_295u;
 }
 
 /**
@@ -734,10 +734,10 @@ open class u16 inherits u32 {
   public static pln SIZE = 16;
 
   /** @superdoc */
-  static pln MINIMUM = 0us;
+  public static pln MINIMUM = 0us;
 
   /** @superdoc */
-  static pln MAXIMUM = 65_535us;
+  public static pln MAXIMUM = 65_535us;
 }
 
 /**
@@ -750,10 +750,10 @@ class u8 inherits u16 {
   public static pln SIZE = 8;
 
   /** @superdoc */
-  static pln MINIMUM = 0ub;
+  public static pln MINIMUM = 0ub;
 
   /** @superdoc */
-  static pln MAXIMUM = 255ub;
+  public static pln MAXIMUM = 255ub;
 }
 
 
