@@ -4719,7 +4719,18 @@ This code is equivalent to the class we wrote before. We'll, its a lot more simp
 
 The function is marked with the `iter` keyword to indicate it's an iterator, as well as the `func` keyword because it's a function (even if it will be converted to an `Iterator<T>` class). Its signature also tells it returns an iteration. In its body, it simply makes a loop that _yields_ some values. To be exact, each time the `yield` keyword is encountered, the value is returned and the function is _paused_ until the program asks to generate values again. So, all resources locally defined by the function stays in memory.
 
-Now, let's see how to use iterators in loops to explore dictionaries.
+We can use a loop to explore an iterator's values:
+
+```sn
+iter oneAndTwo () : int {
+  yield 1;
+  yield 2;
+}
+
+for i in mySuperIterator {
+  println!(i); // Prints: '1' then '2'
+}
+```
 
 ### Exploring dictionaries
 
