@@ -1008,3 +1008,310 @@ Also, slicing a too short vector will result in an error:
 val arr = [ 2 ];
 val [ left, ...middle, right ] = arr; // ERROR (too short vector)
 ```
+
+## Blocks
+
+Blocks allow to control the program's flow or to perform some specific actions. They use the following syntax:
+
+```sn
+[keyword] [head?] {
+  [body]
+}
+```
+
+### Scopes
+
+Instructions are always located in a _scope_.
+
+Anywhere, an opening brace indicates the beginning of a new scope, _child_ of the current one, and a closing brace indicates the end of the last-opened scope. The newly-created scope has for parents the scope it is declared in plus all its parent scope's own parents.
+
+Outside braces, the code is located inside the _main scope_, which is declared implicitly.
+
+A scope can access the entities declared in it as well as in its _parent scopes_, but not them declared in its children scopes, which means the main scope can only access the entities declared in it.
+
+```sn
+// e.g.
+
+// <- main scope (scope 0)
+let scope0 = true;
+
+{ // <- main scope's child (scope 1)
+  let scope1 = true;
+
+  { // <- scope 1's child (scope 2)
+    let scope2 = true;
+
+    scope2; // Works
+    scope1; // Works
+    scope0; // Works
+  } // <- end of scope 2
+
+  scope2; // ERROR
+  scope1; // Works
+  scope0; // Works
+
+} // <- end of scope 1
+
+scope2; // ERROR
+scope1; // ERROR
+scope0; // Works
+
+// <- end of the main scope
+```
+
+### Conditional block
+
+The _conditional block_ uses the `if` and takes as its head a value, called its _condition_. Its body is ran if, and only if, its condition is not a NIL value.
+
+```sn
+// e.g.
+if 2 == 2 {
+  // body will be ran
+}
+
+// e.g.
+if 2 != 2 {
+  // body won't be ran
+}
+```
+
+The _condition reverser block_ uses the `else` keyword. Its body is ran if the condition of the previous conditional block is a NIL value. It can only be placed after the closing brace of the previous conditional block:
+
+```sn
+// e.g.
+if 2 != 2 {
+  // body won't be ran
+} else {
+  // body will be run
+}
+```
+
+The conditional and condition reverser blocks can be mixed together by using the `elsif` keyword, which takes a condition as its head. Its body is ran if the previous conditional block's condition is a NIL value and if its condition is not a NIL value.
+
+As `elsif` being a conditional block itself, it can be followed by a condition reverser block.
+
+```sn
+// e.g.
+if 2 != 2 {
+  // body won't be ran
+} elsif 3 != 3 {
+  // body won't be ran
+} elsif 4 == 4 {
+  // body will be ran
+} else {
+  // body won't be ran
+}
+```
+
+#### Ternary conditions
+
+A _ternary condition_ is not a block but a shortened syntax of an `if` block followed by an `else` block. It takes a condition, a _success value_ as well as a _fail value_ and uses the following syntax:
+
+```sn
+[condition] ? [success value] : [fail value]
+```
+
+If its condition is a NIL value, it returns its success value, else its fail value. The two values must be of the same type. A ternary condition is considered itself as an expression.
+
+### Incremental repetition
+
+The _incremental repetition block_ uses the `for` keyword. Its head is made of an _initialization instruction_, followed by a condition, and finally by an _iteration instruction_ which doesn't end by the usual `;` symbol.
+
+This block is also a _loop block_. It creates a _loop_, which consists in repeating the execution of its body from zero to several times. The evaluation of a loop's body is called an _iteration_.
+
+The initialization instruction is ran at the beginning of the loop.
+
+The condition is ran each time the loop's body is ran. If it's a NIL value, the loop is stopped (_breaked_).
+
+The iteration instruction is ran each time the loop's body is going to ran (so after the condition has been evaluated and returned a non-NIL value).
+
+When the iteration instruction has been ran, the loop's body is run. The, we go back to evaluating the condition, and so on until the loop breaks.
+
+```sn
+// e.g.
+for i = 0; i < 5; i ++ {
+  i; // 0, then 1, then 2, then 3, then 4
+}
+```
+
+#### Specific case for iterators
+
+When the `for` loop is written using the following syntax:
+
+```sn
+for [name] = [value]; [condition]; [iteration instruction] {
+  [body]
+}
+```
+
+The `[name]` is called the loop's _iterator_. It is implicitly created as a mutable and is made part of the block's scope:
+
+```sn
+// 'i' is implicitly creates as a mutable
+//   in the loop's scope
+for i = 0; i < 5; i ++ {}
+
+i; // ERROR ('i' is not in this scope)
+```
+
+### Breaking and continuing loops
+
+Loops can be manually broke using the `break` keyword as an instruction. When ran, it breaks the loop it's directly located in.
+
+```sn
+// e.g.
+for i = 0; i < 5; i ++ {
+  if i == 2 {
+    break ;
+  }
+
+  i; // 0, then 1
+}
+```
+
+The `continue` keyword can also be used as an instruction to ignore all the instructions below it and directly go back to evaluating the loop's condition.
+
+```sn
+// e.g.
+for i = 0; i < 5; i ++ {
+  continue ;
+
+  i; // This instruction is never ran
+}
+```
+
+### Conditional repetition
+
+The _condition repetition block_ is a loop block that uses the `while` keyword. Its head is a condition, evaluated at the beginning of the loop. If it's a NIL value, the loop is broke ; else the loop's body is ran and we go back to evaluating the condition.
+
+```sn
+// e.g.
+let i = 0;
+
+while i < 5 {
+  i ++; // 0, then 1, then 2, then 3, then 4
+}
+```
+
+### `while` variant: `until`
+
+The _reversed condition repetition block_ is a loop block that uses the `until` keyword and behaves exactly as a `while` loop, except it breaks if its condition is a NIL value.
+
+```sn
+// e.g.
+let i = 0;
+
+until i == 5 {
+  i ++; // 0, then 1, then 2, then 3, then 4
+}
+```
+
+### `while` variant: `do...while`
+
+The _end-checked condition repetition block_ is a loop block that uses the following syntax:
+
+```sn
+do {
+  [body]
+} while [condition];
+```
+
+Its condition is evaluted at the end of the loop. If it's a NIL value, the loop breaks ; else it goes back to the beginning of the loop.
+
+```sn
+// e.g.
+let i = 0;
+
+do {
+  i ++; // 0, then 1, then 2, then 3, then 4, then 5
+} while i < 5;
+```
+
+### `while` variant: `loop`
+
+The _infinite repetition block_ is a loop block that uses the `loop` keyword. It does not have any head and runs its body undefinitely - only a `break` instruction can break it.
+
+```sn
+// e.g.
+loop {
+  i ++; // 0, then 1, then 2, then 3
+
+  if i == 3 {
+    break ;
+  }
+}
+```
+
+Although it behaves exactly like a `while true { [body] }` loop, it's better to use this one because it allows a better optimization at build time.
+
+### `match` for matches
+
+The _match block_ uses the following syntax:
+
+```sn
+match [subject] {
+  [value1] -> [instruction1];
+  [value2] -> [instruction2];
+  ...
+  [value3] -> [instruction3];
+}
+```
+
+It runs the instruction on the right of the value that matches the subject's one. The values must be simple, not expressions.
+
+```sn
+// e.g.
+match 'Hello' {
+  'Hi' -> null;
+  'Hello' -> null; // This instruction will be ran
+  'Goodbye' -> null;
+}
+```
+
+It's also possible to specify conditions by wrapping it between parenthesis and writing it instead of a value:
+
+```sn
+// e.g.
+match 'Hello' {
+  (true == true) -> null; // This instruction will be ran
+}
+```
+
+If several tests match, only the instruction on the first one's right is ran.
+
+The `default` keyword matches if no match has occured in the block yet:
+
+```sn
+// e.g.
+match 'Hello' {
+  'Hi' -> null;
+  default -> null; // This instruction will be ran
+}
+```
+
+### Inline blocks
+
+Blocks can be used in an _inline syntax_. They are placed after an expression to make an instruction, which will be their body. They still keep their head, but they don't have braces anymore, so their syntax become the following:
+
+```sn
+[instruction] [keyword] [head?];
+
+// e.g.
+let i = 0;
+
+i = i + 1 if i < 5;
+i = i + 2 while i < 10;
+```
+
+Note that the inline syntax keeps the scope creation blocks perform but it's useful only with the `for` loop which implicitly creates a mutable in its scope.
+
+#### Inline generation
+
+Inline generation is performed by using any loop block inline, if and only if the expression as well as the inline block are wrapped between parenthesis. It initially creates an empty list of the same type than the expression, and add the evaluated expression's result in it at each iteration.
+
+```sn
+// e.g.
+
+// Generates a List<int>
+let cubes = (i * i * i for i = 0; i < 10; i ++);
+```
