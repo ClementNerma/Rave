@@ -268,7 +268,7 @@ for (let link of nav_links) {
     // If its target is not the section...
     if (target !== parent)
       // Get its target and scroll to it
-      window.scrollTo(0, q(`[data-id="${target}"]`).offsetTop);
+      q(`[data-id="${target}"]`).scrollIntoView();
 
     // Another way to ignore the click
     return false;
