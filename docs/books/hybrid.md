@@ -3907,28 +3907,28 @@ You now know how this 'magic' typecasting work between integers.
 
 When we give to a function that expects a given type a value of one of its child type, an implicit typecast is performed. This is also why we can give an `i16` where an `i32` is expected, as `i32` is a mother class of `i16`.
 
-The type hierarchy of numbers is the following: `i8` is a child of `i16`, itself child of `i32` which is child of `i64`. Finally, it inherits from `SignedInteger`. On its side, `u8` inherits from `u16`, itself child of `u32` whilch is child of `u64`. Finally, it inherits from `UnsignedInteger`.
+The type hierarchy of numbers is the following: `i8` is a child of `i16`, itself child of `i32` which is child of `i64`. Finally, it inherits from `vsint`. On its side, `u8` inherits from `u16`, itself child of `u32` whilch is child of `u64`. Finally, it inherits from `vuint`.
 
-Both `SignedInteger` and `UnsignedInteger` inherits from `VirtualInteger`, which itself inherits from `Number`. Here is a little schema to summarize this complex inheritance model:
+Both `vsint` and `vuint` inherits from `vint`, which itself inherits from `number`. Here is a little schema to summarize this complex inheritance model:
 
 ```plain
-Number
+number
 |
-|- VirtualInteger
+|- vint
 |
-|-- SignedInteger
+|-- vsint
 |--- i64
 |---- i32 (int)
 |----- i16
 |------ i8
 |
-|-- UnsignedInteger
+|-- vuint
 |--- u64
 |---- u32 (uint)
 |----- u16
 |------ u8
 |
-|- VirtualFloatingPoint
+|- vfloat
 |--- f64
 |---- f32
 ```
