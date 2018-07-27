@@ -1779,7 +1779,7 @@ The result will be the same. Because the builder has a great support of inferred
 let cubes = (i * i * i for i in 1...10);
 ```
 
-This is also why we told you should be careful when using inline loops. All inline loops generate a `List`.
+This is also why we told you should be careful when using inline loops: all inline loops generate a `List`.
 
 Note that inline loops will not perform if the generation is not wrapped by parenthesis. So, if you do:
 
