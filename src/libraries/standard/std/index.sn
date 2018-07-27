@@ -871,24 +871,31 @@ class string inherits Primitive {
   /** @superdoc */
   public func %to<string> () : string => this;
   
+  /**
+   * @superdoc
+   * @example 'Hello \\ "guys"'.%serialize() == "Hello \\\\ \\"guys\\""
+   */
+  // DEVNOTE: * Add backslashes before each backslash
+  //          * Add backslashes before each double quote
+  //          * Replace all line breaks by their string equivalent
+  //          * Wraps the string between double quotes
+  public func %serialize () : string;
+
   /** @superdoc */
-  public func %serialize () : string => this ? '"' + this.replace('\\', '\\\\').replace('"', '\\"');
+  public static func %unserialize (serialized: string) throws UnserializationError : string;
+
+  /** @superdoc */
+  // DEVNOTE: * If the strings are different, the strings are not equal
+  //          * Compare each character one by one: if any is different, the strings are not equal
+  //          * Else, they are equal
+  public func %equal (another: bool) : bool;
   
   /** @superdoc */
-  public static func %unserialize (serialized: string) throws UnserializationError : string => #__magic_todo;
-
-  /** @superdoc */
-  public func %equal (another: bool) : bool {
-    return false if @size != another.size;
-
-    for i in 0...@size {
-      return false if @getCharCodeAt(i) != another.getCharCodeAt(i);
-    }
-
-    return true;
-  };
-  
-  /** @superdoc */
+  // DEVNOTE: * Compare each character one by one until the end of the shortest string:
+  //            -> if this string's character has a greater ASCII code than the other, this string is greater
+  //            -> if the other string's character has a greater ASCII code than the other, the other is greater
+  //          * Else, if this string is longer than or equal to the other one, this string is greater
+  //          * Else, the other string is greater than this one
   public func %greater (another: bool) : bool {
     val smallest_size = min!(@length, another.length);
 
@@ -904,13 +911,250 @@ class string inherits Primitive {
   }
   
   /** @superdoc */
-  public func %smaller (another: bool) : bool => {
-    return false if this.%equal(another);
-    return false if this.%greater(another);
-  };
+  // DEVNOTE: * If this string is equal to the other one, it is not smaller
+  //          * If this string is greater than the other one, it is not smaller
+  //          * Else, this string is smaller than the other one
+  public func %smaller (another: bool) : bool;
   
   /** @superdoc */
   public static func %call<T ~ Primitive> (prim: T) : string => <string> prim;
+
+  /**
+   * The first character
+   */
+  public val firstChar: string;
+
+  /**
+   * The last character
+   */
+  public val lastChar: string;
+
+  /**
+   * The number of characters in the string
+   */
+  public val length: u32;
+
+  /**
+   * Get the character a given position
+   * @param pos The character's position
+   * @returns The character
+   */
+  public func charAt (pos: u32) : string;
+
+  /**
+   * Get the ASCII code of a character at a given position
+   * @param pos The character's position
+   * @returns The character's ASCII code
+   */
+  public func charCodeAt (pos: u32) : uint;
+
+  /**
+   * Get the code point of a character at a given position
+   * @param pos The character's position
+   * @returns The character's code point
+   */
+  public func codePointAt (pos: u32) : uint;
+
+  /**
+   * Count the times a text appears in this string
+   * @param lookfor The text to look for
+   * @returns Number of times the given text appears in this string
+   */
+  public func count (lookfor: u32) : uint;
+
+  /**
+   * Cut the string
+   * @param start The start position
+   * @param end The end position
+   * @returns The cut string, between the start and end position (both included)
+   */
+  public func cut (start: u32, end: u32) : string;
+
+  /**
+   * Check if the string ends with a text
+   * @param lookfor The text to look for
+   * @returns `true` if the string ends with the given text
+   */
+  public func endsWith (lookfor: string) : bool;
+
+  /**
+   * Prefix some characters with a backslash
+   * @param chars A list of characters to escape
+   * @returns The escaped string
+   * @example "'Hello'".escape("'") == "\\'Hello\\'"
+   * @samedef
+   */
+  public func escape (chars: Vector<string>) : string;
+
+  /**
+   * Get the first word of the string
+   * @param sep The word seperator (default: white space)
+   * @returns The string's first word
+   */
+  public func firstWord (sep: string = ' ') : string;
+
+  /**
+   * Get the index of a string inside this one
+   * @param lookfor The string to look for
+   * @returns The position of 'lookfor' in the string (null if not found)
+   */
+  public func indexOf (lookfor: string) : u32?;
+
+  /**
+   * Get the last index of a string
+   * @param lookfor The string to look for
+   * @returns The last position of 'lookfor' in the string (null if not found)
+   */
+  public func lastIndexOf (lookfor: string) : u32?;
+
+  /**
+   * Get the last word of the string
+   * @param sep The word separator (default: white space)
+   */
+  public func lastWord (sep: string = ' ') : string;
+
+  /**
+   * Check if the string contains a text
+   * @param lookfor The text to look for
+   * @returns `true` if the text was found
+   */
+  public func includes (lookfor: string) : bool;
+
+  /**
+   * Check if the string is in another string
+   * @param lookin The string that could contain this one
+   * @returns `true` if this string is contained into the given one
+   */
+  public func isIn (lookin: string) : bool;
+
+  /**
+   * Check if the string is in a vector of string
+   * @param lookin The vector that could contain this string
+   * @returns `true` if this string is contained into the given vector
+   */
+  public func isIn (lookin: Vector<string>) : bool;
+
+  /**
+   * Parse the string as a number (recommended in front of numerical typecasting)
+   * @template T The output format (must be a class inheriting from `number` or `number` itself)
+   * @param base The input number's base (default: 10 for decimal)
+   * @returns The parsed number
+   * @example "2".parse() == "2" && "2.8".parse(float) == "2.8"
+   */
+  public func parse<T ~ realnumber = int> (base: T = 10) throws StringParsingError : T;
+
+  /**
+   * Repeat the string a given amount of times
+   * @param times The amount of times the string must be repeated
+   * @returns The string, repeated
+   */
+  public func repeat (times: u32) : string;
+
+  /**
+   * Check if the string starts by a text
+   * @param lookfor The text to look for
+   * @returns `true` if the string starts by the given text
+   */
+  public func startsWith (lookfor: string) : bool;
+
+  /**
+   * Split the string into an array
+   * @param model The separator
+   * @returns An array containing each part of the array as an individual string
+   */
+  public func split (model: string) : string[];
+
+  /**
+   * Cut a string (fixed length)
+   * @param start The start position
+   * @param length The length
+   * @returns The string cut from the start position with the given length
+   */
+  public func substr (start: u32, length: u32) : string;
+
+  /**
+   * Convert the string to base64
+   * @returns This string as a base64 string
+   */
+  public func toBase64 () : string;
+
+  /**
+   * Convert the string to a list
+   * @returns The string as a list of single characters
+   */
+  public func toList () : List<string>;
+
+  /**
+   * Convert the string to an array
+   * @returns The string as an array of single characters
+   */
+  public func toArray () : string[];
+
+  /**
+   * Get the lowercase version of the string
+   * @returns This string, lowercased
+   */
+  public func toLowerCase () : string;
+
+  /**
+   * Get the uppercase version of the string
+   * @returns This string, uppercased
+   */
+  public func toUpperCase () : string;
+
+  /**
+   * Trim spaces at the beginning and the end of the string
+   * @returns This string, trimmed
+   */
+  public func trim () : string;
+
+  /**
+   * Trim spaces at the beginning of the string
+   * @returns This string, trimmed from the left
+   */
+  public func trimLeft () : string;
+
+  /**
+   * Trim spaces at the end of the string
+   * @returns This string, trimmed for the right
+   */
+  public func trimRight () : string;
+
+  /**
+   * Get a word of the string
+   * @param pos The word's index (starting from 0)
+   * @param sep The word separator (default: white space)
+   * @returns The word (in case of error, returns an empty string)
+   */
+  public func word (pos: u32, sep: string = ' ') : string;
+
+  /**
+   * Get all string's words (same as splitting with spaces)
+   * @param sep Word separator (default: white space)
+   * @returns The words
+   */
+  public func words (sep: string = ' ') : string[];
+
+  /**
+   * Decode a base64 string
+   * @param base64 The base64 string to decode
+   * @returns The given base64 string, decoded
+   */
+  public static func fromBase64 (base64: string) : string;
+
+  /**
+   * Make a string from a char code
+   * @param code The char code to use
+   * @returns The string made from the given char code
+   */
+  public static func fromCharCode (code: int) : string;
+
+  /**
+   * Make a string from a code point
+   * @param code The code point to use
+   * @returns The string made from the given code point
+   */
+  public static func fromCodePoint (code: int) : string;
 }
 
 // ==================== Context-dependant plain constants ==================== //
