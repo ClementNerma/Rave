@@ -495,57 +495,57 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
  */
 virtual class number inherits Primitive implements Randomizable, RandomizableWithBounds {
     /** @superdoc */
-  public func %construct () {};
+  final public func %construct () {};
   
   /** @superdoc */
-  public func %construct<T ~ Primitive> (prim: T) => #__magic_set_primitive(self, prim);
+  final public func %construct<T ~ Primitive> (prim: T) => #__magic_set_primitive(self, prim);
   
   /** @superdoc */
-  public func %to<bool> () : bool => self != 0;
+  final public func %to<bool> () : bool => self != 0;
   
   /** @superdoc */
-  public func %to<i64> () : i64 => #__magic_cast(i64, self);
+  final public func %to<i64> () : i64 => #__magic_cast(i64, self);
   
   /** @superdoc */
-  public func %to<u64> () : u64 => #__magic_cast(u64, self);
+  final public func %to<u64> () : u64 => #__magic_cast(u64, self);
   
   /** @superdoc */
-  public func %to<f64> () : f64  => #__magic_cast(f64, self);
+  final public func %to<f64> () : f64  => #__magic_cast(f64, self);
   
   /** @superdoc */
-  public func %to<string> () : string => #__magic_cast(string, self);
+  final public func %to<string> () : string => #__magic_cast(string, self);
   
   /** @superdoc */
-  public func %serialize () : string => #__magic_cast(string, self);
+  final public func %serialize () : string => #__magic_cast(string, self);
   
   /** @superdoc */
-  public static func %unserialize (serialized: string) throws UnserializationError : i64 {
+  final public static func %unserialize (serialized: string) throws UnserializationError : i64 {
     #__magic_unserialize(i64, serialized);
   }
   
   /** @superdoc */
-  public func %equal (another: i64) : bool => self == another;
+  final public func %equal (another: i64) : bool => self == another;
   
   /** @superdoc */
-  public func %greater (another: _i64) : i64 => self > another;
+  final public func %greater (another: _i64) : i64 => self > another;
   
   /** @superdoc */
-  public func %smaller (another: i64) : i64 => self < another;
+  final public func %smaller (another: i64) : i64 => self < another;
   
   /** @superdoc */
-  public static func %call<T ~ Primitive> (prim: T) : i64 => #__magic_cast(i64, prim);
+  final public static func %call<T ~ Primitive> (prim: T) : i64 => #__magic_cast(i64, prim);
 
   /** @superdoc */
-  public static func %random () : i64 => #__magic_random_primitive(i64);
+  final public static func %random () : i64 => #__magic_random_primitive(i64);
 
   /** @superdoc */
-  public static pln MINIMUM = TODO;
+  final public static pln MINIMUM = TODO;
 
   /** @superdoc */
-  public static pln MAXIMUM = TODO;
+  final public static pln MAXIMUM = TODO;
 
   /** @superdoc */
-  public static func %random (low: i64, up: i64) : i64 => #__magic_random_primitive(i64);
+  final public static func %random (low: i64, up: i64) : i64 => #__magic_random_primitive(i64);
 
   /**
    * Is this number type signed?
