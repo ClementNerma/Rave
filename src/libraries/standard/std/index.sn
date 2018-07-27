@@ -14,6 +14,11 @@
 //       This is allowed as this file only acts as a reference ; native types are self-dependent and so couldn't be
 //        described another way.
 
+// NOTE: This file is allowed to declare context-dependant plain constants without an initialization value.
+
+// NOTE: This file is allowed to use native types or context-dependant plain constants before their declaration,
+//        as some are self-dependants.
+
 // Only module of the STD package
 #[module];
 
@@ -791,13 +796,13 @@ class usize inherits uint {
   public static pln NIL = 0p;
 
   /** @superdoc */
-  public static pln SIZE = PROC_ARCH;
+  public static pln SIZE = PROC_ARCH_BITS;
 
   /** @superdoc */
   public static pln MINIMUM = 0p;
 
   /** @superdoc */
-  public static pln MAXIMUM = 2p ** PROC_ARCH - 1p;
+  public static pln MAXIMUM = 2p ** PROC_ARCH_BITS - 1p;
 }
 
 /**
@@ -907,3 +912,32 @@ class string inherits Primitive {
   /** @superdoc */
   public static func %call<T ~ Primitive> (prim: T) : string => <string> prim;
 }
+
+// ==================== Context-dependant plain constants ==================== //
+
+// NOTE: [WARNING] The values context-dependant plain constants can take are not fixed for now.
+//                 They can considerably evolve before the stable version of the language.
+
+/**
+ * Processor architecture
+ * @example 'x86' ; 'arm'
+ */
+pln PROC_ARCH: string;
+
+/**
+ * Number of bits of the processor
+ * @example 32p ; 64p
+ */
+pln PROC_ARCH_BITS: usize;
+
+/**
+ * Name of the operating system
+ * @example 'windows' ; 'linux'
+ */
+pln OS_NAME: string;
+
+/**
+ * Full name of the operating system
+ * @example 'Linux admin-laptop 2.6.32-21-generic #32-Ubuntu SMP Fri Apr 16 08:09:38 UTC 2010 x86_64 GNU/Linux'
+ */
+pln OS_FULL_NAME: string;
