@@ -1,0 +1,213 @@
+/**
+ * @file Standard Library definition file
+ * @author Clément Nerma
+ * @license Apache-2.0
+ */
+
+// NOTE: This file declares all entities natively available in SilverNight programs.
+//       It is not ran at the beginning of each program but simply acts as a reference for developers and IDEs.
+
+// NOTE: The body of many functions has been written in this file ; it only acts as a reference and may not
+//        be implemented exactly the same way during build. Still, the functions' behaviour must remain the same.
+
+// NOTE: Some declarations use a forbidden syntax like declaring as a plain member an instance of the current class.
+//       This is allowed as this file only acts as a reference ; native types are self-dependent and so couldn't be
+//        described another way.
+
+// Only module of the STD package
+#[module];
+
+// Frontend libraries are declared as extern
+#[extern];
+
+// ==================== Basic types ==================== //
+
+/**
+ * Generic type
+ */
+interface Any {}
+
+/**
+ * Static reference operator
+ * @template DATA The data to get the class from
+ * @returns The class 'DATA' is an instance of
+ */
+proxy! static<DATA: Any>: #raw<Class> {
+  getter: flex () : #raw<Class> {
+    return classof!(DATA);
+  }
+};
+
+// Reference to the current instance's class
+type _this = static<this>;
+
+// Reference to the current class
+type _self = static<self>;
+
+// Reference to the current class' mother
+type _super = static<super>;
+
+// ==================== Typecastable types ====================
+
+/**
+ * Types convertible to a boolean
+ */
+interface BooleanConvertible {
+  // Set a typecasting path for booleans
+  func %to<bool> = string || f64 || f32 || u64 || i64 || u32 || i32 || u16 || i16 || u8 || i8;
+}
+
+/**
+ * Types convertible to an integer
+ */
+interface IntegerConvertible {
+  // Set a typecasting path for signed integers
+  func %to<i64> = f64 || u64 || f32 || i32 || u32 || i16 || u16 || i8 || u8 || bool;
+
+  // Set a typecasting path for unsigned integers
+  func %to<u64> = f64 || i64 || f32 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
+}
+
+/**
+ * Types convertible to a floating-point number
+ */
+interface FloatConvertible {
+  // Set a typecasting path for floating-point numbers
+  func %to<f64> = f32 || u64 || i64 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
+}
+
+/**
+ * Types convertible to a number
+ */
+interface Numerizable {
+  // Set a typecasting path for numbers
+  func %to<number> = f64 || u64 || i64 || f32 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
+}
+
+/**
+ * Types which can be converted to a string
+ */
+interface Stringifyable {
+  // Set a typecasting path for strings
+  func %to<string> = f64 || u64 || i64 || f32 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
+}
+
+// ==================== Clonable types ==================== //
+
+/**
+ * Clonable types
+ */
+interface Clonable {
+  /**
+   * Clone the current instance
+   * @returns A clone of the current instance
+   */
+  func %clone () : _self;
+}
+
+// ==================== Serializable types ==================== //
+
+/**
+ * Serializable types
+ */
+interface Serializable {
+  /**
+   * Serialize the current instance
+   * @returns The current instance as a string
+   */
+  func %serialize () : string;
+
+  /**
+   * Unserialize a string to an instance of the current type
+   * @param serialized An instance of the current type, serialized
+   * @returns An instance of this type
+   */
+  static func %unserialize (serialized: string) throws UnserializationError : _self;
+}
+
+// ==================== Comparable types ==================== //
+
+/**
+ * Comparable types
+ */
+interface Comparable {
+  /**
+   * Check if this instance is equal to another
+   * @param another Another instance of this type
+   * @returns `true` if this instance is equal to the provided one
+   */
+  func %equal (another: _self) : bool;
+
+  /**
+   * Check if this instance is greater than another
+   * @param another Another instance of this type
+   * @returns `true` if this instance is greater than the provided one
+   */
+  func %greater (another: _self) : bool;
+
+  /**
+   * Check if this instance is smaller than another
+   * @param another Another instance of this type
+   * @returns `true` if this instance is smaller than the provided one
+   */
+  func %smaller (another: _self) : bool;
+}
+
+// ==================== Randomizable types ==================== //
+
+/**
+ * Types able to generate a random value
+ */
+interface Randomizable {
+  /**
+   * Generate a random value of this type
+   * @returns A random value of this type
+   */
+  static func %random () : _self;
+}
+
+/**
+ * Types able to generate a random value between two bounds
+ */
+interface RandomizableWithBounds {
+  /**
+   * This type's minimum value
+   */
+  static val MINIMUM: _self;
+
+  /**
+   * This type's maximum value
+   */
+  static val MAXIMUM: _self;
+
+  /**
+   * Generate a random value of this type between two bounds
+   * @param low The lower bound
+   * @param up The upper bound
+   * @returns A random value of this type
+   */
+  static func %random (low: _self, up: _self) : _self;
+}
+
+// ==================== Callable types ==================== //
+
+/**
+ * Callable types
+ */
+interface Callable {
+  /**
+   * Call this instance as a function
+   */
+  func %call(#__magic_arguments) : #__magic_return_type;
+}
+
+/**
+ * Callable classes
+ */
+interface StaticallyCallable {
+  /**
+   * Call this class as a function
+   */
+  static func %call(#__magic_arguments) : #__magic_return_type;
+}
+
