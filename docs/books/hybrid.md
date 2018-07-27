@@ -1770,7 +1770,7 @@ for i in 1...10 {
 But there is another, simplier way to generate this array, using _inline generation_:
 
 ```sn
-let cubes: int[10] = (i * i * i for i in 1...10);
+let cubes: List<int> = (i * i * i for i in 1...10);
 ```
 
 The result will be the same. Because the builder has a great support of inferred typing, you can also omit the `cubes`' explicit type:
@@ -1779,7 +1779,7 @@ The result will be the same. Because the builder has a great support of inferred
 let cubes = (i * i * i for i in 1...10);
 ```
 
-This is also why we told you should be careful when using inline loops. All inline loops generate a vector: `Array` exclusively for `for` loops with predictable number of iterations like ranges or elementary incremental / decremental expressions, `List` for anything else.
+This is also why we told you should be careful when using inline loops. All inline loops generate a `List`.
 
 Note that inline loops will not perform if the generation is not wrapped by parenthesis. So, if you do:
 
