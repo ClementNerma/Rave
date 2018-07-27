@@ -1482,7 +1482,7 @@ if name == 'Marco' {
 } elsif name == 'John' {
   println!('Welcome, John!');
 } else {
-  println!('I can't remember you...');
+  println!('I can\'t remember you...');
 }
 ```
 
@@ -1663,7 +1663,7 @@ if name == 'Paul' {
 } elsif name == 'Marc' {
   println!('Hello there Marc!');
 } else {
-  println!('I don't know you...');
+  println!('I don\'t know you...');
 }
 ```
 
@@ -1674,7 +1674,7 @@ match name {
   'Paul'  -> println!('Happy birthday, Paul!');
   'John'  -> println!('How are you, John?');
   'Marc'  -> println!('Hello there Marc!');
-  default -> println!('I don't know you...');
+  default -> println!('I don\'t know you...');
 }
 ```
 
@@ -1714,7 +1714,7 @@ _Ternary conditions_ are an alternative to simple conditions. They always return
 
 ```sn
 let name = 'John';
-name = (name == 'Marc') ? 'Welcome Marc' : 'I don't know who you are';
+name = (name == 'Marc') ? 'Welcome Marc' : 'I don\'t know who you are';
 ```
 
 ### Inline blocks
@@ -2562,14 +2562,14 @@ Private members are restricted to the inside of the class, meaning they can be u
 ```sn
 class Example {
   public val hello = 'world!';
-  private val secret = 'I'm private!';
+  private val secret = 'I\'m private!';
 
   public func printSecret () => println!(this.secret);
 }
 
 val instance = new Example();
 println!(instance.hello); // Prints: 'world!'
-println!(instance.printSecret()); // Prints: 'I'm private!'
+println!(instance.printSecret()); // Prints: "I'm private!"
 println!(instance.secret); // ERROR (private member)
 ```
 
@@ -2661,7 +2661,7 @@ Here, the `getName()` function will return the thing's name. To use it, we simpl
 val something = new Superthing('cake');
 
 println!(`The thing's name is ${something.getName()}.`);
-  // Prints: 'The thing's name is cake.'
+  // Prints: "The thing's name is cake."
 ```
 
 Another trick to use a member from the inside of the class is to use the `@` symbol:
@@ -2809,7 +2809,7 @@ class Map {
     // If we fell in a trap before...
     if @trapped {
       // Move is forbidden
-      println('You can't move because you're trapped.');
+      println('You can\'t move because you\'re trapped.');
     }
 
     // Check if we are going outside of the map
@@ -2820,7 +2820,7 @@ class Map {
 
     // Check if the cell we are going to is a rock
     elsif @cells[y][x] is _self.ROCK {
-      println!('There's a rock on your way.');
+      println!('There\'s a rock on your way.');
     }
 
     // Else, move the player
@@ -2831,7 +2831,7 @@ class Map {
 
       // If we fell in a trap, game over!
       if @cells[y][x] is _self.TRAP {
-        println!('You've been trapped!');
+        println!('You\'ve been trapped!');
         @trapped = true;
       }
     }
@@ -4346,12 +4346,12 @@ struct Data<T implements Stringifyable> {
 
 // Make a class that works with the structure
 class Working {
-  public func %to<string> () => 'It's working!';
+  public func %to<string> () => 'It\'s working!';
 }
 
 // Make a class that doesn't work with the structure
 class NotWorking {
-  public func %construct () : _self => println!('It's not working!');
+  public func %construct () : _self => println!('It\'s not working!');
 }
 ```
 
@@ -7434,7 +7434,7 @@ For that, we use an anonymous class, as follows:
 ```sn
 takeHandler(new ~MouseClickHandler {
   public func onClick () : void {
-    println!('I've been clicked!');
+    println!('I\'ve been clicked!');
   }
 });
 ```
@@ -7444,7 +7444,7 @@ The `~` symbol can be either followed by a class, an interface, or a trait. It c
 ```sn
 takeHandler(new ~MouseClickHandler & Stringifyable {
   public func onClick () : void {
-    println!('I've been clicked!');
+    println!('I\'ve been clicked!');
   }
 
   public func %to<string> () : string {
