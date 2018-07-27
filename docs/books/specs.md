@@ -46,6 +46,11 @@ In this book, we will use several notations both in the text and in code example
 * An `// Works` comment indicates the current line works as expected in an ambuiguous context
 * An _invalid code_ is a code that result in an error when we try to give it to the builder
 
+For syntaxes demonstration, the following notations will be used:
+
+* `[x]` indicates a variable value (e.g. a keyword specific to the context) ;
+* `[x?]` indicaets an optional variable value
+
 ## Values
 
 _Values_ are individual data that can be processed using _expressions_ or _value operators_. Each value has an associated _type_ describing it.
