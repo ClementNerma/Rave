@@ -1305,26 +1305,19 @@ open dict Map<K, V> implements Clonable {
 type Collection<T> = Map<string, T>;
 
 /**
- * Sortable map
- * @template K Type of keys
- * @template V Type of values
- * @classname(sortable map)
- */
-type SortableMap<K ~ Sortable, V ~ Sortable> = Map<K, V>;
-
-/**
  * Comparable map
  * @template K Type of keys
  * @template V Type of values
- * @classname(comparable map)
+ * @classname(map)
  */
-type ComparableMap<K ~ Comparable, V ~ Comparable> = Map<K, V>;
+type SortableMap<K ~ Comparable, V ~ Comparable> = Map<K, V>;
 
 /**
  * Map with unique values
  * NOTE: This class is inheritable
  * @template K Type of keys
  * @template V Type of values
+ * @classname(set)
  */
 open class Set<K, V ~ Comparable> inherits Map<K, V> {
   /** @classname */
