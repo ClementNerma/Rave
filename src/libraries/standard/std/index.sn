@@ -1041,7 +1041,7 @@ class string inherits Primitive {
    * @returns The parsed number
    * @example "2".parse() == "2" && "2.8".parse(float) == "2.8"
    */
-  public func parse<T ~ realnumber = int> (base: T = 10) throws StringParsingError : T;
+  public func parse<T ~ number = int> (base: T = 10) throws StringParsingError : T;
 
   /**
    * Repeat the string a given amount of times
