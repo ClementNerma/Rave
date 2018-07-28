@@ -273,7 +273,7 @@ virtual class Primitive implements BooleanConvertible, IntegerConvertible, Float
    * Clone this @class
    * @returns A clone of this @class
    */
-  abstract public func %clone () : _self;
+  abstract public func %clone () : _this;
 
   /**
    * Convert this @class to a string
@@ -285,14 +285,14 @@ virtual class Primitive implements BooleanConvertible, IntegerConvertible, Float
    * Unserialize a string to a a @class
    * @returns The unserialized string as a a @class
    */
-  abstract public static func %unserialize (serialized: string) throws UnserializationError : _self;
+  abstract public static func %unserialize (serialized: string) throws UnserializationError : _this;
 
   /**
    * Check equality with another @class value
    * @param another Another @string value
    * @returns `true` if the two values are equal
    */
-  abstract public func %equal (another: _self) : bool;
+  abstract public func %equal (another: _this) : bool;
 
   /**
    * Check if this @class is greater than another
@@ -349,13 +349,7 @@ class void inherits Primitive implements Randomizable, RandomizableWithBounds {
   
   public func %serialize () : string => '';
   
-  public static func %unserialize (serialized: string) throws UnserializationError : _self => {
-    if serialized != '' {
-      throw new UnserializationError("Serialized voids can only be '' (empty string)");
-    } else {
-      return null;
-    }
-  };
+  public static func %unserialize (serialized: string) throws UnserializationError : _self;
   
   public func %equal (another: void) : bool => true;
   
@@ -474,21 +468,19 @@ virtual class number inherits Primitive implements Randomizable, RandomizableWit
 
   public static val NIL = 0; // i32
  
-  final public func %to<bool> () : bool => self != <self> 0;
+  final public func %to<bool> () : bool => self != 0;
   
-  final public func %to<i64> () : i64 => #__magic_cast(i64, self);
+  final public func %to<i64> () : i64;
   
-  final public func %to<u64> () : u64 => #__magic_cast(u64, self);
+  final public func %to<u64> () : u64;
+
+  final public func %to<f64> () : f64;
   
-  final public func %to<f64> () : f64  => #__magic_cast(f64, self);
+  final public func %to<string> () : string;
   
-  final public func %to<string> () : string => #__magic_cast(string, self);
-  
-  final public func %serialize () : string => #__magic_cast(string, self);
-  
-  final public static func %unserialize (serialized: string) throws UnserializationError : _self {
-    #__magic_unserialize(_self, serialized);
-  }
+  final public func %serialize () : string;
+ 
+  final public static func %unserialize (serialized: string) throws UnserializationError : _self;
   
   final public func %equal (another: _self) : bool => self == another;
   
@@ -496,15 +488,15 @@ virtual class number inherits Primitive implements Randomizable, RandomizableWit
   
   final public func %smaller (another: _self) : _self => self < another;
   
-  final public static func %call<T ~ Primitive> (prim: T) : _self => #__magic_cast(_self, prim);
+  final public static func %call<T ~ Primitive> (prim: T) : _self;
 
-  final public static func %random () : _self => #__magic_random_primitive(_self);
+  final public static func %random () : _self;
 
   public static val MINIMUM: _self;
 
   public static val MAXIMUM: _self;
 
-  final public static func %random (low: _self, up: _self) : _self => #__magic_random_primitive(_self);
+  final public static func %random (low: _self, up: _self) : _self;
 
   /**
    * Is this number type signed?
@@ -760,11 +752,11 @@ class string inherits Primitive {
   
   public func %to<bool> () : bool => this.length > 0;
   
-  public func %to<i64> () : i64 => #__magic_parse_string(this, i64);
+  public func %to<i64> () : i64;
   
-  public func %to<u64> () : u64 => #__magic_parse_string(this, u64);
+  public func %to<u64> () : u64;
   
-  public func %to<f64> () : f64 => #__magic_parse_string(this, f64);
+  public func %to<f64> () : f64;
   
   public func %to<string> () : string => this;
   
@@ -1184,7 +1176,7 @@ open dict Map<K, V> implements Clonable {
      * @param serialized The @class to unserialize
      * @returns The unserialized @class
      */
-    public static func %unserialize (serialized: string) throws UnserializationError : _self;
+    public static func %unserialize (serialized: string) throws UnserializationError : _this;
 
     /**
      * Stringify this @class, including its keys and values
