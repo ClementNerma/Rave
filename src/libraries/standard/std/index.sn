@@ -1401,6 +1401,47 @@ open dict Map<K, V> implements Clonable {
   public static func fromArrays<X, Y, SIZE: usize> (keys: X[SIZE], values: Y[SIZE]) : Map<X, Y>;
 }
 
+// ==================== Map-based types ==================== //
+
+/**
+ * Collection of values (map with string keys)
+ * @template T Type of values
+ */
+type Collection<T> = Map<string, T>;
+
+/**
+ * Sortable map
+ * @template K Type of keys
+ * @template V Type of values
+ */
+type SortableMap<K ~ Sortable, V ~ Sortable> = Map<K, V>;
+
+/**
+ * Comparable map
+ * @template K Type of keys
+ * @template V Type of values
+ */
+type ComparableMap<K ~ Comparable, V ~ Comparable> = Map<K, V>;
+
+/**
+ * Map with unique values
+ * NOTE: This class is inheritable
+ * @template K Type of keys
+ * @template V Type of values
+ */
+open class Set<K, V ~ Comparable> inherits Map<K, V> {
+  #supercstr;
+
+  /**
+   * Associate a value to a key
+   * NOTE: A 'DuplicateValueError' will be thrown if the provided value is already contained
+   * NOTE: As all assignment methods like `.merge()` use this overload, they may throw this error too
+   * @param key The key to associate a value to
+   * @param value The value to associate
+   */
+  abstract public func %set (key: K, value: V);
+}
+
 // ==================== Context-dependant plain constants ==================== //
 
 // NOTE: [WARNING] The values context-dependant plain constants can take are not fixed for now.
