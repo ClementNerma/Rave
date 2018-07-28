@@ -1409,6 +1409,7 @@ open dict Map<K, V> implements Clonable {
 /**
  * Collection of values (map with string keys)
  * @template T Type of values
+ * @gsuperdoc(collection)
  */
 type Collection<T> = Map<string, T>;
 
@@ -1416,6 +1417,7 @@ type Collection<T> = Map<string, T>;
  * Sortable map
  * @template K Type of keys
  * @template V Type of values
+ * @gsuperdoc(sortable map)
  */
 type SortableMap<K ~ Sortable, V ~ Sortable> = Map<K, V>;
 
@@ -1423,6 +1425,7 @@ type SortableMap<K ~ Sortable, V ~ Sortable> = Map<K, V>;
  * Comparable map
  * @template K Type of keys
  * @template V Type of values
+ * @gsuperdoc(comparable map)
  */
 type ComparableMap<K ~ Comparable, V ~ Comparable> = Map<K, V>;
 
@@ -1433,6 +1436,8 @@ type ComparableMap<K ~ Comparable, V ~ Comparable> = Map<K, V>;
  * @template V Type of values
  */
 open class Set<K, V ~ Comparable> inherits Map<K, V> {
+  /** @gsuperdoc */
+
   #supercstr;
 
   /**
