@@ -1586,7 +1586,7 @@ type SerializableVector<T ~ Serializable> = Vector<T>;
  * @template T Type of values
  * @classname(array)
  */
-dict Array<T> inherits Vector<T> {
+open dict Array<T> inherits Vector<T> {
   #supercstr;
 
   /**
