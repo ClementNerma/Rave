@@ -1737,6 +1737,75 @@ open class Error implements Stringifyable {
   public func %to<string> () : string;
 }
 
+// ==================== Promise type ==================== //
+
+/**
+ * Promise type
+ * @template X Resolution type
+ * @template Y Rejection type
+ */
+open class Promise<X, Y> {
+  /**
+   * Make a new promise
+   * @param core The promise's core function
+   * > @param resolve The resolution callback (called in case of success)
+   * > > @param data The resolution data
+   * > @param reject The rejection callback (called in case of fail)
+   * > > @param data The rejection data
+   */
+  public func %construct (core: func (resolve: func (data: X), reject: func (data: Y)));
+
+  /**
+   * Set a resolution callback
+   * It will be called in case of success
+   * @param resolve The resolution callback
+   * > @param data The resolution data
+   * @returns This promise
+   */
+  public func then (resolve: func (data: X));
+
+  /**
+   * Set a rejection callback
+   * It will be called in case of fail
+   * @param reject The rejection callback
+   * > @param data The rejection data
+   * @returns This promise
+   */
+  public func catch (resolve: func (data: Y));
+
+  /**
+   * Set a final callback
+   * It will be called after either then or catch have been triggered
+   * @param callback The callback function
+   * > @param resolution_data The resolution data (may be null)
+   * > @param rejection_data The rejection data (may be null)
+   * @returns This promise
+   */
+  public func finally (callback: func (resolution_data: X?, rejection_data: Y?));
+
+  /**
+   * The number of miliseconds elapsed since the promise has been created
+   */
+  public readonly timer: uint;
+}
+
+/**
+ * Error-free promise type
+ * @template X Resolution type
+ * @template Y Rejection type
+ */
+class Promise<X> inherits Promise<X, void> {
+  #supercstr;
+
+  /**
+   * Make a new promise
+   * @param core The promise's core function
+   * > @param resolve The resolution callback (called in case of success)
+   * > > @param data The resolution data
+   */
+  public func %construct (core: func (resolve: func (data: X)));
+}
+
 // ==================== Context-dependant constants ==================== //
 
 // NOTE: [WARNING] The values context-dependant constants can take are not fixed for now.
