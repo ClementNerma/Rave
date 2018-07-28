@@ -396,7 +396,7 @@ class void inherits Primitive implements Randomizable, RandomizableWithBounds {
 
 /**
  * Boolean type (primitive)
- * @gsuperdoc(boolean)
+ * @classname(boolean)
  */
 class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
   public static val NIL = false;
@@ -554,7 +554,7 @@ virtual class number inherits Primitive implements Randomizable, RandomizableWit
 
 /**
  * Virtual integer type (primitive)
- * @gsuperdoc(virtual integer)
+ * @classname(virtual integer)
  */
 open class vint inherits number {
   #superabstract;
@@ -565,7 +565,7 @@ open class vint inherits number {
 
 /**
  * Virtual signed integer type (primitive)
- * @gsuperdoc(virtual signed integer)
+ * @classname(virtual signed integer)
  */
 open class vsint inherits vint {
   #superabstract;
@@ -636,7 +636,7 @@ class i8 inherits i16 {
 
 /**
  * Virtual unsigned integer type (primitive)
- * @gsuperdoc(virtual unsigned integer)
+ * @classname(virtual unsigned integer)
  */
 open class vuint inherits vint {
   #superabstract;
@@ -723,7 +723,7 @@ class usize inherits uint {
 
 /**
  * Virtual signed floating-point number type (primitive)
- * @gsuperdoc(virtual signed float)
+ * @classname(virtual signed float)
  */
 open class vfloat inherits number {
   #superabstract;
@@ -736,7 +736,7 @@ open class vfloat inherits number {
 
 /**
  * 64-bit signed floating-point number type (primitive)
- * @gsuperdoc
+ * @classname
  */
 open class f64 inherits vfloat {
   #supercstr;
@@ -746,7 +746,7 @@ open class f64 inherits vfloat {
 
 /**
  * 32-bit signed floating-point number type (primitive)
- * @gsuperdoc
+ * @classname
  */
 class f32 inherits f64 {
   #supercstr;
@@ -1327,7 +1327,7 @@ open dict Map<K, V> implements Clonable {
 /**
  * Collection of values (map with string keys)
  * @template T Type of values
- * @gsuperdoc(collection)
+ * @classname(collection)
  */
 type Collection<T> = Map<string, T>;
 
@@ -1335,7 +1335,7 @@ type Collection<T> = Map<string, T>;
  * Sortable map
  * @template K Type of keys
  * @template V Type of values
- * @gsuperdoc(sortable map)
+ * @classname(sortable map)
  */
 type SortableMap<K ~ Sortable, V ~ Sortable> = Map<K, V>;
 
@@ -1343,7 +1343,7 @@ type SortableMap<K ~ Sortable, V ~ Sortable> = Map<K, V>;
  * Comparable map
  * @template K Type of keys
  * @template V Type of values
- * @gsuperdoc(comparable map)
+ * @classname(comparable map)
  */
 type ComparableMap<K ~ Comparable, V ~ Comparable> = Map<K, V>;
 
@@ -1354,7 +1354,7 @@ type ComparableMap<K ~ Comparable, V ~ Comparable> = Map<K, V>;
  * @template V Type of values
  */
 open class Set<K, V ~ Comparable> inherits Map<K, V> {
-  /** @gsuperdoc */
+  /** @classname */
 
   #supercstr;
 
