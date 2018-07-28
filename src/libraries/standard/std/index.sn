@@ -1171,46 +1171,46 @@ virtual class Dictionary<K, V> {
    * @param key The key to get the value of
    * @returns The value associated to the key
    */
-  public func %get (key: K) : V;
+  abstract public func %get (key: K) : V;
 
   /**
    * Associate a value to a key
    * @param key The key to associate a value to
    * @param value The value to associate
    */
-  public func %set (key: K, value: V);
+  abstract public func %set (key: K, value: V);
 
   /**
    * Delete an existing key (with its value)
    * @param key The key to delete
    */
-  public func %unset (key: K);
+  abstract public func %unset (key: K);
   
   /**
    * Check if a key exists in this dictionary
    * @param key The key to check the existence of
    * @returns `true` if the key exists
    */
-  public func %has (key: K) : bool;
+  abstract public func %has (key: K) : bool;
 
   /**
    * Check if a value exists in this dictionary
    * @param value The value to check the existence of
    * @returns `true` if the value exists
    */
-  public func %contains (key: V) : bool;
+  abstract public func %contains (key: V) : bool;
 
   /**
    * Get an iterator on the keys
    * @returns An iterator on the keys
    */
-  public func %keys () : Iterator<K>;
+  abstract public func %keys () : Iterator<K>;
 
   /**
    * Get an iterator on the values
    * @returns An iterator on the values
    */
-  public func %values () : Iterator<V>;
+  abstract public func %values () : Iterator<V>;
 }
 
 // ==================== Context-dependant plain constants ==================== //
