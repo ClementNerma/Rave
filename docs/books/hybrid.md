@@ -2184,7 +2184,7 @@ Let's now see the declaration of the `filter` function:
 
 ```sn
   // ...
-  public func filter (callback: func (value: T) : bool) : _self<T>;
+  public func filter (callback: func (value: T) : bool) : _this<T>;
   // ...
 ```
 
