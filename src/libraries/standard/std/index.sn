@@ -22,6 +22,7 @@
 // NOTE: Unless otherwise stated, open classes are not inheritable from the outside of this file
 //       The mention "NOTE: This class is inheritable" revokes this statement and allows the class to be inherited
 //        by end-developer classes
+//       Such classes also show their protected fields, as they can be used by their children
 
 // Only module of the STD package
 #[module];
