@@ -1584,9 +1584,17 @@ type SerializableVector<T ~ Serializable> = Vector<T>;
 /**
  * Unknown-sized array
  * @template T Type of values
+ * @classname(array)
  */
 dict Array<T> inherits Vector<T> {
   #supercstr;
+
+  /**
+   * The array's size
+   */
+  public val size: usize;
+
+  public func getSize () : usize;
 }
 
 /**
@@ -1596,6 +1604,8 @@ dict Array<T> inherits Vector<T> {
  */
 dict Array<T, SIZE: usize> inherits Vector<T> {
   #supercstr;
+
+  public val size = SIZE;
 }
 
 // ==================== Context-dependant constants ==================== //
