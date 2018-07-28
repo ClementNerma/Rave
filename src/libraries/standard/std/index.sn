@@ -1570,6 +1570,22 @@ virtual dict Vector<T> inherits Map<usize, T> {
   }
 }
 
+// ==================== Vector-based types ==================== //
+
+/**
+ * Sortable vector
+ * @template T Type of values
+ * @classname(vector)
+ */
+type SortableVector<T ~ Comparable> = Vector<T>;
+
+/**
+ * Serializable vector
+ * @template T Type of values
+ * @classname(vector)
+ */
+type SerializableVector<T ~ Serializable> = Vector<T>;
+
 // ==================== Context-dependant constants ==================== //
 
 // NOTE: [WARNING] The values context-dependant constants can take are not fixed for now.
