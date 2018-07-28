@@ -599,6 +599,7 @@ virtual class number inherits Primitive implements Randomizable, RandomizableWit
 
 /**
  * Virtual integer type (primitive)
+ * @gsuperdoc(virtual integer)
  */
 open class vint inherits number {
   #superabstract;
@@ -610,6 +611,7 @@ open class vint inherits number {
 
 /**
  * Virtual signed integer type (primitive)
+ * @gsuperdoc(virtual signed integer)
  */
 open class vsint inherits vint {
   #superabstract;
@@ -697,6 +699,7 @@ class i8 inherits i16 {
 
 /**
  * Virtual unsigned integer type (primitive)
+ * @gsuperdoc(virtual unsigned integer)
  */
 open class vuint inherits vint {
   #superabstract;
@@ -804,6 +807,7 @@ class usize inherits uint {
 
 /**
  * Virtual signed floating-point number type (primitive)
+ * @gsuperdoc(virtual signed float)
  */
 open class vfloat inherits number {
   #superabstract;
@@ -818,6 +822,7 @@ open class vfloat inherits number {
 
 /**
  * 64-bit signed floating-point number type (primitive)
+ * @gsuperdoc
  */
 open class f64 inherits vfloat {
   #supercstr;
@@ -828,6 +833,7 @@ open class f64 inherits vfloat {
 
 /**
  * 32-bit signed floating-point number type (primitive)
+ * @gsuperdoc
  */
 class f32 inherits f64 {
   #supercstr;
