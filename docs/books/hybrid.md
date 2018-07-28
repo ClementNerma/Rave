@@ -2769,7 +2769,7 @@ let product = new Product();
 product.increaseCounter(); // ERROR (static method)
 ```
 
-The `self` keyword refers to the current class as an instance (like `this` but with only the members of the current class), and `static` makes it static, meaning we can access its static members and only them.
+The `_self` keyword refers to the current class in a static context, meaining we can only access its static members.
 
 But, there are three shortcuts for this object: `_self`, which refers to `_self` ; `_this`, which refers to `static<this>` ; and `_super`, which refers to `static<super>`.
 
