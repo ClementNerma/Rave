@@ -795,8 +795,8 @@ class string inherits Primitive {
   // DEVNOTE: * Compare each character one by one until the end of the shortest string:
   //            -> if this string's character has a greater ASCII code than the other, this string is greater
   //            -> if the other string's character has a greater ASCII code than the other, the other is greater
-  //          * Else, if this string is longer than or equal to the other one, this string is greater
-  //          * Else, the other string is greater than this one
+  //          * Else, if this string is longer than the other one, this string is greater
+  //          * Else, this string is not greater than the other (but may still be equal)
   public func %greater (another: bool) : bool {
     val smallest_size = min!(@length, another.length);
 
