@@ -1594,6 +1594,13 @@ open dict Array<T> inherits Vector<T> {
    */
   public val length: usize;
 
+  /**
+   * Remove a key and its associated value from the array
+   * Always throw an 'ArrayNotDynamicError' error
+   * @param key The key to remove
+   */
+  public func %unset (key: usize);
+
   public func getSize () : usize;
 }
 
