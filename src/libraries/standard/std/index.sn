@@ -1174,7 +1174,7 @@ class Tuple {}
  * @template K Type of keys
  * @template V Type of values
  */
-virtual class Dictionary<K, V> {
+virtual dict Dictionary<K, V> {
   /**
    * Get the value associated to an existing key
    * @param key The key to get the value of
