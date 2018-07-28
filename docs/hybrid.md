@@ -6534,7 +6534,7 @@ tuple[0]; // Returns: 'Hello'
 
 Note that plain constants have natively a `#raw<T>` type. There are the only entities having such a type. Still, `#raw<T>` works on flexs' arguments as well as functions' ones (to give them the possibility to pass such raw values to flexs that require them). This type describes an entity as containing a predictable **and** imutable value.
 
-Note that flexs can be expressed as a type, using `flex` instead of `func`. For example, the native `iter_tuple` flex requires another flex as a callback:
+Note that flexs can be expressed as a type, using `flex` instead of `func`, but only inside other flexs' signature and body. For example, the native `iter_tuple` flex requires another flex as a callback:
 
 ```sn
 // Flex's signature
