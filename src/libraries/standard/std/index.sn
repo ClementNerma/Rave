@@ -1213,6 +1213,194 @@ virtual class Dictionary<K, V> {
   abstract public func %values () : Iterator<V>;
 }
 
+// ==================== Maps ==================== //
+
+/**
+ * Map type (powered-up dictionary)
+ * NOTE: This class is inheritable
+ * @template K Type of keys
+ * @template V Type of values
+ */
+open dict Map<K, V> implements Clonable {
+  /**
+   * The map's keys
+   */
+  protected keys: List<K>;
+
+  /**
+   * The map's values
+   */
+  protected values: List<V>;
+
+  /**
+   * Make an empty map
+   */
+  public func %construct ();
+
+  /**
+   * Initialize a map by getting all the keys and values from another dictionary
+   * @template X Type of the other dictionary's keys
+   * @template Y Type of the other dictionary's values
+   * @param init The dictionary to use for initialization
+   */
+  public func %construct<X ~ K, Y ~ V> (init: Dictionary<X, Y>);
+
+  /** @superdoc */
+  public func %get (key: K) : V;
+
+  /** @superdoc */
+  public func %set (key: K, value: V);
+
+  /** @superdoc */
+  public func %unset (key: K);
+
+  /** @superdoc */
+  public func %has (key: K) : bool;
+
+  /** @superdoc */
+  public func %contains (key: V) : bool;
+
+  /** @superdoc */
+  public func %keys () : Iterator<K>;
+
+  /** @superdoc */
+  public func %values () : Iterator<V>;
+
+  /**
+   * Make a new map with the same keys and values
+   * Keys and values will not be cloned themselves
+   * @returns A clone of this map
+   */
+  public func %clone () : _self;
+
+  /**
+   * Segment for clonable keys and values
+   */
+  segment (K ~ Clonable && V ~ Clonable) {
+    /**
+     * Make a new map with the same keys and values
+     * Keys and values will be cloned
+     * @returns A clone of this map
+     */
+    public func %clone () : _self;
+  }
+
+  /**
+   * Segment for serializable keys and values
+   */
+  segment (K ~ Serializable && V ~ Serializable) implements Serializable, Stringifyable {
+    /**
+     * Stringify this map, including its keys and values
+     * @returns This map, stringified
+     */
+    // DEVNOTE: * Stringify each string and value
+    //          * Make a JSON object linking the stringified keys to the stringified values
+    //          * Return the JSON object, as a string
+    public func %serialize () : string;
+
+    /**
+     * Unserialize a stringified map
+     * @param serialized The map to unserialize
+     * @returns The unserialized map
+     */
+    public static func %unserialize (serialized: string) throws UnserializationError : _self;
+
+    /**
+     * Stringify this map, including its keys and values
+     * @returns This map, stringified
+     */
+    // DEVNOTE: Equivalent to %serialize()
+    public func %to<string> () : string;
+  }
+
+  /**
+   * Remove all keys and values from this map
+   */
+  public func clear ();
+
+  /**
+   * Associate the same value to every existing key
+   * @param value The value to associate
+   */
+  public func fill (value: V);
+
+  /**
+   * Insert all the keys and values from another dictionary
+   * @template X Type of the other dictionary's keys
+   * @template Y Type of the other dictionary's values
+   * @param merge The dictionary to use for merging
+   */
+  public func merge<X ~ K, Y ~ V> (merge: Dictionary<X, Y>);
+
+  /**
+   * Segment for comparable keys and values
+   */
+  segment (T ~ Comparable) implements Comparable {
+    /**
+     * Check if this map is equivalent to another dictionary
+     * @param compareTo The map to compare this one
+     * @returns `true` if the dictionaries have the same number of keys and values and if they are equal
+     */
+    public func %equal (compareTo: Dictionary<K, V>) : bool;
+
+    /**
+     * Check if this map is greater than another one (always `false`)
+     * @param compareTo The map to compare this one
+     * @returns `false`
+     */
+    public func %greater (compareTo: Dictionary<K, V>) : bool => false;
+
+    /**
+     * Check if this map is smaller than another one (always `false`)
+     * @param compareTo The map to compare this one
+     * @returns `false`
+     */
+    public func %smaller (compareTo: Dictionary<K, V>) : bool => false;
+  }
+
+  /**
+   * Generate a new map from this one through a callback
+   * The callback is called for each key/value pair
+   *  its return value is transparently stored in a new map
+   * @template X Type of keys returned by the callback
+   * @template Y Type of values returned by the callback
+   * @param generator The generator callback
+   * > @param key A map's key
+   * > @param value The value associated to the provided key
+   * > @returns A key/pair value to add to the ghost map
+   * @returns The ghost map generated using the callback
+   * @example ({ # 'hello': 'world' }).map((k, v) => (v, k)) == ({ # 'world': 'hello' })
+   */
+  public func map<X = K, Y = V> (callback: func (key: K, value: V) : (X, Y)) : Map<X, Y>;
+
+  /**
+   * Generate a new map from this one through a callback
+   * Keys are kept ; only values can be generated
+   * The callback is called for each key/value pair
+   *  its return value is transparently stored in a new map, linked to the current key
+   * @template Y Type of values returned by the callback
+   * @param generator The generator callback
+   * > @param key A map's key
+   * > @param value The value associated to the provided key
+   * > @returns A value to add to the ghost map
+   * @returns The ghost map generated using the callback (same keys)
+   * @example ({ # 'hello': 'world' }).map((k, v) => 'mom') == ({ # 'hello': 'mom' })
+   */
+  public func map<Y = V> (callback: func (key: K, value: V) : Y) : Map<K, Y>;
+
+  /**
+   * Make a map from an array of keys and an array of values
+   * Keys and values are mapped in the same order they are in the provided vector
+   * @template X Type of keys
+   * @template Y Type of values
+   * @template SIZE Size of the two arrays
+   * @param keys The list of keys
+   * @param values The list of values
+   * @returns The map generated from the provided lists
+   */
+  public static func fromArrays<X, Y, SIZE: usize> (keys: X[SIZE], values: Y[SIZE]) : Map<X, Y>;
+}
+
 // ==================== Context-dependant plain constants ==================== //
 
 // NOTE: [WARNING] The values context-dependant plain constants can take are not fixed for now.
