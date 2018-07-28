@@ -228,21 +228,16 @@ interface StaticallyCallable {
  */
 virtual class Primitive implements BooleanConvertible, IntegerConvertible, FloatConvertible, Numerizable, Stringifyable, Clonable, Serializable, Comparable, StaticallyCallable {
   /**
-   * NIL @class value
-   */
-  abstract public static val NIL: _self;
-
-  /**
    * Make a NIL @class value
    */
-  abstract public func %construct ();
+  final public func %construct ();
 
   /**
    * Make a @class from another primitive value
    * @template T A primitive type
    * @param prim Another primitive value
    */
-  abstract public func %construct<T ~ Primitive> (prim: T);
+  final public func %construct<T ~ Primitive> (prim: T);
 
   /**
    * Convert this @class to a boolean
@@ -318,6 +313,11 @@ virtual class Primitive implements BooleanConvertible, IntegerConvertible, Float
    * @returns A @string made from the provided value
    */
   abstract public static func %call<T ~ Primitive> (prim: T) : _self;
+
+  /**
+   * NIL @class value
+   */
+  abstract public static val NIL: _self;
 }
 
 // ==================== Object types ==================== //
@@ -333,11 +333,9 @@ type Object = not Primitive;
  * Void type (primitive)
  */
 class void inherits Primitive implements Randomizable, RandomizableWithBounds {
-  public static val NIL = null;
+  #supercstr;
 
-  public func %construct () {};
-  
-  public func %construct<T ~ Primitive> (prim: T) => #__magic_set_primitive(this, prim);
+  public static val NIL = null;
   
   public func %to<bool> () : bool => false;
   
@@ -399,11 +397,9 @@ class void inherits Primitive implements Randomizable, RandomizableWithBounds {
  * @classname(boolean)
  */
 class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
-  public static val NIL = false;
+  #supercstr;
 
-  public func %construct () {};
-  
-  public func %construct<T ~ Primitive> (prim: T) => #__magic_set_primitive(this, prim);
+  public static val NIL = false;
   
   public func %to<bool> () : bool => this;
   
@@ -474,12 +470,10 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
  * Virtual number type (primitive)
  */
 virtual class number inherits Primitive implements Randomizable, RandomizableWithBounds {
-  public static val NIL = 0; // i32
+  #supercstr;
 
-  final public func %construct () {};
-  
-  final public func %construct<T ~ Primitive> (prim: T) => #__magic_set_primitive(self, prim);
-  
+  public static val NIL = 0; // i32
+ 
   final public func %to<bool> () : bool => self != <self> 0;
   
   final public func %to<i64> () : i64 => #__magic_cast(i64, self);
@@ -760,11 +754,9 @@ class f32 inherits f64 {
  * String type (primitive)
  */
 class string inherits Primitive {
-  public static val NIL = '';
+  #supercstr;
 
-  public func %construct () {};
-  
-  public func %construct<T ~ Primitive> (prim: T) => #__magic_set_primitive(this, prim);
+  public static val NIL = '';
   
   public func %to<bool> () : bool => this.length > 0;
   
@@ -797,19 +789,7 @@ class string inherits Primitive {
   //            -> if the other string's character has a greater ASCII code than the other, the other is greater
   //          * Else, if this string is longer than the other one, this string is greater
   //          * Else, this string is not greater than the other (but may still be equal)
-  public func %greater (another: bool) : bool {
-    val smallest_size = min!(@length, another.length);
-
-    for i in 0..smallest_size {
-      val this_code = @charCodeAt(i);
-      val other_code = another.charCodeAt(i);
-
-      return true if this_code > other_code;
-      return false if other_code > this_code;
-    }
-
-    return (@length > another.length);
-  }
+  public func %greater (another: bool) : bool;
   
   // DEVNOTE: * If this string is equal to the other one, it is not smaller
   //          * If this string is greater than the other one, it is not smaller
