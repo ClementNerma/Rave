@@ -1615,6 +1615,71 @@ dict Array<T, SIZE: usize> inherits Vector<T> {
   public val length = SIZE;
 }
 
+// ==================== Vector type (vector-based) ==================== //
+
+/**
+ * List (vector-based)
+ * @template T Type of values
+ * @classname(list)
+ */
+dict List<T> inherits Vector<T> {
+  #supercstr;
+  
+  /**
+   * Get the last element from the list and remove it
+   * @returns The ex-last element (null if the list was empty)
+   */
+  public func pop () : T?;
+
+  /**
+   * Push an element at the end of the list
+   * @param value The value to push
+   * @returns The new list's length
+   */
+  public func push (value: T) : usize;
+
+  /**
+   * Remove all elements with a given value from the list
+   * @param lookfor The value to remove
+   */
+  public func remove (lookfor: T);
+
+  /**
+   * Remove the element located at a given index
+   * @param index The index of the value to remove
+   * @returns The removed element
+   */
+  public func removeAt (index: usize) : T;
+
+  /**
+   * Get the first element of the list and remove it
+   * @returns The ex-first element (null if the list was empty)
+   */
+  public func shift () : T?;
+
+  /**
+   * Remove all elements of the list from an index
+   * @param start The index to begin the cut at
+   * @returns The cut part
+   */
+  public func splice (start: int) : List<T>;
+
+  /**
+   * Remove a part of the list
+   * @param start The index to begin the cut at
+   * @param length The length of the cut
+   * @returns The cut part
+   */
+  public func splice (start: int, length: int) : List<T>;
+
+  /**
+   * Push a value at the beginning of the list
+   * @param value The value to push at the head
+   * @returns The new list's length
+   */
+  public func unshift (value: T) : usize;
+}
+
 // ==================== Context-dependant constants ==================== //
 
 // NOTE: [WARNING] The values context-dependant constants can take are not fixed for now.
