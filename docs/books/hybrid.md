@@ -4446,6 +4446,8 @@ class StringDict<K, V ~ Stringifyable> inherits KindOfDict<K, V> {
 }
 ```
 
+Note: the `~` operator allows to check if the type on its left either implements, uses or inherits from the one on its right. It also works on values and then check if they either implement, use or be an instance of the type on its right.
+
 For information, the `T`, `X`, `Y`, `Z`, `K` and `V` names are reserved to templates, so you can use it as you want. Conventionally, `T` is used when there is only one template to use, `T` and `X` for two templates, `T` `X` `Y` for three templates, `T` `X` `Y` `Z` for four templates, and `K` and `V` for keys and values.
 
 #### Type-checking operators on values
