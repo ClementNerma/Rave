@@ -2039,7 +2039,7 @@ Infinite arguments allow a function to take from zero to an infinity of argument
 func sum (...numbers: int) : int {
   let sum = 0;
 
-  for i = 0; i < numbers.length; i ++ {
+  for i = 0p; i < numbers.length; i ++ {
     sum += numbers[i];
   }
 
@@ -2057,7 +2057,7 @@ Note that we can mix an infinite argument with other arguments, like before anot
 func sum (...numbers: int, coefficient: int) : int {
   let sum = 0;
 
-  for i = 0; i < numbers.length; i ++ {
+  for i = 0p; i < numbers.length; i ++ {
     sum += i;
   }
 
@@ -2073,7 +2073,7 @@ Or after it:
 func sum (coefficient: int, ...numbers: int) : int {
   let sum = 0;
 
-  for i = 0; i < numbers.length; i ++ {
+  for i = 0p; i < numbers.length; i ++ {
     sum += i;
   }
 
@@ -2089,7 +2089,7 @@ Or even between two other arguments:
 func sum (coeff1: int, ...numbers: int, coeff2: int) : int {
   let sum = 0;
 
-  for i = 0; i < numbers.length; i ++ {
+  for i = 0p; i < numbers.length; i ++ {
     sum += i;
   }
 
@@ -2151,7 +2151,7 @@ What is their point? Well, let's say we have a list called `signed` of signed in
 ```sn
 val positive: List<int>;
 
-for i = 0; i < signed.size; i ++ {
+for i = 0p; i < signed.size; i ++ {
   if signed[i] >= 0 {
     positive.push(signed[i]);
   }
@@ -2925,7 +2925,7 @@ Let's imagine we have an array of integers. We make a function that calculates, 
 
 ```sn
 func squareList (array: int[]) : int[] {
-  for i = 0; i < array.length; i ++ {
+  for i = 0p; i < array.length; i ++ {
     array[i] *= array[i];
   }
 
