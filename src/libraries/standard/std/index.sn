@@ -1341,6 +1341,235 @@ open class Set<K, V ~ Comparable> inherits Map<K, V> {
   abstract public func %set (key: K, value: V);
 }
 
+// ==================== Vector type (map-based) ==================== //
+
+/**
+ * Vector type
+ * @template T Type of values
+ * @classname(vector)
+ */
+virtual dict Vector<T> inherits Map<usize, T> {
+  #supercstr;
+
+  /**
+   * This @class's last element
+   */
+  public proxy last: T from {
+    getter: () => this[@size - 1]
+  };
+
+  /**
+   * This @class's size
+   */
+  public proxy size: usize from {
+    getter: @getSize
+  };
+
+  /**
+   * Get the value associated to an index
+   * NOTE: If the provided index is not smaller than this @class's size,
+   *        an `IndexOutOfBoundError` error will be thrown.
+   * @param index The index to get the value of
+   * @returns The value
+   * @condition index < this.size
+   */
+  public func %get (index: usize) : T;
+
+  /**
+   * Associate a value to an index
+   * NOTE: If the provided index is not smaller than this @class's size,
+   *        an `IndexOutOfBoundError` error will be thrown.
+   * @param index The index to associate a value to
+   * @param value The value to associate to the index
+   * @returns The value
+   * @condition index < this.size
+   */
+  public func %set (index: usize, value: T);
+
+  /**
+   * Make a vector from a list of values
+   * @param values The values to make the @class from
+   */
+  public func %construct (values: ...T);
+
+  /**
+   * Concatenate this @class with another vector
+   * @param vect The vector to concatenate at the end of this one
+   * @param affect If `true`, affects the result to this @class
+   * @returns The final @class
+   */
+  public func concat (vect: Vector<T>, affect: bool = false) : _self;
+
+  /**
+   * Concatenate this @class with a list of values (does not affect this @class)
+   * @param values The values to concatenate at the end of this one
+   * @param affect If `true`, affects the result to this @class
+   * @returns The final @class
+   */
+  public func concat (values: ...T, affect: bool = false) : _self;
+
+  /**
+   * Fill this @class with a single value
+   * @param value The value to fill the @class with
+   */
+  public func fill (value: T);
+
+  /**
+   * Get this @class's size
+   * @returns This @class's size
+   */
+  public func getSize () : usize;
+
+  /**
+   * Check if a value is included in the @class
+   * @param lookfor The value to look for
+   * @returns The value's index ; null if not found
+   */
+  public func indexOf (lookfor: T) : usize?;
+
+  /**
+   * List all indexes a value is found at in this @class
+   * @param lookfor The value to look for
+   * @returns An array of indexes the value was found at
+   */
+  public func indexesOf (lookfor: T) : usize[];
+
+  /**
+   * Segment for comparable types
+   */
+  segment (T ~ Comparable) {
+    /**
+     * Check if this @class is equivalent to another vector
+     * @param compareTo The vector to compare this @class
+     * @returns `true` if the vectors have the same indexes and if their values are equall
+     */
+    public func %equal<Vector<T>> (compareTo: Vector<T>) : bool;
+
+    /**
+     * Check if this @class is greater than another vector
+     * @param compareTo The vector to compare this @class
+     * @returns `true` if this @class is greater
+     */
+     // DEVNOTE: * Compare each value one by one until the end of the shortest vector:
+     //            -> if this vector's value is greater than the other, this vector is greater
+     //            -> if the other vector's value is greater than the other, the other is greater
+     //          * Else, if this vector is longer than the other one, this vector is greater
+     //          * Else, this vector is not greater than the other one
+    public func %greater<Vector<T>> (compareTo: Vector<T>) : bool;
+
+    /**
+     * Check if this @class is smaller than another vector
+     * @param compareTo The vector to compare this @class
+     * @returns `true` if this @class is smaller
+     */
+    // DEVNOTE: * If this vector is equal to the other one, it is not smaller
+    //          * If this vector is greater than the other one, it is not smaller
+    //          * Else, this vector is smaller than the other one
+    public func %smaller<Vector<T>> (compareTo: Vector<T>) : bool;
+
+    /**
+     * Check if all values are equal in this vector
+     * @returns `true` if all values are equal
+     */
+    public func isUniform () : bool;
+  }
+
+  /**
+   * Segment for stringifyable types
+   */
+  segment (T ~ Stringifyable) {
+    /**
+     * Join all of this @class's values with a string
+     * @param str The join string
+     * @returns This @class as a string
+     */
+    public func join (str: string) : string;
+  }
+
+  /**
+   * Get a random element from this @class
+   * @returns A random element
+   */
+  public func random () : T;
+
+  /**
+   * Shuffle this @class
+   * @returns A new @class with all its elements shuffled
+   */
+  public func shuffle () : _self;
+
+  /**
+   * Slice this @class
+   * NOTE: This function cannot throw an 'IndexOutOfBoundError' error
+   * @param start The start index
+   * @param end The end index (if omitted, cuts to the end of this @class)
+   * @example ([ 2, 5, 8 ]).slice(1, 2) == [ 5 ]
+   * @example ([ 2, 5, 8 ]).slice(1, 8) == [ 5, 8 ]
+   * @example ([ 2, 5, 8 ]).slice(1) == [ 5, 8 ]
+   * @returns A slice version of this @class
+   */
+  public func slice (start: usize, end: usize) : void;
+
+  /**
+   * Reverse this @class
+   * @param affect If `true`, affects the result to this @class
+   * @returns This @class, reversed
+   */
+  public func reverse (affect: bool = false) : _self;
+
+  /**
+   * Create an unknown-sized array from this @class
+   * @returns An unknown-sized array with the same indexes and values than this @class
+   */
+  public func toArray () : T[];
+
+  /**
+   * Create a list from this @class
+   * @returns A list with the same indexes and values than this @class
+   */
+  public func toList () : List<T>;
+
+  /**
+   * Segment for calculable types
+   */
+  segment (T ~ Calculable) {
+    /**
+     * Sum this @class's values (may overflow with too large value)
+     * @template T The result type (default: same type than the values)
+     * @returns The result
+     */
+    public func sum<X = T> () : i64;
+  }
+  
+  /**
+   * Segment for serializable keys and values
+   */
+  segment (K ~ Serializable && V ~ Serializable) implements Serializable, Stringifyable {
+    /**
+     * Stringify this @class, including its values
+     * @returns This @class, stringified
+     */
+    // DEVNOTE: * Stringify each value
+    //          * Make a JSON array containing the stringified value, in the right order
+    //          * Return the JSON array, as a string
+    public func %serialize () : string;
+
+    /**
+     * Unserialize a stringified @class
+     * @param serialized The @class to unserialize
+     * @returns The unserialized @class
+     */
+    public static func %unserialize (serialized: string) throws UnserializationError : _self;
+
+    /**
+     * Stringify this @class, its values
+     * @returns This @class, stringified
+     */
+    // DEVNOTE: Equivalent to %serialize()
+    public func %to<string> () : string;
+  }
+}
+
 // ==================== Context-dependant constants ==================== //
 
 // NOTE: [WARNING] The values context-dependant constants can take are not fixed for now.
