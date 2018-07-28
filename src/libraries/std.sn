@@ -1592,7 +1592,7 @@ open dict Array<T> inherits Vector<T> {
   /**
    * The array's size
    */
-  public val size: usize;
+  public val length: usize;
 
   public func getSize () : usize;
 }
@@ -1605,7 +1605,7 @@ open dict Array<T> inherits Vector<T> {
 dict Array<T, SIZE: usize> inherits Vector<T> {
   #supercstr;
 
-  public val size = SIZE;
+  public val length = SIZE;
 }
 
 // ==================== Context-dependant constants ==================== //
