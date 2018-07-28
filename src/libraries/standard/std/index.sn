@@ -1237,6 +1237,6 @@ pln OS_NAME: string;
 
 /**
  * Full name of the operating system
- * @example 'Linux admin-laptop 2.6.32-21-generic #32-Ubuntu SMP Fri Apr 16 08:09:38 UTC 2010 x86_64 GNU/Linux'
+ * @example 'Linux someone-laptop 4.15.0-29-generic #31-Ubuntu SMP Tue Jul 17 15:39:52 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux'
  */
 pln OS_FULL_NAME: string;
