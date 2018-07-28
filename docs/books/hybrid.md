@@ -3021,8 +3021,6 @@ Note that the constructor is not called when the instance is automatically clone
   // ...
 ```
 
-The `_self` keyword is a type that refers to the current class.
-
 This cloning way is simple but implies two problems, though. The first one is that, for a moment, an exact clone of the instance exists. This can be a problem is some specific situations, so we have to be careful about this point. The second one is that this doesn't work on classes which has non-clonable attributes.
 
 For example, if we have in our class a `Superthing` instance, with the `Superthing` class not being clonable, an error will be thrown at build time.
