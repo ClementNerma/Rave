@@ -1125,6 +1125,7 @@ virtual dict Dictionary<K, V> {
 /**
  * Map type (powered-up dictionary)
  * NOTE: This class is inheritable
+ * @classname(map)
  * @template K Type of keys
  * @template V Type of values
  */
