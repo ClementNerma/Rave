@@ -333,34 +333,24 @@ type Object = not Primitive;
  * Void type (primitive)
  */
 class void inherits Primitive implements Randomizable, RandomizableWithBounds {
-  /** @superdoc */
   public static val NIL = null;
 
-  /** @superdoc */
   public func %construct () {};
   
-  /** @superdoc */
   public func %construct<T ~ Primitive> (prim: T) => #__magic_set_primitive(this, prim);
   
-  /** @superdoc */
   public func %to<bool> () : bool => false;
   
-  /** @superdoc */
   public func %to<i64> () : i64 => 0l;
   
-  /** @superdoc */
   public func %to<u64> () : u64 => 0ul;
   
-  /** @superdoc */
   public func %to<f64> () : f64 => 0d;
   
-  /** @superdoc */
   public func %to<string> () : string => '';
   
-  /** @superdoc */
   public func %serialize () : string => '';
   
-  /** @superdoc */
   public static func %unserialize (serialized: string) throws UnserializationError : _self => {
     if serialized != '' {
       throw new UnserializationError("Serialized voids can only be '' (empty string)");
@@ -369,16 +359,12 @@ class void inherits Primitive implements Randomizable, RandomizableWithBounds {
     }
   };
   
-  /** @superdoc */
   public func %equal (another: void) : bool => true;
   
-  /** @superdoc */
   public func %greater (another: void) : void => false;
   
-  /** @superdoc */
   public func %smaller (another: void) : void => false;
   
-  /** @superdoc */
   public static func %call<T ~ Primitive> (prim: T) : void => null;
 
   /**
@@ -410,36 +396,27 @@ class void inherits Primitive implements Randomizable, RandomizableWithBounds {
 
 /**
  * Boolean type (primitive)
+ * @gsuperdoc(boolean)
  */
 class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
-  /** @superdoc(boolean) */
   public static val NIL = false;
 
-  /** @superdoc(boolean) */
   public func %construct () {};
   
-  /** @superdoc(boolean) */
   public func %construct<T ~ Primitive> (prim: T) => #__magic_set_primitive(this, prim);
   
-  /** @superdoc(boolean) */
   public func %to<bool> () : bool => this;
   
-  /** @superdoc(boolean) */
   public func %to<i64> () : i64 => this ? 1l : 0l;
   
-  /** @superdoc(boolean) */
   public func %to<u64> () : u64 => this ? 1ul : 0ul;
   
-  /** @superdoc(boolean) */
   public func %to<f64> () : f64 => this ? 1d : 0d;
   
-  /** @superdoc(boolean) */
   public func %to<string> () : string => this ? 'true' : 'false';
   
-  /** @superdoc(boolean) */
   public func %serialize () : string => this ? 'true' : 'false';
   
-  /** @superdoc(boolean) */
   public static func %unserialize (serialized: string) throws UnserializationError : bool {
     if serialized == 'true' {
       return true;
@@ -450,16 +427,12 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
     }
   }
   
-  /** @superdoc(boolean) */
   public func %equal (another: bool) : bool => this == another;
   
-  /** @superdoc(boolean) */
   public func %greater (another: bool) : bool => (this == true && another == false);
   
-  /** @superdoc(boolean) */
   public func %smaller (another: bool) : bool => (this == false && another == true);
   
-  /** @superdoc(boolean) */
   public static func %call<T ~ Primitive> (prim: T) : bool => prim != T.NIL;
 
   /**
@@ -501,60 +474,42 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
  * Virtual number type (primitive)
  */
 virtual class number inherits Primitive implements Randomizable, RandomizableWithBounds {
-  /** @superdoc */
   public static val NIL = 0; // i32
 
-  /** @superdoc */
   final public func %construct () {};
   
-  /** @superdoc */
   final public func %construct<T ~ Primitive> (prim: T) => #__magic_set_primitive(self, prim);
   
-  /** @superdoc */
   final public func %to<bool> () : bool => self != <self> 0;
   
-  /** @superdoc */
   final public func %to<i64> () : i64 => #__magic_cast(i64, self);
   
-  /** @superdoc */
   final public func %to<u64> () : u64 => #__magic_cast(u64, self);
   
-  /** @superdoc */
   final public func %to<f64> () : f64  => #__magic_cast(f64, self);
   
-  /** @superdoc */
   final public func %to<string> () : string => #__magic_cast(string, self);
   
-  /** @superdoc */
   final public func %serialize () : string => #__magic_cast(string, self);
   
-  /** @superdoc */
   final public static func %unserialize (serialized: string) throws UnserializationError : _self {
     #__magic_unserialize(_self, serialized);
   }
   
-  /** @superdoc */
   final public func %equal (another: _self) : bool => self == another;
   
-  /** @superdoc */
   final public func %greater (another: _self) : _self => self > another;
   
-  /** @superdoc */
   final public func %smaller (another: _self) : _self => self < another;
   
-  /** @superdoc */
   final public static func %call<T ~ Primitive> (prim: T) : _self => #__magic_cast(_self, prim);
 
-  /** @superdoc */
   final public static func %random () : _self => #__magic_random_primitive(_self);
 
-  /** @superdoc */
   public static val MINIMUM: _self;
 
-  /** @superdoc */
   public static val MAXIMUM: _self;
 
-  /** @superdoc */
   final public static func %random (low: _self, up: _self) : _self => #__magic_random_primitive(_self);
 
   /**
@@ -605,7 +560,6 @@ open class vint inherits number {
   #superabstract;
   #supercstr;
 
-  /** @superdoc */
   final public static val HANDLE_FLOATS = false;
 }
 
@@ -617,7 +571,6 @@ open class vsint inherits vint {
   #superabstract;
   #supercstr;
 
-  /** @superdoc */
   final public static val SIGNED = true;
 }
 
@@ -627,16 +580,12 @@ open class vsint inherits vint {
 open class i64 inherits vsint {
   #supercstr;
 
-  /** @superdoc */
   public static val NIL = 0l;
 
-  /** @superdoc */
   public static val SIZE = 64p;
 
-  /** @superdoc */
   public static val MINIMUM = -9_223_372_036_854_775_808l;
 
-  /** @superdoc */
   public static val MAXIMUM = 9_223_372_036_854_775_807l;
 }
 
@@ -646,16 +595,12 @@ open class i64 inherits vsint {
 open class i32 inherits i64 {
   #supercstr;
 
-  /** @superdoc */
   public static val NIL = 0;
 
-  /** @superdoc */
   public static val SIZE = 32p;
 
-  /** @superdoc */
   public static val MINIMUM = -2_147_483_648;
 
-  /** @superdoc */
   public static val MAXIMUM = 2_147_483_647;
 }
 
@@ -665,16 +610,12 @@ open class i32 inherits i64 {
 open class i16 inherits i32 {
   #supercstr;
 
-  /** @superdoc */
   public static val NIL = 0s;
 
-  /** @superdoc */
   public static val SIZE = 16p;
 
-  /** @superdoc */
   public static val MINIMUM = -32_768s;
 
-  /** @superdoc */
   public static val MAXIMUM = 32_767s;
 }
 
@@ -684,16 +625,12 @@ open class i16 inherits i32 {
 class i8 inherits i16 {
   #supercstr;
 
-  /** @superdoc */
   public static val NIL = 0b;
 
-  /** @superdoc */
   public static val SIZE = 8p;
 
-  /** @superdoc */
   public static val MINIMUM = -128b;
 
-  /** @superdoc */
   public static val MAXIMUM = 127b;
 }
 
@@ -705,7 +642,6 @@ open class vuint inherits vint {
   #superabstract;
   #supercstr;
 
-  /** @superdoc */
   final public static val SIGNED = false;
 }
 
@@ -715,16 +651,12 @@ open class vuint inherits vint {
 open class u64 inherits vuint {
   #supercstr;
 
-  /** @superdoc */
   public static val NIL = 0ul;
 
-  /** @superdoc */
   public static val SIZE = 64p;
 
-  /** @superdoc */
   public static val MINIMUM = 0ul;
 
-  /** @superdoc */
   public static val MAXIMUM = 18_446_744_073_709_551_615ul;
 }
 
@@ -734,16 +666,12 @@ open class u64 inherits vuint {
 open class u32 inherits u64 {
   #supercstr;
 
-  /** @superdoc */
   public static val NIL = 0u;
 
-  /** @superdoc */
   public static val SIZE = 32p;
 
-  /** @superdoc */
   public static val MINIMUM = 0u;
 
-  /** @superdoc */
   public static val MAXIMUM = 4_294_967_295u;
 }
 
@@ -753,16 +681,12 @@ open class u32 inherits u64 {
 open class u16 inherits u32 {
   #supercstr;
 
-  /** @superdoc */
   public static val NIL = 0us;
 
-  /** @superdoc */
   public static val SIZE = 16p;
 
-  /** @superdoc */
   public static val MINIMUM = 0us;
 
-  /** @superdoc */
   public static val MAXIMUM = 65_535us;
 }
 
@@ -772,16 +696,12 @@ open class u16 inherits u32 {
 class u8 inherits u16 {
   #supercstr;
 
-  /** @superdoc */
   public static val NIL = 0ub;
 
-  /** @superdoc */
   public static val SIZE = 8p;
 
-  /** @superdoc */
   public static val MINIMUM = 0ub;
 
-  /** @superdoc */
   public static val MAXIMUM = 255ub;
 }
 
@@ -792,16 +712,12 @@ class u8 inherits u16 {
 class usize inherits uint {
   #supercstr;
 
-  /** @superdoc */
   public static val NIL = 0p;
 
-  /** @superdoc */
   public static val SIZE = PROC_ARCH_BITS;
 
-  /** @superdoc */
   public static val MINIMUM = 0p;
 
-  /** @superdoc */
   public static val MAXIMUM = 2p ** PROC_ARCH_BITS - 1p;
 }
 
@@ -813,10 +729,8 @@ open class vfloat inherits number {
   #superabstract;
   #supercstr;
 
-  /** @superdoc */
   final public static val SIGNED = true;
 
-  /** @superdoc */
   final public static val HANDLE_FLOATS = true;
 }
 
@@ -827,7 +741,6 @@ open class vfloat inherits number {
 open class f64 inherits vfloat {
   #supercstr;
 
-  /** @superdoc */
   public static val SIZE = 64p;
 }
 
@@ -838,7 +751,6 @@ open class f64 inherits vfloat {
 class f32 inherits f64 {
   #supercstr;
 
-  /** @superdoc */
   public static val SIZE = 32p;
 }
 
@@ -848,32 +760,23 @@ class f32 inherits f64 {
  * String type (primitive)
  */
 class string inherits Primitive {
-  /** @superdoc */
   public static val NIL = '';
 
-  /** @superdoc */
   public func %construct () {};
   
-  /** @superdoc */
   public func %construct<T ~ Primitive> (prim: T) => #__magic_set_primitive(this, prim);
   
-  /** @superdoc */
   public func %to<bool> () : bool => this.length > 0;
   
-  /** @superdoc */
   public func %to<i64> () : i64 => #__magic_parse_string(this, i64);
   
-  /** @superdoc */
   public func %to<u64> () : u64 => #__magic_parse_string(this, u64);
   
-  /** @superdoc */
   public func %to<f64> () : f64 => #__magic_parse_string(this, f64);
   
-  /** @superdoc */
   public func %to<string> () : string => this;
   
   /**
-   * @superdoc
    * @example 'Hello \\ "guys"'.%serialize() == "Hello \\\\ \\"guys\\""
    */
   // DEVNOTE: * Add backslashes before each backslash
@@ -882,16 +785,13 @@ class string inherits Primitive {
   //          * Wraps the string between double quotes
   public func %serialize () : string;
 
-  /** @superdoc */
   public static func %unserialize (serialized: string) throws UnserializationError : string;
 
-  /** @superdoc */
   // DEVNOTE: * If the strings are different, the strings are not equal
   //          * Compare each character one by one: if any is different, the strings are not equal
   //          * Else, they are equal
   public func %equal (another: bool) : bool;
   
-  /** @superdoc */
   // DEVNOTE: * Compare each character one by one until the end of the shortest string:
   //            -> if this string's character has a greater ASCII code than the other, this string is greater
   //            -> if the other string's character has a greater ASCII code than the other, the other is greater
@@ -911,13 +811,11 @@ class string inherits Primitive {
     return (@length > another.length);
   }
   
-  /** @superdoc */
   // DEVNOTE: * If this string is equal to the other one, it is not smaller
   //          * If this string is greater than the other one, it is not smaller
   //          * Else, this string is smaller than the other one
   public func %smaller (another: bool) : bool;
   
-  /** @superdoc */
   public static func %call<T ~ Primitive> (prim: T) : string => <string> prim;
 
   /**
@@ -1254,25 +1152,18 @@ open dict Map<K, V> implements Clonable {
    */
   public func %construct<X ~ K, Y ~ V> (init: Dictionary<X, Y>);
 
-  /** @superdoc */
   public func %get (key: K) : V;
 
-  /** @superdoc */
   public func %set (key: K, value: V);
 
-  /** @superdoc */
   public func %unset (key: K);
 
-  /** @superdoc */
   public func %has (key: K) : bool;
 
-  /** @superdoc */
   public func %contains (key: V) : bool;
 
-  /** @superdoc */
   public func %keys () : Iterator<K>;
 
-  /** @superdoc */
   public func %values () : Iterator<V>;
 
   /**
