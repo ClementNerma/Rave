@@ -1454,7 +1454,7 @@ open class Set<K, V ~ Comparable> inherits Map<K, V> {
 pln PROC_ARCH: string;
 
 /**
- * Number of bits of the processor
+ * Number of bits of the processor (32 or 64 bits only)
  * @example 32p ; 64p
  */
 pln PROC_ARCH_BITS: usize;
