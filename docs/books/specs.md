@@ -536,12 +536,12 @@ a >> 2; // 0000 1111 : 15
 
 There is a last bitwise operator, which takes only one value:
 
-* `~` (one's complement) - takes a single number
+* `~~` (one's complement) - takes a single number
 
 ```sn
 pln a: int = 60; // a = 0011 1100
 
-~ a; // 1100 0100 : -60 (for signed integers - two's complement form)
+~~ a; // 1100 0100 : -60 (for signed integers - two's complement form)
 ```
 
 There is also an operator working on string, called the _concatenation operator_. Its syntax is the same as the addition operator `+`:

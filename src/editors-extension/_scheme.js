@@ -425,12 +425,7 @@ scheme = {
         ],
         [
           // Logical operators
-          /(<=|>=|<|>|==|!=|&&?|\|\|?)/,
-          'cyan'
-        ],
-        [
-          // One's complement operator (fixed version)
-          /~(?=\s*[a-z_\$])/,
+          /(<=|>=|<|>|==|!=|&&?|\|\|?|~~)/,
           'cyan'
         ],
         [
@@ -491,7 +486,7 @@ scheme = {
         ],
         [
           // Shortened typechecking
-          /(~)\s*([A-Z][a-zA-Z0-9_\$\.]*)\b/,
+          /(~)\s*([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
           'cyan', 'green'
         ],
         [
