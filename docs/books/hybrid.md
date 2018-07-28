@@ -4590,6 +4590,17 @@ We specify between the parenthesis that follow the `segment` keyword the segment
 
 This also means the condition must be evaluable just by giving the class' templates. For example, `segment (self.data > 2) { /* ... */ }` wouldn't work because we are evaluating a non-predictable data.
 
+Note that segments can also implement an interface or use a trait, as follows:
+
+```sn
+class Vector<T> {
+  // ...
+  segment (T inherits number) implements Randomizable {
+    public func %random () : T  { /* ... */ }
+  }
+}
+```
+
 ### Templated overloads
 
 It's possible to use templates on overloads, but only if these templates are part of the type of at least one argument of the function. Here are some examples of valid and invalid templated overloads:
