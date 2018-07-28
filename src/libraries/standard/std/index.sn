@@ -19,6 +19,10 @@
 // NOTE: This file is allowed to use native types or context-dependant plain constants before their declaration,
 //        as some are self-dependants.
 
+// NOTE: Unless otherwise stated, open classes are not inheritable from the outside of this file
+//       The mention "NOTE: This class is inheritable" revokes this statement and allows the class to be inherited
+//        by end-developer classes
+
 // Only module of the STD package
 #[module];
 
@@ -220,7 +224,6 @@ interface StaticallyCallable {
 
 /**
  * Primitive type
- * NOTE: This class is not inheritable outside of this file
  */
 virtual class Primitive implements BooleanConvertible, IntegerConvertible, FloatConvertible, Numerizable, Stringifyable, Clonable, Serializable, Comparable, StaticallyCallable {
   /**
@@ -495,7 +498,6 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
 
 /**
  * Virtual number type (primitive)
- * NOTE: This class is not inheritable outside of this file
  */
 virtual class number inherits Primitive implements Randomizable, RandomizableWithBounds {
   /** @superdoc */
@@ -593,7 +595,6 @@ virtual class number inherits Primitive implements Randomizable, RandomizableWit
 
 /**
  * Virtual integer type (primitive)
- * NOTE: This class is not inheritable outside of this file
  */
 open class vint inherits number {
   #superabstract;
@@ -605,7 +606,6 @@ open class vint inherits number {
 
 /**
  * Virtual signed integer type (primitive)
- * NOTE: This class is not inheritable outside of this file
  */
 open class vsint inherits vint {
   #superabstract;
@@ -617,7 +617,6 @@ open class vsint inherits vint {
 
 /**
  * 64-bit signed integer type (primitive)
- * NOTE: This class is not inheritable outside of this file
  */
 open class i64 inherits vsint {
   #supercstr;
@@ -637,7 +636,6 @@ open class i64 inherits vsint {
 
 /**
  * 32-bit signed integer type (primitive)
- * NOTE: This class is not inheritable outside of this file
  */
 open class i32 inherits i64 {
   #supercstr;
@@ -657,7 +655,6 @@ open class i32 inherits i64 {
 
 /**
  * 16-bit signed integer type (primitive)
- * NOTE: This class is not inheritable outside of this file
  */
 open class i16 inherits i32 {
   #supercstr;
@@ -696,7 +693,6 @@ class i8 inherits i16 {
 
 /**
  * Virtual unsigned integer type (primitive)
- * NOTE: This class is not inheritable outside of this file
  */
 open class vuint inherits vint {
   #superabstract;
@@ -708,7 +704,6 @@ open class vuint inherits vint {
 
 /**
  * 64-bit unsigned integer type (primitive)
- * NOTE: This class is not inheritable outside of this file
  */
 open class u64 inherits vuint {
   #supercstr;
@@ -728,7 +723,6 @@ open class u64 inherits vuint {
 
 /**
  * 32-bit unsigned integer type (primitive)
- * NOTE: This class is not inheritable outside of this file
  */
 open class u32 inherits u64 {
   #supercstr;
@@ -748,7 +742,6 @@ open class u32 inherits u64 {
 
 /**
  * 16-bit unsigned integer type (primitive)
- * NOTE: This class is not inheritable outside of this file
  */
 open class u16 inherits u32 {
   #supercstr;
@@ -807,7 +800,6 @@ class usize inherits uint {
 
 /**
  * Virtual signed floating-point number type (primitive)
- * NOTE: This class is not inheritable outside of this file
  */
 open class vfloat inherits number {
   #superabstract;
@@ -822,7 +814,6 @@ open class vfloat inherits number {
 
 /**
  * 64-bit signed floating-point number type (primitive)
- * NOTE: This class is not inheritable outside of this file
  */
 open class f64 inherits vfloat {
   #supercstr;
@@ -1169,6 +1160,7 @@ class Tuple {}
 /**
  * Dictionary type
  * This class is inherited by every dictionary class
+ * NOTE: This class is inheritable
  * @template K Type of keys
  * @template V Type of values
  */
