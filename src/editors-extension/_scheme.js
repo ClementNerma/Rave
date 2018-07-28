@@ -85,7 +85,7 @@ scheme = {
               }
             },
             {
-              match: /(@g?superdoc\s*\()\s*(.*)\s*(\))/,
+              match: /(@classname\s*\()\s*(.*)\s*(\))/,
               captures: {
                 '1': {
                   name: '${purple}'
