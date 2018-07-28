@@ -2796,7 +2796,7 @@ class Product {
 }
 ```
 
-Be aware though, writing `_self` is not like writing the class' name (`Product` here). `_self` is a reference that can only be used inside of a class, and which provides a way to access its private (and public) static members. If we had specified the class' name instead, we wouldn't have been able to access the `counter` attribute as it's private.
+Note that writing `_self` is like writing the class' name (`Product` here). The specificity is that, when we write a class' name inside itself, we can also access its private static members. If we had been outside the class, we wouldn't have been able to access the `counter` attribute as it's private.
 
 When static members are private, that means they can only accessed through `_self`, so from the inside of the class only. When they are public, they are available from the outisde of the class using the class' name, followed by the static operator `.` and the attribute's name.
 
