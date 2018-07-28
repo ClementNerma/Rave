@@ -4578,10 +4578,8 @@ Segments are parts of a class that provides some methods only if some conditions
 ```sn
 class Vector<T> {
   // ...
-  public func %keys() : List<T> { /* ... */ };
-  // ...
   segment (T inherits number) {
-    public func sum () : T { /* ... */ };
+    public func sum () : T { /* ... */ }
   }
 }
 ```
