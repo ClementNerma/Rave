@@ -502,6 +502,9 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
  */
 virtual class number inherits Primitive implements Randomizable, RandomizableWithBounds {
   /** @superdoc */
+  public static val NIL = 0; // i32
+
+  /** @superdoc */
   final public func %construct () {};
   
   /** @superdoc */
