@@ -85,7 +85,7 @@ scheme = {
               }
             },
             {
-              match: /@superdoc\b/,
+              match: /@g?superdoc\b/,
               captures: {
                 '0': {
                   name: '${purple}'
