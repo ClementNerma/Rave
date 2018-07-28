@@ -1225,6 +1225,27 @@ open dict Map<K, V> implements Clonable {
   public func fill (value: V);
 
   /**
+   * Filter this @class
+   * @param filter The callback to filter the @class with
+   * > @param key A @class's key
+   * > @param value The value associated to this key
+   * > @returns `false` if this key/value pair must be ignored
+   * @returns A clone of this @class without the ignored key/value pairs
+   * @example ([ 2, 5, -1 ]).filter((i, v) => v > 0) == [ 2, 5 ]
+   */
+  public func filter (filter: func (key: K, value: T) : bool) : _self;
+
+  /**
+   * Filter this @class
+   * @param filter The callback to filter the @class with
+   * > @param value A @class's value (order is respected)
+   * > @returns `false` if this value must be ignored
+   * @returns A clone of this @class without the ignored key/value pairs
+   * @example ([ 2, 5, -1 ]).filter(i => i > 0) == [ 2, 5 ]
+   */
+  public func filter (filter: func (value: T) : bool) : _self;
+
+  /**
    * Insert all the keys and values from another dictionary
    * @template X Type of the other dictionary's keys
    * @template Y Type of the other dictionary's values
