@@ -2771,8 +2771,6 @@ product.increaseCounter(); // ERROR (static method)
 
 The `_self` keyword refers to the current class in a static context, meaining we can only access its static members.
 
-But, there are three shortcuts for this object: `_self`, which refers to `_self` ; `_this`, which refers to `static<this>` ; and `_super`, which refers to `static<super>`.
-
 Let's populate the class with non-static attributes:
 
 ```sn
