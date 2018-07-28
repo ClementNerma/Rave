@@ -4599,6 +4599,19 @@ class Vector<T> {
 }
 ```
 
+It's even possible to override an existing method or attribute in a segment:
+
+```sn
+class SomeClass<T> implements Randomizable {
+  // ...
+  func %random () : T { /* ... */ }
+  // ...
+  segment (T inherits number) {
+    func %random () : T { /* other code */ }
+  }
+}
+```
+
 ### Templated overloads
 
 It's possible to use templates on overloads, but only if these templates are part of the type of at least one argument of the function. Here are some examples of valid and invalid templated overloads:
