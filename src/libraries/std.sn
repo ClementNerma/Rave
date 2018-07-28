@@ -1680,6 +1680,63 @@ dict List<T> inherits Vector<T> {
   public func unshift (value: T) : usize;
 }
 
+// ==================== Error types ==================== //
+
+/**
+ * Instant of a backtrace
+ * Data may be invalid if the program has been mangled
+ * Only for debugging purpose, not for production
+ */
+struct BacktraceInstant {
+  /**
+   * Filename
+   */
+  val file: string;
+
+  /**
+   * The function's name
+   */
+  val function: string;
+
+  /**
+   * The line number
+   */
+  val line: usize;
+
+  /**
+   * The column number
+   */
+  val column: usize;
+}
+
+/**
+ * Error type
+ * NOTE: This class is inheritable
+ */
+open class Error implements Stringifyable {
+  /**
+   * The error message
+   */
+  public val message: string;
+
+  /**
+   * The error's backtrace
+   */
+  public val backtrace: BacktraceInstant[];
+
+  /**
+   * Initialize an error object
+   * @param message The error's message
+   */
+  public func %construct (@message: string, @backtrace: BacktraceInstant[]);
+
+  /**
+   * Stringify the error
+   * @returns The error, as a string
+   */
+  public func %to<string> () : string;
+}
+
 // ==================== Context-dependant constants ==================== //
 
 // NOTE: [WARNING] The values context-dependant constants can take are not fixed for now.
