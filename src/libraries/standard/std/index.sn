@@ -1236,7 +1236,8 @@ pln PROC_ARCH_BITS: usize;
 pln OS_NAME: string;
 
 /**
- * Full name of the operating system
+ * Platform name
+ * NOTE: Equivalent of `uname -a` on Linux
  * @example 'Linux someone-laptop 4.15.0-29-generic #31-Ubuntu SMP Tue Jul 17 15:39:52 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux'
  */
-pln OS_FULL_NAME: string;
+pln PLATFORM: string;
