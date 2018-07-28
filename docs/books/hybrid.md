@@ -3049,7 +3049,7 @@ If we write that, instances of the class will support cloning but the class won'
 
 Of course, the same problems that applies to the `%clone (clone: _self) : _self` method applies here too.
 
-Note that implementing any of the cloning ways make the `%clone () : _self` overload available in the class.
+Note that implementing any of the cloning ways makes the `%clone () : _self` overload available in the class.
 
 ### Serialization
 
