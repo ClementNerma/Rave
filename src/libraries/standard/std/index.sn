@@ -1579,6 +1579,25 @@ type SortableVector<T ~ Comparable> = Vector<T>;
  */
 type SerializableVector<T ~ Serializable> = Vector<T>;
 
+// ==================== Array type (vector-based) ==================== //
+
+/**
+ * Unknown-sized array
+ * @template T Type of values
+ */
+dict Array<T> inherits Vector<T> {
+  #supercstr;
+}
+
+/**
+ * Array
+ * @template T Type of values
+ * @template SIZE Number of values
+ */
+dict Array<T, SIZE: usize> inherits Vector<T> {
+  #supercstr;
+}
+
 // ==================== Context-dependant constants ==================== //
 
 // NOTE: [WARNING] The values context-dependant constants can take are not fixed for now.
