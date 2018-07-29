@@ -59,7 +59,7 @@ A value can either be a _primitive_ or an _object_.
 
 Primitives are the only type of value that is immutable, meaning their content can never change.
 
-Also, values can be written as _raw values_ (also called _plain values_) or as _unpredictable values_. The first ones are explicit values, meaning they are predictable and won't change whatever happens. The second ones can depend on the program's state. In this chapter, we will only talk about raw values.
+Also, values can be written as _plain values_ (also called _plain values_) or as _unpredictable values_. The first ones are explicit values, meaning they are predictable and won't change whatever happens. The second ones can depend on the program's state. In this chapter, we will only talk about plain values.
 
 ### Voids and booleans
 
@@ -88,7 +88,7 @@ Integer types starting with an `i` are signed integers, meaning they can handle 
 
 The number following the first letter of the type indicates how must bits it takes in memory.
 
-Raw integers are a suite of digits from `0` to `9`, optionally separated by underscores (_) which are separators and are ignored. Note that numbers cannot start or end with an underscore symbol.
+Plain integers are a suite of digits from `0` to `9`, optionally separated by underscores (_) which are separators and are ignored. Note that numbers cannot start or end with an underscore symbol.
 
 There is also the `usize` type, which is an unsigned integer with the same number of bytes as the processor the program is running on (32 or 64 bits). It guarantees to be able to handle any memory adress and index.
 
@@ -117,20 +117,20 @@ All floating-point types are signed.
 
 The number following the first letter of the type indicates how must bits it takes in memory.
 
-Raw integers are a suite of digits from `0` to `9`, optionally separated by underscores (_) which are separators and are ignored.
+Plain integers are a suite of digits from `0` to `9`, optionally separated by underscores (_) which are separators and are ignored.
 
 This is their _integer part_, which is followed by a point (.) and another equivalent suite representing their _decimal part_.
 
 When writing a floating-point number without providing a type, it's by default an `f32`. If it exceeds its capacity, it is turned into an `f64`.
 
-By default, any raw number without a decimal part is considered as being an integer. If it has a decimal part, even if it's a suite of zeros, it is considered as being a floating-point number.
+By default, any plain number without a decimal part is considered as being an integer. If it has a decimal part, even if it's a suite of zeros, it is considered as being a floating-point number.
 
 ### Numerical suffixes
 
-Raw numbers can be followed with a _numerical suffix_, which allows them to be of another number type:
+Plain numbers can be followed with a _numerical suffix_, which allows them to be of another number type:
 
 ```sn
-[raw number][suffix]
+[plain number][suffix]
 
 // e.g.
 2b;  // i8 (Byte)
@@ -272,7 +272,7 @@ Plain constants are constants with a predictable value, meaning that the value w
 pln age: uint = 5;
 ```
 
-Plain constants only accept raw values, and are so considered as containing raw values themselves.
+Plain constants only accept plain values, and are so considered as containing plain values themselves.
 
 ### Models
 
@@ -398,7 +398,7 @@ Tuples are a special type of value that can contain several mutables at once. Ea
 let person: (string, uint) = ('Jack', 24);
 ```
 
-The entities it contains are called its _elements_. They can be retrieved using an _index_, which must be a raw `usize` value:
+The entities it contains are called its _elements_. They can be retrieved using an _index_, which must be a plain `usize` value:
 
 ```sn
 [tuple] [ [index] ]
@@ -440,7 +440,7 @@ Expressions are a suite of one or more values, each separated by a single _value
 
 Note that, wherever something asks for a value, it also accepts expressions, as they always produce a value. So, it also accepts an entity, as entities can also be considered as expressions.
 
-When an expression is only made of raw values and operators, it produces a raw values. When there is at least one unpredictable value, it produces an unpredictable value.
+When an expression is only made of plain values and operators, it produces a plain values. When there is at least one unpredictable value, it produces an unpredictable value.
 
 They are two types of operators: _value operators_, which produce a value from one or several ones, and _affectation operators_, which work from an entity and a value to change the entity's value.
 
@@ -707,7 +707,7 @@ A vector's mutables can be accessed using an _index_, which must be a `usize` va
 messages[1p] // ''
 ```
 
-There is a syntax sugar for indexes: we can use a raw `int` value as an index:
+There is a syntax sugar for indexes: we can use a plain `int` value as an index:
 
 ```sn
 messages[1] // ''
@@ -721,7 +721,7 @@ messages[1] = 'Hello world!';
 messages[1]; // 'Hello world'
 ```
 
-Unlike tuples, the index is not forced to be a raw index:
+Unlike tuples, the index is not forced to be a plain index:
 
 ```sn
 let i = 1p;

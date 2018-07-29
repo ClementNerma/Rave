@@ -1093,7 +1093,7 @@ Arrays and lists are in fact dictionaries. Their keys are `usize` values, while 
 
 This is why lists use the same `#` symbols as dictionaries. For arrays, that's a little bit complex, as we'll see now.
 
-There is though a syntax sugar that allows us to use raw `int` values as indexes, to avoid having to write the `p` suffix each time we try to access a vector's value.
+There is though a syntax sugar that allows us to use plain `int` values as indexes, to avoid having to write the `p` suffix each time we try to access a vector's value.
 
 ### Inferred Structured Typing
 
@@ -4526,7 +4526,7 @@ func something<T> () : void {}
 func something<T: #raw<Class>> () : void {}
 ```
 
-We are specifying the template's _type_. Here, `T` is an instance of the `Class` class, which is a special class that refers to an existing class. The `#raw<T>` directive indicates it must be a raw type: we must explicitly tell the class we want to use as a template. But we can also specify other types:
+We are specifying the template's _type_. Here, `T` is an instance of the `Class` class, which is a special class that refers to an existing class. The `#raw<T>` directive indicates it must be a plain type: we must explicitly tell the class we want to use as a template. But we can also specify other types:
 
 ```sn
 func createEmptyList<T, SIZE: uint> () : T[SIZE] { /* ... */ }
@@ -4549,7 +4549,7 @@ Also, always remember templates are _constants_: they cannot be modified in any 
 
 **NOTE :** The fact templates can be of any type is the main reason why they aren't called 'generics', unlike many programming languages.
 
-**NOTE :** In classes, methods are raw functions. This means that the following code:
+**NOTE :** In classes, methods are plain functions. This means that the following code:
 
 ```sn
 class A {
@@ -6532,7 +6532,7 @@ let tuple = ( 'Hello' );
 tuple[0]; // Returns: 'Hello'
 ```
 
-Note that plain constants have natively a `#raw<T>` type. There are the only entities having such a type. Still, `#raw<T>` works on flexs' arguments as well as functions' ones (to give them the possibility to pass such raw values to flexs that require them). This type describes an entity as containing a predictable **and** imutable value.
+Note that plain constants have natively a `#raw<T>` type. There are the only entities having such a type. Still, `#raw<T>` works on flexs' arguments as well as functions' ones (to give them the possibility to pass such plain values to flexs that require them). This type describes an entity as containing a predictable **and** imutable value.
 
 Note that flexs can be expressed as a type, using `flex` instead of `func`, but only inside other flexs' signature and body. For example, the native `iter_tuple` flex requires another flex as a callback:
 
@@ -6546,9 +6546,9 @@ iter_tuple!(('Hello', 24), flex (value: Any) {
 });
 ```
 
-Note that flexs must be raw, meaning you can't store a flex in a variable to use it later (except in a plain constant, of course, and as an argument because flexs are implicitly raw).
+Note that flexs must be plain, meaning you can't store a flex in a variable to use it later (except in a plain constant, of course, and as an argument because flexs are implicitly plain).
 
-Another particular point about flexs is that their return type can be a raw type:
+Another particular point about flexs is that their return type can be a plain type:
 
 ```sn
 flex returnTwo () : #raw<int> {
@@ -6559,7 +6559,7 @@ pln two = returnTwo!(); // Works fine
 println!(two); // Prints: '2'
 ```
 
-This is useful when dealing with plain constants, or even when dealing with classes. Indeed, when we write a class name like `string` or `int` as a value, it is typed as a `#raw<Class>` (called a _raw class_). Only raw classes can be instanciated and get members available.
+This is useful when dealing with plain constants, or even when dealing with classes. Indeed, when we write a class name like `string` or `int` as a value, it is typed as a `#raw<Class>` (called a _plain class_). Only plain classes can be instanciated and get members available.
 
 ```sn
 func stringFunc () : Class {
@@ -7004,7 +7004,7 @@ proxy randOf<T inherits int>: T from randOfModel;
 
 ### Flexible proxies
 
-Also called _flex proxies_, flexible proxies are a mix between flexible functions and proxies. They allow us, for example, to return raw values (like raw classes).
+Also called _flex proxies_, flexible proxies are a mix between flexible functions and proxies. They allow us, for example, to return plain values (like plain classes).
 
 They are defined the same way as standard proxies, except we use the `proxy!` keyword instead of the `proxy` one, and that the getter and setter are flexs instead of simple functions.
 
@@ -7018,11 +7018,11 @@ proxy! static<DATA: Any>: #raw<Class> {
 };
 ```
 
-This definition is a bit ugly, as it mixes a flexible templated proxy and raw return types.
+This definition is a bit ugly, as it mixes a flexible templated proxy and plain return types.
 
 So, this proxy takes a single template, `DATA`. Thanks to template inference, writing `static<'Hello'>` works fine and, because we are using a flex proxy, `DATA` will be typed as a `string` (with a standard proxy, it would have been typed as an `Any`).
 
-The proxy returns a raw class, meaning we can manipulate it as if we wrote its name directly. This is possible thanks to the proxy being flexible. Its getter also indicates, of course, an identical return type, and returns the class `DATA` is an instance of. This leads us to the following results:
+The proxy returns a plain class, meaning we can manipulate it as if we wrote its name directly. This is possible thanks to the proxy being flexible. Its getter also indicates, of course, an identical return type, and returns the class `DATA` is an instance of. This leads us to the following results:
 
 ```sn
 let str: static<''> = 'Hello world!'; // Works fine
@@ -8114,7 +8114,7 @@ let name: string;
 export Functions;
 ```
 
-Here, `Functions` is an object that contains all resources defined in `functions.sn`. All its members are constants, and thanks to type inference, we can export raw data like plain constants.
+Here, `Functions` is an object that contains all resources defined in `functions.sn`. All its members are constants, and thanks to type inference, we can export plain data like plain constants.
 
 _Tip :_ The `#include` directive can be used everywhere, even outside a package. Think to it to structure your code!
 
