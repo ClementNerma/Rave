@@ -589,7 +589,7 @@ scheme = {
         ],
         [
           // Special native types
-          /(?<!\.)\b(void|Any|lambda|T|X|Y|Z|K|V|Class|Function|Structure|Enumeration|Interface|Trait)\b/,
+          /(?<!\.)\b(void|Any|lambda|T|X|Y|Z|K|V|Type|Function|Structure|Enumeration|Interface|Trait)\b/,
           'purple', 'cyan'
         ],
         [

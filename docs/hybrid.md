@@ -4541,10 +4541,10 @@ In reality, templates are instances of a class. Consider the following code:
 func something<T> () : void {}
 
 // Is strictly equivalent to:
-func something<T: #pln<Class>> () : void {}
+func something<T: #pln<Type>> () : void {}
 ```
 
-We are specifying the template's _type_. Here, `T` is an instance of the `Class` class, which is a special class that refers to an existing class. The `#pln<T>` directive indicates it must be a plain type: we must explicitly tell the class we want to use as a template. But we can also specify other types:
+We are specifying the template's _type_. Here, `T` is an instance of the `Type` class, which is a special class that refers to an existing class. The `#pln<T>` directive indicates it must be a plain type: we must explicitly tell the class we want to use as a template. But we can also specify other types:
 
 ```sn
 func createEmptyList<T, SIZE: uint> () : T[SIZE] { /* ... */ }
@@ -6577,14 +6577,14 @@ pln two = returnTwo!(); // Works fine
 println!(two); // Prints: '2'
 ```
 
-This is useful when dealing with plain constants, or even when dealing with classes. Indeed, when we write a class name like `string` or `int` as a value, it is typed as a `#pln<Class>` (called a _plain class_). Only plain classes can be instanciated and get members available.
+This is useful when dealing with plain constants, or even when dealing with classes. Indeed, when we write a class name like `string` or `int` as a value, it is typed as a `#pln<Type>` (called a _plain class_). Only plain classes can be instanciated and get members available.
 
 ```sn
-func stringFunc () : Class {
+func stringFunc () : Type {
   return string;
 }
 
-flex stringFlex () : #pln<Class> {
+flex stringFlex () : #pln<Type> {
   return string;
 }
 
@@ -6618,7 +6618,7 @@ val k = getFinalReferred(&&& wrap!(2)); // Returns: 2
 val l = getFinalReferred(& &mut & wrap!(2)); // Returns: 2
 ```
 
-Another news: flexs can be used to type an entity, as long as they return a `#pln<Class>` of course. Also, mutable pointers are considered as instances of their non-mutable version (so a `*mut int` is considered as being an instance of both `*mut int` and `* int`).
+Another news: flexs can be used to type an entity, as long as they return a `#pln<Type>` of course. Also, mutable pointers are considered as instances of their non-mutable version (so a `*mut int` is considered as being an instance of both `*mut int` and `* int`).
 
 This example is complex but demonstrates the powerfulness of references manipulation using flexs.
 
@@ -7029,8 +7029,8 @@ They are defined the same way as standard proxies, except we use the `proxy!` ke
 To understand the usefulness of flexible proxies, know that the `static` object is in reality a flexible proxy itself. Here is its definition:
 
 ```sn
-proxy! static<DATA: Any>: #pln<Class> {
-  getter: flex () : #pln<Class> {
+proxy! static<DATA: Any>: #pln<Type> {
+  getter: flex () : #pln<Type> {
     return classof!(DATA);
   }
 };
