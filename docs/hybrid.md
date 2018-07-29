@@ -4523,10 +4523,10 @@ In reality, templates are instances of a class. Consider the following code:
 func something<T> () : void {}
 
 // Is strictly equivalent to:
-func something<T: #raw<Class>> () : void {}
+func something<T: #pln<Class>> () : void {}
 ```
 
-We are specifying the template's _type_. Here, `T` is an instance of the `Class` class, which is a special class that refers to an existing class. The `#raw<T>` directive indicates it must be a plain type: we must explicitly tell the class we want to use as a template. But we can also specify other types:
+We are specifying the template's _type_. Here, `T` is an instance of the `Class` class, which is a special class that refers to an existing class. The `#pln<T>` directive indicates it must be a plain type: we must explicitly tell the class we want to use as a template. But we can also specify other types:
 
 ```sn
 func createEmptyList<T, SIZE: uint> () : T[SIZE] { /* ... */ }
@@ -6514,10 +6514,10 @@ class Hello {
 
 Here, flexs are able to access their scope they are declared in (the scope of `Hello` plus all of its parents) as well as their own scope (remember, functions have a reserved scope delimited by their brackets), but they aren't able to access the local scope in which we define a `local_name` constant and from which we call them.
 
-Another point: the `#raw<T>` typed. It's called a _templated type directive_, and only accepts plain values. Its goal is to be able to manipulate, for example, tuples:
+Another point: the `#pln<T>` typed. It's called a _templated type directive_, and only accepts plain values. Its goal is to be able to manipulate, for example, tuples:
 
 ```sn
-flex access_tuple_value (tuple: #raw<Tuple>, index: #raw<usize>) : Any {
+flex access_tuple_value (tuple: #pln<Tuple>, index: #pln<usize>) : Any {
   // The following line works because:
   // - The length and type of every element in the tuple
   //     are known as it's a plain tuple
@@ -6532,13 +6532,13 @@ let tuple = ( 'Hello' );
 tuple[0]; // Returns: 'Hello'
 ```
 
-Note that plain constants have natively a `#raw<T>` type. There are the only entities having such a type. Still, `#raw<T>` works on flexs' arguments as well as functions' ones (to give them the possibility to pass such plain values to flexs that require them). This type describes an entity as containing a predictable **and** imutable value.
+Note that plain constants have natively a `#pln<T>` type. There are the only entities having such a type. Still, `#pln<T>` works on flexs' arguments as well as functions' ones (to give them the possibility to pass such plain values to flexs that require them). This type describes an entity as containing a predictable **and** imutable value.
 
 Note that flexs can be expressed as a type, using `flex` instead of `func`, but only inside other flexs' signature and body. For example, the native `iter_tuple` flex requires another flex as a callback:
 
 ```sn
 // Flex's signature
-flex iter_tuple (tuple: #raw<Tuple>, callback: flex (value: Any));
+flex iter_tuple (tuple: #pln<Tuple>, callback: flex (value: Any));
 
 // Showcase
 iter_tuple!(('Hello', 24), flex (value: Any) {
@@ -6551,7 +6551,7 @@ Note that flexs must be plain, meaning you can't store a flex in a variable to u
 Another particular point about flexs is that their return type can be a plain type:
 
 ```sn
-flex returnTwo () : #raw<int> {
+flex returnTwo () : #pln<int> {
   return 2;
 }
 
@@ -6559,14 +6559,14 @@ pln two = returnTwo!(); // Works fine
 println!(two); // Prints: '2'
 ```
 
-This is useful when dealing with plain constants, or even when dealing with classes. Indeed, when we write a class name like `string` or `int` as a value, it is typed as a `#raw<Class>` (called a _plain class_). Only plain classes can be instanciated and get members available.
+This is useful when dealing with plain constants, or even when dealing with classes. Indeed, when we write a class name like `string` or `int` as a value, it is typed as a `#pln<Class>` (called a _plain class_). Only plain classes can be instanciated and get members available.
 
 ```sn
 func stringFunc () : Class {
   return string;
 }
 
-flex stringFlex () : #raw<Class> {
+flex stringFlex () : #pln<Class> {
   return string;
 }
 
@@ -6574,7 +6574,7 @@ stringFunc().NIL; // ERROR
 stringFlex!().NIL; // Empty string
 ```
 
-A last 'type', truly reserved to flexs this time (so functions cannot use it): the unknown-sized reference. It requires a reference and allows references, references of references, references of references of references, and so on. The given reference's level can be got using the `levelof!` flex, which returns a `#raw<usize>` value.
+A last 'type', truly reserved to flexs this time (so functions cannot use it): the unknown-sized reference. It requires a reference and allows references, references of references, references of references of references, and so on. The given reference's level can be got using the `levelof!` flex, which returns a `#pln<usize>` value.
 
 For this example, we will use several useful flexs that work on references:
 
@@ -6600,7 +6600,7 @@ val k = getFinalReferred(&&& wrap!(2)); // Returns: 2
 val l = getFinalReferred(& &mut & wrap!(2)); // Returns: 2
 ```
 
-Another news: flexs can be used to type an entity, as long as they return a `#raw<Class>` of course. Also, mutable pointers are considered as instances of their non-mutable version (so a `*mut int` is considered as being an instance of both `*mut int` and `* int`).
+Another news: flexs can be used to type an entity, as long as they return a `#pln<Class>` of course. Also, mutable pointers are considered as instances of their non-mutable version (so a `*mut int` is considered as being an instance of both `*mut int` and `* int`).
 
 This example is complex but demonstrates the powerfulness of references manipulation using flexs.
 
@@ -7011,8 +7011,8 @@ They are defined the same way as standard proxies, except we use the `proxy!` ke
 To understand the usefulness of flexible proxies, know that the `static` object is in reality a flexible proxy itself. Here is its definition:
 
 ```sn
-proxy! static<DATA: Any>: #raw<Class> {
-  getter: flex () : #raw<Class> {
+proxy! static<DATA: Any>: #pln<Class> {
+  getter: flex () : #pln<Class> {
     return classof!(DATA);
   }
 };

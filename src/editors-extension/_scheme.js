@@ -799,7 +799,7 @@ scheme = {
         ],
         [
           // Type directives for flexs
-          /#(raw|var|noptr|name|reduced|class)\b/,
+          /#(var|noptr|name|reduced|class)\b/,
           'purple'
         ],
         [
