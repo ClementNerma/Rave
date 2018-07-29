@@ -188,30 +188,36 @@ interface Serializable {
 // ==================== Comparable types ==================== //
 
 /**
- * Comparable types
+ * Types comparable to a given one
+ * @template T The type this one is comparable to
  */
-interface Comparable {
+interface ComparableTo<T> {
   /**
    * Check if this instance is equal to another
    * @param another Another instance of this type
    * @returns `true` if this instance is equal to the provided one
    */
-  func %equal (another: _self) : bool;
+  func %equal (another: T) : bool;
 
   /**
    * Check if this instance is greater than another
    * @param another Another instance of this type
    * @returns `true` if this instance is greater than the provided one
    */
-  func %greater (another: _self) : bool;
+  func %greater (another: T) : bool;
 
   /**
    * Check if this instance is smaller than another
    * @param another Another instance of this type
    * @returns `true` if this instance is smaller than the provided one
    */
-  func %smaller (another: _self) : bool;
+  func %smaller (another: T) : bool;
 }
+
+/**
+ * Types comparable to themselves
+ */
+type Comparable = ComparableTo<_>;
 
 // ==================== Randomizable types ==================== //
 
