@@ -310,13 +310,25 @@ Note that constants are considered as unpredictable.
 
 #### Plain constants
 
-Plain constants are constants with a predictable value, meaning that the value won't change whatever the execution conditions are and what the other contains contain. Otherwise, they work exactly like constants and are declared using the `pln` keyword:
+_Plain constants_ are simply constants that only accept plain values.
 
 ```sn
-pln age: uint = 5;
+// e.g.
+val age: #pln<uint> = 5; // Works
+val age2: #pln<uint> = age; // Works
+
+val age: uint = 5;
+val age2: #pln<uint> = age; // ERROR
 ```
 
-Plain constants only accept plain values, and are so considered as containing plain values themselves.
+There is also a shortened syntax, using the `pln` keyword:
+
+```sn
+pln [name]: [type] = [value];
+
+// e.g.
+pln age: uint = 5;
+```
 
 ### Models
 
