@@ -236,6 +236,8 @@ While non-raw values have a simple type (like `int`), raw values use the `#raw<[
 
 Containers have a type and contain a value described as their _content_. The action of setting a container's content is called _assignment_. Be aware though, containers are not values themselves, they simply contain one (and only one).
 
+Note that, if a container is typed as a `[Type]`, it also accepts raw values of the same type (`#raw<[Type]>`) as it is considered as a sub-type.
+
 #### Mutables
 
 Mutable containers contain an unpredictable value and have a dynamic content, meaning we can perform several assignment separetly on them. They are declared using the `let` keyword:
