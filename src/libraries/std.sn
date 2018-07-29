@@ -102,6 +102,56 @@ interface Stringifyable {
   func %to<string> = f64 || u64 || i64 || f32 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
 }
 
+// ==================== Calculable types ==================== //
+
+/**
+ * Calculable types
+ * Only for types returning instances of themselves for calculations
+ */
+interface Calculable {
+  /**
+   * Add this value to another one
+   * @param value The value to add to this one
+   * @returns The result
+   */
+  func %plus (value: _self) : _self;
+
+  /**
+   * Substract a value to this one
+   * @param value The value to substract to this one
+   * @returns The result
+   */
+  func %less (value: _self) : _self;
+
+  /**
+   * Multiply this value by another one
+   * @param value The value to multiply this one by
+   * @returns The result
+   */
+  func %times (value: _self) : _self;
+
+  /**
+   * Divide this value by another one
+   * @param value The value to multiply this one by
+   * @returns The result
+   */
+  func %divide (value: _self) : _self;
+
+  /**
+   * Multiply this value by itself a given number of times
+   * @param pow The number of times
+   * @example self ** 4 == self * self * self * self
+   */
+  func %pow (pow: uint) : _self;
+
+  /**
+   * Modulo this value by another
+   * @param value The value to modulo this one by
+   * @returns The result
+   */
+  func %modulo (value: _self) : _self;
+}
+
 // ==================== Clonable types ==================== //
 
 /**
@@ -1523,7 +1573,7 @@ virtual dict Vector<T> inherits Map<usize, T> {
   public func toList () : List<T>;
 
   /**
-   * Segment for calculable types
+   * Segment for self-calculable types
    */
   segment (T ~ Calculable) {
     /**
