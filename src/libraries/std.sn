@@ -336,27 +336,27 @@ class void inherits Primitive implements Randomizable, RandomizableWithBounds {
   #supercstr;
 
   public static val NIL = null;
-  
+
   public func %to<bool> () : bool => false;
-  
+
   public func %to<i64> () : i64 => 0l;
-  
+
   public func %to<u64> () : u64 => 0ul;
-  
+
   public func %to<f64> () : f64 => 0d;
-  
+
   public func %to<string> () : string => '';
-  
+
   public func %serialize () : string => '';
-  
+
   public static func %unserialize (serialized: string) throws UnserializationError : _self;
-  
+
   public func %equal (another: void) : bool => true;
-  
+
   public func %greater (another: void) : void => false;
-  
+
   public func %smaller (another: void) : void => false;
-  
+
   public static func %call<T ~ Primitive> (prim: T) : void => null;
 
   /**
@@ -394,19 +394,19 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
   #supercstr;
 
   public static val NIL = false;
-  
+
   public func %to<bool> () : bool => this;
-  
+
   public func %to<i64> () : i64 => this ? 1l : 0l;
-  
+
   public func %to<u64> () : u64 => this ? 1ul : 0ul;
-  
+
   public func %to<f64> () : f64 => this ? 1d : 0d;
-  
+
   public func %to<string> () : string => this ? 'true' : 'false';
-  
+
   public func %serialize () : string => this ? 'true' : 'false';
-  
+
   public static func %unserialize (serialized: string) throws UnserializationError : bool {
     if serialized == 'true' {
       return true;
@@ -416,13 +416,13 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
       throw new UnserializationError("Serialized boolean can be either 'true' or 'false'");
     }
   }
-  
+
   public func %equal (another: bool) : bool => this == another;
-  
+
   public func %greater (another: bool) : bool => (this == true && another == false);
-  
+
   public func %smaller (another: bool) : bool => (this == false && another == true);
-  
+
   public static func %call<T ~ Primitive> (prim: T) : bool => prim != T.NIL;
 
   /**
@@ -467,27 +467,27 @@ virtual class number inherits Primitive implements Randomizable, RandomizableWit
   #supercstr;
 
   public static val NIL = 0; // i32
- 
+
   final public func %to<bool> () : bool => self != 0;
-  
+
   final public func %to<i64> () : i64;
-  
+
   final public func %to<u64> () : u64;
 
   final public func %to<f64> () : f64;
-  
+
   final public func %to<string> () : string;
-  
+
   final public func %serialize () : string;
- 
+
   final public static func %unserialize (serialized: string) throws UnserializationError : _self;
-  
+
   final public func %equal (another: _self) : bool => self == another;
-  
+
   final public func %greater (another: _self) : _self => self > another;
-  
+
   final public func %smaller (another: _self) : _self => self < another;
-  
+
   final public static func %call<T ~ Primitive> (prim: T) : _self;
 
   final public static func %random () : _self;
@@ -502,7 +502,7 @@ virtual class number inherits Primitive implements Randomizable, RandomizableWit
    * Is this number type signed?
    */
   abstract public static val SIGNED: bool;
-  
+
   /**
    * Does this number type handle floating-point numbers?
    */
@@ -749,17 +749,17 @@ class string inherits Primitive {
   #supercstr;
 
   public static val NIL = '';
-  
+
   public func %to<bool> () : bool => this.length > 0;
-  
+
   public func %to<i64> () : i64;
-  
+
   public func %to<u64> () : u64;
-  
+
   public func %to<f64> () : f64;
-  
+
   public func %to<string> () : string => this;
-  
+
   /**
    * @example 'Hello \\ "guys"'.%serialize() == "Hello \\\\ \\"guys\\""
    */
@@ -775,19 +775,19 @@ class string inherits Primitive {
   //          * Compare each character one by one: if any is different, the strings are not equal
   //          * Else, they are equal
   public func %equal (another: bool) : bool;
-  
+
   // DEVNOTE: * Compare each character one by one until the end of the shortest string:
   //            -> if this string's character has a greater ASCII code than the other, this string is greater
   //            -> if the other string's character has a greater ASCII code than the other, the other is greater
   //          * Else, if this string is longer than the other one, this string is greater
   //          * Else, this string is not greater than the other (but may still be equal)
   public func %greater (another: bool) : bool;
-  
+
   // DEVNOTE: * If this string is equal to the other one, it is not smaller
   //          * If this string is greater than the other one, it is not smaller
   //          * Else, this string is smaller than the other one
   public func %smaller (another: bool) : bool;
-  
+
   public static func %call<T ~ Primitive> (prim: T) : string => <string> prim;
 
   /**
@@ -1064,7 +1064,7 @@ virtual dict Dictionary<K, V> {
    * @param key The key to delete
    */
   abstract public func %unset (key: K);
-  
+
   /**
    * Check if a key exists in this dictionary
    * @param key The key to check the existence of
@@ -1533,7 +1533,7 @@ virtual dict Vector<T> inherits Map<usize, T> {
      */
     public func sum<X = T> () : i64;
   }
-  
+
   /**
    * Segment for serializable keys and values
    */
@@ -1624,7 +1624,7 @@ dict Array<T, SIZE: usize> inherits Vector<T> {
  */
 dict List<T> inherits Vector<T> {
   #supercstr;
-  
+
   /**
    * Get the last element from the list and remove it
    * @returns The ex-last element (null if the list was empty)
