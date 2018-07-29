@@ -7627,6 +7627,21 @@ mutable = true; // Works fine too
 
 This works as expected. And we can do this with absolutely any type, of course. We can even store the types in a structure's plain field to use it later.
 
+This also means we could define types without using the `type` keyword:
+
+```sn
+// Shortened syntax
+type A = B;
+
+// Plain constants shortened syntax
+pln A: Type = B;
+
+// Full syntax
+val A: #pln<Type> = B;
+```
+
+This last line is clearly ugly and less readable than a simple `type` aliasing. Also, the keyword makes an _alias_ and not an assignment, which allows us to use the `this` and `self` resolution operators in it, at the opposite of declaring the type using a plain constant.
+
 ## Asynchronous behaviours
 
 Sometimes we can't foretell when an event will occur. For example, if we are making a web server, we can't predict _when_ there will be incoming connections. This is called an _asynchronous behaviour_ and can be handled several ways.
