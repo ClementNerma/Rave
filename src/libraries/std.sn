@@ -42,8 +42,8 @@ interface Any {}
  * @template DATA The data to get the class from
  * @returns The class 'DATA' is an instance of
  */
-proxy! static<DATA: Any>: #raw<Class> {
-  getter: flex () : #raw<Class> {
+proxy! static<DATA: Any>: #pln<Type> {
+  getter: flex () : #pln<Type> {
     return classof!(DATA);
   }
 };
