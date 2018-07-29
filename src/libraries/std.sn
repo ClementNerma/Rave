@@ -1391,7 +1391,7 @@ virtual dict Vector<T> inherits Map<usize, T> {
    * @param affect If `true`, affects the result to this @class
    * @returns The final @class
    */
-  public func concat (vect: Vector<T>, affect: bool = false) : _self;
+  public func concat (vect: Vector<T>, affect: bool = false) : _this;
 
   /**
    * Concatenate this @class with a list of values (does not affect this @class)
@@ -1399,7 +1399,7 @@ virtual dict Vector<T> inherits Map<usize, T> {
    * @param affect If `true`, affects the result to this @class
    * @returns The final @class
    */
-  public func concat (values: ...T, affect: bool = false) : _self;
+  public func concat (values: ...T, affect: bool = false) : _this;
 
   /**
    * Fill this @class with a single value
