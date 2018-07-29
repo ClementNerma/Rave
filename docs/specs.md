@@ -226,17 +226,17 @@ A _templated type directive_ is a type directive that takes a template, meaning 
 #[directive]<[Type]>
 ```
 
-### Raw values
+### Plain values
 
-Raw values are predictable and immutable values: they are predictable even before the program starts to run, just by reading the program's source code.
+Plain values are predictable and immutable values: they are predictable even before the program starts to run, just by reading the program's source code.
 
-While non-raw values have a simple type (like `int`), raw values use the `#raw<[Type]>` templated type directive. For example, a raw 32-bit signed integer will have the `#raw<int>` type.
+While non-plain values have a simple type (like `int`), plain values use the `#pln<[Type]>` templated type directive. For example, a plain 32-bit signed integer will have the `#pln<int>` type.
 
 ### Containers
 
 Containers have a type and contain a value described as their _content_. The action of setting a container's content is called _assignment_. Be aware though, containers are not values themselves, they simply contain one (and only one).
 
-Note that, if a container is typed as a `[Type]`, it also accepts raw values of the same type (`#raw<[Type]>`) as it is considered as a sub-type.
+Note that, if a container is typed as a `[Type]`, it also accepts plain values of the same type (`#pln<[Type]>`) as it is considered as a sub-type.
 
 #### Mutables
 
