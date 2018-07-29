@@ -51,6 +51,28 @@ For syntaxes demonstration, the following notations will be used:
 * `[x]` indicates a variable value (e.g. a keyword specific to the context) ;
 * `[x?]` indicaets an optional variable value
 
+## Basics
+
+Here is a few notions about the language's basics.
+
+A _directive_ is a keyword starting by a sharp symbol (#) and optionally ending by a semicolon (;). It describes a piece of code as having a different behaviour than it should have by default. The syntax is as follows:
+
+```sn
+#[directive];
+```
+
+There are also the _heading directives_, which describe a whole file. They use a slightly different syntax:
+
+```sn
+#[[directive]];
+```
+
+An _instruction_ is a piece of code that _runs_ something in the program. They are the only pieces of code ending by a semicolon (;). The syntax is as follows:
+
+```sn
+[instruction];
+```
+
 ## Values
 
 _Values_ are individual data that can be processed using _expressions_ or _value operators_. Each value has an associated _type_ describing it.
