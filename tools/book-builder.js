@@ -61,7 +61,7 @@ self = {
       error(`Unknown book "${name}"`, 7);
 
     // Determine its path
-    let book_path = `docs/books/${name}.md`;
+    let book_path = `docs/${name}.md`;
 
     // If the file does not exist...
     if (! fileExists(book_path))
