@@ -6330,7 +6330,7 @@ engine.run(() => {
 
 ### Conditional directives
 
-Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the _conditional directives_: `#if`, `#else`, `#elsif`, `#end`. These directives use a boolean, like their block equivalent. Their specificity is that the code located in them will simply be removed from the source code if the condition is (or is not) filled. They can use build constants, giving the type of conversion (compilation, interpretation, transpiling), the platform (x86_64, ARM...). Conditions must compare a plain value to another (plain constants defined in the program are supported).
+Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the _conditional directives_: `#if`, `#else`, `#elsif`, `#end`. The code located in them is simply removed from the source code if the condition is (or is not) filled, before the program starts to run. They can only use plain values, as well as native constants, which give informations about the type of execution (interpreted, compiled, ...), the platform (Windows, Linux, ...) the processor's architecture (ARM, x86, ...).
 
 Here is an example:
 
