@@ -1305,6 +1305,8 @@ i = i + 2 while i < 10;
 
 Note that the inline syntax keeps the scope creation blocks perform but it's useful only with the `for` loop which implicitly creates a mutable in its scope.
 
+Also, note that inline blocks are not blocks ; they simply act like blocks.
+
 #### Inline generation
 
 Inline generation is performed by using any loop block inline, if and only if the expression as well as the inline block are wrapped between parenthesis. It initially creates an empty list of the same type than the expression, and add the evaluated expression's result in it at each iteration.
