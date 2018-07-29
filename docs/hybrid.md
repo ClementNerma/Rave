@@ -2353,7 +2353,7 @@ struct Point {
 // Declare the two functions with polymorphism
 func pointStr (x: f32, y: f32) : string => `(${x}, ${y})`;
 
-func pointStr (pt: Point) : string => `(${Point.x}, ${Point.y})`;
+func pointStr (pt: Point) : string => `(${pt.x}, ${pt.y})`;
 
 // Let's try them!
 pointStr(2, 5); // Prints: '(2, 5)'
@@ -4385,7 +4385,7 @@ Because the chosen template is not predictable, we can't instanciate it nor use 
 // Make a structure
 struct Data<T implements Stringifyable> {
   value: T;
-  func stringify () : string = () => string(value);
+  stringify: func () : string = () => <string> value;
 }
 
 // Make a class that works with the structure
