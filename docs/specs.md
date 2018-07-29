@@ -212,6 +212,20 @@ Entities must be _declared_ using a _keyword_ (which is a suite of lowercase let
 
 Each entity can be used as a value.
 
+### Type directives
+
+A _type directive_ is a directive associated to a type.
+
+```sn
+#[directive]
+```
+
+A _templated type directive_ is a type directive that takes a template, meaning it depends on another type. The syntax is as follows:
+
+```sn
+#[directive]<[Type]>
+```
+
 ### Containers
 
 Containers have a type and contain a value described as their _content_. The action of setting a container's content is called _assignment_. Be aware though, containers are not values themselves, they simply contain one (and only one).
