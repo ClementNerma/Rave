@@ -893,33 +893,77 @@ let jack: Hero = Hero {
 
 Not that we can omit the structure's name before the opening bracket `({)` but it's conventional to put it to clearly indicate what structure we are using for this object.
 
-#### Constant properties
+#### Mutable fields
 
-All the properties of a structure instance can be assigned anytime, so can do `jack.hp += 5;` whenever we want for example. But let's admit we want the name to be constant, so we can't change it after declaration. We just have to change this:
-
-```sn
-  // ...
-  name: string,
-  // ...
-```
-
-Into:
+By default, all fields of a structure are constants, so we can't do `jack.hp = 120;` for example. But, in the case we want to be able to change some fields later, we can use the `mut` keyword before the entity name to make it mutable:
 
 ```sn
   // ...
-  val name: string,
+  mut name: string,
   // ...
 ```
 
-And the field will be constant! Be aware though, we absolutely need to initialize `jack` at declaration time. Else, an error will be thrown by the builder, saying the object has not been initialized.
+And the field will be mutable!
 
-But we can still make some properties optionals, so we won't have to specify them when initializing the structure:
+Also, note that constantness of the entity that contains the object doesn't prevent its items from being written:
 
 ```sn
 struct Identity {
-  // Constant field
-  val name: string;
+  mut name: string;
+  mut adult: bool;
+}
 
+val jack = Identity {
+  mut name: 'Jack',
+  mut adult: true
+};
+
+jack.adult = false; // Works fine
+println!(jack.adult); // Prints: 'false'
+```
+
+#### Plain fields
+
+Structures can also ask for plain values:
+
+```sn
+struct Identity {
+  pln name: string;
+  adult: bool;
+}
+
+pln jack = Identity {
+  name: 'Jack', // Implicitly a plain value
+  adult: true
+};
+
+pln Jack_Name = jack.name; // Works fine
+```
+
+Note that, if instances are contained inside a mutable or a simple constant (not plain), the fields are not considered as plain anymore:
+
+```sn
+struct PlainName {
+  pln name: string;
+}
+
+let jack = Identity { name: 'Jack' };
+val john = Identity { name: 'John' };
+pln paul = Identity { name: 'Paul' };
+
+pln jack_name = jack.name; // ERROR
+pln john_name = john.name; // ERROR
+pln paul_name = paul.name; // Works fine
+```
+
+#### Optional fields
+
+We can make some fields optional, so we won't have to specify them when initializing the structure:
+
+```sn
+struct Identity {
+  name: string;
+  
   // Optional field
   adult: bool = false;
 }
@@ -930,52 +974,6 @@ val jack = Identity {
 };
 
 println!(jack.adult); // Prints: 'false'
-```
-
-Also, note that constantness of the entity that contains the object doesn't prevent its items from being written:
-
-```sn
-struct Identity {
-  name: string;
-  adult: bool;
-}
-
-val jack = Identity {
-  name: 'Jack',
-  adult: true
-};
-
-jack.adult = false; // Works fine
-println!(jack.adult); // Prints: 'false'
-```
-
-#### Plain properties
-
-Structures can also ask for plain values:
-
-```sn
-struct Identity {
-  pln name: string;
-  adult: bool;
-}
-
-val jack = Identity {
-  name: 'Jack',
-  adult: true
-};
-
-pln Jack_Name = jack.name; // Works fine
-```
-
-Note that declaring a field as a plain constant makes the structure assignable only to constant entities. This is due to the fact a mutable can take as its value several instances of the structure, at different time. This makes the field unpredictable, and so it wouldn't be a plain constant.
-
-```sn
-struct PlainName {
-  pln name: string;
-}
-
-let jack = Identity { name: 'Hello' }; // ERROR
-val jack = Identity { name: 'Hello' }; // Works fine
 ```
 
 #### Tuple structures
@@ -990,6 +988,26 @@ val jack = Identity { 'Jack', true };
 println!(jack[0]); // Prints: 'Jack'
 println!(jack[1]); // Prints: 'true'
 ```
+
+If we want the members to be mutable:
+
+```sn
+struct Identity (mut string, mut bool);
+
+val jack = Identity { 'Jack', true };
+
+jack[0] = 'John'; // Works fine
+```
+
+And for plain constants:
+
+```sn
+struct Identity (pln string, pln bool);
+
+val jack = Identity { 'Jack', true };
+```
+
+As you may notice, we don't have to use the `mut` and `pln` keyword when instanciating a tuple structure, as these keywords only act on entities (like structure fields).
 
 ### Enumerations
 
@@ -3097,8 +3115,8 @@ But there is a problem: first, the string is not optimized. One of the goal of s
 ```sn
   // ...
   public static struct Serialized {
-    val name: string;
-    val price: int;
+    name: string;
+    price: int;
   }
 
   public func %serialize () : string =>
@@ -3829,20 +3847,20 @@ b = B { x: 3, y: 4 };
 a = b; // Works fine
 ```
 
-Be aware though, the structure must **perfectly** respected: if a member is described as constant, it must be respected. Same thing if it is described as being a plain value:
+Be aware though, the structure must **perfectly** respected: if a member is described as mutable or as plain, it must be respected.
 
 ```sn
 struct A {
   x: int;
-  val y: int;
+  mut y: int;
 }
 
 let a = A {
   x: 2,
-  y: 3
+  mut y: 3
 };
 
-let b = { x: 2, y: 3 };
+let b = { x: 2, y: 3 /* 'y' is not mutable */ };
 
 a = b; // ERROR
 ```
@@ -4216,8 +4234,8 @@ To take an example, let's say we have a structure which associates any value wit
 
 ```sn
 struct ValueWithID<T> {
-  val id: int;
-  val value: T;
+  id: int;
+  value: T;
 }
 ```
 
@@ -4227,8 +4245,8 @@ Here, `T` is called the structure's _template_. When a structure is declared wit
 
 ```sn
 struct ValueWithID<T> {
-  val id: int;
-  val value: T;
+  id: int;
+  value: T;
 }
 
 val test = ValueWithID<string> {
@@ -4349,8 +4367,8 @@ Optional templates work the same way than optional arguments for functions:
 
 ```sn
 struct Data<T = f32> {
-  val id: int;
-  val value: T;
+  id: int;
+  value: T;
 }
 
 val test = Data {
@@ -4366,7 +4384,7 @@ Because the chosen template is not predictable, we can't instanciate it nor use 
 ```sn
 // Make a structure
 struct Data<T implements Stringifyable> {
-  val value: T;
+  value: T;
   func stringify () : string = () => string(value);
 }
 
@@ -5669,7 +5687,7 @@ Pointers aim to provide a new way to deal with OESM. Let's take the following co
 // Make a 'Hero' structure
 struct Hero {
   name: string;
-  attack: int;
+  mut attack: int;
 }
 
 // Make a function that changes a single field of the object
@@ -5681,14 +5699,14 @@ func changeProperty (obj: Hero) {
 func assignSomethingNew (obj: Hero) {
   obj = {
     name: 'John',
-    attack: 50
+    mut attack: 50
   };
 }
 
 // Create a 'Hero' object
 val hero = {
   name: 'Jack',
-  attack: 10
+  mut attack: 10
 };
 
 // Test the two functions

@@ -619,7 +619,7 @@ scheme = {
         ],
         [
           // Keywords
-          /(?<!\.)\b(func|lambda|do|if|ift|else|elsif|for|while|loop|unless|until|break|continue|match|default|try|catch|finally|segment|delete)(?!\s*:)\b/,
+          /(?<!\.)\b(func|lambda|do|if|ift|else|elsif|for|while|loop|unless|until|break|continue|match|default|try|catch|finally|segment|delete|mut)(?!\s*:)\b/,
           'purple'
         ],
         [
