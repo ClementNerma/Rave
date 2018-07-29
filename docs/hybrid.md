@@ -893,42 +893,6 @@ let jack: Hero = Hero {
 
 Not that we can omit the structure's name before the opening bracket `({)` but it's conventional to put it to clearly indicate what structure we are using for this object.
 
-### Enumerations
-
-Enumerations allows to use a set of identifiers. Values using the enumeration type can only contain one of the enumeration's identifiers. It goes like this:
-
-```sn
-enum Color { RED, GREEN, BLUE }
-
-val red  : Color = Color.RED;
-val green: Color = Color.GREEN;
-val blue : Color = Color.BLUE;
-
-val somethingElse: Color = 2; // ERROR
-```
-
-Note that all enumeration values are also `usize` values:
-
-```sn
-val red  : usize = Color.RED;
-val green: usize = Color.GREEN;
-val blue : usize = Color.BLUE;
-
-println!(red); // Prints: '0'
-println!(green); // Prints: '1'
-println!(blue); // Prints: '2'
-```
-
-It's also possible to force the value of the enumeration's members:
-
-```sn
-enum Color { RED, GREEN = 8, BLUE }
-
-println!(Color.RED); // Prints: '0'
-println!(Color.GREEN); // Prints: '8'
-println!(Color.BLUE); // Prints: '1'
-```
-
 #### Constant properties
 
 All the properties of a structure instance can be assigned anytime, so can do `jack.hp += 5;` whenever we want for example. But let's admit we want the name to be constant, so we can't change it after declaration. We just have to change this:
@@ -1025,6 +989,42 @@ val jack = Identity { 'Jack', true };
 
 println!(jack[0]); // Prints: 'Jack'
 println!(jack[1]); // Prints: 'true'
+```
+
+### Enumerations
+
+Enumerations allows to use a set of identifiers. Values using the enumeration type can only contain one of the enumeration's identifiers. It goes like this:
+
+```sn
+enum Color { RED, GREEN, BLUE }
+
+val red  : Color = Color.RED;
+val green: Color = Color.GREEN;
+val blue : Color = Color.BLUE;
+
+val somethingElse: Color = 2; // ERROR
+```
+
+Note that all enumeration values are also `usize` values:
+
+```sn
+val red  : usize = Color.RED;
+val green: usize = Color.GREEN;
+val blue : usize = Color.BLUE;
+
+println!(red); // Prints: '0'
+println!(green); // Prints: '1'
+println!(blue); // Prints: '2'
+```
+
+It's also possible to force the value of the enumeration's members:
+
+```sn
+enum Color { RED, GREEN = 8, BLUE }
+
+println!(Color.RED); // Prints: '0'
+println!(Color.GREEN); // Prints: '8'
+println!(Color.BLUE); // Prints: '1'
 ```
 
 ### Dictionaries
