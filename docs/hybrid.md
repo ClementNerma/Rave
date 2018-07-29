@@ -197,6 +197,24 @@ pln MY_REAL_JOB = MY_JOB; // Works fine
 
 Always prefer declaring values using plain (or simple) constants instead of mutables when you won't change their value. This prevents these theorically immutable datas from being modified by error. Plus, in some languages like JavaScript, it even makes the programs (a bit) faster.
 
+#### Original syntax
+
+First of all, plain constants only accept `#pln<T>` values, where `T` is a given type. This is a directive that indicates a value must be a plain one. For example, a `#pln<string>` would accept any litteral (e.g. `'my string'`) or another plain constant's content, but not the value from a mutable or from a simple constant.
+
+Technically, the plain constants declaration we just saw is a _shortened syntax_ of another, which means it has been reduced to be more easy to write and read. Here is the full syntax behind it:
+
+```sn
+// Shortened syntax
+pln STR: string = 'Hello world!';
+
+// Full syntax
+val STR: #pln<string> = 'Hello world!';
+```
+
+The full syntax is strictly equivalent to the shortened one ; we are simply defining a constant (so its value will never change, it's immutable) that only accepts plain values (which means it's predictable). A predictable and immutable value is called a plain value, and the case of an entity it's called a plain constant.
+
+Anywhere we need to create a plain constant with the `pln` keyword, we can also do it with the `val` keyword by explicitly indicating we are using a `#pln<T>` type.
+
 ### Primitive types
 
 #### Voids
@@ -4544,7 +4562,7 @@ func something<T> () : void {}
 func something<T: #pln<Type>> () : void {}
 ```
 
-We are specifying the template's _type_. Here, `T` is an instance of a plain `Type` value. `Type` is a special class that refers to any valid type a value can take. The `#pln<T>` directive indicates it must be a plain type: we must explicitly tell the class we want to use as a template. But we can also specify other types:
+We are specifying the template's _type_. Here, `T` is an instance of a plain `Type` value. `Type` is a special class that refers to any valid type a value can take. Still, we can ask our template to be of any type:
 
 ```sn
 func createEmptyList<T, SIZE: uint> () : T[SIZE] { /* ... */ }
