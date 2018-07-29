@@ -1232,21 +1232,21 @@ open dict Map<K, V> implements Clonable {
   segment (T ~ Comparable) implements Comparable {
     /**
      * Check if this @class is equivalent to another dictionary
-     * @param compareTo The @class to compare this one
-     * @returns `true` if the dictionaries have the same number of keys and values and if they are equal
+     * @param compareTo The @class to compare to this one
+     * @returns `true` if this @class and the other dictionary have the same number of keys and if their values are equal
      */
     public func %equal (compareTo: Dictionary<K, V>) : bool;
 
     /**
-     * Check if this @class is greater than another one (always `false`)
-     * @param compareTo The @class to compare this one
+     * Check if this @class is greater than another dictionary (always `false`)
+     * @param compareTo The dictionary to compare this @class
      * @returns `false`
      */
     public func %greater (compareTo: Dictionary<K, V>) : bool => false;
 
     /**
-     * Check if this @class is smaller than another one (always `false`)
-     * @param compareTo The @class to compare this one
+     * Check if this @class is smaller than another dictionary (always `false`)
+     * @param compareTo The dictionary to compare this @class
      * @returns `false`
      */
     public func %smaller (compareTo: Dictionary<K, V>) : bool => false;
