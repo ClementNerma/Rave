@@ -7599,6 +7599,34 @@ try {
 }
 ```
 
+### Types as values
+
+As we previously saw, the type of any class can be represented as a `#pln<Type>`. As `#pln<Type>` is a type itself, and as a type describes values, a type is technically speaking a value. This also means that `Type` is an instance of itself, which perfectly illustrates the special case this class represents.
+
+This allows us, still technically speaking, to store a type in a plain constant, do some operations on it that don't make it lose its plain state (like intersections or unions), and then to use it as the type of an entity. Here is an example which works perfectly fine:
+
+```sn
+pln A: Type = Primitive; // Primitive
+pln B: Type = A & string; // Primitive & string = string
+pln C: Type = B | bool; // string | bool
+
+let mutable: C = 'Hello world!'; // Works fine
+mutable = true; // Works fine too
+```
+
+We can even use type inference on this:
+
+```sn
+pln A = Primitive;
+pln B = A & string;
+pln C = B | bool;
+
+let mutable: C = 'Hello world!'; // Works fine
+mutable = true; // Works fine too
+```
+
+This works as expected. And we can do this with absolutely any type, of course. We can even store the types in a structure's plain field to use it later.
+
 ## Asynchronous behaviours
 
 Sometimes we can't foretell when an event will occur. For example, if we are making a web server, we can't predict _when_ there will be incoming connections. This is called an _asynchronous behaviour_ and can be handled several ways.
