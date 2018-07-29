@@ -172,7 +172,7 @@ source = {
     },
 
     "README.md": {
-      content: "${README}"
+      content: "${IMPORT:README.md}"
     },
     
     syntaxes: {
