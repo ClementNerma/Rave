@@ -4544,7 +4544,7 @@ func something<T> () : void {}
 func something<T: #pln<Type>> () : void {}
 ```
 
-We are specifying the template's _type_. Here, `T` is an instance of the `Type` class, which is a special class that refers to an existing class. The `#pln<T>` directive indicates it must be a plain type: we must explicitly tell the class we want to use as a template. But we can also specify other types:
+We are specifying the template's _type_. Here, `T` is an instance of a plain `Type` value. `Type` is a special class that refers to any valid type a value can take. The `#pln<T>` directive indicates it must be a plain type: we must explicitly tell the class we want to use as a template. But we can also specify other types:
 
 ```sn
 func createEmptyList<T, SIZE: uint> () : T[SIZE] { /* ... */ }
