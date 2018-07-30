@@ -4070,6 +4070,16 @@ interface ConvertibleToInt {
 }
 ```
 
+Note that interfaces are not compatible with structures, which means the following code won't work:
+
+```sn
+interface Hero {
+  name: string;
+}
+
+let jack: Hero = { mut name: 'Jack' }; // ERROR
+```
+
 #### Self-references
 
 An interface can use the `_self` type to refers to the class that is implemeting it. Here is an exemple:
