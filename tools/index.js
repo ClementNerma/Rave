@@ -785,7 +785,7 @@ else if (typeof argv.module !== 'string') {
     // Attach a help text to the module object
     main_mod.help = [
       'Build the sources through modules',
-      yellow('List of available modules:\n========================\n\n') +
+      yellow('List of available modules:\n==========================\n\n') +
       listModules()
         .map(name =>
           // Load the module ; get its help ; generate an item for the list and return it
