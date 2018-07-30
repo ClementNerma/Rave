@@ -7049,7 +7049,7 @@ To understand the usefulness of flexible proxies, know that the `static!` object
 ```sn
 proxy! static<DATA: Any>: #pln<Type> {
   getter: flex () : #pln<Type> {
-    return classof!(DATA);
+    return typeof!(DATA);
   }
 };
 ```

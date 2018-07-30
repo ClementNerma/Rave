@@ -44,7 +44,7 @@ interface Any {}
  */
 proxy! static<DATA: Any>: #pln<Type> {
   getter: flex () : #pln<Type> {
-    return classof!(DATA);
+    return typeof!(DATA);
   }
 };
 
