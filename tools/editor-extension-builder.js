@@ -89,39 +89,39 @@ self = {
       source = eval(source);
     } catch (e) {
       // ERROR
-      error(`Failed to parse editor's scheme file as JSON`, 22, e);
+      error(`Failed to parse editor's syntax file as JSON`, 22, e);
     }
 
     // Determine its path
-    let scheme_path = source_path + '/syntax.js';
+    let syntax_path = source_path + '/syntax.js';
 
     // If the file does not exist...
-    if (!fileExists(scheme_path))
+    if (!fileExists(syntax_path))
       // ERROR
-      error(`Scheme file not found (expecting file at "${scheme_path}")`, 23);
+      error(`syntax file not found (expecting file at "${syntax_path}")`, 23);
 
     // Try to read the book's file
-    let scheme;
+    let syntax;
 
     try {
-      scheme = readFile(scheme_path, 'scheme file');
+      syntax = readFile(syntax_path, 'syntax file');
     } catch (e) {
       // ERROR
-      error(`Failed to read scheme file "${name}"`, 24, e);
+      error(`Failed to read syntax file "${name}"`, 24, e);
     }
 
     // Try to evaluate it as an object
     verb('Evaluating it as a script...');
 
     try {
-      scheme = eval(scheme);
+      syntax = eval(syntax);
     } catch (e) {
       // ERROR
-      error(`Failed to evaluate scheme file`, 25, e);
+      error(`Failed to evaluate syntax file`, 25, e);
     }
 
     // Extract constants
-    const BUILD_CONSTANTS = scheme.constants;
+    const BUILD_CONSTANTS = syntax.constants;
 
     /**
      * Treat a group of patterns
@@ -169,12 +169,12 @@ self = {
     mkdir(output_path);
 
     // Treat native patterns
-    scheme.patterns = treatPatterns(scheme.patterns, 'patterns');
+    syntax.patterns = treatPatterns(syntax.patterns, 'patterns');
 
     // For each group in the repository...
-    for (let group of Reflect.ownKeys(scheme.repository))
+    for (let group of Reflect.ownKeys(syntax.repository))
       // Treat it too
-      scheme.repository[group].patterns = treatPatterns(scheme.repository[group].patterns, `group of patterns "${group}"`)
+      syntax.repository[group].patterns = treatPatterns(syntax.repository[group].patterns, `group of patterns "${group}"`)
 
     /**
      * Merge two objects
@@ -381,7 +381,7 @@ self = {
     }
 
     // Format the build file
-    source.tree = treatTree(source.tree, scheme.patterns, scheme.repository);
+    source.tree = treatTree(source.tree, syntax.patterns, syntax.repository);
     
     // Verbose
     verb('Running the target\'s build function...');
