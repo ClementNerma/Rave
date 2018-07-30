@@ -3675,50 +3675,6 @@ Child.getMotherObj(); // Works fine
 Child.getMotherObj().sayHello(); // Prints: 'Hello!'
 ```
 
-### Abstract methods
-
-Like virtual classes are classes that must be inherited, abstract methods are methods that must be re-implemented in the children classes.
-
-Basically, abstracting a method means that its signature is written in the class, but its body is not forced to. It also forces any children of this class to implement its own version of the method, and this method will be usable in the parent even though its body is in the child class.
-
-Here is an example:
-
-```sn
-virtual class Hello {
-  abstract public func sayHello() : string;
-}
-
-class World {
-  abstract public func sayHello() : string {
-    println!('Hello world!');
-  }
-}
-```
-
-The first difference we can see between these two classes is that the first one is virtual and not the second one. Why? Because, when we declare an abstract method without its body, it can't of course be used from this class - because the program doesn't know what to do. So it can't be instanciated, and because of it it is stated as a virtual class.
-
-The second class declares an abstract method but with a body, this time. That means that any child class will be forced to implement its own version of this method, but the class is still instanciable because we written the method's body in the class. In this case, the class will be able able to use its `sayHello()` method from its own body, and it will use the body of the abstract function if we use `self`, or maybe the body of the re-implemented function in a child class if we use `this`.
-
-Note that abstraction is reserved to methods ; attributes can't be abstracted.
-
-#### Final methods
-
-Final methods are simply methods that can't be overwritten in children classes. They are prefixed with the `final` keyword and ensures the behavior will not be changed in any child class.
-
-```sn
-open class Mother {
-  final public func sayHello () {
-    println!('Hello from the mother class!!');
-  }
-}
-
-class Child inherits Mother {
-  public func sayHello() { // ERROR (overwritting a final method)
-    println!('Hello from the child class!');
-  }
-}
-```
-
 ### Stated classes
 
 _Stated_ classes have a keywording prefix the `class` one, called the _class' state_. They allow to change the behavior of the class, and notably to modify the way it can (or not) be inherited.
@@ -3781,6 +3737,50 @@ Read-only classes are classes that can't be written from the outside of the clas
 |  `open`   |       Yes      |      Yes      |
 
 The `unique` keyword doesn't affect a class itself but makes an object from a ghost class, that's why it isn't in the table.
+
+### Abstract methods
+
+Like virtual classes are classes that must be inherited, abstract methods are methods that must be re-implemented in the children classes.
+
+Basically, abstracting a method means that its signature is written in the class, but its body is not forced to. It also forces any children of this class to implement its own version of the method, and this method will be usable in the parent even though its body is in the child class.
+
+Here is an example:
+
+```sn
+virtual class Hello {
+  abstract public func sayHello() : string;
+}
+
+class World {
+  abstract public func sayHello() : string {
+    println!('Hello world!');
+  }
+}
+```
+
+The first difference we can see between these two classes is that the first one is virtual and not the second one. Why? Because, when we declare an abstract method without its body, it can't of course be used from this class - because the program doesn't know what to do. So it can't be instanciated, and because of it it is stated as a virtual class.
+
+The second class declares an abstract method but with a body, this time. That means that any child class will be forced to implement its own version of this method, but the class is still instanciable because we written the method's body in the class. In this case, the class will be able able to use its `sayHello()` method from its own body, and it will use the body of the abstract function if we use `self`, or maybe the body of the re-implemented function in a child class if we use `this`.
+
+Note that abstraction is reserved to methods ; attributes can't be abstracted.
+
+#### Final methods
+
+Final methods are simply methods that can't be overwritten in children classes. They are prefixed with the `final` keyword and ensures the behavior will not be changed in any child class.
+
+```sn
+open class Mother {
+  final public func sayHello () {
+    println!('Hello from the mother class!!');
+  }
+}
+
+class Child inherits Mother {
+  public func sayHello() { // ERROR (overwritting a final method)
+    println!('Hello from the child class!');
+  }
+}
+```
 
 ### Sub-typing
 
