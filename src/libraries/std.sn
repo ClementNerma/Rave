@@ -49,13 +49,13 @@ proxy! static<DATA: Any>: #pln<Type> {
 };
 
 // Reference to the current instance's class
-type _this = static<this>;
+type _this = static!<this>;
 
 // Reference to the current class
-type _self = static<self>;
+type _self = static!<self>;
 
 // Reference to the current class' mother
-type _super = static<super>;
+type _super = static!<super>;
 
 // ==================== Typecastable types ====================
 

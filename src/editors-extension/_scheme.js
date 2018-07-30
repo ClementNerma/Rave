@@ -638,6 +638,11 @@ scheme = {
           'yellow'
         ],
         [
+          // Static proxy usage
+          /\bstatic\!/,
+          'purple'
+        ],
+        [
           // Flexs call
           /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)\!(?=\s*\()/,
           'cyan'

@@ -3529,7 +3529,7 @@ There are several keywords to access other classes from a given one. These are t
 * `_self` refers to the class `self` is an instance of ;
 * `_super` refers to the class `super` is an instance of ;
 
-Besides, `static<obj>` allows us to get a class in a static context from any of its instances. This means that  `static<'Hello'>` will return the `string` class, so we can access its static properties (like `string.NIL` which is the NIL value for this class, an empty string).
+Besides, `static!<obj>` allows us to get a class in a static context from any of its instances. This means that  `static!<'Hello'>` will return the `string` class, so we can access its static properties (like `string.NIL` which is the NIL value for this class, an empty string).
 
 Let's take a short example:
 
@@ -7044,7 +7044,7 @@ Also called _flex proxies_, flexible proxies are a mix between flexible function
 
 They are defined the same way as standard proxies, except we use the `proxy!` keyword instead of the `proxy` one, and that the getter and setter are flexs instead of simple functions.
 
-To understand the usefulness of flexible proxies, know that the `static` object is in reality a flexible proxy itself. Here is its definition:
+To understand the usefulness of flexible proxies, know that the `static!` object is in reality a flexible proxy itself. Here is its definition:
 
 ```sn
 proxy! static<DATA: Any>: #pln<Type> {
@@ -7056,22 +7056,22 @@ proxy! static<DATA: Any>: #pln<Type> {
 
 This definition is a bit ugly, as it mixes a flexible templated proxy and plain return types.
 
-So, this proxy takes a single template, `DATA`. Thanks to template inference, writing `static<'Hello'>` works fine and, because we are using a flex proxy, `DATA` will be typed as a `string` (with a standard proxy, it would have been typed as an `Any`).
+So, this proxy takes a single template, `DATA`. Thanks to template inference, writing `static!<'Hello'>` works fine and, because we are using a flex proxy, `DATA` will be typed as a `string` (with a standard proxy, it would have been typed as an `Any`).
 
 The proxy returns a plain class, meaning we can manipulate it as if we wrote its name directly. This is possible thanks to the proxy being flexible. Its getter also indicates, of course, an identical return type, and returns the class `DATA` is an instance of. This leads us to the following results:
 
 ```sn
-let str: static<''> = 'Hello world!'; // Works fine
+let str: static!<''> = 'Hello world!'; // Works fine
 
-static<''>.NIL; // Empty string
+static!<''>.NIL; // Empty string
 ```
 
 Besides, the underscore types in classes are defined using the following statements:
 
 ```sn
-type _this is static<this>;
-type _self is static<self>;
-type _super is static<super>;
+type _this is static!<this>;
+type _self is static!<self>;
+type _super is static!<super>;
 ```
 
 Thanks to the `type` keyword declaring an _alias_ instead of creating a whole new type, this works perfectly.
