@@ -786,13 +786,11 @@ else if (typeof argv.module !== 'string') {
     main_mod.help = [
       'Build the sources through modules',
       yellow('List of available modules:\n========================\n\n') +
-      fs.readdirSync(here('tools/modules'))
-        .map(name => {
-          // Remove the extension from the filename
-          name = path.basename(name, path.extname(name));
+      listModules()
+        .map(name =>
           // Load the module ; get its help ; generate an item for the list and return it
-          return green(` * ${name} - ${loadModule(name, m_argv).help[0]}`);
-        })
+          green(` * ${name} - ${loadModule(name, m_argv).help[0]}`)
+        )
         .join('\n')
     ]
 
