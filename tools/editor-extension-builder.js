@@ -67,7 +67,7 @@ self = {
     let static_path = source_path + '/static';
 
     // Determine its path
-    let target_path = `${source_path}/${name}.js`;
+    let target_path = `${source_path}/targets/${name}.js`;
 
     // If the file does not exist...
     if (!fileExists(target_path))
@@ -93,7 +93,7 @@ self = {
     }
 
     // Determine its path
-    let scheme_path = source_path + '/_scheme.js';
+    let scheme_path = source_path + '/syntax.js';
 
     // If the file does not exist...
     if (!fileExists(scheme_path))
