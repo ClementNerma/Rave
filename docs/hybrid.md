@@ -2697,9 +2697,9 @@ This will work fine and the constructor will get the `'Gamepad'` value in `theTh
 
 ### Methods
 
-This part will be pretty simple: methods in classes act like simple lambdas in structures, but they can also access the classes' private attributes and use a few keywords, like `this` which refers to the current class.
+This part will be pretty simple: methods in classes act like simple lambdas in structures, but they can also access the classes' private attributes and use a few specific keywords.
 
-Note that all attributes and methods of a class (called its _members_) can be accessed only through the `this` keyword or the instance name. For example:
+Attributes and methods of a class (called its _members_) can be accessed using the `this` keyword:
 
 ```sn
 class Superthing {
