@@ -3905,6 +3905,33 @@ let c: A = A {
 
 Writing the structure's name before the opening brace makes an automatic check to fit the structure's exact definition.
 
+#### Handling the `_this` keyword
+
+The `_this` keyword is a little special. As we previously saw, it refers to the class of the _real instance_. This allows us to force children to implement a method returning an instance of themselves, for example.
+
+As for any abstract method, we can call the methods using this keyword from all values typed as the mother class. For example:
+
+```sn
+virtual class Mother {
+  public func getThis () : _this => this;
+}
+
+class Child inherits Mother {
+  public func getThis () : _this => this;
+}
+
+val obj: Mother = new Child();
+a.getThis(); // Works
+```
+
+This works fine. Still, can you guess the type of the value returned by our call to `.getThis()`? Well, it returns a `Mother` value. Why?
+
+Because our `obj` entity is typed as a `Mother`, the `_this` keyword in it will refer to `Mother`, as it's not possible to predict the _real type_ it will contain. Maybe it'll be a `Mother`, but maybe it'll be a `Child`, we cannot guess.
+
+Still, our call to `.getThis()` will return a `Child` value 'disguised' in a `Mother` one. We will be able to convert it back by using an _unsafe typecasting_, a concept we'll see later.
+
+Note that, if we had typed our `obj` entity as a `Child`, the return type of our call would have been a `Child`, as `_this` would have refer to the child class.
+
 ### Safe typecasting
 
 Typecasting allows to convert a value from a given type to another. But typecasting can either be safe or unsafe.
