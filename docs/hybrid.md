@@ -3764,7 +3764,7 @@ The second class declares an abstract method but with a body, this time. That me
 
 Note that abstraction is reserved to methods ; attributes can't be abstracted.
 
-#### Final methods
+### Final methods
 
 Final methods are simply methods that can't be overwritten in children classes. They are prefixed with the `final` keyword and ensures the behavior will not be changed in any child class.
 
