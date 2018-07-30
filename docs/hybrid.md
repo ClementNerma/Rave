@@ -2849,9 +2849,9 @@ The problem seems to be complex but it is mostly simple to achieve. Read the sol
 ```sn
 class Map {
   // Cell types
-  private static readonly EMPTY = 0;
-  private static readonly ROCK  = 1;
-  private static readonly TRAP  = 2;
+  private static val EMPTY = 0;
+  private static val ROCK  = 1;
+  private static val TRAP  = 2;
 
   // Read-only attributes
   public readonly playerX: int;
