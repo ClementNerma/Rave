@@ -1169,6 +1169,21 @@ A _ternary condition_ is not a block but a shortened syntax of an `if` block fol
 
 If its condition is a NIL value, it returns its success value, else its fail value. The two values must be of the same type. A ternary condition is considered itself as an expression.
 
+#### The `unless` block
+
+The `unless` block has the same syntax and works the same way as the `if` block, except its body is ran if its condition is a NIL value.
+
+```sn
+// e.g.
+unless 1 + 2 == 3 {
+  // Won't be ran
+}
+
+unless 1 + 2 == 4 {
+  // Will be ran
+}
+```
+
 ### Incremental repetition
 
 The _incremental repetition block_ uses the `for` keyword. Its head is made of an _initialization instruction_, followed by a condition, and finally by an _iteration instruction_ which doesn't end by the usual `;` symbol.

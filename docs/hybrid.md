@@ -1524,6 +1524,18 @@ if name == 'Marco' {
 
 Note that there isn't a special syntax for single-instruction, like in other programming languages (e.g. `if (condition) instruction;`). That's because this last syntax easily leads to errors when braces have been forgotten (e.g. after adding a second instruction but forgetting to add the braces after that), and to have a unique development style (no condition wraps its expression between parenthesis).
 
+### `if` variant: `unless`
+
+The `unless` block uses the same syntax as the `if` block and works the same way ; simply, the condition is inverted. Here is an example:
+
+```sn
+if 2 + 2 == 4 { /* Runs */ }
+unless 2 + 2 == 4 { /* Doesn't */ }
+
+if 1 + 1 == 3 { /* Doesn't */ }
+unless 1 + 1 == 3 { /* Runs */ }
+```
+
 ### `for`: incremental repetition
 
 Loop blocks are blocks that repeat a set of instructions zero, one or several times depending on the condition we provide to them.
