@@ -101,10 +101,10 @@ self = {
       error(`syntax file not found (expecting file at "${syntax_path}")`, 23);
 
     // Try to read the book's file
-    let syntax;
+    let src_file;
 
     try {
-      syntax = readFile(syntax_path, 'syntax file');
+      src_file = readFile(syntax_path, 'syntax file');
     } catch (e) {
       // ERROR
       error(`Failed to read syntax file "${name}"`, 24, e);
@@ -113,15 +113,15 @@ self = {
     // Try to evaluate it as an object
     verb('Evaluating it as a script...');
 
+    // Prepare two variables
+    let BUILD_CONSTANTS, SYNTAX;
+
     try {
-      syntax = eval(syntax);
+      eval(src_file);
     } catch (e) {
       // ERROR
       error(`Failed to evaluate syntax file`, 25, e);
     }
-
-    // Extract constants
-    const BUILD_CONSTANTS = syntax.constants;
 
     /**
      * Treat a group of patterns
@@ -169,12 +169,12 @@ self = {
     mkdir(output_path);
 
     // Treat native patterns
-    syntax.patterns = treatPatterns(syntax.patterns, 'patterns');
+    SYNTAX.patterns = treatPatterns(SYNTAX.patterns, 'patterns');
 
     // For each group in the repository...
-    for (let group of Reflect.ownKeys(syntax.repository))
+    for (let group of Reflect.ownKeys(SYNTAX.repository))
       // Treat it too
-      syntax.repository[group].patterns = treatPatterns(syntax.repository[group].patterns, `group of patterns "${group}"`)
+      SYNTAX.repository[group].patterns = treatPatterns(SYNTAX.repository[group].patterns, `group of patterns "${group}"`)
 
     /**
      * Merge two objects
@@ -381,7 +381,7 @@ self = {
     }
 
     // Format the build file
-    source.tree = treatTree(source.tree, syntax.patterns, syntax.repository);
+    source.tree = treatTree(source.tree, SYNTAX.patterns, SYNTAX.repository);
     
     // Verbose
     verb('Running the target\'s build function...');
