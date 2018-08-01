@@ -419,6 +419,11 @@ SYNTAX = {
           'purple', 'blue'
         ],
         [
+          // Superoverload declaration
+          /\b(func)\s+(%)(equal|greater|smaller|plus|less|times|divide|pow|modulo)\b/,
+          'purple', 'red', 'cyan'
+        ],
+        [
           // Functions call
           /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*\(|\s*<.*>\s*\()/,
           'blue'
