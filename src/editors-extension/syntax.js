@@ -364,8 +364,8 @@ SYNTAX = {
         ],
         [
           // Lazy overloads
-          /\b(public)\s+(pln)\s+(%)(lazy_(?:clone|serialize|unserialize|serial_fields))\b/,
-          'purple', 'purple', 'red', 'cyan'
+          /\b(pln)\s+(%)(lazy_(?:clone|serialize|unserialize|serial_fields))\b/,
+          'purple', 'red', 'cyan'
         ],
         [
           // Immutable containers declaration in classes
@@ -384,8 +384,8 @@ SYNTAX = {
         ],
         [
           // Overload methods declaration (in classes)
-          /\b(public|protected|private)\s+(static\s+)?(func\s+)(%)(construct|free|clone|serialize|unserialize|call|to|equal|greater|smaller|plus|less|times|divide|pow|modulo)\b/,
-          'purple', 'purple', 'purple', 'red', 'cyan'
+          /\b(static\s+)?(func\s+)(%)(construct|free|clone|serialize|unserialize|call|to|equal|greater|smaller|plus|less|times|divide|pow|modulo)\b/,
+          'purple', 'purple', 'red', 'cyan'
         ],
         [
           // Getting overload method
