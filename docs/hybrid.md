@@ -822,68 +822,9 @@ let array: string[] = new Array<string, 3>;
 let list: string[] = new List<string>;
 ```
 
-### Tuples
-
-Tuples are very similair to arrays, except the fact they can combine mixed types. They are defined as follows:
-
-```sn
-val tuples: (int, f32, string) = (2, 4.8, 'Hello');
-```
-
-Thanks to inferred typing, we can simply write:
-
-```sn
-val tuples = (2, 4.8, 'Hello');
-```
-
-To get or set a value from a tuple, we simply use an index as for arrays:
-
-```sn
-println!(tuples[2]); // Prints: 'Hello'
-```
-
-Though, indexes must be plain numbers. They can't be a variable, because the type of each member of the tuple may be different.
-
-Note that plain constants are still considered as plain data, so it's possible to use them as tuples' indexes:
-
-```sn
-// Constant
-val index1 = 1;
-// Plain constant
-pln index2 = 2;
-
-// Constants won't work
-println!(tuples[index1]); // ERROR
-// But plain constants will
-println!(tuples[index2]); // Prints: 'Hello'
-```
-
-Note that, as for arrays, tuples are considered as a single type (even if it can combine several values of different types). Also, tuples have the `Tuple` type, even though we can't do anything with it.
-
-We can also check if a value is contained in a tuple using the `in` keyword:
-
-```sn
-val tuple = ( 18, 'John', true );
-
-'John' in tuple; // Equal to true
-'Jack' in tuple; // Equal to false
-```
-
-When we told previously that plain constants could only contain litterals, tuples are part of them. This means the following declaration is allowed:
-
-```sn
-// Plain tuples
-pln MY_CONSTANT = ( 18, 'John', true );
-
-// Multi-level plain tuples
-pln MY_CONSTANT = ( 18, ( 'John', 'Lucy', 'Thomas' ), true );
-
-println!(MY_CONSTANT[1][2]); // Prints: 'Lucy'
-```
-
 ### Structures
 
-Let's say we now want to represent a video game hero. It has a name, health points (HP), magic points (MP), attack and defense points. How could we describe this? A first idea would be to make an array or a tuple of five elements, the first element referring to the name, the second one to the HP, the third one to the MP, and so on. But this is not very readable and hard to maintain.
+Let's say we now want to represent a video game hero. It has a name, health points (HP), magic points (MP), attack and defense points. How could we describe this? A first idea would be to make an array containing five elements, the first element referring to the name, the second one to the HP, the third one to the MP, and so on. But this is not very readable and hard to maintain.
 
 A great tool to solve our problem is _structures_. They work as tuples with string indexes : we can't extend them, and we cannot access them using variable indexes. Here is an example of a simple structure:
 
@@ -992,6 +933,65 @@ val jack = Identity {
 };
 
 println!(jack.adult); // Prints: 'false'
+```
+
+### Tuples
+
+Tuples are very similair to arrays, except the fact they can combine mixed types. They are defined as follows:
+
+```sn
+val tuples: (int, f32, string) = (2, 4.8, 'Hello');
+```
+
+Thanks to inferred typing, we can simply write:
+
+```sn
+val tuples = (2, 4.8, 'Hello');
+```
+
+To get or set a value from a tuple, we simply use an index as for arrays:
+
+```sn
+println!(tuples[2]); // Prints: 'Hello'
+```
+
+Though, indexes must be plain numbers. They can't be a variable, because the type of each member of the tuple may be different.
+
+Note that plain constants are still considered as plain data, so it's possible to use them as tuples' indexes:
+
+```sn
+// Constant
+val index1 = 1;
+// Plain constant
+pln index2 = 2;
+
+// Constants won't work
+println!(tuples[index1]); // ERROR
+// But plain constants will
+println!(tuples[index2]); // Prints: 'Hello'
+```
+
+Note that, as for arrays, tuples are considered as a single type (even if it can combine several values of different types). Also, tuples have the `Tuple` type, even though we can't do anything with it.
+
+We can also check if a value is contained in a tuple using the `in` keyword:
+
+```sn
+val tuple = ( 18, 'John', true );
+
+'John' in tuple; // Equal to true
+'Jack' in tuple; // Equal to false
+```
+
+When we told previously that plain constants could only contain litterals, tuples are part of them. This means the following declaration is allowed:
+
+```sn
+// Plain tuples
+pln MY_CONSTANT = ( 18, 'John', true );
+
+// Multi-level plain tuples
+pln MY_CONSTANT = ( 18, ( 'John', 'Lucy', 'Thomas' ), true );
+
+println!(MY_CONSTANT[1][2]); // Prints: 'Lucy'
 ```
 
 #### Tuple structures
