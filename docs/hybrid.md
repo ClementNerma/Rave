@@ -7394,6 +7394,20 @@ let val: ArrayThree<int> = [ 2, 5, 8 ]; // Works fine
 let val: ArrayThree<int> = [ 2, 5 ]; // ERROR (invalid length)
 ```
 
+Also, as for constrained types, we can use the `_` value, which refers to the type of the value we are trying to assign:
+
+```sn
+type NearToAny = Any with (_ isnt string);
+
+let one: string = 'Hello';
+let two: int    = 5;
+let three: Any = 'Hello';
+
+<NearToAny> one; // ERROR
+<NearToAny> two; // Works fine
+<NearToAny> three; // Works fine
+```
+
 ### Unsafe typecasting
 
 Unsafe typecasting allows to convert any type to its real type. For example, in the following code:
