@@ -465,7 +465,8 @@ SYNTAX = {
         ],
         [
           // Type comparison operators
-          /\b(is|isnt)\b/
+          /\b(is|isnt)\b/,
+          'purple'
         ],
         [
           // Reference
