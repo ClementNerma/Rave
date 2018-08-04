@@ -7410,6 +7410,8 @@ let three: Any = 'Hello';
 <NearToAny> three; // Works fine
 ```
 
+Think of it as an equivalent to `_this` for the taken value.
+
 ### Unsafe typecasting
 
 Unsafe typecasting allows to convert any type to its real type. For example, in the following code:
