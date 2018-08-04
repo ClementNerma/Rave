@@ -424,6 +424,11 @@ SYNTAX = {
           'purple', 'red', 'cyan'
         ],
         [
+          // Constrained type
+          /\bwith(?=\s+[\(a-zA-Z_\$])/,
+          'purple'
+        ],
+        [
           // Functions call
           /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*\(|\s*<.*>\s*\()/,
           'blue'
