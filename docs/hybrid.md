@@ -1364,6 +1364,35 @@ val jack = Hero {
 };
 ```
 
+#### Plain field assumption
+
+By default, when a plain value is associated to a field, it is considered as plain:
+
+```sn
+val jack = {
+  name: 'Jack' // pln name: string;
+}
+```
+
+#### Plain fields compatibility
+
+Any plain field can be automatically converted to a constant one, if required. Here is an example:
+
+```sn
+struct A {
+  pln name: string;
+}
+
+struct B {
+  name: string;
+}
+
+let a: A = A { name: 'Hello' };
+let b: B = a; // Works
+```
+
+The second assignment works because `A`'s instances can be automatically _typecasted_ to instances of `B`, as a plain field is a constant field too.
+
 ### Multiple assignments
 
 Objects - both structures and dictionaries - allow _multiple assignments_, which means we can make several assignments at once. Let's consider the following object:
@@ -3916,25 +3945,6 @@ let c: A = A {
 ```
 
 Writing the structure's name before the opening brace makes an automatic check to fit the structure's exact definition.
-
-#### Plain fields compatibility
-
-Any plain field can be automatically converted to a constant one, if required. Here is an example:
-
-```sn
-struct A {
-  pln name: string;
-}
-
-struct B {
-  name: string;
-}
-
-let a: A = A { name: 'Hello' };
-let b: B = a; // Works
-```
-
-The second assignment works because `A`'s instances can be automatically _typecasted_ to instances of `B`, as a plain field is a constant field too.
 
 #### Handling the `_this` keyword
 
