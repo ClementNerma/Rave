@@ -3989,7 +3989,9 @@ Note that, if we had typed our `obj` entity as a `Child`, the return type of our
 
 Typecasting allows to convert a value from a given type to another. But typecasting can either be safe or unsafe.
 
-Safe typecasting consists in converting a value from a given type to a value from one of its parent types, or from a typecast-capable class. The first one allows, for example, to convert an `i16` to a `number`.
+Safe typecasting consists in converting a value from a given type to a value from one of its parent types in the type hierarchy, or from a typecast-capable class.
+
+The first one allows, for example, to convert an `i16` to a `number`, but also to a `Stringifyable`, which is technically one of its parent type in a hierarchy - though it does not _inherit_ from it as it's an interface.
 
 The second one uses the _typecast overload_, which indicates that a class can be typecasted to a specific type. For example, integers are typecast-capable between all of them, meaning an `i16` can be converted to an `u32`, even though they are separate classes.
 
