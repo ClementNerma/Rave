@@ -7866,12 +7866,12 @@ func readAsync (path: string) : Promise<string, FSError> =>
     }
 
     catch (e) {
-      resolve e;
+      reject(e);
     }
 
     // Resolve the promise if the reading worked fine
     if content isnt null {
-      resolve content;
+      resolve(content);
     }
   });
 }
