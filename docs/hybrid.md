@@ -3917,6 +3917,25 @@ let c: A = A {
 
 Writing the structure's name before the opening brace makes an automatic check to fit the structure's exact definition.
 
+#### Plain fields compatibility
+
+Any plain field can be automatically converted to a constant one, if required. Here is an example:
+
+```sn
+struct A {
+  pln name: string;
+}
+
+struct B {
+  name: string;
+}
+
+let a: A = A { name: 'Hello' };
+let b: B = a; // Works
+```
+
+The second assignment works because `A`'s instances can be automatically _typecasted_ to instances of `B`, as a plain field is a constant field too.
+
 #### Handling the `_this` keyword
 
 The `_this` keyword is a little special. As we previously saw, it refers to the class of the _real instance_. This allows us to force children to implement a method returning an instance of themselves, for example.
