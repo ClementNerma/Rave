@@ -994,6 +994,18 @@ pln MY_CONSTANT = ( 18, ( 'John', 'Lucy', 'Thomas' ), true );
 println!(MY_CONSTANT[1][2]); // Prints: 'Lucy'
 ```
 
+Note that, by default, a tuple's elements are constants. To make them mutable, we can use the `mut` keyword, as for structures:
+
+```sn
+val first: (string) = ( 'Hello' );
+val second: (mut string) = ( 'Hello' );
+
+first[0] = 'Yoh'; // ERROR
+second[1] = 'Yoh'; // Works fine
+```
+
+The same applies for plain fields with the `pln` keyword. Note that, still like structures, when a tuple is assigned to anything that is not a plain constant, its plain fields become simple constants.
+
 #### Tuple structures
 
 Structures can declare a tuple type, to avoid writing the full tuple's definition all the time:
