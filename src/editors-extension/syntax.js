@@ -384,12 +384,12 @@ SYNTAX = {
         ],
         [
           // Overload methods declaration (in classes)
-          /\b(static\s+)?(func\s+)(%)(construct|free|clone|serialize|unserialize|call|to|equal|greater|smaller|plus|less|times|divide|pow|modulo)\b/,
+          /\b(static\s+)?(func\s+)(%)(construct|free|clone|serialize|unserialize|call|to|equal|greater|smaller|plus|less|times|divide|pow|modulo|random)\b/,
           'purple', 'purple', 'red', 'cyan'
         ],
         [
           // Getting overload method
-          /(?<=\.)(%)(construct|free|clone|serialize|unserialize|call|to|equal|greater|smaller|plus|less|times|divide|pow|modulo)\b/,
+          /(?<=\.)(%)(construct|free|clone|serialize|unserialize|call|to|equal|greater|smaller|plus|less|times|divide|pow|modulo|random)\b/,
           'red', 'cyan'
         ],
         [
