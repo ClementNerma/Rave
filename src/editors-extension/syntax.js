@@ -516,12 +516,12 @@ SYNTAX = {
         },
         [
           // Inheritance and reversed inheritance
-          /\b(inherits|parentof)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
+          /\b(inherits|parentof)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.<>]*)\b/,
           'purple', 'green'
         ],
         [
           // Implementation (interfaces) and usage (traits)
-          /\b(implements|uses?)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.]*)*)\b/,
+          /\b(implements|uses?)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.<>]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.<>]*)*)\b/,
           'purple', 'green', 'green'
         ],
         [
@@ -531,7 +531,7 @@ SYNTAX = {
         ],
         [
           // Throw declaration
-          /\b(throws)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.]*)*)\b/,
+          /\b(throws)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.<>]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.<>]*)*)\b/,
           'purple', 'green', 'green'
         ],
         [
