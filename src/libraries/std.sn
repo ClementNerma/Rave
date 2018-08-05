@@ -259,22 +259,24 @@ interface RandomizableWithBounds {
 
 /**
  * Callable types
+ * @template T The call method's return type
  */
-interface Callable {
+interface Callable<T> {
   /**
    * Call this instance as a function
    */
-  func %call(#__magic_arguments) : #__magic_return_type;
+  func %call() : T;
 }
 
 /**
  * Callable classes
+ * @template T The call method's return type
  */
-interface StaticallyCallable {
+interface StaticallyCallable<T> {
   /**
    * Call this class as a function
    */
-  static func %call(#__magic_arguments) : #__magic_return_type;
+  static func %call() : T;
 }
 
 // ==================== Primitive types ==================== //
@@ -282,7 +284,7 @@ interface StaticallyCallable {
 /**
  * Primitive type
  */
-virtual class Primitive implements BooleanConvertible, IntegerConvertible, FloatConvertible, Numerizable, Stringifyable, Clonable, Serializable, Comparable, StaticallyCallable {
+virtual class Primitive implements BooleanConvertible, IntegerConvertible, FloatConvertible, Numerizable, Stringifyable, Clonable, Serializable, Comparable<_this>, StaticallyCallable<_this> {
   /**
    * Make a NIL @class value
    */
@@ -463,15 +465,7 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
 
   public func %serialize () : string => this ? 'true' : 'false';
 
-  public static func %unserialize (serialized: string) throws UnserializationError : bool {
-    if serialized == 'true' {
-      return true;
-    } elsif serialized == 'false' {
-      return false;
-    } else {
-      throw new UnserializationError("Serialized boolean can be either 'true' or 'false'");
-    }
-  }
+  public static func %unserialize (serialized: string) throws UnserializationError : bool;
 
   public func %equal (another: bool) : bool => this == another;
 
@@ -485,7 +479,7 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
    * Generate a random boolean
    * @returns A random boolean
    */
-  public static func %random () : bool => #__magic_random_primitive(bool);
+  public static func %random () : bool;
 
   /**
    * The lowest boolean value
@@ -503,15 +497,7 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
    * @param up The upper bound
    * @returns A random boolean between the provided bounds
    */
-  public static func %random (low: bool, up: bool) : bool {
-    if (low == true && up == false) ||
-       (low == false && up == true) {
-      return #__magic_random_primitive(bool);
-    } else {
-      // low == up
-      return low;
-    }
-  }
+  public static func %random (low: bool, up: bool) : bool;
 }
 
 // ==================== Numbers ==================== //
