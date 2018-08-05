@@ -424,36 +424,6 @@ SYNTAX = {
           'purple', 'red', 'cyan'
         ],
         [
-          // Constrained type
-          /\bwith(?=\s+[\(a-zA-Z_\$])/,
-          'purple'
-        ],
-        [
-          // Lambdas
-          /\blambda(?=\s*\()/,
-          'purple'
-        ],
-        [
-          // Catch blocks with an argument
-          /\bcatch(?=\s*\()/,
-          'purple'
-        ],
-        [
-          // Functions as types
-          /\bfunc(?=\s*\()/,
-          'purple'
-        ],
-        [
-          // Segments
-          /\bsegment(?=\s*\()/,
-          'purple'
-        ],
-        [
-          // Functions call
-          /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*\(|\s*<.*>\s*\()/,
-          'blue'
-        ],
-        [
           // Arrow function symbol
           /(=>)/,
           'purple'
@@ -647,6 +617,11 @@ SYNTAX = {
           // Keywords
           /(?<!\.)\b(func|lambda|do|if|ift|else|elsif|for|while|loop|unless|until|break|continue|match|default|try|catch|finally|segment|delete|mut|let|val|pln|proxy\!?|public|protected|private|friend|static|abstract|final|unique|virtual|open|extern|readonly|in|export|return|async|iter|yield|flex|await|sync|resolve|reject|throw|with|new|include|namespace|struct|enum|class|type|dict|trait|interface|implements|throws|use|uses|inherits|parentof|instanceof|instanceofsuper|scope|import|from|as)(?!\s*:)\b/,
           'purple'
+        ],
+        [
+          // Functions call
+          /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*\(|\s*<.*>\s*\()/,
+          'blue'
         ],
         [
           // Name of constants
