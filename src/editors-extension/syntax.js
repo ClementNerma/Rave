@@ -374,8 +374,8 @@ SYNTAX = {
         ],
         [
           // Models declaration in classes
-          /\b(public|protected|private)(\s+static)?(?=\s+struct|enum|interface|trait)\b/,
-          'purple', 'purple', 'purple'
+          /\b(public|protected|private)(\s+static)?(?=\s+func|struct|enum|interface|trait)\b/,
+          'purple', 'purple'
         ],
         [
           // Mutable containers declaration in classes
