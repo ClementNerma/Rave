@@ -277,6 +277,26 @@ SYNTAX = {
           ]
         },
         [
+          // Native types and classes
+          /(?<!\.)\b(bool|number|v[su]?int|vfloat|[ui](?:8|16|32|64)|u?int|f(?:32|64)|usize|string|Primitive|BooleanConvertible|IntegerConvertible|FloatConvertible|Numerizable|Stringifyable|Clonable|Serializable|Randomizable|RandomizableWithBounds|Primitivable|Dictionary|Collection|Vector|Array|List|Error|BacktraceInstant|Output)(\?)?\b/,
+          'yellow', 'cyan'
+        ],
+        [
+          // Special native types
+          /(?<!\.)\b(void|Any|T|X|Y|Z|K|V|Type|Function|Structure|Enumeration|Interface|Trait)\b/,
+          'purple', 'cyan'
+        ],
+        [
+          // Name of constants
+          /\b([A-Z_\$][A-Z0-9_\$]+)\b/,
+          'orange'
+        ],
+        [
+          // Name of classes
+          /\b([A-Z][a-zA-Z0-9_\$]*)\b/,
+          'yellow'
+        ],
+        [
           // Plain boolean
           /\b(true|false)\b/,
           'orange'
@@ -584,16 +604,6 @@ SYNTAX = {
           endCaptures: {}
         },
         [
-          // Native types and classes
-          /(?<!\.)\b(bool|number|v[su]?int|vfloat|[ui](?:8|16|32|64)|u?int|f(?:32|64)|usize|string|Primitive|BooleanConvertible|IntegerConvertible|FloatConvertible|Numerizable|Stringifyable|Clonable|Serializable|Randomizable|RandomizableWithBounds|Primitivable|Dictionary|Collection|Vector|Array|List|Error|BacktraceInstant|Output)(\?)?\b/,
-          'yellow', 'cyan'
-        ],
-        [
-          // Special native types
-          /(?<!\.)\b(void|Any|T|X|Y|Z|K|V|Type|Function|Structure|Enumeration|Interface|Trait)\b/,
-          'purple', 'cyan'
-        ],
-        [
           // Iterating with key and value
           /(for)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s*(->)\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?:\s+(in)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*))?\b/,
           'purple', 'cyan', 'purple', 'cyan', 'purple', 'orange'
@@ -622,11 +632,6 @@ SYNTAX = {
           // Functions call
           /\b([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?=\s*\(|\s*<.*>\s*\()/,
           'blue'
-        ],
-        [
-          // Name of constants
-          /\b([A-Z_\$][A-Z0-9_\$]+)\b/,
-          'orange'
         ],
         [
           // Infinite argument
