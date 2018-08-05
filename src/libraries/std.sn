@@ -106,7 +106,7 @@ interface Stringifyable {
 
 /**
  * Calculable types
- * Only for types returning instances of themselves for calculations
+ * Only for types manipulating instances of themselves for calculations
  */
 interface Calculable {
   /**
