@@ -7684,6 +7684,15 @@ let array = [ new Lion(), new Rhino(), new Bear() ];
 let array = (Lion | Rhino | Bear)[3] ([ new Lion(), new Rhino(), new Bear() ]);
 ```
 
+#### Type absorption
+
+_Type absorption_ is the result of an union or intersection between one type and one of its parent. Such an operation results in the child type only:
+
+```sn
+string & Stringifyable; // string
+Numerizable & number;   // number
+```
+
 ### Anonymous classes
 
 Anonymous classes are for classes the equivalent of lambdas for functions. These are class, without a name, that are mainly used when they are used a single time.
