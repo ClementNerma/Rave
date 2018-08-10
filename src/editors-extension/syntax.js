@@ -283,7 +283,7 @@ SYNTAX = {
         ],
         [
           // Special native types
-          /(?<!\.)\b(void|Any|T|X|Y|Z|K|V|Type|Function|Structure|Enumeration|Interface|Trait)\b/,
+          /(?<!\.)\b(void|Any|T|X|Y|Z|K|V|Type|Function|Structure|Enumeration|Interface|Trait|Class)\b/,
           'purple', 'cyan'
         ],
         [
