@@ -7197,6 +7197,16 @@ myType = number; // Works fine
 
 Note that any type is an _instance of_ `Type`, which means even `Function` is an instance of it.
 
+### Plainable types
+
+Plainable types are types that can be plained using the `#pln<T>` directive. They are described in the native `PLAINABLE` plain constant:
+
+```sn
+pln PLAINABLE = (void, bool, number, string, Function, Structure, Enumeration, Interface, Trait, Class, Type);
+```
+
+As you can see, it's a tuple of types. Only types contained in it can be plained, meaning we can't write `#pln<Promise<string, bool>>` for example.
+
 ### Type assertion
 
 Here is a very nice feature when we want to manipulate some members on a value that is described as a mother of their real type that doesn't implement these members:
