@@ -7217,6 +7217,27 @@ println!(sum(2, 5)); // Prints: "7"
 
 As all function types are children of `Function` itself.
 
+This is also part of the function's behavior: when you write this:
+
+```sn
+func sum (a: int, b: int) {
+  return a + b;
+}
+```
+
+The builder turns it into this code:
+
+```sn
+pln sum: func (a: int, b: int) : int = func (a: int, b: int) : int {
+  return a + b;
+};
+
+// Which is itself turned into:
+val sum: #pln<func (a: int, b: int) : int> = func (a: int, b: int) : int {
+  return a + b;
+};
+```
+
 ### Type assertion
 
 Here is a very nice feature when we want to manipulate some members on a value that is described as a mother of their real type that doesn't implement these members:
