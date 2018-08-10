@@ -7207,6 +7207,16 @@ pln PLAINABLE = (void, bool, number, string, Function, Structure, Enumeration, I
 
 As you can see, it's a tuple of types. Only types contained in it can be plained, meaning we can't write `#pln<Promise<string, bool>>` for example.
 
+Note that child of these types are also accepted ; for example, it's possible to write this:
+
+```sn
+pln sum: func (a: int, b: int) = (a, b) => a + b;
+
+println!(sum(2, 5)); // Prints: "7"
+```
+
+As all function types are children of `Function` itself.
+
 ### Type assertion
 
 Here is a very nice feature when we want to manipulate some members on a value that is described as a mother of their real type that doesn't implement these members:
