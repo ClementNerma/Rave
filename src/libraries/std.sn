@@ -1848,6 +1848,18 @@ class Promise<X> inherits Promise<X, void> {
   public func %construct (core: func (resolve: func (data: X)));
 }
 
+// ==================== Native plain constants ==================== //
+
+/**
+ * List of NIL values
+ */
+pln NIL = (null, false, 0b, 0ub, 0s, 0us, 0, 0u, 0l, 0ul, 0f, 0d, '');
+
+/**
+ * List of plainable types
+ */
+pln PLAINABLE = (void, bool, number, string, Function, Structure, Interface, Trait, Class, Type);
+
 // ==================== Context-dependant constants ==================== //
 
 // NOTE: [WARNING] The values context-dependant constants can take are not fixed for now.
