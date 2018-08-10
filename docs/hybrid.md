@@ -7598,6 +7598,25 @@ class B {
 type C = A & B; // ERROR (conflict because of 'member')
 ```
 
+Note that intersection types support automatic typecasting to any type of the intersection:
+
+```sn
+class A {}
+
+class B inherits A implements Numerizable {
+  public func %to<int> => 2;
+}
+
+// Works
+let a: A & Numerizable = new B();
+let b: A = a; // Works fine
+
+// Though...
+let c: A = new B();
+let d: A & Numerizable = c; // ERROR
+let e: A & Numerizable = cast_unsafe!<B>(c); // Works fine
+```
+
 ### Union types
 
 Union types are the opposite of intersection types: they describe a value as being of a type OR another one. Example:
@@ -7682,6 +7701,23 @@ let array = [ new Lion(), new Rhino(), new Bear() ];
 
 // Works (explicit union typecasting)
 let array = (Lion | Rhino | Bear)[3] ([ new Lion(), new Rhino(), new Bear() ]);
+```
+
+Note that union types support automatic typecasting to any type of the union, and also from a single type to an union containing it:
+
+```sn
+class A {}
+class B inherits A implements Numerizable {
+  public func %to<int> => 2;
+}
+
+// Works
+let a: A = new B();
+let b: A | Numerizable = a; // Works fine
+
+// Works
+let c: A | Numerizable = new B();
+let d: Numerizable = d; // Works fine
 ```
 
 #### Type absorption
