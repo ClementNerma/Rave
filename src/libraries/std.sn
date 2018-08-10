@@ -1858,7 +1858,7 @@ pln NIL = (null, false, 0b, 0ub, 0s, 0us, 0, 0u, 0l, 0ul, 0f, 0d, '');
 /**
  * List of plainable types
  */
-pln PLAINABLE = (void, bool, number, string, Function, Structure, Interface, Trait, Class, Type);
+pln PLAINABLE = (void, bool, number, string, Function, Structure, Enumeration, Interface, Trait, Class, Type);
 
 // ==================== Context-dependant constants ==================== //
 
