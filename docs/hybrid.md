@@ -7210,7 +7210,7 @@ As you can see, it's a tuple of types. Only types contained in it can be plained
 Note that child of these types are also accepted ; for example, it's possible to write this:
 
 ```sn
-pln sum: func (a: int, b: int) = (a, b) => a + b;
+pln sum: func (a: int, b: int) : int = (a, b) => a + b;
 
 println!(sum(2, 5)); // Prints: "7"
 ```
@@ -7220,7 +7220,7 @@ As all function types are children of `Function` itself.
 This is also part of the function's behavior: when you write this:
 
 ```sn
-func sum (a: int, b: int) {
+func sum (a: int, b: int) : int {
   return a + b;
 }
 ```
