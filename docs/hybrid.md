@@ -7617,6 +7617,15 @@ let d: A & Numerizable = c; // ERROR
 let e: A & Numerizable = cast_unsafe!<B>(c); // Works fine
 ```
 
+#### Type absorption
+
+_Type absorption_ is the result of an intersection between one type and one of its parent. Such an operation results in the child type only:
+
+```sn
+string & Stringifyable; // string
+Numerizable & number;   // number
+```
+
 ### Union types
 
 Union types are the opposite of intersection types: they describe a value as being of a type OR another one. Example:
@@ -7718,15 +7727,6 @@ let b: A | Numerizable = a; // Works fine
 // Works
 let c: A | Numerizable = new B();
 let d: Numerizable = d; // Works fine
-```
-
-#### Type absorption
-
-_Type absorption_ is the result of an union or intersection between one type and one of its parent. Such an operation results in the child type only:
-
-```sn
-string & Stringifyable; // string
-Numerizable & number;   // number
 ```
 
 ### Anonymous classes
