@@ -7168,6 +7168,35 @@ type _super is static!<super>;
 
 Thanks to the `type` keyword declaring an _alias_ instead of creating a whole new type, this works perfectly.
 
+### Descriptor types
+
+Natively, there are some types called _descriptor types_:
+
+* `Function` accepts any function ;
+* `Structure` accepts any structure ;
+* `Enumeration` accepts any enumeration ;
+* `Interface` accepts any interface ;
+* `Trait` accepts any trait ;
+* `Class` accepts any class
+
+This means the following statement is valid:
+
+```sn
+let callback: Function = func () : void => null;
+
+callback = func () : string => "Hello"; // Works fine
+```
+
+Besides, the `Type` type accepts any type, as we already saw:
+
+```sn
+let myType: Type = string;
+
+myType = number; // Works fine
+```
+
+Note that any type is an _instance of_ `Type`, which means even `Function` is an instance of it.
+
 ### Type assertion
 
 Here is a very nice feature when we want to manipulate some members on a value that is described as a mother of their real type that doesn't implement these members:
