@@ -529,14 +529,14 @@ Note that the result of these operators has the same type as the left value:
 
 _Logical operators_ take one or two values to produce a boolean. Their syntax is `[value1] [op] [value2]`. Here is the list:
 
-* `&&` / `and` (and)
-* `||` / `or` (or)
+* `&&` (and)
+* `||` (or)
 * `>` (greater than)
 * `<` (less than)
 * `>=` (greater than or equal to)
 * `<=` (less than or equal to)
-* `==` / `is` (equal to)
-* `!=` / `isnt` (not equal to)
+* `==` (equal to)
+* `!=` (not equal to)
 * `nand` (not and)
 * `nor` (not or)
 * `xor` (exclusive or)
@@ -560,7 +560,7 @@ a xor b; // false
 
 There is a last logical operator, which takes only one value:
 
-* `!` / `not` (not) - takes a single value
+* `!` (not) - takes a single value
 
 Its syntax is `! [value]`.
 

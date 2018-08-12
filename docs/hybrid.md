@@ -564,18 +564,18 @@ Logical operators take one or two entities, which are converted to booleans (`fa
 
 The logical operators are:
 
-* `&&` / `and` (and)
-* `||` / `or` (or)
+* `&&` (and)
+* `||` (or)
 * `>` (greater than)
 * `<` (less than)
 * `>=` (greater than or equal to)
 * `<=` (less than or equal to)
-* `==` / `is` (equal to)
-* `!=` / `isnt` (not equal to)
+* `==` (equal to)
+* `!=` (not equal to)
 * `nand` (not and)
 * `nor` (not or)
 * `xor` (exclusive or)
-* `!` / `not` (not) - takes a single value
+* `!` (not) - takes a single value
 
 Showcase:
 
@@ -2930,7 +2930,7 @@ class Map {
     }
 
     // Check if the cell we are going to is a rock
-    elsif @cells[y][x] is _self.ROCK {
+    elsif @cells[y][x] == _self.ROCK {
       println!('There\'s a rock on your way.');
     }
 
@@ -2941,7 +2941,7 @@ class Map {
       @playerY = y;
 
       // If we fell in a trap, game over!
-      if @cells[y][x] is _self.TRAP {
+      if @cells[y][x] == _self.TRAP {
         println!('You\'ve been trapped!');
         @trapped = true;
       }
@@ -3337,7 +3337,7 @@ So, we could compare two bank accounts:
 class BankAccount {
   // ...
   public func %equal (cmp: _self) : bool {
-    return @money is right.money;
+    return @money == right.money;
   }
 }
 
@@ -3424,7 +3424,7 @@ open class Hero {
   // Attack an ennemy
   public func fight (ennemy: _self) {
     // Check if this hero is dead
-    if @hp is 0 {
+    if @hp == 0 {
       println!(`${@name} can't find because he's dead.`);
       return ;
     }
@@ -3433,7 +3433,7 @@ open class Hero {
     ennemy.receiveDamages(@attack, @name);
 
     // Check if the ennemy died
-    if ennemy.hp is 0 {
+    if ennemy.hp == 0 {
       println!(`${@name} killed ${ennemy.name}!`);
       return ;
     }
@@ -3445,7 +3445,7 @@ open class Hero {
   // Receive damages from an ennemy
   public func receiveDamages (amount: int, ennemyName: string) {
     // Check if this hero is dead
-    if @hp is 0 {
+    if @hp == 0 {
       println!(`${@name} did not receive any damage because he's dead.`);
       return ;
     }
@@ -3530,7 +3530,7 @@ class Wizard inherits Hero {
     ennemy.receiveDamages(@attack * 2, @name);
 
     // Check if the ennemy died
-    if ennemy.hp is 0 {
+    if ennemy.hp == 0 {
       println!(`${@name} killed ${ennemy.name}!`);
       return ;
     }
@@ -4389,7 +4389,7 @@ class KindOfDict<K, V> {
   // Associate a value to a key
   public func set (key: K, value: V) {
     // If this key is not already known...
-    if not @has(key) {
+    if ! @has(key) {
       // Create it
       @keys[] = key;
       // Add the new value
@@ -5124,7 +5124,7 @@ A strict equivalent to the function we saw would be:
 ```sn
 func getNilPoint (array: Point[]) : Point? {
   for point in array {
-    if point.x is 0 and point.y is 0 {
+    if point.x == 0 && point.y == 0 {
       return point;
     }
   }
@@ -5138,7 +5138,7 @@ This would do exactly the same thing. There's also a native value, named `null`,
 ```sn
 func getNilPoint (array: Point[]) : Point? {
   for point in array {
-    if point.x is 0 and point.y is 0 {
+    if point.x == 0 && point.y == 0 {
       return point;
     }
   }
@@ -5185,7 +5185,7 @@ The second call to `getNilPoint()` makes our program crash. Why? Simply because 
 ```sn
 val point = getNilPoint([]);
 
-if point is null {
+if point == null {
   println!('No point found.');
 } else {
   println!(`A point was found: ${point.name}`);
@@ -5274,7 +5274,7 @@ We previously saw how to make optional arguments in functions thanks to a defaul
 
 ```sn
 func sayHello (name: string, age?: int) {
-  println!(`Hello ${name}` + (age is null ? '!' : `, you are ${age} year-old.`));
+  println!(`Hello ${name}` + (age == null ? '!' : `, you are ${age} year-old.`));
 }
 
 println!('Jack'); // Prints: 'Hello Jack!'
@@ -5297,8 +5297,8 @@ struct Hero {
 
 val jack = Hero { name: 'Jack' };
 
-println!(jack.name is 'Jack'); // Prints: 'true'
-println!(jack.age is null) // Prints: 'true'
+println!(jack.name == 'Jack'); // Prints: 'true'
+println!(jack.age == null) // Prints: 'true'
 ```
 
 ### The null-checker operator
@@ -5704,7 +5704,7 @@ Throwing custom errors simply consists in throwing an instance of a child class 
 
 ```sn
 func divide (left: int, right: int) : f32 throws CustomError {
-  if right is 0 {
+  if right == 0 {
     throw new CustomError('Cannot divide by zero.');
   }
 
@@ -6177,9 +6177,9 @@ let j = 0;
 
 let ptr: * = &i;
 
-println!(ptr is &i); // Prints: 'true'
-println!(ptr is &j); // Prints: 'false'
-println!(*ptr is 0); // Prints: 'true'
+println!(ptr == &i); // Prints: 'true'
+println!(ptr == &j); // Prints: 'false'
+println!(*ptr == 0); // Prints: 'true'
 ```
 
 ### Reference's state
@@ -6463,15 +6463,15 @@ Sometimes, we will want to use a piece of code for a specific platform or langua
 Here is an example:
 
 ```sn
-#if PROC_ARCH is 'ARM'
+#if PROC_ARCH == 'ARM'
   println!('This program has been compiled for ARM.');
 #end
 
-#if OS is 'Windows'
+#if OS == 'Windows'
   println!('You are using a Windows system.');
-#elsif OS is 'Linux'
+#elsif OS == 'Linux'
   println!('You are using a Linux system.');
-#elsif OS is 'Darwin'
+#elsif OS == 'Darwin'
   println!('You are using a MacOS system.');
 #end
 ```
@@ -7161,9 +7161,9 @@ static!<''>.NIL; // Empty string
 Besides, the underscore types in classes are defined using the following statements:
 
 ```sn
-type _this is static!<this>;
-type _self is static!<self>;
-type _super is static!<super>;
+type _this == static!<this>;
+type _self == static!<self>;
+type _super == static!<super>;
 ```
 
 Thanks to the `type` keyword declaring an _alias_ instead of creating a whole new type, this works perfectly.
@@ -7379,14 +7379,14 @@ But, because of the need to match the constraint, constrained resources may not 
 
 ```sn
 // We use ICT here
-let car: Vehicle with (c => c.wheels is 4); // ERROR
-let car: Vehicle with (c => c.wheels is 4) = new Vehicle(4); // Works fine
+let car: Vehicle with (c => c.wheels == 4); // ERROR
+let car: Vehicle with (c => c.wheels == 4) = new Vehicle(4); // Works fine
 ```
 
 Also, because we could want to re-use a constrained type later, the `type` keyword allows us to register an alias on it:
 
 ```sn
-type Car = Vehicle with (c => c.wheels is 4);
+type Car = Vehicle with (c => c.wheels == 4);
 
 let car: Car;                  // ERROR
 let car: Car = new Vehicle(2); // ERROR
@@ -7396,18 +7396,10 @@ let car: Car = new Vehicle(4); // Works fine
 A last thing about this concept is the _short notation_ it allows: because writing a `c => ...` can be a bit heavy, we can omit the arrow syntax and simply use the `_` entity to refer as the candidate value. Here is an example:
 
 ```sn
-type Car = Vehicle with (c => c.wheels is 4);
+type Car = Vehicle with (c => c.wheels == 4);
 // *Strict* equivalent:
-type Car = Vehicle with (_.wheels is 4);
+type Car = Vehicle with (_.wheels == 4);
 ```
-
-Here is another concrete example:
-
-```sn
-type Object = Any with (not _ instanceof Primitive);
-```
-
-Yes, this is how the generic `Object` type is defined: it allows _any_ value that _is not_ a primitive.
 
 #### Proxy equivalence
 
@@ -7442,18 +7434,18 @@ Assigning a new value to a constrained entity requires to call a function, and t
 
 #### About the `type` keyword
 
-The `type` keyword allows to _alias_ a type with another. In our previous example, we defined `Object` as the `Any with (not _ instanceof Primitive)` type.
+The `type` keyword allows to _alias_ a type with another. In our previous example, we defined `Object` as the `Any with (! (_ instanceof Primitive))` type.
 
 In reality, this doesn't create a new type ; it simply makes an _alias_ to it:
 
 ```sn
 // Set up an alias
-type Object = Any with (not _ instanceof Primitive);
+type NotEmptyString = string with (_.length > 0);
 
 // This declaration:
-let var: Object = {};
+let var: NotEmptyString = 'Hello';
 // Equivalent to this one:
-let val: Any with (not _ instanceof Primitive) = {};
+let val: string with (_.length > 0) = 'Hello';
 ```
 
 It can also be used with templates:
@@ -7469,7 +7461,7 @@ let val: ArrayThree<int> = [ 2, 5 ]; // ERROR (invalid length)
 Also, as for constrained types, we can use the `_` value, which refers to the type of the value we are trying to assign:
 
 ```sn
-type NearToAny = Any with (_ isnt string);
+type NearToAny = not string;
 
 let one: string = 'Hello';
 let two: int    = 5;
@@ -7985,7 +7977,7 @@ func readAsync (path: string) : Promise<string, FSError> =>
     }
 
     // Resolve the promise if the reading worked fine
-    if content isnt null {
+    if content != null {
       resolve(content);
     }
   });
