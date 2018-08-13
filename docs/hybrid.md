@@ -5041,7 +5041,10 @@ delete personsAge.john;
 delete personsAge['john'];
 
 // Check if a key is known
-'john' in personsAge; // Equal to 'false'
+'john' keyof personsAge; // Equal to 'false'
+
+// Check if a value is contained in the dictionary
+18 in personsAge; // Equal to 'true'
 
 // Get the array of all keys
 keys!(personsAge); // Iterator<K>
