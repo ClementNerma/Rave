@@ -409,7 +409,7 @@ SYNTAX = {
         ],
         [
           // Getting overload method
-          /(?<=\.)(%)(construct|free|clone|serialize|unserialize|call|to|equal|greater|smaller|plus|less|times|divide|pow|modulo|random)\b/,
+          /(?<=\.)(%)(clone|serialize|unserialize|call|to|equal|greater|smaller|plus|less|times|divide|pow|modulo|random)\b/,
           'red', 'cyan'
         ],
         [
