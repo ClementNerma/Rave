@@ -4810,6 +4810,8 @@ dict Custom<K, V> {
   public func %unset (key: K);
   // Check if a key is known
   public func %has (key: K) : bool;
+  // Check if a key is contained in the dictionary
+  public func %contains (value: V) : bool;
   // Get the array of all keys
   public func %keys () : Iterator<K>;
   // Get the array of all values
