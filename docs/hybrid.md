@@ -5053,8 +5053,6 @@ keys!(personsAge); // Iterator<K>
 values!(personsAge); // Iterator<V>
 ```
 
-Be aware: if we provide a tuple on the right of the `in` keyword, it will check if the provided value is contained inside, but in the case of dictionaries it will look for the key and not for the value.
-
 ## Nullable types
 
 Here is a short chapter to show another of the most useful concepts of the language: the nullable types. These are types that can either be an instance of the class they refer to, or the `null` value, so they provide a way to not initialize an entity or to return nothing from a function.
