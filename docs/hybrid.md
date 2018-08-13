@@ -5012,6 +5012,9 @@ personsAge.%unset('john');
 // Check if a key is known
 personsAge.%has('john'); // Returns: false
 
+// Check if a value is contained in the dictionary
+personsAge.%contains(18); // Returns: true
+
 // Get the array of all keys
 personsAge.%keys(); // Returns an Iterator<K>
 
