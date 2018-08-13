@@ -7188,9 +7188,9 @@ Natively, there are some types called _descriptor types_:
 This means the following statement is valid:
 
 ```sn
-let callback: Function = func () : void => null;
+let callback: Function = lambda () : void => null;
 
-callback = func () : string => "Hello"; // Works fine
+callback = lambda () : string => "Hello"; // Works fine
 ```
 
 Besides, the `Type` type accepts any type, as we already saw:
@@ -7234,12 +7234,12 @@ func sum (a: int, b: int) : int {
 The builder turns it into this code:
 
 ```sn
-pln sum: func (a: int, b: int) : int = func (a: int, b: int) : int {
+pln sum: func (a: int, b: int) : int = lambda (a: int, b: int) : int {
   return a + b;
 };
 
 // Which is itself turned into:
-val sum: #pln<func (a: int, b: int) : int> = func (a: int, b: int) : int {
+val sum: #pln<func (a: int, b: int) : int> = lambda (a: int, b: int) : int {
   return a + b;
 };
 ```
@@ -7370,7 +7370,7 @@ Type constraints are a form of _type variation_, which are bidirectionaly compat
 Here is an exemple to better understand the concept:
 
 ```sn
-func treatCars (car: Vehicle with (func (c: string) : string => c.wheels <= 4)) {
+func treatCars (car: Vehicle with (lambda (c: string) : string => c.wheels <= 4)) {
   c = new Vehicle(2); // Works fine
   c = new Vehicle(4); // Works fine
   c = new Vehicle(8); // ERROR because the constraint returned `false`
@@ -8250,7 +8250,7 @@ Note that `await` cannot be used in non-asynchronous functions, even if they are
 async func funcA () : void {
 
   // Not asynchronous function
-  (func () {
+  (lambda () {
     await somePromise; // ERROR (cannot use 'await' here)
   })();
 }
