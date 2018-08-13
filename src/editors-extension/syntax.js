@@ -516,14 +516,52 @@ SYNTAX = {
         },
         [
           // Inheritance and reversed inheritance
-          /\b(inherits|parentof)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.<>]*)\b/,
+          /\b(inherits|parentof)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
           'purple', 'green'
         ],
-        [
+        {
+          begin: /\b(implements|uses?)\s+/,
+          beginCaptures: {
+            '1': {
+              name: '${purple}'
+            }
+          },
+          patterns: [
+            {
+              begin: /([a-zA-Z_\$][a-zA-Z0-9_\$::]+)\s*(<)/,
+              beginCaptures: {
+                '1': {
+                  name: '${green}'
+                },
+                '2': {
+                  name: '${cyan}'
+                }
+              },
+              patterns: [
+                {
+                  include: '#global'
+                }
+              ],
+              end: />/,
+              endCaptures: {
+                '0': {
+                  name: '${cyan}'
+                }
+              }
+            },
+            {
+              match: /[a-zA-Z_\$][a-zA-Z0-9_\$::]+\s*(?=,|\b)/,
+              name: '${green}'
+            },
+          ],
+          end: /(?=[\{\}\[\]\(\)\r\n;])/,
+          endCaptures: {}
+        },
+        /*[
           // Implementation (interfaces) and usage (traits)
           /\b(implements|uses?)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.<>]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.<>]*)*)\b/,
           'purple', 'green', 'green'
-        ],
+        ],*/
         [
           // Shortened typechecking
           /(~)\s*([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
