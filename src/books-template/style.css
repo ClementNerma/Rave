@@ -183,6 +183,7 @@ pre a.copy.triggered:after {
 
 code {
   background-color: rgb(245, 245, 245);
+  padding: 5px;
 }
 
 blockquote {
