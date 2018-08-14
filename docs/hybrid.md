@@ -8996,6 +8996,23 @@ interface B<T> {
 }
 ```
 
+### Class segments
+
+Segments are described like assignable entities:
+
+```sn
+class B<T> {
+  public value: T;
+
+  /**
+   * Segment for number types
+   */
+  segment (T ~ number) {
+    public func double () => @value * 2;
+  }
+}
+```
+
 ### Namespaces
 
 Namespaces are described like assignable entities:
