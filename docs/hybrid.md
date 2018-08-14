@@ -7533,6 +7533,16 @@ let val: ArrayThree<int> = [ 2, 5, 8 ]; // Works fine
 let val: ArrayThree<int> = [ 2, 5 ]; // ERROR (invalid length)
 ```
 
+Templates can also be constrained, as for classes:
+
+```sn
+// Set up a templated alias
+type ArrayOfThreeNums<T ~ number> = T[3];
+
+let val: ArrayOfThreeNums<int> = [ 2, 5, 8 ]; // Works fine
+let val: ArrayOfThreeNums<string> = [ 'a', 'b', 'c' ]; // ERROR
+```
+
 Also, as for constrained types, we can use the `_` value, which refers to the type of the value we are trying to assign:
 
 ```sn
