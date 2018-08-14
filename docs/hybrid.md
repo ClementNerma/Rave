@@ -8996,6 +8996,23 @@ interface B<T> {
 }
 ```
 
+### Type aliases
+
+Type aliases are described like classes:
+
+```sn
+/**
+ * Alias for the 'int' type
+ */
+type A = int;
+
+/**
+ * Collection of values
+ * @template T Type of the values
+ */
+type Collection<T> = Map<string, T>;
+```
+
 ### Class segments
 
 Segments are described like assignable entities:
