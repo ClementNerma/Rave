@@ -171,6 +171,8 @@ function toggleSummary () {
   summary.classList.toggle('hidden');
   // Toggle article's full-width state
   article.classList.toggle('full-width');
+  // Toggle hide summary's button's full-width indicator
+  hideNav.classList.toggle('force-left');
   // Toggle the "previous" button position
   previous.classList.toggle('force-left');
 
