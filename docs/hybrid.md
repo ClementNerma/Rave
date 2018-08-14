@@ -22,7 +22,7 @@ Of course, this language has downsides itself: it isn't as fast as a well-writte
 
 SilverNight is borned from the wish to have a language almost as simple as JavaScript or Python but as powerful as low-level languages, and as safe and languages like Rust to cover most of developers' needs. It is a statically-typed, functional programming language. Intended for multi-platform development, it comes with great flexibility and a large native library.
 
-### Why does "hybrid" mean?
+### What does "hybrid" mean?
 
 This book is called "hybrid" because it provides a simple specification for the language but also acts as a tutorial for persons who want to learn it from the beginning to the very end.
 
