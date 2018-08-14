@@ -1814,7 +1814,10 @@ open class Error implements Stringifyable {
    * Initialize an error object
    * @param message The error's message
    */
-  public func %construct (@message: string, @backtrace: BacktraceInstant[]);
+  public func %construct (message: string, backtrace: BacktraceInstant[]) {
+    @message = message;
+    @backtrace = backtrace;
+  }
 
   /**
    * Stringify the error
