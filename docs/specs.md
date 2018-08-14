@@ -914,13 +914,22 @@ delete personsAge.Jack;
 delete personsAge['Jack'];
 ```
 
-And to check if an element is contained in a dictionary, there is the `in` operator which returns a boolean (`true` if the key is found in the dictionary, `false` else):
+And to check if a key is known in a dictionary, there is the `keyof` operator which returns a boolean (`true` if the key is found in the dictionary, `false` else):
+
+```sn
+[key] keyof [dictionary];
+
+// e.g.
+'inexisting' keyof personsAge; // false
+```
+
+To check if a value is contained in a dictionary, there is the `in` operator that acts exactly like `keyof` acts for keys:
 
 ```sn
 [key] in [dictionary];
 
 // e.g.
-'inexisting' in personsAge; // false
+25 in personsAge; // true
 ```
 
 Dictionaries can also be expressed like a structure, but with a sharp symbol (#) following the opening brace:
