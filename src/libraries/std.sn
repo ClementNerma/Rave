@@ -1830,11 +1830,6 @@ open class Promise<X, Y> {
    * @returns This promise
    */
   public func finally (callback: func (resolution_data: X?, rejection_data: Y?));
-
-  /**
-   * The number of miliseconds elapsed since the promise has been created
-   */
-  public readonly timer: uint;
 }
 
 /**
