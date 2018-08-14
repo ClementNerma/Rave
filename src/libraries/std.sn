@@ -778,6 +778,16 @@ class f32 inherits f64 {
   public static val SIZE = 32p;
 }
 
+/**
+ * 32-bit signed integer type (primitive)
+ */
+type int = i32;
+
+/**
+ * 32-bit unsigned integer type (primitive)
+ */
+type uint = u32;
+
 // ==================== Strings ==================== //
 
 /**
