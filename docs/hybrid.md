@@ -1939,7 +1939,7 @@ The last line throws an error, because `j` is not defined. This is due to the fa
 Now, question is: what entities can I access from a scope? The answer is simple: you can access all entities declared in the current scope, plus every entity that belongs to (e.g. that are declared in) a _parent scope_ (a scope that contains, directly or indirectly, the current one). For example:
 
 ```sn
-// Global scope (scope 0)
+// main scope (scope 0)
 // Entities: i
 let i = 1;
 
@@ -1964,7 +1964,7 @@ In the code above:
 
 As you can see, a scope is considered as a parent of a given one even if it's not its _direct_ parent: it also works if it's an _indirect_ parent, meaning it contains a scope that itself contains the given one.
 
-The **global scope**, which is transparently defined, has no parent scope. It cannot access any other entity than the ones declared in its body. Because all our code is put somewhere in the global scope, you can always access entities that are declared in them (they are called _global entities_).
+The **main scope**, which is transparently defined, has no parent scope. It cannot access any other entity than the ones declared in its body. Because all our code is put somewhere in the main scope, you can always access entities that are declared in them (they are called _global entities_).
 
 Remember these rules about scopes (entities availability, drops, parent scopes, flying scopes), because all the language is ruled by it. Don't hesitate to read these explanations again as they may not be very simple.
 
@@ -8579,9 +8579,9 @@ names.defineName('John');
 println!(names.readName()); // Prints: 'John'
 ```
 
-As you can see, scope imports act like standard imports but also _aliases_ all entity names to link them to the package's/module's ones in the _current scope_. So, we can access without writing the package's name all its entities from the current scope - this way, it prevents polluating the global scope. Be aware though to not overwrite some existing entities, this would result in an error, like declaring two entities of the same name. Also, because multiple packages could have entities with the same name, it's discouraged to import several packages in a given scope.
+As you can see, scope imports act like standard imports but also _aliases_ all entity names to link them to the package's/module's ones in the _current scope_. So, we can access without writing the package's name all its entities from the current scope - this way, it prevents polluating the main scope. Be aware though to not overwrite some existing entities, this would result in an error, like declaring two entities of the same name. Also, because multiple packages could have entities with the same name, it's discouraged to import several packages in a given scope.
 
-Note the analyzer transparently adds the following line to all programs (at their beginning, so it's located in the global scope):
+Note the analyzer transparently adds the following line to all programs (at their beginning, so it's located in the main scope):
 
 ```sn
 scope import frontend::std;
