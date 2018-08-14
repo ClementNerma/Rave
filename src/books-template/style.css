@@ -224,7 +224,7 @@ th, td {
   position: fixed;
   top: 10px;
   left: 350px;
-  padding: 15px;
+  padding: 5px;
   font-size: 20px;
 }
 
@@ -240,12 +240,12 @@ th, td {
   position: fixed;
   top: 10px;
   left: 380px;
-  padding: 15px;
+  padding: 5px;
   font-size: 20px;
 }
 
 #dark-toggle.force-left {
-  left: 30px;
+  left: 50px;
 }
 
 #dark-toggle:hover {
