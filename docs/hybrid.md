@@ -2797,7 +2797,7 @@ We can also use it in the constructor to automatically set some attributes:
 class Superthing {
   private name: string;
 
-  public func %construct (@name: string) {}
+  public func %construct (name: string) => @name = name;
 }
 ```
 
@@ -2876,7 +2876,8 @@ class Product {
   public readonly name: string;
 
   // Initialize the instance
-  public func %construct (@name: string) {
+  public func %construct (name: string) {
+    @name = name;
     // Generate a unique identifier from the static function
     @unique_id = _self.increaseCounter();
   }
@@ -2913,7 +2914,11 @@ class Map {
   public readonly cells: int[][];
 
   // Create the map
-  public func %construct (@cells: int[][], @playerX: int, @playerY: int) {};
+  public func %construct (cells: int[][], playerX: int, playerY: int) {
+    @cells = cells;
+    @playerX = playerX;
+    @playerY = playerY;
+  };
 
   // Move the hero
   private func move (x: int, y: int) {
@@ -3079,7 +3084,10 @@ class Product {
   // Class' static attribute
   private static counter: int = 0;
 
-  public %construct(@name: string, @price: int) {
+  public %construct(name: string, price: int) {
+    @name = name;
+    @price = price;
+
     @unique_id = _self.counter ++;
   }
 }
@@ -3154,7 +3162,10 @@ class Product {
   // Class' static attribute
   private static counter: int = 0;
 
-  public %construct(@name: string, @price: int) {
+  public %construct(name: string, price: int) {
+    @name = name;
+    @price = price;
+
     @unique_id = _self.counter ++;
   }
 }
@@ -3287,7 +3298,7 @@ class BankAccount {
   public readonly money: uint;
 
   // A simple constructor
-  public func %construct (@money: int) {}
+  public func %construct (money: int) => @money = money;
 
   // Add money to the account
   public func add (amount: int) => @money += amount;
@@ -3479,7 +3490,11 @@ So, now we've seen that, let's make a first children class:
 class Warrior inherits Hero {
   public readonly rage: int;
 
-  public %construct(@name: string, @hp: int, @attack: int) {}
+  public %construct(name: string, hp: int, attack: int) {
+    @name = name;
+    @hp = hp;
+    @attack = attack;
+  }
 
   public func receiveDamages (amount: int, ennemyName: string) {
     // Call the parent class' `receiveDamages()` method
@@ -3516,7 +3531,12 @@ We can now write our `Wizard` class, still inheriting from `Hero`:
 class Wizard inherits Hero {
   public readonly mp: int;
 
-  public func %construct (@name: int, @hp: int, @attack: int, @mp: int) {}
+  public func %construct (name: int, hp: int, attack: int, mp: int) {
+    @name = name;
+    @hp = hp;
+    @attack = attack;
+    @mp = mp;
+  }
 
   public func fireball (ennemy: Hero) {
     // Check if remaining MP are enough
@@ -3643,7 +3663,9 @@ class Test {
     @id = ++ self.counter;
   }
 
-  public func %construct (@name: string) {
+  public func %construct (name: string) {
+    @name = name;
+
     this.%construct(id);
   }
 }
@@ -3688,7 +3710,9 @@ As we saw, the constructor can't be inherited, but we can use still call it from
 open class Mother {
   protected name: string;
 
-  public func %construct (@name: string) {
+  public func %construct (name: string) {
+    @name = name;
+
     println!(`Hello ${name}!`);
   }
 }
@@ -4194,7 +4218,9 @@ interface Duplication {
 class Product implements Duplication {
   public readonly name: string;
 
-  public func %construct (@name: string) {};
+  public func %construct (name: string) {
+    @name = name;
+  };
 
   public func duplicate () : _self {
     return new _self(@name);
@@ -4254,7 +4280,7 @@ _'Long'_ safe typecasting is a method that uses a typecast path to convert a val
 class Money {
   public amount = 0u;
 
-  public func %construct (@money: uint) {};
+  public func %construct (money: uint) => @money = money;
   
   public func %to<u64> () : u64 => @value;
 
@@ -5454,13 +5480,13 @@ Because attributes are instantly instanciated in classes, some require to be nul
 class Container<T> {
   public value: T;
 
-  public func %construct (@value: T) {}
+  public func %construct (value: T) => @value = value;
 }
 
 class ComplexClass {
   public readonly name: string;
 
-  public func %construct (@name: string) {}
+  public func %construct (name: string) => @name = name;
 }
 
 let cmp = new ComplexClass('John');
@@ -5475,13 +5501,13 @@ A solution could be to make the `value` attribute nullable:
 class Container<T> {
   public value: T?;
 
-  public func %construct (@value: T) {}
+  public func %construct (value: T) => @value = value;
 }
 
 class ComplexClass {
   public readonly name: string;
 
-  public func %construct (@name: string) {}
+  public func %construct (name: string) => @name = name;
 }
 
 let cmp = new ComplexClass('John');
@@ -5499,13 +5525,13 @@ class Container<T> {
   #future
   public value: T;
 
-  public func %construct (@value: T) {}
+  public func %construct (value: T) => @value = value;
 }
 
 class ComplexClass {
   public readonly name: string;
 
-  public func %construct (@name: string) {}
+  public func %construct (name: string) => @name = name;
 }
 
 let cmp = new ComplexClass('John');
@@ -5541,7 +5567,8 @@ struct ErrorStep {
 class Error {
   public readonly message: string;
   public readonly traceback: ErrorStep[];
-  public func %construct (@message: string, @traceback: ErrorStep[]);
+
+  public func %construct (message: string, traceback: ErrorStep[]);
   public func %to<string> ();
 }
 ```
@@ -6562,7 +6589,7 @@ How do they work? That's simple: each operator superoverload overwrites the beha
 ```sn
 class MyClass {
   public readonly value: int;
-  public func %construct (@value: int) {}
+  public func %construct (value: int) => @value = value;
   public func %plus (cmp: int) : int {
     return @value + cmp;
   }
@@ -7322,7 +7349,7 @@ This time, because we haven't seen any feature that could achieve it, let's skip
 ```sn
 class Vehicle {
   public readonly wheels: int;
-  public func %construct (@wheels: int);
+  public func %construct (wheels: int) => @wheels = wheels;
 }
 
 val car = new Vehicle(4);
@@ -7960,7 +7987,7 @@ Another case is callbacks. In the following code:
 class Event {
   private static handler: func ();
 
-  public static func handle (@handler: func ()) {}
+  public static func handle (handler: func ()) => @handler = handler;
 
   public static func trigger () {
     @handler();
