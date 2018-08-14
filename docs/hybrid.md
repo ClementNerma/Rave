@@ -7236,9 +7236,9 @@ static!<''>.NIL; // Empty string
 Besides, the underscore types in classes are defined using the following statements:
 
 ```sn
-type _this == static!<this>;
-type _self == static!<self>;
-type _super == static!<super>;
+type _this = static!<this>;
+type _self = static!<self>;
+type _super = static!<super>;
 ```
 
 Thanks to the `type` keyword declaring an _alias_ instead of creating a whole new type, this works perfectly.
