@@ -1827,12 +1827,7 @@ open class Error implements Stringifyable {
 /**
  * Runtime error
  */
-virtual class RuntimeError inherits Error {
-  /**
-   * Create an instance of @class
-   */
-  abstract public func %construct () : void;
-}
+virtual class RuntimeError inherits Error {}
 
 /**
  * Program is out of memory
@@ -1887,6 +1882,52 @@ class IndexOutOfBoundsError inherits RuntimeError {
  */
 class ArrayNotDynamicError inherits RuntimeError {
   public func %construct () => @message = 'Cannot remove a value from an array';
+}
+
+/**
+ * Type constraint's rejection
+ */
+class TypeConstraintError inherits RuntimeError {
+  public func %construct () => @message = 'Type constraint rejected the assignment';
+}
+
+/**
+ * Cast fail
+ */
+class InvalidCastError inherits RuntimeError {
+  public func %construct () => @message = 'Failed to cast to the provided type';
+}
+
+/**
+ * Union cast fail
+ */
+class UnionBadTypeError inherits RuntimeError {
+  public func %construct () => @message = 'Failed to cast the union to the given type';
+}
+
+/**
+ * Future attribute nullable removal fail
+ */
+class NullFutureAttributeError inherits RuntimeError {
+  public func %construct () => @message = 'Future attribute is still \'null\' after the constructor ends';
+}
+
+/**
+ * Asynchronous function (promise) rejection
+ * @template T The promise's rejection type
+ */
+class AwaitRejectionError<T> inherits RuntimeError {
+  /**
+   * The rejection data
+   */
+  #future
+  public val data: T;
+
+  /**
+   * Create an 'await' rejection error
+   * @param data The promise's rejection data
+   */
+  public func %construct (data: T) => @data = data;
 }
 
 // ==================== Promise type ==================== //
