@@ -752,6 +752,11 @@ SYNTAX = {
           'orange'
         ],
         [
+          // Automatic typecasting overload indicator
+          /#auto(?= +|\r|\n| *;)/,
+          'orange'
+        ],
+        [
           // Exact type directive
           /#=/,
           'purple'
