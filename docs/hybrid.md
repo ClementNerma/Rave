@@ -8012,6 +8012,8 @@ readAsync('hello.txt')
 
 Here, the `then()` function simply registers the callback which will be called if the promise succeeds, while `catch()` registers the callback for the case it fails. Here, we don't use any `try`/`catch` block to handle potential errors ; there is callback for that.
 
+We can also use the `.finally()` function that runs the provided callback after `.then()`'s and `.catch()`'s one, whatever the promise succeeds or fails.
+
 Let's now write the `readAsync()` function:
 
 ```sn
