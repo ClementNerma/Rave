@@ -61,10 +61,10 @@ function success(message, output_folder, dontExit = false) {
     // If an output folder was provided...
     if (output_folder) {
       // Display a message
-      say(cyan('Statically delivering output folder on port ' + yellow(argv.serve) + '...'));
+      say(cyan('Statically delivering output folder on port ' + yellow(argv.port) + '...'));
 
       // Serve it
-      staticServe(output_folder, argv.serve);
+      staticServe(output_folder);
     } else
       // Else, display an error message
       console.error(log(red('Cannot serve files: the module did not provide an output folder')));
@@ -294,11 +294,10 @@ function openBrowser (p, callback) {
 /**
  * Make a static web server
  * @param {string} folder The web server's static folder
- * @param {number} port The port number to deliver the folder on
  * @param {string} verbmsg A message for the verbose mode
  * @returns {void}
  */
-function staticServe (folder, port = 3000, verbmsg) {
+function staticServe (folder, verbmsg) {
     // Create an Express application
   verb('Creating an Express application');
   const app = express();
@@ -320,7 +319,7 @@ function staticServe (folder, port = 3000, verbmsg) {
     app.get('/', (req, res) => res.send(readFile(folder)));
 
   // Listen on the provided port
-  server = app.listen(port, () => void say(`Server listening on port ${port}...`));
+  server = app.listen(argv.port, () => void say(`Server listening on port ${argv.port}...`));
 }
 
 /**
@@ -582,7 +581,8 @@ const main_mod = {
     { long: 'release', short: 'r', type: 'boolean', default: true, help: 'Optimize and improve the compatibility of the build' },
     { long: 'fast', short: 'f', type: 'boolean', help: 'Produce an unoptimized code - speed up the build' },
     { long: 'clean', short: 'c', type: 'boolean', help: 'Clean module\'s data' },
-    { long: 'serve', type: 'number', defaultIfTrue: process.env.PORT || 3000, help: 'Run a web server to deliver statically the output folder' },
+    { long: 'serve', type: 'boolean', help: 'Run a web server to deliver statically the output folder' },
+    { long: 'port', short: 'p', type: 'number', value: 'port', default: 3000, help: 'The port to serve the local files on' },
     { long: 'watch', short: 'w', value: 'folders', defaultIfTrue: '.', help: 'Build each time a file is changed in the folders (folders are separated by a comma)' },
     { long: 'live-reload', short: 'r', type: 'boolean', help: 'Serve the output each time the build is triggerd (requires `--watch`)' },
     { long: 'logfile', short: 'l', value: 'file', help: 'Write all log messages in a file' },
