@@ -7357,7 +7357,7 @@ func treatCars (car: Vehicle with (lambda (c: string) : string => c.wheels <= 4)
 treatCars(new Vehicle(4));
 ```
 
-When the resource is written, the callback receives its value (plus the current value of the resource if it takes two arguments), and returns a boolean. If it accepts the changes, it will return a non-NIL value (in our case, `true`, which will happen only if the vehicle has four wheels or less). Else, it will return a NIL value (in our case, `false`) and the writing will be rejected, which will result in an `RejectedAssignmentError` error (note that this error is a native one, so we don't have to catch it).
+When the resource is written, the callback receives its value (plus the current value of the resource if it takes two arguments), and returns a boolean. If it accepts the changes, it will return a non-NIL value (in our case, `true`, which will happen only if the vehicle has four wheels or less). Else, it will return a NIL value (in our case, `false`) and the writing will be rejected, which will result in an `TypeConstraintError` error (note that this error is a native one, so we don't have to catch it).
 
 But, because of the need to match the constraint, constrained resources may not be declared without an initialization value. Here is an example:
 
