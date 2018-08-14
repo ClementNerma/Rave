@@ -4281,13 +4281,13 @@ _'Long'_ safe typecasting is a method that uses a typecast path to convert a val
 class Money {
   public amount = 0u;
 
-  public func %construct (money: uint) => @money = money;
+  public func %construct (amount: uint) => @amount = amount;
   
-  public func %to<u64> () : u64 => @value;
+  public func %to<u64> () : u64 => @amount;
 
-  public func %to<u32> () : u32 => @value;
+  public func %to<u32> () : u32 => @amount;
 
-  public func %to<u16> () : u16 => @value;
+  public func %to<u16> () : u16 => <u16> @amount;
 }
 ```
 
