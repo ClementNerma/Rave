@@ -51,6 +51,10 @@ For syntaxes demonstration, the following notations will be used:
 * `[x]` indicates a variable value (e.g. a keyword specific to the context) ;
 * `[x?]` indicaets an optional variable value
 
+### Syntax extensions
+
+Through the book, a syntax we have explained before can be extended. For example, it may be indicated somewhere in the book that a given feature (let's call it A) has a specific syntax, but later we may see that A can also have another syntax. Keep this in mind: the syntax will evolve through the book.
+
 ## Basics
 
 Here is a few notions about the language's basics.
