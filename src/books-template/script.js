@@ -179,7 +179,7 @@ function toggleSummary () {
   // If the summary is now visible...
   if (summary.classList.contains('hidden')) {
     // Set the button's legend
-    hideNav.innerHTML = '❯';
+    hideNav.innerHTML = '&#10095;';
     
     // Remember this state in the local storage
     try {
@@ -190,7 +190,7 @@ function toggleSummary () {
     }
   } else {
     // Set the button's legend
-    hideNav.innerHTML = '❮';
+    hideNav.innerHTML = '&#10094;';
 
     // Remove the boolean from the local storage
     try {
@@ -288,7 +288,7 @@ let previous = document.createElement('a');
 // Set its ID
 previous.setAttribute('id', 'previous');
 // Set its content
-previous.innerHTML = '❮';
+previous.innerHTML = '&#10094;';
 // When it is clicked, go to the previous section
 previous.addEventListener('click', () => showSection(currentSectionID - 1));
 // Append it to the page's body
@@ -299,7 +299,7 @@ let next = document.createElement('a');
 // Set its ID
 next.setAttribute('id', 'next');
 // Set its content
-next.innerHTML = '❯';
+next.innerHTML = '&#10095;';
 // When it is clicked, go to the next section
 next.addEventListener('click', () => showSection(currentSectionID + 1));
 // Append it to the page's body
@@ -355,7 +355,7 @@ hideNav.setAttribute('id', 'hide-summary');
 // Give it a help text
 hideNav.setAttribute('title', 'Toggle the summary');
 // Give it a legend
-hideNav.innerHTML = '❮';
+hideNav.innerHTML = '&#10094;';
 // When it is clicked...
 hideNav.addEventListener('click', toggleSummary);
 // Append it to the <body>
