@@ -296,6 +296,27 @@ body.dark #previous:hover, body.dark #next:hover {
   color: #ddd;
 }
 
+/* Scrollbar style */
+
+::-webkit-scrollbar {
+  width: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #999;
+  /* Kind of padding */
+  border: 2px solid #f1f1f1;
+  border: 2px solid #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
 /* Stylesheet for desktop devices and large-width mobile devices */
 @media screen and (min-width: 641px) {
   #previous, #next {
