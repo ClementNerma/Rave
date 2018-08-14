@@ -5562,7 +5562,7 @@ func c () throws Error {
 }
 ```
 
-Note that functions must always declare the type of error they may throw using the `throws` keyword. Errors thrown by superoverloads are excluded - doing a division doesn't require us to dedclare an `ArithmeticError` throw in the function's signature ; as well as _native errors_ (which inherits from `RuntimeError`) that are triggered automatically by the program like `OutOfMemoryError`.
+Note that functions must always declare the type of error they may throw using the `throws` keyword. Errors thrown by superoverloads are excluded - doing a division doesn't require us to dedclare an `DivisionByZeroError` throw in the function's signature ; as well as _native errors_ (which inherits from `RuntimeError`) that are triggered automatically by the program like `OutOfMemoryError`.
 
 As `c` throws an error automatically, it indicates it in its declaration. But then, because `b` calls `c`, it may throw the same error. And that's also the case for `a`, which calls `b` that indicates it may throw an error.
 
@@ -5699,7 +5699,7 @@ Also, if we call a function that may throw an error inside the main scope, we mu
 
 ### Sub-typing with errors
 
-As `catch` blocks ask for an error type, they support sub-typing. There are several native error classes, like `ArithmeticError` or `OutOfMemoryError` (which occurs when the memory is filled). So, if we want to catch only some type of errors, we can use sub-typing in the `catch`, like this:
+As `catch` blocks ask for an error type, they support sub-typing. There are several native error classes, like `DivisionByZeroError` or `OutOfMemoryError` (which occurs when the memory is filled). So, if we want to catch only some type of errors, we can use sub-typing in the `catch`, like this:
 
 ```sn
 try {
@@ -5722,7 +5722,7 @@ catch (e: OutOfMemoryError) {
   println!('Program is out of memory.');
 }
 
-catch (e: ArithmeticError) {
+catch (e: DivisionByZeroError) {
   println!('Division failed because we can\'t divide by zero.');
 }
 ```
@@ -5738,7 +5738,7 @@ catch (e: OutOfMemoryError) {
   println!('Program is out of memory.');
 }
 
-catch (e: ArithmeticError) {
+catch (e: DivisionByZeroError) {
   println!('Division failed because we can\'t divide by zero.');
 }
 
