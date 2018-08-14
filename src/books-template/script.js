@@ -198,6 +198,15 @@ function toggleSummary () {
   }
 }
 
+/**
+ * Toggle the dark mode
+ * @returns {void}
+ */
+function toggleDarkMode () {
+  // Toggle <body>'s dark mode's class
+  document.body.classList.toggle('dark');
+}
+
 // For each title in the page...
 for (let title of qa('h1, h2, h3, h4, h5, h6'))
   // If it has an ID...
@@ -366,10 +375,7 @@ darkModeToggle.setAttribute('title', 'Toggle the dark mode');
 // Give it a legend
 darkModeToggle.innerHTML = '&#9789;';
 // When it is clicked...
-darkModeToggle.addEventListener('click', () =>
-  // Toggle <body>'s dark mode's class
-  document.body.classList.toggle('dark')
-);
+darkModeToggle.addEventListener('click', toggleDarkMode);
 // Append it to the <body>
 document.body.appendChild(darkModeToggle);
 
@@ -412,6 +418,11 @@ window.addEventListener('keydown', e => {
   if (e.keyCode === 83)
     // Toggle the summary
     toggleSummary();
+
+  // If the "d" (for "dark") key was pressed...
+  if (e.keyCode === 68)
+    // Toggle the dark mode
+    toggleDarkMode();
 });
 
 // Now the page is ready, show it
