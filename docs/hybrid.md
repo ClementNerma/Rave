@@ -9109,3 +9109,90 @@ Inline annotations are part of the language and describe a part of the program. 
 
 // BUG: There is this specific bug: ...
 ```
+
+### Dynamic annotations
+
+Dynamic annotations allow to set and read a value using annotations. It can be useful to document functions that are re-implemented in child classes, without rewriting the whole documentation in the children. Here is an example, using the `@class` class which is automatically replaced by the real class name (`_this`' name):
+
+```sn
+virtual class A {
+  /**
+   * Create a new value of @class and return it
+   * @returns A new instance of @class
+   */
+  public func create () : _this;
+}
+
+class B inherits A {
+  public func create () : _this => new _self();
+}
+
+class C inherits A {
+  public func create () : _this => new _self();
+}
+```
+
+This code is strictly equivalent to:
+
+```sn
+virtual class A {
+  /**
+   * Create a new value of A and return it
+   * @returns A new instance of A
+   */
+  public func create () : _this;
+}
+
+class B inherits A {
+  /**
+   * Create a new value of B and return it
+   * @returns A new instance of B
+   */
+  public func create () : _this => new _self();
+}
+
+class C inherits A {
+  /**
+   * Create a new value of C and return it
+   * @returns A new instance of C
+   */
+  public func create () : _this => new _self();
+}
+```
+
+In some cases, renaming could be required, and can be performed using the `@classname` annotation:
+
+```sn
+/**
+ * @classname(number)
+ */
+class Number {
+  /**
+   * Do some @class stuff
+   */
+  public func nothing () => null;
+}
+
+/**
+ * @classname(signed number)
+ */
+class SignedNumber inherits A {}
+```
+
+Equivalence:
+
+```sn
+class Number {
+  /**
+   * Do some number stuff
+   */
+  public func nothing () => null;
+}
+
+class SignedNumber inherits A {
+  /**
+   * Do some signed number stuff
+   */
+  public func nothing () => null;
+}
+```
