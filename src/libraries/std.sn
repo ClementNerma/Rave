@@ -1076,6 +1076,43 @@ class string inherits Primitive {
   public static func fromCodePoint (code: int) : string;
 }
 
+// ==================== Descriptor types ==================== //
+
+/**
+ * Any type
+ */
+class Type {}
+
+/**
+ * Function type
+ */
+class Function {}
+
+/**
+ * Structure type
+ */
+class Structure {}
+
+/**
+ * Enumeration type
+ */
+class Enumeration {}
+
+/**
+ * Class type
+ */
+class Class {}
+
+/**
+ * Trait type
+ */
+class Trait {}
+
+/**
+ * Interface type
+ */
+class Interface {}
+
 // ==================== Tuples ==================== //
 
 /**
