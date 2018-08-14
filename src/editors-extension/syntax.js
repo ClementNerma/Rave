@@ -563,6 +563,11 @@ SYNTAX = {
           'cyan', 'green'
         ],
         [
+          // Type exclusion
+          /\bnot\b/,
+          'purple'
+        ],
+        [
           // Throw declaration
           /\b(throws)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.<>]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.<>]*)*)\b/,
           'purple', 'green', 'green'
