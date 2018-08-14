@@ -236,6 +236,65 @@ th, td {
   cursor: pointer;
 }
 
+#dark-toggle {
+  position: fixed;
+  top: 10px;
+  left: 380px;
+  padding: 15px;
+  font-size: 20px;
+}
+
+#dark-toggle.force-left {
+  left: 30px;
+}
+
+#dark-toggle:hover {
+  cursor: pointer;
+}
+
+/* Dark mode */
+
+body.dark {
+  background-color: #0f1419;
+  color: #c5c5c5;
+}
+
+body.dark nav {
+  background-color: #14191f;
+}
+
+body.dark nav a {
+  color: #c8c9db;
+}
+
+body.dark nav a:hover, body.dark nav a.active {
+  color: #ffb454;
+}
+
+body.dark article, body.dark h2, body.dark h3, body.dark h4 {
+  color: #c5c5c5;
+}
+
+body.dark article a {
+  color: #4183c4;
+}
+
+body.dark pre {
+  background-color: black;
+}
+
+body.dark code, body.dark blockquote {
+  background-color: #191f26;
+}
+
+body.dark #previous, body.dark #next {
+  color: #ddd;
+}
+
+body.dark #previous:hover, body.dark #next:hover {
+  color: darkgray;
+}
+
 /* Stylesheet for desktop devices and large-width mobile devices */
 @media screen and (min-width: 641px) {
   #previous, #next {
@@ -278,6 +337,12 @@ th, td {
 
   #hide-summary {
     display: none;
+  }
+
+  #dark-toggle {
+    position: fixed;
+    top: 5px;
+    left: 5px;
   }
 
   #previous {

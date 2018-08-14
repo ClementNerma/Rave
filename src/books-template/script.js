@@ -173,6 +173,8 @@ function toggleSummary () {
   article.classList.toggle('full-width');
   // Toggle hide summary's button's full-width indicator
   hideNav.classList.toggle('force-left');
+  // Same with the dark mode toggle button
+  darkModeToggle.classList.toggle('force-left');
   // Toggle the "previous" button position
   previous.classList.toggle('force-left');
 
@@ -360,6 +362,22 @@ hideNav.innerHTML = '&#10094;';
 hideNav.addEventListener('click', toggleSummary);
 // Append it to the <body>
 document.body.appendChild(hideNav);
+
+// Create a button to toggle the dark mode
+let darkModeToggle = document.createElement('a');
+// Give it an ID
+darkModeToggle.setAttribute('id', 'dark-toggle');
+// Give it a help text
+darkModeToggle.setAttribute('title', 'Toggle the dark mode');
+// Give it a legend
+darkModeToggle.innerHTML = '&#9789;';
+// When it is clicked...
+darkModeToggle.addEventListener('click', () =>
+  // Toggle <body>'s dark mode's class
+  document.body.classList.toggle('dark')
+);
+// Append it to the <body>
+document.body.appendChild(darkModeToggle);
 
 try {
   // If the book summary is marked as hidden in the local storage...
