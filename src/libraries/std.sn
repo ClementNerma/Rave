@@ -1830,6 +1830,15 @@ open class Promise<X, Y> {
    * @returns This promise
    */
   public func finally (callback: func (resolution_data: X?, rejection_data: Y?));
+
+  /**
+   * Set a final callback
+   * It will be called after either then or catch have been triggered
+   * @param callback The callback function
+   * > @param data Either the resolution or rejection data
+   * @returns This promise
+   */
+  public func finally (callback: func (data: X | Y));
 }
 
 /**
