@@ -7313,97 +7313,6 @@ val sum: #pln<func (a: int, b: int) : int> = lambda (a: int, b: int) : int {
 };
 ```
 
-### Type assertion
-
-Here is a very nice feature when we want to manipulate some members on a value that is described as a mother of their real type that doesn't implement these members:
-
-```sn
-func convertToString (arg: Any) : string? {
-  // Convert the argument to a string using its `%to<string>` overload
-  // If it doesn't have any, return 'null'
-}
-```
-
-A first idea for this function's body could be to use typecasting, like this:
-
-```sn
-func convertToString (arg: Any) : string? {
-  try
-    return cast_unsafe!<string>(arg);
-
-  catch
-    return null;
-}
-```
-
-But this doesn't work if the real type of the data isnt `string`. In order to avoid this problem, we can perform a _type assertion_: it's a conditional block where we specify one or several conditions, like `arg` is an instance of the `Primitive` class. If the condition successes, the block is executed considering, this time, all the members described by `Primitive`:
-
-```sn
-func convertToString (arg: Any) : string? {
-  ift arg instanceof Primitive {
-    // Here, 'arg' is considered as being a 'Primitive'
-    return <string> arg;
-  } else {
-    return null;
-  }
-}
-```
-
-Note that this code can be fastened using an exact type if we expect one, as the program doesn't have to check all the type hierarchy:
-
-```sn
-func convertToString (arg: Any) : string? {
-  ift arg instanceof #=u16 {
-    // Here, 'arg' is considered as being EXACTLY an 'u16'
-    return <string> arg;
-  } else {
-    return null;
-  }
-}
-```
-
-For more flexibility, we can simply accept any type that is typecastable to a string:
-
-```sn
-func convertToString (arg: Any) : string? {
-  ift arg implements Stringifyable {
-    return <string> arg;
-  } else {
-    return null;
-  }
-}
-```
-
-It also works inline:
-
-```sn
-func convertToString (arg: Any) : string? {
-  return ift arg implements Stringifyable { <string> arg } else { null };
-}
-```
-
-Though this second syntax is often heavier and more difficult to read.
-
-The assumption condition must be take the following form:
-
-```sn
-[entity] [instanceof | instanceofsuper | implements | uses | ~] [class]
-```
-
-Or a combination of several assumption conditions using the `&&` operator. The `instanceofsuper` operator returns `true` if the entity is an instance of the class itself or one of its parent. That's the opposite of `instanceof` which returns `true` if the entity is an instance of the class itself or one of its _children_.
-
-Note that we can also use the `~` operator here:
-
-```sn
-func convertToString (arg: Any) : string? {
-  ift arg ~ int {
-    return <string> arg;
-  } else {
-    return null;
-  }
-}
-```
-
 ### Constrained types
 
 Sometimes we want to get restricted values from a specific type. For example, if we make a function called `treatCars` that takes a `Vehicle` instance as a parameter, we could only want to accept vehicles with four `wheels` or less.
@@ -7598,6 +7507,97 @@ let byte: u8 = <u8> cast_unsafe!<u64>(num);
 ```
 
 Type assertion uses an unsafe cast but catches the result when it fails and simply ignore the condition's body in that case.
+
+### Type assertion
+
+Here is a very nice feature when we want to manipulate some members on a value that is described as a mother of their real type that doesn't implement these members:
+
+```sn
+func convertToString (arg: Any) : string? {
+  // Convert the argument to a string using its `%to<string>` overload
+  // If it doesn't have any, return 'null'
+}
+```
+
+A first idea for this function's body could be to use typecasting, like this:
+
+```sn
+func convertToString (arg: Any) : string? {
+  try
+    return cast_unsafe!<string>(arg);
+
+  catch
+    return null;
+}
+```
+
+But this doesn't work if the real type of the data isnt `string`. In order to avoid this problem, we can perform a _type assertion_: it's a conditional block where we specify one or several conditions, like `arg` is an instance of the `Primitive` class. If the condition successes, the block is executed considering, this time, all the members described by `Primitive`:
+
+```sn
+func convertToString (arg: Any) : string? {
+  ift arg instanceof Primitive {
+    // Here, 'arg' is considered as being a 'Primitive'
+    return <string> arg;
+  } else {
+    return null;
+  }
+}
+```
+
+Note that this code can be fastened using an exact type if we expect one, as the program doesn't have to check all the type hierarchy:
+
+```sn
+func convertToString (arg: Any) : string? {
+  ift arg instanceof #=u16 {
+    // Here, 'arg' is considered as being EXACTLY an 'u16'
+    return <string> arg;
+  } else {
+    return null;
+  }
+}
+```
+
+For more flexibility, we can simply accept any type that is typecastable to a string:
+
+```sn
+func convertToString (arg: Any) : string? {
+  ift arg implements Stringifyable {
+    return <string> arg;
+  } else {
+    return null;
+  }
+}
+```
+
+It also works inline:
+
+```sn
+func convertToString (arg: Any) : string? {
+  return ift arg implements Stringifyable { <string> arg } else { null };
+}
+```
+
+Though this second syntax is often heavier and more difficult to read.
+
+The assumption condition must be take the following form:
+
+```sn
+[entity] [instanceof | instanceofsuper | implements | uses | ~] [class]
+```
+
+Or a combination of several assumption conditions using the `&&` operator. The `instanceofsuper` operator returns `true` if the entity is an instance of the class itself or one of its parent. That's the opposite of `instanceof` which returns `true` if the entity is an instance of the class itself or one of its _children_.
+
+Note that we can also use the `~` operator here:
+
+```sn
+func convertToString (arg: Any) : string? {
+  ift arg ~ int {
+    return <string> arg;
+  } else {
+    return null;
+  }
+}
+```
 
 ### Intersection types
 
