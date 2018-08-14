@@ -3084,7 +3084,7 @@ class Product {
   // Class' static attribute
   private static counter: int = 0;
 
-  public %construct(name: string, price: int) {
+  public func %construct(name: string, price: int) {
     @name = name;
     @price = price;
 
@@ -3162,7 +3162,7 @@ class Product {
   // Class' static attribute
   private static counter: int = 0;
 
-  public %construct(name: string, price: int) {
+  public func %construct(name: string, price: int) {
     @name = name;
     @price = price;
 
@@ -3490,7 +3490,7 @@ So, now we've seen that, let's make a first children class:
 class Warrior inherits Hero {
   public readonly rage: int;
 
-  public %construct(name: string, hp: int, attack: int) {
+  public func %construct(name: string, hp: int, attack: int) {
     @name = name;
     @hp = hp;
     @attack = attack;
