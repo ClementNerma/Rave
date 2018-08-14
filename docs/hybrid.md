@@ -7559,6 +7559,8 @@ let three: Any = 'Hello';
 
 Think of it as an equivalent to `_this` for the taken value.
 
+**NOTE :** The `not` keyword performs a _type exclusion_, which means it accepts any type that **isn't** the one following the keyword (nor one of its children).
+
 ### Unsafe typecasting
 
 Unsafe typecasting allows to convert any type to its real type. For example, in the following code:
