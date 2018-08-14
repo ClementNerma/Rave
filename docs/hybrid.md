@@ -3661,6 +3661,7 @@ class Test {
 
   public func %construct () {
     @id = ++ self.counter;
+    @name = ''; // The value of '@name' is now more explicit
   }
 
   public func %construct (name: string) {
