@@ -1,9 +1,5 @@
 /* One Light Syntax theme for Atom */
 
-pre {
-  background-color: rgb(245, 245, 245);
-}
-
 pre .line.cursor-line {
   background-color: rgba(56,58,66,.05);
 }

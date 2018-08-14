@@ -159,6 +159,7 @@ pre {
   white-space: pre-line;
   position: relative;
   line-height: 25px;
+  background-color: rgb(245, 245, 245);
 }
 
 pre a.copy {
