@@ -4077,6 +4077,51 @@ let str = <string> helloWorld;
 println!(str); // Prints: 'Hello world!'
 ```
 
+There is a variant to perform _automatic_ typecasting. If an `A` example implements an automatic typecasting overload toi `B`, when we give an instance of it where a `B` is expected, the conversion will be performed implicitly, without requiring us to statically typecasting it. Example:
+
+```sn
+class A {
+  #auto
+  public func %to<B> () : B => new B()
+}
+
+class B {}
+
+let a: A = new A();
+let b: B = <B> a; // Works fine (static typecasting)
+let c: B = a; // Works fine (automatic typecasting)
+```
+
+Note that some native types implement some automatic typecasting overloads. Here is the list:
+
+* `u8` to `usize` ;
+* `u16` to `usize` ;
+* `u32` to `usize`
+
+This allows to use some unsigned type numbers as size numbers, without a static typecasting - as we know their capacity will be respected. Also, `u64` isn't in the list because `usize` isn't guaranteed to contain 64 bits, as it will contain only 32 on 32-bit processors.
+
+Automatic typecasting is also used on a well-known type: `Array`. In the native library, `Array<T, SIZE>` is a sub-type of `Array<T>`. That's why we can give an `int[3]` where an `int[]` is expected. But, if you try, you will see that we can also give an `int[]` where an `int[3]` is expected, without any conversion. That's all thanks to automatic typecasting:
+
+```sn
+class Array<T> {
+  // ...
+
+  #auto
+  public func %to<Array<T, SIZE>, T, SIZE: usize> () : Array<T, SIZE>;
+
+  // ...
+}
+```
+
+This overload is a little bit complex. Its first parameter is the destination type (`Array<T, SIZE>`), but is also takes two other templates: the array's type (`T`), which is automatically inferred, and its size (`SIZE`), which is automatically inferred as well. Finally, with these two templates being automatically inferred, the first one can be inferred too to guess the whole type. Example:
+
+```sn
+func test <VALUE: T, T> () {}
+
+test<2> (); // 'T' is inferred as being an 'i32'
+test<8p> (); // 'T' is inferred as being a 'usize'
+```
+
 ### Interfaces
 
 Because understanding the concrete point of interfaces isn't always easy, let's take an example to introduce the concept.
