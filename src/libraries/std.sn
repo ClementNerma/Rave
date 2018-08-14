@@ -1350,7 +1350,7 @@ open dict Map<K, V> implements Clonable {
    * @returns The ghost @class generated using the callback
    * @example ({ # 'hello': 'world' }).@class((k, v) => (v, k)) == ({ # 'world': 'hello' })
    */
-  public func @class<X = K, Y = V> (callback: func (key: K, value: V) : (X, Y)) : @class<X, Y>;
+  public func map<X = K, Y = V> (callback: func (key: K, value: V) : (X, Y)) : Map<X, Y>;
 
   /**
    * Generate a new @class from this one through a callback
@@ -1365,7 +1365,7 @@ open dict Map<K, V> implements Clonable {
    * @returns The ghost @class generated using the callback (same keys)
    * @example ({ # 'hello': 'world' }).@class((k, v) => 'mom') == ({ # 'hello': 'mom' })
    */
-  public func @class<Y = V> (callback: func (key: K, value: V) : Y) : @class<K, Y>;
+  public func map<Y = V> (callback: func (key: K, value: V) : Y) : Map<K, Y>;
 
   /**
    * Make a @class from an array of keys and an array of values
@@ -1377,7 +1377,7 @@ open dict Map<K, V> implements Clonable {
    * @param values The list of values
    * @returns The @class generated from the provided lists
    */
-  public static func fromArrays<X, Y, SIZE: usize> (keys: X[SIZE], values: Y[SIZE]) : @class<X, Y>;
+  public static func fromArrays<X, Y, SIZE: usize> (keys: X[SIZE], values: Y[SIZE]) : Map<X, Y>;
 }
 
 // ==================== Map-based types ==================== //
