@@ -4233,7 +4233,7 @@ We first convert the instance to an `uint`, as it's capable of, and then we turn
 
 ```sn
 interface LongStringifyable {
-  func %to<string> = u64 || i64 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
+  typepath string = (u64, i64, u32, i32, u16, i16, u8, i8, bool);
 }
 ```
 
@@ -4270,7 +4270,7 @@ A concrete example of using this is when we want to convert any class that can b
 
 ```sn
 interface Stringifyable {
-  func %to<string> = u64 || i64 || u32 || i32 || u16 || i16 || u8 || i8 || bool || void;
+  typepath string = (u64, i64, u32, i32, u16, i16, u8, i8, bool, void);
 }
 ```
 
