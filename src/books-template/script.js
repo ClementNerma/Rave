@@ -408,8 +408,8 @@ window.addEventListener('keydown', e => {
     // Go to the next section
     showSection(currentSectionID + 1);
 
-  // If the "lower than" key was pressed...
-  if (e.keyCode === 226)
+  // If the "s" (for "summary") key was pressed...
+  if (e.keyCode === 83)
     // Toggle the summary
     toggleSummary();
 });
