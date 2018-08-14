@@ -179,10 +179,7 @@ function toggleSummary () {
   previous.classList.toggle('force-left');
 
   // If the summary is now visible...
-  if (summary.classList.contains('hidden')) {
-    // Set the button's legend
-    hideNav.innerHTML = '&#10095;';
-    
+  if (summary.classList.contains('hidden')) {    
     // Remember this state in the local storage
     try {
       localStorage.setItem('sn-book-hidden-summary', 'true');
@@ -191,9 +188,6 @@ function toggleSummary () {
       console.error(e);
     }
   } else {
-    // Set the button's legend
-    hideNav.innerHTML = '&#10094;';
-
     // Remove the boolean from the local storage
     try {
       localStorage.removeItem('sn-book-hidden-summary');
@@ -357,7 +351,7 @@ hideNav.setAttribute('id', 'hide-summary');
 // Give it a help text
 hideNav.setAttribute('title', 'Toggle the summary');
 // Give it a legend
-hideNav.innerHTML = '&#10094;';
+hideNav.innerHTML = '&#9776;';
 // When it is clicked...
 hideNav.addEventListener('click', toggleSummary);
 // Append it to the <body>
