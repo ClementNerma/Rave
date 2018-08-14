@@ -3356,6 +3356,8 @@ So, any class that implements either `%equal` or `%inequal` as well as `%greater
 
 This also makes the class implementing the `Comparable` interface, which is useful when dealing with vectors for example: that allows to use the `.sort()` as well as the `.getIterator()` functions from `Vector`.
 
+Note that these overloads can have a variant to make them comparable to another type, like `%equal (cmp: int) : bool`. If all required comparison overloads for the `int` type are implemented in our class, it will implement the `ComparableTo<int>` interface. The `Comparable` type is in fact an alias for `ComparableTo<_self>`.
+
 ### Friends
 
 _Friends_ are part of the concept of accessibility. These are resources, listed in a class, that can access its private attributes.
