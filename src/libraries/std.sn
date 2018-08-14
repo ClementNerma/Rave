@@ -585,7 +585,6 @@ virtual class number inherits Primitive implements Randomizable, RandomizableWit
  * @classname(virtual integer)
  */
 open class vint inherits number {
-  #superabstract;
   #supercstr;
 
   final public static val HANDLE_FLOATS = false;
@@ -596,7 +595,6 @@ open class vint inherits number {
  * @classname(virtual signed integer)
  */
 open class vsint inherits vint {
-  #superabstract;
   #supercstr;
 
   final public static val SIGNED = true;
@@ -667,7 +665,6 @@ class i8 inherits i16 {
  * @classname(virtual unsigned integer)
  */
 open class vuint inherits vint {
-  #superabstract;
   #supercstr;
 
   final public static val SIGNED = false;
@@ -754,7 +751,6 @@ class usize inherits uint {
  * @classname(virtual signed float)
  */
 open class vfloat inherits number {
-  #superabstract;
   #supercstr;
 
   final public static val SIGNED = true;
