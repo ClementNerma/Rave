@@ -8303,7 +8303,7 @@ delayedPrint(1); // Prints: 'A'
                  // Prints: 'B' after 1 second
 ```
 
-As we can see, `await` simply blocks the asynchronous function until the given promise is resolved. If it is rejected, it will simply throw an `AwaitRejectionError<T>` with `T` being the rejection type of the promise. Then, we can use its `.data` attribute to get the rejection error.
+As we can see, `await` simply blocks the asynchronous function until the given promise is resolved. If it is rejected, it will simply throw an `AwaitRejectionError<T>` with `T` being the rejection type of the promise. Then, we can use its `.data` attribute to get the rejection error. This allows us to use even non-error rejection types.
 
 Also, `await` returns the resolution value of the promise:
 
