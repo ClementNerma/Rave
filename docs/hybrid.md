@@ -6522,7 +6522,7 @@ In this specific case, we can exclude some attributes from the scope binding:
 
 ```sn
 engine.run(() => {
-  #bind engine not init, run;
+  #bind engine \ init, run;
 
   let init = 2;
   let run = lambda () : void { println!('Hello world!'); }
