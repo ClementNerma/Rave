@@ -4742,6 +4742,28 @@ class A {
 }
 ```
 
+### Fixed templates
+
+In specific cases like typecasting overloads, it can be useful to have a function working for a fixed template:
+
+```sn
+func test <int> () {}
+
+test<int>(); // Works fine
+test<string>(); // ERROR
+```
+
+When providing the name of an existing type, the templated is considered as _fixed_, which means this specific type must be provided at this place in order to run the function or access the class. Also, this type cannot be inferred ; it has to be written manually.
+
+Still, in order to avoid our template to have the same name than another class in the code and so to result in troubles at build time, we should always specify the template's type (at least when it doesn't use a reserved template name like `T`, which explicitly indicates it's a template). Example:
+
+```sn
+func test <SIZE> (); // Not ok (could be a class' name)
+func test <SIZE: usize> (); // Ok (no ambiguity)
+
+func test <V> (); // Ok ('V' is a reserved template name)
+```
+
 ### Segments
 
 Segments are parts of a class that provides some methods only if some conditions are matched about the templates. For example, we can consider the `Vector<T>` class that implements a `.sum()` function if `T` is a `Number`. Here is how it goes:
