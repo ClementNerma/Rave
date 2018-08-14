@@ -163,6 +163,51 @@ function showSection(id) {
 }
 
 /**
+ * Restore an option from the local storage
+ * @param {string} name The option's name
+ * @param {Function} callback A function to call if the option is enabled
+ * @returns {void}
+ */
+function restore (name, callback) {
+  try {
+    // If the dark option is marked as enabled in the local storage...
+    if (localStorage.getItem('sn-book-' + name) === 'true')
+      // Run the provided callback
+      callback();
+  } catch (e) {
+    // Display the error, to debug it
+    console.error(e);
+  }
+}
+
+/**
+ * Save an option to the local storage
+ * @param {string} name The option's name
+ * @param {Boolean} value The option's value
+ * @returns {void}
+ */
+function save (name, value) {
+  // If the value is 'true'...
+  if (value) {
+    // Remember this state in the local storage
+    try {
+      localStorage.setItem('sn-book-' + name, 'true');
+    } catch (e) {
+      // Display the error in the console, to debug it
+      console.error(e);
+    }
+  } else {
+    // Remove the option from the local storage
+    try {
+      localStorage.removeItem('sn-book-' + name);
+    } catch (e) {
+      // Display the error in the console, to debug it
+      console.error(e);
+    }
+  }
+}
+
+/**
  * Toggle the summary's visibility
  * @returns {void}
  */
@@ -178,24 +223,8 @@ function toggleSummary () {
   // Toggle the "previous" button position
   previous.classList.toggle('force-left');
 
-  // If the summary is now visible...
-  if (summary.classList.contains('hidden')) {    
-    // Remember this state in the local storage
-    try {
-      localStorage.setItem('sn-book-hidden-summary', 'true');
-    } catch (e) {
-      // Display the error in the console, to debug it
-      console.error(e);
-    }
-  } else {
-    // Remove the boolean from the local storage
-    try {
-      localStorage.removeItem('sn-book-hidden-summary');
-    } catch (e) {
-      // Display the error in the console, to debug it
-      console.error(e);
-    }
-  }
+  // Save the summary's visilibity
+  save('hidden-summary', summary.classList.contains('hidden'));
 }
 
 /**
@@ -205,6 +234,9 @@ function toggleSummary () {
 function toggleDarkMode () {
   // Toggle <body>'s dark mode's class
   document.body.classList.toggle('dark');
+
+  // Save the dark mode's state
+  save('dark-mode', document.body.classList.contains('dark'));
 }
 
 // For each title in the page...
@@ -379,15 +411,11 @@ darkModeToggle.addEventListener('click', toggleDarkMode);
 // Append it to the <body>
 document.body.appendChild(darkModeToggle);
 
-try {
-  // If the book summary is marked as hidden in the local storage...
-  if (localStorage.getItem('sn-book-hidden-summary') === 'true')
-    // Hide it
-    toggleSummary();
-} catch (e) {
-  // Display the error, to debug it
-  console.error(e);
-}
+// Restore the summary's visibility
+restore('hidden-summary', toggleSummary);
+
+// Restore the dark mode's state
+restore('dark-mode', toggleDarkMode);
 
 // If a hash was specified in the URL
 // and if it targets an existing section...
