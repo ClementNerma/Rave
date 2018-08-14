@@ -557,11 +557,6 @@ SYNTAX = {
           end: /(?=[\{\}\[\]\(\)\r\n;])/,
           endCaptures: {}
         },
-        /*[
-          // Implementation (interfaces) and usage (traits)
-          /\b(implements|uses?)\s+([a-zA-Z_\$][a-zA-Z0-9_\$\.<>]*)((?:\s*,\s*[a-zA-Z_\$][a-zA-Z0-9_\$\.<>]*)*)\b/,
-          'purple', 'green', 'green'
-        ],*/
         [
           // Shortened typechecking
           /(~)\s*([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
