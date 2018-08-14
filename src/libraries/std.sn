@@ -1409,7 +1409,7 @@ virtual dict Vector<T> inherits Map<usize, T> {
   /**
    * Get the value associated to an index
    * NOTE: If the provided index is not smaller than this @class's size,
-   *        an `IndexOutOfBoundError` error will be thrown.
+   *        an `IndexOutOfBoundsError` error will be thrown.
    * @param index The index to get the value of
    * @returns The value
    * @condition index < this.size
@@ -1419,7 +1419,7 @@ virtual dict Vector<T> inherits Map<usize, T> {
   /**
    * Associate a value to an index
    * NOTE: If the provided index is not smaller than this @class's size,
-   *        an `IndexOutOfBoundError` error will be thrown.
+   *        an `IndexOutOfBoundsError` error will be thrown.
    * @param index The index to associate a value to
    * @param value The value to associate to the index
    * @returns The value
@@ -1541,7 +1541,7 @@ virtual dict Vector<T> inherits Map<usize, T> {
 
   /**
    * Slice this @class
-   * NOTE: This function cannot throw an 'IndexOutOfBoundError' error
+   * NOTE: This function cannot throw an 'IndexOutOfBoundsError' error
    * @param start The start index
    * @param end The end index (if omitted, cuts to the end of this @class)
    * @example ([ 2, 5, 8 ]).slice(1, 2) == [ 5 ]
@@ -1783,6 +1783,73 @@ open class Error implements Stringifyable {
    * @returns The error, as a string
    */
   public func %to<string> () : string;
+}
+
+// ==================== Runtime error types ==================== //
+
+/**
+ * Runtime error
+ */
+virtual class RuntimeError inherits Error {
+  /**
+   * Create an instance of @class
+   */
+  abstract public func %construct () : void;
+}
+
+/**
+ * Program is out of memory
+ */
+class OutOfMemory inherits RuntimeError {
+  public func %construct () => @message = 'Program is out of memory';
+}
+
+/**
+ * Division by zero
+ */
+class DivisionByZeroError inherits RuntimeError {
+  public func %construct () => @message = 'Cannot divide by zero';
+}
+
+/**
+ * Unserialization fail
+ */
+class UnserializationError inherits RuntimeError {
+  public func %construct () => @message = 'Unserialization failed';
+
+  /**
+   * Create an instance of UnserializationError
+   * @param message The error message
+   */
+  public func %construct (message: string) => @message = message;
+}
+
+/**
+ * String parsing fail
+ */
+class StringParsingError inherits RuntimeError {
+  public func %construct () => @message = 'Failed to parse the string as a number';
+}
+
+/**
+ * Duplicate value in a set
+ */
+class DuplicateValueError inherits RuntimeError {
+  public func %construct () => @message => 'Cannot assign a duplicate value in a set';
+}
+
+/**
+ * Access to an out-of-bound index
+ */
+class IndexOutOfBoundsError inherits RuntimeError {
+  public func %construct () => @message = 'Cannot access an out-of-bound index';
+}
+
+/**
+ * Array's value removal
+ */
+class ArrayNotDynamicError inherits RuntimeError {
+  public func %construct () => @message = 'Cannot remove a value from an array';
 }
 
 // ==================== Promise type ==================== //
