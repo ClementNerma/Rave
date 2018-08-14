@@ -1431,6 +1431,7 @@ virtual dict Vector<T> inherits Map<usize, T> {
 
   /**
    * This @class's last element
+   * NOTE: THis will throw an 'IndexOutOfBoundError' error if the @class is empty
    */
   public proxy last: T from {
     getter: () => this[@size - 1]
