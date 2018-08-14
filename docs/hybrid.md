@@ -2653,7 +2653,7 @@ jack.fight(john); // Prints: 'Jack is going to fight John!'
                   //         'Jack is attacked by John and loses 70 HP!'
 ```
 
-When declaring a class, its name must start with an uppercase letter (A to Z), an underscore (_) or a dollar symbol ($) ; starting it with another symbol (e.g. a lowercase letter) will result in an error at build time.
+When declaring a class, its name must start with an uppercase letter (A to Z), followed by either uppercase or lowercase letters and underscores (_) ; starting it with another symbol (e.g. a lowercase letter) will result in an error at build time. Also, it can't be made of only several uppercase letters, but one is fine. For example, `A` is valid name, but `AA` isn't (as it's a constant's name). Also, `A_` is fine, but not `_A`.
 
 Primitive types (`void`, `string`, `int`...) start with a lowercase letter to recognize them more easily and distinguish them from object types.
 
