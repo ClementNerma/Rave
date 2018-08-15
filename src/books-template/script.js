@@ -519,6 +519,8 @@ function search (query) {
           path: path.slice(0).filter(title => title !== null),
           // A link to this element
           linkTo: el,
+          // Indicate if the result was found in a title,
+          inTitle: isTitle,
           // The result's relevance (= number of occurences)
           relevance: result[1] + extract[1]
         });
@@ -554,7 +556,21 @@ function search (query) {
   const startedRendering = Date.now();
 
   // Sort the results by decreasing relevance
-  //results = results.sort((a, b) => a.relevance > b.relevance ? 1 : (a.relevance === b.relevance ? 0 : -1));
+  results = results.sort((a, b) => {
+    if (a.inTitle && ! b.inTitle)
+      return -1;
+    
+    if (b.inTitle && ! a.inTitle)
+      return 1;
+
+    if (a.relevance > b.relevance)
+      return -1;
+    
+    if (a.relevance < b.relevance)
+      return 1;
+    
+    return 0; // Equality
+  });
 
   // For each of result...
   for (let result of results) {
