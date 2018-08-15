@@ -3487,7 +3487,7 @@ Another thing: the `protected` keyword. It kind of acts like `private`, as the m
 So, now we've seen that, let's make a first children class:
 
 ```sn
-class Warrior inherits Hero {
+class Warrior extends Hero {
   public readonly rage: int;
 
   public func %construct(name: string, hp: int, attack: int) {
@@ -3528,7 +3528,7 @@ The redefined method increases the rage counter (with a maximum of 20 points) an
 We can now write our `Wizard` class, still inheriting from `Hero`:
 
 ```sn
-class Wizard inherits Hero {
+class Wizard extends Hero {
   public readonly mp: int;
 
   public func %construct (name: int, hp: int, attack: int, mp: int) {
@@ -3614,7 +3614,7 @@ open class Mother {
   public func hello () => println!('I am the mother class.');
 }
 
-class Child inherits Mother {
+class Child extends Mother {
   public func hello () => println!('I am the child class.');
 }
 ```
@@ -3640,7 +3640,7 @@ open class Mother {
   public func hello () => println!('I am the mother class.');
 }
 
-class Child inherits Mother {
+class Child extends Mother {
   public func hello () => println!('I am the child class.');
 }
 
@@ -3691,9 +3691,9 @@ class A {
   }
 }
 
-class B inherits A {}
+class B extends A {}
 
-class C inherits A {
+class C extends A {
   #supercstr;
 }
 
@@ -3718,7 +3718,7 @@ open class Mother {
   }
 }
 
-class Child inherits Mother {
+class Child extends Mother {
   public func %construct (name: string) {
     // Call the mother's existing constructor
     super.%construct(name);
@@ -3741,7 +3741,7 @@ class Mother {
   }
 }
 
-class Child inherits Mother {
+class Child extends Mother {
   public static func getMotherObj () : _super {
     return new Mother(); // Works fine
   }
@@ -3855,7 +3855,7 @@ open class Mother {
   }
 }
 
-class Child inherits Mother {
+class Child extends Mother {
   public func sayHello() { // ERROR (overwritting a final method)
     println!('Hello from the child class!');
   }
@@ -3877,7 +3877,7 @@ open class Vehicle {
   public func accelerate () => println!('Vroom!');
 }
 
-class Motorcycle inherits Vehicle {
+class Motorcycle extends Vehicle {
   public func accelerate () => println!('vroom vroom!');
 }
 
@@ -3898,7 +3898,7 @@ open class Vehicle {
   public func accelerate () => println!('Vroom!');
 }
 
-class Motorcycle inherits Vehicle {
+class Motorcycle extends Vehicle {
   public func accelerate () => println!('vroom vroom!');
   public func stunt () => println!('Wow!');
 }
@@ -3996,7 +3996,7 @@ virtual class Mother {
   public func getThis () : _this => this;
 }
 
-class Child inherits Mother {
+class Child extends Mother {
   public func getThis () : _this => this;
 }
 
@@ -4517,7 +4517,7 @@ func newValue (value: int) : int {
   return value * 2;
 }
 
-func newValue<T inherits number> (value: T) : T {
+func newValue<T extends number> (value: T) : T {
   return value * 4;
 }
 
@@ -4603,7 +4603,7 @@ Here are some examples of constrained templates:
 
 ```sn
 // Inheritance (class)
-T inherits SomeClass;
+T extends SomeClass;
 
 // Reversed inheritance (class)
 // `true` if `T` is the given class or one of its parents
@@ -4621,7 +4621,7 @@ T uses SomeTrait1, SomeTrait2;
 T isnt SomeForbiddenClass;
 
 // A mix
-T isnt SomeForbiddenClass inherits SomeClass implements SomeInterface uses SomeTrait;
+T isnt SomeForbiddenClass extends SomeClass implements SomeInterface uses SomeTrait;
 ```
 
 Pretty powerful, right? We can use this to make very specialized classes, like this:
@@ -4629,19 +4629,19 @@ Pretty powerful, right? We can use this to make very specialized classes, like t
 ```sn
 // open class KindOfDict<K, V> { /* ... */ }
 
-class StringDict<K, V implements Stringifyable> inherits KindOfDict<K, V> {
+class StringDict<K, V implements Stringifyable> extends KindOfDict<K, V> {
   public func stringify(key: T) : string => string(@values[@keys.indexOf(key)]);
 }
 ```
 
-Note that inheritance is a little special with templates: writing `T inherits SomeClass` will of course accept all classes inheriting from `SomeClass`, but also `SomeClass` itself. Be aware of that. Writing `T` alone will accept anything.
+Note that inheritance is a little special with templates: writing `T extends SomeClass` will of course accept all classes inheriting from `SomeClass`, but also `SomeClass` itself. Be aware of that. Writing `T` alone will accept anything.
 
 Also, there is a shortened syntax to mix several type checkings that checks inheritance, implementation, and usage all at a time:
 
 ```sn
 // open class KindOfDict<K, V> { /* ... */ }
 
-class StringDict<K, V ~ Stringifyable> inherits KindOfDict<K, V> {
+class StringDict<K, V ~ Stringifyable> extends KindOfDict<K, V> {
   public func stringify(key: T) : string => string(@values[@keys.indexOf(key)]);
 }
 ```
@@ -4800,7 +4800,7 @@ Segments are parts of a class that provides some methods only if some conditions
 ```sn
 class Vector<T> {
   // ...
-  segment (T inherits number) {
+  segment (T extends number) {
     public func sum () : T { /* ... */ }
   }
 }
@@ -4815,7 +4815,7 @@ Note that segments can also implement an interface or use a trait, as follows:
 ```sn
 class Vector<T> {
   // ...
-  segment (T inherits number) implements Randomizable {
+  segment (T extends number) implements Randomizable {
     public func %random () : T  { /* ... */ }
   }
 }
@@ -4828,7 +4828,7 @@ class SomeClass<T> implements Randomizable {
   // ...
   func %random () : T { /* ... */ }
   // ...
-  segment (T inherits number) {
+  segment (T extends number) {
     func %random () : T { /* other code */ }
   }
 }
@@ -4879,7 +4879,7 @@ Dictionary classes are defined this way:
 ```sn
 // K = type for keys
 // V = type for values
-class Custom<K, V> inherits Dictionary<K, V> {
+class Custom<K, V> extends Dictionary<K, V> {
   // Code here
 }
 ```
@@ -4891,7 +4891,7 @@ There is a shortened syntax to indicate more clearly we have a dictionary class:
 ```sn
 dict Custom<K, V> {
 // Equivalent to:
-class Custom<K, V> inherits Dictionary<K, V> {
+class Custom<K, V> extends Dictionary<K, V> {
 ```
 
 By convention, all dictionary classes use the `dict` keyword, even if they inherit from a class that is already a dictionary class itself.
@@ -4926,7 +4926,7 @@ dict Custom<K, V> {
 Most of the time, custom dictionaries should inherit from the `Map` class (the same one that is used by the builder when using `#` in a key/value association thanks to IST). The syntax is the same as for classes:
 
 ```sn
-dict Custom<K, V> inherits Map<K, V> {
+dict Custom<K, V> extends Map<K, V> {
   // Do some stuff here
 }
 ```
@@ -4938,7 +4938,7 @@ Also, because `Map<K, V>` inherits itself from `Dictionary<K, V>`, you won't hav
 Note that we could have written our class using the `class` keyword:
 
 ```sn
-class Custom<K, V> inherits Map<K, V> {
+class Custom<K, V> extends Map<K, V> {
 ```
 
 This would work, but by convention we should always use `dict` for dictionary classes, as it's more explicit and avoid errors (forgetting to implement an overload...).
@@ -4950,7 +4950,7 @@ Sometimes we want to force one of the dictionary's types, like `Vector<T>` do.
 Basically, `Vector<T>` inherits from `Map<K, V>` with `K` **always** being a `usize` integer and `V` being `T`:
 
 ```sn
-open dict Vector<T> inherits Map<usize, T> { /* ... */ }
+open dict Vector<T> extends Map<usize, T> { /* ... */ }
 ```
 
 ### Iterators
@@ -4960,7 +4960,7 @@ The `%keys()` and `%values()` overloads respectively return an `Iterator<K>` and
 Iterators are defined like this:
 
 ```sn
-class MySuperIterator<T> inherits Iterator<T> {
+class MySuperIterator<T> extends Iterator<T> {
   // Start a counter
   private counter = 0;
 
@@ -5843,7 +5843,7 @@ func divide (left: int, right: int) : f32 throws CustomError {
 The `CustomError` class could look like this:
 
 ```sn
-class CustomError inherits Error {
+class CustomError extends Error {
   // Make a constructor
   public func %construct (message: string, traceback: ErrorStep[]) {
     // Call the parent constructor
@@ -7235,7 +7235,7 @@ Prepared proxy models must be declared using the `prxmodel` keyword. Also note t
 Proxies can take one or several templates, but then they can't have an hidden value.
 
 ```sn
-proxy randOf<T inherits int>: T from {
+proxy randOf<T extends int>: T from {
   // The getter
   getter: func () : T {
     return random!(T.MINIMUM, T.MAXIMUM);
@@ -7249,13 +7249,13 @@ randOf<u32>; // Random 'u32' value
 Prepared version:
 
 ```sn
-prxmodel randOfModel<T inherits int>: T {
+prxmodel randOfModel<T extends int>: T {
   getter: func () : T {
     return random!(T.MINIMUM, T.MAXIMUM);
   }
 };
 
-proxy randOf<T inherits int>: T from randOfModel;
+proxy randOf<T extends int>: T from randOfModel;
 ```
 
 ### Flexible proxies
@@ -7735,7 +7735,7 @@ Note that intersection types support automatic typecasting to any type of the in
 ```sn
 class A {}
 
-class B inherits A implements Numerizable {
+class B extends A implements Numerizable {
   public func %to<int> => 2;
 }
 
@@ -7822,9 +7822,9 @@ Note that type inference will **never** result either in an intersection type or
 virtual class Animal {}
 
 // These three types have in common their 'Animal' parent
-class Lion inherits Animal {}
-class Rhino inherits Animal {}
-class Bear inherits Animal {}
+class Lion extends Animal {}
+class Rhino extends Animal {}
+class Bear extends Animal {}
 
 let array = [ new Lion(), new Rhino(), new Bear() ];
 // 'array' is of type 'Animal[]'
@@ -7848,7 +7848,7 @@ Note that union types support automatic typecasting to any type of the union, an
 
 ```sn
 class A {}
-class B inherits A implements Numerizable {
+class B extends A implements Numerizable {
   public func %to<int> => 2;
 }
 
@@ -7927,8 +7927,8 @@ Any union that contains only children of a given class will be considered as one
 ```sn
 virtual class A {}
 
-class B inherits A {}
-class C inherits A {}
+class B extends A {}
+class C extends A {}
 
 let b: B | C = new B();
 let a: A = b; // Works
@@ -8958,7 +8958,7 @@ Templates are documented like arguments, but with `@template`:
  * @param iterator The iterator to make the summation from
  * @returns The summation
  */
-func sum<T inherits number> (iterator: Iterator<T>) : T {
+func sum<T extends number> (iterator: Iterator<T>) : T {
   let summation: T = 0;
 
   for num in iterator {
@@ -9180,11 +9180,11 @@ virtual class A {
   public func create () : _this;
 }
 
-class B inherits A {
+class B extends A {
   public func create () : _this => new _self();
 }
 
-class C inherits A {
+class C extends A {
   public func create () : _this => new _self();
 }
 ```
@@ -9200,7 +9200,7 @@ virtual class A {
   public func create () : _this;
 }
 
-class B inherits A {
+class B extends A {
   /**
    * Create a new value of B and return it
    * @returns A new instance of B
@@ -9208,7 +9208,7 @@ class B inherits A {
   public func create () : _this => new _self();
 }
 
-class C inherits A {
+class C extends A {
   /**
    * Create a new value of C and return it
    * @returns A new instance of C
@@ -9233,7 +9233,7 @@ class Number {
 /**
  * @classname(signed number)
  */
-class SignedNumber inherits A {}
+class SignedNumber extends A {}
 ```
 
 Equivalence:
@@ -9246,7 +9246,7 @@ class Number {
   public func nothing () => null;
 }
 
-class SignedNumber inherits A {
+class SignedNumber extends A {
   /**
    * Do some signed number stuff
    */
