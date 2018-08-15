@@ -1701,6 +1701,7 @@ open dict Array<T> extends Vector<T> {
  * Array
  * @template T Type of values
  * @template SIZE Number of values
+ * @classname(array)
  */
 dict Array<T, SIZE: usize> extends Vector<T> {
   #supercstr;
