@@ -149,9 +149,6 @@ function showSection(id) {
     // Show it
     next.classList.remove('hidden');
 
-  // Get the current section's slug
-  const currentSlug = currentSection.getAttribute('data-slug');
-
   // Set the window's hash
   window.location.hash = '#' + currentSection.getAttribute('data-slug');
 
@@ -436,7 +433,7 @@ function search (query) {
     null, // <h4>
     null, // <h5>
     null  // <h6>
-  ]
+  ];
 
   // The search's results
   let results = [];
@@ -814,8 +811,9 @@ for (let block of qa('pre')) {
     // After 2 seconds...
     setTimeout(() =>
       // Go back to its original legend
-      link.classList.remove('triggered')
-    , 2000);
+      link.classList.remove('triggered'),
+      2000
+    );
   });
   // Append the link to the codeblock
   block.appendChild(link);
