@@ -372,6 +372,17 @@ body.dark #previous:hover, body.dark #next:hover {
   color: #ddd;
 }
 
+body.dark #search-box {
+  background-color: #0f1419;
+  color: #c5c5c5;
+  border: 1px solid lightgray;
+}
+
+body.dark #search-box > input {
+  background-color: #3b3b3b;
+  color: #c5c5c5;
+}
+
 /* Stylesheet for desktop devices and large-width mobile devices */
 @media screen and (min-width: 641px) {
   #previous, #next {
