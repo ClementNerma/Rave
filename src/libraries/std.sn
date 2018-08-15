@@ -798,6 +798,13 @@ class string inherits Primitive {
 
   public static val NIL = '';
 
+  /**
+   * Check if the string contains a text using the 'in' operator
+   * @param lookfor The text to look for
+   * @returns `true` if the text was found
+   */
+  public func %contains (lookfor: string) : bool;
+
   public func %to<bool> () : bool => this.length > 0;
 
   public func %to<i64> () : i64;
