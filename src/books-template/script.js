@@ -213,7 +213,7 @@ function toggleSummary () {
   document.body.classList.toggle('full-width');
 
   // Save the summary's visilibity
-  save('hidden-summary', summary.classList.contains('hidden'));
+  save('hidden-summary', document.body.classList.contains('full-width'));
 }
 
 /**
