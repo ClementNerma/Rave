@@ -288,7 +288,9 @@ function openBrowser (p, callback) {
   verb('Opening item in the browser', p);
 
   // Open the item in the browser
-  opn(here(p)).then(callback);
+  opn(here(p))
+    .then(callback)
+    .catch(err => error('Failed to open the build files in the browser', 38, err));
 }
 
 /**
