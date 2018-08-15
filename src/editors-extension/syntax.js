@@ -413,6 +413,21 @@ SYNTAX = {
           'red', 'cyan'
         ],
         [
+          // Calling constructor and destructor (internally)
+          /(?<=[^a-zA-Z0-9_\$]this\.)(%)(construct|free)\b/,
+          'red', 'cyan'
+        ],
+        [
+          // Calling constructor and destructor (internally)
+          /(?<=[^a-zA-Z0-9_\$]self\.)(%)(construct|free)\b/,
+          'red', 'cyan'
+        ],
+        [
+          // Calling constructor and destructor (internally)
+          /(?<=[^a-zA-Z0-9_\$]super\.)(%)(construct|free)\b/,
+          'red', 'cyan'
+        ],
+        [
           // Match variable (_)
           // 'with' value (_)
           /\b_\b/,
