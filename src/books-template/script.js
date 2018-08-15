@@ -151,7 +151,7 @@ function showSection(id) {
 
   // Get the current section's slug
   const currentSlug = currentSection.getAttribute('data-slug');
-    
+
   // Set the window's hash
   window.location.hash = '#' + currentSection.getAttribute('data-slug');
 
@@ -239,6 +239,438 @@ function toggleDarkMode () {
   save('dark-mode', document.body.classList.contains('dark'));
 }
 
+/**
+ * Toggle the search bar
+ * @returns {void}
+ */
+function toggleSearchBar () {
+  // Toggle the search box's visibility
+  searchBox.classList.toggle('hidden');
+
+  // If it's now visible...
+  if (! searchBox.classList.contains('hidden'))
+    // Give it the focus
+    searchBar.focus();
+}
+
+/**
+ * Perform a search in the current book
+ * @param {string} query The text to look for
+ * @returns {void}
+ */
+function search (query) {
+  // NOTE: This search method is particular but allows to indicate exactly where the
+  //        occurences are found
+
+  // Get the timestamp to measure performances
+  const started = Date.now();
+
+  /**
+   * Get an element's tag name (lowercase)
+   * @param {HTMLElement} el An element
+   * @returns The element's tag name (lowercase)
+   */
+  function tagOf (el) {
+    return el.tagName.toLocaleLowerCase();
+  }
+
+  /**
+   * Look for the query in an element
+   * @param {HTMLElement} el An element
+   * @param {Number} startFrom The position to start the search at
+   * @param {Boolean} noLeftAbbrev Do not put a left abbreviation symbol ([...]) 
+   * @param {Number} limit The maximum number of characters
+   * @returns The search's result
+   */
+  function look (el, startFrom = 0, limit = 200, noLeftAbbrev = false) {
+    // The output element (containing the element's text with the query highlighted)
+    let output = document.createElement(tagOf(el));
+
+    // If there is text before the start position...
+    // And if not forbidden...
+    if (startFrom > 0 && ! noLeftAbbrev) {
+      // Create an element
+      let symbol = document.createElement('span');
+      // Give it a class
+      symbol.classList.add('abbrev-symbol');
+      // Make it empty
+      symbol.innerHTML = '';
+      // Append it to the output
+      output.appendChild(symbol);
+    }
+    
+    // The number of times the query is found in this element
+    let occurences = 0;
+
+    // Get the element's text (normalize spaces)
+    let elText;
+
+    // HACK: Code blocks' .innerText strangely removes line breaks when the element is hidden (tested on Chrome + Firefox)
+    // NOTE: Also, <ul> blocks get a new blank line at their .innerText's beginning when hidden (tested on Chrome)
+    if (tagOf(el) === 'pre')
+      elText = Array.from(el.children).map(line => line.innerText).join('\n').replace(nonBreakingSpaceRegExp, ' ');
+    else
+      elText = el.innerText.replace(nonBreakingSpaceRegExp, ' ');
+
+    // Get the element's text (lowercase)
+    const lcText = elText.toLocaleLowerCase();
+
+    // Keep the start position positive
+    startFrom = Math.max(startFrom, 0);
+
+    // For each character in this element...
+    for (let i = startFrom; i < elText.length; i ++) {
+      // If the query is found since this character...
+      if (lcText.substr(i, query.length) === query) {
+        // If the limit has been exceeded...
+        if (i > startFrom + limit) {
+          // Just increase the number of occurences
+          occurences ++;
+          // Continue the loop
+          continue ;
+        }
+
+        // Create an highlight element
+        let item = document.createElement('strong');
+        // Set it the query's text
+        item.innerText = elText.substr(i, query.length);
+        // Append it to the output element
+        output.appendChild(item);
+        // Ignore the query's characters from this position, until the query's end
+        i += query.length - 1;
+        // Increase the number of occurences
+        occurences ++;
+      } else if (i <= startFrom + limit) {
+        // Get the character code
+        const code = elText.charCodeAt(i);
+
+        // Add this character to the output
+        output.innerHTML += (code === 10 || code === 13) ? '<br/>' : (code === 32 || code === 160 ? '&nbsp;' : elText.charAt(i));
+      }
+    }
+
+    // If there is text after the end of the extract...
+    if (elText.length - startFrom > limit) {
+      // Create an element
+      let symbol = document.createElement('span');
+      // Give it a class
+      symbol.classList.add('abbrev-symbol');
+      // Make it empty
+      symbol.innerHTML = '';
+      // Append it to the output
+      output.appendChild(symbol);
+    }
+
+    // Create a wrapper element
+    let wrapper = document.createElement('div');
+
+    // Put the output inside
+    wrapper.appendChild(output);
+
+    // Return the result
+    return [wrapper, occurences];
+  }
+
+  /**
+   * Get an extract since an element
+   * @param {HTMLElement} el An element
+   * @param {Number} startFrom The position to start the extract it
+   * @param {Number} length The number of characters to get
+   * @param {Boolean} noFirstLeftAbbrev Do not put a left abbreviation symbol ([...]) for the first element
+   * @returns The extract (with the query highlighted in it)
+   */
+  function getExtract (el, startFrom = 0, length = Infinity, noFirstLeftAbbrev = false) {
+    // The extract
+    let extract = document.createElement('p');
+
+    // The number of occurences
+    let occurences = 0;
+
+    // Is it the first element?
+    let firstElement = true;
+
+    // While the extract contains less than the required number of characters...
+    while (extract.innerText.length < length) {
+      // If the the element is 'null'...
+      if (el === null)
+        // Break the loop
+        break ;
+
+      // If this is an <h2> or an <h3> title...
+      if (tagOf(el) === 'h2' || tagOf(el) === 'h3')
+        // Stop the extraction
+        break ;
+
+      // Look for the query in the current element
+      const result = look(
+        el,
+        firstElement ? startFrom : 0, // Use the start position for the first occurence (the original element)
+        length - extract.innerText.length - (firstElement ? 1 : 0), // The space we'll add since the 2nd element,
+        firstElement && noFirstLeftAbbrev // If wanted, prevent adding an abbrevation symbol on the left for te first element
+      );
+      
+      // Add its content to the extract
+      extract.innerHTML += result[0].innerHTML;
+
+      // Update the number of occurences
+      occurences += result[1];
+
+      // Get the next element
+      el = el.nextElementSibling;
+
+      // Indicate this is not the first element anymore
+      firstElement = false;
+    }
+
+    // Return the result
+    return [ extract, occurences ];
+  }
+
+  // Make the query lowercase and normalize its spaces
+  query = query.toLocaleLowerCase().replace(nonBreakingSpaceRegExp, ' ');
+
+  // The current search path
+  let path = [
+    null, // <h2>
+    null, // <h3>
+    null, // <h4>
+    null, // <h5>
+    null  // <h6>
+  ]
+
+  // The search's results
+  let results = [];
+
+  // Keep a list of (exclusively) used <h2> titles to avoid duplicates in search results
+  // NOTE: "exclusively" means a search has been found under the <h2> title but not under an <h3> itself
+  let usedH2 = [];
+
+  // Keep a list of used <h3> titles to avoid duplicates in search results
+  let usedH3 = [];
+
+  // Indicator to stop the search
+  let stop = false;
+
+  // Remove all results from the previous search
+  searchResults.innerHTML = '';
+
+  // For each section...
+  for (let section of qa('section')) {
+
+    // For each element in it...
+    for (let el of section.children) {
+      // Check if the element is a title
+      const isTitle = (['h2', 'h3', 'h4', 'h5', 'h6']).includes(tagOf(el));
+
+      // If the element is a title...
+      if (isTitle) {
+        // Get its level (decreased by 2 to be an array of the 'path' array)
+        const level = parseInt(tagOf(el).charAt(1)) - 2;
+
+        // Remember this title in the search path
+        path[level] = el;
+
+        // Erase any title deeper than this one in the path
+        for (let i = level + 1; i < 5; i ++)
+          path[i] = null;
+      }
+
+      // If we are (exlusively) under an already used <h2> element...
+      // NOTE: This condition also greatly increases performances depending on cases
+      if (path[0] && usedH2.includes(path[0]))
+        // Don't search in it
+        continue;
+
+      // If we are under an already used <h3> element...
+      // NOTE: This condition also greatly increases performances depending on cases
+      if (path[1] && usedH3.includes(path[1]))
+        // Don't search in it
+        continue ;
+
+      // Get the element's text (lowercase + normalized spaces)
+      const elText = el.innerText.toLocaleLowerCase().replace(nonBreakingSpaceRegExp, ' ');
+
+      // Look for the query (normalize spaces)...
+      if (elText.includes(query)) {
+        // Perform a search and get the results
+        const result = look(el, elText.indexOf(query) - 20);
+
+        // An extract following this element
+        const extract = isTitle ?
+          // Titles: get the extract from the next element (200 characters)
+          getExtract(el.nextElementSibling, 0, 200, true) :
+          // Paragraphs: get the extract from this element (200 characters - the length of this result)
+          getExtract(el, elText.indexOf(query) - 20 + result[0].innerText.length, 200 - result[0].innerText.length, true);
+
+        // Compute the content to show in the results
+        let content;
+
+        // For titles...
+        if (isTitle)
+          // The content is the extract
+          content = extract[0].innerHTML;
+        else {
+          // If the extract is not empty...
+          if (extract[0].firstElementChild) {
+            // Integrate its first element to the original result
+            result[0].firstElementChild.innerHTML += extract[0].firstElementChild.innerHTML;
+            // Remove the first element from the extract
+            extract[0].removeChild(extract[0].firstElementChild);
+          }
+
+          // Set the content
+          content = result[0].innerHTML + extract[0].innerHTML;
+        }
+
+        // Push the result
+        results.push({
+          // The extract to show in the results (textual)
+          content,
+          // The titles path up to the nearest one above this element
+          path: path.slice(0).filter(title => title !== null),
+          // A link to this element
+          linkTo: el,
+          // The result's relevance (= number of occurences)
+          relevance: result[1] + extract[1]
+        });
+
+        // If we are under an <h3> title...
+        if (path[1])
+          // Mark it as used
+          usedH3.push(path[1]);
+        // Else, if we are (exclusively) under an <h2> title...
+        else if (path[0])
+          // Mark it as used
+          usedH2.push(path[0]);
+
+        // After 30 results...
+        if (results.length === 30) {
+          // Stop the search (less relevant but still required)
+          stop = true;
+          break ;
+        }
+      }
+    }
+
+    // If the searched must be stopped...
+    if (stop)
+      // Break the loop
+      break ;
+  }
+
+  // Measure performances
+  const foundAfter = Date.now() - started;
+
+  // Get the timestamp to measure rendering performances
+  const startedRendering = Date.now();
+
+  // Sort the results by decreasing relevance
+  //results = results.sort((a, b) => a.relevance > b.relevance ? 1 : (a.relevance === b.relevance ? 0 : -1));
+
+  // For each of result...
+  for (let result of results) {
+    // Create a result item
+    let item = document.createElement('div');
+
+    // Create a title path
+    let path = document.createElement('h3');
+
+    // For each part of the title...
+    for (let part of result.path) {
+      // Except for the first part...
+      if (path.children.length > 0) {
+        // Create a directional item
+        let dir = document.createElement('span');
+        // Give it a content
+        dir.innerHTML = '&#10095;';
+        // Append it to the path
+        path.appendChild(dir);
+      }
+
+      // Create a part item
+      let partItem = document.createElement('a');
+      // Give it a content
+      partItem.innerHTML = part.innerHTML;
+
+      // Except for <h4>, <h5> and <h6>...
+      if (! (['h4', 'h5', 'h6']).includes(tagOf(part))) {
+        // When it is clicked...
+        partItem.addEventListener('click', e => {
+          // Hide the search box
+          toggleSearchBar();
+
+          // Trigger the real link's click
+          get(q('nav li[data-real-target="' + part.getAttribute('data-id') + '"] a'))(e);
+        });
+      } else
+        // Add a specific class to it
+        partItem.classList.add('inactive');
+
+        // Append it to the path
+      path.appendChild(partItem);
+    }
+
+    // Append the path to the result item
+    item.appendChild(path);
+
+    // Create a container for the content
+    const container = document.createElement('p');
+    // Give it a content
+    container.innerHTML = result.content;
+    // Remove the last letters (to avoid word breaking)
+    container.lastElementChild.innerHTML = container.lastElementChild.innerHTML.replace(/\s?[a-zA-Z]+$/, '');
+
+    // Append it to the result item
+    item.appendChild(container);
+
+    // Append the item to the search box's results
+    searchResults.appendChild(item);
+  }
+
+  // Calculate performances
+  const renderingTook = Date.now() - startedRendering;
+
+  // Log the performances
+  console.debug(
+    `Performed a search (${query.length} bytes) : found ${results.length} results\n` +
+    `Search took ${foundAfter} ms\n` +
+    `Rendering took ${renderingTook} ms\n` +
+    `Whole search took ${foundAfter + renderingTook} ms`
+  );
+}
+
+/**
+ * Associate a value to a key
+ * @param {*} key The key
+ * @param {*} value The value to assign to the key
+ * @returns {void}
+ */
+function set (key, value) {
+  if (! keys.includes(key)) {
+    keys.push(key);
+    values.push(value);
+  } else
+    values[keys.indexOf(key)] = value;
+}
+
+/**
+ * Get the value associated to a key
+ * @param {*} key The key
+ * @returns {*} The value associated to the provided key
+ */
+function get (key) {
+  return values[keys.indexOf(key)];
+}
+
+// The list of keys
+let keys = [];
+
+// The list of values
+let values = [];
+
+// Set up a regular expression to detect all non-breaking spaces
+const nonBreakingSpaceRegExp = new RegExp(String.fromCharCode(160), 'g');
+
 // For each title in the page...
 for (let title of qa('h1, h2, h3, h4, h5, h6'))
   // If it has an ID...
@@ -294,8 +726,8 @@ for (let link of nav_links) {
     parent = el.querySelector('a').getAttribute('href').substr(1);
   }
 
-  // When it is clicked...
-  link.addEventListener('click', e => {
+  // Assign a callback to this link
+  set(link, e => {
     // If possible...
     if (typeof e.preventDefault === 'function')
       // Cancel the click
@@ -312,6 +744,9 @@ for (let link of nav_links) {
     // Another way to ignore the click
     return false;
   });
+
+  // When it is clicked...
+  link.addEventListener('click', get(link));
 }
 
 // Make a variable to store the current section
@@ -319,6 +754,12 @@ let currentSection;
 
 // Make a variable to store the current section's number
 let currentSectionID;
+
+// Make a variable to indicate if the search bar just caught a keydown event
+let justGotSearchKey = false;
+
+// Make a variable to store the last search's content
+let lastSearch = '';
 
 // Create a "previous" link
 let previous = document.createElement('a');
@@ -417,6 +858,74 @@ restore('hidden-summary', toggleSummary);
 // Restore the dark mode's state
 restore('dark-mode', toggleDarkMode);
 
+// Create a button to search in the book
+let searchButton = document.createElement('a');
+// Give it an ID
+searchButton.setAttribute('id', 'search-button');
+// Give it a help text
+searchButton.setAttribute('title', 'Search in this book');
+// Give it a legend
+searchButton.innerHTML = '&#128270;';
+// When it is clicked...
+searchButton.addEventListener('click', toggleSearchBar);
+// Append it to the <body>
+document.body.appendChild(searchButton);
+
+// Create a search box
+let searchBox = document.createElement('div');
+// Give it an ID
+searchBox.setAttribute('id', 'search-box');
+// Make it hidden by default
+searchBox.classList.add('hidden');
+// Append it to the <body>
+document.body.appendChild(searchBox);
+
+// Create a search bar
+let searchBar = document.createElement('input');
+// Give it a placeholder
+searchBar.setAttribute('placeholder', 'Search in this book...');
+// When a key is pressed in it...
+searchBar.addEventListener('keydown', () =>
+  // Indicate the search bar just got this key
+  justGotSearchKey = true
+);
+// When a key is pressed in it...
+searchBar.addEventListener('input', () => {
+  // If the content has not changed since the last time...
+  if (lastSearch === searchBar.value) {
+    // Update the last search
+    lastSearch = searchBar.value;
+
+    // Ignore the event
+    return ;
+  }
+
+  // If the query is less than 3 characters-long...
+  if (searchBar.value.length < 3) {
+    // Remove all results from the previous search
+    searchResults.innerHTML = '';
+
+    // Update the last search
+    lastSearch = searchBar.value;
+
+    // Ignore it
+    return ;
+  }
+
+  // Perform the search
+  search(searchBar.value);
+
+  // Update the last search
+  lastSearch = searchBar.value;
+});
+// Append it to the search box
+searchBox.appendChild(searchBar);
+
+// Create a container for the search's results
+let searchResults = document.createElement('div');
+// Append it to the search box
+searchBox.appendChild(searchResults);
+
 // If a hash was specified in the URL
 // and if it targets an existing section...
 if (window.location.hash && q(`[data-slug="${window.location.hash.substr(1)}"]`))
@@ -432,6 +941,15 @@ window.addEventListener('scroll', () => refreshActive());
 
 // When a key is pressed...
 window.addEventListener('keydown', e => {
+  // If the search bar just got this key...
+  if (justGotSearchKey) {
+    // Reset the boolean
+    justGotSearchKey = false;
+
+    // Ignore this event
+    return ;
+  }
+  
   // If the "arrow left" key was pressed...
   if (e.keyCode === 37)
     // Go to the previous section

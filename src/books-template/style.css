@@ -253,6 +253,82 @@ th, td {
   cursor: pointer;
 }
 
+#search-button {
+  position: fixed;
+  top: 10px;
+  left: 400px;
+  padding: 5px;
+  font-size: 18px;
+}
+
+#search-button.force-left {
+  left: 80px;
+}
+
+#search-button:hover {
+  cursor: pointer;
+}
+
+#search-box {
+  position: fixed;
+  top: 20px;
+  left: calc(300px + 15% - 20px);
+  width: calc(100% - 30% - 20px - 300px);
+  /*height: calc(100% - 40px);*/
+  bottom: 20px;
+  overflow: auto;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid black;
+  box-shadow: 5px 5px 5px black;
+  z-index: 999;
+}
+
+#search-box > input {
+  padding: 15px;
+  margin-left: 10%;
+  width: 80%;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  outline: none;
+  font-size: 20px;
+}
+
+#search-box > input:focus {
+  border: 1px solid darkgray;
+}
+
+#search-box h3 {
+  font-size: 20px;
+  color: #4183c4;
+}
+
+#search-box h3 span {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+#search-box h3 a:not(.inactive):hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#search-box p h4, #search-box p h5, #search-box p > h6 {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+#search-box > div > div > p {
+  word-break: break-all;
+  padding-left: 10px;
+  border-left: 1px solid lightgray;
+}
+
+#search-box .abbrev-symbol::after {
+  content: "[...]";
+  color: darkgray;
+}
+
 /* Dark mode */
 
 body.dark {
