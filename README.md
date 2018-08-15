@@ -66,7 +66,7 @@ yarn build website  # Build the website locally
 
 Some other commands are available in the [`package.json`](package.json) file, but these are the most common ones.
 
-### Building live
+### Live build
 
 To build some parts of the project each time a file changes in the folder, you can use the `build-dev-live` as follows:
 
