@@ -1688,6 +1688,14 @@ open dict Array<T> extends Vector<T> {
   public val length: usize;
 
   /**
+   * Automatically convert this array to a fixed-size array
+   * NOTE: An 'ArraySizeMismatchError' will be thrown if this array's size is not equal to the provided template
+   * @template SIZE The destination array's size
+   */
+  #auto
+  public func %to<T[SIZE], SIZE: usize> () : T[SIZE];
+
+  /**
    * Remove a key and its associated value from the array
    * Always throw an 'ArrayNotDynamicError' error
    * @param key The key to remove
@@ -1894,6 +1902,18 @@ class IndexOutOfBoundsError extends RuntimeError {
  */
 class ArrayNotDynamicError extends RuntimeError {
   public func %construct () => @message = 'Cannot remove a value from an array';
+}
+
+/**
+ * Unknown-sized to fixed-size array conversion fail
+ */
+class ArraySizeMismatchError extends RuntimeError {
+  /**
+   * Create an array size mismatch error
+   * @param fromSize The original array's size
+   * @param toSize The destination array's size
+   */
+  public func %construct (fromSize: usize, toSize: usize) => @message = `Cannot convert a ${toSize}-element array to an ${fromSize}-element one`;
 }
 
 /**
