@@ -217,6 +217,8 @@ function toggleSummary () {
   hideNav.classList.toggle('force-left');
   // Same with the dark mode toggle button
   darkModeToggle.classList.toggle('force-left');
+  // Same with the search button
+  searchButton.classList.toggle('force-left');
   // Toggle the "previous" button position
   previous.classList.toggle('force-left');
 
