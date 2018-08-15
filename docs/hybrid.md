@@ -5167,6 +5167,15 @@ keys!(personsAge); // Iterator<K>
 values!(personsAge); // Iterator<V>
 ```
 
+### `%contains` for non-dictionaries
+
+The `%contains` overload can be implemented even in non-dictionary classes, like it is in `string`, which allows the following behavior:
+
+```sn
+'a' in 'abc'; // Works even though `string`
+              // is not a dictionary class
+```
+
 ## Nullable types
 
 Here is a short chapter to show another of the most useful concepts of the language: the nullable types. These are types that can either be an instance of the class they refer to, or the `null` value, so they provide a way to not initialize an entity or to return nothing from a function.
