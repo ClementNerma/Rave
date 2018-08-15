@@ -108,7 +108,7 @@ println!('Hello !');
 
 ## Mutables
 
-In SilverNight, every single value is either a primitive or an object. To describe what a primitive or an object is, we use a _type_, which simply consists in set of methods, properties and other things that provides tools to manipulate an entity, like a variable or a constant. You can also see it as a describer that indicates what kind of value an entity can take.
+In SilverNight, every single value is either a primitive or an object. To describe what a primitive or an object is, we use a _type_, which simply consists in a set of methods, properties and other things that provides tools to manipulate an entity, like a variable or a constant. You can also see it as a describer that indicates what kind of value an entity can take.
 
 _Tip :_ For those who already programmed in Java, C, C++ or Rust, the concept of type is roughly the same in SilverNight.
 
@@ -4900,17 +4900,17 @@ dict Custom<K, V> {
   public func %get (key: K) : V;
   // Associate a value to a key
   public func %set (key: K, value: V);
-  // Get the size of the dictionary
+  // Get the number of key/values pairs in the dictionary
   public func %size () : usize;
   // Delete a key (and the value it refers to)
   public func %unset (key: K);
   // Check if a key is known
   public func %has (key: K) : bool;
-  // Check if a key is contained in the dictionary
+  // Check if a value is contained in the dictionary
   public func %contains (value: V) : bool;
-  // Get the array of all keys
+  // Get an iterator on all keys
   public func %keys () : Iterator<K>;
-  // Get the array of all values
+  // Get an iterator on all values
   public func %values () : Iterator<V>;
 }
 ```
@@ -4923,7 +4923,7 @@ dict Custom<K, V> inherits Map<K, V> {
 }
 ```
 
-This will inherits all functions that comes with basic dictionaries, like `.filter()` or `.map()`. It will grant access to two protected members, `keys` and `values`, which are lists referring respectively to the dictionary's keys and its values, plus many additional functions and overloads.
+This will inherit all functions that comes with basic dictionaries, like `.filter()` or `.map()`. It will grant access to two protected members, `keys` and `values`, which are lists referring respectively to the dictionary's keys and its values, plus many additional functions and overloads.
 
 Also, because `Map<K, V>` inherits itself from `Dictionary<K, V>`, you won't have to specify this inheritance - `Map` always dit it.
 
