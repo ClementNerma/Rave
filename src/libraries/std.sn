@@ -390,7 +390,7 @@ type Object = not Primitive;
 /**
  * Void type (primitive)
  */
-class void inherits Primitive implements Randomizable, RandomizableWithBounds {
+class void extends Primitive implements Randomizable, RandomizableWithBounds {
   #supercstr;
 
   public static val NIL = null;
@@ -448,7 +448,7 @@ class void inherits Primitive implements Randomizable, RandomizableWithBounds {
  * Boolean type (primitive)
  * @classname(boolean)
  */
-class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
+class bool extends Primitive implements Randomizable, RandomizableWithBounds {
   #supercstr;
 
   public static val NIL = false;
@@ -505,7 +505,7 @@ class bool inherits Primitive implements Randomizable, RandomizableWithBounds {
 /**
  * Virtual number type (primitive)
  */
-virtual class number inherits Primitive implements Randomizable, RandomizableWithBounds {
+virtual class number extends Primitive implements Randomizable, RandomizableWithBounds {
   #supercstr;
 
   public static val NIL = 0; // i32
@@ -584,7 +584,7 @@ virtual class number inherits Primitive implements Randomizable, RandomizableWit
  * Virtual integer type (primitive)
  * @classname(virtual integer)
  */
-open class vint inherits number {
+open class vint extends number {
   #supercstr;
 
   final public static val HANDLE_FLOATS = false;
@@ -594,7 +594,7 @@ open class vint inherits number {
  * Virtual signed integer type (primitive)
  * @classname(virtual signed integer)
  */
-open class vsint inherits vint {
+open class vsint extends vint {
   #supercstr;
 
   final public static val SIGNED = true;
@@ -603,7 +603,7 @@ open class vsint inherits vint {
 /**
  * 64-bit signed integer type (primitive)
  */
-open class i64 inherits vsint {
+open class i64 extends vsint {
   #supercstr;
 
   public static val NIL = 0l;
@@ -618,7 +618,7 @@ open class i64 inherits vsint {
 /**
  * 32-bit signed integer type (primitive)
  */
-open class i32 inherits i64 {
+open class i32 extends i64 {
   #supercstr;
 
   public static val NIL = 0;
@@ -633,7 +633,7 @@ open class i32 inherits i64 {
 /**
  * 16-bit signed integer type (primitive)
  */
-open class i16 inherits i32 {
+open class i16 extends i32 {
   #supercstr;
 
   public static val NIL = 0s;
@@ -648,7 +648,7 @@ open class i16 inherits i32 {
 /**
  * 8-bit signed integer type (primitive)
  */
-class i8 inherits i16 {
+class i8 extends i16 {
   #supercstr;
 
   public static val NIL = 0b;
@@ -664,7 +664,7 @@ class i8 inherits i16 {
  * Virtual unsigned integer type (primitive)
  * @classname(virtual unsigned integer)
  */
-open class vuint inherits vint {
+open class vuint extends vint {
   #supercstr;
 
   final public static val SIGNED = false;
@@ -673,7 +673,7 @@ open class vuint inherits vint {
 /**
  * 64-bit unsigned integer type (primitive)
  */
-open class u64 inherits vuint {
+open class u64 extends vuint {
   #supercstr;
 
   public static val NIL = 0ul;
@@ -688,7 +688,7 @@ open class u64 inherits vuint {
 /**
  * 32-bit unsigned integer type (primitive)
  */
-open class u32 inherits u64 {
+open class u32 extends u64 {
   #supercstr;
 
   public static val NIL = 0u;
@@ -703,7 +703,7 @@ open class u32 inherits u64 {
 /**
  * 16-bit unsigned integer type (primitive)
  */
-open class u16 inherits u32 {
+open class u16 extends u32 {
   #supercstr;
 
   public static val NIL = 0us;
@@ -718,7 +718,7 @@ open class u16 inherits u32 {
 /**
  * 8-bit unsigned integer type (primitive)
  */
-class u8 inherits u16 {
+class u8 extends u16 {
   #supercstr;
 
   public static val NIL = 0ub;
@@ -734,7 +734,7 @@ class u8 inherits u16 {
  * Architecture-sized unsigned integer type (primitive)
  * Size is equal to the processor's number of bits
  */
-class usize inherits uint {
+class usize extends uint {
   #supercstr;
 
   public static val NIL = 0p;
@@ -750,7 +750,7 @@ class usize inherits uint {
  * Virtual signed floating-point number type (primitive)
  * @classname(virtual signed float)
  */
-open class vfloat inherits number {
+open class vfloat extends number {
   #supercstr;
 
   final public static val SIGNED = true;
@@ -762,7 +762,7 @@ open class vfloat inherits number {
  * 64-bit signed floating-point number type (primitive)
  * @classname
  */
-open class f64 inherits vfloat {
+open class f64 extends vfloat {
   #supercstr;
 
   public static val SIZE = 64p;
@@ -772,7 +772,7 @@ open class f64 inherits vfloat {
  * 32-bit signed floating-point number type (primitive)
  * @classname
  */
-class f32 inherits f64 {
+class f32 extends f64 {
   #supercstr;
 
   public static val SIZE = 32p;
@@ -793,7 +793,7 @@ type uint = u32;
 /**
  * String type (primitive)
  */
-class string inherits Primitive {
+class string extends Primitive {
   #supercstr;
 
   public static val NIL = '';
@@ -1411,7 +1411,7 @@ type SortableMap<K ~ Comparable, V ~ Comparable> = Map<K, V>;
  * @template V Type of values
  * @classname(set)
  */
-open class Set<K, V ~ Comparable> inherits Map<K, V> {
+open class Set<K, V ~ Comparable> extends Map<K, V> {
   /** @classname */
 
   #supercstr;
@@ -1433,7 +1433,7 @@ open class Set<K, V ~ Comparable> inherits Map<K, V> {
  * @template T Type of values
  * @classname(vector)
  */
-virtual dict Vector<T> inherits Map<usize, T> {
+virtual dict Vector<T> extends Map<usize, T> {
   #supercstr;
 
   /**
@@ -1679,7 +1679,7 @@ type SerializableVector<T ~ Serializable> = Vector<T>;
  * @template T Type of values
  * @classname(array)
  */
-open dict Array<T> inherits Vector<T> {
+open dict Array<T> extends Vector<T> {
   #supercstr;
 
   /**
@@ -1702,7 +1702,7 @@ open dict Array<T> inherits Vector<T> {
  * @template T Type of values
  * @template SIZE Number of values
  */
-dict Array<T, SIZE: usize> inherits Vector<T> {
+dict Array<T, SIZE: usize> extends Vector<T> {
   #supercstr;
 
   public val length = SIZE;
@@ -1715,7 +1715,7 @@ dict Array<T, SIZE: usize> inherits Vector<T> {
  * @template T Type of values
  * @classname(list)
  */
-dict List<T> inherits Vector<T> {
+dict List<T> extends Vector<T> {
   #supercstr;
 
   /**
@@ -1838,26 +1838,26 @@ open class Error implements Stringifyable {
 /**
  * Runtime error
  */
-virtual class RuntimeError inherits Error {}
+virtual class RuntimeError extends Error {}
 
 /**
  * Program is out of memory
  */
-class OutOfMemory inherits RuntimeError {
+class OutOfMemory extends RuntimeError {
   public func %construct () => @message = 'Program is out of memory';
 }
 
 /**
  * Division by zero
  */
-class DivisionByZeroError inherits RuntimeError {
+class DivisionByZeroError extends RuntimeError {
   public func %construct () => @message = 'Cannot divide by zero';
 }
 
 /**
  * Unserialization fail
  */
-class UnserializationError inherits RuntimeError {
+class UnserializationError extends RuntimeError {
   public func %construct () => @message = 'Unserialization failed';
 
   /**
@@ -1870,56 +1870,56 @@ class UnserializationError inherits RuntimeError {
 /**
  * String parsing fail
  */
-class StringParsingError inherits RuntimeError {
+class StringParsingError extends RuntimeError {
   public func %construct () => @message = 'Failed to parse the string as a number';
 }
 
 /**
  * Duplicate value in a set
  */
-class DuplicateValueError inherits RuntimeError {
+class DuplicateValueError extends RuntimeError {
   public func %construct () => @message => 'Cannot assign a duplicate value in a set';
 }
 
 /**
  * Access to an out-of-bound index
  */
-class IndexOutOfBoundsError inherits RuntimeError {
+class IndexOutOfBoundsError extends RuntimeError {
   public func %construct () => @message = 'Cannot access an out-of-bound index';
 }
 
 /**
  * Array's value removal
  */
-class ArrayNotDynamicError inherits RuntimeError {
+class ArrayNotDynamicError extends RuntimeError {
   public func %construct () => @message = 'Cannot remove a value from an array';
 }
 
 /**
  * Type constraint's rejection
  */
-class TypeConstraintError inherits RuntimeError {
+class TypeConstraintError extends RuntimeError {
   public func %construct () => @message = 'Type constraint rejected the assignment';
 }
 
 /**
  * Cast fail
  */
-class InvalidCastError inherits RuntimeError {
+class InvalidCastError extends RuntimeError {
   public func %construct () => @message = 'Failed to cast to the provided type';
 }
 
 /**
  * Union cast fail
  */
-class UnionBadTypeError inherits RuntimeError {
+class UnionBadTypeError extends RuntimeError {
   public func %construct () => @message = 'Failed to cast the union to the given type';
 }
 
 /**
  * Future attribute nullable removal fail
  */
-class NullFutureAttributeError inherits RuntimeError {
+class NullFutureAttributeError extends RuntimeError {
   public func %construct () => @message = 'Future attribute is still \'null\' after the constructor ends';
 }
 
@@ -1927,7 +1927,7 @@ class NullFutureAttributeError inherits RuntimeError {
  * Asynchronous function (promise) rejection
  * @template T The promise's rejection type
  */
-class AwaitRejectionError<T> inherits RuntimeError {
+class AwaitRejectionError<T> extends RuntimeError {
   /**
    * The rejection data
    */
@@ -2002,7 +2002,7 @@ open class Promise<X, Y> {
  * @template X Resolution type
  * @template Y Rejection type
  */
-class Promise<X> inherits Promise<X, void> {
+class Promise<X> extends Promise<X, void> {
   #supercstr;
 
   /**
