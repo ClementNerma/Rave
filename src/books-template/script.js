@@ -209,18 +209,8 @@ function save (name, value) {
  * @returns {void}
  */
 function toggleSummary () {
-  // Toggle summary's visibility
-  summary.classList.toggle('hidden');
-  // Toggle article's full-width state
-  article.classList.toggle('full-width');
-  // Toggle hide summary's button's full-width indicator
-  hideNav.classList.toggle('force-left');
-  // Same with the dark mode toggle button
-  darkModeToggle.classList.toggle('force-left');
-  // Same with the search button
-  searchButton.classList.toggle('force-left');
-  // Toggle the "previous" button position
-  previous.classList.toggle('force-left');
+  // Toggle the full-width state
+  document.body.classList.toggle('full-width');
 
   // Save the summary's visilibity
   save('hidden-summary', summary.classList.contains('hidden'));
