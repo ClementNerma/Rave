@@ -863,7 +863,7 @@ function moveScrollbarBy (scrollbar, target, y, duration) {
  * @param {HTMLElement} target Its target
  * @param {number} y The Y value to assign
  * @param {number} duration The animation's duration, in miliseconds
- * @param {number} doNotAnimateScrollbar Do not animate the scrollbar's movement
+ * @param {boolean} doNotAnimateScrollbar Do not animate the scrollbar's movement
  * @returns {void}
  */
 function setScrollbarY (scrollbar, target, y, duration, doNotAnimateScrollbar = false) {
