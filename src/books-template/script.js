@@ -1206,30 +1206,42 @@ window.addEventListener('keydown', e => {
     return ;
   }
   
+  // Was the key captured?
+  let captured = true;
+
   // If the "arrow left" key was pressed...
   if (e.keyCode === 37)
     // Go to the previous section
     showSection(currentSectionID - 1);
 
   // If the "arrow right" key was pressed...
-  if (e.keyCode === 39)
+  else if (e.keyCode === 39)
     // Go to the next section
     showSection(currentSectionID + 1);
 
   // If the "s" (for "summary") key was pressed...
-  if (e.keyCode === 83)
+  else if (e.keyCode === 83)
     // Toggle the summary
     toggleSummary();
 
   // If the "d" (for "dark") key was pressed...
-  if (e.keyCode === 68)
+  else if (e.keyCode === 68)
     // Toggle the dark mode
     toggleDarkMode();
 
   // If the "f" (for "find") key was pressed...
-  if (e.keyCode === 70)
+  else if (e.keyCode === 70)
     // Toggle the search bar
     toggleSearchBar();
+  
+  else
+    // No action is binded to this key
+    captured = false;
+
+  // If the key has been captured...
+  if (captured)
+    // Cancel its event
+    e.preventDefault();
 });
 
 // Indicate the scripts are working
