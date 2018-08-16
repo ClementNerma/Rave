@@ -951,9 +951,11 @@ function setScrollbarY (scrollbar, target, y, duration) {
     const finalY = data.end;
 
     // Compute its new Y position
+    // NOTE: Use a linear animation function because it's smoother than an
+    //        'ease-in-out-cubic' function for example
     const currentY = Math.floor(Math.min(
       Math.max(
-        lastFrame ? finalY : startY + Math.min(f(elapsed / duration), 1) * (finalY - startY),
+        lastFrame ? finalY : startY + Math.min(elapsed / duration, 1) * (finalY - startY),
         0
       ),
 
@@ -1041,9 +1043,6 @@ function setScrollbarY (scrollbar, target, y, duration) {
 
   // Memorize the last Y position
   let lastY = startY;
-
-  // Set up an animation function (ease-in-out-cubic)
-  const f = t => t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
 
   // Start the timer
   const started = performance.now();
