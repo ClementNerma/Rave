@@ -708,7 +708,7 @@ function search (query) {
           toggleSearchBox();
 
           // Trigger the real link's click
-          get(q('nav li[data-real-target="' + part.getAttribute('data-id') + '"] a'))(e);
+          linkCallback.get(q('nav li[data-real-target="' + part.getAttribute('data-id') + '"] a'))(e);
         });
       } else
         // Add a specific class to it
@@ -1022,35 +1022,6 @@ function setScrollbarY (scrollbar, target, y, duration) {
   requestFrame(() => animate());
 }
 
-/**
- * Associate a value to a key
- * @param {*} key The key
- * @param {*} value The value to assign to the key
- * @returns {void}
- */
-function set (key, value) {
-  if (! keys.includes(key)) {
-    keys.push(key);
-    values.push(value);
-  } else
-    values[keys.indexOf(key)] = value;
-}
-
-/**
- * Get the value associated to a key
- * @param {*} key The key
- * @returns {*} The value associated to the provided key
- */
-function get (key) {
-  return values[keys.indexOf(key)];
-}
-
-// The list of keys
-let keys = [];
-
-// The list of values
-let values = [];
-
 // Set up a regular expression to detect all non-breaking spaces
 const nonBreakingSpaceRegExp = new RegExp(String.fromCharCode(160), 'g');
 
@@ -1065,6 +1036,38 @@ for (let title of qa('h1, h2, h3, h4, h5, h6'))
     // Give it a "data-id" attribute instead
     title.setAttribute('data-id', id);
   }
+
+// Get the animation frame requesting function
+const requestFrame = window.requestAnimationFrame ||
+                     window.mozRequestAnimationFrame ||
+                     window.webkitRequestAnimationFrame ||
+                     window.msRequestAnimationFrame ||
+                     window.setImmediate ||
+                     (c => setTimeout(c, 0));
+
+// Is the page being animated?
+let animating = false;
+
+// Make a variable to store the callback to run after the current animation
+let stopAnimationCallback = null;
+
+// Make a variable to store the current section
+let currentSection;
+
+// Make a variable to store the current section's number
+let currentSectionID;
+
+// Make a variable to indicate if the search bar just caught a keydown event
+let justGotSearchKey = false;
+
+// Make a variable to store the last search's content
+let lastSearch = '';
+
+// Make a variable to store the updater of each scrollbar
+let scrollbarUpdaters = {};
+
+// Make a variable to store the callback associated to each link
+let linkCallback = new Map();
 
 // Get the list of all sections
 const sections = qa('body > article section');
@@ -1105,7 +1108,7 @@ for (let link of nav_links) {
   }
 
   // Assign a callback to this link
-  set(link, e => {
+  linkCallback.set(link, e => {
     // If possible...
     if (typeof e.preventDefault === 'function')
       // Cancel the click
@@ -1124,37 +1127,8 @@ for (let link of nav_links) {
   });
 
   // When it is clicked...
-  link.addEventListener('click', get(link));
+  link.addEventListener('click', linkCallback.get(link));
 }
-
-// Get the animation frame requesting function
-const requestFrame = window.requestAnimationFrame ||
-                     window.mozRequestAnimationFrame ||
-                     window.webkitRequestAnimationFrame ||
-                     window.msRequestAnimationFrame ||
-                     window.setImmediate ||
-                     (c => setTimeout(c, 0));
-
-// Is the page being animated?
-let animating = false;
-
-// Make a variable to store the callback to run after the current animation
-let stopAnimationCallback = null;
-
-// Make a variable to store the current section
-let currentSection;
-
-// Make a variable to store the current section's number
-let currentSectionID;
-
-// Make a variable to indicate if the search bar just caught a keydown event
-let justGotSearchKey = false;
-
-// Make a variable to store the last search's content
-let lastSearch = '';
-
-// Make a variable to store the updater of each scrollbar
-let scrollbarUpdaters = {};
 
 // Create a "previous" link
 let previous = document.createElement('a');
