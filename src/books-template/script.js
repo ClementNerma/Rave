@@ -752,6 +752,7 @@ function search (query) {
  * @param {HTMLElement} getTarget A function to get the target element, real-time
  * @param {HTMLElement} scrollFrom The element to handle the scroll from
  * @param {HTMLElement} mouseWheelFrom The element to handle the mouse wheels from
+ * @returns {HTMLElement} The scrollbar
  */
 function addScrollbar (name, getTarget, scrollFrom, mouseWheelFrom) {
   // Create the scrollbar's track
@@ -820,27 +821,37 @@ function addScrollbar (name, getTarget, scrollFrom, mouseWheelFrom) {
 
   /* Handle mouse wheels */
   
-  addWheelsListener(mouseWheelFrom, e => {
-    // Get the target element
-    let target = getTarget();
+  addWheelsListener(mouseWheelFrom, e => moveScrollbarBy(track, getTarget(), e.deltaY));
 
-    // HACK: The `.scrollTop` property is not writable for <section> elements, strangely (tested on Chrome)
-    // If the target is a <section>...
-    if (tagOf(target) === 'section')
-      // Replace it by the document element
-      target = document.documentElement;
+  // Return the scrollbar
+  return track;
+}
 
-    // Move the scrollbar as well as its target
-    setScrollbarY(
-      track,
-      target,
-      // Get the scrollbar's current Y position
-      parseInt(handle.style.marginTop.replace(/px$/, '')) +
-        // Add it the relative move needed to make the container moving of the provided deltaY value
-        // e.g. if the mouse wheels move from 100px, calculate how many pixels the scrollbar have
-        //  to move from in order to make its target getting a 100px move
-        (e.deltaY / target.scrollHeight * track.clientHeight));
-  });
+/**
+ * Move the scrollbar by an amount given of pixels (Y axis)
+ * @param {HTMLElement} scrollbar The scrollbar's element
+ * @param {HTMLElement} target Its target
+ * @param {Number} y The number of pixels to scroll down in the target (can be negative)
+ * @returns {void}
+ */
+function moveScrollbarBy (scrollbar, target, y) {
+  // HACK: The `.scrollTop` property is not writable for <section> elements, strangely (tested on Chrome)
+  // If the target is a <section>...
+  if (tagOf(target) === 'section')
+    // Replace it by the document element
+    target = document.documentElement;
+
+  // Move the scrollbar as well as its target
+  setScrollbarY(
+    scrollbar,
+    target,
+    // Get the scrollbar's current Y position
+    parseInt(scrollbar.firstElementChild.style.marginTop.replace(/px$/, '')) +
+    // Add it the relative move needed to make the container moving of the provided deltaY value
+    // e.g. if the mouse wheels move from 100px, calculate how many pixels the scrollbar have
+    //  to move from in order to make its target getting a 100px move
+    (y / target.scrollHeight * scrollbar.clientHeight)
+  );
 }
 
 /**
@@ -1178,7 +1189,7 @@ searchBox.appendChild(searchResults);
 addScrollbar('summary', () => summary, summary, summary);
 
 // Add a scrollbar to the content
-addScrollbar('article', () => currentSection, document.documentElement, article);
+let articleScrollbar = addScrollbar('article', () => currentSection, document.documentElement, article);
 
 // If a hash was specified in the URL
 // and if it targets an existing section...
@@ -1239,6 +1250,31 @@ window.addEventListener('keydown', e => {
     // Toggle the search bar
     toggleSearchBox();
   
+  // If the "arrow up" key was pressed...
+  else if (e.keyCode === 38)
+    // Move up 40 pixels
+    moveScrollbarBy(articleScrollbar, currentSection, -40);
+
+  // If the "arrow down" key was pressed...
+  else if (e.keyCode === 40)
+    // Move down 40 pixels
+    moveScrollbarBy(articleScrollbar, currentSection, 40);
+
+  // If the "page up" key was pressed...
+  else if (e.keyCode === 33)
+    // Move up 75% of the screen
+    moveScrollbarBy(articleScrollbar, currentSection, - window.innerHeight * 0.75);
+
+  // If the "page down" key was pressed...
+  else if (e.keyCode === 34)
+    // Move down 75% of the screen
+    moveScrollbarBy(articleScrollbar, currentSection, window.innerHeight * 0.75);
+
+  // If the "space bar" key was pressed...
+  else if (e.keyCode === 32)
+    // Move down (or up if the "shift" key was pressed too) 75% of the screen
+    moveScrollbarBy(articleScrollbar, currentSection, (e.shiftKey ? - 0.75 : 0.75) * window.innerHeight);
+
   else
     // No action is binded to this key
     captured = false;
