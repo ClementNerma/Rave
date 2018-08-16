@@ -472,16 +472,20 @@ function search (query) {
    */
   function getExtract (el, startFrom = 0, length = Infinity, noFirstLeftAbbrev = false) {
     // The extract
-    let extract = document.createElement('p');
+    let output = null;
+    // HACK: Special syntax to avoid an 'undefined' variable error with Babel's minifier
+    output = document.createElement('p');
 
     // The number of occurences
-    let occurences = 0;
+    let occurences = null;
+    // HACK: Special syntax to avoid an 'undefined' variable error with Babel's minifier
+    occurences = 0;
 
     // Is it the first element?
     let firstElement = true;
 
     // While the extract contains less than the required number of characters...
-    while (extract.innerText.length < length) {
+    while (output.innerText.length < length) {
       // If the the element is 'null'...
       if (el === null)
         // Break the loop
@@ -496,12 +500,12 @@ function search (query) {
       const result = look(
         el,
         firstElement ? startFrom : 0, // Use the start position for the first occurence (the original element)
-        length - extract.innerText.length - (firstElement ? 1 : 0), // The space we'll add since the 2nd element,
+        length - output.innerText.length - (firstElement ? 1 : 0), // The space we'll add since the 2nd element,
         firstElement && noFirstLeftAbbrev // If wanted, prevent adding an abbrevation symbol on the left for te first element
       );
       
       // Add its content to the extract
-      extract.innerHTML += result[0].innerHTML;
+      output.innerHTML += result[0].innerHTML;
 
       // Update the number of occurences
       occurences += result[1];
@@ -514,7 +518,7 @@ function search (query) {
     }
 
     // Return the result
-    return [ extract, occurences ];
+    return [ output, occurences ];
   }
 
   // Make the query lowercase and normalize its spaces
