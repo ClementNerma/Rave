@@ -41,11 +41,11 @@
   "dependencies": {
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-minify": "^0.3.0",
+    "babel-preset-minify": "^0.4.0",
     "chalk": "^2.3.1",
     "clean-css": "^4.1.9",
     "express": "^4.16.2",
-    "fs-extra": "^5.0.0",
+    "fs-extra": "^7.0.0",
     "handlebars": "^4.0.11",
     "highlights": "^3.1.1",
     "html-minifier": "^3.5.9",
