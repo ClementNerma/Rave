@@ -310,6 +310,10 @@ function addWheelsListener(elem, callback, useCapture = false) {
   if (eventName == 'DOMMouseScroll')
     addWheelsListener(elem, eventName, 'MozMousePixelScroll', useCapture);
 
+  // Look for passive events support
+  let supportsPassive = false;
+  document.createElement('div').addEventListener('test', _ => { }, { get passive() { supportsPassive = true } });
+
   // Register the event listener on the provided element
   elem[window.addEventListener ? 'addEventListener' : 'attachEvent'](
     (window.addEventListener ? '' : 'on') + eventName,
@@ -345,7 +349,7 @@ function addWheelsListener(elem, callback, useCapture = false) {
       return callback(event);
 
     },
-    useCapture
+    supportsPassive && !useCapture ? { passive: true } : useCapture
   );
 }
 
