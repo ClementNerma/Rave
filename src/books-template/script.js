@@ -906,9 +906,6 @@ function setScrollbarY (scrollbar, target, y, duration, doNotAnimateScrollbar = 
     // Stop the animation
     data.stop = true;
 
-    // Debug
-    console.debug(`Replaced active animation for a scrollbar (target: "${scrollbar.getAttribute('data-target')}")`);
-
     // Exit the function for now
     return;
   }
