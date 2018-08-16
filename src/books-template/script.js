@@ -278,7 +278,7 @@ function toggleDarkMode () {
  * Toggle the search bar
  * @returns {void}
  */
-function toggleSearchBar () {
+function toggleSearchBox () {
   // Toggle the search box's visibility
   searchBox.classList.toggle('hidden');
 
@@ -704,7 +704,7 @@ function search (query) {
         // When it is clicked...
         partItem.addEventListener('click', e => {
           // Hide the search box
-          toggleSearchBar();
+          toggleSearchBox();
 
           // Trigger the real link's click
           get(q('nav li[data-real-target="' + part.getAttribute('data-id') + '"] a'))(e);
@@ -1110,7 +1110,7 @@ searchButton.setAttribute('title', 'Search in this book');
 // Give it a legend
 searchButton.innerHTML = '&#128270;';
 // When it is clicked...
-searchButton.addEventListener('click', toggleSearchBar);
+searchButton.addEventListener('click', toggleSearchBox);
 // Append it to the <body>
 document.body.appendChild(searchButton);
 
@@ -1135,7 +1135,7 @@ searchBar.addEventListener('keydown', e => {
   // If this was the 'Escape' key...
   if (e.keyCode === 27)
     // Close the search box
-    toggleSearchBar();
+    toggleSearchBox();
 });
 // When a key is pressed in it...
 searchBar.addEventListener('input', () => {
@@ -1237,7 +1237,7 @@ window.addEventListener('keydown', e => {
   // If the "f" (for "find") key was pressed...
   else if (e.keyCode === 70)
     // Toggle the search bar
-    toggleSearchBar();
+    toggleSearchBox();
   
   else
     // No action is binded to this key
