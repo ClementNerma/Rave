@@ -46,13 +46,18 @@ function tagOf(el) {
  * @returns {void}
  */
 function updateScrollbar (scrollbar, target) {
+  // Get the track (alias)
+  const track = scrollbar;
+
+  // Get the handle
+  const handle = track.firstElementChild;
+
   // Update the handle's height
-  scrollbar.querySelector('div').style.height = Math.round(
-    window.innerHeight / target.scrollHeight * scrollbar.scrollHeight
+  handle.style.height = Math.round(
+    window.innerHeight / target.scrollHeight * track.scrollHeight
   ) + 'px';
 
-  // Update the handler's position
-  scrollbar.style.marginTop = Math.floor(target.scrollTop / (target.scrollTop - window.innerHeight)) + 'px';
+  handle.style.marginTop = Math.floor(target.scrollTop / (target.scrollHeight - window.innerHeight) * (track.clientHeight - handle.clientHeight)) + 'px';
 }
 
 /**
