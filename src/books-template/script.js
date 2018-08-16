@@ -1128,10 +1128,15 @@ let searchBar = document.createElement('input');
 // Give it a placeholder
 searchBar.setAttribute('placeholder', 'Search in this book...');
 // When a key is pressed in it...
-searchBar.addEventListener('keydown', () =>
+searchBar.addEventListener('keydown', e => {
   // Indicate the search bar just got this key
-  justGotSearchKey = true
-);
+  justGotSearchKey = true;
+
+  // If this was the 'Escape' key...
+  if (e.keyCode === 27)
+    // Close the search box
+    toggleSearchBar();
+});
 // When a key is pressed in it...
 searchBar.addEventListener('input', () => {
   // If the content has not changed since the last time...
