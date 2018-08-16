@@ -807,7 +807,7 @@ function addScrollbar (name, getTarget, scrollFrom, mouseWheelFrom) {
       return ;
 
     // Move the scrollbar as well as its target
-    setScrollbarY(track, getTarget(), startScrollY + (e.clientY - startY), 200);
+    setScrollbarY(track, getTarget(), startScrollY + (e.clientY - startY), 200, true);
   });
 
   /* Attach a scroll updater to the scrollbar */
@@ -863,9 +863,10 @@ function moveScrollbarBy (scrollbar, target, y, duration) {
  * @param {HTMLElement} target Its target
  * @param {number} y The Y value to assign
  * @param {number} duration The animation's duration, in miliseconds
+ * @param {number} doNotAnimateScrollbar Do not animate the scrollbar's movement
  * @returns {void}
  */
-function setScrollbarY (scrollbar, target, y, duration) {
+function setScrollbarY (scrollbar, target, y, duration, doNotAnimateScrollbar = false) {
   // HACK: The `.scrollTop` property is not writable for <section> elements, strangely (tested on Chrome)
   // If it's a <section>...
   if (tagOf(target) === 'section')
@@ -894,7 +895,8 @@ function setScrollbarY (scrollbar, target, y, duration) {
         scrollbar,
         target,
         Math.round(Math.min(Math.max(data.end + (y - startY), 0), track.clientHeight - handle.clientHeight)),
-        duration
+        duration,
+        doNotAnimateScrollbar
       );
 
       // Stop the animation
@@ -931,6 +933,11 @@ function setScrollbarY (scrollbar, target, y, duration) {
     // Callback to run after the end of the animation
     callback: null
   });
+
+  // If the scrollbar needs to be moved once...
+  if (doNotAnimateScrollbar)
+    // Move it
+    handle.style.marginTop = animations.get(scrollbar).end + 'px';
 
   /**
    * Update the scrollbar's position as well as it's target's one
@@ -970,8 +977,10 @@ function setScrollbarY (scrollbar, target, y, duration) {
     // Memorize the last position
     lastY = currentY;
 
-    // Move the scrollbar
-    handle.style.marginTop = currentY + 'px';
+    // If not forbidden...
+    if (! doNotAnimateScrollbar)
+      // Move the scrollbar
+      handle.style.marginTop = currentY + 'px';
 
     // Get the scrollbar's purcentage (between 0 and 1)
     const p = currentY / (track.clientHeight - handle.clientHeight);
