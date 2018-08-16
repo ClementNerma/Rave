@@ -543,7 +543,7 @@ function search (query) {
   searchResults.innerHTML = '';
 
   // For each section...
-  for (let section of qa('section')) {
+  for (let section of sections) {
 
     // For each element in it...
     for (let el of section.children) {
