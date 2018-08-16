@@ -806,7 +806,7 @@ function addScrollbar (name, getTarget, scrollFrom, mouseWheelFrom) {
       return ;
 
     // Move the scrollbar as well as its target
-    setScrollbarY(track, getTarget(), startScrollY + (e.clientY - startY));
+    setScrollbarY(track, getTarget(), startScrollY + (e.clientY - startY), 200);
   });
 
   /* Attach a scroll updater to the scrollbar */
@@ -821,7 +821,7 @@ function addScrollbar (name, getTarget, scrollFrom, mouseWheelFrom) {
 
   /* Handle mouse wheels */
   
-  addWheelsListener(mouseWheelFrom, e => moveScrollbarBy(track, getTarget(), e.deltaY));
+  addWheelsListener(mouseWheelFrom, e => moveScrollbarBy(track, getTarget(), e.deltaY, 200));
 
   // Return the scrollbar
   return track;
@@ -832,9 +832,10 @@ function addScrollbar (name, getTarget, scrollFrom, mouseWheelFrom) {
  * @param {HTMLElement} scrollbar The scrollbar's element
  * @param {HTMLElement} target Its target
  * @param {Number} y The number of pixels to scroll down in the target (can be negative)
+ * @param {Number} duration The animation's duration, in miliseconds
  * @returns {void}
  */
-function moveScrollbarBy (scrollbar, target, y) {
+function moveScrollbarBy (scrollbar, target, y, duration) {
   // HACK: The `.scrollTop` property is not writable for <section> elements, strangely (tested on Chrome)
   // If the target is a <section>...
   if (tagOf(target) === 'section')
@@ -847,10 +848,11 @@ function moveScrollbarBy (scrollbar, target, y) {
     target,
     // Get the scrollbar's current Y position
     parseInt(scrollbar.firstElementChild.style.marginTop.replace(/px$/, '')) +
-    // Add it the relative move needed to make the container moving of the provided deltaY value
-    // e.g. if the mouse wheels move from 100px, calculate how many pixels the scrollbar have
-    //  to move from in order to make its target getting a 100px move
-    (y / target.scrollHeight * scrollbar.clientHeight)
+      // Add it the relative move needed to make the container moving of the provided deltaY value
+      // e.g. if the mouse wheels move from 100px, calculate how many pixels the scrollbar have
+      //  to move from in order to make its target getting a 100px move
+      (y / target.scrollHeight * scrollbar.clientHeight),
+    duration
   );
 }
 
@@ -859,39 +861,166 @@ function moveScrollbarBy (scrollbar, target, y) {
  * @param {HTMLElement} scrollbar The scrollbar's element
  * @param {HTMLElement} target Its target
  * @param {Number} y The Y value to assign
+ * @param {Number} duration The animation's duration, in miliseconds
  * @returns {void}
  */
-function setScrollbarY (scrollbar, target, y) {
+function setScrollbarY (scrollbar, target, y, duration) {
+  // If an animation is pending...
+  if (animating) {
+    // Get the arguments as an array
+    const args = Array.from(arguments);
+
+    // Ask to stop it
+    stopAnimationCallback = () => setScrollbarY(...args);
+
+    // Exit the function for now
+    return ;
+  }
+
+  // Indicate the page is being animated
+  animating = true;
+  console.log('Started');
+
   // Get the scrollbar's track (alias)
   const track = scrollbar;
 
   // Get the scrollbar's handle
   const handle = track.firstElementChild;
 
-  // Move the scrollbar
-  handle.style.marginTop = Math.min(
-    Math.max(
-      y,
-      0
-    ),
-
-    track.clientHeight - handle.clientHeight
-  ) + 'px';
-
-  // Get the scrollbar's purcentage (between 0 and 1)
-  const p = parseInt(handle.style.marginTop.replace(/px$/, '')) / (track.clientHeight - handle.clientHeight);
-
-  // Compute the Y position to scroll to
-  const scrollTo = Math.round(target.clientTop + p * (target.scrollHeight - window.innerHeight));
-
   // HACK: The `.scrollTop` property is not writable for <section> elements, strangely (tested on Chrome)
   // If it's a <section>...
   if (tagOf(target) === 'section')
-    // Scroll to it using the window
-    window.scrollTo(0, scrollTo);
-  else
-    // Else, scroll in it
-    target.scrollTop = scrollTo;
+    // Use instead the document element, which is correctly scrollable
+    target = document.documentElement;
+
+  // Get the initial Y position of the scrollbar
+  const startY = parseInt(handle.style.marginTop.replace(/px$/, ''));
+
+  // Compute the final Y position
+  const finalY = Math.round(
+    Math.min(
+      Math.max(
+        y,
+        0
+      ),
+
+      track.clientHeight - handle.clientHeight
+    )
+  );
+
+  /**
+   * Update the scrollbar's position as well as it's target's one
+   * @param {Boolean} lastFrame Indicate if the function must exit after this frame
+   * @returns {void}
+   */
+  function animate (lastFrame = false) {
+    // Compute elapsed time
+    const elapsed = Math.round(performance.now() - started);
+
+    // Increase the frame counter
+    frame ++;
+
+    // Compute its new Y position
+    const currentY = Math.floor(Math.min(
+      Math.max(
+        lastFrame ? finalY : startY + Math.min(f(elapsed / duration), 1) * (finalY - startY),
+        0
+      ),
+
+      track.clientHeight - handle.clientHeight
+    ));
+
+    // If no movement has been done during this frame...
+    if (currentY === lastY)
+      // Mark this frame as motionless
+      motionlessFrames.push(frame + 1 /* Starts at 1 */);
+
+    // Memorize the last position
+    lastY = currentY;
+
+    // Move the scrollbar
+    handle.style.marginTop = currentY + 'px';
+
+    // Get the scrollbar's purcentage (between 0 and 1)
+    const p = currentY / (track.clientHeight - handle.clientHeight);
+
+    // Compute the Y position to scroll to, and then scroll to it
+    target.scrollTop = Math.round(target.clientTop + p * (target.scrollHeight - window.innerHeight));
+
+    // If the animation must be stopped now...
+    if (stopAnimationCallback) {
+      // If the animation is not finished yet...
+      if (currentY !== finalY)
+        // Request a last frame to conclude the animation
+        requestFrame(() => animate(true));
+      else {
+        // Animation has ended
+        animating = false;
+
+        // Else, get the callback
+        const callback = stopAnimationCallback;
+
+        // Remove it from the indicator
+        stopAnimationCallback = null;
+
+        // Run it
+        callback();
+      }
+
+      // Exit the function
+      return ;
+    }
+
+    // Compute elapsed time again (update)
+    // If the animation is not finished yet...
+    if (Math.round(performance.now() - started) <= duration)
+      // Request a new frame
+      // NOTE: `requestFrame(animate);` would have introduce a bug because the callback receives
+      //        an argument - and we don't one as it indicates the last frame
+      requestFrame(() => animate());
+    // Else, if the duration has been reached but the animation is still not finished...
+    else if (currentY !== finalY && ! lastFrame)
+      // Request a last frame to conclude the animation
+      requestFrame(() => animate(true));
+    else {
+      // Animation has ended
+      animating = false;
+      console.log('Finished');
+
+      // Debug
+      console.debug(`Moved by ${Math.round(finalY - startY)} pixels in ${duration} ms using ${frame} frames.`);
+
+      // If there were more than 10 motionless frames...
+      if (motionlessFrames.length > 10)
+        // Display a warning
+        console.warn(
+          `WARNING: ${motionlessFrames.length} motionless frames have been detected.\n` +
+          `Frames number: ` + motionlessFrames.slice(0, 10).join(';') +
+          (motionlessFrames.length > 10 ? ` (${motionlessFrames.length - 10} other frames)` : '')
+        );
+
+      // Exit the function
+      return;
+    }
+  }
+
+  // Set up a frames counter
+  let frame = 0;
+
+  // Set up a motionless frames counter
+  let motionlessFrames = [];
+
+  // Memorize the last Y position
+  let lastY = startY;
+
+  // Set up an animation function (ease-in-out-cubic)
+  const f = t => t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+  
+  // Start the timer
+  const started = performance.now();
+
+  // Launch the animation
+  requestFrame(() => animate());
 }
 
 /**
@@ -998,6 +1127,20 @@ for (let link of nav_links) {
   // When it is clicked...
   link.addEventListener('click', get(link));
 }
+
+// Get the animation frame requesting function
+const requestFrame = window.requestAnimationFrame ||
+                     window.mozRequestAnimationFrame ||
+                     window.webkitRequestAnimationFrame ||
+                     window.msRequestAnimationFrame ||
+                     window.setImmediate ||
+                     (c => setTimeout(c, 0));
+
+// Is the page being animated?
+let animating = false;
+
+// Make a variable to store the callback to run after the current animation
+let stopAnimationCallback = null;
 
 // Make a variable to store the current section
 let currentSection;
@@ -1258,27 +1401,27 @@ window.addEventListener('keydown', e => {
   // If the "arrow up" key was pressed...
   else if (e.keyCode === 38)
     // Move up 40 pixels
-    moveScrollbarBy(articleScrollbar, currentSection, -40);
+    moveScrollbarBy(articleScrollbar, currentSection, -40, 50);
 
   // If the "arrow down" key was pressed...
   else if (e.keyCode === 40)
     // Move down 40 pixels
-    moveScrollbarBy(articleScrollbar, currentSection, 40);
+    moveScrollbarBy(articleScrollbar, currentSection, 40, 50);
 
   // If the "page up" key was pressed...
   else if (e.keyCode === 33)
     // Move up 75% of the screen
-    moveScrollbarBy(articleScrollbar, currentSection, - window.innerHeight * 0.75);
+    moveScrollbarBy(articleScrollbar, currentSection, - window.innerHeight * 0.75, 200);
 
   // If the "page down" key was pressed...
   else if (e.keyCode === 34)
     // Move down 75% of the screen
-    moveScrollbarBy(articleScrollbar, currentSection, window.innerHeight * 0.75);
+    moveScrollbarBy(articleScrollbar, currentSection, window.innerHeight * 0.75, 200);
 
   // If the "space bar" key was pressed...
   else if (e.keyCode === 32)
     // Move down (or up if the "shift" key was pressed too) 75% of the screen
-    moveScrollbarBy(articleScrollbar, currentSection, (e.shiftKey ? - 0.75 : 0.75) * window.innerHeight);
+    moveScrollbarBy(articleScrollbar, currentSection, (e.shiftKey ? - 0.75 : 0.75) * window.innerHeight, 200);
 
   else
     // No action is binded to this key
