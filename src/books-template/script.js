@@ -625,8 +625,9 @@ function search (query) {
           path: path.slice(0).filter(title => title !== null),
           // A link to this element
           linkTo: el,
-          // Indicate if the result was found in a title,
-          inTitle: isTitle,
+          // Indicate if the result was found in a title
+          // And its place in the path (the lowest, the more relevant)
+          inTitle: isTitle ? path.length - path.indexOf(el) : 0,
           // The result's relevance (= number of occurences)
           relevance: result[1] + extract[1]
         });
@@ -663,10 +664,10 @@ function search (query) {
 
   // Sort the results by decreasing relevance
   results = results.sort((a, b) => {
-    if (a.inTitle && ! b.inTitle)
+    if (a.inTitle > b.inTitle)
       return -1;
-    
-    if (b.inTitle && ! a.inTitle)
+
+    if (a.inTitle < b.inTitle)
       return 1;
 
     if (a.relevance > b.relevance)
