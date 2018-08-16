@@ -901,7 +901,7 @@ function setScrollbarY (scrollbar, target, y, duration, doNotAnimateScrollbar = 
       );
     else
       // Set a callback
-      data.callback = () => setScrollbarY(...Array.from(args));
+      data.callback = () => setScrollbarY(...Array.from(arguments));
 
     // Stop the animation
     data.stop = true;
