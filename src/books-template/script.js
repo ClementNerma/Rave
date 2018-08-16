@@ -65,7 +65,7 @@ function updateScrollbar (scrollbar, target) {
     window.innerHeight / target.scrollHeight * track.scrollHeight
   ) + 'px';
 
-  handle.style.marginTop = Math.floor(target.scrollTop / (target.scrollHeight - window.innerHeight) * (track.clientHeight - handle.clientHeight)) + 'px';
+  handle.style.marginTop = Math.round(target.scrollTop / (target.scrollHeight - window.innerHeight) * (track.clientHeight - handle.clientHeight)) + 'px';
 }
 
 /**
@@ -871,7 +871,7 @@ function setScrollbarY (scrollbar, target, y) {
   const p = parseInt(handle.style.marginTop.replace(/px$/, '')) / (track.clientHeight - handle.clientHeight);
 
   // Compute the Y position to scroll to
-  const scrollTo = Math.floor(target.clientTop + p * (target.scrollHeight - window.innerHeight));
+  const scrollTo = Math.round(target.clientTop + p * (target.scrollHeight - window.innerHeight));
 
   // HACK: The `.scrollTop` property is not writable for <section> elements, strangely (tested on Chrome)
   // If it's a <section>...
