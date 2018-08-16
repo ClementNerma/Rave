@@ -883,7 +883,6 @@ function setScrollbarY (scrollbar, target, y, duration) {
 
   // Indicate the page is being animated
   animating = true;
-  console.log('Started');
 
   // Get the scrollbar's track (alias)
   const track = scrollbar;
@@ -989,7 +988,6 @@ function setScrollbarY (scrollbar, target, y, duration) {
     else {
       // Animation has ended
       animating = false;
-      console.log('Finished');
 
       // Debug
       console.debug(`Moved by ${Math.round(finalY - startY)} pixels in ${duration} ms using ${frame} frames.`);
