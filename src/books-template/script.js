@@ -226,7 +226,7 @@ function restore (name, callback) {
 /**
  * Save an option to the local storage
  * @param {string} name The option's name
- * @param {Boolean} value The option's value
+ * @param {boolean} value The option's value
  * @returns {void}
  */
 function save (name, value) {
@@ -368,9 +368,9 @@ function search (query) {
   /**
    * Look for the query in an element
    * @param {HTMLElement} el An element
-   * @param {Number} startFrom The position to start the search at
-   * @param {Boolean} noLeftAbbrev Do not put a left abbreviation symbol ([...]) 
-   * @param {Number} limit The maximum number of characters
+   * @param {number} startFrom The position to start the search at
+   * @param {boolean} noLeftAbbrev Do not put a left abbreviation symbol ([...]) 
+   * @param {number} limit The maximum number of characters
    * @returns The search's result
    */
   function look (el, startFrom = 0, limit = 200, noLeftAbbrev = false) {
@@ -462,9 +462,9 @@ function search (query) {
   /**
    * Get an extract since an element
    * @param {HTMLElement} el An element
-   * @param {Number} startFrom The position to start the extract it
-   * @param {Number} length The number of characters to get
-   * @param {Boolean} noFirstLeftAbbrev Do not put a left abbreviation symbol ([...]) for the first element
+   * @param {number} startFrom The position to start the extract it
+   * @param {number} length The number of characters to get
+   * @param {boolean} noFirstLeftAbbrev Do not put a left abbreviation symbol ([...]) for the first element
    * @returns The extract (with the query highlighted in it)
    */
   function getExtract (el, startFrom = 0, length = Infinity, noFirstLeftAbbrev = false) {
@@ -832,8 +832,8 @@ function addScrollbar (name, getTarget, scrollFrom, mouseWheelFrom) {
  * Move the scrollbar by an amount given of pixels (Y axis)
  * @param {HTMLElement} scrollbar The scrollbar's element
  * @param {HTMLElement} target Its target
- * @param {Number} y The number of pixels to scroll down in the target (can be negative)
- * @param {Number} duration The animation's duration, in miliseconds
+ * @param {number} y The number of pixels to scroll down in the target (can be negative)
+ * @param {number} duration The animation's duration, in miliseconds
  * @returns {void}
  */
 function moveScrollbarBy (scrollbar, target, y, duration) {
@@ -861,8 +861,8 @@ function moveScrollbarBy (scrollbar, target, y, duration) {
  * Set a scrollbar's position (also updates its target)
  * @param {HTMLElement} scrollbar The scrollbar's element
  * @param {HTMLElement} target Its target
- * @param {Number} y The Y value to assign
- * @param {Number} duration The animation's duration, in miliseconds
+ * @param {number} y The Y value to assign
+ * @param {number} duration The animation's duration, in miliseconds
  * @returns {void}
  */
 function setScrollbarY (scrollbar, target, y, duration) {
@@ -910,7 +910,7 @@ function setScrollbarY (scrollbar, target, y, duration) {
 
   /**
    * Update the scrollbar's position as well as it's target's one
-   * @param {Boolean} lastFrame Indicate if the function must exit after this frame
+   * @param {boolean} lastFrame Indicate if the function must exit after this frame
    * @returns {void}
    */
   function animate (lastFrame = false) {
