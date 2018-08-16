@@ -1384,7 +1384,7 @@ window.addEventListener('resize', () => {
 });
 
 // When the page is scrolled...
-window.addEventListener('scroll', refreshActive);
+document.documentElement.addEventListener('scroll', refreshActive);
 
 // When a key is pressed...
 window.addEventListener('keydown', e => {
