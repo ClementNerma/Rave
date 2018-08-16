@@ -333,7 +333,7 @@ self = {
     }
 
     // Load the JavaScript minifier
-    const babel = require('babel-core');
+    const uglify = require('uglify-es');
 
     // Load the CSS minifier
     const cleanCSS = new (require('clean-css'));
@@ -344,20 +344,7 @@ self = {
       js: {
         left: '<script type="text/javascript">',
         right: '</script>',
-        release: str => babel.transform(str, {
-          presets: [
-            [
-              'env',
-              {
-                targets: {
-                  browsers: ['last 5 versions']
-                }
-              }
-            ],
-
-            'minify'
-          ]
-        }).code
+        release: str => uglify.minify(str).code
       },
 
       // CSS

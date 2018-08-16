@@ -472,14 +472,10 @@ function search (query) {
    */
   function getExtract (el, startFrom = 0, length = Infinity, noFirstLeftAbbrev = false) {
     // The extract
-    let output = null;
-    // HACK: Special syntax to avoid an 'undefined' variable error with Babel's minifier
-    output = document.createElement('p');
+    let output = document.createElement('p');
 
     // The number of occurences
-    let occurences = null;
-    // HACK: Special syntax to avoid an 'undefined' variable error with Babel's minifier
-    occurences = 0;
+    let occurences = 0;
 
     // Is it the first element?
     let firstElement = true;
