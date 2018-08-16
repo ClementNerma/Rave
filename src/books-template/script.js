@@ -1185,7 +1185,7 @@ else
   showSection(sections[0].getAttribute('data-slug'));
 
 // When the page is scrolled...
-window.addEventListener('scroll', () => refreshActive());
+window.addEventListener('scroll', refreshActive);
 
 // When a key is pressed...
 window.addEventListener('keydown', e => {
