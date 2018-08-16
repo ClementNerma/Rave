@@ -424,6 +424,10 @@ body.dark #search-box > input {
   color: #c5c5c5;
 }
 
+body.dark #search-box .abbrev-symbol::after {
+  color: #ffb454;
+}
+
 /* Stylesheet for desktop devices and large-width mobile devices */
 @media screen and (min-width: 641px) {
   #previous, #next {
