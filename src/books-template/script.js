@@ -1037,7 +1037,10 @@ for (let title of qa('h1, h2, h3, h4, h5, h6'))
     title.setAttribute('data-id', id);
   }
 
-// Get the animation frame requesting function
+/**
+ * Request an animation frame
+ * @type {Function}
+ */
 const requestFrame = window.requestAnimationFrame ||
                      window.mozRequestAnimationFrame ||
                      window.webkitRequestAnimationFrame ||
@@ -1045,28 +1048,51 @@ const requestFrame = window.requestAnimationFrame ||
                      window.setImmediate ||
                      (c => setTimeout(c, 0));
 
-// Is the page being animated?
+/**
+ * Is the page being animated?
+ * @type {boolean}
+ */
 let animating = false;
 
-// Make a variable to store the callback to run after the current animation
+/**
+ * The callback to run after the current animation
+ */
 let stopAnimationCallback = null;
 
-// Make a variable to store the current section
+/**
+ * The current section
+ * @type {HTMLElement}
+ */
 let currentSection;
 
-// Make a variable to store the current section's number
+/**
+ * The current section's ID
+ * @type {number}
+ */
 let currentSectionID;
 
-// Make a variable to indicate if the search bar just caught a keydown event
+/**
+ * Did the search bar just caught a key?
+ * @type {boolean}
+ */
 let justGotSearchKey = false;
 
-// Make a variable to store the last search's content
+/**
+ * The last search's content
+ * @type {string}
+ */
 let lastSearch = '';
 
-// Make a variable to store the updater of each scrollbar
+/**
+ * The updater associated to each scrollbar
+ * @type {Object.<HTMLElement, Function>}
+ */
 let scrollbarUpdaters = {};
 
-// Make a variable to store the callback associated to each link
+/**
+ * The callback associated to each link
+ * HTMLElement -> Function
+ */
 let linkCallback = new Map();
 
 // Get the list of all sections
