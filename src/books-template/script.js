@@ -7,6 +7,9 @@
 // Enable strict mode
 "use strict";
 
+// Get timestamp to measure performances later
+const started = performance.now();
+
 /**
  * Get an element using a query selector
  * @param {string} selector The selector
@@ -25,6 +28,31 @@ function q(selector) {
 function qa(selector) {
   // Make the query, convert its result to an array and return it
   return Array.from(document.querySelectorAll(selector));
+}
+
+/**
+ * Get an element's tag name (lowercase)
+ * @param {HTMLElement} el An element
+ * @returns The element's tag name (lowercase)
+ */
+function tagOf(el) {
+  return el.tagName.toLocaleLowerCase();
+}
+
+/**
+ * Update the scrollbar
+ * @param {HTMLElement} scrollbar The scrollbar to update
+ * @param {HTMLElement} target The scrollbar's target
+ * @returns {void}
+ */
+function updateScrollbar (scrollbar, target) {
+  // Update the handle's height
+  scrollbar.querySelector('div').style.height = Math.round(
+    window.innerHeight / target.scrollHeight * scrollbar.scrollHeight
+  ) + 'px';
+
+  // Update the handler's position
+  scrollbar.style.marginTop = Math.floor(target.scrollTop / (target.scrollTop - window.innerHeight)) + 'px';
 }
 
 /**
@@ -107,7 +135,7 @@ function showSection(id) {
     id = sections[id];
 
     // If no section has this ID...
-    if (!id)
+    if (! id)
       // Exit the function
       return;
   }
@@ -151,6 +179,9 @@ function showSection(id) {
 
   // Set the window's hash
   window.location.hash = '#' + currentSection.getAttribute('data-slug');
+
+  // Update the article scrollbar
+  scrollbarUpdaters.article();
 
   // Go to the beginning of this section
   window.scrollTo(0, 0);
@@ -242,6 +273,67 @@ function toggleSearchBar () {
     searchBar.focus();
 }
 
+/*
+  Adapted from Mozilla Developer's Network polyfill
+  Original code: https://developer.mozilla.org/en-US/docs/Web/Events/wheel#Listening_to_this_event_across_browser#Listening_to_this_event_across_browser
+*/
+
+/**
+ * Capture the mouse wheels' movements on an element
+ * @param {HTMLElement} elem The element to capture the mouse wheels' movements on
+ * @param {*} callback A callback to trigger when the mouse wheel is used on it 
+ * @param {*} useCapture Same parameter as for traditional event capturing
+ * @returns {void}
+ */
+function addWheelsListener(elem, callback, useCapture = false) {
+  // Detect the supported mouse wheel capture event
+  const eventName = 'onwheel' in document.createElement('div') ? 'wheel' : // Modern browsers support 'wheel'
+    document.onmousewheel !== undefined ? 'mousewheel' : // Webkit and IE support at least 'mousewheel'
+      'DOMMouseScroll'; // let's assume that remaining browsers are older Firefox
+
+  // Register the callback under another name for the 'DOMMouseScroll' event
+  if (eventName == 'DOMMouseScroll')
+    addWheelsListener(elem, eventName, 'MozMousePixelScroll', useCapture);
+
+  // Register the event listener on the provided element
+  elem[window.addEventListener ? 'addEventListener' : 'attachEvent'](
+    (window.addEventListener ? '' : 'on') + eventName,
+    eventName == 'wheel' ? callback : originalEvent => {
+      !originalEvent && (originalEvent = window.event);
+
+      // create a normalized event object
+      let event = {
+        // keep a ref to the original event object
+        originalEvent: originalEvent,
+        target: originalEvent.target || originalEvent.srcElement,
+        type: 'wheel',
+        deltaMode: originalEvent.type == 'MozMousePixelScroll' ? 0 : 1,
+        deltaX: 0,
+        deltaY: 0,
+        deltaZ: 0,
+        preventDefault: () => {
+          originalEvent.preventDefault ?
+            originalEvent.preventDefault() :
+            originalEvent.returnValue = false;
+        }
+      };
+
+      // Calculate deltaY (and deltaX) according to the event
+      if (eventName == 'mousewheel') {
+        event.deltaY = - 1 / 40 * originalEvent.wheelDelta;
+        // Webkit also supports wheelDeltaX
+        originalEvent.wheelDeltaX && (event.deltaX = - 1 / 40 * originalEvent.wheelDeltaX);
+      } else
+        event.deltaY = originalEvent.deltaY || originalEvent.detail;
+
+      // Trigger the callback with the event
+      return callback(event);
+
+    },
+    useCapture
+  );
+}
+
 /**
  * Perform a search in the current book
  * @param {string} query The text to look for
@@ -253,15 +345,6 @@ function search (query) {
 
   // Get the timestamp to measure performances
   const started = Date.now();
-
-  /**
-   * Get an element's tag name (lowercase)
-   * @param {HTMLElement} el An element
-   * @returns The element's tag name (lowercase)
-   */
-  function tagOf (el) {
-    return el.tagName.toLocaleLowerCase();
-  }
 
   /**
    * Look for the query in an element
@@ -645,6 +728,143 @@ function search (query) {
 }
 
 /**
+ * Add a scrollbar linked to an element
+ * @param {string} name The target's name ('data-target' attribute)
+ * @param {HTMLElement} getTarget A function to get the target element, real-time
+ * @param {HTMLElement} scrollFrom The element to handle the scroll from
+ * @param {HTMLElement} mouseWheelFrom The element to handle the mouse wheels from
+ */
+function addScrollbar (name, getTarget, scrollFrom, mouseWheelFrom) {
+  // Create the scrollbar's track
+  let track = document.createElement('div');
+  // Give it a target
+  track.setAttribute('data-target', name);
+  // Give it a class
+  track.classList.add('scrollbar');
+  
+  // Create the scrollbar's handle
+  let handle = document.createElement('div');
+  // By default, display it at the top
+  handle.style.marginTop = '0px';
+  // Append it to the track
+  track.appendChild(handle);
+
+  // Append it to the <body>
+  document.body.appendChild(track);
+
+  /* Movement handling */
+
+  // Is the scrollbar being moved?
+  // If so, contains the start Y position
+  let startY = false;
+
+  // The same, but with the scrollbar's Y position
+  let startScrollY = false;
+
+  // When it is clicked...
+  handle.addEventListener('mousedown', e => {
+    // It is now moving
+    startY = e.clientY;
+    startScrollY = parseInt(handle.style.marginTop.replace(/px$/, ''));
+
+    // Cancel the event
+    e.preventDefault();
+  });
+
+  // When the button is released anywhere on the page...
+  document.documentElement.addEventListener('mouseup', () => {
+    // It is not moving anymore
+    startY = false;
+    startScrollY = false;
+  });
+
+  // When the mouse is moved...
+  document.documentElement.addEventListener('mousemove', e => {
+    // If the scrollbar has not been registered as moving...
+    if (! startY)
+      // Ignore this event
+      return ;
+
+    // Move the scrollbar as well as its target
+    setScrollbarY(track, getTarget(), startScrollY + (e.clientY - startY));
+  });
+
+  /* Attach a scroll updater to the scrollbar */
+
+  // Set a scroll updater for this scrollbar
+  scrollbarUpdaters[name] = () =>
+    // Update the scrollbar
+    updateScrollbar(track, scrollFrom);
+
+  // Handle the element's scrolls
+  scrollFrom.addEventListener('scroll', scrollbarUpdaters[name]);
+
+  /* Handle mouse wheels */
+  
+  addWheelsListener(mouseWheelFrom, e => {
+    // Get the target element
+    let target = getTarget();
+
+    // HACK: The `.scrollTop` property is not writable for <section> elements, strangely (tested on Chrome)
+    // If the target is a <section>...
+    if (tagOf(target) === 'section')
+      // Replace it by the document element
+      target = document.documentElement;
+
+    // Move the scrollbar as well as its target
+    setScrollbarY(
+      track,
+      target,
+      // Get the scrollbar's current Y position
+      parseInt(handle.style.marginTop.replace(/px$/, '')) +
+        // Add it the relative move needed to make the container moving of the provided deltaY value
+        // e.g. if the mouse wheels move from 100px, calculate how many pixels the scrollbar have
+        //  to move from in order to make its target getting a 100px move
+        (e.deltaY / target.scrollHeight * track.clientHeight));
+  });
+}
+
+/**
+ * Set a scrollbar's position (also updates its target)
+ * @param {HTMLElement} scrollbar The scrollbar's element
+ * @param {HTMLElement} target Its target
+ * @param {Number} y The Y value to assign
+ * @returns {void}
+ */
+function setScrollbarY (scrollbar, target, y) {
+  // Get the scrollbar's track (alias)
+  const track = scrollbar;
+
+  // Get the scrollbar's handle
+  const handle = track.firstElementChild;
+
+  // Move the scrollbar
+  handle.style.marginTop = Math.min(
+    Math.max(
+      y,
+      0
+    ),
+
+    track.clientHeight - handle.clientHeight
+  ) + 'px';
+
+  // Get the scrollbar's purcentage (between 0 and 1)
+  const p = parseInt(handle.style.marginTop.replace(/px$/, '')) / (track.clientHeight - handle.clientHeight);
+
+  // Compute the Y position to scroll to
+  const scrollTo = Math.floor(target.clientTop + p * (target.scrollHeight - window.innerHeight));
+
+  // HACK: The `.scrollTop` property is not writable for <section> elements, strangely (tested on Chrome)
+  // If it's a <section>...
+  if (tagOf(target) === 'section')
+    // Scroll to it using the window
+    window.scrollTo(0, scrollTo);
+  else
+    // Else, scroll in it
+    target.scrollTop = scrollTo;
+}
+
+/**
  * Associate a value to a key
  * @param {*} key The key
  * @param {*} value The value to assign to the key
@@ -765,6 +985,9 @@ let justGotSearchKey = false;
 
 // Make a variable to store the last search's content
 let lastSearch = '';
+
+// Make a variable to store the updater of each scrollbar
+let scrollbarUpdaters = {};
 
 // Create a "previous" link
 let previous = document.createElement('a');
@@ -932,6 +1155,12 @@ let searchResults = document.createElement('div');
 // Append it to the search box
 searchBox.appendChild(searchResults);
 
+// Add a scrollbar to the summary
+addScrollbar('summary', () => summary, summary, summary);
+
+// Add a scrollbar to the content
+addScrollbar('article', () => currentSection, document.documentElement, article);
+
 // If a hash was specified in the URL
 // and if it targets an existing section...
 if (window.location.hash && q(`[data-slug="${window.location.hash.substr(1)}"]`))
@@ -977,5 +1206,15 @@ window.addEventListener('keydown', e => {
     toggleDarkMode();
 });
 
-// Now the page is ready, show it
+// Indicate the scripts are working
+document.body.setAttribute('data-scripts', 'true');
+
+// Show the page now it's ready
 document.body.style.display = 'block';
+
+// Update the scrollbars' height (requires the page to be visible)
+for (let name of Reflect.ownKeys(scrollbarUpdaters))
+  scrollbarUpdaters[name]();
+
+// Measure performances
+console.debug(`Script execution took ${Math.round(performance.now() - started)} ms.`);
