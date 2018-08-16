@@ -1222,6 +1222,11 @@ window.addEventListener('keydown', e => {
     return ;
   }
   
+  // If the control key and/or the alt key was pressed...
+  if (e.ctrlKey || e.altKey)
+    // Ignore this event
+    return ;
+
   // Was the key captured?
   let captured = true;
 
