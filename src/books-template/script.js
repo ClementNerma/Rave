@@ -406,9 +406,6 @@ function search (query) {
     // Get the element's text (lowercase)
     const lcText = elText.toLocaleLowerCase();
 
-    // Keep the start position positive
-    startFrom = Math.max(startFrom, 0);
-
     // For each character in this element...
     for (let i = startFrom; i < elText.length; i ++) {
       // If the query is found since this character...
@@ -583,15 +580,18 @@ function search (query) {
 
       // Look for the query (normalize spaces)...
       if (elText.includes(query)) {
+        // Get the index to start the search at
+        const startFrom = elText.indexOf(query) < 20 ? elText.indexOf(query) : elText.indexOf(query) - 20;
+
         // Perform a search and get the results
-        const result = look(el, elText.indexOf(query) - 20);
+        const result = look(el, startFrom);
 
         // An extract following this element
         const extract = isTitle ?
           // Titles: get the extract from the next element (200 characters)
           getExtract(el.nextElementSibling, 0, 200, true) :
           // Paragraphs: get the extract from this element (200 characters - the length of this result)
-          getExtract(el, elText.indexOf(query) - 20 + result[0].innerText.length, 200 - result[0].innerText.length, true);
+          getExtract(el, startFrom + result[0].innerText.length, 200 - result[0].innerText.length, true);
 
         // Compute the content to show in the results
         let content;
