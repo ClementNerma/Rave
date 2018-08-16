@@ -288,6 +288,9 @@ function toggleSummary () {
 
   // Save the summary's visilibity
   save('hidden-summary', document.body.classList.contains('full-width'));
+
+  // Because it slightly changes the article's height, update its scrollbar
+  scrollbarUpdaters.article();
 }
 
 /**
