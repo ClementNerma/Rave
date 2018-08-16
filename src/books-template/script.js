@@ -1201,9 +1201,13 @@ for (let link of nav_links) {
     showSection(parent);
 
     // If its target is not the section...
-    if (target !== parent)
+    if (target !== parent) {
       // Get its target and scroll to it
       q(`[data-id="${target}"]`).scrollIntoView();
+      
+      // Refresh the article's scrollbar
+      scrollbarUpdaters.article();
+    }
 
     // Another way to ignore the click
     return false;
