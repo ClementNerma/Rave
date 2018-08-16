@@ -3682,7 +3682,7 @@ Also, be aware that some languages use `this(...)` to call the current class' co
 
 A specificity about the constructor is that it is not inherited by default ; you will have to re-write your own constructor in every child class. But hopefully, it is possible to call the parent class' constructor, as we will see soon.
 
-Still, if you _really_ want to inherit the constructors of the parent class (e.g. in the case there are many constructors to re-define in the child class), you can still use the `#supercstr` directive, which inherits from the constructors of the direct mother class (not the constructors of the grand-mother class):
+Still, if you _really_ want to inherit the constructors of the parent class (e.g. in the case there are many constructors to re-define in the child class), you can still use the `super(<arguments>)` syntax, which retrieves the specified constructor of the direct mother class (but not from of the grand-mother class):
 
 ```sn
 class A {
@@ -3694,7 +3694,28 @@ class A {
 class B extends A {}
 
 class C extends A {
-  #supercstr;
+  super%(message: string);
+}
+
+// Doesn't inherit mother's constructors
+let b = new B('Hello !'); // ERROR (no such constructor)
+// Inherit them
+let c = new C('Hello !'); // Prints: 'Hello !'
+```
+
+To inherit all of them, we can use the `super%(...)` syntax:
+
+```sn
+class A {
+  public func %construct (message: string) {
+    println!(message);
+  }
+}
+
+class B extends A {}
+
+class C extends A {
+  super%(...);
 }
 
 // Doesn't inherit mother's constructors
