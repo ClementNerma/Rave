@@ -391,7 +391,7 @@ type Object = not Primitive;
  * Void type (primitive)
  */
 class void extends Primitive implements Randomizable, RandomizableWithBounds {
-  #supercstr;
+  super%(...);
 
   public static val NIL = null;
 
@@ -449,7 +449,7 @@ class void extends Primitive implements Randomizable, RandomizableWithBounds {
  * @classname(boolean)
  */
 class bool extends Primitive implements Randomizable, RandomizableWithBounds {
-  #supercstr;
+  super%(...);
 
   public static val NIL = false;
 
@@ -506,7 +506,7 @@ class bool extends Primitive implements Randomizable, RandomizableWithBounds {
  * Virtual number type (primitive)
  */
 virtual class number extends Primitive implements Randomizable, RandomizableWithBounds {
-  #supercstr;
+  super%(...);
 
   public static val NIL = 0; // i32
 
@@ -585,7 +585,7 @@ virtual class number extends Primitive implements Randomizable, RandomizableWith
  * @classname(virtual integer)
  */
 open class vint extends number {
-  #supercstr;
+  super%(...);
 
   final public static val HANDLE_FLOATS = false;
 }
@@ -595,7 +595,7 @@ open class vint extends number {
  * @classname(virtual signed integer)
  */
 open class vsint extends vint {
-  #supercstr;
+  super%(...);
 
   final public static val SIGNED = true;
 }
@@ -604,7 +604,7 @@ open class vsint extends vint {
  * 64-bit signed integer type (primitive)
  */
 open class i64 extends vsint {
-  #supercstr;
+  super%(...);
 
   public static val NIL = 0l;
 
@@ -619,7 +619,7 @@ open class i64 extends vsint {
  * 32-bit signed integer type (primitive)
  */
 open class i32 extends i64 {
-  #supercstr;
+  super%(...);
 
   public static val NIL = 0;
 
@@ -634,7 +634,7 @@ open class i32 extends i64 {
  * 16-bit signed integer type (primitive)
  */
 open class i16 extends i32 {
-  #supercstr;
+  super%(...);
 
   public static val NIL = 0s;
 
@@ -649,7 +649,7 @@ open class i16 extends i32 {
  * 8-bit signed integer type (primitive)
  */
 class i8 extends i16 {
-  #supercstr;
+  super%(...);
 
   public static val NIL = 0b;
 
@@ -665,7 +665,7 @@ class i8 extends i16 {
  * @classname(virtual unsigned integer)
  */
 open class vuint extends vint {
-  #supercstr;
+  super%(...);
 
   final public static val SIGNED = false;
 }
@@ -674,7 +674,7 @@ open class vuint extends vint {
  * 64-bit unsigned integer type (primitive)
  */
 open class u64 extends vuint {
-  #supercstr;
+  super%(...);
 
   public static val NIL = 0ul;
 
@@ -689,7 +689,7 @@ open class u64 extends vuint {
  * 32-bit unsigned integer type (primitive)
  */
 open class u32 extends u64 {
-  #supercstr;
+  super%(...);
 
   public static val NIL = 0u;
 
@@ -704,7 +704,7 @@ open class u32 extends u64 {
  * 16-bit unsigned integer type (primitive)
  */
 open class u16 extends u32 {
-  #supercstr;
+  super%(...);
 
   public static val NIL = 0us;
 
@@ -719,7 +719,7 @@ open class u16 extends u32 {
  * 8-bit unsigned integer type (primitive)
  */
 class u8 extends u16 {
-  #supercstr;
+  super%(...);
 
   public static val NIL = 0ub;
 
@@ -735,7 +735,7 @@ class u8 extends u16 {
  * Size is equal to the processor's number of bits
  */
 class usize extends uint {
-  #supercstr;
+  super%(...);
 
   public static val NIL = 0p;
 
@@ -751,7 +751,7 @@ class usize extends uint {
  * @classname(virtual signed float)
  */
 open class vfloat extends number {
-  #supercstr;
+  super%(...);
 
   final public static val SIGNED = true;
 
@@ -763,7 +763,7 @@ open class vfloat extends number {
  * @classname
  */
 open class f64 extends vfloat {
-  #supercstr;
+  super%(...);
 
   public static val SIZE = 64p;
 }
@@ -773,7 +773,7 @@ open class f64 extends vfloat {
  * @classname
  */
 class f32 extends f64 {
-  #supercstr;
+  super%(...);
 
   public static val SIZE = 32p;
 }
@@ -794,7 +794,7 @@ type uint = u32;
  * String type (primitive)
  */
 class string extends Primitive {
-  #supercstr;
+  super%(...);
 
   public static val NIL = '';
 
@@ -1414,7 +1414,7 @@ type SortableMap<K ~ Comparable, V ~ Comparable> = Map<K, V>;
 open class Set<K, V ~ Comparable> extends Map<K, V> {
   /** @classname */
 
-  #supercstr;
+  super%(...);
 
   /**
    * Associate a value to a key
@@ -1434,7 +1434,7 @@ open class Set<K, V ~ Comparable> extends Map<K, V> {
  * @classname(vector)
  */
 virtual dict Vector<T> extends Map<usize, T> {
-  #supercstr;
+  super%(...);
 
   /**
    * This @class's last element
@@ -1680,7 +1680,7 @@ type SerializableVector<T ~ Serializable> = Vector<T>;
  * @classname(array)
  */
 open dict Array<T> extends Vector<T> {
-  #supercstr;
+  super%(...);
 
   /**
    * The array's size
@@ -1712,7 +1712,7 @@ open dict Array<T> extends Vector<T> {
  * @classname(array)
  */
 dict Array<T, SIZE: usize> extends Vector<T> {
-  #supercstr;
+  super%(...);
 
   public val length = SIZE;
 }
@@ -1725,7 +1725,7 @@ dict Array<T, SIZE: usize> extends Vector<T> {
  * @classname(list)
  */
 dict List<T> extends Vector<T> {
-  #supercstr;
+  super%(...);
 
   /**
    * Get the last element from the list and remove it
@@ -2024,7 +2024,7 @@ open class Promise<X, Y> {
  * @template Y Rejection type
  */
 class Promise<X> extends Promise<X, void> {
-  #supercstr;
+  super%(...);
 
   /**
    * Make a new promise
