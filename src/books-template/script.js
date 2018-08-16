@@ -13,10 +13,16 @@
  */
 const DEBUG_MODE = false;
 
-// Get timestamp to measure performances later
+/**
+ * Timestamp at which the script started
+ * @type {number}
+ */
 const started = performance.now();
 
-// Is the page ready?
+/**
+ * Is the page ready?
+ * @type {boolean}
+ */
 let ready = false;
 
 /**
@@ -44,7 +50,7 @@ function q(selector) {
 /**
  * Make an array from a query selector's output
  * @param {string} selector The selector
- * @returns {Array<HTMLElement>} An HTML array
+ * @returns {Array.<HTMLElement>} An HTML array
  */
 function qa(selector) {
   // Make the query, convert its result to an array and return it
@@ -1069,7 +1075,10 @@ function setScrollbarY (scrollbar, target, y, duration, doNotAnimateScrollbar = 
   requestFrame(() => animate());
 }
 
-// Set up a regular expression to detect all non-breaking spaces
+/**
+ * Regular expression for detecting non-breaking spaces
+ * @type {RegExp}
+ */
 const nonBreakingSpaceRegExp = new RegExp(String.fromCharCode(160), 'g');
 
 // For each title in the page...
@@ -1133,14 +1142,20 @@ const requestFrame = window.requestAnimationFrame ||
 
 /**
  * Scrollbars' animation data
- * HTMLElement -> Object.<string, *>
+ * @type {Map.<HTMLElement, Object.<string, *>>}
  */
 let animations = new Map();
 
-// Get the list of all sections
+/**
+ * All sections of this book
+ * @type {Array.<HTMLElement>}
+ */
 const sections = qa('body > article section');
 
-// Get all of the summary's links
+/**
+ * All links of the summary
+ * @type {Array.<HTMLElement>}
+ */
 const nav_links = qa('nav a').slice(1) /* Ignore the main title */;
 
 // For each link in the summary...
@@ -1198,7 +1213,10 @@ for (let link of nav_links) {
   link.addEventListener('click', linkCallback.get(link));
 }
 
-// Create a "previous" link
+/**
+ * Link to the previous page
+ * @type {HTMLElement}
+ */
 let previous = document.createElement('a');
 // Set its ID
 previous.setAttribute('id', 'previous');
@@ -1209,7 +1227,10 @@ previous.addEventListener('click', () => showSection(currentSectionID - 1));
 // Append it to the page's body
 document.body.appendChild(previous);
 
-// Create a "next" link
+/**
+ * Link to the next page
+ * @type {HTMLElement}
+ */
 let next = document.createElement('a');
 // Set its ID
 next.setAttribute('id', 'next');
@@ -1259,12 +1280,22 @@ for (let block of qa('pre')) {
   block.appendChild(link);
 }
 
-// Store the summary's DOM element into a variable
+/**
+ * The summary (DOM)
+ * @type {HTMLElement}
+ */
 let summary = q('body > nav');
-// Store the article's DOM element into a variable
+
+/**
+ * The article (DOM)
+ * @type {HTMLElement}
+ */
 let article = q('body > article');
 
-// Create a button to hide the summary
+/**
+ * Button to toggle the summary
+ * @type {HTMLElement}
+ */
 let hideNav = document.createElement('a');
 // Give it an ID
 hideNav.setAttribute('id', 'hide-summary');
@@ -1277,7 +1308,10 @@ hideNav.addEventListener('click', toggleSummary);
 // Append it to the <body>
 document.body.appendChild(hideNav);
 
-// Create a button to toggle the dark mode
+/**
+ * Button to toggle the dark mode
+ * @type {HTMLElement}
+ */
 let darkModeToggle = document.createElement('a');
 // Give it an ID
 darkModeToggle.setAttribute('id', 'dark-toggle');
@@ -1296,7 +1330,10 @@ restore('hidden-summary', toggleSummary);
 // Restore the dark mode's state
 restore('dark-mode', toggleDarkMode);
 
-// Create a button to search in the book
+/**
+ * Button to toggle the search box
+ * @type {HTMLElement}
+ */
 let searchButton = document.createElement('a');
 // Give it an ID
 searchButton.setAttribute('id', 'search-button');
@@ -1309,7 +1346,10 @@ searchButton.addEventListener('click', toggleSearchBox);
 // Append it to the <body>
 document.body.appendChild(searchButton);
 
-// Create a search box
+/**
+ * The search box
+ * @type {HTMLElement}
+ */
 let searchBox = document.createElement('div');
 // Give it an ID
 searchBox.setAttribute('id', 'search-box');
@@ -1318,7 +1358,10 @@ searchBox.classList.add('hidden');
 // Append it to the <body>
 document.body.appendChild(searchBox);
 
-// Create a search bar
+/**
+ * The search bar
+ * @type {HTMLElement}
+ */
 let searchBar = document.createElement('input');
 // Give it a placeholder
 searchBar.setAttribute('placeholder', 'Search in this book...');
@@ -1364,7 +1407,10 @@ searchBar.addEventListener('input', () => {
 // Append it to the search box
 searchBox.appendChild(searchBar);
 
-// Create a container for the search's results
+/**
+ * Container for searches' results
+ * @type {HTMLElement}
+ */
 let searchResults = document.createElement('div');
 // Append it to the search box
 searchBox.appendChild(searchResults);
@@ -1372,7 +1418,10 @@ searchBox.appendChild(searchResults);
 // Add a scrollbar to the summary
 addScrollbar('summary', () => summary, summary, summary);
 
-// Add a scrollbar to the content
+/**
+ * Article's scrollbar
+ * @type {HTMLElement}
+ */
 let articleScrollbar = addScrollbar('article', () => currentSection, document.documentElement, article);
 
 // If a hash was specified in the URL
