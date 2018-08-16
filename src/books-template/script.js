@@ -1184,6 +1184,13 @@ else
   // Show the first section
   showSection(sections[0].getAttribute('data-slug'));
 
+// When the page is resized...
+window.addEventListener('resize', () => {
+  // Update the scrollbars (requires the page to be visible)
+  for (let name of Reflect.ownKeys(scrollbarUpdaters))
+    scrollbarUpdaters[name]();
+});
+
 // When the page is scrolled...
 window.addEventListener('scroll', refreshActive);
 
