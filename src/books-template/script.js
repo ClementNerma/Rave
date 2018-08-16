@@ -1228,7 +1228,7 @@ document.body.style.display = 'block';
 // Indicate the page is ready
 ready = true;
 
-// Update the scrollbars' height (requires the page to be visible)
+// Update the scrollbars (requires the page to be visible)
 for (let name of Reflect.ownKeys(scrollbarUpdaters))
   scrollbarUpdaters[name]();
 
