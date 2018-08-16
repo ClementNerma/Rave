@@ -197,11 +197,11 @@ function showSection(id) {
   // Set the window's hash
   window.location.hash = '#' + currentSection.getAttribute('data-slug');
 
-  // Update the article scrollbar
-  scrollbarUpdaters.article();
-
   // Go to the beginning of this section
   window.scrollTo(0, 0);
+
+  // Update the article scrollbar
+  scrollbarUpdaters.article();
 
   // If the page is ready...
   if (ready)
