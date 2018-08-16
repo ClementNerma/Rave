@@ -1225,6 +1225,11 @@ window.addEventListener('keydown', e => {
   if (e.keyCode === 68)
     // Toggle the dark mode
     toggleDarkMode();
+
+  // If the "f" (for "find") key was pressed...
+  if (e.keyCode === 70)
+    // Toggle the search bar
+    toggleSearchBar();
 });
 
 // Indicate the scripts are working
