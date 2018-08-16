@@ -115,9 +115,13 @@ function refreshActive() {
       document.body.offsetWidth,
       document.documentElement.offsetWidth,
       document.documentElement.clientWidth
-    ) > 640)
+    ) > 640) {
       // Scroll to the current part's link to always keep it visible
       link.scrollIntoView();
+
+      // Update the summary's scrollbar
+      scrollbarUpdaters.summary();
+    }
   }
 
   // For each title in the current section (reversed order to start from the bottom of the section)...
@@ -816,9 +820,6 @@ function addScrollbar (name, getTarget, scrollFrom, mouseWheelFrom) {
   scrollbarUpdaters[name] = () =>
     // Update the scrollbar
     updateScrollbar(track, scrollFrom);
-
-  // Handle the element's scrolls
-  scrollFrom.addEventListener('scroll', scrollbarUpdaters[name]);
 
   /* Handle mouse wheels */
   
