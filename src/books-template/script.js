@@ -161,13 +161,13 @@ function showSection(id) {
       return void (window.scrollTo(0, 0));
 
     // Hide the current section
-    currentSection.classList.add('inactive');
+    currentSection.classList.remove('active');
   }
 
   // Set the new current section
   currentSection = (id instanceof HTMLElement) ? id : q(`section[data-slug="${id}"]`);
   // Show this one
-  currentSection.classList.remove('inactive');
+  currentSection.classList.add('active');
 
   // Save its number
   currentSectionID = sections.indexOf(currentSection);
@@ -929,11 +929,6 @@ for (let title of qa('h1, h2, h3, h4, h5, h6'))
 
 // Get the list of all sections
 const sections = qa('body > article section');
-
-// For each section of the book...
-for (let section of sections)
-  // Hide it
-  section.classList.add('inactive');
 
 // Get all of the summary's links
 const nav_links = qa('nav a').slice(1) /* Ignore the main title */;
