@@ -890,7 +890,7 @@ function setScrollbarY (scrollbar, target, y, duration, doNotAnimateScrollbar = 
 
     // If the scroll direction is the same...
     if ((data.end > data.start && y > data.start) ||
-        (data.end < data.start && y < data.start)) {
+        (data.end < data.start && y < data.start))
       // Set a callback
       data.callback = () => setScrollbarY(
         scrollbar,
@@ -899,19 +899,12 @@ function setScrollbarY (scrollbar, target, y, duration, doNotAnimateScrollbar = 
         duration,
         doNotAnimateScrollbar
       );
-
-      // Stop the animation
-      data.stop = true;
-    } else {
-      // Get this function's arguments, as an array
-      const args = Array.from(arguments);
-
+    else
       // Set a callback
-      data.callback = () => setScrollbarY(...args);
+      data.callback = () => setScrollbarY(...Array.from(args));
 
-      // Stop the animation
-      data.stop = true;
-    }
+    // Stop the animation
+    data.stop = true;
 
     // Debug
     console.debug(`Replaced active animation for a scrollbar (target: "${scrollbar.getAttribute('data-target')}")`);
