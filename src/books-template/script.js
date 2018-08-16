@@ -866,20 +866,11 @@ function moveScrollbarBy (scrollbar, target, y, duration) {
  * @returns {void}
  */
 function setScrollbarY (scrollbar, target, y, duration) {
-  // If an animation is pending...
-  if (animating) {
-    // Get the arguments as an array
-    const args = Array.from(arguments);
-
-    // Ask to stop it
-    stopAnimationCallback = () => setScrollbarY(...args);
-
-    // Exit the function for now
-    return ;
-  }
-
-  // Indicate the page is being animated
-  animating = true;
+  // HACK: The `.scrollTop` property is not writable for <section> elements, strangely (tested on Chrome)
+  // If it's a <section>...
+  if (tagOf(target) === 'section')
+    // Use instead the document element, which is correctly scrollable
+    target = document.documentElement;
 
   // Get the scrollbar's track (alias)
   const track = scrollbar;
@@ -887,26 +878,59 @@ function setScrollbarY (scrollbar, target, y, duration) {
   // Get the scrollbar's handle
   const handle = track.firstElementChild;
 
-  // HACK: The `.scrollTop` property is not writable for <section> elements, strangely (tested on Chrome)
-  // If it's a <section>...
-  if (tagOf(target) === 'section')
-    // Use instead the document element, which is correctly scrollable
-    target = document.documentElement;
-
-  // Get the initial Y position of the scrollbar
+  // Compute the initial Y position
   const startY = parseInt(handle.style.marginTop.replace(/px$/, ''));
 
-  // Compute the final Y position
-  const finalY = Math.round(
-    Math.min(
-      Math.max(
-        y,
-        0
-      ),
+  // If an animation is pending for this scrollbar...
+  if (animations.get(scrollbar)) {
+    // Get the animation's data
+    const data = animations.get(scrollbar);
 
-      track.clientHeight - handle.clientHeight
-    )
-  );
+    // If the scroll direction is the same...
+    if ((data.end > data.start && y > data.start) ||
+        (data.end < data.start && y < data.start)) {
+      // Set a callback
+      data.callback = () => setScrollbarY(
+        scrollbar,
+        target,
+        Math.round(Math.min(Math.max(data.end + (y - startY), 0), track.clientHeight - handle.clientHeight)),
+        duration
+      );
+
+      // Stop the animation
+      data.stop = true;
+    } else {
+      // Get this function's arguments, as an array
+      const args = Array.from(arguments);
+
+      // Set a callback
+      data.callback = () => setScrollbarY(...args);
+
+      // Stop the animation
+      data.stop = true;
+    }
+
+    // Debug
+    console.debug(`Replaced active animation for a scrollbar (target: "${scrollbar.getAttribute('data-target')}")`);
+
+    // Exit the function for now
+    return;
+  }
+
+  // Register the animation
+  animations.set(scrollbar, {
+    // Its start position
+    start: startY,
+
+    // Compute the final Y position
+    end: Math.round(Math.min(Math.max(y, 0), track.clientHeight - handle.clientHeight)),
+
+    // Must the animation stop now?
+    stop: false,
+
+    // Callback to run after the end of the animation
+    callback: null
+  });
 
   /**
    * Update the scrollbar's position as well as it's target's one
@@ -919,6 +943,12 @@ function setScrollbarY (scrollbar, target, y, duration) {
 
     // Increase the frame counter
     frame ++;
+
+    // Get up-to-date animation's data
+    const data = animations.get(scrollbar);
+
+    // Get the final Y position
+    const finalY = data.end;
 
     // Compute its new Y position
     const currentY = Math.floor(Math.min(
@@ -948,24 +978,9 @@ function setScrollbarY (scrollbar, target, y, duration) {
     target.scrollTop = Math.round(target.clientTop + p * (target.scrollHeight - window.innerHeight));
 
     // If the animation must be stopped now...
-    if (stopAnimationCallback) {
-      // If the animation is not finished yet...
-      if (currentY !== finalY)
-        // Request a last frame to conclude the animation
-        requestFrame(() => animate(true));
-      else {
-        // Animation has ended
-        animating = false;
-
-        // Else, get the callback
-        const callback = stopAnimationCallback;
-
-        // Remove it from the indicator
-        stopAnimationCallback = null;
-
-        // Run it
-        callback();
-      }
+    if (data.stop) {
+      // End the animation
+      endAnimation(data.callback);
 
       // Exit the function
       return ;
@@ -983,8 +998,8 @@ function setScrollbarY (scrollbar, target, y, duration) {
       // Request a last frame to conclude the animation
       requestFrame(() => animate(true));
     else {
-      // Animation has ended
-      animating = false;
+      // End the animation
+      endAnimation(data.callback);
 
       // Debug
       console.debug(`Moved by ${Math.round(finalY - startY)} pixels in ${duration} ms using ${frame} frames.`);
@@ -1003,6 +1018,21 @@ function setScrollbarY (scrollbar, target, y, duration) {
     }
   }
 
+  /**
+   * End the animation
+   * @param {Function} [callback] The callback to run
+   * @returns {void}
+   */
+  function endAnimation (callback) {
+    // Remove the animation's data
+    animations.delete(scrollbar);
+
+    // If there was a callback...
+    if (callback)
+      // Run it
+      callback();
+  }
+
   // Set up a frames counter
   let frame = 0;
 
@@ -1014,7 +1044,7 @@ function setScrollbarY (scrollbar, target, y, duration) {
 
   // Set up an animation function (ease-in-out-cubic)
   const f = t => t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-  
+
   // Start the timer
   const started = performance.now();
 
@@ -1036,28 +1066,6 @@ for (let title of qa('h1, h2, h3, h4, h5, h6'))
     // Give it a "data-id" attribute instead
     title.setAttribute('data-id', id);
   }
-
-/**
- * Request an animation frame
- * @type {Function}
- */
-const requestFrame = window.requestAnimationFrame ||
-                     window.mozRequestAnimationFrame ||
-                     window.webkitRequestAnimationFrame ||
-                     window.msRequestAnimationFrame ||
-                     window.setImmediate ||
-                     (c => setTimeout(c, 0));
-
-/**
- * Is the page being animated?
- * @type {boolean}
- */
-let animating = false;
-
-/**
- * The callback to run after the current animation
- */
-let stopAnimationCallback = null;
 
 /**
  * The current section
@@ -1094,6 +1102,23 @@ let scrollbarUpdaters = {};
  * HTMLElement -> Function
  */
 let linkCallback = new Map();
+
+/**
+ * Request an animation frame
+ * @type {Function}
+ */
+const requestFrame = window.requestAnimationFrame ||
+  window.mozRequestAnimationFrame ||
+  window.webkitRequestAnimationFrame ||
+  window.msRequestAnimationFrame ||
+  window.setImmediate ||
+  (c => setTimeout(c, 0));
+
+/**
+ * Scrollbars' animation data
+ * HTMLElement -> Object.<string, *>
+ */
+let animations = new Map();
 
 // Get the list of all sections
 const sections = qa('body > article section');
