@@ -10,6 +10,9 @@
 // Get timestamp to measure performances later
 const started = performance.now();
 
+// Is the page ready?
+let ready = false;
+
 /**
  * Get an element using a query selector
  * @param {string} selector The selector
@@ -46,6 +49,11 @@ function tagOf(el) {
  * @returns {void}
  */
 function updateScrollbar (scrollbar, target) {
+  // If the page is not ready yet...
+  if (! ready)
+    // Do not update
+    return ;
+
   // Get the track (alias)
   const track = scrollbar;
 
@@ -1216,6 +1224,9 @@ document.body.setAttribute('data-scripts', 'true');
 
 // Show the page now it's ready
 document.body.style.display = 'block';
+
+// Indicate the page is ready
+ready = true;
 
 // Update the scrollbars' height (requires the page to be visible)
 for (let name of Reflect.ownKeys(scrollbarUpdaters))
