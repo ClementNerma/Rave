@@ -7,11 +7,29 @@
 // Enable strict mode
 "use strict";
 
+/**
+ * Debug mode
+ * @type {boolean}
+ */
+const DEBUG_MODE = false;
+
 // Get timestamp to measure performances later
 const started = performance.now();
 
 // Is the page ready?
 let ready = false;
+
+/**
+ * Display a debug message
+ * @param {string} message The message to display
+ * @returns {void}
+ */
+function debug (message) {
+  // If the debug mode is enabled
+  if (DEBUG_MODE)
+    // Print the message in the console
+    console.debug(message);
+}
 
 /**
  * Get an element using a query selector
@@ -743,7 +761,7 @@ function search (query) {
   const renderingTook = Date.now() - startedRendering;
 
   // Log the performances
-  console.debug(
+  debug(
     `Performed a search (${query.length} bytes) : found ${results.length} results\n` +
     `Search took ${foundAfter} ms\n` +
     `Rendering took ${renderingTook} ms\n` +
@@ -1004,7 +1022,7 @@ function setScrollbarY (scrollbar, target, y, duration, doNotAnimateScrollbar = 
       endAnimation(data.callback);
 
       // Debug
-      console.debug(`Moved by ${Math.round(finalY - startY)} pixels in ${duration} ms using ${frame} frames.`);
+      debug(`Moved by ${Math.round(finalY - startY)} pixels in ${duration} ms using ${frame} frames.`);
 
       // If there were more than 10 motionless frames...
       if (motionlessFrames.length > 10)
@@ -1473,4 +1491,4 @@ for (let name of Reflect.ownKeys(scrollbarUpdaters))
   scrollbarUpdaters[name]();
 
 // Measure performances
-console.debug(`Script execution took ${Math.round(performance.now() - started)} ms.`);
+debug(`Script execution took ${Math.round(performance.now() - started)} ms.`);
