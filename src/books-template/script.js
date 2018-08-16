@@ -199,8 +199,10 @@ function showSection(id) {
   // Go to the beginning of this section
   window.scrollTo(0, 0);
 
-  // Refresh the active link in the summary
-  refreshActive();
+  // If the page is ready...
+  if (ready)
+    // Refresh the active link in the summary
+    refreshActive();
 }
 
 /**
@@ -1234,6 +1236,9 @@ document.body.style.display = 'block';
 
 // Indicate the page is ready
 ready = true;
+
+// Refresh the active link in the summary
+refreshActive();
 
 // Update the scrollbars (requires the page to be visible)
 for (let name of Reflect.ownKeys(scrollbarUpdaters))
