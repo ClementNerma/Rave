@@ -657,6 +657,11 @@ SYNTAX = {
           endCaptures: {}
         },
         [
+          // Inheritance of all mother's constructors
+          /(?<=super%)\s*\(\s*\.\.\.\s*\)/,
+          'orange'
+        ],
+        [
           // Iterating with key and value
           /(for)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\s*(->)\s*([a-zA-Z_\$][a-zA-Z0-9_\$]*)(?:\s+(in)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*))?\b/,
           'purple', 'cyan', 'purple', 'cyan', 'purple', 'orange'
