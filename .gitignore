@@ -1,4 +1,4 @@
-.dev/
+_.dev/
 node_modules/
 build/
 **/.tmp/
