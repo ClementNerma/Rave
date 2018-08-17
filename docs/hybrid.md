@@ -5906,13 +5906,16 @@ val result = try { divide(5, 0); } catch { println!(e.why()); };
 Note that this last block can also return a value. Thanks to this, if an error occurs, it is still possible to return an alternative value:
 
 ```sn
-val result = try { divide(5, 0); } catch () => {
+val result = try { divide(5, 0); } catch { -1f; }
+
+// With a callback (to run several instructions)
+val result = try { divide(5, 0); } catch () : f32 => {
   println!(e.why());
   return 0f;
 };
 ```
 
-This syntax is a little heavier but it also fixes the type of `result`. It won't be a `f32?` anymore but a strict `f32` because in all cases it receives a floating-point number.
+The second syntax is a little heavier as it uses a callback which cannot have an inferred return type. These two syntaxes also fix the type of `result`. It won't be a `f32?` anymore but a strict `f32` because in all cases it receives a floating-point number.
 
 Note that, if the `catch` block returns a different type than `try`'s one, it won't throw an error but use an _union type_, a concept we'll deal with later.
 
