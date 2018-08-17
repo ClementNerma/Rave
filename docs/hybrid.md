@@ -7882,6 +7882,28 @@ let c: A | Numerizable = new B();
 let d: Numerizable = d; // Works fine
 ```
 
+### Union values
+
+Union types are in reality part of a bigger concept called _union values_. Indeed, it's possible to make an union from other things than values, like strings. Here is an example:
+
+```sn
+type A: string = 'Hello' | 'World';
+
+<A> 'Hello'; // Works fine
+<A> 'World'; // Works fine
+<A> 'Hi';    // ERROR
+```
+
+When we write a type union, we in fact use a syntax sugar:
+
+```sn
+type A = string | number;
+// Strictly equivalent to:
+type A: Type = string | number;
+```
+
+Note that all values of an union must be plain, else an error will be thrown at build time.
+
 ### Anonymous classes
 
 Anonymous classes are for classes the equivalent of lambdas for functions. These are class, without a name, that are mainly used when they are used a single time.
