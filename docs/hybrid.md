@@ -7968,6 +7968,10 @@ for key of jack {
 }
 ```
 
+Note that this trick also works on classes, interfaces, etc.
+
+On tuples, the `keyof` type will be an union of `usize` values, between `0` and the tuple's length less 1.
+
 ### Anonymous classes
 
 Anonymous classes are for classes the equivalent of lambdas for functions. These are class, without a name, that are mainly used when they are used a single time.
