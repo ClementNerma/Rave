@@ -3824,10 +3824,6 @@ As you can see, the `Translation` class does not even exist, in reality. There i
 
 Because of the self-instanciation, such classes can't have a constructor, or if they have they must have an empty one (which takes no argument).
 
-#### Read-only classes
-
-Read-only classes are classes that can't be written from the outside of the class. All attributes must be set as read-only or be protected/private. Declaring public non-read-only attributes will result in an error.
-
 #### A little table
 
 |  Keyword  | Instanciable ? | Inheritable ? |
