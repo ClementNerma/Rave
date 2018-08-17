@@ -827,6 +827,11 @@ SYNTAX = {
           'purple'
         ],
         [
+          // The tuple type directive
+          /#tuple\b/,
+          'purple'
+        ],
+        [
           // All other directives are invalid
           /#([a-zA-Z_\$][a-zA-Z0-9_\$]+)( *;)?/,
           'invalid'
