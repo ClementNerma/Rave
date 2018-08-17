@@ -583,6 +583,11 @@ SYNTAX = {
           'cyan', 'green'
         ],
         [
+          // Shortened typechecking operator (alone)
+          /~/,
+          'cyan'
+        ],
+        [
           // Type exclusion
           /\bnot\b/,
           'purple'
