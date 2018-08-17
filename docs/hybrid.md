@@ -7115,27 +7115,24 @@ The final code is, in this specific case, perfectly optimized. But, that won't a
 
 Proxies allow to hide the real value of an assignable entity and to call a function when its value is read, written, or both. For example, we could imagine a variable called `counter` that can only be incremented by 1 each time. So, if it is equal to 3, we can only assign 4 to it, not 5 or 6. But we also want to be able to go back from 1 step, to go from 3 to 2 for example, but not from 3 to 1 directly.
 
-There are several signatures for proxies. Here is the most common, most complete (and most complex) one:
+There are several signatures for proxies. Here is the most common one:
 
 ```sn
-proxy var: some_class from {
-  value: T,
-  getter: func (v: T) : T,
-  setter: func (v: T, c: X) : void
+proxy var: X from {
+  getter: func () : T,
+  setter: func (c: Y) : void
 };
 ```
 
-With `X` being an arbitrary type. The object located just after the `from` keyword is called the _proxy model_.
+With `X` and `Y` being arbitrary types. The object located just after the `from` keyword is called the _proxy model_.
 
 In this example, we first declare the proxy entity using the `proxy` keyword and we follow it by a tuple.
 
-The first element (`some_element`) is a class: that's the _type_ of this assignable entity.
+The first element (`X`) is a class: that's the _type_ of this assignable entity.
 
-The second one is an instance of this type, which is the _hidden value_ of the element. Only the tuple's values can access it, it is hidden from the outside. Note that the type of the hidden value can be a child of the proxy's type (we can choose `Number` as the type and have an `int` value).
+The second one is a function called the _getter_ that is called when we ask to read the entity and returns the value corresponding to the entity.
 
-The third value is a function called the _getter_ that is called when we ask to read the entity and returns the value corresponding to the entity.
-
-The fourth member is a function called the _setter_ that is ran when we try to assign something to the entity. It takes a pointer to the _candidate value_, which is the value we are trying to assign to the entity.
+The third member is a function called the _setter_ that is ran when we try to assign something to the entity. It takes a pointer to the _candidate value_, which is the value we are trying to assign to the entity.
 
 The candidate value is not forced to have the same type than the proxy itself (that's why `X` is an arbitrary type). Also, this function can be polymorphed: it's perfectly possible to have a setter with a `string` candidate and a one with a `bool` candidate, for example.
 
