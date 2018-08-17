@@ -4896,22 +4896,22 @@ Dictionary classes are defined this way:
 ```sn
 // K = type for keys
 // V = type for values
-class Custom<K, V> extends Dictionary<K, V> {
+dict Custom<K, V> {
   // Code here
 }
 ```
 
-Dictionary classes have two specificities: first, they need to inherit from the `Dictionary<K, V>` interface, which considers `K` as being the type for the keys and `V` as the type for the values. This is in the case you would want to specify more than two templates, or invert them, etc. Secondly, we can use on them several syntax sugars, as we will see later.
-
-There is a shortened syntax to indicate more clearly we have a dictionary class:
+Dictionary classes have two specificities: first, they need to be defined using the `dict` keyword, which automatically make them implement from the `Dictionary<K, V>` interface. `K` is considered as being the type for the keys and `V` as the type for the values. To change this, it's also possible to manually implement this interface:
 
 ```sn
-dict Custom<K, V> {
-// Equivalent to:
-class Custom<K, V> extends Dictionary<K, V> {
+// V = type for keys
+// K = type for values
+dict Custom<V, K> implements Dictionary<K, V> {
+  // Code here
+}
 ```
 
-By convention, all dictionary classes use the `dict` keyword, even if they inherit from a class that is already a dictionary class itself.
+Secondly, we can use on them several syntax sugars, as we will see later.
 
 The members specified by the `Dictionary` interface are only overloads. These are `%get`, `%set`, `%size`, `%unset`, `%has`, `%keys` and `%values`, which are specific to dictionaries and can't be used in standard classes. All other overloads (like `%clone` or `%random`, even `%construct` and `%free`) can be implemented but are not required.
 
@@ -4951,14 +4951,6 @@ dict Custom<K, V> extends Map<K, V> {
 This will inherit all functions that comes with basic dictionaries, like `.filter()` or `.map()`. It will grant access to two protected members, `keys` and `values`, which are lists referring respectively to the dictionary's keys and its values, plus many additional functions and overloads.
 
 Also, because `Map<K, V>` inherits itself from `Dictionary<K, V>`, you won't have to specify this inheritance - `Map` always dit it.
-
-Note that we could have written our class using the `class` keyword:
-
-```sn
-class Custom<K, V> extends Map<K, V> {
-```
-
-This would work, but by convention we should always use `dict` for dictionary classes, as it's more explicit and avoid errors (forgetting to implement an overload...).
 
 #### Static templates
 
