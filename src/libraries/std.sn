@@ -2049,6 +2049,92 @@ unique class output {
   public func println (message: string);
 }
 
+// ==================== Native flexs ==================== //
+
+/**
+ * Print something in STDOUT
+ * @param content The content to print
+ */
+flex println (...content: Stringifyable) {
+  for item in content {
+    output.println(<string> content);
+  }
+}
+
+/**
+ * Get the type of a value
+ * @template T The value's type (auto-filled)
+ * @param value Any value
+ * @returns The provided value's type
+ */
+flex typeof<T> (value: T) : #pln<Type> {
+  return T;
+}
+
+/**
+ * Wrap a value inside an entity
+ * @template T The value's type (auto-filled)
+ * @param value The value to wrap
+ * @returns The same value, wrapped in an entity
+ */
+flex wrap<T> (value: T) : #pln<Type> {
+  let _wrapper = value;
+  return _wrapper;
+}
+
+/**
+ * Get the level of a reference
+ * @param ref A reference
+ * @returns The reference's level
+ */
+flex levelof (ref: *+ Any) : #pln<usize> {
+  return #__magic_levelof(ref);
+}
+
+/**
+ * Get the type of a reference's referred
+ * @template T The referred's type (auto-filled)
+ * @param ref A reference
+ * @returns The type of its referred
+ */
+flex typeof_ref<T> (ref: *+ T) : #pln<Type> {
+  return T;
+}
+
+/**
+ * Get a reference's referred
+ * @template T The referred's type (auto-filled)
+ * @param ref A reference
+ * @returns The provided reference's referred's type
+ */
+flex depointerize<T> (ref: *+ T) : T {
+  return #__magic_depointerize(ref);
+}
+
+/**
+ * Iterate through a reference's level
+ * @template T The referred's type (auto-filled)
+ * @param ref A reference
+ * @param callback An iteration callback
+ * > @param ref The reference, progressively depointerized
+ * > @param level The provided reference's level, decreasing (>= 1)
+ * @returns The reference's referred
+ */
+flex iter_ref<T> (ref: *+ T, callback: flex (ref: *+ T, level: #pln<usize>)) : T {
+  return #__magic_iter_ref(ref, callback);
+}
+
+/**
+ * Iterate through a tuple
+ * @param tuple The tuple to iterate on
+ * @param callback An iteration callback
+ * > @param index The current index
+ * > @param value The value associated to the provided index
+ */
+flex iter_tuple (tuple: #tuple, callback: flex (index: usize, value: Any) {
+  #__magic_iter_tuple(tuple, callback);
+});
+
 // ==================== Native plain constants ==================== //
 
 /**
