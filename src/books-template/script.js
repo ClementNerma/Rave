@@ -1591,27 +1591,27 @@ window.addEventListener('keydown', e => {
   // If the "arrow up" key was pressed...
   else if (e.keyCode === 38)
     // Move up 40 pixels
-    moveScrollbarBy(articleScrollbar, currentSection, -40, 50);
+    moveScrollbarBy(articleScrollbar, globalElement, -40, 50);
 
   // If the "arrow down" key was pressed...
   else if (e.keyCode === 40)
     // Move down 40 pixels
-    moveScrollbarBy(articleScrollbar, currentSection, 40, 50);
+    moveScrollbarBy(articleScrollbar, globalElement, 40, 50);
 
   // If the "page up" key was pressed...
   else if (e.keyCode === 33)
     // Move up 75% of the screen
-    moveScrollbarBy(articleScrollbar, currentSection, - window.innerHeight * 0.75, 200);
+    moveScrollbarBy(articleScrollbar, globalElement, - window.innerHeight * 0.75, 200);
 
   // If the "page down" key was pressed...
   else if (e.keyCode === 34)
     // Move down 75% of the screen
-    moveScrollbarBy(articleScrollbar, currentSection, window.innerHeight * 0.75, 200);
+    moveScrollbarBy(articleScrollbar, globalElement, window.innerHeight * 0.75, 200);
 
   // If the "space bar" key was pressed...
   else if (e.keyCode === 32)
     // Move down (or up if the "shift" key was pressed too) 75% of the screen
-    moveScrollbarBy(articleScrollbar, currentSection, (e.shiftKey ? - 0.75 : 0.75) * window.innerHeight, 200);
+    moveScrollbarBy(articleScrollbar, globalElement, (e.shiftKey ? - 0.75 : 0.75) * window.innerHeight, 200);
 
   else
     // No action is binded to this key
