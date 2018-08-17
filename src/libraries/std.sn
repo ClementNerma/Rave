@@ -2035,6 +2035,20 @@ class Promise<X> extends Promise<X, void> {
   public func %construct (core: func (resolve: func (data: X)));
 }
 
+// ==================== Output API ====================
+
+/**
+ * The output API
+ */
+unique class output {
+  /**
+   * Print something in STDOUT
+   * Adds a line break after the message
+   * @param message The message to print
+   */
+  public func println (message: string);
+}
+
 // ==================== Native plain constants ==================== //
 
 /**
