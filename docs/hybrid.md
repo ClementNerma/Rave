@@ -794,7 +794,7 @@ We give one additional template to `Array` here: `3` is the length of the array.
 
 ```sn
 // Inferred type allows us to omit the type
-let names = new Array<string, 3>;
+let names = new Array<string, 3>();
 // Short notation:
 let names: string[3];
 ```
@@ -807,9 +807,9 @@ Let's know see how we declare a list:
 
 ```sn
 // The fully explicit version
-let names: List<string> = new List<string>;
+let names: List<string> = new List<string>();
 // Inferred type version
-let names = new List<string>;
+let names = new List<string>();
 ```
 
 We can now use them as we saw previously.
@@ -818,8 +818,8 @@ Note that there is a common type for both lists and arrays, which are vectors:
 
 ```sn
 // Declare two vectors: a list and an array
-let array: string[] = new Array<string, 3>;
-let list: string[] = new List<string>;
+let array: string[] = new Array<string, 3>();
+let list: string[] = new List<string>();
 ```
 
 ### Structures
