@@ -7937,7 +7937,7 @@ takeHandler(new ~MouseClickHandler {
 The `~` symbol can be either followed by a class, an interface, or a trait. It can also mixes several of them by being followed by an intersection type:
 
 ```sn
-takeHandler(new ~MouseClickHandler & Stringifyable {
+takeHandler(new ~(MouseClickHandler & Stringifyable) {
   public func onClick () : void {
     println!('I\'ve been clicked!');
   }
