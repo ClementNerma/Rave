@@ -4029,6 +4029,23 @@ Still, our call to `.getThis()` will return a `Child` value 'disguised' in a `Mo
 
 Note that, if we had typed our `obj` entity as a `Child`, the return type of our call would have been a `Child`, as `_this` would have refer to the child class.
 
+#### Sub-typing with structures
+
+Structures support sub-typing in a simplier way: any structure that implements every member of another will be considered as its child. Note that, as for compatibility, the mutability and plainess must be respected. Here is an example:
+
+```sn
+struct A {
+  name: string;
+}
+
+class B {
+  name: string;
+  age: uint;
+}
+
+let test: A = B { name: 'Jack', age: 24u }; // Works fine
+```
+
 ### Safe typecasting
 
 Typecasting allows to convert a value from a given type to another. But typecasting can either be safe or unsafe.
