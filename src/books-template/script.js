@@ -143,10 +143,10 @@ function refreshActive() {
     // For unhandheld devices only...
     if (Math.max(
       document.body.scrollWidth,
-      document.documentElement.scrollWidth,
+      globalElement.scrollWidth,
       document.body.offsetWidth,
-      document.documentElement.offsetWidth,
-      document.documentElement.clientWidth
+      globalElement.offsetWidth,
+      globalElement.clientWidth
     ) > 640) {
       // Scroll to the current part's link to always keep it visible
       link.scrollIntoView();
@@ -831,14 +831,14 @@ function addScrollbar (name, target, globalScroll = false) {
   });
 
   // When the button is released anywhere on the page...
-  document.documentElement.addEventListener('mouseup', () => {
+  globalElement.addEventListener('mouseup', () => {
     // It is not moving anymore
     startY = false;
     startScrollY = false;
   });
 
   // When the mouse is moved...
-  document.documentElement.addEventListener('mousemove', e => {
+  globalElement.addEventListener('mousemove', e => {
     // If the scrollbar has not been registered as moving...
     if (! startY)
       // Ignore this event
@@ -1140,6 +1140,12 @@ for (let title of qa('h1, h2, h3, h4, h5, h6'))
     // Give it a "data-id" attribute instead
     title.setAttribute('data-id', id);
   }
+
+/**
+ * The "global" element (which covers the whole page but can be clicked through)
+ * @type {HTMLElement}
+ */
+let globalElement = (document.scrollingElement || document.documentElement);
 
 /**
  * The current section
@@ -1516,7 +1522,7 @@ addScrollbar('summary', summary);
  * Article's scrollbar
  * @type {HTMLElement}
  */
-let articleScrollbar = addScrollbar('article', document.documentElement, true);
+let articleScrollbar = addScrollbar('article', globalElement, true);
 
 // If a hash was specified in the URL
 // and if it targets an existing section...
@@ -1536,7 +1542,7 @@ window.addEventListener('resize', () => {
 });
 
 // When the page is scrolled...
-document.documentElement.addEventListener('scroll', refreshActive);
+globalElement.addEventListener('scroll', refreshActive);
 
 // When a key is pressed...
 window.addEventListener('keydown', e => {
