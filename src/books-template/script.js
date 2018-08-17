@@ -871,8 +871,16 @@ function addScrollbar (name, target, globalScroll = false) {
       // Else, indicate a scroll has just been caught
       justGotScroll = true;
 
+    // Get the Y movement to perform
+    let y = e.deltaY;
+
+    // HACK: Needs a multiplier on Firefox
+    if (y === 3 || y === -3)
+      // Multiply it to get ~ 100
+      y *= 33;
+
     // Move the scrollbar
-    moveScrollbarBy(track, target, e.deltaY, 200);
+    moveScrollbarBy(track, target, y, 200);
   });
 
   // Return the scrollbar
