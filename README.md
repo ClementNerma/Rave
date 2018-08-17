@@ -17,6 +17,10 @@ Currently, the SilverNight programming language, as well as all its resources, i
 
 The project's release model is described in the [Roadmap](ROADMAP.md) document.
 
+## Changelog
+
+The changelog can be found in the dedicated [CHANGELOG.md](CHANGELOG.md) document.
+
 ## Installation
 
 The compiler isn't ready yet, so there is no way currently to install it.
