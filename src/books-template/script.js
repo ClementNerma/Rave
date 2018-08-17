@@ -929,12 +929,6 @@ function moveScrollbarBy (scrollbar, target, y, duration) {
  * @returns {void}
  */
 function setScrollbarY (scrollbar, target, y, initialY, duration, doNotAnimateScrollbar = false) {
-  // HACK: The `.scrollTop` property is not writable for <section> elements, strangely (tested on Chrome)
-  // If it's a <section>...
-  if (tagOf(target) === 'section')
-    // Use instead the document element, which is correctly scrollable
-    target = document.documentElement;
-
   // Get the scrollbar's track (alias)
   const track = scrollbar;
 
