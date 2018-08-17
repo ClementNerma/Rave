@@ -3337,8 +3337,8 @@ Note that implemeting `%times` will automatically implement `%pow` as a successi
 
 There are though some operators that can't return any type. These are the logical operators, which must return a boolean. They are:
 
-* `%equal` (`==` / `is`)
-* `%inequal` (`!=` / `isnt`)
+* `%equal` (`==`)
+* `%inequal` (`!=`)
 * `%greater` (`>`)
 * `%smaller` (`<`)
 
