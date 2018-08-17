@@ -5906,15 +5906,15 @@ val result = try { divide(5, 0); } catch { println!(e.why()); };
 Note that this last block can also return a value. Thanks to this, if an error occurs, it is still possible to return an alternative value:
 
 ```sn
-val result = try { divide(5, 0); } catch () : f32 => {
+val result = try { divide(5, 0); } catch () => {
   println!(e.why());
-  return 0;
+  return 0f;
 };
 ```
 
 This syntax is a little heavier but it also fixes the type of `result`. It won't be a `f32?` anymore but a strict `f32` because in all cases it receives a floating-point number.
 
-Please note that the `catch` block must of course be of the same type of data than the `try` one, else an error will be thrown due to incompatible types.
+Note that, if the `catch` block returns a different type than `try`'s one, it won't throw an error but use an _union type_, a concept we'll deal with later.
 
 ## Pointers
 
