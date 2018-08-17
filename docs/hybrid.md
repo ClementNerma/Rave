@@ -7887,6 +7887,10 @@ let c: A | Numerizable = new B();
 let d: Numerizable = d; // Works fine
 ```
 
+#### With nullable types
+
+A given `T?` nullable type is in fact a shortened syntax for `(T | void)`.
+
 #### With `try` and `catch`
 
 The inline verison of `try` and `catch` specifically use union types:
