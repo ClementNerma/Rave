@@ -236,7 +236,7 @@ Note that instanciating the `Void` class (alias of `void`) will create a new ins
 
 ```sn
 // This declaration:
-let void1 = new Void();
+let void1 = new void();
 // Is equivalent to this one:
 let void1 = null;
 ```
