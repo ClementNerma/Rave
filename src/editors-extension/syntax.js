@@ -688,7 +688,7 @@ SYNTAX = {
         ],
         [
           // Keywords
-          /(?<!\.)\b(func|lambda|do|if|ift|else|elsif|for|while|loop|unless|until|break|continue|match|default|try|catch|finally|segment|delete|mut|let|val|pln|proxy\!?|public|protected|private|friend|static|abstract|final|unique|virtual|open|extern|readonly|in|keyof|export|return|async|iter|yield|flex|await|sync|resolve|reject|throw|with|new|include|namespace|struct|enum|class|type|dict|trait|interface|implements|throws|use|uses|extends|parentof|instanceof|instanceofsuper|scope|import|from|as|typepath)(?!\s*:)\b/,
+          /(?<!\.)\b(func|lambda|do|if|ift|else|elsif|for|while|loop|unless|until|break|continue|match|default|try|catch|finally|segment|delete|mut|let|val|pln|proxy\!?|public|protected|private|friend|static|abstract|final|unique|virtual|open|extern|readonly|in|of|keyof|export|return|async|iter|yield|flex|await|sync|resolve|reject|throw|with|new|include|namespace|struct|enum|class|type|dict|trait|interface|implements|throws|use|uses|extends|parentof|instanceof|instanceofsuper|scope|import|from|as|typepath)(?!\s*:)\b/,
           'purple'
         ],
         [
