@@ -844,7 +844,7 @@ function addScrollbar (name, target) {
       return ;
 
     // Move the scrollbar as well as its target
-    setScrollbarY(track, target, startScrollY + (e.clientY - startY), 200, true);
+    setScrollbarY(track, target, startScrollY + (e.clientY - startY), getScrollbarPosition(track), 200, true);
   });
 
   /* Attach a scroll updater to the scrollbar */
@@ -860,6 +860,15 @@ function addScrollbar (name, target) {
 
   // Return the scrollbar
   return track;
+}
+
+/**
+ * Get the Y position of a scrolbar
+ * @param {HTMLElement} scrollbar The scrollbar's element
+ * @returns {number} The scrollbar's Y position
+ */
+function getScrollbarPosition (scrollbar) {
+  return parseInt(scrollbar.querySelector('div').style.marginTop.replace(/px$/, ''))
 }
 
 /**
@@ -887,6 +896,7 @@ function moveScrollbarBy (scrollbar, target, y, duration) {
       // e.g. if the mouse wheels move from 100px, calculate how many pixels the scrollbar have
       //  to move from in order to make its target getting a 100px move
       (y / target.scrollHeight * scrollbar.clientHeight),
+    getScrollbarPosition(scrollbar),
     duration
   );
 }
@@ -896,11 +906,12 @@ function moveScrollbarBy (scrollbar, target, y, duration) {
  * @param {HTMLElement} scrollbar The scrollbar's element
  * @param {HTMLElement} target Its target
  * @param {number} y The Y value to assign
+ * @param {number} initialY The scrollbar's current Y position
  * @param {number} duration The animation's duration, in miliseconds
  * @param {boolean} doNotAnimateScrollbar Do not animate the scrollbar's movement
  * @returns {void}
  */
-function setScrollbarY (scrollbar, target, y, duration, doNotAnimateScrollbar = false) {
+function setScrollbarY (scrollbar, target, y, initialY, duration, doNotAnimateScrollbar = false) {
   // HACK: The `.scrollTop` property is not writable for <section> elements, strangely (tested on Chrome)
   // If it's a <section>...
   if (tagOf(target) === 'section')
@@ -913,9 +924,6 @@ function setScrollbarY (scrollbar, target, y, duration, doNotAnimateScrollbar = 
   // Get the scrollbar's handle
   const handle = track.firstElementChild;
 
-  // Compute the initial Y position
-  const startY = parseInt(handle.style.marginTop.replace(/px$/, ''));
-
   // If an animation is pending for this scrollbar...
   if (animations.get(scrollbar)) {
     // Get the animation's data
@@ -923,18 +931,27 @@ function setScrollbarY (scrollbar, target, y, duration, doNotAnimateScrollbar = 
 
     // If the scroll direction is the same...
     if ((data.end > data.start && y > data.start) ||
-        (data.end < data.start && y < data.start))
+        (data.end < data.start && y < data.start)) {
+      // Update the staging position
+      // Set the staging position
+      staging = Math.round(Math.min(Math.max((staging || data.end) + (y - initialY), 0), track.clientHeight - handle.clientHeight));
+
       // Set a callback
       data.callback = () => setScrollbarY(
         scrollbar,
         target,
-        Math.round(Math.min(Math.max(data.end + (y - startY), 0), track.clientHeight - handle.clientHeight)),
+        staging,
+        initialY,
         duration,
         doNotAnimateScrollbar
       );
-    else
+    } else {
+      // Update the staging position
+      staging = y;
+
       // Set a callback
       data.callback = () => setScrollbarY(...Array.from(arguments));
+    }
 
     // Stop the animation
     data.stop = true;
@@ -942,6 +959,9 @@ function setScrollbarY (scrollbar, target, y, duration, doNotAnimateScrollbar = 
     // Exit the function for now
     return;
   }
+
+  // Compute the initial Y position
+  const startY = getScrollbarPosition(scrollbar);
 
   // Register the animation
   animations.set(scrollbar, {
@@ -1062,6 +1082,12 @@ function setScrollbarY (scrollbar, target, y, duration, doNotAnimateScrollbar = 
     // Remove the animation's data
     animations.delete(scrollbar);
 
+    // If there was a staging position
+    // and if this position was just reached...
+    if (staging !== null && getScrollbarPosition(scrollbar) === staging)
+      // Clear it
+      staging = null;
+
     // If there was a callback...
     if (callback)
       // Run it
@@ -1160,6 +1186,12 @@ const requestFrame = window.requestAnimationFrame ||
  * @type {Map.<HTMLElement, Object.<string, *>>}
  */
 let animations = new Map();
+
+/**
+ * The staging end position
+ * @type {number|void}
+ */
+let staging = null;
 
 /**
  * All sections of this book
