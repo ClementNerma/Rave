@@ -846,7 +846,7 @@ function addScrollbar (name, getTarget, scrollFrom, mouseWheelFrom) {
   // Set a scroll updater for this scrollbar
   scrollbarUpdaters[name] = () =>
     // Update the scrollbar
-    updateScrollbar(track, scrollFrom);
+    updateScrollbar(track, getTarget());
 
   /* Handle mouse wheels */
   
