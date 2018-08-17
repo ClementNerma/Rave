@@ -297,6 +297,11 @@ SYNTAX = {
           'yellow'
         ],
         [
+          // Ranges (numbers and/or entities)
+          /\b([a-zA-Z0-9_\$]+)\.\.\.?([a-zA-Z0-9_\$]+)\b/,
+          'orange'
+        ],
+        [
           // Plain boolean
           /\b(true|false)\b/,
           'orange'
