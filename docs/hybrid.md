@@ -7890,7 +7890,7 @@ c; // int | f32
 
 ### Union values
 
-Union types are in reality part of a bigger concept called _union values_. Indeed, it's possible to make an union from other things than values, like strings. Here is an example:
+Union values allow to create a type that accepts several values. Here is an example:
 
 ```sn
 type A: string = 'Hello' | 'World';
@@ -7900,15 +7900,9 @@ type A: string = 'Hello' | 'World';
 <A> 'Hi';    // ERROR
 ```
 
-When we write a type union, we in fact use a syntax sugar:
+The `A` type accepts any string that is either equal to `'Hello'` or `'World'`. That's a different concept than union types, which accept any _instance_ of any type of the union.
 
-```sn
-type A = string | number;
-// Strictly equivalent to:
-type A: Type = string | number;
-```
-
-Note that all values of an union must be plain, else an error will be thrown at build time.
+Note that all values of the union must be plain, else an error will be thrown at build time.
 
 ### Anonymous classes
 
