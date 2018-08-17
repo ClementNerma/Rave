@@ -7132,9 +7132,9 @@ The first element (`X`) is a class: that's the _type_ of this assignable entity.
 
 The second one is a function called the _getter_ that is called when we ask to read the entity and returns the value corresponding to the entity.
 
-The third member is a function called the _setter_ that is ran when we try to assign something to the entity. It takes a pointer to the _candidate value_, which is the value we are trying to assign to the entity.
+The third member is a function called the _setter_ that is ran when we try to assign something to the entity. It takes a _candidate value_, which is the value we are trying to assign to the entity.
 
-The candidate value is not forced to have the same type than the proxy itself (that's why `X` is an arbitrary type). Also, this function can be polymorphed: it's perfectly possible to have a setter with a `string` candidate and a one with a `bool` candidate, for example.
+The candidate value is not forced to have the same type than the proxy itself (that's why `Y` is an arbitrary type). Also, this function can be polymorphed: it's perfectly possible to have a setter with a `string` candidate and a one with a `bool` candidate, for example.
 
 Here is an example of our counter, made with a proxy:
 
