@@ -3,8 +3,6 @@
 SilverNight is a statically-typed multi-platform language. It aims to provide a unique language to make desktop applications, websites, web applications, and so on.
 It can be transpiled to JavaScript for the web, to Rust for thread-safe desktop applications and servers, to C++ for applications in need of speed, to Java for multi-platform software and to Swift for the iOS platform.
 
-## Please note this language is not finished yet ; some features could and WILL be added, modified or removed without any warning and at anytime. This project is still a draft at this point and no feature or part of the syntax is frozen. For more informations, see the release model below.
-
 ## State of the project
 
 Currently, the SilverNight programming language, as well as all its resources, including the books, tutorials, examples, build tools, toolchain, etc. are in a state of **draft**. This means no feature, part of the syntax, native resource or anything is frozen. The whole project can and will be modified without any delay, it is not suitable for everything else than an experimental use.
