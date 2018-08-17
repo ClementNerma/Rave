@@ -323,7 +323,7 @@ SYNTAX = {
         ],
         [
           // Plain hexadecimal numbers
-          /\b0_*x_*(([a-zA-Z0-9]_*)+)(\._*([a-zA-Z0-9]_*)+[pfd]?u?[bsl]?)\b/,
+          /\b0_*x_*(([a-fA-F0-9]_*)+)(\._*([a-fA-F0-9]_*)+)?(?:[pfd]?u?[bsl]?)\b/,
           'orange'
         ],
         [
