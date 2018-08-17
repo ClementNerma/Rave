@@ -971,7 +971,7 @@ println!(tuples[index1]); // ERROR
 println!(tuples[INDEX_2]); // Prints: 'Hello'
 ```
 
-Note that, as for arrays, tuples are considered as a single type (even if it can combine several values of different types). Also, tuples have the `Tuple` type, even though we can't do anything with it.
+Note that, as for arrays, tuples are considered as a single type (even if it can combine several values of different types).
 
 We can also check if a value is contained in a tuple using the `in` keyword:
 
@@ -2059,7 +2059,7 @@ We can now use the three entities. All of them has the `f32` type, as we used in
 
 Here, the return type of the return value **must** match the function's return type. If we try to return an integer in our function, it will throw an error. The same if we try to return a string.
 
-Also, even though functions can originally only return a single value, it's possible to cheat with tuples, as they are considered as a single value (`Tuple<T>` type):
+Also, even though functions can originally only return a single value, it's possible to cheat with tuples, as they are considered as a single value:
 
 ```sn
 func add (left: int, right: int) : (int, f32) {
@@ -6802,10 +6802,10 @@ Here, flexs are able to access their scope they are declared in (the scope of `H
 Another point: the `#pln<T>` typed. It's called a _templated type directive_, and only accepts plain values. Its goal is to be able to manipulate, for example, tuples:
 
 ```sn
-flex access_tuple_value (tuple: #pln<Tuple>, index: #pln<usize>) : Any {
+flex access_tuple_value (tuple: #tuple, index: #pln<usize>) : Any {
   // The following line works because:
   // - The length and type of every element in the tuple
-  //     are known as it's a plain tuple
+  //     are known as we know the tuple's signature
   // - 'index' is known as it's a plain number
   return tuple[index];
 }
@@ -6823,7 +6823,7 @@ Note that flexs can be expressed as a type, using `flex` instead of `func`, but 
 
 ```sn
 // Flex's signature
-flex iter_tuple (tuple: #pln<Tuple>, callback: flex (value: Any));
+flex iter_tuple (tuple: #tuple, callback: flex (value: Any));
 
 // Showcase
 iter_tuple!(('Hello', 24), flex (value: Any) {
