@@ -790,9 +790,10 @@ function search (query) {
  * Add a scrollbar linked to an element
  * @param {string} name The target's name ('data-target' attribute)
  * @param {HTMLElement} target The scrollbar's target
+ * @param {HTMLElement} globalScroll Is the target a global element?
  * @returns {HTMLElement} The scrollbar
  */
-function addScrollbar (name, target) {
+function addScrollbar (name, target, globalScroll = false) {
   // Create the scrollbar's track
   let track = document.createElement('div');
   // Give it a target
@@ -856,7 +857,23 @@ function addScrollbar (name, target) {
 
   /* Handle mouse wheels */
   
-  addWheelsListener(target, e => moveScrollbarBy(track, target, e.deltaY, 200));
+  addWheelsListener(target, e => {
+    // If the element uses a global scroll...
+    if (globalScroll) {
+      // If a scroll was just caught by another element...
+      if (justGotScroll) {
+        // Reset the indicator
+        justGotScroll = false;
+        // Ignore this event
+        return ;
+      }
+    } else
+      // Else, indicate a scroll has just been caught
+      justGotScroll = true;
+
+    // Move the scrollbar
+    moveScrollbarBy(track, target, e.deltaY, 200);
+  });
 
   // Return the scrollbar
   return track;
@@ -1163,6 +1180,12 @@ let lastSearch = '';
  * @type {Object.<HTMLElement, Function>}
  */
 let scrollbarUpdaters = {};
+
+/**
+ * Did a scrollbar just caught a scroll event?
+ * @type {boolean}
+ */
+let justGotScroll = false;
 
 /**
  * The callback associated to each link
@@ -1497,7 +1520,7 @@ addScrollbar('summary', summary);
  * Article's scrollbar
  * @type {HTMLElement}
  */
-let articleScrollbar = addScrollbar('article', document.documentElement);
+let articleScrollbar = addScrollbar('article', document.documentElement, true);
 
 // If a hash was specified in the URL
 // and if it targets an existing section...
