@@ -176,7 +176,7 @@ We can also declare '_plain constants_', which are explicit values that can be u
 
 ```sn
 val msg = 'Hello';
-pln hello = msg; // ERROR
+pln HELLO = msg; // ERROR
 ```
 
 The initialization value must be a _litteral_, which is an explicit value that is predictable without running the program.
@@ -963,12 +963,12 @@ Note that plain constants are still considered as plain data, so it's possible t
 // Constant
 val index1 = 1;
 // Plain constant
-pln index2 = 2;
+pln INDEX_2 = 2;
 
 // Constants won't work
 println!(tuples[index1]); // ERROR
 // But plain constants will
-println!(tuples[index2]); // Prints: 'Hello'
+println!(tuples[INDEX_2]); // Prints: 'Hello'
 ```
 
 Note that, as for arrays, tuples are considered as a single type (even if it can combine several values of different types). Also, tuples have the `Tuple` type, even though we can't do anything with it.
@@ -7359,9 +7359,9 @@ As you can see, it's a tuple of types. Only types contained in it can be plained
 Note that child of these types are also accepted ; for example, it's possible to write this:
 
 ```sn
-pln sum: func (a: int, b: int) : int = (a, b) => a + b;
+pln SUM: func (a: int, b: int) : int = (a, b) => a + b;
 
-println!(sum(2, 5)); // Prints: "7"
+println!(SUM(2, 5)); // Prints: "7"
 ```
 
 As all function types are children of `Function` itself.
