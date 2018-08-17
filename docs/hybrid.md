@@ -7870,6 +7870,24 @@ let c: A | Numerizable = new B();
 let d: Numerizable = d; // Works fine
 ```
 
+#### With `try` and `catch`
+
+The inline verison of `try` and `catch` specifically use union types:
+
+```sn
+let a = try { 0; } catch () { }; // 'int' and 'void'
+let b = try { 0; } catch () { 0; }; // 'int' and 'int'
+let c = try { 0; } catch () { 0f; }; // 'int' and 'f32'
+```
+
+Here is the type of each variable:
+
+```sn
+a; // int | void = int?
+b; // int | int  = int
+c; // int | f32
+```
+
 ### Union values
 
 Union types are in reality part of a bigger concept called _union values_. Indeed, it's possible to make an union from other things than values, like strings. Here is an example:
