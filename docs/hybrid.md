@@ -3879,68 +3879,7 @@ class Child extends Mother {
 }
 ```
 
-### Sub-typing
-
-Sub-typing is a very useful feature simply consisting in the following statement:
-
-Any children class will be accepted if one of its ancestors is required.
-
-To put it clearly: if a function asks for a `Vehicle` and we make a `Motorcycle` child class that inherits from `Vehicle`, the function will accept `Motorcycle` instances as well.
-
-Here is an example:
-
-```sn
-open class Vehicle {
-  public func accelerate () => println!('Vroom!');
-}
-
-class Motorcycle extends Vehicle {
-  public func accelerate () => println!('vroom vroom!');
-}
-
-func acceleration (vehicle: Vehicle) {
-  vehicle.accelerate();
-}
-
-acceleration(new Vehicle()); // Prints: 'Vroom!'
-acceleration(new Motorcycle()); // Prints: 'Vroom vroom!'
-```
-
-As you can see, if you call an overwritten method from the mother type, it will call the child class' method instead (that's why `.accelerate()` doesn't produce the same effect for both `Vehicle` and `Motorcycle` even though they are both considered as a `Vehicle`).
-
-Be aware though: when using a mother type, all members specific to its children classes becomes unavailable:
-
-```sn
-open class Vehicle {
-  public func accelerate () => println!('Vroom!');
-}
-
-class Motorcycle extends Vehicle {
-  public func accelerate () => println!('vroom vroom!');
-  public func stunt () => println!('Wow!');
-}
-
-val motorcycle: Vehicle = new Motorcycle();
-motorcycle.stunt(); // ERROR because `stunt` is not part of the `Vehicle` class
-```
-
-That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept. Also, note there is a way to ask for a specific type and not its children, thanks to the `#=T` directive:
-
-```sn
-func precise (vehicle: #=Vehicle) {
-  vehicle.accelerate();
-}
-
-let car        : Vehicle    = new Vehicle();
-let motorcycle1: Vehicle    = new Motorcycle();
-let motorcycle2: Motorcycle = new Motorcycle();
-
-println!(precise(car));         // Prints: 'Vroom!'
-println!(precise(motorcycle1)); // ERROR
-println!(precise(motorcycle2)); // ERROR
-```
-
-#### Sub-typing with structures
+### Structures compatibility
 
 Structures support sub-typing too, but in a very simplier way: any object that fully respects the structure's model is considered as being of the same type. Showcase:
 
@@ -4001,6 +3940,67 @@ let c: A = A {
 ```
 
 Writing the structure's name before the opening brace makes an automatic check to fit the structure's exact definition.
+
+### Sub-typing
+
+Sub-typing is a very useful feature simply consisting in the following statement:
+
+Any children class will be accepted if one of its ancestors is required.
+
+To put it clearly: if a function asks for a `Vehicle` and we make a `Motorcycle` child class that inherits from `Vehicle`, the function will accept `Motorcycle` instances as well.
+
+Here is an example:
+
+```sn
+open class Vehicle {
+  public func accelerate () => println!('Vroom!');
+}
+
+class Motorcycle extends Vehicle {
+  public func accelerate () => println!('vroom vroom!');
+}
+
+func acceleration (vehicle: Vehicle) {
+  vehicle.accelerate();
+}
+
+acceleration(new Vehicle()); // Prints: 'Vroom!'
+acceleration(new Motorcycle()); // Prints: 'Vroom vroom!'
+```
+
+As you can see, if you call an overwritten method from the mother type, it will call the child class' method instead (that's why `.accelerate()` doesn't produce the same effect for both `Vehicle` and `Motorcycle` even though they are both considered as a `Vehicle`).
+
+Be aware though: when using a mother type, all members specific to its children classes becomes unavailable:
+
+```sn
+open class Vehicle {
+  public func accelerate () => println!('Vroom!');
+}
+
+class Motorcycle extends Vehicle {
+  public func accelerate () => println!('vroom vroom!');
+  public func stunt () => println!('Wow!');
+}
+
+val motorcycle: Vehicle = new Motorcycle();
+motorcycle.stunt(); // ERROR because `stunt` is not part of the `Vehicle` class
+```
+
+That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept. Also, note there is a way to ask for a specific type and not its children, thanks to the `#=T` directive:
+
+```sn
+func precise (vehicle: #=Vehicle) {
+  vehicle.accelerate();
+}
+
+let car        : Vehicle    = new Vehicle();
+let motorcycle1: Vehicle    = new Motorcycle();
+let motorcycle2: Motorcycle = new Motorcycle();
+
+println!(precise(car));         // Prints: 'Vroom!'
+println!(precise(motorcycle1)); // ERROR
+println!(precise(motorcycle2)); // ERROR
+```
 
 #### Handling the `_this` keyword
 
