@@ -1,8 +1,8 @@
 # Changelog
 
-## [v0.2.0](https://github.com/ClementNerma/SilverNight-draft/commit/018e2254a41f99300c6eb27ac90d4c05b507ccf2)
+## [v0.1.0](https://github.com/ClementNerma/SilverNight-draft/commit/65fa064ae29f633cd36197f87c9120f7b56ea0f7)
 
-### Introducing
+### What's new
 
 * Introduce the `usize` type to handle indexes
 * Introduce number type suffixes
@@ -39,7 +39,7 @@
 * Introduce promises synchronisation (with the new `sync` keyword)
 * Introduce most documentation comments
 
-### Updating
+### Updates
 
 * Rename most number types
 * Make number types incompatible between them (except parent and children)
@@ -73,7 +73,7 @@
 * Introduce the `typeof_ref!`, `iter_ref!`, `levelof!` flexs
 * Require an explicit type for proxy models
 
-### Removing
+### Removed features
 
 * Remove logical operators aliases on values (`is`, `isnt`, `and`, `or`, `not`)
 * Remove structures' fields mutability compatibility (e.g. cannot use a constant field where a mutable is expected)
@@ -90,9 +90,9 @@
 * Remove support for the value item in proxies
 * Remove the old promises chaining syntax
 
-## [v0.0.0](https://github.com/ClementNerma/SilverNight-draft/commit/2168cc849a1207b80629acfb0c3fab879cdbeee3) - [v0.1.0](https://github.com/ClementNerma/SilverNight-draft/commit/65fa064ae29f633cd36197f87c9120f7b56ea0f7)
+## [v0.0.0](https://github.com/ClementNerma/SilverNight-draft/commit/2168cc849a1207b80629acfb0c3fab879cdbeee3)
 
-### Introducing
+### What's new
 
 * Introduce the concept of toolchain
 * Introduce the concept of builder
@@ -245,11 +245,3 @@
 * Introduce namespaces
 * Introduce sub-namespaces
 * Introduce the `\` symbol to access the top-level namespace
-
-### Updating
-
-_
-
-### Removing
-
-_
