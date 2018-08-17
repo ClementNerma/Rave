@@ -72,7 +72,7 @@ function tagOf(el) {
  * @param {HTMLElement} target The scrollbar's target
  * @returns {void}
  */
-function updateScrollbar (scrollbar, target, scrollFrom) {
+function updateScrollbar (scrollbar, target) {
   // If the page is not ready yet...
   if (! ready)
     // Do not update
@@ -97,7 +97,7 @@ function updateScrollbar (scrollbar, target, scrollFrom) {
     window.innerHeight / target.scrollHeight * track.scrollHeight
   ) + 'px';
 
-  handle.style.marginTop = Math.round(scrollFrom.scrollTop / (scrollFrom.scrollHeight - window.innerHeight) * (track.clientHeight - handle.clientHeight)) + 'px';
+  handle.style.marginTop = Math.round(target.scrollTop / (target.scrollHeight - window.innerHeight) * (track.clientHeight - handle.clientHeight)) + 'px';
 }
 
 /**
@@ -789,12 +789,10 @@ function search (query) {
 /**
  * Add a scrollbar linked to an element
  * @param {string} name The target's name ('data-target' attribute)
- * @param {HTMLElement} getTarget A function to get the target element, real-time
- * @param {HTMLElement} scrollFrom The element to handle the scroll from
- * @param {HTMLElement} mouseWheelFrom The element to handle the mouse wheels from
+ * @param {HTMLElement} target The scrollbar's target
  * @returns {HTMLElement} The scrollbar
  */
-function addScrollbar (name, getTarget, scrollFrom, mouseWheelFrom) {
+function addScrollbar (name, target) {
   // Create the scrollbar's track
   let track = document.createElement('div');
   // Give it a target
@@ -846,7 +844,7 @@ function addScrollbar (name, getTarget, scrollFrom, mouseWheelFrom) {
       return ;
 
     // Move the scrollbar as well as its target
-    setScrollbarY(track, getTarget(), startScrollY + (e.clientY - startY), 200, true);
+    setScrollbarY(track, target, startScrollY + (e.clientY - startY), 200, true);
   });
 
   /* Attach a scroll updater to the scrollbar */
@@ -854,11 +852,11 @@ function addScrollbar (name, getTarget, scrollFrom, mouseWheelFrom) {
   // Set a scroll updater for this scrollbar
   scrollbarUpdaters[name] = () =>
     // Update the scrollbar
-    updateScrollbar(track, getTarget(), scrollFrom);
+    updateScrollbar(track, target);
 
   /* Handle mouse wheels */
   
-  addWheelsListener(mouseWheelFrom, e => moveScrollbarBy(track, getTarget(), e.deltaY, 200));
+  addWheelsListener(target, e => moveScrollbarBy(track, target, e.deltaY, 200));
 
   // Return the scrollbar
   return track;
@@ -1460,27 +1458,14 @@ let searchResults = document.createElement('div');
 // Append it to the search box
 searchBox.appendChild(searchResults);
 
-/**
- * The middle Z element (between <body> and the rest of the page)
- * @type {HTMLElement}
- */
-let middleZ = document.createElement('div');
-// Give it an ID
-middleZ.setAttribute('id', 'middle-z');
-// Append it to the <body>
-document.body.appendChild(middleZ);
-
 // Add a scrollbar to the summary
-addScrollbar('summary', () => summary, summary, summary);
+addScrollbar('summary', summary);
 
 /**
  * Article's scrollbar
  * @type {HTMLElement}
  */
-let articleScrollbar = addScrollbar('article', () => currentSection, document.documentElement, article);
-
-// Handle mouse wheels on the middle Z element
-addWheelsListener(middleZ, e => moveScrollbarBy(articleScrollbar, currentSection, e.deltaY, 200));
+let articleScrollbar = addScrollbar('article', document.documentElement);
 
 // If a hash was specified in the URL
 // and if it targets an existing section...
