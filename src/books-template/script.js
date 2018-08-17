@@ -72,7 +72,7 @@ function tagOf(el) {
  * @param {HTMLElement} target The scrollbar's target
  * @returns {void}
  */
-function updateScrollbar (scrollbar, target) {
+function updateScrollbar (scrollbar, target, scrollFrom) {
   // If the page is not ready yet...
   if (! ready)
     // Do not update
@@ -97,7 +97,7 @@ function updateScrollbar (scrollbar, target) {
     window.innerHeight / target.scrollHeight * track.scrollHeight
   ) + 'px';
 
-  handle.style.marginTop = Math.round(target.scrollTop / (target.scrollHeight - window.innerHeight) * (track.clientHeight - handle.clientHeight)) + 'px';
+  handle.style.marginTop = Math.round(scrollFrom.scrollTop / (scrollFrom.scrollHeight - window.innerHeight) * (track.clientHeight - handle.clientHeight)) + 'px';
 }
 
 /**
@@ -854,7 +854,7 @@ function addScrollbar (name, getTarget, scrollFrom, mouseWheelFrom) {
   // Set a scroll updater for this scrollbar
   scrollbarUpdaters[name] = () =>
     // Update the scrollbar
-    updateScrollbar(track, getTarget());
+    updateScrollbar(track, getTarget(), scrollFrom);
 
   /* Handle mouse wheels */
   
@@ -1477,7 +1477,10 @@ addScrollbar('summary', () => summary, summary, summary);
  * Article's scrollbar
  * @type {HTMLElement}
  */
-let articleScrollbar = addScrollbar('article', () => currentSection, document.documentElement, middleZ);
+let articleScrollbar = addScrollbar('article', () => currentSection, document.documentElement, article);
+
+// Handle mouse wheels on the middle Z element
+addWheelsListener(middleZ, e => moveScrollbarBy(articleScrollbar, currentSection, e.deltaY, 200));
 
 // If a hash was specified in the URL
 // and if it targets an existing section...
