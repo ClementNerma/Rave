@@ -6823,7 +6823,7 @@ iter_tuple!(('Hello', 24), flex (value: Any) {
 });
 ```
 
-Note that flexs must be plain, meaning you can't store a flex in a variable to use it later (except in a plain constant, of course, and as an argument because flexs are implicitly plain).
+Note that flexs must be plain, meaning you can't store a flex in a variable to use it later. Though it's still possible to store it in a plain constant, there is an additional rule that forbids from being a function's argument - only a flex's one.
 
 Another particular point about flexs is that their return type can be a plain type:
 
