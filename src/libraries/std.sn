@@ -2035,17 +2035,6 @@ class Promise<X> extends Promise<X, void> {
   public func %construct (core: func (resolve: func (data: X)));
 }
 
-// ==================== Buffer type ==================== //
-
-/**
- * Buffer type
- */
-class Buffer {
-  /**
-   * 
-   */
-}
-
 // ==================== Native plain constants ==================== //
 
 /**
