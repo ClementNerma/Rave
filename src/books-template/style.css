@@ -29,6 +29,7 @@ nav {
   overflow: hidden;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
+  z-index: 3;
 }
 
 nav ul {
@@ -81,6 +82,7 @@ article {
   padding-right: 15%;
   line-height: 25px;
   color: rgb(51, 51, 51);
+  z-index: 3;
 }
 
 section {
@@ -200,6 +202,7 @@ th, td {
 }
 
 #previous, #next {
+  z-index: 4;
   padding: 10px;
   color: #ddd;
   text-align: center;
@@ -208,6 +211,7 @@ th, td {
 }
 
 #hide-summary {
+  z-index: 4;
   position: fixed;
   top: 10px;
   left: 350px;
@@ -220,6 +224,7 @@ th, td {
 }
 
 #dark-toggle {
+  z-index: 4;
   position: fixed;
   top: 10px;
   left: 380px;
@@ -232,6 +237,7 @@ th, td {
 }
 
 #search-button {
+  z-index: 4;
   position: fixed;
   top: 10px;
   left: 400px;
@@ -255,7 +261,7 @@ th, td {
   background-color: white;
   border: 1px solid black;
   box-shadow: 5px 5px 5px black;
-  z-index: 999;
+  z-index: 4;
 }
 
 #search-box > input {
@@ -303,6 +309,16 @@ th, td {
   color: darkgray;
 }
 
+#middle-z {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  z-index: 2;
+}
+
 /* Custom scrollbars */
 
 body[data-scripts="true"], body[data-scripts="true"] nav {
@@ -316,6 +332,7 @@ body[data-scripts="true"], body[data-scripts="true"] nav {
   bottom: 0;
   width: 18px;
   background-color: transparent;
+  z-index: 4;
 }
 
 .scrollbar div {

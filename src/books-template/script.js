@@ -1422,6 +1422,16 @@ let searchResults = document.createElement('div');
 // Append it to the search box
 searchBox.appendChild(searchResults);
 
+/**
+ * The middle Z element (between <body> and the rest of the page)
+ * @type {HTMLElement}
+ */
+let middleZ = document.createElement('div');
+// Give it an ID
+middleZ.setAttribute('id', 'middle-z');
+// Append it to the <body>
+document.body.appendChild(middleZ);
+
 // Add a scrollbar to the summary
 addScrollbar('summary', () => summary, summary, summary);
 
@@ -1429,7 +1439,7 @@ addScrollbar('summary', () => summary, summary, summary);
  * Article's scrollbar
  * @type {HTMLElement}
  */
-let articleScrollbar = addScrollbar('article', () => currentSection, document.documentElement, article);
+let articleScrollbar = addScrollbar('article', () => currentSection, document.documentElement, middleZ);
 
 // If a hash was specified in the URL
 // and if it targets an existing section...
