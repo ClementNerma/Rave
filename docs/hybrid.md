@@ -8116,8 +8116,8 @@ Let's now write the `readAsync()` function:
 func readAsync (path: string) : Promise<string, Error> {
   // Make a new promise and return it
   return new Promise<string, Error>(lambda (
-      resolve: func (content: string),
-      reject: func (err: Error)
+      resolveCallback: func (content: string),
+      rejectCallback: func (err: Error)
     ) {
 
     let content: string;
@@ -8129,11 +8129,11 @@ func readAsync (path: string) : Promise<string, Error> {
 
     catch (e) {
       // Failed
-      reject(e);
+      rejectCallback(e);
     }
 
     // Success
-    resolve(content);
+    resolveCallback(content);
   });
 }
 ```
@@ -8149,7 +8149,7 @@ Now we've seen the detailed syntax of this function, let's rewrite it with ICT:
 ```sn
 func readAsync (path: string) : Promise<string, Error> =>
   // Make a new promise and return it
-  new Promise<string, Error>((resolve, reject) => {
+  new Promise<string, Error>((resolveCallback, rejectCallback) => {
     // Read the file and handle errors
     let content: string;
 
@@ -8158,12 +8158,12 @@ func readAsync (path: string) : Promise<string, Error> =>
     }
 
     catch (e) {
-      reject(e);
+      rejectCallback(e);
     }
 
     // Resolve the promise if the reading worked fine
     if content != null {
-      resolve(content);
+      resolveCallback(content);
     }
   });
 }
@@ -8251,8 +8251,8 @@ takeAsyncCallback (async () => resolve 'Hello world!');
 Error-free promises are promises that cannot perform a reject. They don't have a `reject` callback and are defined like this:
 
 ```sn
-let promise = new Promise<string>((resolve) => {
-  resolve('Hello world!');
+let promise = new Promise<string>(resolveCallback => {
+  resolveCallback('Hello world!');
 });
 ```
 
