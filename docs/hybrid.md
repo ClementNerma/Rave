@@ -7925,6 +7925,49 @@ The `A` type accepts any string that is either equal to `'Hello'` or `'World'`. 
 
 Note that all values of the union must be plain, else an error will be thrown at build time.
 
+### Key of type
+
+It's possible to generate a type that will only accept field names of a given structure. This specific type can then be used to access the structure's fields like for a dictionary, and the return type will be an union of all structure's fields. Showcase:
+
+```sn
+// Declare a structure
+struct Hero {
+  name: string;
+  age: uint;
+}
+
+// Declare a variable only being able to contain one of its key
+val field: keyof Hero = 'name'; // 'name' | 'age'
+
+// Create a hero
+let jack = Hero { name: 'Jack', age: 24u };
+
+// Get its name
+jack[field]; // Returns a (string | uint) value
+
+println!(jack[field]); // Works (both types are stringifyable)
+```
+
+Note that `keyof` entities needs to be initialized:
+
+```sn
+val field: keyof Hero; // ERROR (missing initialization value)
+```
+
+Also, this syntax only allows us to **read** fields, not to write them:
+
+```sn
+jack[field] = 2; // ERROR
+```
+
+It's also possible to iterate through a structure, but only using a `for`...`of` loop. The iterator will then have the `keyof <obj>` type:
+
+```sn
+for key of jack {
+  println!(key); // Prints: 'name' then 'age'
+}
+```
+
 ### Anonymous classes
 
 Anonymous classes are for classes the equivalent of lambdas for functions. These are class, without a name, that are mainly used when they are used a single time.
