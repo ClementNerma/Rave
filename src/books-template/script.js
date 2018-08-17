@@ -78,6 +78,14 @@ function updateScrollbar (scrollbar, target) {
     // Do not update
     return ;
 
+  // If a scrollbar isn't required...
+  if (target.scrollHeight < window.innerHeight)
+    // Do not get a scrollbar
+    scrollbar.classList.add('hidden');
+  else
+    // Else, display one
+    scrollbar.classList.remove('hidden');
+
   // Get the track (alias)
   const track = scrollbar;
 
