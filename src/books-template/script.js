@@ -1115,6 +1115,12 @@ let currentSectionID;
 let justGotSearchKey = false;
 
 /**
+ * Did the search bar just caught a left-button click?
+ * @type {boolean}
+ */
+let justGotSearchClick = false;
+
+/**
  * The last search's content
  * @type {string}
  */
@@ -1349,7 +1355,13 @@ searchButton.setAttribute('title', 'Search in this book');
 // Give it a legend
 searchButton.innerHTML = '&#128270;';
 // When it is clicked...
-searchButton.addEventListener('click', toggleSearchBox);
+searchButton.addEventListener('click', () => {
+  // Prevent the search box from being closed just after
+  justGotSearchClick = true;
+
+  // Open it
+  toggleSearchBox();
+});
 // Append it to the <body>
 document.body.appendChild(searchButton);
 
@@ -1362,8 +1374,26 @@ let searchBox = document.createElement('div');
 searchBox.setAttribute('id', 'search-box');
 // Make it hidden by default
 searchBox.classList.add('hidden');
+// If it is clicked inside...
+searchBox.addEventListener('click', () =>
+  // Prevent it from being closed
+  justGotSearchClick = true
+);
 // Append it to the <body>
 document.body.appendChild(searchBox);
+
+// When <body> is clicked in...
+document.body.addEventListener('click', () => {
+  // If the search bar just caught the click...
+  if (justGotSearchClick)
+    // Reset the indicator
+    justGotSearchClick = false;
+
+  // Else, if the search bar is visible...
+  else if (! searchBox.classList.contains('hidden'))
+    // Hide it
+    toggleSearchBox();
+});
 
 /**
  * The search bar
