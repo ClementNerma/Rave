@@ -2,70 +2,28 @@
 
 ## [v0.2.0](https://github.com/ClementNerma/SilverNight-draft/commit/018e2254a41f99300c6eb27ac90d4c05b507ccf2)
 
-* Rename most number types
+### Introducing
+
 * Introduce the `usize` type to handle indexes
 * Introduce number type suffixes
 * Introduce numbers type hierarchy (`i8` is a sub-type of `i16`...)
-* Make number types incompatible between them (except parent and children)
-* Remove logical operators aliases on values (`is`, `isnt`, `and`, `or`, `not`)
-* Rename one's complement operator to `~~`
-* Fix: type inference for dictionary types (lists, maps)
-* Make structures' fields constant by default
 * Introduce plain structure fields
-* Remove structures' fields mutability compatibility (e.g. cannot use a constant field where a mutable is expected)
 * Introduce optional structures' fields
-* Make tuples' fields constant by default
 * Introduce plain tuple fields
-* Remove tuples' fields mutability compatibility (e.g. cannot use a constant field where a mutable is expected)
 * Introduce convention: write the structure's name before instanciating it as an object
-* Change the `#dict;` directive to the `#` symbol
-* Make Inferred Structured Typing more clear
-* Remove parenthesis from blocks' head
-* Force to use brackets to delimit blocks' body
-* Add the `unless` block
-* Allow `for` loops to accept any instruction in their head
-* Always generate a list with inline generation
-* Do not perform inline generation if not wrapped between parenthesis
-* Rename the _global scope_ to the _main scope_
-* Explicit how `for`'s iterator is located in its body's scope
-* Remove the `@argument` notation from methods
 * Introduce the `ComparableTo<T>` interface
-* Forbid structures from being classes' friends
-* Make the `super` keyword referring to the current class' mother as an instance
-* Dedicate a special type for the current class' mother reference (`_super`)
-* Require the `%` symbol to call a class' overload
-* Do not inherit constructors in classes
-* Make classes not inheritable (sealed) by default
 * Introduce opened classes (inheritable classes)
-* Remove final classes
-* Remove read-only classes
-* Update the syntax for unique classes
 * Introduce final methods
 * Introduce safe typecasting
 * Introduce typecasting overloads
-* Remove freezable entities
-* Remove the `Freezable` interface
 * Introduce long safe typecasting
 * Introduce type extensions
 * Introduce void-templating (and template ambiguity)
 * Introduce the type-checking operator `~`
 * Introduce templates in lambdas
-* Allow class segments to implement interfaces an use traits
 * Introduce the `keyof` operator
-* Remove the shortened syntax for dictionary types
-* Make the `in` operator looking for values instead of keys
 * Introduce constructable attributes (`#future`)
-* Update the `Error` class
-* Make tuples a primitive type
-* Make pointers not nullable by default
-* Remove dynamic typecasting
-* Replace the `fly_ptr!` and `fly_mut_ptr!` flexs
 * Introduce the `wrap!` flex
-* Remake bindings syntax
-* Update reduced functions syntax
-* Introduce the `typeof_ref!`, `iter_ref!`, `levelof!` flexs
-* Drop support for the value item in proxies
-* Require an explicit type for proxy models
 * Introduce templated proxies
 * Introduce flexible proxies
 * Introduce plainable types
@@ -77,12 +35,64 @@
 * Introduce union values
 * Introduce anonymous classes
 * Introduce error-free promises
-* Remove the old promises chaining syntax
 * Introduce promises chaining
 * Introduce promises synchronisation (with the new `sync` keyword)
 * Introduce most documentation comments
 
+### Updating
+
+* Rename most number types
+* Make number types incompatible between them (except parent and children)
+* Rename one's complement operator to `~~`
+* Fix: type inference for dictionary types (lists, maps)
+* Make structures' fields constant by default
+* Make tuples' fields constant by default
+* Change the `#dict;` directive to the `#` symbol
+* Make Inferred Structured Typing more clear
+* Force to use brackets to delimit blocks' body
+* Add the `unless` block
+* Allow `for` loops to accept any instruction in their head
+* Always generate a list with inline generation
+* Rename the _global scope_ to the _main scope_
+* Explicit how `for`'s iterator is located in its body's scope
+* Remove the `@argument` notation from methods
+* Make the `super` keyword referring to the current class' mother as an instance
+* Dedicate a special type for the current class' mother reference (`_super`)
+* Require the `%` symbol to call a class' overload
+* Do not inherit constructors in classes
+* Make classes not inheritable (sealed) by default
+* Update the syntax for unique classes
+* Allow class segments to implement interfaces an use traits
+* Make the `in` operator looking for values instead of keys
+* Update the `Error` class
+* Make tuples a primitive type
+* Make pointers not nullable by default
+* Replace the `fly_ptr!` and `fly_mut_ptr!` flexs
+* Remake bindings syntax
+* Update reduced functions syntax
+* Introduce the `typeof_ref!`, `iter_ref!`, `levelof!` flexs
+* Require an explicit type for proxy models
+
+### Removing
+
+* Remove logical operators aliases on values (`is`, `isnt`, `and`, `or`, `not`)
+* Remove structures' fields mutability compatibility (e.g. cannot use a constant field where a mutable is expected)
+* Remove tuples' fields mutability compatibility (e.g. cannot use a constant field where a mutable is expected)
+* Remove parenthesis from blocks' head
+* Remove inline generation for expressions not wrapped between parenthesis
+* Remove support for structures in classes' friends
+* Remove final classes
+* Remove read-only classes
+* Remove freezable entities
+* Remove the `Freezable` interface
+* Remove the shortened syntax for dictionary types
+* Remove dynamic typecasting
+* Remove support for the value item in proxies
+* Remove the old promises chaining syntax
+
 ## [v0.0.0](https://github.com/ClementNerma/SilverNight-draft/commit/2168cc849a1207b80629acfb0c3fab879cdbeee3) - [v0.1.0](https://github.com/ClementNerma/SilverNight-draft/commit/65fa064ae29f633cd36197f87c9120f7b56ea0f7)
+
+### Introducing
 
 * Introduce the concept of toolchain
 * Introduce the concept of builder
@@ -235,3 +245,11 @@
 * Introduce namespaces
 * Introduce sub-namespaces
 * Introduce the `\` symbol to access the top-level namespace
+
+### Updating
+
+_
+
+### Removing
+
+_
