@@ -5181,7 +5181,7 @@ delete personsAge.john;
 delete personsAge['john'];
 
 // Check if a key is known
-'john' keyof personsAge; // Equal to 'false'
+'john' of personsAge; // Equal to 'false'
 
 // Check if a value is contained in the dictionary
 18 in personsAge; // Equal to 'true'
