@@ -15,11 +15,11 @@ Currently, the SilverNight programming language, as well as all its resources, i
 
 ## Release model
 
-The project's release model is described in the [Roadmap](ROADMAP.md) document.
+The project's release model is described in the [ROADMAP](ROADMAP.md) document.
 
 ## Changelog
 
-The changelog can be found in the dedicated [CHANGELOG.md](CHANGELOG.md) document.
+The changelog can be found in the dedicated [CHANGELOG](CHANGELOG.md) document.
 
 ## Installation
 
