@@ -384,8 +384,8 @@ SYNTAX = {
         ],
         [
           // Lazy overloads
-          /\b(pln)\s+(%)(lazy_(?:clone|serialize|unserialize|serial_fields))\b/,
-          'purple', 'red', 'cyan'
+          /\b(?:(public|protected|private)\s+)?(pln)\s+(%)(lazy_(?:clone|serialize|unserialize|serial_fields))\b/,
+          'purple', 'purple', 'red', 'cyan'
         ],
         [
           // Immutable containers declaration in classes
