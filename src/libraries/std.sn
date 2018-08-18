@@ -534,10 +534,6 @@ virtual class number extends Primitive implements Randomizable, RandomizableWith
 
   final public static func %random () : _self;
 
-  public static val MINIMUM: _self;
-
-  public static val MAXIMUM: _self;
-
   final public static func %random (low: _self, up: _self) : _self;
 
   /**
