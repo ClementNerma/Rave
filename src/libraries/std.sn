@@ -522,19 +522,19 @@ virtual class number extends Primitive implements Randomizable, RandomizableWith
 
   final public func %serialize () : string;
 
-  final public static func %unserialize (serialized: string) throws UnserializationError : _self;
+  final public static func %unserialize (serialized: string) throws UnserializationError : _this;
 
-  final public func %equal (another: _self) : bool => self == another;
+  final public func %equal (another: _this) : bool => self == another;
 
-  final public func %greater (another: _self) : _self => self > another;
+  final public func %greater (another: _this) : _this => self > another;
 
-  final public func %smaller (another: _self) : _self => self < another;
+  final public func %smaller (another: _this) : _this => self < another;
 
-  final public static func %call<T ~ Primitive> (prim: T) : _self;
+  final public static func %call<T ~ Primitive> (prim: T) : _this;
 
-  final public static func %random () : _self;
+  final public static func %random () : _this;
 
-  final public static func %random (low: _self, up: _self) : _self;
+  final public static func %random (low: _this, up: _this) : _this;
 
   /**
    * Is this number type signed?
@@ -555,17 +555,17 @@ virtual class number extends Primitive implements Randomizable, RandomizableWith
    * Generate a random @class
    * @returns A random @class
    */
-  abstract public static func %random () : _self;
+  abstract public static func %random () : _this;
 
   /**
    * The lowest @class value
    */
-  abstract public static val MINIMUM: _self;
+  abstract public static val MINIMUM: _this;
 
   /**
    * The highest @class value
    */
-  abstract public static val MAXIMUM: _self;
+  abstract public static val MAXIMUM: _this;
 
   /**
    * Generate a random @class value between two bounds
@@ -573,7 +573,7 @@ virtual class number extends Primitive implements Randomizable, RandomizableWith
    * @param up The upper bound
    * @returns A random @class between the provided bounds
    */
-  abstract public static func %random (low: _self, up: _self) : _self;
+  abstract public static func %random (low: _this, up: _this) : _this;
 }
 
 /**
