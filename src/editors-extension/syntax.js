@@ -832,6 +832,11 @@ SYNTAX = {
           'purple'
         ],
         [
+          // Magic directives (for STD only)
+          /#__std_only_magic_(levelof|depointerize|iter_ref|iter_tuple)\b/,
+          'red'
+        ],
+        [
           // All other directives are invalid
           /#([a-zA-Z_\$][a-zA-Z0-9_\$]+)( *;)?/,
           'invalid'
