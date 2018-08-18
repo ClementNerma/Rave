@@ -2088,7 +2088,7 @@ flex wrap<T> (value: T) : #pln<Type> {
  * @returns The reference's level
  */
 flex levelof (ref: *+ Any) : #pln<usize> {
-  return #__magic_levelof(ref);
+  return #__std_only_magic_levelof(ref);
 }
 
 /**
@@ -2108,7 +2108,7 @@ flex typeof_ref<T> (ref: *+ T) : #pln<Type> {
  * @returns The provided reference's referred's type
  */
 flex depointerize<T> (ref: *+ T) : T {
-  return #__magic_depointerize(ref);
+  return #__std_only_magic_depointerize(ref);
 }
 
 /**
@@ -2121,7 +2121,7 @@ flex depointerize<T> (ref: *+ T) : T {
  * @returns The reference's referred
  */
 flex iter_ref<T> (ref: *+ T, callback: flex (ref: *+ T, level: #pln<usize>)) : T {
-  return #__magic_iter_ref(ref, callback);
+  return #__std_only_magic_iter_ref(ref, callback);
 }
 
 /**
@@ -2132,7 +2132,7 @@ flex iter_ref<T> (ref: *+ T, callback: flex (ref: *+ T, level: #pln<usize>)) : T
  * > @param value The value associated to the provided index
  */
 flex iter_tuple (tuple: #tuple, callback: flex (index: usize, value: Any) {
-  #__magic_iter_tuple(tuple, callback);
+  #__std_only_magic_iter_tuple(tuple, callback);
 });
 
 // ==================== Native plain constants ==================== //
