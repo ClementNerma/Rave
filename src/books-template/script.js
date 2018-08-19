@@ -931,6 +931,11 @@ function moveScrollbarBy (scrollbar, target, y, duration) {
  * @returns {void}
  */
 function setScrollbarY (scrollbar, target, y, initialY, duration, doNotAnimateScrollbar = false) {
+  // If the scrollbars are disabled...
+  if (! scrollbars)
+    // Ignore the order
+    return ;
+
   // Get the scrollbar's track (alias)
   const track = scrollbar;
 
@@ -1219,6 +1224,12 @@ let animations = new Map();
 let staging = null;
 
 /**
+ * Are custom scrollbars enabled?
+ * @type {boolean}
+ */
+let scrollbars = true;
+
+/**
  * All sections of this book
  * @type {Array.<HTMLElement>}
  */
@@ -1429,6 +1440,28 @@ searchButton.addEventListener('click', () => {
 document.body.appendChild(searchButton);
 
 /**
+ * Button to toggle the scrollbar
+ * @type {HTMLElement}
+ */
+let hideScrollbars = document.createElement('a');
+// Give it an ID
+hideScrollbars.setAttribute('id', 'scrollbar-toggle');
+// Give it a help text
+hideScrollbars.setAttribute('title', 'Toggle the scrollbar');
+// Give it a legend
+hideScrollbars.innerHTML = '&#128441;';
+// When it is clicked...
+hideScrollbars.addEventListener('click', () => {
+  // Toggle the scrollbars indicator
+  scrollbars = false;
+  
+  // Toggle the 'scrollbar' class on <body>
+  document.body.classList.toggle('custom-scrollbars');
+});
+// Append it to the <body>
+document.body.appendChild(hideScrollbars);
+
+/**
  * The search box
  * @type {HTMLElement}
  */
@@ -1589,27 +1622,27 @@ window.addEventListener('keydown', e => {
     toggleSearchBox();
   
   // If the "arrow up" key was pressed...
-  else if (e.keyCode === 38)
+  else if (scrollbars && e.keyCode === 38)
     // Move up 40 pixels
     moveScrollbarBy(articleScrollbar, globalElement, -40, 100);
 
   // If the "arrow down" key was pressed...
-  else if (e.keyCode === 40)
+  else if (scrollbars && e.keyCode === 40)
     // Move down 40 pixels
     moveScrollbarBy(articleScrollbar, globalElement, 40, 100);
 
   // If the "page up" key was pressed...
-  else if (e.keyCode === 33)
+  else if (scrollbars && e.keyCode === 33)
     // Move up 75% of the screen
     moveScrollbarBy(articleScrollbar, globalElement, - window.innerHeight * 0.75, 200);
 
   // If the "page down" key was pressed...
-  else if (e.keyCode === 34)
+  else if (scrollbars && e.keyCode === 34)
     // Move down 75% of the screen
     moveScrollbarBy(articleScrollbar, globalElement, window.innerHeight * 0.75, 200);
 
   // If the "space bar" key was pressed...
-  else if (e.keyCode === 32)
+  else if (scrollbars && e.keyCode === 32)
     // Move down (or up if the "shift" key was pressed too) 75% of the screen
     moveScrollbarBy(articleScrollbar, globalElement, (e.shiftKey ? - 0.75 : 0.75) * window.innerHeight, 100);
 
@@ -1625,6 +1658,9 @@ window.addEventListener('keydown', e => {
 
 // Indicate the scripts are working
 document.body.setAttribute('data-scripts', 'true');
+
+// Indicate we are using custom scrollbars
+document.body.classList.add('custom-scrollbars');
 
 // Show the page now it's ready
 document.body.style.display = 'block';

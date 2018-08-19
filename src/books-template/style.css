@@ -32,6 +32,10 @@ nav {
   z-index: 3;
 }
 
+body:not(.custom-scrollbars) nav {
+  overflow: auto;
+}
+
 nav ul {
   list-style-type: none;
   margin: 0;
@@ -249,6 +253,19 @@ th, td {
   cursor: pointer;
 }
 
+#scrollbar-toggle {
+  z-index: 4;
+  position: fixed;
+  top: 10px;
+  left: 440px;
+  padding: 5px;
+  font-size: 20px;
+}
+
+#scrollbar-toggle:hover {
+  cursor: pointer;
+}
+
 #search-box {
   position: fixed;
   top: 20px;
@@ -311,7 +328,7 @@ th, td {
 
 /* Custom scrollbars */
 
-body[data-scripts="true"], body[data-scripts="true"] nav {
+body.custom-scrollbars, body.custom-scrollbars nav {
   /* If JavaScript is enabled, the native browser's scrollbars are replaced by custom ones */
   overflow: hidden;
 }
@@ -323,6 +340,10 @@ body[data-scripts="true"], body[data-scripts="true"] nav {
   width: 18px;
   background-color: transparent;
   z-index: 4;
+}
+
+body:not(.custom-scrollbars) .scrollbar {
+  display: none;
 }
 
 .scrollbar div {
@@ -375,6 +396,10 @@ body.full-width #dark-toggle {
 
 body.full-width #search-button {
   left: 80px;
+}
+
+body.full-width #scrollbar-toggle {
+  left: 110px;
 }
 
 /* Dark mode */
