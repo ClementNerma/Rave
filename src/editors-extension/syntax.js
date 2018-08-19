@@ -579,8 +579,8 @@ SYNTAX = {
         },
         [
           // Shortened typechecking
-          /(~)\s*([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
-          'cyan', 'green'
+          /(~)\s*(?:(\*)\s*|(\*)(mut)\s+)*([a-zA-Z_\$][a-zA-Z0-9_\$\.]*)\b/,
+          'cyan', 'cyan', 'cyan', 'purple', 'green'
         ],
         [
           // Shortened typechecking operator (alone)
