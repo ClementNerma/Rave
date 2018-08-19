@@ -22,6 +22,7 @@
 * Introduce the type-checking operator `~`
 * Introduce templates in lambdas
 * Introduce the `keyof` operator
+* Introduce the `of` operator
 * Introduce constructable attributes (`#future`)
 * Introduce the `wrap!` flex
 * Introduce templated proxies
@@ -38,6 +39,7 @@
 * Introduce promises chaining
 * Introduce promises synchronisation (with the new `sync` keyword)
 * Introduce most documentation comments
+* Introduce structures sub-typing
 
 ### Updates
 
@@ -72,6 +74,7 @@
 * Update reduced functions syntax
 * Introduce the `typeof_ref!`, `iter_ref!`, `levelof!` flexs
 * Require an explicit type for proxy models
+* Update the tuple type to `#tuple` and reserve it for flexs
 
 ### Removed features
 
