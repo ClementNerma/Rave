@@ -4894,6 +4894,46 @@ class BankAccount {
 
 In more precise terms, if the template cannot be inferred_ the overload's signature will be invalid.
 
+### The generic template
+
+There is a special template called the _generic template_. It is used as type for values and accepts any template. Here is an example:
+
+```sn
+func sizeOfVec (vec: Vector<?>) : usize {
+  return vec.size;
+}
+
+sizeOfVec([ 1, 2, 3 ]); // Returns: 3
+sizeOfVec([ true, false ]); // Returns: 2
+```
+
+The generic template allows to use the class' methods, even those using the real template. In this case, the _real template_ is hidden behind the generic one:
+
+```sn
+let vec: Array<?> = [ 1, 2, 3 ];
+
+println!(vec[0]); // ERROR
+```
+
+In this example, `vec[0]` returns an `Any` value. But, as the real type of `vec` is `Array<int>`, the value's real type is `int`, which allows to convert it using an unsafe cast:
+
+```sn
+let vec: Array<?> = [ 1, 2, 3 ];
+
+try {
+  println!(cast_unsafe!<int>(vec[0])); // Prints: '1'
+} catch () { }
+```
+
+It's also possible to cast the array tself:
+
+```sn
+let vec: Array<?> = [ 1, 2, 3 ];
+let casted: Array<int> = try { cast_unsafe!<Array<int>>(vec); } catch () {}
+
+println!(casted[0]); // Prints: '1'
+```
+
 ## Dictionaries in depth
 
 Let's see the final part about classes: dictionaries. As you already know, dictionaries link unique keys with values. We will see how they work in this chapter, as well as how to make our own dictionary classes to change the behaviour of dictionaries.

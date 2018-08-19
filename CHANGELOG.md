@@ -40,6 +40,7 @@
 * Introduce promises synchronisation (with the new `sync` keyword)
 * Introduce most documentation comments
 * Introduce structures sub-typing
+* Introduce the generic template
 
 ### Updates
 
