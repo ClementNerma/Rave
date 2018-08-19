@@ -1663,8 +1663,9 @@ document.body.setAttribute('data-scripts', 'true');
 if (window.innerWidth > 640)
   // Indicate we are using custom scrollbars
   document.body.classList.add('custom-scrollbars');
-// Else, scrollbars will implicitly be disabled
-// They can still be re-enabled using the dedicated buttons
+else
+  // Disable the scrollbars
+  scrollbars = false;
 
 // Show the page now it's ready
 document.body.style.display = 'block';
