@@ -1659,8 +1659,12 @@ window.addEventListener('keydown', e => {
 // Indicate the scripts are working
 document.body.setAttribute('data-scripts', 'true');
 
-// Indicate we are using custom scrollbars
-document.body.classList.add('custom-scrollbars');
+// If we are NOT on a mobile device...
+if (window.innerWidth > 640)
+  // Indicate we are using custom scrollbars
+  document.body.classList.add('custom-scrollbars');
+// Else, scrollbars will implicitly be disabled
+// They can still be re-enabled using the dedicated buttons
 
 // Show the page now it's ready
 document.body.style.display = 'block';
