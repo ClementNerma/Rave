@@ -1453,7 +1453,7 @@ hideScrollbars.innerHTML = '&#128441;';
 // When it is clicked...
 hideScrollbars.addEventListener('click', () => {
   // Toggle the scrollbars indicator
-  scrollbars = false;
+  scrollbars = ! scrollbars;
   
   // Toggle the 'scrollbar' class on <body>
   document.body.classList.toggle('custom-scrollbars');
