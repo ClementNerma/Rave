@@ -929,20 +929,6 @@ class string extends Primitive {
   public func includes (lookfor: string) : bool;
 
   /**
-   * Check if the string is in another string
-   * @param lookin The string that could contain this one
-   * @returns `true` if this string is contained into the given one
-   */
-  public func isIn (lookin: string) : bool;
-
-  /**
-   * Check if the string is in a vector of string
-   * @param lookin The vector that could contain this string
-   * @returns `true` if this string is contained into the given vector
-   */
-  public func isIn (lookin: Vector<string>) : bool;
-
-  /**
    * Parse the string as a number (recommended in front of numerical typecasting)
    * @template T The output format (must be a class inheriting from `number` or `number` itself)
    * @param base The input number's base (default: 10 for decimal)
