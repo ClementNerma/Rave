@@ -4265,6 +4265,21 @@ class Product implements Duplication {
 
 The `_this` type is also available and refers to the real class as a type. Be aware, `_super` is not available.
 
+#### Interfaces inheritance
+
+Interfaces can inherit from other interfaces:
+
+```sn
+interface A {
+  public func a ();
+}
+
+interface B implements A {
+  // Contains both 'a' and 'b'
+  public func b ();
+}
+```
+
 #### Native typecasting interfaces
 
 Here are some native typecasting interfaces we can use in our programs:
@@ -4439,6 +4454,20 @@ printlnl!(car.accelerate()); // Prints: 'Vroom!'
 ```
 
 As you can see, there is no need to re-declare the members in the function. That's the second difference: while interfaces provides a model that needs to be implemented by a class, traits is more to consider like a small library that comes with methods and attributes.
+
+#### Traits inheritance
+
+Traits can inherit from other traits:
+
+```sn
+trait A {
+  public func a () => println!('A');
+}
+
+trait B implements A {
+  public func b () => println!('B');
+}
+```
 
 ## Templates
 
