@@ -942,7 +942,7 @@ class string extends Primitive {
    * @param times The amount of times the string must be repeated
    * @returns The string, repeated
    */
-  public func repeat (times: u32) : string;
+  public func repeat (times: usize) : string;
 
   /**
    * Check if the string starts by a text
