@@ -365,14 +365,6 @@ virtual class Primitive implements BooleanConvertible, IntegerConvertible, Float
   abstract public func %smaller (another: _self) : _self;
 
   /**
-   * Make a @string from another primitive value
-   * @template T A primitive type
-   * @param prim Another primitive value
-   * @returns A @string made from the provided value
-   */
-  abstract public static func %call<T ~ Primitive> (prim: T) : _self;
-
-  /**
    * NIL @class value
    */
   abstract public static val NIL: _self;
@@ -415,7 +407,7 @@ class void extends Primitive implements Randomizable, RandomizableWithBounds {
 
   public func %smaller (another: void) : void => false;
 
-  public static func %call<T ~ Primitive> (prim: T) : void => null;
+  public static func %call (value: Any) : void => null;
 
   /**
    * Generate a random boolean
@@ -473,7 +465,7 @@ class bool extends Primitive implements Randomizable, RandomizableWithBounds {
 
   public func %smaller (another: bool) : bool => (this == false && another == true);
 
-  public static func %call<T ~ Primitive> (prim: T) : bool => prim != T.NIL;
+  public static func %call<T ~ BooleanConvertible> (value: T) : bool => <bool> value != false;
 
   /**
    * Generate a random boolean
@@ -530,7 +522,7 @@ virtual class number extends Primitive implements Randomizable, RandomizableWith
 
   final public func %smaller (another: _this) : _this => self < another;
 
-  final public static func %call<T ~ Primitive> (prim: T) : _this;
+  final public static func %call<T ~ NumberConvertible> (value: T) : <number> _this;
 
   final public static func %random () : _this;
 
@@ -833,7 +825,7 @@ class string extends Primitive {
   //          * Else, this string is smaller than the other one
   public func %smaller (another: string) : bool;
 
-  public static func %call<T ~ Primitive> (prim: T) : string => <string> prim;
+  public static func %call (value: Stringifyable) : string => <string> value;
 
   /**
    * The first character
