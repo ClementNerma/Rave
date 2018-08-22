@@ -825,19 +825,19 @@ class string extends Primitive {
   // DEVNOTE: * If the strings are different, the strings are not equal
   //          * Compare each character one by one: if any is different, the strings are not equal
   //          * Else, they are equal
-  public func %equal (another: bool) : bool;
+  public func %equal (another: string) : bool;
 
   // DEVNOTE: * Compare each character one by one until the end of the shortest string:
   //            -> if this string's character has a greater ASCII code than the other, this string is greater
   //            -> if the other string's character has a greater ASCII code than the other, the other is greater
   //          * Else, if this string is longer than the other one, this string is greater
   //          * Else, this string is not greater than the other (but may still be equal)
-  public func %greater (another: bool) : bool;
+  public func %greater (another: string) : bool;
 
   // DEVNOTE: * If this string is equal to the other one, it is not smaller
   //          * If this string is greater than the other one, it is not smaller
   //          * Else, this string is smaller than the other one
-  public func %smaller (another: bool) : bool;
+  public func %smaller (another: string) : bool;
 
   public static func %call<T ~ Primitive> (prim: T) : string => <string> prim;
 
