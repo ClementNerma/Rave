@@ -803,12 +803,6 @@ class string extends Primitive {
 
   public func %to<bool> () : bool => this.length > 0;
 
-  public func %to<i64> () : i64;
-
-  public func %to<u64> () : u64;
-
-  public func %to<f64> () : f64;
-
   public func %to<string> () : string => this;
 
   /**
