@@ -35,7 +35,7 @@
 /**
  * Generic type
  */
-interface Any {}
+inf Any {}
 
 /**
  * Static reference operator
@@ -62,44 +62,44 @@ type _super = static!<super>;
 /**
  * Types convertible to a boolean
  */
-interface BooleanConvertible {
+inf BooleanConvertible {
   // Set a typecasting path for booleans
-  func %to<bool> = string || f64 || f32 || u64 || i64 || u32 || i32 || u16 || i16 || u8 || i8;
+  fn %to<bool> = string || f64 || f32 || u64 || i64 || u32 || i32 || u16 || i16 || u8 || i8;
 }
 
 /**
  * Types convertible to an integer
  */
-interface IntegerConvertible {
+inf IntegerConvertible {
   // Set a typecasting path for signed integers
-  func %to<i64> = f64 || u64 || f32 || i32 || u32 || i16 || u16 || i8 || u8 || bool;
+  fn %to<i64> = f64 || u64 || f32 || i32 || u32 || i16 || u16 || i8 || u8 || bool;
 
   // Set a typecasting path for unsigned integers
-  func %to<u64> = f64 || i64 || f32 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
+  fn %to<u64> = f64 || i64 || f32 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
 }
 
 /**
  * Types convertible to a floating-point number
  */
-interface FloatConvertible {
+inf FloatConvertible {
   // Set a typecasting path for floating-point numbers
-  func %to<f64> = f32 || u64 || i64 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
+  fn %to<f64> = f32 || u64 || i64 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
 }
 
 /**
  * Types convertible to a number
  */
-interface Numerizable {
+inf Numerizable {
   // Set a typecasting path for numbers
-  func %to<number> = f64 || u64 || i64 || f32 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
+  fn %to<number> = f64 || u64 || i64 || f32 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
 }
 
 /**
  * Types which can be converted to a string
  */
-interface Stringifyable {
+inf Stringifyable {
   // Set a typecasting path for strings
-  func %to<string> = f64 || u64 || i64 || f32 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
+  fn %to<string> = f64 || u64 || i64 || f32 || u32 || i32 || u16 || i16 || u8 || i8 || bool;
 }
 
 // ==================== Calculable types ==================== //
@@ -108,48 +108,48 @@ interface Stringifyable {
  * Calculable types
  * Only for types manipulating instances of themselves for calculations
  */
-interface Calculable {
+inf Calculable {
   /**
    * Add this value to another one
    * @param value The value to add to this one
    * @returns The result
    */
-  func %plus (value: _self) : _self;
+  fn %plus (value: _self) : _self;
 
   /**
    * Substract a value to this one
    * @param value The value to substract to this one
    * @returns The result
    */
-  func %less (value: _self) : _self;
+  fn %less (value: _self) : _self;
 
   /**
    * Multiply this value by another one
    * @param value The value to multiply this one by
    * @returns The result
    */
-  func %times (value: _self) : _self;
+  fn %times (value: _self) : _self;
 
   /**
    * Divide this value by another one
    * @param value The value to multiply this one by
    * @returns The result
    */
-  func %divide (value: _self) : _self;
+  fn %divide (value: _self) : _self;
 
   /**
    * Multiply this value by itself a given number of times
    * @param pow The number of times
    * @example self ** 4 == self * self * self * self
    */
-  func %pow (pow: uint) : _self;
+  fn %pow (pow: uint) : _self;
 
   /**
    * Modulo this value by another
    * @param value The value to modulo this one by
    * @returns The result
    */
-  func %modulo (value: _self) : _self;
+  fn %modulo (value: _self) : _self;
 }
 
 // ==================== Clonable types ==================== //
@@ -157,12 +157,12 @@ interface Calculable {
 /**
  * Clonable types
  */
-interface Clonable {
+inf Clonable {
   /**
    * Clone the current instance
    * @returns A clone of the current instance
    */
-  func %clone () : _self;
+  fn %clone () : _self;
 }
 
 // ==================== Serializable types ==================== //
@@ -170,19 +170,19 @@ interface Clonable {
 /**
  * Serializable types
  */
-interface Serializable {
+inf Serializable {
   /**
    * Serialize the current instance
    * @returns The current instance as a string
    */
-  func %serialize () : string;
+  fn %serialize () : string;
 
   /**
    * Unserialize a string to an instance of the current type
    * @param serialized An instance of the current type, serialized
    * @returns An instance of this type
    */
-  static func %unserialize (serialized: string) throws UnserializationError : _self;
+  static fn %unserialize (serialized: string) throws UnserializationError : _self;
 }
 
 // ==================== Comparable types ==================== //
@@ -191,27 +191,27 @@ interface Serializable {
  * Types comparable to a given one
  * @template T The type this one is comparable to
  */
-interface ComparableTo<T> {
+inf ComparableTo<T> {
   /**
    * Check if this instance is equal to another
    * @param another Another instance of this type
    * @returns `true` if this instance is equal to the provided one
    */
-  func %equal (another: T) : bool;
+  fn %equal (another: T) : bool;
 
   /**
    * Check if this instance is greater than another
    * @param another Another instance of this type
    * @returns `true` if this instance is greater than the provided one
    */
-  func %greater (another: T) : bool;
+  fn %greater (another: T) : bool;
 
   /**
    * Check if this instance is smaller than another
    * @param another Another instance of this type
    * @returns `true` if this instance is smaller than the provided one
    */
-  func %smaller (another: T) : bool;
+  fn %smaller (another: T) : bool;
 }
 
 /**
@@ -224,18 +224,18 @@ type Comparable = ComparableTo<_>;
 /**
  * Types able to generate a random value
  */
-interface Randomizable {
+inf Randomizable {
   /**
    * Generate a random value of this type
    * @returns A random value of this type
    */
-  static func %random () : _self;
+  static fn %random () : _self;
 }
 
 /**
  * Types able to generate a random value between two bounds
  */
-interface RandomizableWithBounds {
+inf RandomizableWithBounds {
   /**
    * This type's minimum value
    */
@@ -252,7 +252,7 @@ interface RandomizableWithBounds {
    * @param up The upper bound
    * @returns A random value of this type
    */
-  static func %random (low: _self, up: _self) : _self;
+  static fn %random (low: _self, up: _self) : _self;
 }
 
 // ==================== Callable types ==================== //
@@ -261,22 +261,22 @@ interface RandomizableWithBounds {
  * Callable types
  * @template T The call method's return type
  */
-interface Callable<T> {
+inf Callable<T> {
   /**
    * Call this instance as a function
    */
-  func %call() : T;
+  fn %call() : T;
 }
 
 /**
  * Callable classes
  * @template T The call method's return type
  */
-interface StaticallyCallable<T> {
+inf StaticallyCallable<T> {
   /**
    * Call this class as a function
    */
-  static func %call() : T;
+  static fn %call() : T;
 }
 
 // ==================== Primitive types ==================== //
@@ -284,90 +284,90 @@ interface StaticallyCallable<T> {
 /**
  * Primitive type
  */
-virtual class Primitive implements BooleanConvertible, IntegerConvertible, FloatConvertible, Numerizable, Stringifyable, Clonable, Serializable, Comparable<_this>, StaticallyCallable<_this> {
+virtual class Primitive impl BooleanConvertible, IntegerConvertible, FloatConvertible, Numerizable, Stringifyable, Clonable, Serializable, Comparable<_this>, StaticallyCallable<_this> {
   /**
    * Make a NIL @class value
    */
-  final public func %construct ();
+  final pub fn %construct ();
 
   /**
    * Make a @class from another primitive value
    * @template T A primitive type
    * @param prim Another primitive value
    */
-  final public func %construct<T ~ Primitive> (prim: T);
+  final pub fn %construct<T ~ Primitive> (prim: T);
 
   /**
    * Convert this @class to a boolean
    * @returns This @class as a boolean
    */
-  abstract public func %to<bool> () : bool;
+  abstract pub fn %to<bool> () : bool;
 
   /**
    * Convert this @class to a 64-bit signed integer
    * @returns This @class as a 64-bit signed integer
    */
-  abstract public func %to<i64> () : i64;
+  abstract pub fn %to<i64> () : i64;
 
   /**
    * Convert this @class to a 64-bit unsigned integer
    * @returns This @class as a 64-bit unsigned integer
    */
-  abstract public func %to<u64> () : u64;
+  abstract pub fn %to<u64> () : u64;
 
   /**
    * Convert this @class to a 64-bit floating point number
    * @returns This @class as a 64-bit floating point number
    */
-  abstract public func %to<f64> () : f64;
+  abstract pub fn %to<f64> () : f64;
 
   /**
    * Convert this @class to a string
    * @returns This @class as a string
    */
-  abstract public func %to<string> () : string;
+  abstract pub fn %to<string> () : string;
 
   /**
    * Clone this @class
    * @returns A clone of this @class
    */
-  abstract public func %clone () : _this;
+  abstract pub fn %clone () : _this;
 
   /**
    * Convert this @class to a string
    * @returns This @class as a string
    */
-  abstract public func %serialize () : string;
+  abstract pub fn %serialize () : string;
 
   /**
    * Unserialize a string to a a @class
    * @returns The unserialized string as a a @class
    */
-  abstract public static func %unserialize (serialized: string) throws UnserializationError : _this;
+  abstract pub static fn %unserialize (serialized: string) throws UnserializationError : _this;
 
   /**
    * Check equality with another @class value
    * @param another Another @string value
    * @returns `true` if the two values are equal
    */
-  abstract public func %equal (another: _this) : bool;
+  abstract pub fn %equal (another: _this) : bool;
 
   /**
    * Check if this @class is greater than another
    * @returns `true` if this @class is greater than the other one
    */
-  abstract public func %greater (another: _self) : _self;
+  abstract pub fn %greater (another: _self) : _self;
 
   /**
    * Check if this @class is smaller than another
    * @returns `true` if this @class is smaller than the other one
    */
-  abstract public func %smaller (another: _self) : _self;
+  abstract pub fn %smaller (another: _self) : _self;
 
   /**
    * NIL @class value
    */
-  abstract public static val NIL: _self;
+  abstract pub static val NIL: _self;
 }
 
 // ==================== Object types ==================== //
@@ -382,48 +382,48 @@ type Object = not Primitive;
 /**
  * Void type (primitive)
  */
-class void extends Primitive implements Randomizable, RandomizableWithBounds {
+class void extends Primitive impl Randomizable, RandomizableWithBounds {
   super%(...);
 
-  public static val NIL = null;
+  pub static val NIL = null;
 
-  public func %to<bool> () : bool => false;
+  pub fn %to<bool> () : bool => false;
 
-  public func %to<i64> () : i64 => 0l;
+  pub fn %to<i64> () : i64 => 0l;
 
-  public func %to<u64> () : u64 => 0ul;
+  pub fn %to<u64> () : u64 => 0ul;
 
-  public func %to<f64> () : f64 => 0d;
+  pub fn %to<f64> () : f64 => 0d;
 
-  public func %to<string> () : string => '';
+  pub fn %to<string> () : string => '';
 
-  public func %serialize () : string => '';
+  pub fn %serialize () : string => '';
 
-  public static func %unserialize (serialized: string) throws UnserializationError : _self;
+  pub static fn %unserialize (serialized: string) throws UnserializationError : _self;
 
-  public func %equal (another: void) : bool => true;
+  pub fn %equal (another: void) : bool => true;
 
-  public func %greater (another: void) : void => false;
+  pub fn %greater (another: void) : void => false;
 
-  public func %smaller (another: void) : void => false;
+  pub fn %smaller (another: void) : void => false;
 
-  public static func %call (value: Any) : void => null;
+  pub static fn %call (value: Any) : void => null;
 
   /**
    * Generate a random boolean
    * @returns A random boolean
    */
-  public static func %random () : void => null;
+  pub static fn %random () : void => null;
 
   /**
    * The lowest void value
    */
-  public static val MINIMUM = null;
+  pub static val MINIMUM = null;
 
   /**
    * The highest void value
    */
-  public static val MAXIMUM = null;
+  pub static val MAXIMUM = null;
 
   /**
    * Generate a random void value between two bounds
@@ -431,7 +431,7 @@ class void extends Primitive implements Randomizable, RandomizableWithBounds {
    * @param up The upper bound
    * @returns A random void between the provided bounds
    */
-  public static func %random (low: void, up: void) : void => null;
+  pub static fn %random (low: void, up: void) : void => null;
 }
 
 // ==================== Booleans ==================== //
@@ -440,48 +440,48 @@ class void extends Primitive implements Randomizable, RandomizableWithBounds {
  * Boolean type (primitive)
  * @classname(boolean)
  */
-class bool extends Primitive implements Randomizable, RandomizableWithBounds {
+class bool extends Primitive impl Randomizable, RandomizableWithBounds {
   super%(...);
 
-  public static val NIL = false;
+  pub static val NIL = false;
 
-  public func %to<bool> () : bool => this;
+  pub fn %to<bool> () : bool => this;
 
-  public func %to<i64> () : i64 => this ? 1l : 0l;
+  pub fn %to<i64> () : i64 => this ? 1l : 0l;
 
-  public func %to<u64> () : u64 => this ? 1ul : 0ul;
+  pub fn %to<u64> () : u64 => this ? 1ul : 0ul;
 
-  public func %to<f64> () : f64 => this ? 1d : 0d;
+  pub fn %to<f64> () : f64 => this ? 1d : 0d;
 
-  public func %to<string> () : string => this ? 'true' : 'false';
+  pub fn %to<string> () : string => this ? 'true' : 'false';
 
-  public func %serialize () : string => this ? 'true' : 'false';
+  pub fn %serialize () : string => this ? 'true' : 'false';
 
-  public static func %unserialize (serialized: string) throws UnserializationError : bool;
+  pub static fn %unserialize (serialized: string) throws UnserializationError : bool;
 
-  public func %equal (another: bool) : bool => this == another;
+  pub fn %equal (another: bool) : bool => this == another;
 
-  public func %greater (another: bool) : bool => (this == true && another == false);
+  pub fn %greater (another: bool) : bool => (this == true && another == false);
 
-  public func %smaller (another: bool) : bool => (this == false && another == true);
+  pub fn %smaller (another: bool) : bool => (this == false && another == true);
 
-  public static func %call<T ~ BooleanConvertible> (value: T) : bool => <bool> value != false;
+  pub static fn %call<T ~ BooleanConvertible> (value: T) : bool => <bool> value != false;
 
   /**
    * Generate a random boolean
    * @returns A random boolean
    */
-  public static func %random () : bool;
+  pub static fn %random () : bool;
 
   /**
    * The lowest boolean value
    */
-  public static val MINIMUM = false;
+  pub static val MINIMUM = false;
 
   /**
    * The highest boolean value
    */
-  public static val MAXIMUM = true;
+  pub static val MAXIMUM = true;
 
   /**
    * Generate a random boolean value between two bounds
@@ -489,7 +489,7 @@ class bool extends Primitive implements Randomizable, RandomizableWithBounds {
    * @param up The upper bound
    * @returns A random boolean between the provided bounds
    */
-  public static func %random (low: bool, up: bool) : bool;
+  pub static fn %random (low: bool, up: bool) : bool;
 }
 
 // ==================== Numbers ==================== //
@@ -497,67 +497,67 @@ class bool extends Primitive implements Randomizable, RandomizableWithBounds {
 /**
  * Virtual number type (primitive)
  */
-virtual class number extends Primitive implements Randomizable, RandomizableWithBounds {
+virtual class number extends Primitive impl Randomizable, RandomizableWithBounds {
   super%(...);
 
-  public static val NIL = 0; // i32
+  pub static val NIL = 0; // i32
 
-  final public func %to<bool> () : bool => self != 0;
+  final pub fn %to<bool> () : bool => self != 0;
 
-  final public func %to<i64> () : i64;
+  final pub fn %to<i64> () : i64;
 
-  final public func %to<u64> () : u64;
+  final pub fn %to<u64> () : u64;
 
-  final public func %to<f64> () : f64;
+  final pub fn %to<f64> () : f64;
 
-  final public func %to<string> () : string;
+  final pub fn %to<string> () : string;
 
-  final public func %serialize () : string;
+  final pub fn %serialize () : string;
 
-  final public static func %unserialize (serialized: string) throws UnserializationError : _this;
+  final pub static fn %unserialize (serialized: string) throws UnserializationError : _this;
 
-  final public func %equal (another: _this) : bool => self == another;
+  final pub fn %equal (another: _this) : bool => self == another;
 
-  final public func %greater (another: _this) : _this => self > another;
+  final pub fn %greater (another: _this) : _this => self > another;
 
-  final public func %smaller (another: _this) : _this => self < another;
+  final pub fn %smaller (another: _this) : _this => self < another;
 
-  final public static func %call<T ~ NumberConvertible> (value: T) : <number> _this;
+  final pub static fn %call<T ~ NumberConvertible> (value: T) : <number> _this;
 
-  final public static func %random () : _this;
+  final pub static fn %random () : _this;
 
-  final public static func %random (low: _this, up: _this) : _this;
+  final pub static fn %random (low: _this, up: _this) : _this;
 
   /**
    * Is this number type signed?
    */
-  abstract public static val SIGNED: bool;
+  abstract pub static val SIGNED: bool;
 
   /**
    * Does this number type handle floating-point numbers?
    */
-  abstract public static val HANDLE_FLOATS: bool;
+  abstract pub static val HANDLE_FLOATS: bool;
 
   /**
    * On how many bits this number type fits?
    */
-  abstract public static val SIZE: usize;
+  abstract pub static val SIZE: usize;
 
   /**
    * Generate a random @class
    * @returns A random @class
    */
-  abstract public static func %random () : _this;
+  abstract pub static fn %random () : _this;
 
   /**
    * The lowest @class value
    */
-  abstract public static val MINIMUM: _this;
+  abstract pub static val MINIMUM: _this;
 
   /**
    * The highest @class value
    */
-  abstract public static val MAXIMUM: _this;
+  abstract pub static val MAXIMUM: _this;
 
   /**
    * Generate a random @class value between two bounds
@@ -565,7 +565,7 @@ virtual class number extends Primitive implements Randomizable, RandomizableWith
    * @param up The upper bound
    * @returns A random @class between the provided bounds
    */
-  abstract public static func %random (low: _this, up: _this) : _this;
+  abstract pub static fn %random (low: _this, up: _this) : _this;
 }
 
 /**
@@ -575,7 +575,7 @@ virtual class number extends Primitive implements Randomizable, RandomizableWith
 open class vint extends number {
   super%(...);
 
-  final public static val HANDLE_FLOATS = false;
+  final pub static val HANDLE_FLOATS = false;
 }
 
 /**
@@ -585,7 +585,7 @@ open class vint extends number {
 open class vsint extends vint {
   super%(...);
 
-  final public static val SIGNED = true;
+  final pub static val SIGNED = true;
 }
 
 /**
@@ -594,13 +594,13 @@ open class vsint extends vint {
 open class i64 extends vsint {
   super%(...);
 
-  public static val NIL = 0l;
+  pub static val NIL = 0l;
 
-  public static val SIZE = 64p;
+  pub static val SIZE = 64p;
 
-  public static val MINIMUM = -9_223_372_036_854_775_808l;
+  pub static val MINIMUM = -9_223_372_036_854_775_808l;
 
-  public static val MAXIMUM = 9_223_372_036_854_775_807l;
+  pub static val MAXIMUM = 9_223_372_036_854_775_807l;
 }
 
 /**
@@ -609,13 +609,13 @@ open class i64 extends vsint {
 open class i32 extends i64 {
   super%(...);
 
-  public static val NIL = 0;
+  pub static val NIL = 0;
 
-  public static val SIZE = 32p;
+  pub static val SIZE = 32p;
 
-  public static val MINIMUM = -2_147_483_648;
+  pub static val MINIMUM = -2_147_483_648;
 
-  public static val MAXIMUM = 2_147_483_647;
+  pub static val MAXIMUM = 2_147_483_647;
 }
 
 /**
@@ -624,13 +624,13 @@ open class i32 extends i64 {
 open class i16 extends i32 {
   super%(...);
 
-  public static val NIL = 0s;
+  pub static val NIL = 0s;
 
-  public static val SIZE = 16p;
+  pub static val SIZE = 16p;
 
-  public static val MINIMUM = -32_768s;
+  pub static val MINIMUM = -32_768s;
 
-  public static val MAXIMUM = 32_767s;
+  pub static val MAXIMUM = 32_767s;
 }
 
 /**
@@ -639,13 +639,13 @@ open class i16 extends i32 {
 class i8 extends i16 {
   super%(...);
 
-  public static val NIL = 0b;
+  pub static val NIL = 0b;
 
-  public static val SIZE = 8p;
+  pub static val SIZE = 8p;
 
-  public static val MINIMUM = -128b;
+  pub static val MINIMUM = -128b;
 
-  public static val MAXIMUM = 127b;
+  pub static val MAXIMUM = 127b;
 }
 
 /**
@@ -655,7 +655,7 @@ class i8 extends i16 {
 open class vuint extends vint {
   super%(...);
 
-  final public static val SIGNED = false;
+  final pub static val SIGNED = false;
 }
 
 /**
@@ -664,13 +664,13 @@ open class vuint extends vint {
 open class u64 extends vuint {
   super%(...);
 
-  public static val NIL = 0ul;
+  pub static val NIL = 0ul;
 
-  public static val SIZE = 64p;
+  pub static val SIZE = 64p;
 
-  public static val MINIMUM = 0ul;
+  pub static val MINIMUM = 0ul;
 
-  public static val MAXIMUM = 18_446_744_073_709_551_615ul;
+  pub static val MAXIMUM = 18_446_744_073_709_551_615ul;
 }
 
 /**
@@ -679,13 +679,13 @@ open class u64 extends vuint {
 open class u32 extends u64 {
   super%(...);
 
-  public static val NIL = 0u;
+  pub static val NIL = 0u;
 
-  public static val SIZE = 32p;
+  pub static val SIZE = 32p;
 
-  public static val MINIMUM = 0u;
+  pub static val MINIMUM = 0u;
 
-  public static val MAXIMUM = 4_294_967_295u;
+  pub static val MAXIMUM = 4_294_967_295u;
 }
 
 /**
@@ -694,13 +694,13 @@ open class u32 extends u64 {
 open class u16 extends u32 {
   super%(...);
 
-  public static val NIL = 0us;
+  pub static val NIL = 0us;
 
-  public static val SIZE = 16p;
+  pub static val SIZE = 16p;
 
-  public static val MINIMUM = 0us;
+  pub static val MINIMUM = 0us;
 
-  public static val MAXIMUM = 65_535us;
+  pub static val MAXIMUM = 65_535us;
 }
 
 /**
@@ -709,13 +709,13 @@ open class u16 extends u32 {
 class u8 extends u16 {
   super%(...);
 
-  public static val NIL = 0ub;
+  pub static val NIL = 0ub;
 
-  public static val SIZE = 8p;
+  pub static val SIZE = 8p;
 
-  public static val MINIMUM = 0ub;
+  pub static val MINIMUM = 0ub;
 
-  public static val MAXIMUM = 255ub;
+  pub static val MAXIMUM = 255ub;
 }
 
 /**
@@ -725,13 +725,13 @@ class u8 extends u16 {
 class usize extends uint {
   super%(...);
 
-  public static val NIL = 0p;
+  pub static val NIL = 0p;
 
-  public static val SIZE = PROC_ARCH_BITS;
+  pub static val SIZE = PROC_ARCH_BITS;
 
-  public static val MINIMUM = 0p;
+  pub static val MINIMUM = 0p;
 
-  public static val MAXIMUM = 2p ** PROC_ARCH_BITS - 1p;
+  pub static val MAXIMUM = 2p ** PROC_ARCH_BITS - 1p;
 }
 
 /**
@@ -741,9 +741,9 @@ class usize extends uint {
 open class vfloat extends number {
   super%(...);
 
-  final public static val SIGNED = true;
+  final pub static val SIGNED = true;
 
-  final public static val HANDLE_FLOATS = true;
+  final pub static val HANDLE_FLOATS = true;
 }
 
 /**
@@ -753,7 +753,7 @@ open class vfloat extends number {
 open class f64 extends vfloat {
   super%(...);
 
-  public static val SIZE = 64p;
+  pub static val SIZE = 64p;
 }
 
 /**
@@ -763,7 +763,7 @@ open class f64 extends vfloat {
 class f32 extends f64 {
   super%(...);
 
-  public static val SIZE = 32p;
+  pub static val SIZE = 32p;
 }
 
 /**
@@ -784,18 +784,18 @@ type uint = u32;
 class string extends Primitive {
   super%(...);
 
-  public static val NIL = '';
+  pub static val NIL = '';
 
   /**
    * Check if the string contains a text using the 'in' operator
    * @param lookfor The text to look for
    * @returns `true` if the text was found
    */
-  public func %contains (lookfor: string) : bool;
+  pub fn %contains (lookfor: string) : bool;
 
-  public func %to<bool> () : bool => this.length > 0;
+  pub fn %to<bool> () : bool => this.length > 0;
 
-  public func %to<string> () : string => this;
+  pub fn %to<string> () : string => this;
 
   /**
    * @example 'Hello \\ "guys"'.%serialize() == "Hello \\\\ \\"guys\\""
@@ -804,71 +804,71 @@ class string extends Primitive {
   //          * Add backslashes before each double quote
   //          * Replace all line breaks by their string equivalent
   //          * Wraps the string between double quotes
-  public func %serialize () : string;
+  pub fn %serialize () : string;
 
-  public static func %unserialize (serialized: string) throws UnserializationError : string;
+  pub static fn %unserialize (serialized: string) throws UnserializationError : string;
 
   // DEVNOTE: * If the strings are different, the strings are not equal
   //          * Compare each character one by one: if any is different, the strings are not equal
   //          * Else, they are equal
-  public func %equal (another: string) : bool;
+  pub fn %equal (another: string) : bool;
 
   // DEVNOTE: * Compare each character one by one until the end of the shortest string:
   //            -> if this string's character has a greater ASCII code than the other, this string is greater
   //            -> if the other string's character has a greater ASCII code than the other, the other is greater
   //          * Else, if this string is longer than the other one, this string is greater
   //          * Else, this string is not greater than the other (but may still be equal)
-  public func %greater (another: string) : bool;
+  pub fn %greater (another: string) : bool;
 
   // DEVNOTE: * If this string is equal to the other one, it is not smaller
   //          * If this string is greater than the other one, it is not smaller
   //          * Else, this string is smaller than the other one
-  public func %smaller (another: string) : bool;
+  pub fn %smaller (another: string) : bool;
 
-  public static func %call (value: Stringifyable) : string => <string> value;
+  pub static fn %call (value: Stringifyable) : string => <string> value;
 
   /**
    * The first character
    */
-  public val firstChar: string;
+  pub val firstChar: string;
 
   /**
    * The last character
    */
-  public val lastChar: string;
+  pub val lastChar: string;
 
   /**
    * The number of characters in the string
    */
-  public val length: u32;
+  pub val length: u32;
 
   /**
    * Get the character a given position
    * @param pos The character's position
    * @returns The character
    */
-  public func charAt (pos: u32) : string;
+  pub fn charAt (pos: u32) : string;
 
   /**
    * Get the ASCII code of a character at a given position
    * @param pos The character's position
    * @returns The character's ASCII code
    */
-  public func charCodeAt (pos: u32) : uint;
+  pub fn charCodeAt (pos: u32) : uint;
 
   /**
    * Get the code point of a character at a given position
    * @param pos The character's position
    * @returns The character's code point
    */
-  public func codePointAt (pos: u32) : uint;
+  pub fn codePointAt (pos: u32) : uint;
 
   /**
    * Count the times a text appears in this string
    * @param lookfor The text to look for
    * @returns Number of times the given text appears in this string
    */
-  public func count (lookfor: u32) : uint;
+  pub fn count (lookfor: u32) : uint;
 
   /**
    * Cut the string
@@ -876,14 +876,14 @@ class string extends Primitive {
    * @param end The end position
    * @returns The cut string, between the start and end position (both included)
    */
-  public func cut (start: u32, end: u32) : string;
+  pub fn cut (start: u32, end: u32) : string;
 
   /**
    * Check if the string ends with a text
    * @param lookfor The text to look for
    * @returns `true` if the string ends with the given text
    */
-  public func endsWith (lookfor: string) : bool;
+  pub fn endsWith (lookfor: string) : bool;
 
   /**
    * Prefix some characters with a backslash
@@ -892,41 +892,41 @@ class string extends Primitive {
    * @example "'Hello'".escape("'") == "\\'Hello\\'"
    * @samedef
    */
-  public func escape (chars: Vector<string>) : string;
+  pub fn escape (chars: Vector<string>) : string;
 
   /**
    * Get the first word of the string
    * @param sep The word seperator (default: white space)
    * @returns The string's first word
    */
-  public func firstWord (sep: string = ' ') : string;
+  pub fn firstWord (sep: string = ' ') : string;
 
   /**
    * Get the index of a string inside this one
    * @param lookfor The string to look for
    * @returns The position of 'lookfor' in the string (null if not found)
    */
-  public func indexOf (lookfor: string) : u32?;
+  pub fn indexOf (lookfor: string) : u32?;
 
   /**
    * Get the last index of a string
    * @param lookfor The string to look for
    * @returns The last position of 'lookfor' in the string (null if not found)
    */
-  public func lastIndexOf (lookfor: string) : u32?;
+  pub fn lastIndexOf (lookfor: string) : u32?;
 
   /**
    * Get the last word of the string
    * @param sep The word separator (default: white space)
    */
-  public func lastWord (sep: string = ' ') : string;
+  pub fn lastWord (sep: string = ' ') : string;
 
   /**
    * Check if the string contains a text
    * @param lookfor The text to look for
    * @returns `true` if the text was found
    */
-  public func includes (lookfor: string) : bool;
+  pub fn includes (lookfor: string) : bool;
 
   /**
    * Parse the string as a number (recommended in front of numerical typecasting)
@@ -935,28 +935,28 @@ class string extends Primitive {
    * @returns The parsed number
    * @example "2".parse() == "2" && "2.8".parse(float) == "2.8"
    */
-  public func parse<T ~ number = int> (base: T = 10) throws StringParsingError : T;
+  pub fn parse<T ~ number = int> (base: T = 10) throws StringParsingError : T;
 
   /**
    * Repeat the string a given amount of times
    * @param times The amount of times the string must be repeated
    * @returns The string, repeated
    */
-  public func repeat (times: usize) : string;
+  pub fn repeat (times: usize) : string;
 
   /**
    * Check if the string starts by a text
    * @param lookfor The text to look for
    * @returns `true` if the string starts by the given text
    */
-  public func startsWith (lookfor: string) : bool;
+  pub fn startsWith (lookfor: string) : bool;
 
   /**
    * Split the string into an array
    * @param model The separator
    * @returns An array containing each part of the array as an individual string
    */
-  public func split (model: string) : string[];
+  pub fn split (model: string) : string[];
 
   /**
    * Cut a string (fixed length)
@@ -964,55 +964,55 @@ class string extends Primitive {
    * @param length The length
    * @returns The string cut from the start position with the given length
    */
-  public func substr (start: u32, length: u32) : string;
+  pub fn substr (start: u32, length: u32) : string;
 
   /**
    * Convert the string to base64
    * @returns This string as a base64 string
    */
-  public func toBase64 () : string;
+  pub fn toBase64 () : string;
 
   /**
    * Convert the string to a list
    * @returns The string as a list of single characters
    */
-  public func toList () : List<string>;
+  pub fn toList () : List<string>;
 
   /**
    * Convert the string to an array
    * @returns The string as an array of single characters
    */
-  public func toArray () : string[];
+  pub fn toArray () : string[];
 
   /**
    * Get the lowercase version of the string
    * @returns This string, lowercased
    */
-  public func toLowerCase () : string;
+  pub fn toLowerCase () : string;
 
   /**
    * Get the uppercase version of the string
    * @returns This string, uppercased
    */
-  public func toUpperCase () : string;
+  pub fn toUpperCase () : string;
 
   /**
    * Trim spaces at the beginning and the end of the string
    * @returns This string, trimmed
    */
-  public func trim () : string;
+  pub fn trim () : string;
 
   /**
    * Trim spaces at the beginning of the string
    * @returns This string, trimmed from the left
    */
-  public func trimLeft () : string;
+  pub fn trimLeft () : string;
 
   /**
    * Trim spaces at the end of the string
    * @returns This string, trimmed for the right
    */
-  public func trimRight () : string;
+  pub fn trimRight () : string;
 
   /**
    * Get a word of the string
@@ -1020,35 +1020,35 @@ class string extends Primitive {
    * @param sep The word separator (default: white space)
    * @returns The word (in case of error, returns an empty string)
    */
-  public func word (pos: u32, sep: string = ' ') : string;
+  pub fn word (pos: u32, sep: string = ' ') : string;
 
   /**
    * Get all string's words (same as splitting with spaces)
    * @param sep Word separator (default: white space)
    * @returns The words
    */
-  public func words (sep: string = ' ') : string[];
+  pub fn words (sep: string = ' ') : string[];
 
   /**
    * Decode a base64 string
    * @param base64 The base64 string to decode
    * @returns The given base64 string, decoded
    */
-  public static func fromBase64 (base64: string) : string;
+  pub static fn fromBase64 (base64: string) : string;
 
   /**
    * Make a string from a char code
    * @param code The char code to use
    * @returns The string made from the given char code
    */
-  public static func fromCharCode (code: int) : string;
+  pub static fn fromCharCode (code: int) : string;
 
   /**
    * Make a string from a code point
    * @param code The code point to use
    * @returns The string made from the given code point
    */
-  public static func fromCodePoint (code: int) : string;
+  pub static fn fromCodePoint (code: int) : string;
 }
 
 // ==================== Descriptor types ==================== //
@@ -1110,46 +1110,46 @@ virtual dict Dictionary<K, V> {
    * @param key The key to get the value of
    * @returns The value associated to the key
    */
-  abstract public func %get (key: K) : V;
+  abstract pub fn %get (key: K) : V;
 
   /**
    * Associate a value to a key
    * @param key The key to associate a value to
    * @param value The value to associate
    */
-  abstract public func %set (key: K, value: V);
+  abstract pub fn %set (key: K, value: V);
 
   /**
    * Delete an existing key (with its value)
    * @param key The key to delete
    */
-  abstract public func %unset (key: K);
+  abstract pub fn %unset (key: K);
 
   /**
    * Check if a key exists in this dictionary
    * @param key The key to check the existence of
    * @returns `true` if the key exists
    */
-  abstract public func %has (key: K) : bool;
+  abstract pub fn %has (key: K) : bool;
 
   /**
    * Check if a value exists in this dictionary
    * @param value The value to check the existence of
    * @returns `true` if the value exists
    */
-  abstract public func %contains (key: V) : bool;
+  abstract pub fn %contains (key: V) : bool;
 
   /**
    * Get an iterator on the keys
    * @returns An iterator on the keys
    */
-  abstract public func %keys () : Iterator<K>;
+  abstract pub fn %keys () : Iterator<K>;
 
   /**
    * Get an iterator on the values
    * @returns An iterator on the values
    */
-  abstract public func %values () : Iterator<V>;
+  abstract pub fn %values () : Iterator<V>;
 }
 
 // ==================== Maps ==================== //
@@ -1161,7 +1161,7 @@ virtual dict Dictionary<K, V> {
  * @template K Type of keys
  * @template V Type of values
  */
-open dict Map<K, V> implements Clonable {
+open dict Map<K, V> impl Clonable {
   /**
    * The @class's keys
    */
@@ -1175,7 +1175,7 @@ open dict Map<K, V> implements Clonable {
   /**
    * Make an empty @class
    */
-  public func %construct ();
+  pub fn %construct ();
 
   /**
    * Initialize a @class by getting all the keys and values from another dictionary
@@ -1183,28 +1183,28 @@ open dict Map<K, V> implements Clonable {
    * @template Y Type of the other dictionary's values
    * @param init The dictionary to use for initialization
    */
-  public func %construct<X ~ K, Y ~ V> (init: Dictionary<X, Y>);
+  pub fn %construct<X ~ K, Y ~ V> (init: Dictionary<X, Y>);
 
-  public func %get (key: K) : V;
+  pub fn %get (key: K) : V;
 
-  public func %set (key: K, value: V);
+  pub fn %set (key: K, value: V);
 
-  public func %unset (key: K);
+  pub fn %unset (key: K);
 
-  public func %has (key: K) : bool;
+  pub fn %has (key: K) : bool;
 
-  public func %contains (key: V) : bool;
+  pub fn %contains (key: V) : bool;
 
-  public func %keys () : Iterator<K>;
+  pub fn %keys () : Iterator<K>;
 
-  public func %values () : Iterator<V>;
+  pub fn %values () : Iterator<V>;
 
   /**
    * Make a new @class with the same keys and values
    * Keys and values will not be cloned themselves
    * @returns A clone of this @class
    */
-  public func %clone () : _self;
+  pub fn %clone () : _self;
 
   /**
    * Segment for clonable keys and values
@@ -1215,13 +1215,13 @@ open dict Map<K, V> implements Clonable {
      * Keys and values will be cloned
      * @returns A clone of this @class
      */
-    public func %clone () : _self;
+    pub fn %clone () : _self;
   }
 
   /**
    * Segment for serializable keys and values
    */
-  segment (K ~ Serializable && V ~ Serializable) implements Serializable, Stringifyable {
+  segment (K ~ Serializable && V ~ Serializable) impl Serializable, Stringifyable {
     /**
      * Stringify this @class, including its keys and values
      * @returns This @class, stringified
@@ -1229,33 +1229,33 @@ open dict Map<K, V> implements Clonable {
     // DEVNOTE: * Stringify each string and value
     //          * Make a JSON object linking the stringified keys to the stringified values
     //          * Return the JSON object, as a string
-    public func %serialize () : string;
+    pub fn %serialize () : string;
 
     /**
      * Unserialize a stringified @class
      * @param serialized The @class to unserialize
      * @returns The unserialized @class
      */
-    public static func %unserialize (serialized: string) throws UnserializationError : _this;
+    pub static fn %unserialize (serialized: string) throws UnserializationError : _this;
 
     /**
      * Stringify this @class, including its keys and values
      * @returns This @class, stringified
      */
     // DEVNOTE: Equivalent to %serialize()
-    public func %to<string> () : string;
+    pub fn %to<string> () : string;
   }
 
   /**
    * Remove all keys and values from this @class
    */
-  public func clear ();
+  pub fn clear ();
 
   /**
    * Associate the same value to every existing key
    * @param value The value to associate
    */
-  public func fill (value: V);
+  pub fn fill (value: V);
 
   /**
    * Filter this @class
@@ -1266,7 +1266,7 @@ open dict Map<K, V> implements Clonable {
    * @returns A clone of this @class without the ignored key/value pairs
    * @example ([ 2, 5, -1 ]).filter((i, v) => v > 0) == [ 2, 5 ]
    */
-  public func filter (filter: func (key: K, value: T) : bool) : _self;
+  pub fn filter (filter: fn (key: K, value: T) : bool) : _self;
 
   /**
    * Filter this @class
@@ -1276,7 +1276,7 @@ open dict Map<K, V> implements Clonable {
    * @returns A clone of this @class without the ignored key/value pairs
    * @example ([ 2, 5, -1 ]).filter(i => i > 0) == [ 2, 5 ]
    */
-  public func filter (filter: func (value: T) : bool) : _self;
+  pub fn filter (filter: fn (value: T) : bool) : _self;
 
   /**
    * Insert all the keys and values from another dictionary
@@ -1284,32 +1284,32 @@ open dict Map<K, V> implements Clonable {
    * @template Y Type of the other dictionary's values
    * @param merge The dictionary to use for merging
    */
-  public func merge<X ~ K, Y ~ V> (merge: Dictionary<X, Y>);
+  pub fn merge<X ~ K, Y ~ V> (merge: Dictionary<X, Y>);
 
   /**
    * Segment for comparable keys and values
    */
-  segment (T ~ Comparable) implements Comparable {
+  segment (T ~ Comparable) impl Comparable {
     /**
      * Check if this @class is equivalent to another dictionary
      * @param compareTo The @class to compare to this one
      * @returns `true` if this @class and the other dictionary have the same number of keys and if their values are equal
      */
-    public func %equal (compareTo: Dictionary<K, V>) : bool;
+    pub fn %equal (compareTo: Dictionary<K, V>) : bool;
 
     /**
      * Check if this @class is greater than another dictionary (always `false`)
      * @param compareTo The dictionary to compare this @class
      * @returns `false`
      */
-    public func %greater (compareTo: Dictionary<K, V>) : bool => false;
+    pub fn %greater (compareTo: Dictionary<K, V>) : bool => false;
 
     /**
      * Check if this @class is smaller than another dictionary (always `false`)
      * @param compareTo The dictionary to compare this @class
      * @returns `false`
      */
-    public func %smaller (compareTo: Dictionary<K, V>) : bool => false;
+    pub fn %smaller (compareTo: Dictionary<K, V>) : bool => false;
   }
 
   /**
@@ -1325,7 +1325,7 @@ open dict Map<K, V> implements Clonable {
    * @returns The ghost @class generated using the callback
    * @example ({ # 'hello': 'world' }).@class((k, v) => (v, k)) == ({ # 'world': 'hello' })
    */
-  public func map<X = K, Y = V> (callback: func (key: K, value: V) : (X, Y)) : Map<X, Y>;
+  pub fn map<X = K, Y = V> (callback: fn (key: K, value: V) : (X, Y)) : Map<X, Y>;
 
   /**
    * Generate a new @class from this one through a callback
@@ -1340,7 +1340,7 @@ open dict Map<K, V> implements Clonable {
    * @returns The ghost @class generated using the callback (same keys)
    * @example ({ # 'hello': 'world' }).@class((k, v) => 'mom') == ({ # 'hello': 'mom' })
    */
-  public func map<Y = V> (callback: func (key: K, value: V) : Y) : Map<K, Y>;
+  pub fn map<Y = V> (callback: fn (key: K, value: V) : Y) : Map<K, Y>;
 
   /**
    * Make a @class from an array of keys and an array of values
@@ -1352,7 +1352,7 @@ open dict Map<K, V> implements Clonable {
    * @param values The list of values
    * @returns The @class generated from the provided lists
    */
-  public static func fromArrays<X, Y, SIZE: usize> (keys: X[SIZE], values: Y[SIZE]) : Map<X, Y>;
+  pub static fn fromArrays<X, Y, SIZE: usize> (keys: X[SIZE], values: Y[SIZE]) : Map<X, Y>;
 }
 
 // ==================== Map-based types ==================== //
@@ -1391,7 +1391,7 @@ open class Set<K, V ~ Comparable> extends Map<K, V> {
    * @param key The key to associate a value to
    * @param value The value to associate
    */
-  abstract public func %set (key: K, value: V);
+  abstract pub fn %set (key: K, value: V);
 }
 
 // ==================== Vector type (map-based) ==================== //
@@ -1408,14 +1408,14 @@ virtual dict Vector<T> extends Map<usize, T> {
    * This @class's last element
    * NOTE: THis will throw an 'IndexOutOfBoundError' error if the @class is empty
    */
-  public proxy last: T from {
+  pub proxy last: T from {
     getter: () => this[@size - 1]
   };
 
   /**
    * This @class's size
    */
-  public proxy size: usize from {
+  pub proxy size: usize from {
     getter: @getSize
   };
 
@@ -1427,7 +1427,7 @@ virtual dict Vector<T> extends Map<usize, T> {
    * @returns The value
    * @condition index < this.size
    */
-  public func %get (index: usize) : T;
+  pub fn %get (index: usize) : T;
 
   /**
    * Associate a value to an index
@@ -1438,13 +1438,13 @@ virtual dict Vector<T> extends Map<usize, T> {
    * @returns The value
    * @condition index < this.size
    */
-  public func %set (index: usize, value: T);
+  pub fn %set (index: usize, value: T);
 
   /**
    * Make a vector from a list of values
    * @param values The values to make the @class from
    */
-  public func %construct (values: ...T);
+  pub fn %construct (values: ...T);
 
   /**
    * Concatenate this @class with another vector
@@ -1452,7 +1452,7 @@ virtual dict Vector<T> extends Map<usize, T> {
    * @param affect If `true`, affects the result to this @class
    * @returns The final @class
    */
-  public func concat (vect: Vector<T>, affect: bool = false) : _this;
+  pub fn concat (vect: Vector<T>, affect: bool = false) : _this;
 
   /**
    * Concatenate this @class with a list of values (does not affect this @class)
@@ -1460,33 +1460,33 @@ virtual dict Vector<T> extends Map<usize, T> {
    * @param affect If `true`, affects the result to this @class
    * @returns The final @class
    */
-  public func concat (values: ...T, affect: bool = false) : _this;
+  pub fn concat (values: ...T, affect: bool = false) : _this;
 
   /**
    * Fill this @class with a single value
    * @param value The value to fill the @class with
    */
-  public func fill (value: T);
+  pub fn fill (value: T);
 
   /**
    * Get this @class's size
    * @returns This @class's size
    */
-  public func getSize () : usize;
+  pub fn getSize () : usize;
 
   /**
    * Check if a value is included in the @class
    * @param lookfor The value to look for
    * @returns The value's index ; null if not found
    */
-  public func indexOf (lookfor: T) : usize?;
+  pub fn indexOf (lookfor: T) : usize?;
 
   /**
    * List all indexes a value is found at in this @class
    * @param lookfor The value to look for
    * @returns An array of indexes the value was found at
    */
-  public func indexesOf (lookfor: T) : usize[];
+  pub fn indexesOf (lookfor: T) : usize[];
 
   /**
    * Segment for comparable types
@@ -1497,7 +1497,7 @@ virtual dict Vector<T> extends Map<usize, T> {
      * @param compareTo The vector to compare this @class
      * @returns `true` if the vectors have the same indexes and if their values are equall
      */
-    public func %equal<Vector<T>> (compareTo: Vector<T>) : bool;
+    pub fn %equal<Vector<T>> (compareTo: Vector<T>) : bool;
 
     /**
      * Check if this @class is greater than another vector
@@ -1509,7 +1509,7 @@ virtual dict Vector<T> extends Map<usize, T> {
      //            -> if the other vector's value is greater than the other, the other is greater
      //          * Else, if this vector is longer than the other one, this vector is greater
      //          * Else, this vector is not greater than the other one
-    public func %greater<Vector<T>> (compareTo: Vector<T>) : bool;
+    pub fn %greater<Vector<T>> (compareTo: Vector<T>) : bool;
 
     /**
      * Check if this @class is smaller than another vector
@@ -1519,13 +1519,13 @@ virtual dict Vector<T> extends Map<usize, T> {
     // DEVNOTE: * If this vector is equal to the other one, it is not smaller
     //          * If this vector is greater than the other one, it is not smaller
     //          * Else, this vector is smaller than the other one
-    public func %smaller<Vector<T>> (compareTo: Vector<T>) : bool;
+    pub fn %smaller<Vector<T>> (compareTo: Vector<T>) : bool;
 
     /**
      * Check if all values are equal in this vector
      * @returns `true` if all values are equal
      */
-    public func isUniform () : bool;
+    pub fn isUniform () : bool;
   }
 
   /**
@@ -1537,20 +1537,20 @@ virtual dict Vector<T> extends Map<usize, T> {
      * @param str The join string
      * @returns This @class as a string
      */
-    public func join (str: string) : string;
+    pub fn join (str: string) : string;
   }
 
   /**
    * Get a random element from this @class
    * @returns A random element
    */
-  public func random () : T;
+  pub fn random () : T;
 
   /**
    * Shuffle this @class
    * @returns A new @class with all its elements shuffled
    */
-  public func shuffle () : _self;
+  pub fn shuffle () : _self;
 
   /**
    * Slice this @class
@@ -1562,26 +1562,26 @@ virtual dict Vector<T> extends Map<usize, T> {
    * @example ([ 2, 5, 8 ]).slice(1) == [ 5, 8 ]
    * @returns A slice version of this @class
    */
-  public func slice (start: usize, end: usize) : void;
+  pub fn slice (start: usize, end: usize) : void;
 
   /**
    * Reverse this @class
    * @param affect If `true`, affects the result to this @class
    * @returns This @class, reversed
    */
-  public func reverse (affect: bool = false) : _self;
+  pub fn reverse (affect: bool = false) : _self;
 
   /**
    * Create an unknown-sized array from this @class
    * @returns An unknown-sized array with the same indexes and values than this @class
    */
-  public func toArray () : T[];
+  pub fn toArray () : T[];
 
   /**
    * Create a list from this @class
    * @returns A list with the same indexes and values than this @class
    */
-  public func toList () : List<T>;
+  pub fn toList () : List<T>;
 
   /**
    * Segment for self-calculable types
@@ -1592,13 +1592,13 @@ virtual dict Vector<T> extends Map<usize, T> {
      * @template T The result type (default: same type than the values)
      * @returns The result
      */
-    public func sum<X = T> () : i64;
+    pub fn sum<X = T> () : i64;
   }
 
   /**
    * Segment for serializable keys and values
    */
-  segment (K ~ Serializable && V ~ Serializable) implements Serializable, Stringifyable {
+  segment (K ~ Serializable && V ~ Serializable) impl Serializable, Stringifyable {
     /**
      * Stringify this @class, including its values
      * @returns This @class, stringified
@@ -1606,21 +1606,21 @@ virtual dict Vector<T> extends Map<usize, T> {
     // DEVNOTE: * Stringify each value
     //          * Make a JSON array containing the stringified value, in the right order
     //          * Return the JSON array, as a string
-    public func %serialize () : string;
+    pub fn %serialize () : string;
 
     /**
      * Unserialize a stringified @class
      * @param serialized The @class to unserialize
      * @returns The unserialized @class
      */
-    public static func %unserialize (serialized: string) throws UnserializationError : _self;
+    pub static fn %unserialize (serialized: string) throws UnserializationError : _self;
 
     /**
      * Stringify this @class, its values
      * @returns This @class, stringified
      */
     // DEVNOTE: Equivalent to %serialize()
-    public func %to<string> () : string;
+    pub fn %to<string> () : string;
   }
 }
 
@@ -1653,7 +1653,7 @@ open dict Array<T> extends Vector<T> {
   /**
    * The array's size
    */
-  public val length: usize;
+  pub val length: usize;
 
   /**
    * Automatically convert this array to a fixed-size array
@@ -1661,16 +1661,16 @@ open dict Array<T> extends Vector<T> {
    * @template SIZE The destination array's size
    */
   #auto
-  public func %to<T[SIZE], SIZE: usize> () : T[SIZE];
+  pub fn %to<T[SIZE], SIZE: usize> () : T[SIZE];
 
   /**
    * Remove a key and its associated value from the array
    * Always throw an 'ArrayNotDynamicError' error
    * @param key The key to remove
    */
-  public func %unset (key: usize);
+  pub fn %unset (key: usize);
 
-  public func getSize () : usize;
+  pub fn getSize () : usize;
 }
 
 /**
@@ -1682,7 +1682,7 @@ open dict Array<T> extends Vector<T> {
 dict Array<T, SIZE: usize> extends Vector<T> {
   super%(...);
 
-  public val length = SIZE;
+  pub val length = SIZE;
 }
 
 // ==================== Vector type (vector-based) ==================== //
@@ -1699,40 +1699,40 @@ dict List<T> extends Vector<T> {
    * Get the last element from the list and remove it
    * @returns The ex-last element (null if the list was empty)
    */
-  public func pop () : T?;
+  pub fn pop () : T?;
 
   /**
    * Push an element at the end of the list
    * @param value The value to push
    * @returns The new list's length
    */
-  public func push (value: T) : usize;
+  pub fn push (value: T) : usize;
 
   /**
    * Remove all elements with a given value from the list
    * @param lookfor The value to remove
    */
-  public func remove (lookfor: T);
+  pub fn remove (lookfor: T);
 
   /**
    * Remove the element located at a given index
    * @param index The index of the value to remove
    * @returns The removed element
    */
-  public func removeAt (index: usize) : T;
+  pub fn removeAt (index: usize) : T;
 
   /**
    * Get the first element of the list and remove it
    * @returns The ex-first element (null if the list was empty)
    */
-  public func shift () : T?;
+  pub fn shift () : T?;
 
   /**
    * Remove all elements of the list from an index
    * @param start The index to begin the cut at
    * @returns The cut part
    */
-  public func splice (start: int) : List<T>;
+  pub fn splice (start: int) : List<T>;
 
   /**
    * Remove a part of the list
@@ -1740,14 +1740,14 @@ dict List<T> extends Vector<T> {
    * @param length The length of the cut
    * @returns The cut part
    */
-  public func splice (start: int, length: int) : List<T>;
+  pub fn splice (start: int, length: int) : List<T>;
 
   /**
    * Push a value at the beginning of the list
    * @param value The value to push at the head
    * @returns The new list's length
    */
-  public func unshift (value: T) : usize;
+  pub fn unshift (value: T) : usize;
 }
 
 // ==================== Error types ==================== //
@@ -1783,22 +1783,22 @@ struct BacktraceInstant {
  * Error type
  * NOTE: This class is inheritable
  */
-open class Error implements Stringifyable {
+open class Error impl Stringifyable {
   /**
    * The error message
    */
-  public val message: string;
+  pub val message: string;
 
   /**
    * The error's backtrace
    */
-  public val backtrace: BacktraceInstant[];
+  pub val backtrace: BacktraceInstant[];
 
   /**
    * Initialize an error object
    * @param message The error's message
    */
-  public func %construct (message: string, backtrace: BacktraceInstant[]) {
+  pub fn %construct (message: string, backtrace: BacktraceInstant[]) {
     @message = message;
     @backtrace = backtrace;
   }
@@ -1807,7 +1807,7 @@ open class Error implements Stringifyable {
    * Stringify the error
    * @returns The error, as a string
    */
-  public func %to<string> () : string;
+  pub fn %to<string> () : string;
 }
 
 // ==================== Runtime error types ==================== //
@@ -1821,55 +1821,55 @@ virtual class RuntimeError extends Error {}
  * Program is out of memory
  */
 class OutOfMemory extends RuntimeError {
-  public func %construct () => @message = 'Program is out of memory';
+  pub fn %construct () => @message = 'Program is out of memory';
 }
 
 /**
  * Division by zero
  */
 class DivisionByZeroError extends RuntimeError {
-  public func %construct () => @message = 'Cannot divide by zero';
+  pub fn %construct () => @message = 'Cannot divide by zero';
 }
 
 /**
  * Unserialization fail
  */
 class UnserializationError extends RuntimeError {
-  public func %construct () => @message = 'Unserialization failed';
+  pub fn %construct () => @message = 'Unserialization failed';
 
   /**
    * Create an instance of UnserializationError
    * @param message The error message
    */
-  public func %construct (message: string) => @message = message;
+  pub fn %construct (message: string) => @message = message;
 }
 
 /**
  * String parsing fail
  */
 class StringParsingError extends RuntimeError {
-  public func %construct () => @message = 'Failed to parse the string as a number';
+  pub fn %construct () => @message = 'Failed to parse the string as a number';
 }
 
 /**
  * Duplicate value in a set
  */
 class DuplicateValueError extends RuntimeError {
-  public func %construct () => @message => 'Cannot assign a duplicate value in a set';
+  pub fn %construct () => @message => 'Cannot assign a duplicate value in a set';
 }
 
 /**
  * Access to an out-of-bound index
  */
 class IndexOutOfBoundsError extends RuntimeError {
-  public func %construct () => @message = 'Cannot access an out-of-bound index';
+  pub fn %construct () => @message = 'Cannot access an out-of-bound index';
 }
 
 /**
  * Array's value removal
  */
 class ArrayNotDynamicError extends RuntimeError {
-  public func %construct () => @message = 'Cannot remove a value from an array';
+  pub fn %construct () => @message = 'Cannot remove a value from an array';
 }
 
 /**
@@ -1881,35 +1881,35 @@ class ArraySizeMismatchError extends RuntimeError {
    * @param fromSize The original array's size
    * @param toSize The destination array's size
    */
-  public func %construct (fromSize: usize, toSize: usize) => @message = `Cannot convert a ${toSize}-element array to an ${fromSize}-element one`;
+  pub fn %construct (fromSize: usize, toSize: usize) => @message = `Cannot convert a ${toSize}-element array to an ${fromSize}-element one`;
 }
 
 /**
  * Type constraint's rejection
  */
 class TypeConstraintError extends RuntimeError {
-  public func %construct () => @message = 'Type constraint rejected the assignment';
+  pub fn %construct () => @message = 'Type constraint rejected the assignment';
 }
 
 /**
  * Cast fail
  */
 class InvalidCastError extends RuntimeError {
-  public func %construct () => @message = 'Failed to cast to the provided type';
+  pub fn %construct () => @message = 'Failed to cast to the provided type';
 }
 
 /**
  * Union cast fail
  */
 class UnionBadTypeError extends RuntimeError {
-  public func %construct () => @message = 'Failed to cast the union to the given type';
+  pub fn %construct () => @message = 'Failed to cast the union to the given type';
 }
 
 /**
  * Future attribute nullable removal fail
  */
 class NullFutureAttributeError extends RuntimeError {
-  public func %construct () => @message = 'Future attribute is still \'null\' after the constructor ends';
+  pub fn %construct () => @message = 'Future attribute is still \'null\' after the constructor ends';
 }
 
 /**
@@ -1921,13 +1921,13 @@ class AwaitRejectionError<T> extends RuntimeError {
    * The rejection data
    */
   #future
-  public val data: T;
+  pub val data: T;
 
   /**
    * Create an 'await' rejection error
    * @param data The promise's rejection data
    */
-  public func %construct (data: T) => @data = data;
+  pub fn %construct (data: T) => @data = data;
 }
 
 // ==================== Promise type ==================== //
@@ -1946,7 +1946,7 @@ open class Promise<X, Y> {
    * > @param reject The rejection callback (called in case of fail)
    * > > @param data The rejection data
    */
-  public func %construct (core: func (resolve: func (data: X), reject: func (data: Y)));
+  pub fn %construct (core: fn (resolve: fn (data: X), reject: fn (data: Y)));
 
   /**
    * Set a resolution callback
@@ -1955,7 +1955,7 @@ open class Promise<X, Y> {
    * > @param data The resolution data
    * @returns This promise
    */
-  public func then (resolve: func (data: X));
+  pub fn then (resolve: fn (data: X));
 
   /**
    * Set a rejection callback
@@ -1964,7 +1964,7 @@ open class Promise<X, Y> {
    * > @param data The rejection data
    * @returns This promise
    */
-  public func catch (resolve: func (data: Y));
+  pub fn catch (resolve: fn (data: Y));
 
   /**
    * Set a final callback
@@ -1974,7 +1974,7 @@ open class Promise<X, Y> {
    * > @param rejection_data The rejection data (may be null)
    * @returns This promise
    */
-  public func finally (callback: func (resolution_data: X?, rejection_data: Y?));
+  pub fn finally (callback: fn (resolution_data: X?, rejection_data: Y?));
 
   /**
    * Set a final callback
@@ -1983,7 +1983,7 @@ open class Promise<X, Y> {
    * > @param data Either the resolution or rejection data
    * @returns This promise
    */
-  public func finally (callback: func (data: X | Y));
+  pub fn finally (callback: fn (data: X | Y));
 }
 
 /**
@@ -2000,7 +2000,7 @@ class Promise<X> extends Promise<X, void> {
    * > @param resolve The resolution callback (called in case of success)
    * > > @param data The resolution data
    */
-  public func %construct (core: func (resolve: func (data: X)));
+  pub fn %construct (core: fn (resolve: fn (data: X)));
 }
 
 // ==================== Output API ====================
@@ -2014,7 +2014,7 @@ unique class output {
    * Adds a line break after the message
    * @param message The message to print
    */
-  public func println (message: string);
+  pub fn println (message: string);
 }
 
 // ==================== Native flexs ==================== //

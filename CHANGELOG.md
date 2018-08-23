@@ -80,6 +80,12 @@
 * Introduce the `typeof_ref!`, `iter_ref!`, `levelof!` flexs
 * Require an explicit type for proxy models
 * Update the tuple type to `#tuple` and reserve it for flexs
+* Rename `public` to `pub`
+* Rename `protected` to `prot`
+* Rename `private` to `priv`
+* Rename `interface` to `inf`
+* Rename `implements` to `impl`
+* Rename `func` to `fn`
 
 ### Removed features
 

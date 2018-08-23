@@ -2010,12 +2010,12 @@ But now, let's imagine we have to do this dozens of time. This would be heavy to
 
 In order to avoid copy-pasting this block of code again and again, we can use a general programming concept known as _functions_.
 
-A function is declared using the `func` keyword. We give it a name, and its arguments between parenthesis, separated by commands. An argument is simply a couple formed of a name and a type, written as `argname: type` (though we will see later this is not the only syntax for arguments). We then write a double point `:` symbol and the function's return type - the type of the value it returns.
+A function is declared using the `fn` keyword. We give it a name, and its arguments between parenthesis, separated by commands. An argument is simply a couple formed of a name and a type, written as `argname: type` (though we will see later this is not the only syntax for arguments). We then write a double point `:` symbol and the function's return type - the type of the value it returns.
 
 Let's write the block's head:
 
 ```sn
-func triangle_area (base: f32, height: f32) : f32 {
+fn triangle_area (base: f32, height: f32) : f32 {
   // Function's body
 }
 ```
@@ -2025,7 +2025,7 @@ The very first line (without the `{` symbol) is called the function's _prototype
 Let's get back to our example: we want to calculate the triangle's area. Here is a function that does it:
 
 ```sn
-func triangle_area (base: f32, height: f32) : f32 {
+fn triangle_area (base: f32, height: f32) : f32 {
   val area = 0.5 * base * height;
 }
 ```
@@ -2033,7 +2033,7 @@ func triangle_area (base: f32, height: f32) : f32 {
 Let's print the result:
 
 ```sn
-func triangle_area (base: f32, height: f32) : f32 {
+fn triangle_area (base: f32, height: f32) : f32 {
   val area = 0.5 * base * height;
   println!(`The triangle's area is: ${area}`);
 }
@@ -2044,7 +2044,7 @@ Now we want to assign it a variable each time we calculate the area. So we will 
 There's a simple way to achieve this called the _return statement_. It uses the `return` keyword to return a value from the function. This value can then be assigned to an assignable entity like a variable or a constant. Let's do it!
 
 ```sn
-func triangle_area (base: f32, height: f32) : f32 {
+fn triangle_area (base: f32, height: f32) : f32 {
   val area = 0.5 * base * height;
   println!(`The triangle's area is: ${area}`);
   return area;
@@ -2062,7 +2062,7 @@ Here, the return type of the return value **must** match the function's return t
 Also, even though functions can originally only return a single value, it's possible to cheat with tuples, as they are considered as a single value:
 
 ```sn
-func add (left: int, right: int) : (int, f32) {
+fn add (left: int, right: int) : (int, f32) {
   return (
     // Divide as integers
     left / right,
@@ -2082,7 +2082,7 @@ As they are single values too, we can return arrays, lists, vectors, dictionarie
 Note that void-typed functions (functions that return nothing) can omit their return type:
 
 ```sn
-func sayHello () {
+fn sayHello () {
   println!('Hello !');
 }
 ```
@@ -2092,7 +2092,7 @@ func sayHello () {
 This one is pretty explicit, at least. It's possible to make some arguments omittable by giving them default values. These arguments are called _optional_ as you are not forced to specify them when calling the function:
 
 ```sn
-func sayHello (name: string, justTheName: bool = false) {
+fn sayHello (name: string, justTheName: bool = false) {
   if justTheName {
     println!(name);
   } else {
@@ -2109,11 +2109,11 @@ sayHello('John'); // 'Hello, John!'
 This is useful when we don't want to give a default value to arguments manually, in the function's body. Note that default values can be absolutely anything, even expressions:
 
 ```sn
-func getMarcName () : string {
+fn getMarcName () : string {
   return 'Marc';
 }
 
-func sayHello (name: string = 'Hello' + getMarcName()) {
+fn sayHello (name: string = 'Hello' + getMarcName()) {
   println!(`Hello, ${name}!`);
 }
 
@@ -2125,7 +2125,7 @@ sayHello(); // Prints: 'Hello, Marc!'
 Infinite arguments allow a function to take from zero to an infinity of arguments, without using a list to get a lighter syntax.
 
 ```sn
-func sum (...numbers: int) : int {
+fn sum (...numbers: int) : int {
   let sum = 0;
 
   for i = 0p; i < numbers.length; i ++ {
@@ -2143,7 +2143,7 @@ In this function, `numbers` is an array because of the `...` symbols, so in our 
 Note that we can mix an infinite argument with other arguments, like before another one:
 
 ```sn
-func sum (...numbers: int, coefficient: int) : int {
+fn sum (...numbers: int, coefficient: int) : int {
   let sum = 0;
 
   for i = 0p; i < numbers.length; i ++ {
@@ -2159,7 +2159,7 @@ println!(sum(2, 3, 4, 5)); // Prints: '45'
 Or after it:
 
 ```sn
-func sum (coefficient: int, ...numbers: int) : int {
+fn sum (coefficient: int, ...numbers: int) : int {
   let sum = 0;
 
   for i = 0p; i < numbers.length; i ++ {
@@ -2175,7 +2175,7 @@ println!(sum(5, 2, 3, 4)); // Prints: '45'
 Or even between two other arguments:
 
 ```sn
-func sum (coeff1: int, ...numbers: int, coeff2: int) : int {
+fn sum (coeff1: int, ...numbers: int, coeff2: int) : int {
   let sum = 0;
 
   for i = 0p; i < numbers.length; i ++ {
@@ -2191,7 +2191,7 @@ println!(sum(2, 2, 3, 4, 3)); // Prints: '54'
 The only restriction is you can't put two infinite arguments with the same type in a function's signature. For example, the following code is not valid:
 
 ```sn
-func sum (...nums1: int, ...nums2: int) : int { /* ... */ }
+fn sum (...nums1: int, ...nums2: int) : int { /* ... */ }
 ```
 
 #### Arguments expansion
@@ -2199,7 +2199,7 @@ func sum (...nums1: int, ...nums2: int) : int { /* ... */ }
 Functions can also be called using an array of a list of argmuents using the _arguments expansion_ operator:
 
 ```sn
-func sum (left: int, right: int) : int => left + right;
+fn sum (left: int, right: int) : int => left + right;
 
 // Declare a int[]
 val numbers = [ 2, 8 ];
@@ -2220,7 +2220,7 @@ sum(numbers...); // Returns: 10
 This operator can also be used with other arguments:
 
 ```sn
-func calc (left: int, right: int, divide: int) : int {
+fn calc (left: int, right: int, divide: int) : int {
   return (left + right) / divide;
 }
 
@@ -2273,7 +2273,7 @@ Let's now see the declaration of the `filter` function:
 
 ```sn
   // ...
-  public func filter (callback: func (value: T) : bool) : _this<T>;
+  pub fn filter (callback: func (value: T) : bool) : _this<T>;
   // ...
 ```
 
@@ -2298,7 +2298,7 @@ This will do the same thing than the first version. Here, we declare a `myFunc` 
 Note that we inferred this lambda ; its full declaration would be:
 
 ```sn
-val myFunc: func (value: int) : bool = lambda (value: int) : bool {
+val myFunc: fn (value: int) : bool = lambda (value: int) : bool {
   return value >= 0;
 }
 
@@ -2315,7 +2315,7 @@ println!(myFunc(-3)); // Prints: 'false'
 We could also have declared it as a normal function:
 
 ```sn
-func myFunc (value: int) : bool {
+fn myFunc (value: int) : bool {
   return value >= 0;
 };
 
@@ -2328,7 +2328,7 @@ As we saw with `filter`, functions can be arguments of other functions. Here is 
 
 ```sn
 // We don't provide the arguments' name for the function here
-func twoPlusFive (callback: func (int, int) : string) : string {
+fn twoPlusFive (callback: func (int, int) : string) : string {
   return callback(2, 5);
 }
 
@@ -2347,12 +2347,12 @@ The problem of the above code is that the lambda usage is kind of heavy. We can 
 val posArr = list.filter(lambda (value: int, key: int) : bool => value >= 0);
 ```
 
-We don't have the `func` keyword anymore, but the `=>` one appeared. This symbol implicitly indicates a lambda and tells that the value on its right is automatically returned by the function.
+We don't have the `fn` keyword anymore, but the `=>` one appeared. This symbol implicitly indicates a lambda and tells that the value on its right is automatically returned by the function.
 
 This symbol can in fact even be used with functions, like:
 
 ```sn
-func returnTrue () : bool => true;
+fn returnTrue () : bool => true;
 
 println!(returnTrue()); // Prints: 'true'
 ```
@@ -2361,10 +2361,10 @@ Here is a recap of all the functions' syntaxes:
 
 ```sn
 // Classic functions
-func returnTrue () : bool { return true; }
+fn returnTrue () : bool { return true; }
 
 // Function with arrow syntax
-func returnTrue () : bool => true;
+fn returnTrue () : bool => true;
 
 // Classic lambda
 val returnTrue = lambda () : bool { return true; };
@@ -2422,9 +2422,9 @@ struct Point {
 }
 
 // Declare the two functions with polymorphism
-func pointStr (x: f32, y: f32) : string => `(${x}, ${y})`;
+fn pointStr (x: f32, y: f32) : string => `(${x}, ${y})`;
 
-func pointStr (pt: Point) : string => `(${pt.x}, ${pt.y})`;
+fn pointStr (pt: Point) : string => `(${pt.x}, ${pt.y})`;
 
 // Let's try them!
 pointStr(2, 5); // Prints: '(2, 5)'
@@ -2436,8 +2436,8 @@ They work as expected and print the same result.
 A specific case is when we have two definitions that fit a same call:
 
 ```sn
-func something (arg: number) : void {}
-func something (arg: int) : void {}
+fn something (arg: number) : void {}
+fn something (arg: int) : void {}
 
 something(2);
 ```
@@ -2490,27 +2490,27 @@ So, what can we do? Answer is: classes. Here is one:
 
 ```sn
 class Hero {
-  private name: string;
-  private hp: int;
-  private mp: int;
-  private atk: int;
-  private def: int;
+  priv name: string;
+  priv hp: int;
+  priv mp: int;
+  priv atk: int;
+  priv def: int;
 }
 ```
 
-First, we _declare_ the class with the `class` keyword. Like for structures, this creates a type named `Hero`. Then, we set up its _members_, an equivalent to structures' properties. But look at the `private` keyword. This indicates that this members are available only from _the inside_ of the class: only its members can modify them ; that means no one will be able to access these members outside the class.
+First, we _declare_ the class with the `class` keyword. Like for structures, this creates a type named `Hero`. Then, we set up its _members_, an equivalent to structures' properties. But look at the `priv` keyword. This indicates that this members are available only from _the inside_ of the class: only its members can modify them ; that means no one will be able to access these members outside the class.
 
 Now, we just have to make a _public_ function which allows our hero to fight another. But first, we need to make a function that sets the hero's attributes (name, health points, ...). Else, all will be set to 0 and the name will be empty. For that, we use a _constructor_:
 
 ```sn
 class Hero {
-  private name: string;
-  private hp: int;
-  private mp: int;
-  private atk: int;
-  private def: int;
+  priv name: string;
+  priv hp: int;
+  priv mp: int;
+  priv atk: int;
+  priv def: int;
 
-  public func %construct (name: string, hp: int, mp: int, atk: int, def: int) {
+  pub fn %construct (name: string, hp: int, mp: int, atk: int, def: int) {
     this.name = name;
     this.hp = hp;
     this.mp = mp;
@@ -2528,11 +2528,11 @@ Let's continue our class by implementing two methods, which are function attribu
 
 ```sn
   // ...
-  public func getAttack () : int {
+  pub fn getAttack () : int {
     return this.atk;
   }
 
-  public func beAttacked (ennemy: Hero) {
+  pub fn beAttacked (ennemy: Hero) {
     this.hp -= ennemy.getAttack();
   }
   // ...
@@ -2554,7 +2554,7 @@ If we want to consider the defense of our hero now:
 
 ```sn
   // ...
-  public func beAttacked (ennemy: Hero) {
+  pub fn beAttacked (ennemy: Hero) {
     this.hp -= ennemy.getAttack() - this.def;
   }
   // ...
@@ -2564,7 +2564,7 @@ But now, we have to assure HP loss is not negative. That would be weird to win H
 
 ```sn
   // ...
-  public func beAttacked (ennemy: Hero) {
+  pub fn beAttacked (ennemy: Hero) {
     // Calculate the loss
     val loss = ennemy.getAttack() - this.def;
     // Decrease HP
@@ -2577,14 +2577,14 @@ Here we are! Now, let's write a `fight()` function!
 
 ```sn
   // ...
-  public func beAttacked (ennemy: Hero) {
+  pub fn beAttacked (ennemy: Hero) {
     // Calculate the loss
     val loss = ennemy.getAttack() - this.def;
     // Decrease HP
     this.hp -= loss if loss > 0;
   }
 
-  public func fight (ennemy: Hero) {
+  pub fn fight (ennemy: Hero) {
     // Damage the ennemy
     this.beAttacked(ennemy);
     // Get damages from the ennemy
@@ -2597,13 +2597,13 @@ We did it! Here is our whole code with the display of names:
 
 ```sn
 class Hero {
-  private name: string;
-  private hp: int;
-  private mp: int;
-  private atk: int;
-  private def: int;
+  priv name: string;
+  priv hp: int;
+  priv mp: int;
+  priv atk: int;
+  priv def: int;
 
-  public func %construct (name: string, hp: int, mp: int, atk: int, def: int) {
+  pub fn %construct (name: string, hp: int, mp: int, atk: int, def: int) {
     this.name = name;
     this.hp = hp;
     this.mp = mp;
@@ -2611,15 +2611,15 @@ class Hero {
     this.def = defense;
   }
 
-  public func getName () : string {
+  pub fn getName () : string {
     return this.name;
   }
 
-  public func getAttack () : int {
+  pub fn getAttack () : int {
     return this.atk;
   }
 
-  public func beAttacked (ennemy: Hero) {
+  pub fn beAttacked (ennemy: Hero) {
     // Calculate the loss
     // Can't lose a negative amount of health points
     val loss = max(0, ennemy.getAttack() - this.def);
@@ -2629,7 +2629,7 @@ class Hero {
     this.hp -= loss;
   }
 
-  public func fight (ennemy: Hero) {
+  pub fn fight (ennemy: Hero) {
     // Tell what happens
     println!(`${this.name} is going to fight ${ennemy.getName()}!`);
     // Damage the ennemy
@@ -2659,11 +2659,11 @@ Primitive types (`void`, `string`, `int`...) start with a lowercase letter to re
 
 ### Members accessibility
 
-We just saw two _accessor_ keywords for a class' members: `public` and `private`. Public members are public, so anyone can access them, even from the outside of the class. This mean we can do this:
+We just saw two _accessor_ keywords for a class' members: `pub` and `priv`. Public members are public, so anyone can access them, even from the outside of the class. This mean we can do this:
 
 ```sn
 class Example {
-  public val hello = 'world!';
+  pub val hello = 'world!';
 }
 
 val instance = new Example();
@@ -2674,16 +2674,16 @@ Private members are restricted to the inside of the class, meaning they can be u
 
 ```sn
 class Example {
-  public val hello = 'world!';
-  private val secret = 'I\'m private!';
+  pub val hello = 'world!';
+  priv val secret = 'I\'m private!';
 
-  public func printSecret () => println!(this.secret);
+  pub fn printSecret () => println!(this.secret);
 }
 
 val instance = new Example();
 println!(instance.hello); // Prints: 'world!'
-println!(instance.printSecret()); // Prints: "I'm private!"
-println!(instance.secret); // ERROR (private member)
+println!(instance.printSecret()); // Prints: "I'm priv!"
+println!(instance.secret); // ERROR (priv member)
 ```
 
 In other terms, a class is a _scope_ which can make some of its resources public.
@@ -2692,10 +2692,10 @@ There is a specificy about private members, though. We can access an instance's 
 
 ```sn
 class Example {
-  public val hello = 'Hello!';
-  private val secret = 'No one can see me!';
+  pub val hello = 'Hello!';
+  priv val secret = 'No one can see me!';
 
-  public func printAnotherSecret (other: Example) => println!(other.secret);
+  pub fn printAnotherSecret (other: Example) => println!(other.secret);
 }
 
 val instance = new Example();
@@ -2726,9 +2726,9 @@ Because we want some attributes to be initialized before the developer uses them
 
 ```sn
 class Superthing {
-  private name: string;
+  priv name: string;
 
-  public func %construct (theThingName: string) {
+  pub fn %construct (theThingName: string) {
     this.name = theThingName;
   }
 }
@@ -2756,13 +2756,13 @@ Attributes and methods of a class (called its _members_) can be accessed using t
 
 ```sn
 class Superthing {
-  private name: string;
+  priv name: string;
 
-  public func %construct (theThingName: string) {
+  pub fn %construct (theThingName: string) {
     this.name = theThingName;
   }
 
-  public func getName () {
+  pub fn getName () {
     return this.name;
   }
 }
@@ -2783,7 +2783,7 @@ Another trick to use a member from the inside of the class is to use the `@` sym
 class Superthing {
   // ...
 
-  public func getName () {
+  pub fn getName () {
     return @name;
   }
 }
@@ -2795,9 +2795,9 @@ We can also use it in the constructor to automatically set some attributes:
 
 ```sn
 class Superthing {
-  private name: string;
+  priv name: string;
 
-  public func %construct (name: string) => @name = name;
+  pub fn %construct (name: string) => @name = name;
 }
 ```
 
@@ -2811,9 +2811,9 @@ A first implementation could be:
 
 ```sn
 class SomeClass {
-  private myAttribute: string;
+  priv myAttribute: string;
 
-  public func getMyAttribute () : string {
+  pub fn getMyAttribute () : string {
     return @myAttribute;
   }
 }
@@ -2823,7 +2823,7 @@ This is perfectly valid and works as expected. But doing this can be heavy to wr
 
 ```sn
 class SomeClass {
-  public readonly myAttribute: string;
+  pub readonly myAttribute: string;
 }
 ```
 
@@ -2831,7 +2831,7 @@ Now we will access `myAttribute` using `instance.myAttribute` instead of `instan
 
 ```sn
 class SomeClass {
-  public readonly attr = { sub: 1 };
+  pub readonly attr = { sub: 1 };
 }
 
 let instance = new SomeClass();
@@ -2844,8 +2844,8 @@ This is another type of members. Static members are not available from the insta
 
 ```sn
 class Product {
-  private static unique_id = 0;
-  public static func increaseCounter () : int => ++ _self.unique_id;
+  priv static unique_id = 0;
+  pub static fn increaseCounter () : int => ++ _self.unique_id;
 }
 ```
 
@@ -2865,18 +2865,18 @@ Let's populate the class with non-static attributes:
 ```sn
 class Product {
   // The global counter for unique identnfiers
-  private static counter = 0;
+  priv static counter = 0;
 
   // Increase the global counter
-  public static func increaseCounter () : int => ++ _self.counter;
+  pub static fn increaseCounter () : int => ++ _self.counter;
 
   // The product's unique identifier
-  public readonly unique_id: int;
+  pub readonly unique_id: int;
   // The product's name
-  public readonly name: string;
+  pub readonly name: string;
 
   // Initialize the instance
-  public func %construct (name: string) {
+  pub fn %construct (name: string) {
     @name = name;
     // Generate a unique identifier from the static function
     @unique_id = _self.increaseCounter();
@@ -2903,25 +2903,25 @@ The problem seems to be complex but it is mostly simple to achieve. Read the sol
 ```sn
 class Map {
   // Cell types
-  private static val EMPTY = 0;
-  private static val ROCK  = 1;
-  private static val TRAP  = 2;
+  priv static val EMPTY = 0;
+  priv static val ROCK  = 1;
+  priv static val TRAP  = 2;
 
   // Read-only attributes
-  public readonly playerX: int;
-  public readonly playerY: int;
-  public readonly trapped: bool = false;
-  public readonly cells: int[][];
+  pub readonly playerX: int;
+  pub readonly playerY: int;
+  pub readonly trapped: bool = false;
+  pub readonly cells: int[][];
 
   // Create the map
-  public func %construct (cells: int[][], playerX: int, playerY: int) {
+  pub fn %construct (cells: int[][], playerX: int, playerY: int) {
     @cells = cells;
     @playerX = playerX;
     @playerY = playerY;
   };
 
   // Move the hero
-  private func move (x: int, y: int) {
+  priv fn move (x: int, y: int) {
     // If we fell in a trap before...
     if @trapped {
       // Move is forbidden
@@ -2954,13 +2954,13 @@ class Map {
   }
 
   // Move up
-  public func moveUp () => @move(@playerX, @playerY - 1);
+  pub fn moveUp () => @move(@playerX, @playerY - 1);
   // Move down
-  public func moveDown () => @move(@playerX, @playerY + 1);
+  pub fn moveDown () => @move(@playerX, @playerY + 1);
   // Move to the left
-  public func moveLeft () => @move(@playerX - 1, @playerY);
+  pub fn moveLeft () => @move(@playerX - 1, @playerY);
   // Move to the right
-  public func moveRight () => @move(@playerX + 1, @playerY);
+  pub fn moveRight () => @move(@playerX + 1, @playerY);
 }
 ```
 
@@ -2990,14 +2990,14 @@ In the language, the destructor is called when the instance is freed, no matter 
 
 ```sn
 class IntArray {
-  private data: List<int>;
+  priv data: List<int>;
 
-  public func %free () {
+  pub fn %free () {
     println!('I will be freed.');
   }
 
-  public func push (value: int) => @data.push(value);
-  public func pop () : bool => @data.pop();
+  pub fn push (value: int) => @data.push(value);
+  pub fn pop () : bool => @data.pop();
 }
 
 let list = new IntArray();
@@ -3016,7 +3016,7 @@ This overload aims to prepare the instance to being destroyed. After the destruc
 Let's imagine we have an array of integers. We make a function that calculates, for each number, its square, and return a final array with the result. A first implementation of this idea could be:
 
 ```sn
-func squareList (array: int[]) : int[] {
+fn squareList (array: int[]) : int[] {
   for i = 0p; i < array.length; i ++ {
     array[i] *= array[i];
   }
@@ -3077,14 +3077,14 @@ But cloning doesn't work on any class. For example, if we have a class represent
 ```sn
 class Product {
   // Instances' attributes
-  public readonly unique_id: int;
-  public readonly name: string;
-  public readonly price: int;
+  pub readonly unique_id: int;
+  pub readonly name: string;
+  pub readonly price: int;
 
   // Class' static attribute
-  private static counter: int = 0;
+  priv static counter: int = 0;
 
-  public func %construct(name: string, price: int) {
+  pub fn %construct(name: string, price: int) {
     @name = name;
     @price = price;
 
@@ -3103,7 +3103,7 @@ Note that the constructor is not called when the instance is automatically clone
 
 ```sn
   // ...
-  public func %clone (target: _self) : _self {
+  pub fn %clone (target: _self) : _self {
     // Print a simple message
     println!(`Cloning a ${target.name}`);
 
@@ -3124,7 +3124,7 @@ So, we have another choice: make an overload function that takes no argument, an
 
 ```sn
   // ...
-  public func %clone () => new Product(@name, @price);
+  pub fn %clone () => new Product(@name, @price);
   // ...
 ```
 
@@ -3136,7 +3136,7 @@ There is a third and last way to grant cloning support to your class. It's calle
 
 ```sn
   // ...
-  public pln %lazy_clone = true;
+  pub pln %lazy_clone = true;
   // ...
 ```
 
@@ -3155,14 +3155,14 @@ We will take again our product example. Below is the source code of the `Product
 ```sn
 class Product {
   // Instances' attributes
-  public readonly unique_id: int;
-  public readonly name: string;
-  public readonly price: int;
+  pub readonly unique_id: int;
+  pub readonly name: string;
+  pub readonly price: int;
 
   // Class' static attribute
-  private static counter: int = 0;
+  priv static counter: int = 0;
 
-  public func %construct(name: string, price: int) {
+  pub fn %construct(name: string, price: int) {
     @name = name;
     @price = price;
 
@@ -3176,8 +3176,8 @@ The serialization process requires to convert the instance to a string. We also 
 For that, we'll implement two overloads in our class: `%serialize` and `%unserialize`. They have the following signatures:
 
 ```sn
-  public func %serialize () : string;
-  public static func %unserialize (serial: string) throws UnserializationError : _self;
+  pub fn %serialize () : string;
+  pub static fn %unserialize (serial: string) throws UnserializationError : _self;
 ```
 
 For now, we won't talk about the `throws UnserializationError` part as it requires other concepts we will see later.
@@ -3186,7 +3186,7 @@ Now let's implement these overloads! First, how to implement serialization? We c
 
 ```sn
   // ...
-  public func %serialize () : string {
+  pub fn %serialize () : string {
     return `uid: ${@unique_id} ; name: ${@name} ; price: ${@price}`;
   }
   // ...
@@ -3196,12 +3196,12 @@ But there is a problem: first, the string is not optimized. One of the goal of s
 
 ```sn
   // ...
-  public static struct Serialized {
+  pub static struct Serialized {
     name: string;
     price: int;
   }
 
-  public func %serialize () : string =>
+  pub fn %serialize () : string =>
     // Make an object containing the data we want to serialize
     // (thanks to IST)
     // Then serialize it and return the result
@@ -3210,7 +3210,7 @@ But there is a problem: first, the string is not optimized. One of the goal of s
       price: @price
     });
 
-  public static func %unserialize (serial: string) throws UnserializationError : _self {
+  pub static fn %unserialize (serial: string) throws UnserializationError : _self {
     // Unserialize the serialized structure
     val obj: @Serialized = unserialize!(serial, @Serialized);
     // Make a new product instance and return it
@@ -3229,7 +3229,7 @@ Just like cloning, there is a lazy overload for serialization. It consists in a 
 
 ```sn
   // ...
-  public pln %lazy_serial_fields = ( 'name', 'price' );
+  pub pln %lazy_serial_fields = ( 'name', 'price' );
   // ...
 ```
 
@@ -3247,14 +3247,14 @@ There are two overloads for inline calls: the first one is common to each instan
 class Translator {
   // Here is a function that translates a text
   //  and returns the translated string
-  public static func translate (text: string, lang: string) : string {
+  pub static fn translate (text: string, lang: string) : string {
     // Do some translation stuff here
     // For the example we will return a constant string
     return 'Bonjour';
   }
 
   // Make the class callable
-  public static func %call (text: string, lang: string) : string {
+  pub static fn %call (text: string, lang: string) : string {
     return @translate(text, lang);
   }
 }
@@ -3266,9 +3266,9 @@ Here, the `%call` overload made the class callable. We could implement it for in
 
 ```sn
 class Calculator {
-  public func add (left: int, right: int) : int => left + right;
+  pub fn add (left: int, right: int) : int => left + right;
 
-  public func %call (left: int, right: int) : int => @add(left, right);
+  pub fn %call (left: int, right: int) : int => @add(left, right);
 }
 
 val calc = new Calculator();
@@ -3295,18 +3295,18 @@ You can see the matching operator on the right of the corresponding overload. Ea
 ```sn
 class BankAccount {
   // The money on the account
-  public readonly money: uint;
+  pub readonly money: uint;
 
   // A simple constructor
-  public func %construct (money: int) => @money = money;
+  pub fn %construct (money: int) => @money = money;
 
   // Add money to the account
-  public func add (amount: int) => @money += amount;
+  pub fn add (amount: int) => @money += amount;
   // Remove money from the account
-  public func sub (amount: int) => @money -= amount;
+  pub fn sub (amount: int) => @money -= amount;
 
   // Add two accounts by returning the sum of their content
-  public func %plus (cmp: _self) : int {
+  pub fn %plus (cmp: _self) : int {
     return @money + cmp.money;
   }
 }
@@ -3324,7 +3324,7 @@ That's as simple as that. We could also implement a way to handle addition betwe
 ```sn
 class BankAccount {
   // ...
-  public func %plus (cmp: number) : number {
+  pub fn %plus (cmp: number) : number {
     return cmp + @money;
   }
   // ...
@@ -3347,7 +3347,7 @@ So, we could compare two bank accounts:
 ```sn
 class BankAccount {
   // ...
-  public func %equal (cmp: _self) : bool {
+  pub fn %equal (cmp: _self) : bool {
     return @money == right.money;
   }
 }
@@ -3375,18 +3375,18 @@ _Friends_ are part of the concept of accessibility. These are resources, listed 
 
 ```sn
 class Product {
-  private static counter = 0;
-  private id: int;
+  priv static counter = 0;
+  priv id: int;
 
-  public func %construct () => @unique_id = _self.counter ++;
+  pub fn %construct () => @unique_id = _self.counter ++;
 
   // List a function as this class' friend
   friend getProductId (product: _self) : int;
 }
 
 // Define the class' friend function
-func getProductId (product: Product) : int {
-  // Access the instance's private attributes
+fn getProductId (product: Product) : int {
+  // Access the instance's priv attributes
   return product.id;
 }
 ```
@@ -3396,10 +3396,10 @@ There are several syntax to set a resource as friend:
 ```sn
 class Product {
   // List a simple function as a friend
-  friend func simpleFunction (product: _self) : int;
+  friend fn simpleFunction (product: _self) : int;
 
   // List a function (either static or not) from another class as a friend
-  friend func AnotherClass.instanceFunction(product: _self) : int;
+  friend fn AnotherClass.instanceFunction(product: _self) : int;
 
   // Even a whole class can be listed as a friend
   friend class AnotherClass;
@@ -3430,12 +3430,12 @@ Now we saw the concept, let's implement it step by step. First, we'll make a ske
 
 ```sn
 open class Hero {
-  public readonly name: string;
-  public readonly hp: int;
-  public readonly attack: int;
+  pub readonly name: string;
+  pub readonly hp: int;
+  pub readonly attack: int;
 
   // Attack an ennemy
-  public func fight (ennemy: _self) {
+  pub fn fight (ennemy: _self) {
     // Check if this hero is dead
     if @hp == 0 {
       println!(`${@name} can't find because he's dead.`);
@@ -3456,7 +3456,7 @@ open class Hero {
   }
 
   // Receive damages from an ennemy
-  public func receiveDamages (amount: int, ennemyName: string) {
+  pub fn receiveDamages (amount: int, ennemyName: string) {
     // Check if this hero is dead
     if @hp == 0 {
       println!(`${@name} did not receive any damage because he's dead.`);
@@ -3482,21 +3482,21 @@ open class Hero {
 
 A little subtlety here is the presence of the `open` keyword at the beginning. It's called a _class state_, and this one allows our class to be _inherited_. By default, classes are _sealed_, so it's impossible to make children class from them ; they need to be _opened_ using the `open` keyword to allow it.
 
-Another thing: the `protected` keyword. It kind of acts like `private`, as the member it prefixes will only be available from the inside of the class. But, `private` is a special keyword that, in addition to making the attribute available only from the inside of the class, will not make it available from its children class. So `Warrior` and `Wizard` wouldn't be able to read or write it. That's a thing we need to think to when making a class that will be inherited by other ones. The `protected` keyword does the same thing than `private` excepted that it makes the attribute available from children classes.
+Another thing: the `prot` keyword. It kind of acts like `priv`, as the member it prefixes will only be available from the inside of the class. But, `private` is a special keyword that, in addition to making the attribute available only from the inside of the class, will not make it available from its children class. So `Warrior` and `Wizard` wouldn't be able to read or write it. That's a thing we need to think to when making a class that will be inherited by other ones. The `protected` keyword does the same thing than `private` excepted that it makes the attribute available from children classes.
 
 So, now we've seen that, let's make a first children class:
 
 ```sn
 class Warrior extends Hero {
-  public readonly rage: int;
+  pub readonly rage: int;
 
-  public func %construct(name: string, hp: int, attack: int) {
+  pub fn %construct(name: string, hp: int, attack: int) {
     @name = name;
     @hp = hp;
     @attack = attack;
   }
 
-  public func receiveDamages (amount: int, ennemyName: string) {
+  pub fn receiveDamages (amount: int, ennemyName: string) {
     // Call the parent class' `receiveDamages()` method
     super.receiveDamages(amount, ennemyName);
 
@@ -3517,7 +3517,7 @@ class Warrior extends Hero {
 
 First, we create a `Warrior` declared as a child class of `Hero`, so it keeps all its attributes and methods (including overloads).
 
-Next, we declare a new `rage` attribute, which this time is `private` because there won't be any class inheriting from this one.
+Next, we declare a new `rage` attribute, which this time is `priv` because there won't be any class inheriting from this one.
 
 Then, we declare a constructor for the class. If you look at the mother class, it doesn't have any constructors. If we doesn't make one, the class will be instanciable without any argument, which would set HP, attack etc. to their NIL value. This is a fundamental rule: if the class has no constructor, it can be instanciated without any argument ; if it has one or more constructors, the instanciation must use any of the declared constructors.
 
@@ -3529,16 +3529,16 @@ We can now write our `Wizard` class, still inheriting from `Hero`:
 
 ```sn
 class Wizard extends Hero {
-  public readonly mp: int;
+  pub readonly mp: int;
 
-  public func %construct (name: int, hp: int, attack: int, mp: int) {
+  pub fn %construct (name: int, hp: int, attack: int, mp: int) {
     @name = name;
     @hp = hp;
     @attack = attack;
     @mp = mp;
   }
 
-  public func fireball (ennemy: Hero) {
+  pub fn fireball (ennemy: Hero) {
     // Check if remaining MP are enough
     if @mp < 10 {
       println!(`${name} can't throw a fireball because he doesn't have enough MP.`);
@@ -3610,12 +3610,12 @@ Let's take a short example:
 
 ```sn
 open class Mother {
-  public func helloFromMother () => this.hello();
-  public func hello () => println!('I am the mother class.');
+  pub fn helloFromMother () => this.hello();
+  pub fn hello () => println!('I am the mother class.');
 }
 
 class Child extends Mother {
-  public func hello () => println!('I am the child class.');
+  pub fn hello () => println!('I am the child class.');
 }
 ```
 
@@ -3636,12 +3636,12 @@ Note that these keywords can be used both in a dynamic and static way: we could 
 
 ```sn
 open class Mother {
-  public func helloFromMother () => self.hello();
-  public func hello () => println!('I am the mother class.');
+  pub fn helloFromMother () => self.hello();
+  pub fn hello () => println!('I am the mother class.');
 }
 
 class Child extends Mother {
-  public func hello () => println!('I am the child class.');
+  pub fn hello () => println!('I am the child class.');
 }
 
 val child = new Child();
@@ -3654,17 +3654,17 @@ Classes can call their own overloads like standard methods:
 
 ```sn
 class Test {
-  public readonly id: int;
-  public readonly name: string;
+  pub readonly id: int;
+  pub readonly name: string;
 
-  private static readonly counter: int = 0;
+  priv static readonly counter: int = 0;
 
-  public func %construct () {
+  pub fn %construct () {
     @id = ++ self.counter;
     @name = ''; // The value of '@name' is now more explicit
   }
 
-  public func %construct (name: string) {
+  pub fn %construct (name: string) {
     @name = name;
 
     this.%construct(id);
@@ -3686,7 +3686,7 @@ Still, if you _really_ want to inherit the constructors of the parent class (e.g
 
 ```sn
 class A {
-  public func %construct (message: string) {
+  pub fn %construct (message: string) {
     println!(message);
   }
 }
@@ -3707,7 +3707,7 @@ To inherit all of them, we can use the `super%(...)` syntax:
 
 ```sn
 class A {
-  public func %construct (message: string) {
+  pub fn %construct (message: string) {
     println!(message);
   }
 }
@@ -3730,9 +3730,9 @@ As we saw, the constructor can't be inherited, but we can use still call it from
 
 ```sn
 open class Mother {
-  protected name: string;
+  prot name: string;
 
-  public func %construct (name: string) {
+  pub fn %construct (name: string) {
     @name = name;
 
     println!(`Hello ${name}!`);
@@ -3740,7 +3740,7 @@ open class Mother {
 }
 
 class Child extends Mother {
-  public func %construct (name: string) {
+  pub fn %construct (name: string) {
     // Call the mother's existing constructor
     super.%construct(name);
   }
@@ -3755,21 +3755,21 @@ For example, we could imagine a class we don't want to be instanciated from the 
 
 ```sn
 class Mother {
-  protected func %construct () {}
+  prot fn %construct () {}
 
-  public func sayHello () {
+  pub fn sayHello () {
     println!('Hello!');
   }
 }
 
 class Child extends Mother {
-  public static func getMotherObj () : _super {
+  pub static fn getMotherObj () : _super {
     return new Mother(); // Works fine
   }
 }
 
 // Instanciate the mother class
-new Mother(); // ERROR (no public constructor available)
+new Mother(); // ERROR (no pub constructor available)
 Child.getMotherObj(); // Works fine
 
 // Use the instance
@@ -3802,12 +3802,12 @@ Unique classes are 'self-instanciated' classes. Here is an example:
 
 ```sn
 unique class tr {
-  public func translate (text: str, lang: str) : string {
+  pub fn translate (text: str, lang: str) : string {
     // Do some stuff here
     return 'Bonjour';
   }
 
-  public func %call (text: str, lang: str) : string {
+  pub fn %call (text: str, lang: str) : string {
     return @translate(text, lang);
   }
 }
@@ -3845,11 +3845,11 @@ Here is an example:
 
 ```sn
 virtual class Hello {
-  abstract public func sayHello() : string;
+  abstract pub fn sayHello() : string;
 }
 
 class World {
-  abstract public func sayHello() : string {
+  abstract pub fn sayHello() : string {
     println!('Hello world!');
   }
 }
@@ -3867,13 +3867,13 @@ Final methods are simply methods that can't be overwritten in children classes. 
 
 ```sn
 open class Mother {
-  final public func sayHello () {
+  final pub fn sayHello () {
     println!('Hello from the mother class!!');
   }
 }
 
 class Child extends Mother {
-  public func sayHello() { // ERROR (overwritting a final method)
+  pub fn sayHello() { // ERROR (overwritting a final method)
     println!('Hello from the child class!');
   }
 }
@@ -3953,14 +3953,14 @@ Here is an example:
 
 ```sn
 open class Vehicle {
-  public func accelerate () => println!('Vroom!');
+  pub fn accelerate () => println!('Vroom!');
 }
 
 class Motorcycle extends Vehicle {
-  public func accelerate () => println!('vroom vroom!');
+  pub fn accelerate () => println!('vroom vroom!');
 }
 
-func acceleration (vehicle: Vehicle) {
+fn acceleration (vehicle: Vehicle) {
   vehicle.accelerate();
 }
 
@@ -3974,12 +3974,12 @@ Be aware though: when using a mother type, all members specific to its children 
 
 ```sn
 open class Vehicle {
-  public func accelerate () => println!('Vroom!');
+  pub fn accelerate () => println!('Vroom!');
 }
 
 class Motorcycle extends Vehicle {
-  public func accelerate () => println!('vroom vroom!');
-  public func stunt () => println!('Wow!');
+  pub fn accelerate () => println!('vroom vroom!');
+  pub fn stunt () => println!('Wow!');
 }
 
 val motorcycle: Vehicle = new Motorcycle();
@@ -3989,7 +3989,7 @@ motorcycle.stunt(); // ERROR because `stunt` is not part of the `Vehicle` class
 That may appear to be simple and not very useful at the moment, but as we will see later that's an extremly useful concept. Also, note there is a way to ask for a specific type and not its children, thanks to the `#=T` directive:
 
 ```sn
-func precise (vehicle: #=Vehicle) {
+fn precise (vehicle: #=Vehicle) {
   vehicle.accelerate();
 }
 
@@ -4010,11 +4010,11 @@ As for any abstract method, we can call the methods using this keyword from all 
 
 ```sn
 virtual class Mother {
-  public func getThis () : _this => this;
+  pub fn getThis () : _this => this;
 }
 
 class Child extends Mother {
-  public func getThis () : _this => this;
+  pub fn getThis () : _this => this;
 }
 
 val obj: Mother = new Child();
@@ -4113,14 +4113,14 @@ number
 Typecasting overloads are defined this way:
 
 ```sn
-  [public|protected|private] func %to<Type> () : Type { /* code */ }
+  [pub|prot|priv] fn %to<Type> () : Type { /* code */ }
 ```
 
 Here is an example:
 
 ```sn
 class HelloWorld {
-  public func %to<string> () : string {
+  pub fn %to<string> () : string {
     return 'Hello world!';
   }
 }
@@ -4143,7 +4143,7 @@ There is a variant to perform _automatic_ typecasting. If an `A` example impleme
 ```sn
 class A {
   #auto
-  public func %to<B> () : B => new B()
+  pub fn %to<B> () : B => new B()
 }
 
 class B {}
@@ -4168,7 +4168,7 @@ class Array<T> {
   // ...
 
   #auto
-  public func %to<Array<T, SIZE>, T, SIZE: usize> () : Array<T, SIZE>;
+  pub fn %to<Array<T, SIZE>, T, SIZE: usize> () : Array<T, SIZE>;
 
   // ...
 }
@@ -4177,7 +4177,7 @@ class Array<T> {
 This overload is a little bit complex. Its first parameter is the destination type (`Array<T, SIZE>`), but is also takes two other templates: the array's type (`T`), which is automatically inferred, and its size (`SIZE`), which is automatically inferred as well. Finally, with these two templates being automatically inferred, the first one can be inferred too to guess the whole type. Example:
 
 ```sn
-func test <VALUE: T, T> () {}
+fn test <VALUE: T, T> () {}
 
 test<2> (); // 'T' is inferred as being an 'i32'
 test<8p> (); // 'T' is inferred as being a 'usize'
@@ -4193,7 +4193,7 @@ The first idea would be to make a virtual class called `ConvertibleToInt` with a
 
 ```sn
 virtual class ConvertibleToInt {
-  abstract func %to<int> () : int;
+  abstract fn %to<int> () : int;
 }
 ```
 
@@ -4206,11 +4206,11 @@ Also, and that's the great point about interfaces, any class that implements all
 Try to find the solution by yourself, we've what we just saw. Below is the solution:
 
 ```sn
-interface ConvertibleToInt {
-  func %to<int> () : int;
+inf ConvertibleToInt {
+  fn %to<int> () : int;
 }
 
-func add (left: ConvertibleToInt, right: ConvertibleToInt) : int {
+fn add (left: ConvertibleToInt, right: ConvertibleToInt) : int {
   return int(left) + int(right);
 }
 ```
@@ -4224,17 +4224,17 @@ If we try this code, it works perfectly fine.
 We can also declare attributes in interfaces, and even give them a default value, like this:
 
 ```sn
-interface ConvertibleToInt {
+inf ConvertibleToInt {
   value: int = 5;
 
-  func %to<int> () : int;
+  fn %to<int> () : int;
 }
 ```
 
 Note that interfaces are not compatible with structures, which means the following code won't work:
 
 ```sn
-interface Hero {
+inf Hero {
   name: string;
 }
 
@@ -4246,18 +4246,18 @@ let jack: Hero = { mut name: 'Jack' }; // ERROR
 An interface can use the `_self` type to refers to the class that is implemeting it. Here is an exemple:
 
 ```sn
-interface Duplication {
-  func duplicate () : _self;
+inf Duplication {
+  fn duplicate () : _self;
 }
 
-class Product implements Duplication {
-  public readonly name: string;
+class Product impl Duplication {
+  pub readonly name: string;
 
-  public func %construct (name: string) {
+  pub fn %construct (name: string) {
     @name = name;
   };
 
-  public func duplicate () : _self {
+  pub fn duplicate () : _self {
     return new _self(@name);
   }
 }
@@ -4270,13 +4270,13 @@ The `_this` type is also available and refers to the real class as a type. Be aw
 Interfaces can inherit from other interfaces:
 
 ```sn
-interface A {
-  public func a ();
+inf A {
+  pub fn a ();
 }
 
-interface B implements A {
+inf B impl A {
   // Contains both 'a' and 'b'
-  public func b ();
+  pub fn b ();
 }
 ```
 
@@ -4298,11 +4298,11 @@ Here are some native typecasting interfaces we can use in our programs:
 
 #### Implementing interfaces in a class
 
-To implement an interface in a class, simply use the `implements` keyword like the `inherits` one:
+To implement an interface in a class, simply use the `impl` keyword like the `inherits` one:
 
 ```sn
-class Two implements IntegerConvertible {
-  public func %to<int> () => 2;
+class Two impl IntegerConvertible {
+  pub fn %to<int> () => 2;
 }
 ```
 
@@ -4313,7 +4313,7 @@ Even though the class will automatically implement the interface if it respects 
 The smallest interface in SilverNight is `Any`. It allows us to take absolutely any instance of any class as an argument. Here is its full declaration:
 
 ```sn
-interface Any {
+inf Any {
   // Nothing here
 }
 ```
@@ -4328,15 +4328,15 @@ _'Long'_ safe typecasting is a method that uses a typecast path to convert a val
 
 ```sn
 class Money {
-  public amount = 0u;
+  pub amount = 0u;
 
-  public func %construct (amount: uint) => @amount = amount;
+  pub fn %construct (amount: uint) => @amount = amount;
   
-  public func %to<u64> () : u64 => @amount;
+  pub fn %to<u64> () : u64 => @amount;
 
-  public func %to<u32> () : u32 => @amount;
+  pub fn %to<u32> () : u32 => @amount;
 
-  public func %to<u16> () : u16 => <u16> @amount;
+  pub fn %to<u16> () : u16 => <u16> @amount;
 }
 ```
 
@@ -4355,7 +4355,7 @@ let str = <string> <uint> money; // '1000'
 We first convert the instance to an `uint`, as it's capable of, and then we turn the `uint` to a `string`, as it's capable of too. But, this syntax is a bit heavy, so we can instead perform a _long safe typecasting_. It basically consists in doing a unique cast. But, for that, we must define a _typecasting path_. In an interface, it has the following syntax:
 
 ```sn
-interface LongStringifyable {
+inf LongStringifyable {
   typepath string = (u64, i64, u32, i32, u16, i16, u8, i8, bool);
 }
 ```
@@ -4392,7 +4392,7 @@ println!(<string> strable); // Prints: '1000'
 A concrete example of using this is when we want to convert any class that can be converted to an integer to a string. This is how the `Stringifyable` interface works. Here is its declaration:
 
 ```sn
-interface Stringifyable {
+inf Stringifyable {
   typepath string = (u64, i64, u32, i32, u16, i16, u8, i8, bool, void);
 }
 ```
@@ -4408,7 +4408,7 @@ An example of the usefulness of extensions is if we often have to reverse string
 The solution is to create an _extension_ of the class, which goes like this:
 
 ```sn
-extension<string> func reverse () : string {
+extension<string> fn reverse () : string {
   let reversed = '';
 
   for i = this.length - 1; i >= 0; i -- {
@@ -4432,7 +4432,7 @@ A good example of traits is when you want to inherit from multiple classes. This
 ```sn
 trait Vehicle {
   val speed: f32;
-  func accelerate () : string => 'Vroom !';
+  fn accelerate () : string => 'Vroom !';
 }
 
 trait Wheeled {
@@ -4461,11 +4461,11 @@ Traits can inherit from other traits:
 
 ```sn
 trait A {
-  public func a () => println!('A');
+  pub fn a () => println!('A');
 }
 
-trait B implements A {
-  public func b () => println!('B');
+trait B impl A {
+  pub fn b () => println!('B');
 }
 ```
 
@@ -4516,15 +4516,15 @@ That's more simple, right? Now, let's see an application in classes. We will mak
 ```sn
 class KindOfDict<K, V> {
   // The list of keys
-  private keys: List<K>;
+  priv keys: List<K>;
   // The list of values
-  private values: List<V>;
+  priv values: List<V>;
 
   // Check if a key exists
-  public func has (key: K) : bool => @keys.has(key);
+  pub fn has (key: K) : bool => @keys.has(key);
 
   // Associate a value to a key
-  public func set (key: K, value: V) {
+  pub fn set (key: K, value: V) {
     // If this key is not already known...
     if ! @has(key) {
       // Create it
@@ -4538,7 +4538,7 @@ class KindOfDict<K, V> {
   }
 
   // Get a value from a given key
-  public func get (key: K) : V {
+  pub fn get (key: K) : V {
     // Return the value associated to the key
     return @values[@keys.indexOf(key)];
   }
@@ -4562,8 +4562,8 @@ A final word about template inference: be **really** aware about ambiguities tha
 
 ```sn
 class KindOfDict<K, V> {
-  public func %construct (theFirstKey: K) { /* ... */ }
-  public func %construct (theFirstValue: V) { /* ... */ }
+  pub fn %construct (theFirstKey: K) { /* ... */ }
+  pub fn %construct (theFirstValue: V) { /* ... */ }
 }
 
 new KindOfDict(2); // ERROR: Template inference ambiguity
@@ -4576,11 +4576,11 @@ Because of the program not being able to decide on the template to infer, an err
 Another ambiguity problem is when we deal with this kind of code:
 
 ```sn
-func newValue (value: int) : int {
+fn newValue (value: int) : int {
   return value * 2;
 }
 
-func newValue<T extends number> (value: T) : T {
+fn newValue<T extends number> (value: T) : T {
   return value * 4;
 }
 
@@ -4630,19 +4630,19 @@ Because the chosen template is not predictable, we can't instanciate it nor use 
 
 ```sn
 // Make a structure
-struct Data<T implements Stringifyable> {
+struct Data<T impl Stringifyable> {
   value: T;
-  stringify: func () : string = () => <string> value;
+  stringify: fn () : string = () => <string> value;
 }
 
 // Make a class that works with the structure
 class Working {
-  public func %to<string> () => 'It\'s working!';
+  pub fn %to<string> () => 'It\'s working!';
 }
 
 // Make a class that doesn't work with the structure
 class NotWorking {
-  public func %construct () : _self => println!('It\'s not working!');
+  pub fn %construct () : _self => println!('It\'s not working!');
 }
 ```
 
@@ -4672,19 +4672,19 @@ T extends SomeClass;
 // `true` if `T` is the given class or one of its parents
 T parentof SomeClass;
 
-// Implementation (interface)
-T implements SomeInterface;
-T implements SomeInterface1, SomeInterface2;
+// Implementation (inf)
+T impl SomeInterface;
+T impl SomeInterface1, SomeInterface2;
 
 // Implementation (trait)
 T uses SomeTrait;
 T uses SomeTrait1, SomeTrait2;
 
-// Exclusion (class, interface, trait, ...)
+// Exclusion (class, inf, trait, ...)
 T isnt SomeForbiddenClass;
 
 // A mix
-T isnt SomeForbiddenClass extends SomeClass implements SomeInterface uses SomeTrait;
+T isnt SomeForbiddenClass extends SomeClass impl SomeInterface uses SomeTrait;
 ```
 
 Pretty powerful, right? We can use this to make very specialized classes, like this:
@@ -4692,8 +4692,8 @@ Pretty powerful, right? We can use this to make very specialized classes, like t
 ```sn
 // open class KindOfDict<K, V> { /* ... */ }
 
-class StringDict<K, V implements Stringifyable> extends KindOfDict<K, V> {
-  public func stringify(key: T) : string => string(@values[@keys.indexOf(key)]);
+class StringDict<K, V impl Stringifyable> extends KindOfDict<K, V> {
+  pub fn stringify(key: T) : string => string(@values[@keys.indexOf(key)]);
 }
 ```
 
@@ -4705,7 +4705,7 @@ Also, there is a shortened syntax to mix several type checkings that checks inhe
 // open class KindOfDict<K, V> { /* ... */ }
 
 class StringDict<K, V ~ Stringifyable> extends KindOfDict<K, V> {
-  public func stringify(key: T) : string => string(@values[@keys.indexOf(key)]);
+  pub fn stringify(key: T) : string => string(@values[@keys.indexOf(key)]);
 }
 ```
 
@@ -4722,7 +4722,7 @@ let str = 'Hello';
 
 str instanceof string; // true
 str instanceof Primitive; // true
-str implements Stringifyable; // true
+str impl Stringifyable; // true
 str uses SomeTrait;
 ```
 
@@ -4742,7 +4742,7 @@ str ~ SomeTrait;
 Here is a problem we may encounter soon: we have a function, that takes a single argument of any type, do some things with it (like putting it in a list or something) and returns an instance of the exact same type. A first implementation of this idea could be this one:
 
 ```sn
-func treat (something: Any) : Any {
+fn treat (something: Any) : Any {
   // Do some stuff
   return something;
 }
@@ -4758,7 +4758,7 @@ height = treat(hello); // ERROR
 An error will be thrown because `height` is typed as an `int` but `treat` returns an instance of `Any`. This is where we block: the function tells it can return absolutely any type of values. To solve this problem, we'll simply use templates with inferred templating:
 
 ```sn
-func treat<T> (something: T) : T {
+fn treat<T> (something: T) : T {
   // Do some stuff
   return something;
 }
@@ -4785,16 +4785,16 @@ In reality, templates are instances of a class. Consider the following code:
 
 ```sn
 // This line:
-func something<T> () : void {}
+fn something<T> () : void {}
 
 // Is strictly equivalent to:
-func something<T: #pln<Type>> () : void {}
+fn something<T: #pln<Type>> () : void {}
 ```
 
 We are specifying the template's _type_. Here, `T` is an instance of a plain `Type` value. `Type` is a special class that refers to any valid type a value can take. Still, we can ask our template to be of any type:
 
 ```sn
-func createEmptyList<T, SIZE: uint> () : T[SIZE] { /* ... */ }
+fn createEmptyList<T, SIZE: uint> () : T[SIZE] { /* ... */ }
 
 val list1: int[8] = createEmptyList<int, 8>();
 val list2: int[]  = createEmptyList<int, 8>();
@@ -4818,7 +4818,7 @@ Also, always remember templates are _constants_: they cannot be modified in any 
 
 ```sn
 class A {
-  public func hello () : string {
+  pub fn hello () : string {
     println!("Hello world!");
   }
 }
@@ -4828,7 +4828,7 @@ Is equivalent to:
 
 ```sn
 class A {
-  public pln hello = func () : string {
+  pub pln hello = fn () : string {
     println!("Hello world!");
   }
 }
@@ -4839,7 +4839,7 @@ class A {
 In specific cases like typecasting overloads, it can be useful to have a function working for a fixed template:
 
 ```sn
-func test <int> () {}
+fn test <int> () {}
 
 test<int>(); // Works fine
 test<string>(); // ERROR
@@ -4850,10 +4850,10 @@ When providing the name of an existing type, the templated is considered as _fix
 Still, in order to avoid our template to have the same name than another class in the code and so to result in troubles at build time, we should always specify the template's type (at least when it doesn't use a reserved template name like `T`, which explicitly indicates it's a template). Example:
 
 ```sn
-func test <SIZE> (); // Not ok (could be a class' name)
-func test <SIZE: usize> (); // Ok (no ambiguity)
+fn test <SIZE> (); // Not ok (could be a class' name)
+fn test <SIZE: usize> (); // Ok (no ambiguity)
 
-func test <V> (); // Ok ('V' is a reserved template name)
+fn test <V> (); // Ok ('V' is a reserved template name)
 ```
 
 ### Segments
@@ -4864,7 +4864,7 @@ Segments are parts of a class that provides some methods only if some conditions
 class Vector<T> {
   // ...
   segment (T extends number) {
-    public func sum () : T { /* ... */ }
+    pub fn sum () : T { /* ... */ }
   }
 }
 ```
@@ -4878,8 +4878,8 @@ Note that segments can also implement an interface or use a trait, as follows:
 ```sn
 class Vector<T> {
   // ...
-  segment (T extends number) implements Randomizable {
-    public func %random () : T  { /* ... */ }
+  segment (T extends number) impl Randomizable {
+    pub fn %random () : T  { /* ... */ }
   }
 }
 ```
@@ -4887,12 +4887,12 @@ class Vector<T> {
 It's even possible to override an existing method or attribute in a segment:
 
 ```sn
-class SomeClass<T> implements Randomizable {
+class SomeClass<T> impl Randomizable {
   // ...
-  func %random () : T { /* ... */ }
+  fn %random () : T { /* ... */ }
   // ...
   segment (T extends number) {
-    func %random () : T { /* other code */ }
+    fn %random () : T { /* other code */ }
   }
 }
 ```
@@ -4906,16 +4906,16 @@ class BankAccount {
   // ...
 
   // Doesn't work because 'T' cannot be guessed
-  public func %plus<T> (left: string, right: int) : int[];
+  pub fn %plus<T> (left: string, right: int) : int[];
 
   // Doesn't work because 'T' cannot be guessed
-  public func %plus<T> (left: string, right: int) : T;
+  pub fn %plus<T> (left: string, right: int) : T;
 
   // Works fine
-  public func %plus<T> (left: T, right: int) : bool;
+  pub fn %plus<T> (left: T, right: int) : bool;
 
   // Works fine
-  public func %plus<T> (left: string, right: Map<int, T>) : string[];
+  pub fn %plus<T> (left: string, right: Map<int, T>) : string[];
 
   // ...
 }
@@ -4928,7 +4928,7 @@ In more precise terms, if the template cannot be inferred_ the overload's signat
 There is a special template called the _generic template_. It is used as type for values and accepts any template. Here is an example:
 
 ```sn
-func sizeOfVec (vec: Vector<?>) : usize {
+fn sizeOfVec (vec: Vector<?>) : usize {
   return vec.size;
 }
 
@@ -4992,7 +4992,7 @@ Dictionary classes have two specificities: first, they need to be defined using 
 ```sn
 // V = type for keys
 // K = type for values
-dict Custom<V, K> implements Dictionary<K, V> {
+dict Custom<V, K> impl Dictionary<K, V> {
   // Code here
 }
 ```
@@ -5008,21 +5008,21 @@ Let's detail these overloads:
 // V = type for values
 dict Custom<K, V> {
   // Get a value from a key
-  public func %get (key: K) : V;
+  pub fn %get (key: K) : V;
   // Associate a value to a key
-  public func %set (key: K, value: V);
+  pub fn %set (key: K, value: V);
   // Get the number of key/values pairs in the dictionary
-  public func %size () : usize;
+  pub fn %size () : usize;
   // Delete a key (and the value it refers to)
-  public func %unset (key: K);
+  pub fn %unset (key: K);
   // Check if a key is known
-  public func %has (key: K) : bool;
+  pub fn %has (key: K) : bool;
   // Check if a value is contained in the dictionary
-  public func %contains (value: V) : bool;
+  pub fn %contains (value: V) : bool;
   // Get an iterator on all keys
-  public func %keys () : Iterator<K>;
+  pub fn %keys () : Iterator<K>;
   // Get an iterator on all values
-  public func %values () : Iterator<V>;
+  pub fn %values () : Iterator<V>;
 }
 ```
 
@@ -5057,10 +5057,10 @@ Iterators are defined like this:
 ```sn
 class MySuperIterator<T> extends Iterator<T> {
   // Start a counter
-  private counter = 0;
+  priv counter = 0;
 
   // Generate a new value
-  public func next () : Iteration<T> {
+  pub fn next () : Iteration<T> {
     // Increase the counter
     // If it's lower than 10...
     if ++ @counter < 10 {
@@ -5104,7 +5104,7 @@ iter mySuperIterator () : int {
 
 This code is equivalent to the class we wrote before. We'll, its a lot more simplier here, right? Let's detail this.
 
-The function is marked with the `iter` keyword to indicate it's an iterator, as well as the `func` keyword because it's a function (even if it will be converted to an `Iterator<T>` class). Its signature also tells it returns an iteration. In its body, it simply makes a loop that _yields_ some values. To be exact, each time the `yield` keyword is encountered, the value is returned and the function is _paused_ until the program asks to generate values again. So, all resources locally defined by the function stays in memory.
+The function is marked with the `iter` keyword to indicate it's an iterator, as well as the `fn` keyword because it's a function (even if it will be converted to an `Iterator<T>` class). Its signature also tells it returns an iteration. In its body, it simply makes a loop that _yields_ some values. To be exact, each time the `yield` keyword is encountered, the value is returned and the function is _paused_ until the program asks to generate values again. So, all resources locally defined by the function stays in memory.
 
 We can use a loop to explore an iterator's values:
 
@@ -5285,7 +5285,7 @@ struct Point {
   y: int;
 }
 
-func getNilPoint (array: Point[]) : Point {
+fn getNilPoint (array: Point[]) : Point {
   for point in array {
     if point.x == 0 && point.y == 0 {
       return point;
@@ -5303,7 +5303,7 @@ val point: Point = getNilPoint([]);
 Our program will crash because `getNilPoint` returned a `void` while a `Point` was expected. This is simply due to the fact no point matched the condition in the `for` loop, so the function ended without returning anything (which is equivalent to returning an instance of `void`). So, in order to make this function work anyway, and without returning a whole structure with a `success` boolean or anything ugly, we can use a nullable type:
 
 ```sn
-func getNilPoint (array: Point[]) : Point? {
+fn getNilPoint (array: Point[]) : Point? {
 ```
 
 This allows the function to return a `Point` instance **or** a `void` instance. But, our program will still crash with an error message telling that a `void` cannot be converted to a `Point`. That's simply because we declared our constant with the `Point` type, but we must now tell it can also contain a `void`:
@@ -5344,7 +5344,7 @@ As we saw, the `getNilPoint()` function can now return an instance of `void` (th
 A strict equivalent to the function we saw would be:
 
 ```sn
-func getNilPoint (array: Point[]) : Point? {
+fn getNilPoint (array: Point[]) : Point? {
   for point in array {
     if point.x == 0 && point.y == 0 {
       return point;
@@ -5358,7 +5358,7 @@ func getNilPoint (array: Point[]) : Point? {
 This would do exactly the same thing. There's also a native value, named `null`, which is an instance of `void`. We can use it, as all instances of `void` are the same:
 
 ```sn
-func getNilPoint (array: Point[]) : Point? {
+fn getNilPoint (array: Point[]) : Point? {
   for point in array {
     if point.x == 0 && point.y == 0 {
       return point;
@@ -5460,7 +5460,7 @@ Let's take an example for this one: we have a function that takes a `string` as 
 But there's a specific typecasting for nullable types. When giving a nullable type where a standard type is expected, it is automatically cast into the standard type, and an error will be thrown if the value was `null`. Let's take an example:
 
 ```sn
-func inc (num: int) : int => num + 1;
+fn inc (num: int) : int => num + 1;
 
 val one: int = 1;
 val two = inc(one); // Returns: 2
@@ -5495,7 +5495,7 @@ Now, `one` has the nullable type `int?` and `two` has the standard `int` type.
 We previously saw how to make optional arguments in functions thanks to a default value. But now let's see how to make _really_ optional arguments using nullable types:
 
 ```sn
-func sayHello (name: string, age?: int) {
+fn sayHello (name: string, age?: int) {
   println!(`Hello ${name}` + (age == null ? '!' : `, you are ${age} year-old.`));
 }
 
@@ -5599,15 +5599,15 @@ Because attributes are instantly instanciated in classes, some require to be nul
 
 ```sn
 class Container<T> {
-  public value: T;
+  pub value: T;
 
-  public func %construct (value: T) => @value = value;
+  pub fn %construct (value: T) => @value = value;
 }
 
 class ComplexClass {
-  public readonly name: string;
+  pub readonly name: string;
 
-  public func %construct (name: string) => @name = name;
+  pub fn %construct (name: string) => @name = name;
 }
 
 let cmp = new ComplexClass('John');
@@ -5620,15 +5620,15 @@ A solution could be to make the `value` attribute nullable:
 
 ```sn
 class Container<T> {
-  public value: T?;
+  pub value: T?;
 
-  public func %construct (value: T) => @value = value;
+  pub fn %construct (value: T) => @value = value;
 }
 
 class ComplexClass {
-  public readonly name: string;
+  pub readonly name: string;
 
-  public func %construct (name: string) => @name = name;
+  pub fn %construct (name: string) => @name = name;
 }
 
 let cmp = new ComplexClass('John');
@@ -5644,15 +5644,15 @@ Of course, we must then be aware to not assign a value to the attribute, else an
 ```sn
 class Container<T> {
   #future
-  public value: T;
+  pub value: T;
 
-  public func %construct (value: T) => @value = value;
+  pub fn %construct (value: T) => @value = value;
 }
 
 class ComplexClass {
-  public readonly name: string;
+  pub readonly name: string;
 
-  public func %construct (name: string) => @name = name;
+  pub fn %construct (name: string) => @name = name;
 }
 
 let cmp = new ComplexClass('John');
@@ -5686,26 +5686,26 @@ struct ErrorStep {
 }
 
 class Error {
-  public readonly message: string;
-  public readonly traceback: ErrorStep[];
+  pub readonly message: string;
+  pub readonly traceback: ErrorStep[];
 
-  public func %construct (message: string, traceback: ErrorStep[]);
-  public func %to<string> ();
+  pub fn %construct (message: string, traceback: ErrorStep[]);
+  pub fn %to<string> ();
 }
 ```
 
 As you can see, an error instance has a `message` attribute that is the message we give to it when we instanciate the class, and a `traceback` attribute which is a trace of all functions that were ran until the error. Here is an example:
 
 ```sn
-func a () throws Error {
+fn a () throws Error {
   b();
 }
 
-func b () throws Error {
+fn b () throws Error {
   c();
 }
 
-func c () throws Error {
+fn c () throws Error {
   throw new Error('Test');
 }
 ```
@@ -5717,7 +5717,7 @@ As `c` throws an error automatically, it indicates it in its declaration. But th
 If the function may throw several types of errors, we indicate them all separated by a comma:
 
 ```sn
-func c () : throws A, B {
+fn c () : throws A, B {
   if rand!<bool> {
     throw new A('Hello !');
   } else {
@@ -5773,7 +5773,7 @@ For exampe, we could imagine using a function to read a file in a notepad applic
 The same thing applies if we do a division, we want to be able handle division errors. In this example:
 
 ```sn
-func divide (left: int, right: int) : f32 {
+fn divide (left: int, right: int) : f32 {
   return (<f32> left) / right;
 }
 
@@ -5804,7 +5804,7 @@ There is also a third block called `finally`, which goes just after the `catch` 
 This block matters because we can for example clear the `try`'s data after it is fully ran even though the `catch` block contains a `return` instruction or something:
 
 ```sn
-func test () {
+fn test () {
   try {
     println!('Hello from the try block.');
     someInvalidCall();
@@ -5822,7 +5822,7 @@ func test () {
 If we run the code above and call the `test` function, the last `println!` won't show, because our `catch` block did exit the function. So, if we had some data from the test, we couldn't clear them.
 
 ```sn
-func test () {
+fn test () {
   try {
     println!('Hello from the try block.');
     someInvalidCall();
@@ -5926,7 +5926,7 @@ catch {
 Throwing custom errors simply consists in throwing an instance of a child class of `Error`. This allows us to make a distinction between native error types and our own ones. Here is an exemple:
 
 ```sn
-func divide (left: int, right: int) : f32 throws CustomError {
+fn divide (left: int, right: int) : f32 throws CustomError {
   if right == 0 {
     throw new CustomError('Cannot divide by zero.');
   }
@@ -5940,13 +5940,13 @@ The `CustomError` class could look like this:
 ```sn
 class CustomError extends Error {
   // Make a constructor
-  public func %construct (message: string, traceback: ErrorStep[]) {
+  pub fn %construct (message: string, traceback: ErrorStep[]) {
     // Call the parent constructor
     super.%construct(message, traceback);
   }
 
   // A sample function
-  public func why () : string {
+  pub fn why () : string {
     return 'This is a custom error class';
   }
 }
@@ -6027,12 +6027,12 @@ struct Hero {
 }
 
 // Make a function that changes a single field of the object
-func changeProperty (obj: Hero) {
+fn changeProperty (obj: Hero) {
   obj.attack = 20;
 }
 
 // Make a function
-func assignSomethingNew (obj: Hero) {
+fn assignSomethingNew (obj: Hero) {
   obj = {
     name: 'John',
     mut attack: 50
@@ -6248,7 +6248,7 @@ To be exact, when a mutable pointer is found where a constant pointer is expecte
 This behavior makes that, if we want to make a function that takes both constant pointers and mutable pointers, we simply have to make a function that accepts constant ones - mutable pointers will be automatically typecasted:
 
 ```sn
-func printPointer (ptr: *int) : void {
+fn printPointer (ptr: *int) : void {
   println!(*ptr);
 }
 
@@ -6274,7 +6274,7 @@ First of all, by langage abuse, we often say that a function requires a pointer 
 So, references can be used to manipulate data in functions:
 
 ```sn
-func increment (counter: *mut int) => *counter += 1;
+fn increment (counter: *mut int) => *counter += 1;
 
 let counter = 0;
 increment(&mut counter);
@@ -6284,7 +6284,7 @@ println!(counter); // Prints: '1'
 Functions can also return references, of course:
 
 ```sn
-func increment (counter: *int) : *int => & wrap!(*counter + 1);
+fn increment (counter: *int) : *int => & wrap!(*counter + 1);
 
 let ptr: * = increment(& wrap!(0));
 
@@ -6299,7 +6299,7 @@ Also, be aware of depointerization: when a function asks for an `int` for exampl
 
 ```sn
 // Make an addition function
-func add (left: int, right: int) : int {
+fn add (left: int, right: int) : int {
   return left + right;
 }
 
@@ -6712,14 +6712,14 @@ How do they work? That's simple: each operator superoverload overwrites the beha
 
 ```sn
 class MyClass {
-  public readonly value: int;
-  public func %construct (value: int) => @value = value;
-  public func %plus (cmp: int) : int {
+  pub readonly value: int;
+  pub fn %construct (value: int) => @value = value;
+  pub fn %plus (cmp: int) : int {
     return @value + cmp;
   }
 }
 
-func %plus (cmp: int, inst: MyClass) : int {
+fn %plus (cmp: int, inst: MyClass) : int {
   return inst + cmp; // Use the implemented superoverload
 }
 ```
@@ -6732,10 +6732,10 @@ Sometimes we want a function to take as an argument any function, as well as its
 
 Problem is: there is no type to catch every existing function. We would have to use the `Any` type, that opens the door to non-function types. So, we wouldn't be able to call the function later. The second problem is that the arguments we would want to give to the function later would have to be an array of `Any`, so the builder would reject the call because its arguments may not fit the `Any` type.
 
-The solution to this problem is to use the `#reduced` directive. Prefixing the `func` keyword in the argument's type, it allows to call the function with a tuple contaning the callback and all of its arguments, prepared in advance. Then, the argument is turned into a lambda with no arguments that can be called without worrying about arguments. To make this more clear, let's take an example:
+The solution to this problem is to use the `#reduced` directive. Prefixing the `fn` keyword in the argument's type, it allows to call the function with a tuple contaning the callback and all of its arguments, prepared in advance. Then, the argument is turned into a lambda with no arguments that can be called without worrying about arguments. To make this more clear, let's take an example:
 
 ```sn
-func repeatedCall (callback: #reduced func (), times: int) {
+fn repeatedCall (callback: #reduced func (), times: int) {
   // Do some amazing stuff here
   for i in 0..times {
     callback();
@@ -6755,7 +6755,7 @@ Note that, because the callback hadn't a specific signature in the `repeatedCall
 It's also possible to ask for a specific return type in a returned function:
 
 ```sn
-func summation (callback: #reduced func () : int, times: int) : int {
+fn summation (callback: #reduced func () : int, times: int) : int {
   let sum = 0;
 
   for i in 0..times {
@@ -6769,7 +6769,7 @@ func summation (callback: #reduced func () : int, times: int) : int {
 If we want to match absolutely any possible reduced function:
 
 ```sn
-func takeAny<T> (callback: #reduced func () : T, times: int) : T[] {
+fn takeAny<T> (callback: #reduced func () : T, times: int) : T[] {
   return (callback() for i in 0..times);
 }
 ```
@@ -6777,7 +6777,7 @@ func takeAny<T> (callback: #reduced func () : T, times: int) : T[] {
 A last use is when we want to be able to give some data to the callback, so we want to require it having some arguments. Here is an examplpe:
 
 ```sn
-func summation (callback: #reduced func (num: int) : int, times: int) : int {
+fn summation (callback: #reduced func (num: int) : int, times: int) : int {
   let sum = 0;
 
   for i in 0..times {
@@ -6811,7 +6811,7 @@ Still, flexs have a double specificity (in addition to the fact we write a `!` a
 What does that mean? Well, let's take an example:
 
 ```sn
-func sayHello (name: Any) : void {
+fn sayHello (name: Any) : void {
   println!(name);
 }
 
@@ -6847,13 +6847,13 @@ Be aware though: flexs' scope are the same as for standard functions: they can o
 
 ```sn
 class Hello {
-  private static name = 'Hello';
+  priv static name = 'Hello';
 
-  public static flex printName () : void {
+  pub static flex printName () : void {
     println!(@name);
   };
 
-  public static flex printLocal () : void {
+  pub static flex printLocal () : void {
     println!(local_name);
   }
 }
@@ -6888,7 +6888,7 @@ tuple[0]; // Returns: 'Hello'
 
 Note that plain constants have natively a `#pln<T>` type. There are the only entities having such a type. Still, `#pln<T>` works on flexs' arguments as well as functions' ones (to give them the possibility to pass such plain values to flexs that require them). This type describes an entity as containing a predictable **and** imutable value.
 
-Note that flexs can be expressed as a type, using `flex` instead of `func`, but only inside other flexs' signature and body. For example, the native `iter_tuple` flex requires another flex as a callback:
+Note that flexs can be expressed as a type, using `flex` instead of `fn`, but only inside other flexs' signature and body. For example, the native `iter_tuple` flex requires another flex as a callback:
 
 ```sn
 // Flex's signature
@@ -6916,7 +6916,7 @@ println!(two); // Prints: '2'
 This is useful when dealing with plain constants, or even when dealing with classes. Indeed, when we write a class name like `string` or `int` as a value, it is typed as a `#pln<Type>` (called a _plain class_). Only plain classes can be instanciated and get members available.
 
 ```sn
-func stringFunc () : Type {
+fn stringFunc () : Type {
   return string;
 }
 
@@ -7205,8 +7205,8 @@ There are several signatures for proxies. Here is the most common one:
 
 ```sn
 proxy var: X from {
-  getter: func () : T,
-  setter: func (c: Y) : void
+  getter: fn () : T,
+  setter: fn (c: Y) : void
 };
 ```
 
@@ -7231,13 +7231,13 @@ proxy counter: uint from {
   value: 0,
 
   // The getter
-  getter: func () : uint {
+  getter: fn () : uint {
     // Return the hidden value without any changes
     return @value;
   },
 
   // The setter
-  setter: func (c: IntegerConvertible) : void {
+  setter: fn (c: IntegerConvertible) : void {
     // Convert the candidate to an integer
     let result = <uint> c;
 
@@ -7332,7 +7332,7 @@ Proxies can take one or several templates, but then they can't have an hidden va
 ```sn
 proxy randOf<T extends int>: T from {
   // The getter
-  getter: func () : T {
+  getter: fn () : T {
     return random!(T.MINIMUM, T.MAXIMUM);
   }
 };
@@ -7345,7 +7345,7 @@ Prepared version:
 
 ```sn
 prxmodel randOfModel<T extends int>: T {
-  getter: func () : T {
+  getter: fn () : T {
     return random!(T.MINIMUM, T.MAXIMUM);
   }
 };
@@ -7433,7 +7433,7 @@ As you can see, it's a tuple of types. Only types contained in it can be plained
 Note that child of these types are also accepted ; for example, it's possible to write this:
 
 ```sn
-pln SUM: func (a: int, b: int) : int = (a, b) => a + b;
+pln SUM: fn (a: int, b: int) : int = (a, b) => a + b;
 
 println!(SUM(2, 5)); // Prints: "7"
 ```
@@ -7443,7 +7443,7 @@ As all function types are children of `Function` itself.
 This is also part of the function's behavior: when you write this:
 
 ```sn
-func sum (a: int, b: int) : int {
+fn sum (a: int, b: int) : int {
   return a + b;
 }
 ```
@@ -7451,12 +7451,12 @@ func sum (a: int, b: int) : int {
 The builder turns it into this code:
 
 ```sn
-pln sum: func (a: int, b: int) : int = lambda (a: int, b: int) : int {
+pln sum: fn (a: int, b: int) : int = lambda (a: int, b: int) : int {
   return a + b;
 };
 
 // Which is itself turned into:
-val sum: #pln<func (a: int, b: int) : int> = lambda (a: int, b: int) : int {
+val sum: #pln<fn (a: int, b: int) : int> = lambda (a: int, b: int) : int {
   return a + b;
 };
 ```
@@ -7469,8 +7469,8 @@ This time, because we haven't seen any feature that could achieve it, let's skip
 
 ```sn
 class Vehicle {
-  public readonly wheels: int;
-  public func %construct (wheels: int) => @wheels = wheels;
+  pub readonly wheels: int;
+  pub fn %construct (wheels: int) => @wheels = wheels;
 }
 
 val car = new Vehicle(4);
@@ -7480,7 +7480,7 @@ val motorcycle = new Vehicle(2);
 Our function will have this look:
 
 ```sn
-func treatCars (car: Vehicle with (c => c.wheels <= 4)) {
+fn treatCars (car: Vehicle with (c => c.wheels <= 4)) {
   println!(`This vehicle has ${car.wheels} wheels.`);
 }
 ```
@@ -7496,7 +7496,7 @@ Type constraints are a form of _type variation_, which are bidirectionaly compat
 Here is an exemple to better understand the concept:
 
 ```sn
-func treatCars (car: Vehicle with (lambda (c: string) : string => c.wheels <= 4)) {
+fn treatCars (car: Vehicle with (lambda (c: string) : string => c.wheels <= 4)) {
   c = new Vehicle(2); // Works fine
   c = new Vehicle(4); // Works fine
   c = new Vehicle(8); // ERROR because the constraint returned `false`
@@ -7661,7 +7661,7 @@ Type assertion uses an unsafe cast but catches the result when it fails and simp
 Here is a very nice feature when we want to manipulate some members on a value that is described as a mother of their real type that doesn't implement these members:
 
 ```sn
-func convertToString (arg: Any) : string? {
+fn convertToString (arg: Any) : string? {
   // Convert the argument to a string using its `%to<string>` overload
   // If it doesn't have any, return 'null'
 }
@@ -7670,7 +7670,7 @@ func convertToString (arg: Any) : string? {
 A first idea for this function's body could be to use typecasting, like this:
 
 ```sn
-func convertToString (arg: Any) : string? {
+fn convertToString (arg: Any) : string? {
   try
     return cast_unsafe!<string>(arg);
 
@@ -7682,7 +7682,7 @@ func convertToString (arg: Any) : string? {
 But this doesn't work if the real type of the data isnt `string`. In order to avoid this problem, we can perform a _type assertion_: it's a conditional block where we specify one or several conditions, like `arg` is an instance of the `Primitive` class. If the condition successes, the block is executed considering, this time, all the members described by `Primitive`:
 
 ```sn
-func convertToString (arg: Any) : string? {
+fn convertToString (arg: Any) : string? {
   ift arg instanceof Primitive {
     // Here, 'arg' is considered as being a 'Primitive'
     return <string> arg;
@@ -7695,7 +7695,7 @@ func convertToString (arg: Any) : string? {
 Note that this code can be fastened using an exact type if we expect one, as the program doesn't have to check all the type hierarchy:
 
 ```sn
-func convertToString (arg: Any) : string? {
+fn convertToString (arg: Any) : string? {
   ift arg instanceof #=u16 {
     // Here, 'arg' is considered as being EXACTLY an 'u16'
     return <string> arg;
@@ -7708,8 +7708,8 @@ func convertToString (arg: Any) : string? {
 For more flexibility, we can simply accept any type that is typecastable to a string:
 
 ```sn
-func convertToString (arg: Any) : string? {
-  ift arg implements Stringifyable {
+fn convertToString (arg: Any) : string? {
+  ift arg impl Stringifyable {
     return <string> arg;
   } else {
     return null;
@@ -7720,8 +7720,8 @@ func convertToString (arg: Any) : string? {
 It also works inline:
 
 ```sn
-func convertToString (arg: Any) : string? {
-  return ift arg implements Stringifyable { <string> arg } else { null };
+fn convertToString (arg: Any) : string? {
+  return ift arg impl Stringifyable { <string> arg } else { null };
 }
 ```
 
@@ -7730,7 +7730,7 @@ Though this second syntax is often heavier and more difficult to read.
 The assumption condition must be take the following form:
 
 ```sn
-[entity] [instanceof | instanceofsuper | implements | uses | ~] [class]
+[entity] [instanceof | instanceofsuper | impl | uses | ~] [class]
 ```
 
 Or a combination of several assumption conditions using the `&&` operator. The `instanceofsuper` operator returns `true` if the entity is an instance of the class itself or one of its parent. That's the opposite of `instanceof` which returns `true` if the entity is an instance of the class itself or one of its _children_.
@@ -7738,7 +7738,7 @@ Or a combination of several assumption conditions using the `&&` operator. The `
 Note that we can also use the `~` operator here:
 
 ```sn
-func convertToString (arg: Any) : string? {
+fn convertToString (arg: Any) : string? {
   ift arg ~ int {
     return <string> arg;
   } else {
@@ -7752,17 +7752,17 @@ func convertToString (arg: Any) : string? {
 Intersection types is a feature that enforces a value to respect several types (either to be an instance of a class and implement one or several interfaces or traits, or simply to implement several interfaces or traits). It goes like this:
 
 ```sn
-interface HasMotor {
+inf HasMotor {
   isAnObject: bool;
   horsesPower: uint;
 }
 
-interface HasWheels {
+inf HasWheels {
   isAnObject: bool;
   wheels: uint;
 }
 
-func takeCar (car: HasMotor & HasWheels) {
+fn takeCar (car: HasMotor & HasWheels) {
   println!(car.wheels);
 }
 
@@ -7788,19 +7788,19 @@ takeCar((HasMotor & HasWheels) {
 Besides, we can shorten our definition using the `type` keyword:
 
 ```sn
-interface HasMotor {
+inf HasMotor {
   isAnObject: bool;
   horsesPower: uint;
 }
 
-interface HasWheels {
+inf HasWheels {
   isAnObject: bool;
   wheels: uint;
 }
 
 type Car = HasMotor & HasWheels;
 
-func takeCar (car: Car) {
+fn takeCar (car: Car) {
   println!(car.wheels);
 }
 
@@ -7830,8 +7830,8 @@ Note that intersection types support automatic typecasting to any type of the in
 ```sn
 class A {}
 
-class B extends A implements Numerizable {
-  public func %to<int> => 2;
+class B extends A impl Numerizable {
+  pub fn %to<int> => 2;
 }
 
 // Works
@@ -7858,17 +7858,17 @@ Numerizable & number;   // number
 Union types are the opposite of intersection types: they describe a value as being of a type OR another one. Example:
 
 ```sn
-interface HasMotor {
+inf HasMotor {
   isAnObject: bool;
   horsesPower: uint;
 }
 
-interface HasWheels {
+inf HasWheels {
   isAnObject: bool;
   wheels: uint;
 }
 
-func takeSomething (obj: HasMotor | HasWheels) {
+fn takeSomething (obj: HasMotor | HasWheels) {
   println!(obj.isAnObject); // Prints: 'true'
 }
 
@@ -7881,7 +7881,7 @@ takeSomething(HasMotor {
 A value using an union type makes available all the members commonly described by all the types of the union. Here, this means only `isAnObject` is available. To access `horsesPower` or `wheels`, we must ensure our type is typecastable:
 
 ```sn
-func takeSomething (obj: HasMotor | HasWheels) {
+fn takeSomething (obj: HasMotor | HasWheels) {
   println!(obj.isAnObject); // Prints: 'true'
 
   // println!(obj.horsesPower); // ERROR
@@ -7943,8 +7943,8 @@ Note that union types support automatic typecasting to any type of the union, an
 
 ```sn
 class A {}
-class B extends A implements Numerizable {
-  public func %to<int> => 2;
+class B extends A impl Numerizable {
+  pub fn %to<int> => 2;
 }
 
 // Works
@@ -8051,10 +8051,10 @@ Let's consider the following code:
 
 ```sn
 virtual class MouseClickHandler {
-  abstract public func onClick () : void;
+  abstract pub fn onClick () : void;
 }
 
-func takeHandler (handler: MouseClickHandler) {
+fn takeHandler (handler: MouseClickHandler) {
   handler.onClick();
 }
 ```
@@ -8065,7 +8065,7 @@ For that, we use an anonymous class, as follows:
 
 ```sn
 takeHandler(new ~MouseClickHandler {
-  public func onClick () : void {
+  pub fn onClick () : void {
     println!('I\'ve been clicked!');
   }
 });
@@ -8075,11 +8075,11 @@ The `~` symbol can be either followed by a class, an interface, or a trait. It c
 
 ```sn
 takeHandler(new ~(MouseClickHandler & Stringifyable) {
-  public func onClick () : void {
+  pub fn onClick () : void {
     println!('I\'ve been clicked!');
   }
 
-  public func %to<string> () : string {
+  pub fn %to<string> () : string {
     return 'Hello world!';
   }
 });
@@ -8089,9 +8089,9 @@ Note that the class is instantly instanciated. Type inferring also works with an
 
 ```sn
 let hello = new ~Stringifyable {
-  public value: int;
+  pub value: int;
 
-  public func %to<string> () {
+  pub fn %to<string> () {
     return @value;
   }
 };
@@ -8119,7 +8119,7 @@ let a: A = b; // Works
 When wrapping a call to a function using a `try`/`catch` block but not declaring the error type in the `catch`, the inferred type will be an union of all the error types that may be thrown in the `try` block:
 
 ```sn
-func mayThrow () throws AError, BError {
+fn mayThrow () throws AError, BError {
   if rand!<bool> {
     throw new AError("Hello");
   } else {
@@ -8191,11 +8191,11 @@ Another case is callbacks. In the following code:
 
 ```sn
 class Event {
-  private static handler: func ();
+  priv static handler: fn ();
 
-  public static func handle (handler: func ()) => @handler = handler;
+  pub static fn handle (handler: func ()) => @handler = handler;
 
-  public static func trigger () {
+  pub static fn trigger () {
     @handler();
   };
 }
@@ -8230,7 +8230,7 @@ Promises are basically a software conception of tasks that can either return a r
 
 ```sn
 // We admit the function below is already defined
-func readAsync (path: string) : Promise<int, Error>;
+fn readAsync (path: string) : Promise<int, Error>;
 
 // Let's use it
 readAsync('hello.txt')
@@ -8250,11 +8250,11 @@ We can also use the `.finally()` function that runs the provided callback after 
 Let's now write the `readAsync()` function:
 
 ```sn
-func readAsync (path: string) : Promise<string, Error> {
+fn readAsync (path: string) : Promise<string, Error> {
   // Make a new promise and return it
   return new Promise<string, Error>(lambda (
-      resolveCallback: func (content: string),
-      rejectCallback: func (err: Error)
+      resolveCallback: fn (content: string),
+      rejectCallback: fn (err: Error)
     ) {
 
     let content: string;
@@ -8284,7 +8284,7 @@ The first argument is the callback triggered in the case the promise succeeds, w
 Now we've seen the detailed syntax of this function, let's rewrite it with ICT:
 
 ```sn
-func readAsync (path: string) : Promise<string, Error> =>
+fn readAsync (path: string) : Promise<string, Error> =>
   // Make a new promise and return it
   new Promise<string, Error>((resolveCallback, rejectCallback) => {
     // Read the file and handle errors
@@ -8313,7 +8313,7 @@ This is a lot simplier already, but still heavy. A solution to make this functio
 The `async` keyword describes an asynchronous function - it's pretty explicit. It forces the function's to return a promise and work only in it. To understand the concept, let's rewrite our `readAsync` function with this new keyword:
 
 ```sn
-async func readAsync (path: string) throws Error : string => {
+async fn readAsync (path: string) throws Error : string => {
   try {
     resolve import!('fs').readFile(path, 'utf8');
   }
@@ -8333,7 +8333,7 @@ Then, because the `async` keyword indicates our function is asynchronous, its bo
 The powerfulness of these keywords is also they can be used inside a sub-function, like this:
 
 ```sn
-async func readAsync (path: string) throws Error : string => {
+async fn readAsync (path: string) throws Error : string => {
   (lambda throws Error () {
     try {
       // A 'return' would just terminate this lambda and not resolve anything
@@ -8351,7 +8351,7 @@ async func readAsync (path: string) throws Error : string => {
 Also, when an error happens in an asynchronous functions, the error is automatically caught and transformed into a rejection. So, we could write our code like that:
 
 ```sn
-async func readAsync (path: string) throws Error : string {
+async fn readAsync (path: string) throws Error : string {
   resolve import!('fs').readFile(path, 'utf8');
 }
 ```
@@ -8361,7 +8361,7 @@ If the filesystem fails to read the file, an error will be thrown, but because o
 Note that, even if the function's end is reached, the promise is not terminated until it encounters a `resolve` or a `reject` keyword. For example, in the code below:
 
 ```sn
-async func infinite () throws Error : void {
+async fn infinite () throws Error : void {
   for i in 0..10 {
     println!('Hello world!');
   }
@@ -8375,7 +8375,7 @@ This specificity excepted, the `async` keyword is pretty powerful when coming to
 Note that there is also an asynchronous syntax for lambdas:
 
 ```sn
-func takeAsyncCallback (callback: async func () throws Error : string) {
+fn takeAsyncCallback (callback: async func () throws Error : string) {
   callback()
     .then(message => println!(message));
 };
@@ -8398,7 +8398,7 @@ Note that it's still possible to perform a `.catch()` on error-free promises. Th
 Asynchronous functions can also be error-free. This happens when they never use the `reject` keyword and don't have any `throws` indicator. They keep the same declaration syntax but may not throw error anymore:
 
 ```sn
-async func resolveHello () : string {
+async fn resolveHello () : string {
   resolve 'Hello world!';
 }
 ```
@@ -8408,7 +8408,7 @@ This allows to avoid wrapping their call inside a `try`/`catch` block and makes 
 Also, void-typed error-free promises can fully omit their return type, like for standard functions:
 
 ```sn
-async func resolveHello () {
+async fn resolveHello () {
   for i in 0..10 {
     println!('Hello world!');
   }
@@ -8424,7 +8424,7 @@ The _single resolution_ way allows us to to chain promises and use only one call
 
 ```sn
 // Considering the following function:
-async func fetch (url: string) : string;
+async fn fetch (url: string) : string;
 
 Promise.all([
   fetch('/api/last-article/author.json'),
@@ -8432,12 +8432,12 @@ Promise.all([
   fetch('/api/last-article/sources.json')
 ])
   // When all the promises are resolved, get their respective result
-  .then(func (author: string, contributors: string, sources: string) : void {
+  .then(fn (author: string, contributors: string, sources: string) : void {
     println!(author, contributors, sources)
   })
   
   // Else, get the error as well as the faulty promise
-  .catch(func <T, X> (error: Error, errorAt: Promise<T, X>, fpIndex: uint) : void {
+  .catch(fn <T, X> (error: Error, errorAt: Promise<T, X>, fpIndex: uint) : void {
     println!(`Failed at promise ${fpIndex}.`);
     println!('Error is: ' + error.message);
   });
@@ -8517,10 +8517,10 @@ In order to solve this problem, we can use the `await` keyword, but **only** in 
 
 ```sn
 // Considering the following function:
-async func sleep (delay: uint);
+async fn sleep (delay: uint);
 
 // Resolve a promise after a specific delay
-async func delayedPrint (delay: uint) {
+async fn delayedPrint (delay: uint) {
   println!('A'); // Prints: 'A'
 
   // Wait for the given delay...
@@ -8542,7 +8542,7 @@ Also, `await` returns the resolution value of the promise:
 
 ```sn
 // Add two numbers after a second
-async func delayed_add (left: int, right: int) : int {
+async fn delayed_add (left: int, right: int) : int {
   // Sleep for 1 second
   await sleep(1);
   // Perform the addition and return the result
@@ -8550,7 +8550,7 @@ async func delayed_add (left: int, right: int) : int {
 }
 
 // Substract two after two seconds
-async func delayed_sub (left: int, right: int) : int {
+async fn delayed_sub (left: int, right: int) : int {
   // Perform the substraction as an addition and return the result
   resolve await delayed_add (0 - left, right);
 }
@@ -8563,7 +8563,7 @@ Note that `await` cannot be used in non-asynchronous functions, even if they are
 
 ```sn
 // Asynchronous function
-async func funcA () : void {
+async fn funcA () : void {
 
   // Not asynchronous function
   (lambda () {
@@ -8662,11 +8662,11 @@ Now we've written our package descriptor, we can write the package's `names` mod
 
 let name: string;
 
-func defineName (newName: string with (_)) {
+fn defineName (newName: string with (_)) {
   name = newName;
 }
 
-func readName () : string throws Error {
+fn readName () : string throws Error {
   if name {
     return name;
   } else {
@@ -8702,11 +8702,11 @@ Below is our functions file:
 
 ```sn
 // File: 'functions.sn'
-func defineName (newName: string with (_)) {
+fn defineName (newName: string with (_)) {
   name = newName;
 }
 
-func readName () : string throws Error {
+fn readName () : string throws Error {
   if name {
     return name;
   } else {
@@ -8955,7 +8955,7 @@ The `package::module::submodule::...` model is based on the concept of _namespac
 // Declare a namespace
 namespace Hello {
   // Declare a function in it
-  func world () {
+  fn world () {
     println!('Hello world!');
   }
 
@@ -8978,7 +8978,7 @@ Namespaces can also be imbricated: it's possible to declare a namespace called `
 ```sn
 namespace A {
   namespace B {
-    func world () { println!('Hello world!'); }
+    fn world () { println!('Hello world!'); }
 
     // From the inside of B
     world();
@@ -9088,7 +9088,7 @@ For functions, we have to document what the function does, what is its return va
  * @param numbers A list of numbers
  * @returns The summation
  */
-func sum (...numbers: int) : int {
+fn sum (...numbers: int) : int {
   let summation = 0;
 
   for num in numbers {
@@ -9114,7 +9114,7 @@ To document nested functions (e.g. callbacks), we document them as usual functio
  * > @returns A list of values
  * @returns The summation
  */
-func sum (generation: func () : int[]) : int {
+fn sum (generation: func () : int[]) : int {
   let summation = 0;
 
   for num in generation() {
@@ -9138,7 +9138,7 @@ Templates are documented like arguments, but with `@template`:
  * @param iterator The iterator to make the summation from
  * @returns The summation
  */
-func sum<T extends number> (iterator: Iterator<T>) : T {
+fn sum<T extends number> (iterator: Iterator<T>) : T {
   let summation: T = 0;
 
   for num in iterator {
@@ -9159,7 +9159,7 @@ The `@example` annotation gives an example on how to use the function:
  * @param num A mutable reference to an integer
  * @example let i = 0; increment (&mut i); i == 1;
  */
-func increment (num: *mut int) {
+fn increment (num: *mut int) {
   *num += 1;
 }
 ```
@@ -9178,7 +9178,7 @@ The `@throws` annotation allows us to describe each case of error throwing:
  * @throws ErrorType2 If the integer is equal to 0
  * @returns The double value of the provided integer
  */
-func double (num: int) : int throws ErrorType1, ErrorType2 {
+fn double (num: int) : int throws ErrorType1, ErrorType2 {
   throw new ErrorType1('Integer is negative') if num < 0;
   throw new ErrorType2('Integer is zero') if num == 0;
   return num * 2;
@@ -9197,7 +9197,7 @@ The `@condition` annotation indicates a condition that must be matched in order 
  * @returns The requested value
  * @condition 0 <= index <= arr.length
  */
-func getValue (arr: int[], index: usize) : int {
+fn getValue (arr: int[], index: usize) : int {
   return arr[index];
 }
 ```
@@ -9215,11 +9215,11 @@ Polymorph functions that does exactly the same actions but on different types ca
  * @condition 0 <= index <= arr.length
  * @samedef
  */
-func getValue (arr: int[], index: usize) : int {
+fn getValue (arr: int[], index: usize) : int {
   return arr[index];
 }
 
-func getValue (arr: string[], index: usize) : string {
+fn getValue (arr: string[], index: usize) : string {
   return arr[index];
 }
 ```
@@ -9233,15 +9233,15 @@ Classes are described like assignable entities. Their templates can be described
  * Container for an integer value
  */
 class A {
-  public value: int = 0;
+  pub value: int = 0;
 }
 
 /**
  * Container for a value of an arbitrary type
  * @template T Type of the value
  */
-interface B<T> {
-  public value: T;
+inf B<T> {
+  pub value: T;
 }
 ```
 
@@ -9268,13 +9268,13 @@ Segments are described like assignable entities:
 
 ```sn
 class B<T> {
-  public value: T;
+  pub value: T;
 
   /**
    * Segment for number types
    */
   segment (T ~ number) {
-    public func double () => @value * 2;
+    pub fn double () => @value * 2;
   }
 }
 ```
@@ -9293,7 +9293,7 @@ namespace SuperMath {
    * @param num A mutable reference to an integer
    * @example let i = 0; increment (&mut i); i == 1;
    */
-  func increment (num: *mut int) {
+  fn increment (num: *mut int) {
     *num += 1;
   }
 
@@ -9318,7 +9318,7 @@ Files can be documented as well, using three indicators: `@file`, which indicate
  * @param numbers A list of numbers
  * @returns The summation
  */
-func sum (...numbers: int) : int {
+fn sum (...numbers: int) : int {
   let summation = 0;
 
   for num in numbers {
@@ -9357,15 +9357,15 @@ virtual class A {
    * Create a new value of @class and return it
    * @returns A new instance of @class
    */
-  public func create () : _this;
+  pub fn create () : _this;
 }
 
 class B extends A {
-  public func create () : _this => new _self();
+  pub fn create () : _this => new _self();
 }
 
 class C extends A {
-  public func create () : _this => new _self();
+  pub fn create () : _this => new _self();
 }
 ```
 
@@ -9377,7 +9377,7 @@ virtual class A {
    * Create a new value of A and return it
    * @returns A new instance of A
    */
-  public func create () : _this;
+  pub fn create () : _this;
 }
 
 class B extends A {
@@ -9385,7 +9385,7 @@ class B extends A {
    * Create a new value of B and return it
    * @returns A new instance of B
    */
-  public func create () : _this => new _self();
+  pub fn create () : _this => new _self();
 }
 
 class C extends A {
@@ -9393,7 +9393,7 @@ class C extends A {
    * Create a new value of C and return it
    * @returns A new instance of C
    */
-  public func create () : _this => new _self();
+  pub fn create () : _this => new _self();
 }
 ```
 
@@ -9407,7 +9407,7 @@ class Number {
   /**
    * Do some @class stuff
    */
-  public func nothing () => null;
+  pub fn nothing () => null;
 }
 
 /**
@@ -9423,13 +9423,13 @@ class Number {
   /**
    * Do some number stuff
    */
-  public func nothing () => null;
+  pub fn nothing () => null;
 }
 
 class SignedNumber extends A {
   /**
    * Do some signed number stuff
    */
-  public func nothing () => null;
+  pub fn nothing () => null;
 }
 ```

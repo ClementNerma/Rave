@@ -283,7 +283,7 @@ SYNTAX = {
         ],
         [
           // Special native types
-          /(?<!\.)\b(void|Any|T|X|Y|Z|K|V|Type|Function|Structure|Enumeration|Interface|Trait|Class)\b/,
+          /(?<!\.)\b(void|Any|T|X|Y|Z|K|V|Type|Function|Structure|Enumeration|inf|Trait|Class)\b/,
           'purple', 'cyan'
         ],
         [
@@ -374,7 +374,7 @@ SYNTAX = {
         ],
         [
           // Declaration statement for model entities
-          /\b(struct|enum|class|type|dict|trait|interface)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(struct|enum|class|type|dict|trait|inf)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'yellow'
         ],
         [
@@ -389,27 +389,27 @@ SYNTAX = {
         ],
         [
           // Lazy overloads
-          /\b(?:(public|protected|private)\s+)?(pln)\s+(%)(lazy_(?:clone|serialize|unserialize|serial_fields))\b/,
+          /\b(?:(pub|prot|priv)\s+)?(pln)\s+(%)(lazy_(?:clone|serialize|unserialize|serial_fields))\b/,
           'purple', 'purple', 'red', 'cyan'
         ],
         [
           // Immutable containers declaration in classes
-          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|iter|setter|struct|enum)\s+)(val|pln|proxy\!?)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(pub|prot|priv)\s+(static\s+)?(?!(?:fn|iter|setter|struct|enum)\s+)(val|pln|proxy\!?)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'purple', 'purple', 'orange'
         ],
         [
           // Models declaration in classes
-          /\b(public|protected|private)(\s+static)?(?=\s+func|struct|enum|interface|trait)\b/,
+          /\b(pub|prot|priv)(\s+static)?(?=\s+fn|struct|enum|inf|trait)\b/,
           'purple', 'purple'
         ],
         [
           // Mutable containers declaration in classes
-          /\b(public|protected|private)\s+(static\s+)?(?!(?:func|iter|struct|enum)\s+)(readonly\s+)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(pub|prot|priv)\s+(static\s+)?(?!(?:fn|iter|struct|enum)\s+)(readonly\s+)?([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'purple', 'purple', 'cyan'
         ],
         [
           // Overload methods declaration (in classes)
-          /\b(static\s+)?(func\s+)(%)(construct|free|clone|serialize|unserialize|call|to|equal|greater|smaller|plus|less|times|divide|pow|modulo|random|get|set|size|unset|has|contains|keys|values)\b/,
+          /\b(static\s+)?(fn\s+)(%)(construct|free|clone|serialize|unserialize|call|to|equal|greater|smaller|plus|less|times|divide|pow|modulo|random|get|set|size|unset|has|contains|keys|values)\b/,
           'purple', 'purple', 'red', 'cyan'
         ],
         [
@@ -455,12 +455,12 @@ SYNTAX = {
         ],
         [
           // Function declaration
-          /\b(func)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
+          /\b(fn)\s+([a-zA-Z_\$][a-zA-Z0-9_\$]*)\b/,
           'purple', 'blue'
         ],
         [
           // Superoverload declaration
-          /\b(func)\s+(%)(equal|greater|smaller|plus|less|times|divide|pow|modulo)\b/,
+          /\b(fn)\s+(%)(equal|greater|smaller|plus|less|times|divide|pow|modulo)\b/,
           'purple', 'red', 'cyan'
         ],
         [
@@ -540,7 +540,7 @@ SYNTAX = {
           'purple', 'green'
         ],
         {
-          begin: /\b(implements|uses?)\s+/,
+          begin: /\b(impl|uses?)\s+/,
           beginCaptures: {
             '1': {
               name: '${purple}'
@@ -688,12 +688,12 @@ SYNTAX = {
         ],
         [
           // Virtual members don't exist
-          /\b(virtual)\s+(public|protected|private)\b/,
+          /\b(virtual)\s+(pub|prot|priv)\b/,
           'invalid', 'purple'
         ],
         [
           // Keywords
-          /(?<!\.)\b(func|lambda|do|if|ift|else|elsif|for|while|loop|unless|until|break|continue|match|default|try|catch|finally|segment|delete|mut|let|val|pln|proxy\!?|public|protected|private|friend|static|abstract|final|unique|virtual|open|extern|readonly|in|of|keyof|export|return|async|iter|yield|flex|await|sync|resolve|reject|throw|with|new|include|namespace|struct|enum|class|type|dict|trait|interface|implements|throws|use|uses|extends|parentof|instanceof|instanceofsuper|scope|import|from|as|typepath)(?!\s*:)\b/,
+          /(?<!\.)\b(fn|lambda|do|if|ift|else|elsif|for|while|loop|unless|until|break|continue|match|default|try|catch|finally|segment|delete|mut|let|val|pln|proxy\!?|pub|prot|priv|friend|static|abstract|final|unique|virtual|open|extern|readonly|in|of|keyof|export|return|async|iter|yield|flex|await|sync|resolve|reject|throw|with|new|include|namespace|struct|enum|class|type|dict|trait|inf|impl|throws|use|uses|extends|parentof|instanceof|instanceofsuper|scope|import|from|as|typepath)(?!\s*:)\b/,
           'purple'
         ],
         [
