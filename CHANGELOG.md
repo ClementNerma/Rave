@@ -41,6 +41,10 @@
 * Introduce most documentation comments
 * Introduce structures sub-typing
 * Introduce the generic template
+* Introduce interfaces inheritance
+* Introduce traits inheritance
+* Introduce iteration on structure instances
+* Introduce iteration on models
 
 ### Updates
 
