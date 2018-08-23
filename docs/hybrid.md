@@ -366,13 +366,13 @@ Also, if you explicitly want to get a `2` contained in a `u32` for example, ther
 
 ```sn
 2b;  // i8 (Byte)
-2ub; // u8 (Unsigned Byte)
+2B; // u8 (Unsigned Byte)
 2s;  // i16 (Short)
-2us; // u16 (Unsigned Short)
+2S; // u16 (Unsigned Short)
 2;   // i32
 2u;  // u32 (Unsigned)
 2l;  // i64 (Long)
-2ul; // u64 (Unsigned Long)
+2L; // u64 (Unsigned Long)
 2f;  // f32 (Float)
 2d;  // f64 (Double)
 2p;  // usize (Unsigned Pointer)
@@ -429,7 +429,7 @@ This works because we clearly indicate to the builder we know that informations 
 The second error case is due to the same reason: if we store `250` in an `u8`, it exceeds the capacity of an `i8`. The solution here is also to perform an explicit cast:
 
 ```sn
-let e: u8 = 250ub;
+let e: u8 = 250B;
 let f: i8 = <u8> e; // Works (explicit external cast)
 ```
 
@@ -7000,7 +7000,7 @@ let _arg_1: *mut int = &mut _wrapper_1;
 let _ret_1: int?;
 
 // iter_ref! call
-let _level_2: u8 = 1ub;
+let _level_2: u8 = 1B;
 let _ptr_2: *mut int = _arg_1;
 
 // Callback call
@@ -7019,7 +7019,7 @@ let _arg_2: ***int = &&& _wrapper_2;
 let _ret_2: int?;
 
 // iter_ref! call
-let _level_3: u8 = 3ub;
+let _level_3: u8 = 3B;
 let _ptr_3: *** int = _arg_2;
 
 // Callback call
@@ -7028,7 +7028,7 @@ ift _ptr_3 ~ * int {
 }
 
 // iter_ref! call
-let _level_4: u8 = 2ub;
+let _level_4: u8 = 2B;
 let _ptr_4: ** int = *_ptr_3;
 
 // Callback call
@@ -7037,7 +7037,7 @@ ift _ptr_4 ~ * int {
 }
 
 // iter_ref! call
-let _level_5: u8 = 1ub;
+let _level_5: u8 = 1B;
 let _ptr_5: * int = *_ptr_4;
 
 // Callback call
@@ -7056,7 +7056,7 @@ let _arg_3: * *mut *int = & &mut & _wrapper_3;
 let _ret_3: int?;
 
 // iter_ref! call
-let _level_6: u8 = 3ub;
+let _level_6: u8 = 3B;
 let _ptr_6: * *mut * int = _arg_3;
 
 // Callback call
@@ -7065,7 +7065,7 @@ ift _ptr_6 ~ * int {
 }
 
 // iter_ref! call
-let _level_7: u8 = 2ub;
+let _level_7: u8 = 2B;
 let _ptr_7: * *mut int = *_ptr_6;
 
 // Callback call
@@ -7074,7 +7074,7 @@ ift _ptr_7 ~ * int {
 }
 
 // iter_ref! call
-let _level_8: u8 = 1ub;
+let _level_8: u8 = 1B;
 let _ptr_8: * int = *_ptr_7;
 
 // Callback call
@@ -7647,7 +7647,7 @@ let invalid: i16 = cast_unsafe!<i16>(unknown); // ERROR
 Final word: if you want to convert, for example, a `number` entity which contains in reality an `i16` to an `u8`, you must combine both safe and unsafe casts:
 
 ```sn
-let num: Any = 2ul;
+let num: Any = 2L;
 let byte: u8 = cast!<u8>(cast_unsafe!<u64>(num));
 
 // Shorter version:

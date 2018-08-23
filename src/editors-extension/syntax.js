@@ -308,22 +308,22 @@ SYNTAX = {
         ],
         [
           // Plain numbers
-          /\b(0_*d_*)?(\d_*)+(\._*(\d_*)+)?(?:[pfd]|u?[bsl]?)\b/,
+          /\b(0_*d_*)?(\d_*)+(\._*(\d_*)+)?(?:[pfdbslBSLu])?\b/,
           'orange'
         ],
         [
           // Plain binary numbers
-          /\b0_*b_*(([01]_*)+)(\._*([01]_*)+)?(?:[pfd]|u?[bsl]?)\b/,
+          /\b0_*b_*(([01]_*)+)(\._*([01]_*)+)?(?:[pfdbslBSLu])?\b/,
           'orange'
         ],
         [
           // Plain octal numbers
-          /\b0_*o_*(([0-7]_*)+)(\._*([0-7]_*)+)?(?:[pfd]|u?[bsl]?)\b/,
+          /\b0_*o_*(([0-7]_*)+)(\._*([0-7]_*)+)?(?:[pfdbslBSLu])?\b/,
           'orange'
         ],
         [
           // Plain hexadecimal numbers
-          /\b0_*x_*(([a-fA-F0-9]_*)+)(\._*([a-fA-F0-9]_*)+)?(?:[pfd]?u?[bsl]?)\b/,
+          /\b0_*x_*(([a-fA-F0-9]_*)+)(\._*([a-fA-F0-9]_*)+)?(?:[pfdbslBSLu])?\b/,
           'orange'
         ],
         [
@@ -348,7 +348,7 @@ SYNTAX = {
         ],
         [
           // Implicit numerical iterator
-          /[a-zA-Z0-9_\.\$]+(u|(?:[pfd]|u?[bsl]?))\.\.\.?[a-zA-Z0-9_\.\$]+(?:[pfd]|u?[bsl]?)/,
+          /[a-zA-Z0-9_\.\$]+(u|(?:[pfdbslBSLu])?)\.\.\.?[a-zA-Z0-9_\.\$]+(?:[pfdbslBSLu])?/,
           'orange'
         ],
         [
