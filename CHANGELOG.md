@@ -86,6 +86,9 @@
 * Rename `interface` to `inf`
 * Rename `implements` to `impl`
 * Rename `func` to `fn`
+* Rename `ub` suffix to `B`
+* Rename `us` suffix to `S`
+* Rename `ul` suffix to `L`
 
 ### Removed features
 
