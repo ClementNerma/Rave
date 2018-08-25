@@ -13,3 +13,32 @@ On the other side, higher-level languages such as JavaScript and Python allow a 
 This is where SilverNight comes. A given program can either be compiled to run natively on a given platform, turned into bytecode to run on any machine that already have the dedicated virtual machine installed, interpreted so there is no waiting time between the moment the source code is saved and its execution, transpiled to produce JavaScript code for the web or Swift code for iOS, and so it runs at the same time in a low-level context, in the browser, on mobile devices, on servers, and even on IoT platforms. In addition to this, its behavior is very clear and explicit, allowing to know exactly what happens when we use a specific feature. It is also designed to be as safe as possible, and most errors will be handled at compilation time. Even with runtime errors, it's far easier to debug errors than in most low-level languages, thanks to native error handling mechanisms.
 
 Of course, the language has downsides itself: when being compiled, it isn't as fast as a well-written C program, isn't as safe as Rust when it comes to multi-threading or concurrency, isn't as flexible as dynamically-typed languages. But still, it has a simpler learning curve, is far faster to learn exhaustively, and can be used as a single language for many development contexts.
+
+## Introduction
+
+### An overview of the language
+
+The SilverNight language is built around X key-concepts: safety, explicity, polyvalence, frontend libraries.
+
+* _Safety_ because the language eliminates most errors at compilation time, so the risk of runtime errors are largely reduced ;
+* _Explicity_ because when you use a concept, you always know exactly how it works and don't have surprises ;
+* _Polyvalence_ because programs can either be compiled, ran in a VM, interpreted, or transpiled ;
+* _Frontend libraries_ is a feature that allows to use context-dependant APIs, such as interacting with the touchscreen on mobile devices. It allows to use a single API whatever the platform is.
+
+### Who is this language for?
+
+Given the points above, the language is perfect for developers who want to:
+
+* Unify applications development under a single programming language and API (thanks to frontend libraries) ;
+* Get rid of low-level languages' complexitly/unsafety ;
+* Get rid of high-level languages' lack of riguor ;
+* Use a stable language with a very explicit behavior
+
+Still, it may not be suited for:
+
+* Very low-level programs - direct communication with hardware, direct memory management, drivers, ... ;
+* Programs in which memory and threads safety is critical (not better than C or C++)
+
+### Setting up environment
+
+_This part will be achieved when the toolchain will be made available._
