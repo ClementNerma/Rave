@@ -42,3 +42,27 @@ Still, it may not be suited for:
 ### Setting up environment
 
 _This part will be achieved when the toolchain will be made available._
+
+### Terminology
+
+The _builder_ is the module that analyzes a source code to check if it's valid. It also makes a representation of the program before giving it to a _target module_ (compiler, transpiler, ...).
+
+The _build time_ refers to the moment the source code is given to the builder. In a simplier way, it refers to the moment you compile, transpile etc. your code.
+
+### Commenting your code
+
+Programs can be commented using single-line comments:
+
+```sn
+// This is a single-line comment
+```
+
+For multi-lines comment, we use the following syntax:
+
+```sn
+/* This is
+   a multi-line
+   comment */
+```
+
+Comments can be written everywhere in a line and will simply be ignored at build time.
