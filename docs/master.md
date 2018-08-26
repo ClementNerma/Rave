@@ -290,6 +290,8 @@ It's possible to write a number of another type than `int` without specifying th
 2l; // i64
 2L; // u64
 2p; // usize
+2f; // f32
+2d; // f64
 ```
 
 We can then assign these values to an entity:
