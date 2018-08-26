@@ -1405,6 +1405,8 @@ Let's detail this code. First, we indicate we are declaring a function by using 
 
 We then specify the function's name, `area`, followed by its _arguments_. These are entities that are part of the function's body (starting at the opening brace) which are provided when we call the function. Each argument has a name and a type (like for any entity). We then provide the function's body, which has its own scope.
 
+This first line is called the function's _signature_.
+
 Now, we can call our function:
 
 ```sn
