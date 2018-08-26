@@ -1626,8 +1626,6 @@ list.filter(value => {
 });
 ```
 
-
-
 ## Classes
 
 Classes are kind of extended structures. The main difference is they can have methods, which are functions that can't change through the different instances, and private members, which are entities that are not visible from the outside. There are plenty of other differences, but here are the major ones.
