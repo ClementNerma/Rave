@@ -483,3 +483,547 @@ val b = 2;
 
 println!(`4 ** 2 = ${a ** b}`); // Prints: '4 ** 2 = 16'
 ```
+
+
+
+## Data structures
+
+We saw previously there were two categories of types : primitives and objects. In this chapter, we're going to study these last ones.
+
+### Vectors
+
+Vectors provide a way to represent chain of datas. There are divided in two types: arrays, which are chains with a fixed length, and lists, which have a dynamic length, meaning we can add and remove elements from it.
+
+#### Arrays
+
+Arrays are defined this way:
+
+```sn
+val array: int[3] = [ 2, 3, 4 ];
+```
+
+As you can see, the type for arrays is `T[LENGTH]`, where `T` is the type of value the array contains and `LENGTH` its length. Note that, as inferred typing also works on arrays, we can omit the array type:
+
+```sn
+val array = [ 2, 3, 4 ]; // int[3]
+```
+
+When we want to accept any array of a given type, whatever their length are, we can omit the size:
+
+```sn
+let arr1: int[3] = [ 2, 3, 4 ];
+arr1 = [ 2, 3, 4, 5 ]; // ERROR (size mismatch)
+
+let arr2: int[] = [ 2, 3, 4 ];
+arr2 = [ 2, 3, 4, 5 ]; // Works fine
+```
+
+#### Lists
+
+Lists, on their size, are defined using the `List<T>` type, where `T` is the same as for arrays:
+
+```sn
+val list: List<int> = [ # 2, 3, 4 ];
+```
+
+Notice the `#` symbol at the beginning of the list? It indicates we are not writing an array, but a list of elements. If we omit this symbol, we try to assign an array to a list, which is forbidden.
+
+As for arrays, lists support inferred typing, so we can simply write:
+
+```sn
+val list = [ # 2, 3, 4 ];
+```
+
+#### Dealing with vectors
+
+We can grab any element from a vector using the following syntax:
+
+```sn
+val arr = [ 2, 3, 4 ];
+
+println!(arr[0]); // Prints: '2'
+println!(arr[1]); // Prints: '3'
+println!(arr[2]); // Prints: '4'
+```
+
+The number written between brackets is called the _index_. As in many other programming languages, indexes start at `0`. The index must be an `usize` value, meaning we can't write `arr[-1]` for example.
+
+Note that trying to access an out-of-bounds index will panic the program, meaning it will suddenly stop with an error message:
+
+```sn
+val arr = [ 2, 3, 4 ];
+val index = 3p;
+
+arr[index]; // ERROR (index out of bounds)
+```
+
+We can get the number of elements contained in a vector (array or list) using `.size`:
+
+```sn
+val arr = [ 2, 3, 4 ];
+val list = [ # 5, 6, 7 ];
+
+println!(arr.length == list.length); // Prints: 'true'
+```
+
+Vectors support an additional operator: the inclusion operator. It takes two operators, a value and a vector, and returns `true` if the vector contains the provided value:
+
+```sn
+val arr = [ 2, 3, 4 ];
+
+println!(2 in arr); // Prints: 'true'
+```
+
+For lists, we can add an element using the following syntax:
+
+```sn
+val list = [ # 2, 3, 4 ];
+
+// Short way
+list[] = 5;
+
+// Long way
+list.push(5);
+```
+
+We can remove the last element using `.pop`:
+
+```sn
+val list = [ # 2, 3, 4 ];
+
+println!(list[2]); // Prints: '4'
+
+// Remove the last element
+list.pop();
+
+println!(list[2]); // ERROR (index out of bounds)
+```
+
+### Structures
+
+Structures link fields (which are entity names) to values. They allow to represent data in a more intuitive way than arrays.
+
+Let's say we want to represent a hero. It has health points (HP), attack points (ATK) and experience (EXP). With arrays, we could do like this:
+
+```sn
+val hero = [ 100u /* HP */, 20u /* ATK */, 0u /* EXP */ ];
+```
+
+But this is not very readable, and not intuitive to manipulate: modifying the experience will be achieved using `hero[2]`, which isn't obvious to be the experience number.
+
+Another problem is that we can't, for example, give a name to our hero, because arrays must contain a single type of values. This would lead us to storing the name in another entity, which is not convenient.
+
+A way to represent this more easily is to use structures. Our example would go like this:
+
+```sn
+// Define the structure (it's a type)
+struct Hero {
+  name: string;
+  hp: uint;
+  atk: uint;
+  exp: uint;
+}
+```
+
+We now have an `Hero` type. This introduces a new notation concept: primitive types always start with a lowercase letter (and are in fact only written with lowercase letters and digits), while object types always start with an uppercase letter. This allows to distinguish them easily.
+
+To represent data using our new type, we need to _instanciate_ it using the following syntax:
+
+```sn
+val jack = Hero {
+  name: 'Jack',
+  hp: 100u,
+  atk: 20u,
+  exp: 0u
+};
+```
+
+This produces an _object_, which is an instance of our `Hero` structure. Here, `name`, `hp`, `atk` and `exp` are called the structure's _fields_.
+
+Still, by default, fields are constant. This means we cannot modify our hero's experience, for instance. If we want to, we simply have to mark the field as mutable, using the `mut` keyword:
+
+```sn
+struct Hero {
+  name: string;
+  hp: uint;
+  atk: uint;
+  mut exp: uint;
+}
+```
+
+The instanciation keeps the same syntax. We can now increase our hero's experience:
+
+```sn
+// Given our hero just defeated an ennemy
+jack.exp += 100u;
+
+println!(jack.exp); // Prints: '100'
+```
+
+For specific situations we will see later, we can also force a field to only store a plain value, using the `pln` keyword:
+
+```sn
+struct Hero {
+  pln NAME: string;
+  hp: uint;
+  atk: uint;
+  mut exp: uint;
+}
+
+val jack = Hero {
+  NAME: 'Jack', // A variable wouldn't have been accepted here
+  hp: 100u,
+  atk: 20u,
+  exp: 0u
+};
+
+jack.NAME = 'Jack the Hero'; // Works fine
+jack.NAME = someVariable; // ERROR
+```
+
+We can even put optional fields, by giving them a default value:
+
+```sn
+struct Hero {
+  name: string;
+  hp = 100u; // Inferred typing is supported
+  atk = 20u;
+  exp = 0u;
+}
+
+val jack = {
+  name: 'Jack'
+};
+
+val john = {
+  name: 'John',
+  atk: 10u
+};
+
+println!(jack.atk); // Prints: '20'
+println!(john.atk); // Prints: '10'
+```
+
+Also, as you can see, even if we store the instance in a constant, that doesn't make the object constant itself. Always be aware of this!
+
+### Enumerations
+
+Enumerations allow to use a set of identifiers, linked to automatically-generated values. Values using the enumeration's type can be one of the enumeration's identifiers. Here is the syntax:
+
+```sn
+// Declare an enumeration
+enum Color {
+  RED,
+  GREEN,
+  BLUE
+};
+
+// Use it
+val red = Color.RED;
+val green = Color.GREEN;
+val blue = Color.BLUE;
+```
+
+By default, the first identifier of the enumeration is an `u8` value starting at `0`. The second is equal to `1`, the third is equal to `2`, etc. Though, it's possible to set a specific number:
+
+```sn
+enum Color1 {
+  RED = 5, // 5
+  GREEN, // 6
+  BLUE // 7
+};
+
+enum Color2 {
+  RED, // 0
+  GREEN = 8, // 8
+  BLUE // 9
+};
+```
+
+### Tuples
+
+Tuples are a mix between structures and arrays. Their indexes are plain `usize` values, but each value can have a different type:
+
+```sn
+val tuple: (int, f32, string) = (2, 4.8, 'Hello');
+
+tuple[0]; // int
+tuple[1]; // f32
+tuple[2]; // string
+```
+
+Note that, as indexes must be plain values, we can't use a variable here:
+
+```sn
+val tuple: (int) = (2);
+val num = 0p;
+
+tuple[num]; // ERROR
+
+pln NUM = 0p;
+
+tuple[num]; // Works ('NUM' is a plain constant)
+```
+
+Inferred typing also works on tuples:
+
+```sn
+val tuple = (2, 'Hello'); // (int, string)
+```
+
+As for structures, a tuple's values are constants by default. We can use the `mut` and `pln` keyword to change their state:
+
+```sn
+val tuple: (mut int, string) = (2, 'Hello');
+
+tuple[0] = 8; // Works fine
+tuple[1] = 'World'; // ERROR
+```
+
+As for vectors, we can use the inclusion operator on tuples:
+
+```sn
+val tuple = (2, 'Hello');
+
+2 in tuple; // true
+'Hello' in tuple; // true
+```
+
+### Dictionaries
+
+Dictionaries work like vectors which could have any index type. The most common dictionary type is `Map<K, V>`, where `K` is the key type (`usize` in a vector) and `V` the type of values. It goes like this:
+
+```sn
+// Declare a map (which is the most common type of dictionary)
+val age: Map<string, int> = new Map<string, int>; // Variable's type is omittable
+
+// Associate a value (24) to a field ('Jack')
+age['Jack'] = 24;
+
+// Grab a value using its key
+println!(age['Jack']); // Prints: '24'
+
+println!(age['John']); // ERROR (key not found)
+```
+
+In fact, vectors are a specific type of dictionaries, with `usize` keys. Also, keys must be consecutive, meaning we can't use the `3` key if the `2` doesn't exist in the case of a list (for example).
+
+We can also delete a key (and its value) using the `delete` keyword:
+
+```sn
+// Delete the key and its value
+delete age['Jack'];
+
+// Try to read it
+println!(age['Jack']); // ERROR (key not found)
+```
+
+Note that, on vectors, this operation will result in an error as we cannot remove an element (lists can, but only using specific methods).
+
+The inclusion operator also works here, as well as the _key-of_ operator, which checks if a key exists in the dictionary:
+
+```sn
+val age = new Map<int, string>;
+
+age['Jack'] = 24;
+
+// Key-of operator
+println!('Jack' of age); // Prints: 'true'
+
+// Inclusion operator
+println!(24 in age); // Prints: 'true'
+```
+
+As for vectors, we can get the number of key/value pairs using `.size`:
+
+```sn
+val age = new Map<int, string>;
+
+age['Jack'] = 24;
+age['John'] = 26;
+
+println!(age.size); // Prints: '2'
+```
+
+### Inferred Structured Typing
+
+_Inferred Structured Typing_, abbreviated _IST_, allows to deduce the structure behind an _implicit object_.
+
+An implicit object is an object that is defined without a structure name, like this:
+
+```sn
+val jack = {
+  name: 'Jack',
+  hp: 100u,
+  atk: 20u,
+  exp: 0u
+};
+```
+
+This code is perfectly valid, and we can access our hero's fields just like we would have do with the `Hero` structure. Still, we haven't declared any structure here, so the object doesn't use any. This is why it is called an _implicit_ object: the builder deduces (infers) the structure behind the object. This means the builder will, in reality, turn the example above into this one:
+
+```sn
+struct ImplicitStruct1 {
+  pln name: string;
+  pln hp: uint;
+  pln atk: uint;
+  pln exp: uint;
+}
+
+val jack = Hero {
+  name: 'Jack',
+  hp: 100u,
+  atk: 20u,
+  exp: 0u
+};
+```
+
+This is called Inferred Structured Typing, as it infers not the type of a primitive value, but the structure behind a whole object. The fields were all inferred as plain here, because we provided plain values. If we used variables instead, they wouldn't have been marked as plain, of course.
+
+Also, as you can see here, all fields are constant. We can use the `mut` keyword inside the implicit object to make them mutable:
+
+```sn
+val jack = {
+  name: 'Jack',
+  hp: 100u,
+  atk: 20u,
+  mut exp: 0u
+};
+```
+
+You may now wonder why to use structures, if we can use IST instead. Well, structures allow to ensure its instances contain all the required fields, with the good type. It avoids forgetting a single field when writing our object.
+
+In fact, structures are useful since you have at least two objects of the same type. If you have only one, this is pointless, and that's why implicit objects exist. But if you have to deal with several heroes, for example, it's better to go with a structure and explicitly indicate we are instanciating the structure.
+
+Note that we already saw IST before. Inferred typing on arrays and lists use IST, as these are not primitives. We simply write the object, and the builder infers their type.
+
+There is a last syntax for IST, which uses dictionaries:
+
+```sn
+let ages = { #
+  Jack: 24u,
+  John: 26u
+};
+```
+
+Here, `ages` is a `Map<string, uint>`. We can use to shorten this type its alias, `Collection<uint>` - a `Collection<T>` simply being a `Map<string, T>`. Note that all values must be of the same type.
+
+Below is a summary of all IST's syntaxes:
+
+* `[ a, b, c ]` produces an array (`T[SIZE]`) ;
+* `[ # a, b, c ]` produces a list (`List<T>`) ;
+* `{ a, b, c }` produces an implicit object (implicit structure type) ;
+* `{ # a, b, c }` produces a map (`Collection<T>`)
+
+### Multiple assignments
+
+Structures and dictionaries allow to perform multiple assignments at once. Let's consider the following (implicit) object:
+
+```sn
+val hero = {
+  name: 'John',
+  age: 20u,
+  warrior: true
+};
+```
+
+We want to store its properties in three constants, `name`, `age` and `warrior`. The most intuitive way would be to write:
+
+```sn
+val name = hero.name;
+val age = hero.age;
+val warrior = hero.warrior;
+```
+
+But that's a bit long, so we can perform multiple assignments at once to shorten this in a single line:
+
+```sn
+val { name, age, warrior } = hero;
+```
+
+We "extracted" some properties of `hero` and stored them into constants of the same name. The list of the constants to assign values to is also the list of fields to get the values from.
+
+The opposite is also possible: we can make an object from a group of entities:
+
+```sn
+// Standard way
+val hero_copy = {
+  name: name,
+  age: age,
+  warrior: warrior
+};
+
+// Multiple assignments
+val hero_copy = { name, age, warrior };
+```
+
+This syntax can also be mixed with other properties:
+
+```sn
+val new_hero = {
+  name, // Implicit value
+  age, // Implicit value
+  warrior: false // Explicit value
+};
+```
+
+There is a similar syntax for vectors:
+
+```sn
+// Make a sample array
+val arr = [ 2, 5, 8, 9 ];
+
+// Extract from the array
+val [ n1, n2, n3, n4 ] = arr;
+// Equivalent to:
+val n1 = arr[0],
+    n2 = arr[1],
+    n3 = arr[2],
+    n4 = arr[3];
+
+// Left slice
+val [ ...first, n4 ] = arr;
+// Equivalent to:
+val first = [ arr[0], arr[1], arr[2] ],
+    n4 = arr[3];
+
+// Right slice
+val [ n1, ...last ] = arr;
+// Equivalent to:
+val n1 = arr[0],
+    last = [ arr[1], arr[2], arr[3] ];
+
+// Middle slice
+val [ n1, ...middle, n4 ] = arr;
+// Equivalent to:
+val n1 = arr[0],
+    middle = [ arr[1], arr[2] ],
+    n4 = arr[3];
+```
+
+Note that we can simply ignore some values in a vector by using the `...` symbol alone:
+
+```sn
+// Middle slice
+val [ n1, ..., n4 ] = arr;
+// Equivalent to:
+val n1 = arr[0],
+    n4 = arr[3];
+```
+
+This avoids making a useless entity to store the middle values.
+
+Here is a last syntax, for tuples:
+
+```sn
+val tuple = (1, 2);
+
+// Extract from tuple
+val (one, two) = tuple;
+// Equivalent to:
+val one = tuple[0],
+    two = tuple[1];
+
+println!(one); // Prints: '1'
+println!(two); // Prints: '2'
+```
