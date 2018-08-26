@@ -919,9 +919,9 @@ Below is a summary of all IST's syntaxes:
 * `{ a, b, c }` produces an implicit object (implicit structure type) ;
 * `{ # a, b, c }` produces a map (`Collection<T>`)
 
-### Multiple assignments
+### Destructuring assignments
 
-Structures and dictionaries allow to perform multiple assignments at once. Let's consider the following (implicit) object:
+Structures and dictionaries allow to perform multiple assignments at once by _destructuring_ an object. Let's consider the following (implicit) object:
 
 ```sn
 val hero = {
