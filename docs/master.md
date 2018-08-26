@@ -105,19 +105,9 @@ let mutable: int = 2;
 mutable = 'Hello'; // ERROR
 ```
 
-It is also possible to declare an entity without an initialization value, but its type will be required:
-
-```sn
-let mutable: int;
-```
-
-This syntax is only to use in specific cases we'll see later. Indeed, not initializing an entity results in an error if we try to access it before it is initialized.
-
 ### Constants
 
-Constants are another type of entity. They work like mutables, except their value can't change after their declaration. This requires them to be initialized at declaration time.
-
-Constants use the `val` keyword:
+Constants are another type of entity. They work like mutables, except their value can't change after their declaration. They use the `val` keyword:
 
 ```sn
 // Inferred type
@@ -130,7 +120,7 @@ val constant: int = 8;
 val constant: int; // ERROR
 ```
 
-Always prefer writing a constant than a mutable ; this will prevent accidentally modifying its content. Plus, in some languages like JavaScript, it makes the program a bit faster.
+Always prefer writing a constant to a mutable ; this will prevent accidentally modifying its content. Plus, in some languages like JavaScript, it makes the program a bit faster.
 
 ### Plain constants
 
