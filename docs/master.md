@@ -243,7 +243,7 @@ For integer types, results are truncated to zero, meaning `7 / 4` will result in
 
 Numeric operators return a value of the same type than their left operand. For example, dividing an `f32` number by an `i8` value will result in an `f32`.
 
-### Bitwise operators
+#### Bitwise operators
 
 Bitwise operators work on each bit of the number. They take two numbers to return another one:
 
@@ -408,7 +408,7 @@ num += 3;
 num = num + 3;
 ```
 
-All numeric operators can be used:
+All numeric operators (including bitwise ones) can be used:
 
 ```sn
 let num = 2;
