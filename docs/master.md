@@ -1374,3 +1374,254 @@ let i = 0;
 // Available: 'i'
 println!(j); // ERROR (undefined entity)
 ```
+
+## Functions
+
+Functions are a specific type of blocks that allow to manually run a set of instructions as many times as wee need, from everywhere.
+
+### Declaration
+
+Let's imagine we want to calculate the area of a trapezoid and display a message if it exceeds 100. This is very simple and can be written like this:
+
+```sn
+if (base + top) * height / 2 > 100 {
+  println!('Area exceeds 100');
+}
+```
+
+But now, let's imagine we have to deal with several trapezoids in different places of our program. This would leads us to rewriting this code many times, which is not very convenient. Plus, if we want to change the message, we have to track all the occurences of this code - and we may forgot some of them. This problem is even more true with biggest piece of codes, of course.
+
+A solution is to use a function. It goes like this:
+
+```sn
+fn area (base: f32, top: f32, height: f32) {
+  if (base + top) * height / 2 > 100 {
+    println!('Area exceeds 100');
+  }
+}
+```
+
+Let's detail this code. First, we indicate we are declaring a function by using the `fn` keyword (which is an abbrevation for "function").
+
+We then specify the function's name, `area`, followed by its _arguments_. These are entities that are part of the function's body (starting at the opening brace) which are provided when we call the function. Each argument has a name and a type (like for any entity). We then provide the function's body, which has its own scope.
+
+Now, we can call our function:
+
+```sn
+area(10.0, 5.0, 80.0); // Prints the message
+```
+
+Each time we will have to compute the area, we will simply have to call the function, which is a lot more easier, readable and maintanable than re-writing the whole code each time. If we want to change anything in the computation, we simply have to change it in a single place.
+
+### Returning values
+
+We may want to get the trapezoid's area after (optionally) displaying the message. For that, the function must _return_ the area, which requires us to change it a little bit:
+
+```sn
+fn area (base: f32, top: f32, height: f32) : f32 {
+  // Compute the area
+  val result = (base + top) * height / 2;
+
+  // Print the message
+  if result > 100 {
+    println!('Area exceeds 100');
+  }
+
+  // Return the result
+  return result;
+}
+```
+
+Putting apart comments and the fact we know use a `result` constant, two things have changed in our function.
+
+First, we gave it a _return type_, written after the double point symbol just before the opening brace. It indicates what kind of value our function will return.
+
+The second change is the `return` statement at the end of the function. The value on its right is returned by the function, which can be used afterward:
+
+```sn
+val trapezoid_area = area(1.0, 2.0, 3.0));
+```
+
+### Optional arguments
+
+Like we did with structures, we can make some arguments optional by giving them a default value. Though, such arguments must be placed at the very end of the arguments list.
+
+```sn
+fn say_hello (name: string, repeat: uint = 1) {
+  println!(name) for i in 0..repeat;
+}
+
+say_hello('Jack');    // Prints: 'Jack'
+say_hello('Jack', 1); // Prints: 'Jack'
+say_hello('Jack', 2); // Prints: 'Jack' (twice)
+```
+
+Note that default values can also be an expression, that will be evaluated when the function will be called.
+
+### Endless arguments
+
+Endless arguments are prefixed with the `...` symbol, and accept from zero to an infinity of arguments:
+
+```sn
+fn sum_of (...nums: int) : int {
+  let sum = 0;
+
+  sum += n for n in sums;
+
+  return sum;
+}
+
+sum_of(1, 2, 3); // Works fine
+sum_of(1, 2, 3, 4); // Works fine
+sum_of(); // Works fine
+```
+
+They are typed as arrays with an unknown length ; here, `nums` is an `int[]`.
+
+It's possible to provide multiple endless arguments, the only rule it that we can't write two consecutive endless arguments with the same type:
+
+```sn
+fn sum_of (...ints: int, ...floats: f32) : f32 {
+  let sum = 0.0;
+
+  for n in ints {
+    sum += n as f32;
+  }
+
+  sum += n for f in floats;
+
+  return sum;
+}
+
+sum_of(1, 2, 3.0); // Works fine
+sum_of(1, 2); // Works fine
+sum_of(3.0); // Works fine
+sum_of(); // Works fine
+```
+
+### Arguments expansion
+
+It's also possible to use a vector in the place of an endless arguments:
+
+```sn
+let nums = [ 2, 3, 4 ];
+
+sum_of(nums..., 5.0);
+// Equivalent to:
+sum_of(2, 3, 4, 5.0);
+```
+
+### Polymorphism
+
+_Polymorphism_ allow to declare the same function several times. Each declaration, though, must use different arguments - this can be an additional argument, one less argument, or an existing argument that gets a new type:
+
+```sn
+fn add (a: int, b: int) : int {
+  return a + b;
+}
+
+fn add (a: uint, b: uint) : uint {
+  return a + b;
+}
+```
+
+There is a risk of ambiguity at build time if the function uses endless arguments:
+
+```sn
+fn sum_of (...nums: int) : int { /* ... */ }
+fn sum_of (...nums: f32) : f32 { /* ... */ }
+
+sum_of(); // ERROR (ambiguity)
+
+// The compiler doesn't know what declaration to use
+// We must tell it explicitly by using a vector of elements
+
+val vec = new List<int>;
+sum_of(vec...); // Works fine
+```
+
+### Lambdas
+
+_Lambdas_, also called _anonymous functions_, are single values that can be used as callbacks. Here is an example:
+
+```sn
+// The .filter function takes a function as an argument
+// It runs it for each element of the list
+// If the callback returns `false`, the value is dropped
+// Then, a new list is returned
+
+val list = [ # 2, 3, 4 ];
+
+val filtered = list.filter(lambda (value: int) : bool {
+  return value > 2;
+});
+```
+
+The `filtered` list now contains the `3` and `4` values. As you can see, the lambda has no name - this is where the _anonymous_ term comes from.
+
+It's possible to represent functions as a type:
+
+```sn
+fn run_lambda (func: fn (value: int) : bool) {
+  if func(5) {
+    println!('Returned: true');
+  } else {
+    println!('Returned: false');
+  }
+}
+
+run_lambda(lambda (value: int) : bool {
+  return true:
+}); // Prints: 'Returned: true'
+```
+
+This time, the type uses the `fn` keyword, because we may give an existing function and not a lambda.
+
+As functions are simple values, we can store it in entities, and even use inferred typing to omit their type:
+
+```sn
+let sum = lambda (a: int, b: int) : int {
+  return a + b;
+};
+
+println!(sum(2, 5)); // Prints: '7'
+```
+
+For lambdas only made of a `return` instruction, we can use the _arrow syntax_ to shorten their writing:
+
+```sn
+let sum = lambda (a: int, b: int) : int => a + b;
+
+println!(sum(2, 5)); // Prints: '7'
+```
+
+The expression written after the arrow is evaluated when the function is called, and then returned.
+
+### Inferred Callback Typing
+
+A function is called a _callback_ when it is provided as a function's argument. Callbacks can be written in a shorter way than lambdas, thanks to a featured called _Inferred Callback Typing_ (abbreviated _ICT_) that infers the type of its arguments, as well as its return type:
+
+```sn
+// Lambda syntax
+list.filter(lambda (value: int) : bool => value > 2);
+
+// ICT
+list.filter((value) => value > 2);
+```
+
+This syntax don't work with non-callback lambdas (e.g. lambdas that are assigned to an entity before being used). Indeed, ICT works because the builder exactly knows what are the type of the callback's arguments, as well as its return type.
+
+When the callback has a single argument, its wrapping parenthesis can be omitted:
+
+```sn
+list.filter(value => value > 2);
+```
+
+To provide multiple instructions, braces can be used after the arrow:
+
+```sn
+list.filter(value => {
+  println!(`Filtering value ${value}...`);
+  return value > 2;
+});
+```
