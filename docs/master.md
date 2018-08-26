@@ -1027,3 +1027,344 @@ val one = tuple[0],
 println!(one); // Prints: '1'
 println!(two); // Prints: '2'
 ```
+
+## Blocks
+
+Blocks provide ways to control the program's execution to omit or repeat groups of instructions depending on conditions, or to simply writing some heavy blocks of codes.
+
+### Conditional blocks
+
+Conditions blocks run a set of instructions only if a condition is met. The most common block uses the `if` keyword and runs the provided instructions if the condition we write in it is not a nil value. Here is an example:
+
+```sn
+if 2 + 2 == 4 {
+  println!('OK');
+}
+```
+
+This code displays `'OK'` because `2 + 2 == 4` returns `true`, which is not a nil value. If we wrote `2 + 3 == 4`, this would have resulted in `false`, which is a nil value, so the message wouldn't have been displayed.
+
+The part between the block's keyword (`if`) and the opening brace is called the block's head ; here, it's a condition. The content between the opening and the closing braces is called the block's body - its set of instructions.
+
+We can also use the `unless` block, which is the exact opposite of `if`: it runs the instruction if the condition results in a nil value.
+
+```sn
+unless 2 + 3 == 4 {
+  println!('OK');
+}
+```
+
+This code displays `'OK'`.
+
+Because we may want to do something if the instructions are not ran, we can use the `else` blocks, which takes no head and run the instructions only if the previous block has not ran its own ones:
+
+```sn
+if 2 + 3 == 4 {
+  println!('Strange...');
+} else {
+  println!('OK');
+}
+```
+
+This code displays `'OK'`.
+
+We can also use the `elsif` block, which acts as an `else` block but using another condition:
+
+```sn
+if 1 + 1 == 4 {
+  println!('Strange...');
+} elsif 1 + 1 == 3 {
+  println!('Strange...');
+} else {
+  println!('OK');
+}
+```
+
+As soon as a block runs its set of instructions, the next one in the chain are ignored. Also, note that the `else` block must be placed at the very end of the chain.
+
+### Repetition blocks
+
+There are two main blocks to repeat a set of instructions: the incremental repetition block (`for`), and the conditional repetition block (`while`). They are called _loop blocks_.
+
+The first one has a specific head syntax: its first takes an _initialization instruction_, which is ran when the loop is met ; a _break condition_, which is evaluated each time the set of instructions is going to be ran, and exits the loop if it's a nil value ; and finally an _iteration instruction_, which is executed just before evaluating the break condition. Showcase:
+
+```sn
+for i = 0; i < 5; i ++ {
+  println!(i);
+}
+```
+
+This code will print `0`, then `1`, `2`, `3` and finally `4`. Just after this last value, the iteration instruction is ran, so `i` is equal to `5`. The break condition is then evaluated, and returns `false`, which is a nil value, so the loop exits.
+
+Conventionally, in the above example, `i` is called the loop's _iterator_. It is automatically declared at the beginning of the loop. But it's optional ; the following code is perfectly valid as well:
+
+```sn
+for null; true ; null {
+  println!('Hello');
+}
+```
+
+This will print `'Hello'` endlessly.
+
+Note that our first loop example can be shortened using an iterator - we'll see what it is later:
+
+```sn
+for i in 0..5 {
+  println!(i);  
+}
+```
+
+This will print values from `0` to `4`. If we want to go up to the end value, we simply add a third point:
+
+```sn
+for i in 0...5 {
+  println!(i);
+}
+```
+
+For more complex conditions, we can use the `while` block. Its head is evaluated each time the set of instructions is going to be ran ; if it's a nil value, the loop stops.
+
+```sn
+let i = 0;
+
+while i < 5 {
+  println!(i);
+  i ++;
+}
+```
+
+This will print values from `0` to `4`.
+
+If we want to evaluate the condition at the end of the loop (which also means the instructions will be ran at least once), we can use the `do`...`while` block:
+
+```sn
+let i = 0;
+
+do {
+  println!(i);
+  i ++;
+} while i != 0;
+```
+
+This code will print `0` - nothing would have been printed with a simple `while` loop.
+
+These two blocks also have variants: `until` and `do`..`until`, which simply revert the condition (like `unless` does for `if`).
+
+```sn
+let i = 0;
+
+// until
+until i == 5 {
+  println!(i);
+  i ++;
+}
+
+// do...until
+do {
+  println!(i);
+  i ++;
+} until i == 5;
+```
+
+There is a last repetition block, which repeats its instructions endlessly: `loop`.
+
+```sn
+loop {
+  println!('Hello');
+}
+```
+
+This loop acts like a `while true`, but its point is to clearly indicate we are doing an infinite loop, and allow a better optimization of the code.
+
+### Breaking and continuing
+
+Loops can be broken (stopped) at anytime using the `break` instruction:
+
+```sn
+for i in 0..5 {
+  println!(i);
+
+  if i == 2 {
+    break ;
+  }
+}
+```
+
+This code will print `0`, `1` and `2`, then break.
+
+This instruction is also the only way to exit a `loop` block.
+
+On the other side, the `continue` instruction goes to the next iteration of the loop, ignoring the instructions above it:
+
+```sn
+for i in 0..5 {
+  if i == 2 {
+    continue ;
+  }
+
+  println!(i);
+}
+```
+
+This code will print `0`, `1`, `3` and `4` - the `println!` call for `2` has been ignored because of the `continue` instruction above it.
+
+### Matches
+
+The `match` keyword allow to run a set of instructions depending on a value. Let's consider we have a color taken from a `Color` enumeration and we want to print a message depending on it. A first idea could be to write:
+
+```sn
+if color == Color.RED {
+  println!('Color is red');
+} elsif color == Color.GREEN {
+  println!('Color is green');
+} elsif color == Color.BLUE {
+  println!('Color is blue');
+} else {
+  println!('Unknown color');
+}
+```
+
+This is a bit heavy, and can be replaced by a match:
+
+```sn
+match color {
+  Color.RED   -> println!('Color is red');
+  Color.GREEN -> println!('Color is green');
+  Color.BLUE  -> println!('Color is blue');
+  default     -> println!('Unknown color');
+}
+```
+
+Which is a lot more readable. The `default` keyword runs its related set of instructions if none of the other values matched the provided one.
+
+It's also possible to provide conditions for matches, by wrapping them between brackets:
+
+```sn
+val age = 24;
+let str = '';
+
+match age {
+  [_ < 12] -> str = 'Child';
+  [_ < 18] -> str = 'Teenager';
+  default  -> str = 'Adult';
+}
+```
+
+The `_` entity refers to the provided value.
+
+### Ternary conditions
+
+Ternary conditions allow to write short conditions more easily:
+
+```sn
+val str = age < 18 ? 'Not adult' : 'Adult';
+```
+
+The value after the `?` symbol is taken if the condition is not a nil value. If it's a nil a value, the value written after the `:` symbol is taken instead.
+
+### Inline blocks
+
+Inline blocks are variants of the blocks we saw previously. They are written after an instruction and consider this one as their body. Showcase:
+
+```sn
+val age = 24;
+
+println!('You are an adult') if age >= 18;
+println!('You are an adult') unless age < 18;
+```
+
+This works for absolutely any instruction and block:
+
+```sn
+println!(i) for i in 0...5;
+```
+
+This code will print numbers from `0` to `5`.
+
+### Inline generation
+
+Inline generation allows to generate a list of values from an expression. The syntax is the following:
+
+```plain
+([expression] [inline loop]);
+```
+
+The parenthesis wrapping is required in order to perform inline generation, else it will simply repeat the instruction, like it does in our example with an inline `for` loop.
+
+```sn
+val cubes = (i * i * i for i in 0..5); // List<int>
+
+println!(cube) for cube in cubes;
+```
+
+This code will print `0`, `1`, `8`, `27` and `64`.
+
+Because we may want an array instead of a list, we can use an alternative syntax using the `gen` keyword that produces an array:
+
+```sn
+val cubes = (i * i * i for i -> 0..5) // int[5];
+```
+
+This specific `for` syntax is only allowed for inline generation.
+
+### Scoping
+
+A _scope_ is any code between an opening bracket and a closing one. For blocks, their head is considered as being part of the scope too.
+
+```sn
+if /* Scope begins */ 2 + 2 == 4 {
+  println!('Hello world!');
+/* Scope ends */ }
+```
+
+Inline blocks implicitly create a scope for the whole instruction (including their head).
+
+```sn
+/* Scope begins */ println!('Hello') for i in 0..5 /* Scope ends */;
+```
+
+When declaring an entity, this one is binded to the current scope.
+
+```sn
+// Scope 0
+let i = 0; // Binded to scope 0
+
+// Create a scope
+// When an opening brace starts a line, it opens a scope
+{
+  // Scope 1
+
+  let i = 0; // Binded to scope 1
+}
+```
+
+Scope 1 is called a _child scope_ of scope 0, which is its _parent scope_ (the parent scope, as well as its own parents, etc. are called the _ancestor scopes_). As you can see, it's possible to declare entities in a child scope that has the same name than another in a ancestor scope. The two are completely distinct, though.
+
+A given scope can access:
+
+* Every entity declared in itself ;
+* Every entity declared in any ancestor scope
+
+But not an entity declared in a child scope. Showcase:
+
+```sn
+// Scope 0
+let i = 0;
+
+{
+  // Scope 1
+  let j = 0;
+
+  {
+    // Scope 2
+    let k = 0;
+
+    // Available: 'k', 'j', 'i'
+  }
+
+  // Available: 'j', 'i'
+}
+
+// Available: 'i'
+println!(j); // ERROR (undefined entity)
+```
