@@ -1373,6 +1373,8 @@ let i = 0;
 println!(j); // ERROR (undefined entity)
 ```
 
+**NOTE:** Scope 0, which is implicit as it is not wrapped between braces, is called the _main scope_.
+
 ## Functions
 
 Functions are a specific type of blocks that allow to manually run a set of instructions as many times as wee need, from everywhere.
