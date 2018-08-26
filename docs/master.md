@@ -290,6 +290,12 @@ We can then assign these values to an entity:
 val num = 2b; // 'num' is typed as a 'i8'
 ```
 
+Note that, when a decimal part is found after a number, it is automatically considered as an `f32`, even if it's zero:
+
+```sn
+val float = 2.0; // f32
+```
+
 ### Overflow and underflow
 
 Overflow occurs when we exceed a number type's maximum bound, and leads it to returning to its minimum bound before continuing the operation:
