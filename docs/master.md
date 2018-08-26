@@ -2076,3 +2076,7 @@ class Map {
   }
 }
 ```
+
+This code can still be improved, for example by checking if the player's position is valid in the constructor. If it's not, what about searching the first empty cell of the map?
+
+Also, be aware of the map: its cells can be modified anytime. Indeed, though map cannot be written from the outside, its values can, as it is a vector.
