@@ -418,6 +418,21 @@ num **= 3;
 println!(num); // Prints: '8'
 ```
 
+There are four additional operators for assignment, which all return a number:
+
+* `++ variable`: pre-incremental operator, it increments the variable and return the new value ;
+* `variable ++`: post-incremental operator, it increments the variable and return its previous value ;
+* `-- variable`: pre-decremental operator, it decrements the variable and return the new value ;
+* `variable --`: post-decremental operator, it decrements the variable and return its previous value
+
+```sn
+let i = 0;
+
+if ++ i == 1 {
+  println!('OK'); // Prints: 'OK'
+}
+```
+
 ### Logical operators
 
 Let's first introduce the concept of _nil values_: a nil value is either `null`, `false`, `0` (in any number type) or `''`.
