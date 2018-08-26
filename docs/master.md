@@ -490,8 +490,6 @@ val b = 2;
 println!(`4 ** 2 = ${a ** b}`); // Prints: '4 ** 2 = 16'
 ```
 
-
-
 ## Data structures
 
 We saw previously there were two categories of types : primitives and objects. In this chapter, we're going to study these last ones.
