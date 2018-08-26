@@ -2097,3 +2097,256 @@ class Map {
 This code can still be improved, for example by checking if the player's position is valid in the constructor. If it's not, what about searching the first empty cell of the map?
 
 Also, be aware of the map: its cells can be modified anytime. Indeed, though map cannot be written from the outside, its values can, as it is a vector.
+
+## Advanced classes
+
+Classes have other features we will see in this chapter.
+
+### Scope-dropping
+
+First, let's introduce the concept of _overload_: an overload is a class method, starting with a purcent symbol `%`. It is called like this because it _overloads_ a behavior of the language: the constructor overloads the behavior of instanciation.
+
+Let's now consider the following code, representing users:
+
+```sn
+class User { /* ... */ }
+
+let value = new User;
+value = new User;
+```
+
+The first `A` instance is dropped when the second assignment occurs, because no entity uses it anymore. When a value is dropped, the memory it uses is _freed_, so we can't use the value anymore (which is not a problem because we don't refer to it). Also, when we reach the end of a scope, all entities that have no reference outside of this scope are dropped.
+
+Still, we could want to notify some of the code the user is going to be dropped. For that, we can use the _destructor_, which is called just before the instance is dropped.
+
+**NOTE:** The end of the program marks the drop of all values, but for performance reasons their destructor is not called. To force the program to call the destructor of all values anyway, we have to specify a _head directive_:
+
+```sn
+#[main_scope_dropping];
+
+class User {
+  priv static counter = 0u;
+  priv id: uint;
+
+  pub fn %new () {
+    self.counter ++;
+    @id = self.counter;
+    println!(`User ${@id} has been created`);
+  }
+
+  pub fn %drop () {
+    println!(`User ${@id} will be dropped`);
+  }
+}
+
+let value = new User;
+value = new User;
+```
+
+This code will first print `User 1 has been created`, then `User 2 has been created`, `User 1 will be dropped` and then `User 2 will be dropped`.
+
+Let's see the timeline of events:
+
+* A first user is instanciated (`User 1 has been created`) ;
+* It is assigned to `value` ;
+* A second user is instanciated (`User 2 has been created`) ;
+* It is assigned to `value` ;
+* The first user is dropped because there are no reference to it anymore (`User 1 will be dropped`) ;
+* We reach the end of the scope, the second user is dropped (`User 2 will be dropped`)
+
+As you can see, the dropping occurs only just before the new instance is assigned to the entity, and not when it is created. Also, note that, when the destructor returns, the instance is definitely freed.
+
+### Cloning
+
+Cloning allows to get a new instance of a class that is equivalent to an existing, given instance. This feature is an answer to the following problem:
+
+```sn
+fn squareList (array: int[]) : int[] {
+  for i = 0p; i < array.length; i ++ {
+    array[i] *= array[i];
+  }
+
+  return array;
+}
+
+val array = [ 2, 7, 8 ];
+val squares = squareList(array);
+
+println!(squares[1]); // Prints: '49'
+println!(array[1]); // Prints: '49'
+```
+
+The explanation is simple: when we gave our array to the `squareList` function, it kept a reference to the original `array`, which means any modification on its value is reflected on the original one. Then, the function returned the modified array, which is still a reference to the original one. The result is assigned to `squares`, which results in all values of `squares` being linked to `array`'s ones.
+
+This behavior is specific to objects and is their key difference with primitives: when modifying an existing primitive value, a whole new primitive is created, with no link to the original one. That's not the case for objects, as it would be way too costly and result in unwanted behaviors in specific cases.
+
+The solution to our problem is to clone the array:
+
+```sn
+fn squareList (array: int[]) : int[] {
+  for i = 0p; i < array.length; i ++ {
+    array[i] *= array[i];
+  }
+
+  return array;
+}
+
+val array = [ 2, 7, 8 ];
+val squares = squareList(array.%clone());
+
+println!(squares[1]); // Prints: '49'
+println!(array[1]); // Prints: '7'
+```
+
+By default, objects are not clonable. Vectors simply implement a cloning method.
+
+The cloning overload is a method that takes no argument and returns an instance of the current class. When we try to clone an instance, this overload is called and its return result is the returned clone:
+
+```sn
+class Example {
+  pub rdo name: string;
+
+  pub fn %new (name: string) {
+    @name = name;
+  }
+
+  pub fn set_name (newName: string) {
+    @name = newName;
+  }
+
+  pub fn %clone () {
+    println!('Instance has been cloned.');
+    return new Example(@name);
+  }
+}
+
+let a = new Example('A');
+
+let b = a;
+let c = a.%clone();
+
+b.set_name('B');
+c.set_name('C');
+
+println!(a); // Prints: 'B'
+println!(b); // Prints: 'B'
+println!(c); // Prints: 'C'
+```
+
+You may notice we haven't provided a return type for the `%clone` function. This is because the signature of most overload methods are imposed, so as for callbacks with ICT, we don't have to provide the type of arguments as well as the method's return type - though it's still allowed.
+
+### Serialization
+
+Serialization allows to save an object as a string, in order to restore it later. It goes through two steps: serialization, with turns the instance into a string, and unserialization, which turns a string into an instance.
+
+The serialization overload takes no argument and returns a string. In our `Example` class, where we simply have to save a name, the string could simply be the name itself.
+
+```sn
+  // ...
+  pub fn %serialize () {
+    return @name;
+  }
+```
+
+The unserialization overload takes a string argument and returns an instance of the current class. It goes like this (we wil see what the `throws` part mean later):
+
+```sn
+  // ...
+  pub fn %unserialize (serialized) throws UnserializationError {
+    return new Example(@name);
+  }
+```
+
+When we have several fields, it becomes a bit more complicated, as we have to deal with specific representation of the data. In this case, we can use the _lazy overload_:
+
+```sn
+  // ...
+  pub pln %lazy_serial_fields = ('name');
+```
+
+This plain tuple contains the list of the attributes to serialize. The specified attributes must be serializable themselves.
+
+With the lazy overload, the program will automatically handle serialization and unserialization, as well as checking if the serialized content is valid or not.
+
+If you want to be ensure the serialized content is valid, it's possible to make the program computing a checksum that it'll join to the serialized content. At unserialization time, the checksum will be checked again to ensure data haven't been corrupted. To enable this feature, simply add a `WITH_CHECKSUM` item at the end of the tuple:
+
+```sn
+  // ...
+  pub pln %lazy_serial_fields = ('name', WITH_CHECKSUM);
+```
+
+The big advantage of checksum is that it highly reduces the risks to get invalid values, but the downside is that both serialization and unserialization will be considerably slower.
+
+### Overloading operators
+
+Some operators can be overloaded in a class, allowing to use them on the class' instances:
+
+```sn
+class MyInt {
+  pub rdo value: int;
+
+  pub fn %new (value: int) {
+    @value = value;
+  }
+
+  pub fn %add (another) {
+    return new MyInt(@value + another);
+  }
+}
+
+val one = new MyInt(1);
+val two = new MyInt(2);
+
+val three = one + two;
+
+println!(three.value); // Prints: '3'
+```
+
+If we don't provide types, operator overloads take an instance of the current class as an argument and return another. This behavior can be changed, though:
+
+```sn
+class MyInt {
+  pub rdo value: int;
+
+  pub fn %new (value: int) {
+    @value = value;
+  }
+
+  pub fn %add (another: MyInt) : int {
+    return @value + another.value;
+  }
+}
+
+val one = new MyInt(1);
+val two = new MyInt(2);
+
+println!(one + two); // Prints: '3'
+```
+
+Here is the list of overloadable operators:
+
+* `%add` for `+` ;
+* `%sub` for `-` ;
+* `%mul` for `*` ;
+* `%div` for `/` ;
+* `%mod` for `%` ;
+* `%pow` for `**`
+
+### Friends
+
+A class' _friend_ is a function or a whole class that is allowed to access the class' instances' private members:
+
+```sn
+class Example {
+  // Declare a function as a friend
+  friend fn function (obj: Example);
+
+  // Declare a class' method (static or not) as a friend
+  friend fn AnotherClass.method (obj: Example);
+
+  // Declare a whole class as a friend
+  friend class AnotherClass (obj: Example);
+}
+```
+
+Classes are always friend of themselves, this is why they can access their own private members using `this` or `self`, why it's not possible from the outside by default.
