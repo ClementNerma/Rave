@@ -1627,3 +1627,456 @@ list.filter(value => {
   return value > 2;
 });
 ```
+
+
+
+## Classes
+
+Classes are kind of extended structures. The main difference is they can have methods, which are functions that can't change through the different instances, and private members, which are entities that are not visible from the outside. There are plenty of other differences, but here are the major ones.
+
+### Declaration and members
+
+Let's go back to a previous problem: representing a hero. The first option we saw was to use an array, but that was way too unreadable and restricted all the values to be of the same type. Then, we used a structure, which was a lot more convenient. It resulted in the following:
+
+```sn
+struct Hero {
+  name: string;
+  hp: uint;
+  atk: uint;
+  mut exp: uint;
+}
+```
+
+BUt now, let's imagine we want to allow our hero to fight another one. This action would result in both the heroes to lose health points, depending on their ennemy's attack points. Still, we don't want anyone to modify these health points. That's impossible, because the `hp` field can either be mutable - but then anyone can change it - or constant - but then we're not able to update the health points anymore -. Besides, if we have to make a `fight` function that is separated from the structure, which is not convenient. And if we use many structures, it quickly becomes unmaintanable.
+
+The solution to this problem is to use a class:
+
+```sn
+class Hero {
+  pub rdo name: string;
+  pub rdo hp: uint;
+  pub rdo atk: uint;
+  pub rdo exp: uint;
+}
+```
+
+A class is made of _members_, which are either _attributes_ - entities - like we defined just above or methods - immutable functions linked to the class -.
+
+Through this book, we will often talk about the _inside_ of the class, which refers to anything in the class' scope, and to the _outside_ of the class, which is anything outside this scope.
+
+Here, all attributes are marked as public using the `pub` keyword, meaning they can be accessed from the outside, but they are also marked as read-only using the `rdo` keyword. This is different than `val` in the way it prevents these attributes from being written from the outside, but not from the inside - where they stay mutable.
+
+Like structures, classes can be instanciated. But for that, they need a _constructor_, which is a special method called when the class is created:
+
+```sn
+class Hero {
+  pub rdo name: string;
+  pub rdo hp: uint;
+  pub rdo atk: uint;
+  pub rdo exp: uint;
+  
+  pub fn %new (name: string, hp: uint, atk: uint, exp: uint) {
+    this.name = name;
+    this.hp = hp;
+    this.atk = atk;
+    this.exp = exp;
+  }
+}
+```
+
+Inside the class, `this` refers to the current class. We can access all the class' attributes (even private ones) using it.
+
+We can now instanciate the class using the `new` keyword:
+
+```sn
+val jack = new Hero('Jack', 100u, 20u, 0u);
+```
+
+Note that the constructor's arguments are required:
+
+```sn
+val jack = new Hero; // ERROR (4 arguments missing)
+```
+
+Also note that parenthesis are optional after the class' name if the constructor takes no argument.
+
+We can get its name, health points, attack points or experience by using the dedicated properties, just like we would do with a structure.
+
+Let's write a method to fight another ennemy:
+
+```sn
+class Hero {
+  // ...
+  pub fn fight (ennemy: Hero) {
+    println!(`${this.name} is fighting ${ennemy.name}!`);
+
+    if ennemy.atk > this.hp {
+      // Losed the fight
+      this.hp = 0;
+
+      // Make ennemy win some experience
+      ennemy.exp += 100u;
+    } else {
+      this.hp -= ennemy.atk;
+    }
+
+    ennemy.fight(this);
+  }
+}
+```
+
+As you can see, a class can read the private members of any other instance of itself. We can now make two ennemies fight against each other:
+
+```sn
+val jack = new Hero('Jack', 100u, 20u, 0u);
+val john = new Hero('John', 100u, 10u, 0u);
+
+jack.fight(john); // Prints: 'Jack is fighting John!'
+                  // Prints: 'John is fighting Jack!'
+
+println!(jack.hp); // Prints: '90'
+println!(john.hp); // Prints: '80'
+```
+
+Here is the whole code for reference:
+
+```sn
+class Hero {
+  pub rdo name: string;
+  pub rdo hp: uint;
+  pub rdo atk: uint;
+  pub rdo exp: uint;
+  
+  pub fn %new (name: string, hp: uint, atk: uint, exp: uint) {
+    this.name = name;
+    this.hp = hp;
+    this.atk = atk;
+    this.exp = exp;
+  }
+
+  pub fn fight (ennemy: Hero) {
+    println!(`${this.name} is fighting ${ennemy.name}!`);
+
+    if ennemy.atk > this.hp {
+      // Losed the fight
+      this.hp = 0;
+
+      // Make ennemy win some experience
+      ennemy.exp += 100u;
+    } else {
+      this.hp -= ennemy.atk;
+    }
+
+    ennemy.fight(this);
+  }
+}
+
+// Test the class
+val jack = new Hero('Jack', 100u, 20u, 0u);
+val john = new Hero('John', 100u, 10u, 0u);
+
+jack.fight(john); // Prints: 'Jack is fighting John!'
+                  // Prints: 'John is fighting Jack!'
+
+println!(jack.hp); // Prints: '90'
+println!(john.hp); // Prints: '80'
+```
+
+### Members in depth
+
+Members can either be public with `pub`, so they can be accessed from the outside, or private with `priv`, so they are only readable from the inside of the class:
+
+```sn
+class Example {
+  pub known: string;
+  priv secret: string;
+
+  pub fn %new () {
+    this.known = 'Public data';
+    this.secret = 'Secret data';
+  }
+}
+
+let obj = new Example;
+
+obj.known; // Works fine
+obj.secret; // ERROR (private member)
+```
+
+This also works for methods: they can be public or private to be available - or not - from the outside. The `this` keyword can be replaced by the `@` symbol, too:
+
+```sn
+class Example {
+  pub known: string;
+  priv secret: string;
+
+  pub fn %new () {
+    @known = 'Public data';
+    @secret = 'Secret data';
+  }
+}
+```
+
+We can provide a default value for attributes, so we don't have to assign them in the constructor:
+
+```sn
+class Example {
+  pub known = 'Public data';
+  priv secret = 'Secret data';
+
+  pub fn %new () {}
+}
+```
+
+Also, as attributes are entities, they can be marked as constant using `val`, or as plain using `pln`. By default, they are implicitly mutable.
+
+```sn
+class Example {
+  pub pln KNOWN = 'Public data';
+  priv val secret = 'Secret data';
+}
+```
+
+Another keyword for members is `static`, which makes the member accessible statically, meaning we have to refer to the class itself instead of referring to instance:
+
+```sn
+class Example {
+  pub static name = 'Hello';
+}
+
+println!(Example.name); // Prints: 'Hello'
+println!((new Example).name); // ERROR (static member)
+```
+
+Static attributes must have an initialization value. Classes can access their static members using the `self` keyword:
+
+```sn
+class Example {
+  pub static name = 'Hello';
+
+  pub static fn print_name () {
+    println!(self.name);
+  }
+}
+
+Example.print_name(); // Prints: 'Hello'
+```
+
+### Data structure members
+
+Data structures can also be members of classes ; they then become a local type of the class:
+
+```sn
+class Example {
+  pub struct Hero {
+    name: string;
+    hp: uint;
+    atk: uint;
+    mut exp: uint;
+  }
+
+  pub val hero = Hero {
+    name: 'Jack',
+    hp: 100u,
+    atk: 20u,
+    exp: 0u
+  };
+}
+```
+
+### Practice: a RPG map
+
+Let's conclude this chapter with a little exercice. We want to represent a RPG map and a player moving on it using a class. A map is a grid of cells, each cell being either an empty cell we can walk on, a rock we can't go through, or a trap that prevents our player from moving.
+
+We can specify the player's start coordinate when instanciating the class, and move it using the class' methods. The player can only move from a case to an adjacent one.
+
+It must be possible to check anytime if the player has been trapped, and to get its X and Y coordinates on the map.
+
+The problem may appear to be complex but it is in fact very simple. Read the solution below when you're done. If you can't solve it, try to read again what we saw before and think about the structure of the class. If you're still stuck, read the first part of the solution, then try to make the class again.
+
+#### Part 1: Representing the cells
+
+To represent the cells, we will use a simple enumeration. Because it is specific to our class, it will be a member of it:
+
+```sn
+class Map {
+  pub enum Cell { EMPTY, ROCK, TRAP };
+```
+
+#### Part 2: The constructor
+
+We told the constructor must accept the player's start position. We can simply take two coordinates, X and Y, both of `usize` type. But we also have to take the map's cells, which in our case will be a matrix (an array of arrays) made of `Cell` values. Because we are dealing with array, it's easier to deal with coordinates of the same type than the array's indexes.
+
+Here is our constructor's signature:
+
+```sn
+  pub fn %new (map: Cell[][], x: usize, y: usize) {
+```
+
+#### Part 3: The attributes
+
+We have to store our map, as well as the current player's coordinates. So we have three attributes:
+
+```sn
+  pub rdo map: Cell[][];
+  pub rdo x: usize;
+  pub rdo y: usize;
+```
+
+But it's easier to also have an attribute to check if the player is trapped, so let's add a fourth one:
+
+```sn
+  // ...
+  pub rdo trapped: bool = false;
+```
+
+Thanks to the attributes being public, we can check at anytime the player's coordinates with `.x` and `.y`, as well as if it's trapped or not using `.trapped`.
+
+#### Part 4: Writing the constructor's body
+
+Let's initialize our attributes:
+
+```sn
+  // ...
+  pub fn %new (map: Cell[][], x: usize, y: size) {
+    @map = map;
+    @x = x;
+    @y = y;
+  }
+```
+
+#### Part 5: Declaring simple methods
+
+Because our player can only move on adjacent cells, the easiest solution is to make height methods (up-left, up, up-right left, right, down-left, down, down-right). But because we will have to check, at each move, if the player is running into a rock or is being trapped, we will use a dedicated method in them:
+
+```sn
+  // ...
+  pub fn moveUpLeft    () { @move(x - 1, y - 1); }
+  pub fn moveUp        () { @move(x, y - 1); }
+  pub fn moveUpRight   () { @move(x + 1, y - 1); }
+  pub fn moveLeft      () { @move(x - 1, y); }
+  pub fn moveRight     () { @move(x + 1, y); }
+  pub fn moveDownLeft  () { @move(x - 1, y + 1); }
+  pub fn moveDown      () { @move(x, y + 1); }
+  pub fn moveDownRight () { @move(x + 1, y + 1); }
+  
+```
+
+#### Part 6: The `move` method
+
+Let's make our `move` method. First, its signature:
+
+```sn
+  // ...
+  pub fn move (x: usize, y: usize) {
+```
+
+We have to check that are moving to an adjacent case:
+
+```sn
+    // Moves are only allowed to adjacent cells
+    if (@x - x).abs() > 1 || (@y - y).abs() > 1 {
+      println!('Cannot move on a non-adjacent cell');
+    }
+```
+
+Also, the player cannot move if it's already trapped:
+
+```sn
+  // Moves are forbidden when the player is trapped
+  elsif @trapped {
+    println!('Cannot move because the player is trapped');
+  }
+```
+
+We can't run into a rock:
+
+```sn
+  // Can't run into a rock
+  elsif @map[y][x] == Cell.ROCK {
+    println!('Cannot run into a rock');
+  }
+```
+
+Else, we can move:
+
+```sn
+  // Move fine
+  else {
+    @x = x;
+    @y = y;
+  }
+```
+
+But if we ran into a trap cell, we are now trapped:
+
+```sn
+  // Move fine
+  else {
+    @x = x;
+    @y = y;
+
+    if @map[y][x] == Cell.TRAP {
+      println!('You just felt in a trap!');
+      @trapped = true;
+    }
+  }
+```
+
+#### Complete solution
+
+Here is the full solution:
+
+```sn
+class Map {
+  pub enum Cell { EMPTY, ROCK, TRAP };
+
+  pub rdo map: Cell[][];
+  pub rdo x: usize;
+  pub rdo y: usize;
+  pub rdo trapped: bool = false;
+
+  pub fn %new (map: Cell[][], x: usize, y: size) {
+    @map = map;
+    @x = x;
+    @y = y;
+  }
+
+  pub fn moveUpLeft    () { @move(x - 1, y - 1); }
+  pub fn moveUp        () { @move(x, y - 1); }
+  pub fn moveUpRight   () { @move(x + 1, y - 1); }
+  pub fn moveLeft      () { @move(x - 1, y); }
+  pub fn moveRight     () { @move(x + 1, y); }
+  pub fn moveDownLeft  () { @move(x - 1, y + 1); }
+  pub fn moveDown      () { @move(x, y + 1); }
+  pub fn moveDownRight () { @move(x + 1, y + 1); }
+
+  pub fn move (x: usize, y: usize) {
+    // Moves are only allowed to adjacent cells
+    if (@x - x).abs() > 1 || (@y - y).abs() > 1 {
+      println!('Cannot move on a non-adjacent cell');
+    }
+
+    // Moves are forbidden when the player is trapped
+    elsif @trapped {
+      println!('Cannot move because the player is trapped');
+    }
+
+    // Can't run into a rock
+    elsif @map[y][x] == Cell.ROCK {
+      println!('Cannot run into a rock');
+    }
+
+    // Move fine
+    else {
+      @x = x;
+      @y = y;
+
+      if @map[y][x] == Cell.TRAP {
+        println!('You just felt in a trap!');
+        @trapped = true;
+      }
+    }
+  }
+}
+```
