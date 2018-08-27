@@ -479,6 +479,17 @@ N1 xor N2; // false
 ! N1; // false
 ```
 
+Note that all operators that work on numbers will work on two different number types. For example, comparing an `u16` to an `i8` will work perfectly, the smallest number type being compared to the highest one to avoid overflows:
+
+```sn
+let num8: u16 = 2S;
+let num16: i8 = 2b;
+
+if num8 == num16 {
+  println!('OK'); // Prints: 'OK'
+}
+```
+
 ### String concatenation
 
 The _concatenation operator_ takes two strings and returns the resulting one:
