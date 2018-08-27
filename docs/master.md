@@ -1733,16 +1733,17 @@ class Hero {
 
     println!(`${this.name} is fighting ${ennemy.name}!`);
 
-    if ennemy.atk > this.hp {
-      // Losed the fight
-      this.hp = 0;
+    if this.atk > ennemy.hp {
+      // Won the fight
+      ennemy.hp = 0;
 
-      // Make ennemy win some experience
-      ennemy.exp += 100u;
+      // Win some experience
+      this.exp += 100u;
     } else {
-      this.hp -= ennemy.atk;
+      ennemy.hp -= this.atk;
     }
 
+    // It's ennemy turn!
     ennemy.fight(this);
   }
 }
@@ -1790,16 +1791,17 @@ class Hero {
 
     println!(`${this.name} is fighting ${ennemy.name}!`);
 
-    if ennemy.atk > this.hp {
-      // Losed the fight
-      this.hp = 0;
+    if this.atk > ennemy.hp {
+      // Won the fight
+      ennemy.hp = 0;
 
-      // Make ennemy win some experience
-      ennemy.exp += 100u;
+      // Win some experience
+      this.exp += 100u;
     } else {
-      this.hp -= ennemy.atk;
+      ennemy.hp -= this.atk;
     }
 
+    // It's ennemy turn!
     ennemy.fight(this);
   }
 }
