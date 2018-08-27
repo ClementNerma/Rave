@@ -1721,6 +1721,16 @@ Let's write a method to fight another ennemy:
 class Hero {
   // ...
   pub fn fight (ennemy: Hero) {
+    if this.hp == 0 {
+      println!(`${this.name} cannot fight because he's dead.`);
+      return ;
+    }
+
+    if ennemy.hp == 0 {
+      println!(`${ennemy.hp} cannot fight because he's dead.`);
+      return ;
+    }
+
     println!(`${this.name} is fighting ${ennemy.name}!`);
 
     if ennemy.atk > this.hp {
@@ -1768,6 +1778,16 @@ class Hero {
   }
 
   pub fn fight (ennemy: Hero) {
+    if this.hp == 0 {
+      println!(`${this.name} cannot fight because he's dead.`);
+      return ;
+    }
+
+    if ennemy.hp == 0 {
+      println!(`${ennemy.hp} cannot fight because he's dead.`);
+      return ;
+    }
+
     println!(`${this.name} is fighting ${ennemy.name}!`);
 
     if ennemy.atk > this.hp {
