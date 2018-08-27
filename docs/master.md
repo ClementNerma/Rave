@@ -395,6 +395,8 @@ Also, as the `usize` type is, at maximum, an `u64` value, it can be converted to
 
 The only exception is for float types: integers cannot be automatically converted to floats, as the precision could result in inexact rounds.
 
+**NOTE:** Operations are permitted between different number types. For example, dividing an unsigned number by a signed one is accepted and will return a number of the same type than the left operand.
+
 ### Assignment operators
 
 Assignments operators are numeric operators applied on the assignment operator (`=`). They allow for example to add a value to an entity without writing its name twice. Here is the syntax:
