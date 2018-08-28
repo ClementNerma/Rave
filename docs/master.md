@@ -1541,6 +1541,52 @@ sum_of(nums..., 5.0);
 sum_of(2, 3, 4, 5.0);
 ```
 
+### Operator functions
+
+Operators functions act like traditional operators: they take one or two arguments, called their _operands_, and return a result. Their point is to keep a clean syntax in the program. For example, if we want to make a function that adds two numbers, we can go with a standard function:
+
+```sn
+fn add (left: int, right: int) : int {
+  return left + right;
+}
+
+// Use it
+add(2, 5);
+add(3, 8);
+```
+
+This works fine. But what if we imbricate several additions?
+
+```sn
+add(add(2, add(5, 7)), add(3, 4));
+```
+
+This quickly becomes unreadable, and that's why we use operator functions:
+
+```sn
+op fn plus (left: int, right: int) : int {
+  return left + right;
+}
+
+// Standard syntax
+plus(2, 5);
+
+// Operator syntax
+2 plus 5;
+```
+
+Our previous example becomes like this:
+
+```sn
+// Standard syntax
+add(add(2, add(5, 7)), add(3, 4));
+
+// Operator syntax
+(2 plus (5 plus 7)) plus (3 plus 4);
+```
+
+Which is a lot more readable.
+
 ### Polymorphism
 
 _Polymorphism_ allow to declare the same function several times. Each declaration, though, must use different arguments - this can be an additional argument, one less argument, or an existing argument that gets a new type:
