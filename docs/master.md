@@ -2405,3 +2405,714 @@ println!('Hello Jack!'.countA()); // Prints: 1
 ```
 
 Extensions don't really add a member to the class, they simply allow to use a function on any instance of a given type.
+
+## Cross-typing
+
+_Cross-typing_ is the concept of either converting a value to another type, or to use a type of value when another is expected. This is a key feature of the language, as many concepts are built upon it.
+
+### Inheritance
+
+Let's say we have a `Hero` class. We want to represent both a warrior and a wizard with it. Our warrior would have a rage counter  that increases each time it fights, which will increase its own attack, while the wizard would have magic points to launch fireballs.
+
+The simpliest way to achieve this is the following:
+
+```sn
+class Hero {
+  pub rdo wizard: bool;
+  pub rdo name: string;
+  pub rdo hp: uint;
+  pub rdo atk: uint;
+  pub rdo exp: uint;
+  pub rdo rage: uint;
+  pub rdo mp: uint;
+
+  pub fn %new (wizard: bool, name: string, hp: uint, atk: uint, exp: uint, rage: uint, mp: uint) {
+    @wizard = wizard;
+    @name = name;
+    @hp = hp;
+    @atk = atk;
+    @exp = exp;
+    @rage = rage;
+    @mp = mp;
+  }
+
+  // ...
+}
+```
+
+We would then have to implement a `.fight()` containing a special treatment for warriors, as well as a `.fireball()` method that prints an error message if the hero is not a wizard.
+
+There are many problems here: we are mixing independant pieces of code (the code for warriors and the one for wizards), our constructor is a lot heavier because it also takes informations about the type our hero hasn't, and the `.fireball()` method may fail because we are not use the hero is a warrior.
+
+A solution to this is to use _inheritance_. It simply consists in creating a base class, called the _mother class_, which describes attributes and methods common to all types of heroes. Then, we create a _child class_ that inherits all its members and define its own. In our example, it goes like this:
+
+```sn
+open class Hero {
+  pub rdo name: string;
+  pub rdo hp: uint;
+  pub rdo atk: uint;
+  pub rdo exp: uint;
+
+  pub fn %new (name: string, hp: uint, atk: uint, exp: uint) {
+    @name = name;
+    @hp = hp;
+    @atk = atk;
+    @exp = exp;
+  }
+
+  // Returns 'true' if the fight has been done successfully
+  pub fn fight (ennemy: Hero) : bool {
+    if this.hp == 0 {
+      println!(`${this.name} cannot fight because he's dead.`);
+      return false;
+    }
+
+    if ennemy.hp == 0 {
+      println!(`${ennemy.hp} cannot fight because he's dead.`);
+      return false;
+    }
+
+    println!(`${this.name} is fighting ${ennemy.name}!`);
+
+    if this.atk > ennemy.hp {
+      // Won the fight
+      ennemy.hp = 0;
+
+      // Win some experience
+      this.exp += 100u;
+    } else {
+      ennemy.hp -= this.atk;
+    }
+
+    // It's ennemy turn!
+    ennemy.fight(this);
+    return true;
+  }
+}
+```
+
+This is our mother class. It defines attributes that are common to all type of heroes (name, health points, attack points, experience), as well as a fight method.
+
+The `open` keyword indicates the class can be inherited, which is not allowed by default.
+
+You may wonder why we define one as the warrior fights a different way. That's because our child class will implement its own fight method that will take in consideration the warrior's rage and then call its mother's fight method:
+
+```sn
+class Warrior extends Hero {
+  pub rdo rage: uint;
+
+  pub fn %new (name: string, hp: uint, atk: uint, exp: uint, rage: uint) {
+    @name = name;
+    @hp = hp;
+    @atk = atk;
+    @exp = exp;
+    @rage = rage;
+  }
+
+  pub fn fight (ennemy: Hero) {
+    // Call mother's fight method
+    // If it succeeds, win rage points (limited to 20)
+    if super.fight(ennemy) && @rage < 20 {
+      @rage += 10;
+      @attack += 10;
+    }
+  }
+}
+```
+
+Child classes can redefine a method that already exists in their mother. It's called _overriding_.
+
+The `extends` keyword indicates the current class (on its left) is inheriting from another (on its right).
+
+The `super` object refers to the mother class as an instance, meaning we can use its original methods, applied on the current class. Here, this allows to affect our warrior's hp.
+
+Also, constructors are not inherited by child classes. This is to avoid specialization problems: if we inherited from `Hero`'s constructor in `Warrior`, we would have been able to create a warrior that doesn't have an initial rage amount, which is a big problem. In order to avoid this, constructors are not inherited by default.
+
+Let's write our wizard class:
+
+```sn
+class Wizard extends Hero {
+  pub rdo mp: uint;
+
+  pub fn %new (name: string, hp: uint, atk: uint, exp: uint, mp: uint) {
+    super(name, hp, atk, exp);
+    @mp = mp;
+  }
+
+  pub fn fireball (ennemy: Hero) {
+    if @hp == 0 {
+      println!('Cannot launch a fireball while being dead');
+      return ;
+    }
+
+    if @mp < 10 {
+      println!('At least 10 MP are required to launch a fireball');
+      return ;
+    }
+
+    // Temporarily increase the attack to launch the fireball
+    @atk *= 2;
+
+    println!(`${this.name} is launching a fireball!`);
+
+    @fight(ennemy);
+
+    // Go back to a normal attack
+    @atk *= 2;
+  }
+}
+```
+
+We shortened the child class' constructor by calling the mother's one using `super(...)`. This instruction calls the constructor of the mother class. It can also be used with `this(...)` if we want to call another constructor from an existing one, for example.
+
+#### Protected members
+
+The specificity of private members is that they cannot be accessed from the outside of the class, not even by the child classes. In order to make members that are not available from the outside of the class but still from its child classes, we can mark them as protected using the `prot` keyword:
+
+```sn
+class Mother {
+  pub public = 1;
+  prot protected = 2;
+  priv private = 3;
+
+  // Available here: 'public', 'protected', 'private'
+}
+
+class Child extends Mother {
+  // Available here: 'public', 'protected', but not 'private'
+}
+
+new Child; // Available here: 'public', but not 'protected' and 'private'
+```
+
+### Introducing sub-typing
+
+In classes, every child class of a given one are considered as its _sub-types_. This means that both `Warrior` and `Wizard` are sub-types of `Hero`.
+
+When a value of a given type is expected (for example in a function's argument), it's possible to give instead a value of any of its sub-types:
+
+```sn
+val jack: Hero = new Warrior('Jack', 100u, 20u, 0u, 0u);
+```
+
+The above code works, because `Warrior` is considered as being a `Hero` value. This is the main point of cross-typing. Note that, if we call `.fight` on it, it will call the overriden method, not the original one. The only limitation though is that we cannot access members that are directly declared in `Hero`, like `.fireball` for `Wizard`:
+
+```sn
+val jack: Hero = new Warrior('Jack', 100u, 20u, 0u, 0u);
+val john: Hero = new Wizard('John', 100u, 10u, 0u, 0u);
+
+jack.fight(john); // Works ('fight' exists in 'Hero')
+john.fireball(jack); // ERROR ('fireball' does not exist in 'Hero')
+```
+
+Conceptually, sub-typing allows to use any sub-type's value instead of the expected type's value.
+
+#### Resolution keywords
+
+There are four _resolution keywords_:
+
+* `this`, which refers to the instance we are manipulating ;
+* `self`, which refers to the current class ;
+* `super`, which refers to the current class' mother (if there is one, else it is simply not defined) ;
+* `_real`, which refers to the real class of the instance we are manipulating
+
+This last keyword is a bit special. For example, in our `Hero` class, `self` will always refer to `Hero`, but `_real` may refer either to `Hero`, `Warrior` or `Wizard`. In our `jack` object, it would refer to `Warrior`, and to `Wizard` for `john`. This may not appear very useful, but we will see some useful applications of it later.
+
+### Constructor inheritance
+
+As we saw, constructors are not inherited by child classes. But we can force inheritance by indicating manually the constructors we want to inherit:
+
+```sn
+open class Mother {
+  pub fn %new (name: string) {
+    println!(name);
+  }
+
+  pub fn %new (name: string[2]) {
+    println!(name);
+  }
+}
+
+class Child extends Mother {
+  super(name: string);
+}
+```
+
+Our `Child` class will inherit only the first constructor. It's also possible to inherit all constructors at once:
+
+```sn
+open class Mother {
+  pub fn %new (name: string) {
+    println!(name);
+  }
+
+  pub fn %new (name: string[2]) {
+    println!(name);
+  }
+}
+
+class Child extends Mother {
+  super(...);
+}
+```
+
+### Stated classes
+
+#### Opened and sealed classes
+
+We already saw a first _class state_: `open`. It allows a class to be inherited as it's not possible by default (in this case, the class is _sealed_):
+
+```sn
+class MotherA {}
+open class MotherB {}
+
+class ChildA extends MotherA {} // ERROR
+class ChildB extends MotherB {} // Works fine
+```
+
+#### Virtual classes
+
+Classes can also be prefixed with the `virtual` state: it indicates the class cannot be instanciated. The only way to instanciate such a class is to create a child class of it and instanciate this last one. Virtual classes are automatically opened.
+
+```sn
+virtual class Mother {}
+class Child extends Mother {}
+
+new Mother(); // ERROR
+new Child(); // Works fine
+```
+
+#### Static classes
+
+The `static` state indicates the class only contains static members, and so it cannot be instanciated. Also, static classes cannot be inherited, which makes this state act like a virtual state but without opening.
+
+```sn
+static class Mother {}
+
+class Child extends Mother {} // ERROR
+new Mother(); // ERROR
+```
+
+#### Summary
+
+|  Keyword  | Instanciable? | Inheritable? |
+|-----------|---------------|--------------|
+|  `open`   |      Yes      |      Yes     |
+| _nothing_ |      Yes      |      No      |
+| `virtual` |      No       |      Yes     |
+| `static`  |      No       |      No      |
+
+### Stated methods
+
+#### Virtual methods
+
+Methods can be stated, too. We already saw static methods, but they can also be virtual, meaning they must be defined in child classes. Such methods don't have a body in the original class, and so require the class itself to be virtual:
+
+```sn
+virtual class Mother {
+  virtual pub fn sayHello ();
+}
+
+class ChildA extends Mother {
+  // ERROR: 'sayHello' is not declared
+}
+
+class ChildB extends Mother {
+  pub fn sayHello () {
+    println!('Hello world!');
+  }
+}
+```
+
+Note that, if the child class is virtual itself, it doesn't have to re-declare the same methods ; they are implicitly virtual and will have to be declared in its own child class.
+
+#### Abstract methods
+
+Abstract methods, on their side, are virtual methods declared with a body. This allows to call the method from the original class, and it is not forced to be virtual itself:
+
+```sn
+class Mother {
+  abstract pub fn sayHello () {
+    println!('Hello from mother!');
+  }
+}
+
+class ChildA extends Mother {
+  // ERROR: 'sayHello' is not declared
+}
+
+class ChildB extends Mother {
+  pub fn sayHello () {
+    println!('Hello from child!');
+  }
+}
+
+(new Mother).sayHello(); // Prints: 'Hello from mother!'
+(new ChildB).sayHello(); // Prints: 'Hello from child!'
+```
+
+#### Final methods
+
+Final methods are the opposite of abstract methods: they are defined in the original class but **cannot** be overriden in child classes:
+
+```sn
+class Mother {
+  final pub fn sayHello () {
+    println!('Hello from mother!');
+  }
+}
+
+class Child extends Mother {
+  // ERROR: method is final
+  pub fn sayHello () {
+    println!('Hello from child!');
+  }
+}
+```
+
+### Structures compatibility
+
+Any structure that implements every single field of another with the same mutability (`mut`) is considered as a sub-type of this last one. Example:
+
+```sn
+struct A {
+  name: string;
+}
+
+struct B {
+  name: string;
+  age: uint;
+}
+```
+
+Here, `B` is a sub-type of `A`, because it implements all the fields `A` has, plus its own ones. The opposite is not true: as `A` does not implement `age: uint`, it is not a sub-type of `B`.
+
+Note that, if `name` was marked as mutable in a structure and not in the other, `B` wouldn't have been a sub-type of `A`.
+
+Also, plain fields are tolerated where a constant field is expected:
+
+```sn
+struct A {
+  name: string;
+}
+
+struct B {
+  pln name: string;
+  age: uint;
+}
+
+val jack: A = B {
+  name: 'Jack'
+}; // Works fine
+```
+
+The field will simply act as constant and not plain.
+
+#### Structures inheritance
+
+Structures can even inherit from other ones:
+
+```sn
+struct A {
+  name: string;
+}
+
+struct B extends A {
+  age: uint;
+}
+
+val jack = B {
+  name: 'Jack', // 'name' is required
+  age: 24u
+};
+```
+
+### Static typecasting
+
+Static typecasting allows to convert any value of a given type to another one. It is checked at build time and cannot fail at runtime.
+
+Statically typecasting a value of type `A` to type `B` is allowed when:
+
+* `B` is a sub-type of `A` (e.g. a child class of `A`) ;
+* `A` implements a typecasting overload to `B`
+
+Here is how it goes for the first case:
+
+```sn
+class A {
+  pub fn itsA () {
+    println!('It is A!');
+  }
+}
+
+class B extends A {
+  pub fn itsB () {
+    println!('It is B!');
+  }
+}
+
+val a = new A; // Type: 'A'
+
+// Typecast 'a' from type 'A' to type 'B'
+val b = a as B; // Type: 'B'
+```
+
+The second case is described below.
+
+### Typecasting overloads
+
+Typecasting overloads allow to statically typecast a given type to another, even when they are not sub-type of the other:
+
+```sn
+class A {
+  priv message = 'Hello world!';
+
+  pub fn %to<B> () {
+    return new B(@message);
+  }
+}
+
+class B {
+  pub rdo message: string;
+
+  pub fn %new (message: string) {
+    @message = message;
+  }
+}
+```
+
+We can now statically typecast any `A` value to `B` (but not the opposite, as `B` does not implement any typecasting overload for that):
+
+```sn
+let a = new A;
+let b = a as B; // Works fine
+
+println!(b.message); // Prints: 'Hello world!'
+```
+
+Numbers implement a typecasting overload for each other number type.
+
+#### Automatic typecast
+
+These overloads can be triggered automatically thanks to the `#auto` directive. To take again our example, this means that any `A` value would automatically be converted to `B` where a `B` value is expected, without using the `as` keyword:
+
+```sn
+class A {
+  priv message = 'Hello world!';
+
+  #auto
+  pub fn %to<B> () {
+    return new B(@message);
+  }
+}
+
+class B {
+  pub rdo message: string;
+
+  pub fn %new (message: string) {
+    @message = message;
+  }
+}
+
+let a: A = new A;
+let b: B = a; // Works fine
+```
+
+This last instruction would have fail at build time if we haven't used the `#auto` directive. Instead, we would have had to use a static typecast.
+
+Arrays use this automatic behaviour, that's why it's possible to use an unknown-sized array (`int[]`) to a fixed-size one (`int[3]`) without any explicit conversion, and the oppositve.
+
+A similar behavior to automatic typecasting overloads is implemented for parent types of a given one, which allows to give a value of a type where a value of its mother type is expected.
+
+### Interfaces
+
+Interfaces allow to describe members of a class. Like for structure compatibility, each class that implements all of its members is considered as a sub-type of this interface. Some of widely used in the language, such as the following one:
+
+```sn
+inf Stringifyable {
+  fn %to<string> ();
+}
+```
+
+Every class that implements the `%to<string>` typecast overload will be `Stringifyable`. Note that the visibility is not indicted here as an interface only describes public members.
+
+```sn
+class A impl Stringifyable {
+  pub fn %to<string> () {
+    return 'Hello world!';
+  }
+}
+
+val obj: Stringifyable = new A;
+
+println!(obj as string); // Prints: 'Hello world!'
+```
+
+You may notice the `impl Stringifyable` part: it indicates the class implements a given interface. Though it's entirely optionnal - this could would have worked without this code - it's highly recommanded because it explicits the class' intentions (it is intended to be stringifyable) and avoids forgetting to implement a given member of the interface.
+
+There is another widely-used interface:
+
+```sn
+inf Any {}
+```
+
+Because it has no member, every class implements its members, and so every class is considered as being a sub-type of it.
+
+Also, every object that implements an interface's members is considered as one of its sub-types, which means absolutely any value is an `Any` value (as primitive types generate special objects too).
+
+### Traits
+
+Traits are kind of virtual classes: they describe a set of members, but their methods are declared with a body, too. The goal is to allow re-using some pieces of code across classes that are not mother and child of each other.
+
+```sn
+trait Vehicle {
+  val speed: f32;
+
+  fn accelerate () : string {
+    return 'Vroom!';
+  }
+}
+
+trait Wheeled {
+  val wheels: uint;
+}
+```
+
+As for interfaces, traits only describe public members and so there is no visibility keyword. Traits are implemented using the `use` keyword:
+
+```sn
+class Car {
+  use Vehicle, Wheeled;
+}
+
+// Sub-typing works fine
+val car: Vehicle = new Car();
+// Try a function
+printlnl!(car.accelerate()); // Prints: 'Vroom!'
+```
+
+Traits can also use other traits:
+
+```sn
+trait Bike {
+  use Vehicle;
+
+  fn stop () : string {
+    return 'Scriiii';
+  }
+}
+```
+
+Or even implement interfaces:
+
+```sn
+inf Vehicle {
+  val speed: f32;
+}
+
+trait Bike impl Vehicle {
+  val speed: f32;
+
+  fn accelerate () : string {
+    return 'Vroom!';
+  }
+
+  fn stop () : string {
+    return 'Scriiii';
+  }
+}
+```
+
+### Typecasting paths
+
+Let's consider the following code:
+
+```sn
+class A {
+  pub fn %to<B> () {
+    return new B;
+  }
+}
+
+class B {
+  pub fn %to<C> () {
+    return new C;
+  }
+}
+
+class C {}
+```
+
+We want to create, let's say, a variable, which accepts any value that can be typecasted to a `C`. This accepts `B` values but not `A` ones. Now, we want to accept any value that can be typecasted to a type that itself can be converted to a `C`. It would also accept `A` as we can get a `C` value by first typecasting it to a `B` one.
+
+This can be achieved using a _typecasting path_, which goes like this:
+
+```sn
+inf Convertible_to_C {
+  // Typecasting path
+  typepath C = B;
+}
+```
+
+It is divided in two parts: the _target_, which is `C`, and the _candidates_, which are the types that can be directly typecasted to the target. Any type that is typecastable to any of the candidates (or to the target type itself, of course) will be considered as implementing the path. When a typecast will be performed between this type and the target, it will first use typecast it to the given candidate type, and then to the target type. The value implementing this path itself will so support typecasting to the target:
+
+```sn
+let some_c: A = new A;
+let any_c: Convertible_to_C = new A;
+
+some_c as C; // ERROR (cannot be typecasted to C)
+
+any_c as C; // Works fine
+// Equivalent to:
+(any_c as B) as C;
+// Or even:
+any_c.%to<B>().%to<C>();
+```
+
+The path can contain several types:
+
+```sn
+inf Convertible_to_F {
+  type F = D | E;
+}
+```
+
+In the case our type implements typecasting overload to two or more types in the path, the first one in the list is taken:
+
+```sn
+inf Convertible_to_F {
+  type F = D | E;
+}
+
+// Candidate
+class D {
+  pub fn %to<F> () {
+    return new F;
+  }
+}
+
+// Candidate
+class E {
+  pub fn %to<F> () {
+    return new F;
+  }
+}
+
+// Target
+class F {}
+
+// A sample class
+class G {
+  pub fn %to<D> () {
+    println!('Typecasted to D');
+    return new D;
+  }
+
+  pub fn %to<E> () {
+    println!('Typecasted to E');
+    return new E;
+  }
+}
+
+(new G) as F; // Prints: 'Typecasted to D'
+```
