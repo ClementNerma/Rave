@@ -2385,3 +2385,23 @@ class Example {
 ```
 
 Classes are always friend of themselves, this is why they can access their own private members using `this` or `self`, why it's not possible from the outside by default.
+
+### Extensions
+
+Extensions are the only way to add a method to a class after the end of its declaration. For example, let's say we want to create a `.countA` function that couts the number of `A` letters in a string. Because the class was already declared before, we cannot add it a public method called `countA` ; so we use an _extension_:
+
+```sn
+extension string.countA () : uint {
+  let counter = 0u;
+
+  for i in 0..this.length {
+    counter ++ if this.charAt(i) === 'a';
+  }
+
+  return counter;
+}
+
+println!('Hello Jack!'.countA()); // Prints: 1
+```
+
+Extensions don't really add a member to the class, they simply allow to use a function on any instance of a given type.
