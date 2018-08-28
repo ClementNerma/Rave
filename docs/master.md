@@ -2233,7 +2233,7 @@ println!(squares[1]); // Prints: '49'
 println!(array[1]); // Prints: '7'
 ```
 
-By default, objects are not clonable. Vectors simply implement a cloning method.
+By default, objects are not clonable. Vectors simply implement a cloning method. As you can see, we can call any class overload like a standard method, simply prefixing it with its `%` symbol. The only limitation is that we cannot call the constructor or the destructor manually from the outside of the class, as they are triggerred in specific situations - but the inside of the class can still call them if needed.
 
 The cloning overload is a method that takes no argument and returns an instance of the current class. When we try to clone an instance, this overload is called and its return result is the returned clone:
 
