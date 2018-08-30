@@ -2913,7 +2913,7 @@ Typecasting overloads allow to statically typecast a given type to another, even
 class A {
   priv message = 'Hello world!';
 
-  pub fn %to<B> () {
+  pub fn %to<-B> () {
     return new B(@message);
   }
 }
@@ -2947,7 +2947,7 @@ class A {
   priv message = 'Hello world!';
 
   #auto
-  pub fn %to<B> () {
+  pub fn %to<-B> () {
     return new B(@message);
   }
 }
@@ -2976,15 +2976,15 @@ Interfaces allow to describe members of a class. Like for structure compatibilit
 
 ```sn
 inf Stringifyable {
-  fn %to<string> ();
+  fn %to<-string> ();
 }
 ```
 
-Every class that implements the `%to<string>` typecast overload will be `Stringifyable`. Note that the visibility is not indicted here as an interface only describes public members.
+Every class that implements the `%to<-string>` typecast overload will be `Stringifyable`. Note that the visibility is not indicted here as an interface only describes public members.
 
 ```sn
 class A impl Stringifyable {
-  pub fn %to<string> () {
+  pub fn %to<-string> () {
     return 'Hello world!';
   }
 }
@@ -3075,13 +3075,13 @@ Let's consider the following code:
 
 ```sn
 class A {
-  pub fn %to<B> () {
+  pub fn %to<-B> () {
     return new B;
   }
 }
 
 class B {
-  pub fn %to<C> () {
+  pub fn %to<-C> () {
     return new C;
   }
 }
@@ -3111,7 +3111,7 @@ some_c as C; // ERROR (cannot be typecasted to C)
 any_c as C; // Works fine
 // Equivalent to:
 (any_c as B) as C;
-// Or even:
+// Or even (don't write the dash before the target type):
 any_c.%to<B>().%to<C>();
 ```
 
@@ -3132,14 +3132,14 @@ inf Convertible_to_F {
 
 // Candidate
 class D {
-  pub fn %to<F> () {
+  pub fn %to<-F> () {
     return new F;
   }
 }
 
 // Candidate
 class E {
-  pub fn %to<F> () {
+  pub fn %to<-F> () {
     return new F;
   }
 }
@@ -3149,12 +3149,12 @@ class F {}
 
 // A sample class
 class G {
-  pub fn %to<D> () {
+  pub fn %to<-D> () {
     println!('Typecasted to D');
     return new D;
   }
 
-  pub fn %to<E> () {
+  pub fn %to<-E> () {
     println!('Typecasted to E');
     return new E;
   }
