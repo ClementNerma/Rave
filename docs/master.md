@@ -3162,3 +3162,222 @@ class G {
 
 (new G) as F; // Prints: 'Typecasted to D'
 ```
+
+### Templates
+
+### The concept
+
+To illustrate the concept of templates, let's take an example. We want to create a function that adds two numbers, and return a result with the type of the second one, where the addition operator always return a value with the type of the left operand.
+
+With what we've seen so far, this is impossible because the return type of a function must be fixed. Templates allow to change this:
+
+```sn
+op fn plus <T> (left: CanAdd<T>, right: T) : T {
+  return (left + right) as T;
+}
+```
+
+We will detail this example part by part. First, we declare an operator function called `plus`. We then join it a _template_ called `T`, which must be a type (a class, an interface, a structure...).
+
+The operator's right operand has the template type, and this is the same type the operator returns a value of. The left operand is of type `CanAdd<T>`, which is an interface made to accept values of all types implement the `%plus` method with an argument of the given type. Otherwise, our program wouldn't have worked because the `+` operator doesn't work on non-`CanAdd<T>` values.
+
+We can now use our operator function:
+
+```sn
+let i: int = 2u plus 5; // Works fine
+
+println!(i); // Prints: '7'
+```
+
+Templates can be used everywhere a fixed type could be used. Types that use templates, such as `CanAdd<T>`, are called _templated types_.
+
+### Optional templates
+
+Here is its declaration of the `CanAdd` interface:
+
+```sn
+inf CanAdd<T, X = T> {
+  fn %plus (value: T) : X;
+}
+```
+
+As you can see, this interface takes two templates, but the second one, which is the return type of the `%plus` overload, is optionnal. If omitted, it will be `T`, so `CanAdd<T>` will only accept types that implement the `%plus` overload taking a `T` value **and returning** a `T` value.
+
+### Fixed templates
+
+Templates can be _fixed_, which means they can only be a single value. This can be useful is specific situations, like in typecasting overloads: the target type is a template, as we can see by the fact it's wrapped between a `<` and a `>` symbol:
+
+```sn
+class A {
+  // 'int' is a fixed template
+  pub fn %to<-int> () { /* Some stuff here */ }
+}
+```
+
+This can also be used to distinguish several functions without accepting any type:
+
+```sn
+fn printValue<-int> (value: int) {
+  println!('int:' + value);
+}
+
+fn printValue<-string> (value: string) {
+  println!('value: ' + value);
+}
+
+printValue<int>(2); // Prints: 'int: 2'
+printValue<string>('H'); // Prints: 'string: H'
+```
+
+Note that we don't specify the dash before the type's name when we call the function.
+
+### Typechecking
+
+It's possible for a template to accept any type that inherits from a class, implements an interface or use a trait. For all these scenarios, we use the _template typechecking operator_: `~`.
+
+```sn
+fn takeNum<T ~ number> (num: T) {
+  println!(num);
+}
+
+takeNum<int>(2); // Prints: '2'
+takeNum<uint>(2u); // Prints: '2'
+```
+
+### Template inference
+
+_Template inference_ is the fourth and last type of inference (Type Inference, Inferred Structured Typing, Inferred Callback Typing, Template Inference). It allows to not omit a template, which will be inferred by the builder. Example:
+
+```sn
+fn tupleOf<X, Y> (left: X, right: X) : (X, Y) {
+  return (left, right);
+}
+
+// Standard syntax
+tupleOf<int, string>(2, 'Hello');
+// Template inference
+tupleOf(2 /* X = int */, 'Hello' /* Y = string */);
+```
+
+This is also why we wrote `2u plus 5` instead of `2u plus<int> 5` in our example operator, which makes template usage a lot lighter.
+
+There are two cases where template inference causes ambiguity though, and these cases result in an error at build time. The first case is the following one:
+
+```sn
+fn newValue (value: int) : int {
+  return value * 2;
+}
+
+fn newValue<T ~ number> (value: T) : T {
+  return value * 4;
+}
+
+doubleValue(8); // ERROR: Template inference ambiguity
+```
+
+There is an ambiguity because the builder doesn't know which function to use: the two match the call perfectly. To solve this problem, we must implicitly indicate what function we want to call. For the second function, we write this:
+
+```sn
+doubleValue<int>(8); // Returns: 32
+```
+
+For the first one, we use _void-templating_, which consists in explicitly telling we give no template to the class, which means we also reject template inference:
+
+```sn
+doubleValue<>(8); // Returns: 16
+```
+
+The other ambiguity happens when using undistinctable templates:
+
+```sn
+class Example<K, V> {
+  pub fn %new (value: K) {}
+  pub fn %new (value: V) {}
+}
+
+new Example(2); // ERROR: Template inference ambiguity
+```
+
+The last instruction isn't valid because the builder can't guess what function to call. We must then write the templates explicitly.
+
+#### About the resolution keywords
+
+The resolution keywords refer to their actual classes with all their templates:
+
+```sn
+class Example<T> {
+  pub fn test () {
+    // Here, '_this' refers to 'Example<T>' 
+    //  and not 'Example'
+  }
+}
+
+(new Example<uint>).test(); // In '.test': _this == Example<uint>
+```
+
+### Template values
+
+There are two reasons to the fact _templates_ are not called _generics_ like in most other programming languages. First, because they can be fixed (and so they are not generic), and secondly because they can be of any type, while generics use to only be types.
+
+While templates are, by default, types, they can be simple values like integers or strings:
+
+```sn
+fn createIntArray <LENGTH: usize> () : int[LENGTH] {
+  return (0 for i -> 0..LENGTH);
+}
+```
+
+Let's detail this example, as it's a bit complex. First, we create a `createIntArray` function that takes a `LENGTH` template, which is a `usize` value. It takes no argument and returns an array of integers with `LENGTH` elements.
+
+In its body, we return an inline-generated array of `LENGTH` elements, all being the `0` value - as we can use templates in our code.
+
+We can now use our function:
+
+```sn
+val arr = createIntArray<20>();
+println!(arr.length); // Prints: '20'
+```
+
+Fixed-size arrays use this feature: they take a `T` template indicating the type of elements they contain, as well as a `LENGTH` template which is their number of elements.
+
+### Wildcard template
+
+The wildcard template can be used when we want to accept any template in a given type but won't use the template itself. Example:
+
+```sn
+fn listLength<T> (value: List<T>) : usize {
+  return value.size;
+}
+```
+
+In this function, we don't size the `T` template elsewhere than in the argument's type. So, we can instead replace it by the wildcard template:
+
+```sn
+fn listLength (value: List<?>) : usize {
+  return value.size;
+}
+```
+
+This accepts any list with an unknown template. Note that we can still get elements from the list, but as we don't know what the template is, they will be automatically typecasted to `Any` values. We can also use all methods in the list, except those who require an argument of the same type than the template, as we don't know what it is:
+
+```sn
+class Example<T> {
+  pub rdo value: T;
+  
+  pub fn %new (value: T) {
+    @size = size;
+  }
+}
+
+val obj: Example<?> = new Example(2); // Example<int>
+obj.value; // 'Any' value
+```
+
+Types that use the wildcard template can be typecasted to their original type using _dynamic typecasting_, a concept we will see soon.
+
+Note that it's not possible to instanciate types using the wildcard template directly:
+
+```sn
+val obj: Example<?> = new Example<?>(2); // ERROR
+val obj: Example<?> = new Example<int>(2); // Works fine
+```
