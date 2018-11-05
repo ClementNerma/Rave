@@ -2460,7 +2460,7 @@ class MyInt {
     @value = value;
   }
 
-  public fn %add (another: self) {
+  public fn %add (another: _self) {
     return new MyInt(@value + another);
   }
 }
@@ -3297,7 +3297,7 @@ To illustrate the concept of templates, let's take an example. We want to create
 With what we've seen so far, this is impossible because the return type of a function must be fixed. Templates allow to change this:
 
 ```sn
-op fn plus <T> (left: CanAdd<T>, right: T) : T {
+op fn plus<T> (left: CanAdd<T>, right: T) : T {
   return (left + right) as T;
 }
 ```
