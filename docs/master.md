@@ -3440,6 +3440,26 @@ class Example<T> {
 (new Example<uint>).test(); // In '.test': _this == Example<uint>
 ```
 
+### `typeof` operator
+
+The `typeof` operator can sometimes allow us to get rid of templates. Let's take the following example:
+
+```sn
+fn doubleNumber<T ~ number> (num: T) : T {
+  return num * 2;
+}
+```
+
+It can be transformed into a much simpler declaration by using the `typeof` operator which returns the type of the variable. It goes like this:
+
+```sn
+fn doubleNumber (num: number) : typeof num {
+  return num * 2;
+}
+```
+
+This will work as expected. If we give an `u8` to the function, `typeof num` will be equal to `u8`, so the function will return an `u8` value.
+
 ### Template values
 
 There are two reasons to the fact _templates_ are not called _generics_ like in most other programming languages. First, because they can be fixed (and so they are not generic), and secondly because they can be of any type, while generics use to only be types.
