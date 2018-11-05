@@ -1072,6 +1072,52 @@ println!(one); // Prints: '1'
 println!(two); // Prints: '2'
 ```
 
+#### Slices
+
+The slicing syntax allows to get a specific part of a dictionary. Considering the following one:
+
+```sn
+val persons_city = { #
+  Jack: 'New York',
+  John: 'Washington',
+  Marc: 'Paris'
+};
+```
+
+We can _slice_ it to get only a part of it:
+
+```sn
+val slice = persons_city[['Jack', 'John']];
+
+println!(slice[0]); // 'Jack'
+println!(slice[1]); // 'John'
+```
+
+The `slice` constant is an `int[2]` which contains the values retrieved from `persons_city['Jack']` and `persons_city['John']`.
+
+By giving a tuple of indexes between the brackets, we get an array containing the values related to these indexes. We can get as many indexes as we want - it even works with one or zero index.
+
+We can also use a little trick for vectors. Considering the following array:
+
+```sn
+val numbers = [ 'A', 'B', 'C', 'D', 'E' ];
+```
+
+If we want to take for example values from index 1 to index 3, we can first use the usual slice syntax:
+
+```sn
+val slice = numbers[[1, 2, 3]];
+```
+
+But we can also use a number range for this:
+
+```sn
+val slice = numbers[1..4];
+
+// Equivalent to:
+val slice = numbers[1...3];
+```
+
 ## Blocks
 
 Blocks provide ways to control the program's execution to omit or repeat groups of instructions depending on conditions, or to simply writing some heavy blocks of codes.
