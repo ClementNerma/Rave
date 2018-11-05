@@ -1137,7 +1137,7 @@ Blocks provide ways to control the program's execution to omit or repeat groups 
 
 ### Conditional blocks
 
-Conditions blocks run a set of instructions only if a condition is met. The most common block uses the `if` keyword and runs the provided instructions if the condition we write in it is not a nil value. Here is an example:
+Conditionial blocks run a set of instructions only if a condition is met. The most common conditional block uses the `if` keyword and runs the provided instructions if the condition we write in it is not a nil value. Here is an example:
 
 ```sn
 if 2 + 2 == 4 {
@@ -1145,7 +1145,7 @@ if 2 + 2 == 4 {
 }
 ```
 
-This code displays `'OK'` because `2 + 2 == 4` returns `true`, which is not a nil value. If we wrote `2 + 3 == 4`, this would have resulted in `false`, which is a nil value, so the message wouldn't have been displayed.
+This code displays `'OK'` because `2 + 2 == 4` returns `true`, which is not a nil value. If we had written `2 + 3 == 4`, this would have resulted in `false`, which is a nil value, so the message wouldn't have been displayed.
 
 The part between the block's keyword (`if`) and the opening brace is called the block's head ; here, it's a condition. The content between the opening and the closing braces is called the block's body - its set of instructions.
 
@@ -1395,7 +1395,7 @@ Inline generation allows to generate a list of values from an expression. The sy
 The parenthesis wrapping is required in order to perform inline generation, else it will simply repeat the instruction, like it does in our example with an inline `for` loop.
 
 ```sn
-val cubes = (i * i * i for i in 0..5); // List<int>
+val cubes = (i * i * i for i in 0..5); // int[#]
 
 println!(cube) for cube in cubes;
 ```
@@ -1412,28 +1412,15 @@ This specific `for` syntax is only allowed for inline generation.
 
 ### Scoping
 
-A _scope_ is any code between an opening bracket and a closing one. For blocks, their head is considered as being part of the scope too.
+A _scope_ is a part of the source code that isolate resources such as variables or constants. By default, a scope begins at each opening brace and ends at the matching closing brace.
 
-```sn
-if /* Scope begins */ 2 + 2 == 4 {
-  println!('Hello world!');
-/* Scope ends */ }
-```
-
-Inline blocks implicitly create a scope for the whole instruction (including their head).
-
-```sn
-/* Scope begins */ println!('Hello') for i in 0..5 /* Scope ends */;
-```
-
-When declaring an entity, this one is binded to the current scope.
+When declaring an entity, this one is binded to the current scope, meaning we can access it from within the current scope but not from the sub-scopes (called the _children scopes_).
 
 ```sn
 // Scope 0
 let i = 0; // Binded to scope 0
 
 // Create a scope
-// When an opening brace starts a line, it opens a scope
 {
   // Scope 1
 
@@ -1441,7 +1428,7 @@ let i = 0; // Binded to scope 0
 }
 ```
 
-Scope 1 is called a _child scope_ of scope 0, which is its _parent scope_ (the parent scope, as well as its own parents, etc. are called the _ancestor scopes_). As you can see, it's possible to declare entities in a child scope that has the same name than another in a ancestor scope. The two are completely distinct, though.
+Scope 1 is called a _child scope_ of scope 0, which is its _parent scope_ (the parent scope, as well as its own parents, etc. are called the _ancestor scopes_). As you can see, it's possible to declare entities in a child scope that has the same name than another in a ancestor scope. They are completely distinct, though.
 
 A given scope can access:
 
@@ -1474,9 +1461,23 @@ println!(j); // ERROR (undefined entity)
 
 **NOTE:** Scope 0, which is implicit as it is not wrapped between braces, is called the _main scope_.
 
+Blocks are a special case: their scope includes their head, meaning it starts right after the block's keyword:
+
+```sn
+if /* Scope begins */ 2 + 2 == 4 {
+  println!('Hello world!');
+/* Scope ends */ }
+```
+
+Inline blocks implicitly create a scope for the whole instruction (including their head).
+
+```sn
+val cubes = /* Scope begins */ i * i * i for i in 0..5 /* Scope ends */;
+```
+
 ## Functions
 
-Functions are a specific type of blocks that allow to manually run a set of instructions as many times as wee need, from everywhere.
+Functions are a specific type of blocks that allow to manually run a set of instructions as many times as we need, from anywhere in the scope.
 
 ### Declaration
 
@@ -1514,6 +1515,8 @@ area(10.0, 5.0, 80.0); // Prints the message
 
 Each time we will have to compute the area, we will simply have to call the function, which is a lot more easier, readable and maintanable than re-writing the whole code each time. If we want to change anything in the computation, we simply have to change it in a single place.
 
+**NOTE :** As functions use braces, they of course have their own scopes. Furthermore, as functions declaration are blocks, their head is part of the scope too, which is how we can access its arguments.
+
 ### Returning values
 
 We may want to get the trapezoid's area after (optionally) displaying the message. For that, the function must _return_ the area, which requires us to change it a little bit:
@@ -1533,7 +1536,7 @@ fn area (base: f32, top: f32, height: f32) : f32 {
 }
 ```
 
-Putting apart comments and the fact we know use a `result` constant, two things have changed in our function.
+Putting apart comments and the fact we now use a `result` constant, two things have changed in our function.
 
 First, we gave it a _return type_, written after the double point symbol just before the opening brace. It indicates what kind of value our function will return.
 
@@ -1548,7 +1551,7 @@ val trapezoid_area = area(1.0, 2.0, 3.0));
 Like we did with structures, we can make some arguments optional by giving them a default value. Though, such arguments must be placed at the very end of the arguments list.
 
 ```sn
-fn say_hello (name: string, repeat: uint = 1) {
+fn say_hello (name: string, repeat: uint = 1u) {
   println!(name) for i in 0..repeat;
 }
 
@@ -1559,12 +1562,19 @@ say_hello('Jack', 2); // Prints: 'Jack' (twice)
 
 Note that default values can also be an expression, that will be evaluated when the function will be called.
 
+As default values indicate the argument's type, we can omit it from the declaration:
+
+```sn
+fn say_hello (name: string, repeat = 1u) {
+  // ...
+```
+
 ### Endless arguments
 
 Endless arguments are prefixed with the `...` symbol, and accept from zero to an infinity of arguments:
 
 ```sn
-fn sum_of (...nums: int) : int {
+fn sum_of (...nums: int[]) : int {
   let sum = 0;
 
   sum += n for n in sums;
@@ -1582,7 +1592,7 @@ They are typed as arrays with an unknown length ; here, `nums` is an `int[]`.
 It's possible to provide multiple endless arguments, the only rule it that we can't write two consecutive endless arguments with the same type:
 
 ```sn
-fn sum_of (...ints: int, ...floats: f32) : f32 {
+fn sum_of (...ints: int[], ...floats: f32[]) : f32 {
   let sum = 0.0;
 
   for n in ints {
@@ -1600,12 +1610,12 @@ sum_of(3.0); // Works fine
 sum_of(); // Works fine
 ```
 
-### Arguments expansion
+### Vector expansion
 
-It's also possible to use a vector in the place of an endless arguments:
+It's also possible to use a vector in the place of an endless arguments, using _vector expansion_:
 
 ```sn
-let nums = [ 2, 3, 4 ];
+val nums = [ 2, 3, 4 ];
 
 sum_of(nums..., 5.0);
 // Equivalent to:
@@ -1635,15 +1645,15 @@ add(add(2, add(5, 7)), add(3, 4));
 This quickly becomes unreadable, and that's why we use operator functions:
 
 ```sn
-op fn plus (left: int, right: int) : int {
+op fn add (left: int, right: int) : int {
   return left + right;
 }
 
 // Standard syntax
-plus(2, 5);
+add(2, 5);
 
 // Operator syntax
-2 plus 5;
+2 add 5;
 ```
 
 Our previous example becomes like this:
@@ -1653,7 +1663,7 @@ Our previous example becomes like this:
 add(add(2, add(5, 7)), add(3, 4));
 
 // Operator syntax
-(2 plus (5 plus 7)) plus (3 plus 4);
+(2 add (5 add 7)) add (3 add 4);
 ```
 
 Which is a lot more readable.
@@ -1664,15 +1674,24 @@ _Polymorphism_ allow to declare the same function several times. Each declaratio
 
 ```sn
 fn add (a: int, b: int) : int {
+  println!('Add: int');
   return a + b;
 }
 
 fn add (a: uint, b: uint) : uint {
+  println!('Add: uint');
   return a + b;
 }
 ```
 
-There is a risk of ambiguity at build time if the function uses endless arguments:
+When we call it, the right function is chosen depending on the provided arguments and their type:
+
+```sn
+add(2, 5); // Prints: 'Add: int'
+add(2.0, 5.0); // Prints: 'Add: uint'
+```
+
+There is a risk of ambiguity at build time if the function uses endless arguments and we don't provide any (which is allowed):
 
 ```sn
 fn sum_of (...nums: int) : int { /* ... */ }
@@ -1683,7 +1702,7 @@ sum_of(); // ERROR (ambiguity)
 // The compiler doesn't know what declaration to use
 // We must tell it explicitly by using a vector of elements
 
-val vec = new List<int>;
+val vec = int:[#];
 sum_of(vec...); // Works fine
 ```
 
@@ -1699,7 +1718,7 @@ _Lambdas_, also called _anonymous functions_, are single values that can be used
 
 val list = [ # 2, 3, 4 ];
 
-val filtered = list.filter(lambda (value: int) : bool {
+val filtered = list.filter((value: int) : bool {
   return value > 2;
 });
 ```
@@ -1717,8 +1736,8 @@ fn run_lambda (func: fn (value: int) : bool) {
   }
 }
 
-run_lambda(lambda (value: int) : bool {
-  return true:
+run_lambda((value: int) : bool => {
+  return true;
 }); // Prints: 'Returned: true'
 ```
 
@@ -1727,17 +1746,17 @@ This time, the type uses the `fn` keyword, because we may give an existing funct
 As functions are simple values, we can store it in entities, and even use inferred typing to omit their type:
 
 ```sn
-let sum = lambda (a: int, b: int) : int {
+let sum = (a: int, b: int) : int => {
   return a + b;
 };
 
 println!(sum(2, 5)); // Prints: '7'
 ```
 
-For lambdas only made of a `return` instruction, we can use the _arrow syntax_ to shorten their writing:
+For lambdas only made of a `return` instruction, we can use the _inline syntax_ to shorten their writing:
 
 ```sn
-let sum = lambda (a: int, b: int) : int => a + b;
+let sum = (a: int, b: int) : int => a + b;
 
 println!(sum(2, 5)); // Prints: '7'
 ```
@@ -1750,13 +1769,13 @@ A function is called a _callback_ when it is provided as a function's argument. 
 
 ```sn
 // Lambda syntax
-list.filter(lambda (value: int) : bool => value > 2);
+list.filter((value: int) : bool => value > 2);
 
 // ICT
 list.filter((value) => value > 2);
 ```
 
-This syntax don't work with non-callback lambdas (e.g. lambdas that are assigned to an entity before being used). Indeed, ICT works because the builder exactly knows what are the type of the callback's arguments, as well as its return type.
+This syntax doesn't work with non-callback lambdas (e.g. lambdas that are assigned to an entity before being used). Indeed, ICT works because the builder exactly knows what are the type of the callback's arguments, as well as its return type.
 
 When the callback has a single argument, its wrapping parenthesis can be omitted:
 
@@ -2274,7 +2293,7 @@ Still, we could want to notify some of the code the user is going to be dropped.
 **NOTE:** The end of the program marks the drop of all values, but for performance reasons their destructor is not called. To force the program to call the destructor of all values anyway, we have to specify a _head directive_:
 
 ```sn
-#[main_scope_dropping];
+#![main_scope_dropping];
 
 class User {
   private static counter = 0u;
@@ -2344,7 +2363,7 @@ fn squareList (array: int[]) : int[] {
 }
 
 val array = [ 2, 7, 8 ];
-val squares = squareList(array.%clone());
+val squares = squareList(clone array);
 
 println!(squares[1]); // Prints: '49'
 println!(array[1]); // Prints: '7'
@@ -2375,7 +2394,7 @@ class Example {
 let a = new Example('A');
 
 let b = a;
-let c = a.%clone();
+let c = clone a;
 
 b.set_name('B');
 c.set_name('C');
@@ -2441,7 +2460,7 @@ class MyInt {
     @value = value;
   }
 
-  public fn %add (another) {
+  public fn %add (another: self) {
     return new MyInt(@value + another);
   }
 }
@@ -2508,7 +2527,7 @@ Classes are always friend of themselves, this is why they can access their own p
 Extensions are the only way to add a method to a class after the end of its declaration. For example, let's say we want to create a `.countA` function that couts the number of `A` letters in a string. Because the class was already declared before, we cannot add it a public method called `countA` ; so we use an _extension_:
 
 ```sn
-extension string.countA () : uint {
+extension<string> fn countA () : uint {
   let counter = 0u;
 
   for i in 0..this.length {
@@ -2543,7 +2562,8 @@ class Hero {
   public readonly rage: uint;
   public readonly mp: uint;
 
-  public fn %new (wizard: bool, name: string, hp: uint, atk: uint, exp: uint, rage: uint, mp: uint) {
+  public fn %new (wizard: bool, name: string, hp: uint,
+                  atk: uint, exp: uint, rage: uint, mp: uint) {
     @wizard = wizard;
     @name = name;
     @hp = hp;
@@ -2579,8 +2599,8 @@ open class Hero {
 
   // Returns 'true' if the fight has been done successfully
   public fn fight (ennemy: Hero) : bool {
-    if this.hp == 0 {
-      println!(`${this.name} cannot fight because he's dead.`);
+    if @hp == 0 {
+      println!(`${@name} cannot fight because he's dead.`);
       return false;
     }
 
@@ -2589,16 +2609,16 @@ open class Hero {
       return false;
     }
 
-    println!(`${this.name} is fighting ${ennemy.name}!`);
+    println!(`${@name} is fighting ${ennemy.name}!`);
 
-    if this.atk > ennemy.hp {
+    if @atk > ennemy.hp {
       // Won the fight
       ennemy.hp = 0;
 
       // Win some experience
-      this.exp += 100u;
+      @exp += 100u;
     } else {
-      ennemy.hp -= this.atk;
+      ennemy.hp -= @atk;
     }
 
     // It's ennemy turn!
@@ -2670,7 +2690,7 @@ class Wizard extends Hero {
     // Temporarily increase the attack to launch the fireball
     @atk *= 2;
 
-    println!(`${this.name} is launching a fireball!`);
+    println!(`${@name} is launching a fireball!`);
 
     @fight(ennemy);
 
@@ -2889,7 +2909,7 @@ class Child extends Mother {
 
 ### Structures compatibility
 
-Any structure that implements every single field of another with the same mutability (`mut`) is considered as a sub-type of this last one. Example:
+Any structure that implements every single field of another with the same mutability is considered as a sub-type of this last one. Example:
 
 ```sn
 struct A {
@@ -2925,6 +2945,36 @@ val jack: A = B {
 
 The field will simply act as constant and not plain.
 
+A last exception is for mutable fields when declaring objects. Let's take the following example:
+
+```sn
+struct A {
+  mut a: int;
+}
+
+val obj = {
+  a: 2
+};
+
+val casted: A = obj; // ERROR
+```
+
+An error is thrown error because implicitly the `a` field in our `obj` constant is a plain constant, so it can only be accepted if the target structure's field is a plain constant or a simple constant, but not if it is mutable.
+
+To solve this case, we must specify our field is mutable in `obj`:
+
+```sn
+struct A {
+  mut a: int;
+}
+
+val obj = {
+  mut a: 2
+}:
+
+val casted: A = obj; // Works fine
+```
+
 #### Structures inheritance
 
 Structures can even inherit from other ones:
@@ -2950,28 +3000,22 @@ Static typecasting allows to convert any value of a given type to another one. I
 
 Statically typecasting a value of type `A` to type `B` is allowed when:
 
-* `B` is a sub-type of `A` (e.g. a child class of `A`) ;
+* `B` is a parent type of `A` (e.g. a mother class of `A`) ;
 * `A` implements a typecasting overload to `B`
 
 Here is how it goes for the first case:
 
 ```sn
-class A {
-  public fn itsA () {
-    println!('It is A!');
-  }
-}
+// Mother class
+class A {}
 
-class B extends A {
-  public fn itsB () {
-    println!('It is B!');
-  }
-}
+// Child class (sub-type of 'A')
+class B extends A {}
 
-val a = new A; // Type: 'A'
+val b = new B; // Type: 'B'
 
-// Typecast 'a' from type 'A' to type 'B'
-val b = a as B; // Type: 'B'
+// Typecast 'b' from type 'B' (child) to type 'A' (mother)
+val a = b as A; // Type: 'A'
 ```
 
 The second case is described below.
@@ -3007,7 +3051,16 @@ let b = a as B; // Works fine
 println!(b.message); // Prints: 'Hello world!'
 ```
 
-Numbers implement a typecasting overload for each other number type.
+Numbers implement a typecasting overload for each other number type, so the following conversion is allowed:
+
+```sn
+let small = 8b;
+let large = 2050u;
+
+small = <i8> large; // Works fine (but overflows)
+
+println!(small); // Prints: '2'
+```
 
 #### Automatic typecast
 
@@ -3019,6 +3072,7 @@ class A {
 
   #auto
   public fn %to<-B> () {
+    println!('Typecasting to B');
     return new B(@message);
   }
 }
@@ -3032,21 +3086,21 @@ class B {
 }
 
 let a: A = new A;
-let b: B = a; // Works fine
+let b: B = a; // Works fine (prints: 'Typecasting to B')
 ```
 
 This last instruction would have fail at build time if we haven't used the `#auto` directive. Instead, we would have had to use a static typecast.
 
-Arrays use this automatic behaviour, that's why it's possible to use an unknown-sized array (`int[]`) to a fixed-size one (`int[3]`) without any explicit conversion, and the oppositve.
+Arrays use this automatic behaviour, that's why it's possible to use an unknown-sized array (`int[]`) where expecting a fixed-size one (`int[3]`) without any explicit conversion, as well as the opposite.
 
-A similar behavior to automatic typecasting overloads is implemented for parent types of a given one, which allows to give a value of a type where a value of its mother type is expected.
+A similar behavior to automatic typecasting overloads is implemented for parent types of a given one, which allows to give a value of a type where a value of a parent type is expected.
 
 ### Interfaces
 
 Interfaces allow to describe members of a class. Like for structure compatibility, each class that implements all of its members is considered as a sub-type of this interface. Some of widely used in the language, such as the following one:
 
 ```sn
-inf Stringifyable {
+interface Stringifyable {
   fn %to<-string> ();
 }
 ```
@@ -3054,7 +3108,7 @@ inf Stringifyable {
 Every class that implements the `%to<-string>` typecast overload will be `Stringifyable`. Note that the visibility is not indicted here as an interface only describes public members.
 
 ```sn
-class A impl Stringifyable {
+class A implements Stringifyable {
   public fn %to<-string> () {
     return 'Hello world!';
   }
@@ -3065,12 +3119,12 @@ val obj: Stringifyable = new A;
 println!(obj as string); // Prints: 'Hello world!'
 ```
 
-You may notice the `impl Stringifyable` part: it indicates the class implements a given interface. Though it's entirely optionnal - this could would have worked without this code - it's highly recommanded because it explicits the class' intentions (it is intended to be stringifyable) and avoids forgetting to implement a given member of the interface.
+You may notice the `implements Stringifyable` part: it indicates the class implements a given interface. Though it's entirely optionnal - this could would have worked without this code - it's highly recommanded because it explicits the class' intentions (it is intended to be stringifyable) and avoids forgetting to implement a given member of the interface.
 
 There is another widely-used interface:
 
 ```sn
-inf Any {}
+interface Any {}
 ```
 
 Because it has no member, every class implements its members, and so every class is considered as being a sub-type of it.
@@ -3123,11 +3177,11 @@ trait Bike {
 Or even implement interfaces:
 
 ```sn
-inf Vehicle {
+interface Vehicle {
   val speed: f32;
 }
 
-trait Bike impl Vehicle {
+trait Bike implements Vehicle {
   val speed: f32;
 
   fn accelerate () : string {
@@ -3165,7 +3219,7 @@ We want to create, let's say, a variable, which accepts any value that can be ty
 This can be achieved using a _typecasting path_, which goes like this:
 
 ```sn
-inf Convertible_to_C {
+interface Convertible_to_C {
   // Typecasting path
   typepath C = B;
 }
@@ -3181,15 +3235,15 @@ some_c as C; // ERROR (cannot be typecasted to C)
 
 any_c as C; // Works fine
 // Equivalent to:
+(any_c as Convertible_to_C) as C;
+// If we get rid of the path:
 (any_c as B) as C;
-// Or even (don't write the dash before the target type):
-any_c.%to<B>().%to<C>();
 ```
 
 The path can contain several types:
 
 ```sn
-inf Convertible_to_F {
+interface Convertible_to_F {
   type F = D | E;
 }
 ```
@@ -3197,7 +3251,7 @@ inf Convertible_to_F {
 In the case our type implements typecasting overload to two or more types in the path, the first one in the list is taken:
 
 ```sn
-inf Convertible_to_F {
+interface Convertible_to_F {
   type F = D | E;
 }
 
@@ -3267,7 +3321,7 @@ Templates can be used everywhere a fixed type could be used. Types that use temp
 Here is its declaration of the `CanAdd` interface:
 
 ```sn
-inf CanAdd<T, X = T> {
+interface CanAdd<T, X = T> {
   fn %plus (value: T) : X;
 }
 ```
@@ -3416,7 +3470,7 @@ Fixed-size arrays use this feature: they take a `T` template indicating the type
 The wildcard template can be used when we want to accept any template in a given type but won't use the template itself. Example:
 
 ```sn
-fn listLength<T> (value: List<T>) : usize {
+fn listLength<T> (value: T[#]) : usize {
   return value.size;
 }
 ```
