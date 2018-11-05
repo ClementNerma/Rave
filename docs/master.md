@@ -1737,10 +1737,10 @@ The solution to this problem is to use a class:
 
 ```sn
 class Hero {
-  pub rdo name: string;
-  pub rdo hp: uint;
-  pub rdo atk: uint;
-  pub rdo exp: uint;
+  public readonly name: string;
+  public readonly hp: uint;
+  public readonly atk: uint;
+  public readonly exp: uint;
 }
 ```
 
@@ -1748,18 +1748,18 @@ A class is made of _members_, which are either _attributes_ - entities - like we
 
 Through this book, we will often talk about the _inside_ of the class, which refers to anything in the class' scope, and to the _outside_ of the class, which is anything outside this scope.
 
-Here, all attributes are marked as public using the `pub` keyword, meaning they can be accessed from the outside, but they are also marked as read-only using the `rdo` keyword. This is different than `val` in the way it prevents these attributes from being written from the outside, but not from the inside - where they stay mutable.
+Here, all attributes are marked as public using the `public` keyword, meaning they can be accessed from the outside, but they are also marked as read-only using the `readonly` keyword. This is different than `val` in the way it prevents these attributes from being written from the outside, but not from the inside - where they stay mutable.
 
 Like structures, classes can be instanciated. But for that, they need a _constructor_, which is a special method called when the class is created:
 
 ```sn
 class Hero {
-  pub rdo name: string;
-  pub rdo hp: uint;
-  pub rdo atk: uint;
-  pub rdo exp: uint;
+  public readonly name: string;
+  public readonly hp: uint;
+  public readonly atk: uint;
+  public readonly exp: uint;
 
-  pub fn %new (name: string, hp: uint, atk: uint, exp: uint) {
+  public fn %new (name: string, hp: uint, atk: uint, exp: uint) {
     this.name = name;
     this.hp = hp;
     this.atk = atk;
@@ -1791,7 +1791,7 @@ Let's write a method to fight another ennemy:
 ```sn
 class Hero {
   // ...
-  pub fn fight (ennemy: Hero) {
+  public fn fight (ennemy: Hero) {
     if this.hp == 0 {
       println!(`${this.name} cannot fight because he's dead.`);
       return ;
@@ -1837,19 +1837,19 @@ Here is the whole code for reference:
 
 ```sn
 class Hero {
-  pub rdo name: string;
-  pub rdo hp: uint;
-  pub rdo atk: uint;
-  pub rdo exp: uint;
+  public readonly name: string;
+  public readonly hp: uint;
+  public readonly atk: uint;
+  public readonly exp: uint;
 
-  pub fn %new (name: string, hp: uint, atk: uint, exp: uint) {
+  public fn %new (name: string, hp: uint, atk: uint, exp: uint) {
     this.name = name;
     this.hp = hp;
     this.atk = atk;
     this.exp = exp;
   }
 
-  pub fn fight (ennemy: Hero) {
+  public fn fight (ennemy: Hero) {
     if this.hp == 0 {
       println!(`${this.name} cannot fight because he's dead.`);
       return ;
@@ -1890,14 +1890,14 @@ println!(john.hp); // Prints: '80'
 
 ### Members in depth
 
-Members can either be public with `pub`, so they can be accessed from the outside, or private with `priv`, so they are only readable from the inside of the class:
+Members can either be public with `public`, so they can be accessed from the outside, or private with `private`, so they are only readable from the inside of the class:
 
 ```sn
 class Example {
-  pub known: string;
-  priv secret: string;
+  public known: string;
+  private secret: string;
 
-  pub fn %new () {
+  public fn %new () {
     this.known = 'Public data';
     this.secret = 'Secret data';
   }
@@ -1913,10 +1913,10 @@ This also works for methods: they can be public or private to be available - or 
 
 ```sn
 class Example {
-  pub known: string;
-  priv secret: string;
+  public known: string;
+  private secret: string;
 
-  pub fn %new () {
+  public fn %new () {
     @known = 'Public data';
     @secret = 'Secret data';
   }
@@ -1927,10 +1927,10 @@ We can provide a default value for attributes, so we don't have to assign them i
 
 ```sn
 class Example {
-  pub known = 'Public data';
-  priv secret = 'Secret data';
+  public known = 'Public data';
+  private secret = 'Secret data';
 
-  pub fn %new () {}
+  public fn %new () {}
 }
 ```
 
@@ -1938,8 +1938,8 @@ Also, as attributes are entities, they can be marked as constant using `val`, or
 
 ```sn
 class Example {
-  pub pln KNOWN = 'Public data';
-  priv val secret = 'Secret data';
+  public pln KNOWN = 'Public data';
+  private val secret = 'Secret data';
 }
 ```
 
@@ -1947,7 +1947,7 @@ Another keyword for members is `static`, which makes the member accessible stati
 
 ```sn
 class Example {
-  pub static name = 'Hello';
+  public static name = 'Hello';
 }
 
 println!(Example.name); // Prints: 'Hello'
@@ -1958,9 +1958,9 @@ Static attributes must have an initialization value. Classes can access their st
 
 ```sn
 class Example {
-  pub static name = 'Hello';
+  public static name = 'Hello';
 
-  pub static fn print_name () {
+  public static fn print_name () {
     println!(self.name);
   }
 }
@@ -1974,14 +1974,14 @@ Data structures can also be members of classes ; they then become a local type o
 
 ```sn
 class Example {
-  pub struct Hero {
+  public struct Hero {
     name: string;
     hp: uint;
     atk: uint;
     mut exp: uint;
   }
 
-  pub val hero = Hero {
+  public val hero = Hero {
     name: 'Jack',
     hp: 100u,
     atk: 20u,
@@ -2006,7 +2006,7 @@ To represent the cells, we will use a simple enumeration. Because it is specific
 
 ```sn
 class Map {
-  pub enum Cell { EMPTY, ROCK, TRAP };
+  public enum Cell { EMPTY, ROCK, TRAP };
 ```
 
 #### Part 2: The constructor
@@ -2016,7 +2016,7 @@ We told the constructor must accept the player's start position. We can simply t
 Here is our constructor's signature:
 
 ```sn
-  pub fn %new (map: Cell[][], x: usize, y: usize) {
+  public fn %new (map: Cell[][], x: usize, y: usize) {
 ```
 
 #### Part 3: The attributes
@@ -2024,16 +2024,16 @@ Here is our constructor's signature:
 We have to store our map, as well as the current player's coordinates. So we have three attributes:
 
 ```sn
-  pub rdo map: Cell[][];
-  pub rdo x: usize;
-  pub rdo y: usize;
+  public readonly map: Cell[][];
+  public readonly x: usize;
+  public readonly y: usize;
 ```
 
 But it's easier to also have an attribute to check if the player is trapped, so let's add a fourth one:
 
 ```sn
   // ...
-  pub rdo trapped: bool = false;
+  public readonly trapped: bool = false;
 ```
 
 Thanks to the attributes being public, we can check at anytime the player's coordinates with `.x` and `.y`, as well as if it's trapped or not using `.trapped`.
@@ -2044,7 +2044,7 @@ Let's initialize our attributes:
 
 ```sn
   // ...
-  pub fn %new (map: Cell[][], x: usize, y: size) {
+  public fn %new (map: Cell[][], x: usize, y: size) {
     @map = map;
     @x = x;
     @y = y;
@@ -2057,14 +2057,14 @@ Because our player can only move on adjacent cells, the easiest solution is to m
 
 ```sn
   // ...
-  pub fn moveUpLeft    () { @move(x - 1, y - 1); }
-  pub fn moveUp        () { @move(x, y - 1); }
-  pub fn moveUpRight   () { @move(x + 1, y - 1); }
-  pub fn moveLeft      () { @move(x - 1, y); }
-  pub fn moveRight     () { @move(x + 1, y); }
-  pub fn moveDownLeft  () { @move(x - 1, y + 1); }
-  pub fn moveDown      () { @move(x, y + 1); }
-  pub fn moveDownRight () { @move(x + 1, y + 1); }
+  public fn moveUpLeft    () { @move(x - 1, y - 1); }
+  public fn moveUp        () { @move(x, y - 1); }
+  public fn moveUpRight   () { @move(x + 1, y - 1); }
+  public fn moveLeft      () { @move(x - 1, y); }
+  public fn moveRight     () { @move(x + 1, y); }
+  public fn moveDownLeft  () { @move(x - 1, y + 1); }
+  public fn moveDown      () { @move(x, y + 1); }
+  public fn moveDownRight () { @move(x + 1, y + 1); }
 
 ```
 
@@ -2074,7 +2074,7 @@ Let's make our `move` method. First, its signature:
 
 ```sn
   // ...
-  pub fn move (x: usize, y: usize) {
+  public fn move (x: usize, y: usize) {
 ```
 
 We have to check that are moving to an adjacent case:
@@ -2135,29 +2135,29 @@ Here is the full solution:
 
 ```sn
 class Map {
-  pub enum Cell { EMPTY, ROCK, TRAP };
+  public enum Cell { EMPTY, ROCK, TRAP };
 
-  pub rdo map: Cell[][];
-  pub rdo x: usize;
-  pub rdo y: usize;
-  pub rdo trapped: bool = false;
+  public readonly map: Cell[][];
+  public readonly x: usize;
+  public readonly y: usize;
+  public readonly trapped: bool = false;
 
-  pub fn %new (map: Cell[][], x: usize, y: size) {
+  public fn %new (map: Cell[][], x: usize, y: size) {
     @map = map;
     @x = x;
     @y = y;
   }
 
-  pub fn moveUpLeft    () { @move(x - 1, y - 1); }
-  pub fn moveUp        () { @move(x, y - 1); }
-  pub fn moveUpRight   () { @move(x + 1, y - 1); }
-  pub fn moveLeft      () { @move(x - 1, y); }
-  pub fn moveRight     () { @move(x + 1, y); }
-  pub fn moveDownLeft  () { @move(x - 1, y + 1); }
-  pub fn moveDown      () { @move(x, y + 1); }
-  pub fn moveDownRight () { @move(x + 1, y + 1); }
+  public fn moveUpLeft    () { @move(x - 1, y - 1); }
+  public fn moveUp        () { @move(x, y - 1); }
+  public fn moveUpRight   () { @move(x + 1, y - 1); }
+  public fn moveLeft      () { @move(x - 1, y); }
+  public fn moveRight     () { @move(x + 1, y); }
+  public fn moveDownLeft  () { @move(x - 1, y + 1); }
+  public fn moveDown      () { @move(x, y + 1); }
+  public fn moveDownRight () { @move(x + 1, y + 1); }
 
-  pub fn move (x: usize, y: usize) {
+  public fn move (x: usize, y: usize) {
     // Moves are only allowed to adjacent cells
     if (@x - x).abs() > 1 || (@y - y).abs() > 1 {
       println!('Cannot move on a non-adjacent cell');
@@ -2218,16 +2218,16 @@ Still, we could want to notify some of the code the user is going to be dropped.
 #[main_scope_dropping];
 
 class User {
-  priv static counter = 0u;
-  priv id: uint;
+  private static counter = 0u;
+  private id: uint;
 
-  pub fn %new () {
+  public fn %new () {
     self.counter ++;
     @id = self.counter;
     println!(`User ${@id} has been created`);
   }
 
-  pub fn %drop () {
+  public fn %drop () {
     println!(`User ${@id} will be dropped`);
   }
 }
@@ -2297,17 +2297,17 @@ The cloning overload is a method that takes no argument and returns an instance 
 
 ```sn
 class Example {
-  pub rdo name: string;
+  public readonly name: string;
 
-  pub fn %new (name: string) {
+  public fn %new (name: string) {
     @name = name;
   }
 
-  pub fn set_name (newName: string) {
+  public fn set_name (newName: string) {
     @name = newName;
   }
 
-  pub fn %clone () {
+  public fn %clone () {
     println!('Instance has been cloned.');
     return new Example(@name);
   }
@@ -2336,7 +2336,7 @@ The serialization overload takes no argument and returns a string. In our `Examp
 
 ```sn
   // ...
-  pub fn %serialize () {
+  public fn %serialize () {
     return @name;
   }
 ```
@@ -2345,7 +2345,7 @@ The unserialization overload takes a string argument and returns an instance of 
 
 ```sn
   // ...
-  pub fn %unserialize (serialized) throws UnserializationError {
+  public fn %unserialize (serialized) throws UnserializationError {
     return new Example(@name);
   }
 ```
@@ -2354,7 +2354,7 @@ When we have several fields, it becomes a bit more complicated, as we have to de
 
 ```sn
   // ...
-  pub pln %lazy_serial_fields = ('name');
+  public pln %lazy_serial_fields = ('name');
 ```
 
 This plain tuple contains the list of the attributes to serialize. The specified attributes must be serializable themselves.
@@ -2365,7 +2365,7 @@ If you want to be ensure the serialized content is valid, it's possible to make 
 
 ```sn
   // ...
-  pub pln %lazy_serial_fields = ('name', WITH_CHECKSUM);
+  public pln %lazy_serial_fields = ('name', WITH_CHECKSUM);
 ```
 
 The big advantage of checksum is that it highly reduces the risks to get invalid values, but the downside is that both serialization and unserialization will be considerably slower.
@@ -2376,13 +2376,13 @@ Some operators can be overloaded in a class, allowing to use them on the class' 
 
 ```sn
 class MyInt {
-  pub rdo value: int;
+  public readonly value: int;
 
-  pub fn %new (value: int) {
+  public fn %new (value: int) {
     @value = value;
   }
 
-  pub fn %add (another) {
+  public fn %add (another) {
     return new MyInt(@value + another);
   }
 }
@@ -2399,13 +2399,13 @@ If we don't provide types, operator overloads take an instance of the current cl
 
 ```sn
 class MyInt {
-  pub rdo value: int;
+  public readonly value: int;
 
-  pub fn %new (value: int) {
+  public fn %new (value: int) {
     @value = value;
   }
 
-  pub fn %add (another: MyInt) : int {
+  public fn %add (another: MyInt) : int {
     return @value + another.value;
   }
 }
@@ -2476,15 +2476,15 @@ The simpliest way to achieve this is the following:
 
 ```sn
 class Hero {
-  pub rdo wizard: bool;
-  pub rdo name: string;
-  pub rdo hp: uint;
-  pub rdo atk: uint;
-  pub rdo exp: uint;
-  pub rdo rage: uint;
-  pub rdo mp: uint;
+  public readonly wizard: bool;
+  public readonly name: string;
+  public readonly hp: uint;
+  public readonly atk: uint;
+  public readonly exp: uint;
+  public readonly rage: uint;
+  public readonly mp: uint;
 
-  pub fn %new (wizard: bool, name: string, hp: uint, atk: uint, exp: uint, rage: uint, mp: uint) {
+  public fn %new (wizard: bool, name: string, hp: uint, atk: uint, exp: uint, rage: uint, mp: uint) {
     @wizard = wizard;
     @name = name;
     @hp = hp;
@@ -2506,12 +2506,12 @@ A solution to this is to use _inheritance_. It simply consists in creating a bas
 
 ```sn
 open class Hero {
-  pub rdo name: string;
-  pub rdo hp: uint;
-  pub rdo atk: uint;
-  pub rdo exp: uint;
+  public readonly name: string;
+  public readonly hp: uint;
+  public readonly atk: uint;
+  public readonly exp: uint;
 
-  pub fn %new (name: string, hp: uint, atk: uint, exp: uint) {
+  public fn %new (name: string, hp: uint, atk: uint, exp: uint) {
     @name = name;
     @hp = hp;
     @atk = atk;
@@ -2519,7 +2519,7 @@ open class Hero {
   }
 
   // Returns 'true' if the fight has been done successfully
-  pub fn fight (ennemy: Hero) : bool {
+  public fn fight (ennemy: Hero) : bool {
     if this.hp == 0 {
       println!(`${this.name} cannot fight because he's dead.`);
       return false;
@@ -2557,9 +2557,9 @@ You may wonder why we define one as the warrior fights a different way. That's b
 
 ```sn
 class Warrior extends Hero {
-  pub rdo rage: uint;
+  public readonly rage: uint;
 
-  pub fn %new (name: string, hp: uint, atk: uint, exp: uint, rage: uint) {
+  public fn %new (name: string, hp: uint, atk: uint, exp: uint, rage: uint) {
     @name = name;
     @hp = hp;
     @atk = atk;
@@ -2567,7 +2567,7 @@ class Warrior extends Hero {
     @rage = rage;
   }
 
-  pub fn fight (ennemy: Hero) {
+  public fn fight (ennemy: Hero) {
     // Call mother's fight method
     // If it succeeds, win rage points (limited to 20)
     if super.fight(ennemy) && @rage < 20 {
@@ -2590,14 +2590,14 @@ Let's write our wizard class:
 
 ```sn
 class Wizard extends Hero {
-  pub rdo mp: uint;
+  public readonly mp: uint;
 
-  pub fn %new (name: string, hp: uint, atk: uint, exp: uint, mp: uint) {
+  public fn %new (name: string, hp: uint, atk: uint, exp: uint, mp: uint) {
     super(name, hp, atk, exp);
     @mp = mp;
   }
 
-  pub fn fireball (ennemy: Hero) {
+  public fn fireball (ennemy: Hero) {
     if @hp == 0 {
       println!('Cannot launch a fireball while being dead');
       return ;
@@ -2625,13 +2625,13 @@ We shortened the child class' constructor by calling the mother's one using `sup
 
 #### Protected members
 
-The specificity of private members is that they cannot be accessed from the outside of the class, not even by the child classes. In order to make members that are not available from the outside of the class but still from its child classes, we can mark them as protected using the `prot` keyword:
+The specificity of private members is that they cannot be accessed from the outside of the class, not even by the child classes. In order to make members that are not available from the outside of the class but still from its child classes, we can mark them as protected using the `protected` keyword:
 
 ```sn
 class Mother {
-  pub public = 1;
-  prot protected = 2;
-  priv private = 3;
+  public public = 1;
+  protected protected = 2;
+  private private = 3;
 
   // Available here: 'public', 'protected', 'private'
 }
@@ -2682,11 +2682,11 @@ As we saw, constructors are not inherited by child classes. But we can force inh
 
 ```sn
 open class Mother {
-  pub fn %new (name: string) {
+  public fn %new (name: string) {
     println!(name);
   }
 
-  pub fn %new (name: string[2]) {
+  public fn %new (name: string[2]) {
     println!(name);
   }
 }
@@ -2700,11 +2700,11 @@ Our `Child` class will inherit only the first constructor. It's also possible to
 
 ```sn
 open class Mother {
-  pub fn %new (name: string) {
+  public fn %new (name: string) {
     println!(name);
   }
 
-  pub fn %new (name: string[2]) {
+  public fn %new (name: string[2]) {
     println!(name);
   }
 }
@@ -2768,7 +2768,7 @@ Methods can be stated, too. We already saw static methods, but they can also be 
 
 ```sn
 virtual class Mother {
-  virtual pub fn sayHello ();
+  virtual public fn sayHello ();
 }
 
 class ChildA extends Mother {
@@ -2776,7 +2776,7 @@ class ChildA extends Mother {
 }
 
 class ChildB extends Mother {
-  pub fn sayHello () {
+  public fn sayHello () {
     println!('Hello world!');
   }
 }
@@ -2790,7 +2790,7 @@ Abstract methods, on their side, are virtual methods declared with a body. This 
 
 ```sn
 class Mother {
-  abstract pub fn sayHello () {
+  abstract public fn sayHello () {
     println!('Hello from mother!');
   }
 }
@@ -2800,7 +2800,7 @@ class ChildA extends Mother {
 }
 
 class ChildB extends Mother {
-  pub fn sayHello () {
+  public fn sayHello () {
     println!('Hello from child!');
   }
 }
@@ -2815,14 +2815,14 @@ Final methods are the opposite of abstract methods: they are defined in the orig
 
 ```sn
 class Mother {
-  final pub fn sayHello () {
+  final public fn sayHello () {
     println!('Hello from mother!');
   }
 }
 
 class Child extends Mother {
   // ERROR: method is final
-  pub fn sayHello () {
+  public fn sayHello () {
     println!('Hello from child!');
   }
 }
@@ -2898,13 +2898,13 @@ Here is how it goes for the first case:
 
 ```sn
 class A {
-  pub fn itsA () {
+  public fn itsA () {
     println!('It is A!');
   }
 }
 
 class B extends A {
-  pub fn itsB () {
+  public fn itsB () {
     println!('It is B!');
   }
 }
@@ -2923,17 +2923,17 @@ Typecasting overloads allow to statically typecast a given type to another, even
 
 ```sn
 class A {
-  priv message = 'Hello world!';
+  private message = 'Hello world!';
 
-  pub fn %to<-B> () {
+  public fn %to<-B> () {
     return new B(@message);
   }
 }
 
 class B {
-  pub rdo message: string;
+  public readonly message: string;
 
-  pub fn %new (message: string) {
+  public fn %new (message: string) {
     @message = message;
   }
 }
@@ -2956,18 +2956,18 @@ These overloads can be triggered automatically thanks to the `#auto` directive. 
 
 ```sn
 class A {
-  priv message = 'Hello world!';
+  private message = 'Hello world!';
 
   #auto
-  pub fn %to<-B> () {
+  public fn %to<-B> () {
     return new B(@message);
   }
 }
 
 class B {
-  pub rdo message: string;
+  public readonly message: string;
 
-  pub fn %new (message: string) {
+  public fn %new (message: string) {
     @message = message;
   }
 }
@@ -2996,7 +2996,7 @@ Every class that implements the `%to<-string>` typecast overload will be `String
 
 ```sn
 class A impl Stringifyable {
-  pub fn %to<-string> () {
+  public fn %to<-string> () {
     return 'Hello world!';
   }
 }
@@ -3087,13 +3087,13 @@ Let's consider the following code:
 
 ```sn
 class A {
-  pub fn %to<-B> () {
+  public fn %to<-B> () {
     return new B;
   }
 }
 
 class B {
-  pub fn %to<-C> () {
+  public fn %to<-C> () {
     return new C;
   }
 }
@@ -3144,14 +3144,14 @@ inf Convertible_to_F {
 
 // Candidate
 class D {
-  pub fn %to<-F> () {
+  public fn %to<-F> () {
     return new F;
   }
 }
 
 // Candidate
 class E {
-  pub fn %to<-F> () {
+  public fn %to<-F> () {
     return new F;
   }
 }
@@ -3161,12 +3161,12 @@ class F {}
 
 // A sample class
 class G {
-  pub fn %to<-D> () {
+  public fn %to<-D> () {
     println!('Typecasted to D');
     return new D;
   }
 
-  pub fn %to<-E> () {
+  public fn %to<-E> () {
     println!('Typecasted to E');
     return new E;
   }
@@ -3222,7 +3222,7 @@ Templates can be _fixed_, which means they can only be a single value. This can 
 ```sn
 class A {
   // 'int' is a fixed template
-  pub fn %to<-int> () { /* Some stuff here */ }
+  public fn %to<-int> () { /* Some stuff here */ }
 }
 ```
 
@@ -3303,8 +3303,8 @@ The other ambiguity happens when using undistinctable templates:
 
 ```sn
 class Example<K, V> {
-  pub fn %new (value: K) {}
-  pub fn %new (value: V) {}
+  public fn %new (value: K) {}
+  public fn %new (value: V) {}
 }
 
 new Example(2); // ERROR: Template inference ambiguity
@@ -3318,7 +3318,7 @@ The resolution keywords refer to their actual classes with all their templates:
 
 ```sn
 class Example<T> {
-  pub fn test () {
+  public fn test () {
     // Here, '_this' refers to 'Example<T>'
     //  and not 'Example'
   }
@@ -3374,9 +3374,9 @@ This accepts any list with an unknown template. Note that we can still get eleme
 
 ```sn
 class Example<T> {
-  pub rdo value: T;
+  public readonly value: T;
 
-  pub fn %new (value: T) {
+  public fn %new (value: T) {
     @size = size;
   }
 }
