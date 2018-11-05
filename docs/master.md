@@ -550,6 +550,19 @@ let arr2: int[] = [ 2, 3, 4 ];
 arr2 = [ 2, 3, 4, 5 ]; // Works fine
 ```
 
+### Ranges
+
+Ranges are a shortened syntax to make arrays that go from a given integer to another. For example, if we want to make an array containing all integers from `10` to `19`, we can just write:
+
+```sn
+val arr = 10...19;
+
+println!(arr[0]); // Prints: '10'
+println!(arr[9]); // Prints: '19'
+```
+
+One of the main points that make ranges interesting, aside not having to write all numbers manually, is that they take near-to-zero memory space. Even a range of 1000 billion numbers (let's say, `0..1_000_000_000_000`) will take only a few bytes in memory, while its hand-written version would take much more memory than your computer can handle (about 4096 gigabytes of RAM).
+
 #### Lists
 
 Lists, on their size, are defined using the `List<T>` type, where `T` is the same as for arrays:
