@@ -555,7 +555,7 @@ arr2 = [ 2, 3, 4, 5 ]; // Works fine
 Lists, on their size, are defined using the `List<T>` type, where `T` is the same as for arrays:
 
 ```sn
-val list: List<int> = [ # 2, 3, 4 ];
+val list: int[#] = [ # 2, 3, 4 ];
 ```
 
 Notice the `#` symbol at the beginning of the list? It indicates we are not writing an array, but a list of elements. If we omit this symbol, we try to assign an array to a list, which is forbidden.
@@ -565,6 +565,18 @@ As for arrays, lists support inferred typing, so we can simply write:
 ```sn
 val list = [ # 2, 3, 4 ];
 ```
+
+To make empty lists, we can use an alternate syntax:
+
+```sn
+// Empty list of strings
+val list1 = string:[#];
+
+// Empty list of integers
+val list2 = int:[#];
+```
+
+Don't forget the `:` symbol between the type name and the opening bracket: it indicates we are not writing a type name (`int[#]` refers to a list of integers) but an _empty list_ of the given type.
 
 #### Dealing with vectors
 
@@ -3381,218 +3393,3 @@ Note that it's not possible to instanciate types using the wildcard template dir
 val obj: Example<?> = new Example<?>(2); // ERROR
 val obj: Example<?> = new Example<int>(2); // Works fine
 ```
-
-## Dictionaries in depth
-
-In this chapter, we will see all the concepts about dictionaries.
-
-### Dictionary classes
-
-Dictionary classes are special classes that behaves like a dictionary, which is a set of key/value pairs. They allow to associate arbitrary keys and values. For example, vector classes are dictionary classes, as well as the `Map<K, V>` class.
-
-They are declared using the `dict` keyword instead of the `class` one. Dictionary classes automatically implement the `Dictionary<K, V>` which describes a set of overloads they must implement:
-
-```sn
-// K = type of keys
-// V = type of values
-dict Custom<K, V> {
-  // Get a value from a key
-  pub fn %get (key: K) : V;
-  // Associate a value to a key
-  pub fn %set (key: K, value: V);
-  // Remove a key and its associated value
-  pub fn %unset (key: K);
-  // Get the number of key/value pairs
-  pub fn %size () : usize;
-  // Check if a key exists
-  pub fn %has (key: K) : bool;
-  // Check if a value is associated to a key
-  pub fn %contains (value: V) : bool;
-  // Get an iterator on key-value pairs
-  pub fn %iterate () : Iterator<(K, V)>;
-}
-```
-
-If you want to grant additional template to your dictionary class, you must manually implement the dictionary interface:
-
-```sn
-dict Custom<T, V, K> impl Dictionary<V, K> {
-  // ...
-}
-```
-
-Most dictionary classes should inherit from the `Map<K, V>` class which comes with many useful functions like `.filter` or `%clone`, without any restriction on the overloads itself (they can also be overwritten):
-
-```sn
-dict Custom<K, V> extends Map<K, V> {
-  // ...
-}
-```
-
-In this case, the dictionary class can access two protected members: `keys: List<K>` and `values: List<V>`. To force a template value, like vectors do, we can use a fixed template:
-
-```sn
-dict Vector<T> extends Map<usize, T> {
-  // ...
-}
-```
-
-Note that we can do in a dictionary class anything we can do in a standard class: segments, inheritance, extensions, ...
-
-#### The `%contains` overload
-
-This overload can be used even in non-dictionary classes, like in the `string` class:
-
-```sn
-'a' in 'abc'; // Works even though 'string'
-              // is not a dictionary class
-```
-
-### Exploring dictionaries
-
-We already _explored_ dictionaries before, notably by using the `for value in array` loop. There are several loops for this:
-
-```sn
-// Create a map
-val map = new Collection<int>;
-map['a'] = 2;
-map['b'] = 8;
-
-// Explore keys
-for key of map {
-  println!(key); // Prints: 'a' then 'b'
-}
-
-// Explore values
-for value in map {
-  println!(value); // Prints: '2' then '8'
-}
-
-// Explore keys and values
-for key -> value in map {
-  println!(key + ': ' + value); // Prints: 'a: 2' then 'b: 8'
-}
-```
-
-In fact, the `in` and `of` keyword in a `for` loop automatically call the `%iterate` overload of the value on their right.
-
-### Shortened syntaxes
-
-Dictionaries get many shortened syntaxes to avoid having to use their overloads. Here are the original syntaxes:
-
-```sn
-let personsAge: { # me: 18 };
-
-// Get a value from a key
-personsAge.%get('me'); // Returns: 12
-
-// Associate a value to a key
-personsAge.%set('john', 24);
-
-// Get the size of the dictionary
-personsAge.%size(); // Returns: 2
-
-// Delete a key(and the value it refers to)
-personsAge.%unset('john');
-
-// Check if a key is known
-personsAge.%has('john'); // Returns: false
-
-// Check if a value is contained in the dictionary
-personsAge.%contains(18); // Returns: true
-
-// Get the array of all keys
-personsAge.%iterate(); // Returns an Iterator<(K, V)>
-```
-
-And here are the shortened syntaxes:
-
-```sn
-// Get a value from a key
-personsAge['me'];
-
-// Associate a value to a key
-personsAge['john'] = 24;
-
-// Get the size of the dictionary
-personsAge.size; // Returns: 2
-
-// Delete a key (and the value it refers to)
-delete personsAge['john'];
-
-// Check if a key is known
-'john' of personsAge; // Equal to 'false'
-
-// Check if a value is contained in the dictionary
-18 in personsAge; // Equal to 'true'
-
-// Get the array of all keys
-for key -> value in personsAge {
-  // ...
-}
-```
-
-### Practice: unique values
-
-Here is an example of a dictionary class: it links a key (of any type) to a value (of any type, too), but its specificity is that it doesn't accept the same value twice.
-
-Try to make this class by yourself. Like for the RPG map exercice, the solution is described below, part by part.
-
-#### Part 1: the class
-
-As we are declaring a dictionary class, we will use the `dict` keyword. Also, for the end user to be able to manipulate its instances more easily, we will inherit from the `Map<K, V>` class, as it provides many useful functions like `.filter`.
-
-Here is our class' skeleton:
-
-```sn
-dict UniqueMap<K, V> extends Map<K, V> {}
-```
-
-#### Part 2: storing keys and values
-
-We will have two attributes for this class: a list of keys, and a list of values. That's the traditional way in dictionaries, as it allows to manage keys and values separately.
-
-```sn
-  priv keys = new List<K>;
-  priv values = new List<V>;
-```
-
-#### Part 3: the setter
-
-Let's make the setter:
-
-```sn
-  // ...
-  pub fn %set (key: K, value: V) {
-    // If the value already exists in the dictionary, panic
-    panic!('Trying to use a duplicate value.') if value in @values;
-
-    // If the key already exists...
-    if key in @keys {
-      // Set a new value
-      @values[@keys.indexOf(key)] = value;
-    } else {
-      // Else, push the new key
-      @keys[] = key;
-      // And push the new value too
-      @values[] = value;
-    }
-  }
-```
-
-#### Part 4: the getter
-
-Let's make the getter now:
-
-```sn
-  // ...
-  pub fn %get (key: K, value: V) {
-    // If the key doesn't exist, panic
-    panic!('Key not found') if key not in @keys;
-
-    // Return the value
-    return @values[@keys.indexOf(key)];
-  }
-```
-
-#### Part 5:
