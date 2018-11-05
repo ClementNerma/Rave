@@ -806,7 +806,7 @@ tuple[num]; // ERROR
 
 pln NUM = 0p;
 
-tuple[num]; // Works ('NUM' is a plain constant)
+tuple[NUM]; // Works ('NUM' is a plain constant)
 ```
 
 Inferred typing also works on tuples:
