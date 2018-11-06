@@ -3288,7 +3288,7 @@ class G {
 (new G) as F; // Prints: 'Typecasted to D'
 ```
 
-### Templates
+## Templates
 
 ### The concept
 
