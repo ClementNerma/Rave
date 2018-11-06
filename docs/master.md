@@ -3534,3 +3534,33 @@ Note that it's not possible to instanciate types using the wildcard template dir
 val obj: Example<?> = new Example<?>(2); // ERROR
 val obj: Example<?> = new Example<int>(2); // Works fine
 ```
+
+### Class segments
+
+Class segments allow to make a set of members available only if a specific condition is met. For example, if we have a class representing a list of data, we could add a `.sum()` method which returns the sum of all numbers in it in the case it only contains numbers.
+
+With all we've seen so far, this is not possible: the method will simply be available whatever the type of content is, and must handle the case where it doesn't contain only numbers.
+
+Class segments allow to solve this problem by making our method available only if a condition we give is met. The main point is that conditions must be predictable: the builder must be able to evaluate the condition at build time. A type of valid condition is checking if a template is implementing a specific interface, using a trait or inheriting from a class:
+
+```sn
+class MyArrayClass<T> {
+  // Declare a segment
+  // All items in it will be available only if the condition is met
+  // - which means only if 'T' is a sub-type of 'number'
+  segment T ~ number {
+    // Our '.sum()' function
+    public fn sum () : T {
+      // Do some stuff here;
+    }
+  }
+}
+```
+
+We can now try it:
+
+```sn
+(new MyArrayClass<int>).sum(); // Works fine
+(new MyArrayClass<number>).sum(); // Works fine
+(new MyArrayClass<bool>).sum(); // Works fine
+```
