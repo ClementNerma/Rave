@@ -3304,7 +3304,7 @@ op fn plus<T> (left: CanAdd<T>, right: T) : T {
 
 We will detail this example part by part. First, we declare an operator function called `plus`. We then join it a _template_ called `T`, which must be a type (a class, an interface, a structure...).
 
-The operator's right operand has the template type, and this is the same type the operator returns a value of. The left operand is of type `CanAdd<T>`, which is an interface made to accept values of all types implement the `%plus` method with an argument of the given type. Otherwise, our program wouldn't have worked because the `+` operator doesn't work on non-`CanAdd<T>` values.
+The operator's right operand has the template type, and this is the same type the operator returns a value of. The left operand is of type `CanAdd<T>`, which is an interface made to accept values of all types implement the `%add` method with an argument of the given type. Otherwise, our program wouldn't have worked because the `+` operator doesn't work on non-`CanAdd<T>` values.
 
 We can now use our operator function:
 
@@ -3330,11 +3330,11 @@ Here is its declaration of the `CanAdd` interface:
 
 ```sn
 interface CanAdd<T, X = T> {
-  fn %plus (value: T) : X;
+  fn %add (value: T) : X;
 }
 ```
 
-As you can see, this interface takes two templates, but the second one, which is the return type of the `%plus` overload, is optionnal. If omitted, it will be `T`, so `CanAdd<T>` will only accept types that implement the `%plus` overload taking a `T` value **and returning** a `T` value.
+As you can see, this interface takes two templates, but the second one, which is the return type of the `%add` overload, is optionnal. If omitted, it will be `T`, so `CanAdd<T>` will only accept types that implement the `%add` overload taking a `T` value **and returning** a `T` value.
 
 ### Fixed templates
 
