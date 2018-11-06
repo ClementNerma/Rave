@@ -2385,7 +2385,7 @@ class Example {
     @name = newName;
   }
 
-  public fn %clone () {
+  public fn %clone () : _self {
     println!('Instance has been cloned.');
     return new Example(@name);
   }
@@ -2403,8 +2403,6 @@ println!(a); // Prints: 'B'
 println!(b); // Prints: 'B'
 println!(c); // Prints: 'C'
 ```
-
-You may notice we haven't provided a return type for the `%clone` function. This is because the signature of most overload methods are imposed, so as for callbacks with ICT, we don't have to provide the type of arguments as well as the method's return type - though it's still allowed.
 
 ### Serialization
 
@@ -3343,7 +3341,7 @@ Templates can be _fixed_, which means they can only be a single value. This can 
 ```sn
 class A {
   // 'int' is a fixed template
-  public fn %to<-int> () { /* Some stuff here */ }
+  public fn %to<-int> () : _self { /* Some stuff here */ }
 }
 ```
 
