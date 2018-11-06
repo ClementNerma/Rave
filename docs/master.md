@@ -30,7 +30,7 @@ The SilverNight language is built around X key-concepts: safety, explicity, poly
 Given the points above, the language is perfect for developers who want to:
 
 * Unify applications development under a single programming language and API (thanks to frontend libraries) ;
-* Get rid of low-level languages' complexitly/unsafety ;
+* Get rid of low-level languages' complexity/unsafety ;
 * Get rid of high-level languages' lack of riguor ;
 * Use a stable language with a very explicit behavior
 
