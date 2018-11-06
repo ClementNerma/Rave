@@ -3851,6 +3851,6 @@ We will have two attributes for this class: a list of keys, and a list of values
   // ...
   public fn %iterate () : Iterator<(K, V)> {
     // Return an iterator on a key-value tuple
-    return (@keys, @values).iterate();
+    return Iterator.fromBinom(@keys, @values);
   }
 ```
