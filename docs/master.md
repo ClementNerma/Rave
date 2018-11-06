@@ -3448,6 +3448,17 @@ class Example<T> {
 (new Example<uint>).test(); // In '.test': _this == Example<uint>
 ```
 
+We can change get the current class with other templates by rewriting them:
+
+```sn
+class Example<T> {
+  public fn test () {
+    // _this == Example<T>
+    // _this<int> == Example<int>
+  }
+}
+```
+
 ### `typeof` operator
 
 The `typeof` operator can sometimes allow us to get rid of templates. Let's take the following example:
