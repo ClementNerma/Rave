@@ -161,8 +161,8 @@ val value: void = null;
 Booleans use the `bool` type and can take either the `true` or the `false` value.
 
 ```sn
-val value_1: bool = true;
-val value_2: bool = false;
+val value1: bool = true;
+val value2: bool = false;
 ```
 
 #### Numbers
@@ -1004,20 +1004,20 @@ The opposite is also possible: we can make an object from a group of entities:
 
 ```sn
 // Standard way
-val hero_copy = {
+val copy = {
   name: name,
   age: age,
   warrior: warrior
 };
 
 // Multiple assignments
-val hero_copy = { name, age, warrior };
+val copy = { name, age, warrior };
 ```
 
 This syntax can also be mixed with other properties:
 
 ```sn
-val new_hero = {
+val newHero = {
   name, // Implicit value
   age, // Implicit value
   warrior: false // Explicit value
@@ -1090,7 +1090,7 @@ println!(two); // Prints: '2'
 The slicing syntax allows to get a specific part of a dictionary. Considering the following one:
 
 ```sn
-val persons_city = { #
+val personsCity = { #
   Jack: 'New York',
   John: 'Washington',
   Marc: 'Paris'
@@ -1100,13 +1100,13 @@ val persons_city = { #
 We can _slice_ it to get only a part of it:
 
 ```sn
-val slice = persons_city[['Jack', 'John']];
+val slice = personsCity[['Jack', 'John']];
 
 println!(slice[0]); // 'Jack'
 println!(slice[1]); // 'John'
 ```
 
-The `slice` constant is an `int[2]` which contains the values retrieved from `persons_city['Jack']` and `persons_city['John']`.
+The `slice` constant is an `int[2]` which contains the values retrieved from `personsCity['Jack']` and `personsCity['John']`.
 
 By giving a tuple of indexes between the brackets, we get an array containing the values related to these indexes. We can get as many indexes as we want - it even works with one or zero index.
 
@@ -1543,7 +1543,7 @@ First, we gave it a _return type_, written after the double point symbol just be
 The second change is the `return` statement at the end of the function. The value on its right is returned by the function, which can be used afterward:
 
 ```sn
-val trapezoid_area = area(1.0, 2.0, 3.0));
+val trapezoidArea = area(1.0, 2.0, 3.0));
 ```
 
 ### Optional arguments
@@ -1551,13 +1551,13 @@ val trapezoid_area = area(1.0, 2.0, 3.0));
 Like we did with structures, we can make some arguments optional by giving them a default value. Though, such arguments must be placed at the very end of the arguments list.
 
 ```sn
-fn say_hello (name: string, repeat: uint = 1u) {
+fn sayHello (name: string, repeat: uint = 1u) {
   println!(name) for i in 0..repeat;
 }
 
-say_hello('Jack');    // Prints: 'Jack'
-say_hello('Jack', 1); // Prints: 'Jack'
-say_hello('Jack', 2); // Prints: 'Jack' (twice)
+sayHello('Jack');    // Prints: 'Jack'
+sayHello('Jack', 1); // Prints: 'Jack'
+sayHello('Jack', 2); // Prints: 'Jack' (twice)
 ```
 
 Note that default values can also be an expression, that will be evaluated when the function will be called.
@@ -1565,7 +1565,7 @@ Note that default values can also be an expression, that will be evaluated when 
 As default values indicate the argument's type, we can omit it from the declaration:
 
 ```sn
-fn say_hello (name: string, repeat = 1u) {
+fn sayHello (name: string, repeat = 1u) {
   // ...
 ```
 
@@ -1574,7 +1574,7 @@ fn say_hello (name: string, repeat = 1u) {
 Endless arguments are prefixed with the `...` symbol, and accept from zero to an infinity of arguments:
 
 ```sn
-fn sum_of (...nums: int[]) : int {
+fn sumOf (...nums: int[]) : int {
   let sum = 0;
 
   sum += n for n in sums;
@@ -1582,9 +1582,9 @@ fn sum_of (...nums: int[]) : int {
   return sum;
 }
 
-sum_of(1, 2, 3); // Works fine
-sum_of(1, 2, 3, 4); // Works fine
-sum_of(); // Works fine
+sumOf(1, 2, 3); // Works fine
+sumOf(1, 2, 3, 4); // Works fine
+sumOf(); // Works fine
 ```
 
 They are typed as arrays with an unknown length ; here, `nums` is an `int[]`.
@@ -1592,7 +1592,7 @@ They are typed as arrays with an unknown length ; here, `nums` is an `int[]`.
 It's possible to provide multiple endless arguments, the only rule it that we can't write two consecutive endless arguments with the same type:
 
 ```sn
-fn sum_of (...ints: int[], ...floats: f32[]) : f32 {
+fn sumOf (...ints: int[], ...floats: f32[]) : f32 {
   let sum = 0.0;
 
   for n in ints {
@@ -1604,10 +1604,10 @@ fn sum_of (...ints: int[], ...floats: f32[]) : f32 {
   return sum;
 }
 
-sum_of(1, 2, 3.0); // Works fine
-sum_of(1, 2); // Works fine
-sum_of(3.0); // Works fine
-sum_of(); // Works fine
+sumOf(1, 2, 3.0); // Works fine
+sumOf(1, 2); // Works fine
+sumOf(3.0); // Works fine
+sumOf(); // Works fine
 ```
 
 ### Vector expansion
@@ -1617,9 +1617,9 @@ It's also possible to use a vector in the place of an endless arguments, using _
 ```sn
 val nums = [ 2, 3, 4 ];
 
-sum_of(nums..., 5.0);
+sumOf(nums..., 5.0);
 // Equivalent to:
-sum_of(2, 3, 4, 5.0);
+sumOf(2, 3, 4, 5.0);
 ```
 
 ### Operator functions
@@ -1694,16 +1694,16 @@ add(2.0, 5.0); // Prints: 'Add: uint'
 There is a risk of ambiguity at build time if the function uses endless arguments and we don't provide any (which is allowed):
 
 ```sn
-fn sum_of (...nums: int) : int { /* ... */ }
-fn sum_of (...nums: f32) : f32 { /* ... */ }
+fn sumOf (...nums: int) : int { /* ... */ }
+fn sumOf (...nums: f32) : f32 { /* ... */ }
 
-sum_of(); // ERROR (ambiguity)
+sumOf(); // ERROR (ambiguity)
 
 // The compiler doesn't know what declaration to use
 // We must tell it explicitly by using a vector of elements
 
 val vec = int:[#];
-sum_of(vec...); // Works fine
+sumOf(vec...); // Works fine
 ```
 
 ### Lambdas
@@ -1728,7 +1728,7 @@ The `filtered` list now contains the `3` and `4` values. As you can see, the lam
 It's possible to represent functions as a type:
 
 ```sn
-fn run_lambda (func: fn (value: int) : bool) {
+fn runLambda (func: fn (value: int) : bool) {
   if func(5) {
     println!('Returned: true');
   } else {
@@ -1736,7 +1736,7 @@ fn run_lambda (func: fn (value: int) : bool) {
   }
 }
 
-run_lambda((value: int) : bool => {
+runLambda((value: int) : bool => {
   return true;
 }); // Prints: 'Returned: true'
 ```
@@ -2038,12 +2038,12 @@ Static attributes must have an initialization value. Classes can access their st
 class Example {
   public static name = 'Hello';
 
-  public static fn print_name () {
+  public static fn printName () {
     println!(self.name);
   }
 }
 
-Example.print_name(); // Prints: 'Hello'
+Example.printName(); // Prints: 'Hello'
 ```
 
 ### Data structure members
@@ -2381,7 +2381,7 @@ class Example {
     @name = name;
   }
 
-  public fn set_name (newName: string) {
+  public fn setName (newName: string) {
     @name = newName;
   }
 
@@ -2396,8 +2396,8 @@ let a = new Example('A');
 let b = a;
 let c = clone a;
 
-b.set_name('B');
-c.set_name('C');
+b.setName('B');
+c.setName('C');
 
 println!(a); // Prints: 'B'
 println!(b); // Prints: 'B'
@@ -3217,7 +3217,7 @@ We want to create, let's say, a variable, which accepts any value that can be ty
 This can be achieved using a _typecasting path_, which goes like this:
 
 ```sn
-interface Convertible_to_C {
+interface ConvertibleToC {
   // Typecasting path
   typepath C = B;
 }
@@ -3226,22 +3226,22 @@ interface Convertible_to_C {
 It is divided in two parts: the _target_, which is `C`, and the _candidates_, which are the types that can be directly typecasted to the target. Any type that is typecastable to any of the candidates (or to the target type itself, of course) will be considered as implementing the path. When a typecast will be performed between this type and the target, it will first use typecast it to the given candidate type, and then to the target type. The value implementing this path itself will so support typecasting to the target:
 
 ```sn
-let some_c: A = new A;
-let any_c: Convertible_to_C = new A;
+let short: A = new A;
+let long: ConvertibleToC = new A;
 
-some_c as C; // ERROR (cannot be typecasted to C)
+short as C; // ERROR (cannot be typecasted to C)
 
-any_c as C; // Works fine
+long as C; // Works fine
 // Equivalent to:
-(any_c as Convertible_to_C) as C;
+(long as ConvertibleToC) as C;
 // If we get rid of the path:
-(any_c as B) as C;
+(long as B) as C;
 ```
 
 The path can contain several types:
 
 ```sn
-interface Convertible_to_F {
+interface ConvertibleToF {
   type F = D | E;
 }
 ```
@@ -3249,7 +3249,7 @@ interface Convertible_to_F {
 In the case our type implements typecasting overload to two or more types in the path, the first one in the list is taken:
 
 ```sn
-interface Convertible_to_F {
+interface ConvertibleToF {
   type F = D | E;
 }
 
