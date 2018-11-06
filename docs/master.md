@@ -3459,7 +3459,7 @@ class Example<T> {
 }
 ```
 
-### `typeof` operator
+### The `typeof` operator
 
 The `typeof` operator can sometimes allow us to get rid of templates. Let's take the following example:
 
