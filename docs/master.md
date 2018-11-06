@@ -3316,6 +3316,14 @@ println!(i); // Prints: '7'
 
 Templates can be used everywhere a fixed type could be used. Types that use templates, such as `CanAdd<T>`, are called _templated types_.
 
+#### Templates in lambdas
+
+Templates can be used in lambdas by prefixing the opening parenthesis by the templates:
+
+```sn
+val lambda = <T> (value: T[]) : usize => value.length;
+```
+
 ### Optional templates
 
 Here is its declaration of the `CanAdd` interface:
