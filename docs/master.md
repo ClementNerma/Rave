@@ -2423,7 +2423,7 @@ The unserialization overload takes a string argument and returns an instance of 
 
 ```sn
   // ...
-  public fn %unserialize (serialized) throws UnserializationError {
+  public static fn %unserialize (serialized) throws UnserializationError {
     return new Example(@name);
   }
 ```
