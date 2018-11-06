@@ -3603,16 +3603,16 @@ class BankAccount {
   // ...
 
   // Doesn't work because 'T' cannot be guessed
-  public fn %plus<T> (left: string, right: int) : int[];
+  public fn %add<T> (left: string, right: int) : int[];
 
   // Doesn't work because 'T' cannot be guessed
-  public fn %plus<T> (left: string, right: int) : T;
+  public fn %add<T> (left: string, right: int) : T;
 
   // Works fine
-  public fn %plus<T> (left: T, right: int) : bool;
+  public fn %add<T> (left: T, right: int) : bool;
 
   // Works fine
-  public fn %plus<T> (left: string, right: Map<int, T>) : string[];
+  public fn %add<T> (left: string, right: Map<int, T>) : string[];
 
   // ...
 }
