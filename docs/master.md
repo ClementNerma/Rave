@@ -3575,3 +3575,45 @@ We can now try it:
 (new MyArrayClass<number>).sum(); // Works fine
 (new MyArrayClass<bool>).sum(); // Works fine
 ```
+
+### Templated overloads
+
+Let's say we have a class representing a very large number type (e.g. 512 bits unsigned integer, so it handles from 0 to 2^512 - 1). We want to be able to add such a number to any existing number type (e.g. add it to an `int`) and return a value of the added type.
+
+For that, we use a templated version of the addition overload:
+
+```sn
+class LargeNumber {
+  public fn %add<T ~ number> (num: T) : T {
+    // Do some stuff here
+  }
+}
+
+val largeNum = new LargeNumber;
+
+typeof (largeNum + 2); // int
+typeof (largeNum + 2.0); // f32
+typeof (largeNum + 8u); // uint
+```
+
+Generally speaking, it's always possible to use as many templates as we want on overloads, but only if the template can be inferred at build time:
+
+```sn
+class BankAccount {
+  // ...
+
+  // Doesn't work because 'T' cannot be guessed
+  public fn %plus<T> (left: string, right: int) : int[];
+
+  // Doesn't work because 'T' cannot be guessed
+  public fn %plus<T> (left: string, right: int) : T;
+
+  // Works fine
+  public fn %plus<T> (left: T, right: int) : bool;
+
+  // Works fine
+  public fn %plus<T> (left: string, right: Map<int, T>) : string[];
+
+  // ...
+}
+```
