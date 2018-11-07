@@ -4050,3 +4050,208 @@ typeof jack?.identity?.name?; // Option<string>
 The same applies for `john`.
 
 As you can see, it's possible to chain nullable operators. Indeed, if we just wrote `jack?.identity.name`, it would have failed because `jack?.identity` holds `none`.
+
+## Errors and panics
+
+### Panics
+
+When the program faces a situation that makes it unable to continue. We already encountered most of them ; for example, a program panics when:
+
+* We divide a number by zero;
+* We try to access an inexisting index in a dictionary;
+* We run out of memory
+
+A panic makes the program exit by force and display a panic message in the console. Note that it's not possible to "catch" panics, when one is raised, the program will exit no matter what happens.
+
+We can manually make the program panic by using `panic!`:
+
+```sn
+panic!('This is a panic message');
+```
+
+But its usage is mostly discouraged ; vast majority of the cases are handlable through _errors_.
+
+### Throwing errors
+
+Throwing an error consists in using the `throw` keyword, followed by an instance of the `Error` class. Usually, it looks like this:
+
+```sn
+// ...
+throw new Error('Something went wrong!');
+```
+
+But, errors cannot be thrown everywhere. Only functions can throw errors - meaning we can't throw errors in the main scope - if they declare them. Here is how it looks:
+
+```sn
+fn divideInt (left: int, right: int) : int throws Error {
+  if right == 0 {
+    throw new Error('Division by zero is not allowed');
+  }
+
+  return left / right;
+}
+```
+
+This function throws an error when we try to divide by zero. This way, if the division fails, the program won't panic.
+
+Note that this function indicates it may throw an instance of the `Error` class (right after the `throw` keyword). If we don't put this `throws Error` part, there will be an error at build time indicating the function can't throw an error without declaring it.
+
+### Catching errors
+
+Now, if we try to call our function, this won't work:
+
+```sn
+divideInt(6, 3); // ERROR
+```
+
+This fails because, when we call a function that may throw an error, we must _catch_ this error. This is done by using two blocks: `try` and `catch`.
+
+```sn
+try {
+  divideInt(6, 3);
+}
+
+catch (e: Error) {
+  println!('Division failed');
+}
+```
+
+The `try` block is allowed to call any function throwing errors. When an error occurs, this block is stopped and the program jumps to the `catch` one.
+
+The above program won't display anything. If we divided by 0, it would have displayed the message, but without any error. If we put instructions after these blocks, they will run fine.
+
+#### Cleaning test data
+
+You may create data in your `try` block you want to clone afterwise. This can be achieved through the `finally` block, which runs whatever happens after `try` (and `catch` if it is called). Even if a `return` statement is ran in the `try` or `catch` block, the `finally` one will be called just before returning.
+
+```sn
+fn doSomething () : int {
+  val counter = 0;
+
+  try {
+    counter ++;
+    counter += divideInt(6, 0);
+  }
+
+  catch (e: Error) {
+    println!('Division failed');
+    return -1;
+  }
+
+  finally {
+    counter --;
+  }
+
+  return counter;
+}
+```
+
+This program will print a message telling the division failed, but the `finally` block will still be called before the function returns.
+
+### Inline catching
+
+When assigning a value to a mutable or a constant that may throw an error, we face the following problem: as we cannot simply do `val constant = divideInt(a, b);` because `divideInt` may throw an error, we have first to declare the constant, then to make the assignment inside a `try` block, and catch errors in a `catch` block.
+
+To simplify this process, we can perform an _inline catching_. It consists in trying to call a function and, if that doesn't work, get the `null` value. Showcase:
+
+```sn
+val num = try? divideInt(a, b);
+```
+
+If the division works, it will return its value. Else (if `b` is equal to `0`), `num` will get the `null` value. This makes the constant having the `int?` type.
+
+We can also call a function if this fails:
+
+```sn
+val num = try divideInt(a, b) catch e => println!('FAILED!');
+
+// Preparing the callback:
+val callback = (e: Error) => println!('FAILED!');
+val num = try divideInt(a, b) catch callback;
+```
+
+Note that the callback can return a value of the same type as the value in the `try` block ; if so, it becomes a kind of "default value", and allows the final value to be non-nullable - as we are sure a value will be returned in all cases.
+
+```sn
+val num = try divideInt(a, b) catch e => 0;
+
+// Preparing the callback:
+val callback = (e: Error) : int => 0;
+val num = try divideInt(a, b) catch callback;
+```
+
+### Custom error classes
+
+It's possible to create custom error classes to indicate clearly what type of error has been thrown. Error classes are simply classes that inherit from the base `Error` class:
+
+```sn
+class DivisionByZeroError extends Error {
+  super(message: string);
+}
+```
+
+We can now use it in our function:
+
+```sn
+fn divideInt (left: int, right: int) : int throws DivisionByZeroError {
+  if right == 0 {
+    throw new DivisionByZeroError('Division by zero is not allowed');
+  }
+
+  return left / right;
+}
+```
+
+And when we catch errors:
+
+```sn
+try {
+  divideInt(a, b);
+}
+
+catch (e: DivisionByZeroError) {
+  println!(e.message); // May print: 'Division by zero is not allowed'
+}
+```
+
+A function can also throw different type of errors:
+
+```sn
+fn doSomething () throws AError, BError {
+  if ... {
+    throw new AError('Error of type A occured!');
+  }
+
+  if ... {
+    throw new BError('Error of type B occured!');
+  }
+}
+```
+
+We can then do a chain catch:
+
+```sn
+try {
+  doSomething();
+}
+
+catch (e: AError) {
+  // ...
+}
+
+catch (e: BError) {
+  // ...
+}
+```
+
+But we can also get them all at once:
+
+```sn
+try {
+  doSomething();
+}
+
+catch (e: Error) {
+  // *ALL* errors will be caught here
+}
+```
