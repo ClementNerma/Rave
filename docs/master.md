@@ -3854,3 +3854,199 @@ We will have two attributes for this class: a list of keys, and a list of values
     return Iterator.fromBinom(@keys, @values);
   }
 ```
+
+## Nullability and optional types
+
+A nullable type is a type that can hold values of itself as well as voids. For example, the nullable `int` type can handle any 32-bit signed integer, as well as the `null` value.
+
+### An example with points
+
+To take an example, let's imagine we have a function that looks for a point with `x` and `y` attributes both equals to zero. It could look like this:
+
+```sn
+struct Point {
+  name: string;
+  x: int;
+  y: int;
+}
+
+fn getNilPoint (points: Point[]) : Point {
+  for point in points {
+    if point.x == 0 && point.y == 0 {
+      return point;
+    }
+  }
+}
+```
+
+This works fine. Now, what if we run this code:
+
+```sn
+val point: Point = getNilPoint([]);
+```
+
+Our program will crash because getNilPoint returned a void while a Point was expected. This is simply due to the fact no point matched the condition in the for loop, so the function ended without returning anything (which is equivalent to returning `null`). So, in order to make this function work anyway, and without returning a whole structure with a success boolean or something like that, we can use a nullable type:
+
+```sn
+fn getNilPoint (points: Point[]) : Point? {
+```
+
+This allows the function to return a `Point` instance or a `void` instance (`null`). But, our program will still crash with an error message telling that a `void` cannot be converted to a `Point`. That's simply because we declared our constant with the `Point` type, but we must now tell it can also contain a void:
+
+```sn
+val point: Point? = getNilPoint([]);
+```
+
+Now our program works as expected, and `point` is equal to `null`. We can also use inferred typing on nullable types:
+
+```sn
+val point = getNilPoint();
+
+println!(typeof point == Point?); // Prints: 'true'
+```
+
+### The `null` value
+
+As we saw, the `getNilPoint()` function can now return an instance of `void` (the famous `null` value).
+
+A strict equivalent to our function:
+
+```sn
+fn getNilPoint (array: Point[]) : Point? {
+  for point in array {
+    if point.x == 0 && point.y == 0 {
+      return point;
+    }
+  }
+
+  // Optional
+  return null;
+}
+```
+
+This is exactly the same thing.
+
+Be aware though, using inferred typing with `null` could result in the following behavior:
+
+```sn
+let point = null;
+point = getNilPoint([]); // ERROR
+```
+
+This will result in an error because inferred typing gave the `void` type to `point`, so it can't receive a `Point?` value. We must replace this code by:
+
+```sn
+let point = nullable!(Point);
+point = getNilPoint([]); // Works fine
+```
+
+Now we've seen all this, let's try our function:
+
+```sn
+val point1 = getNilPoint([ { name: 'Test point', x: 0, y: 0 } ]);
+println!(point1.name); // Prints: 'Test point'
+
+val point2 = getNilPoint([]);
+println!(point2.name); // ERROR
+```
+
+The second call to `getNilPoint()` makes our program crash. Why? Simply because `point2` is a `void` instance. This is the main downside of nullable types: if we try to access their members while they are `null`, the program panics.
+
+So, in order to avoid such problems, we have to check first if our constant contains a `null` value or not, thanks to the equality operator `==` or the difference operator `!=`. This can be done thanks to the fact two instances of the same class can be compared with these two operators (we'll see that in details in the pointers chapter). So we can write:
+
+```sn
+val point = getNilPoint([]);
+
+if point == null {
+  println!('No point found.');
+} else {
+  println!(`A point was found: ${point.name}`);
+}
+```
+
+Note that we can still use some native operators like `!` or `point ? doSomething() : doSomethingElse()` on our constant, as they don't care about the value's type - only if it's NIL or not.
+
+### Optional type
+
+The optional type is a nullable type that cannot fail at runtime. The downside is that we can't simply manipulate it like a simple nullable value: before accessing _any_ of its members, we must first ensure it is not `null`. Here is how it goes:
+
+```sn
+fn getNilPoint (array: Point[]) : Option<Point> {
+  for point in array {
+    if point.x == 0 && point.y == 0 {
+      return some!(point);
+    }
+  }
+
+  return none;
+}
+```
+
+Note that `none` is a value that is automatically typecastable to any `Option<T>` type, which allows us to use it where a `Option<T>` value is expected.
+
+As we do not return a nullable value now but an optional value (an instance of the `Option<Point>` type), we can't use `Point`'s members. For that, we must get the point itself, which requires to ensure it is not null:
+
+```sn
+val point = getNilPoint([]);
+
+if point.ok {
+  println!(expect!(point).name);
+} else {
+  println!('No point found');
+}
+```
+
+This code will print "No point found".
+
+Calling `expect!` make it retrieve the value. If it is `none`, the program will panic. Note that it is also possible to not check for `ok` and simply display a custom panic message in the case it is `none`:
+
+```sn
+val point = getNilPoint([]);
+
+println!(expect!(point, 'Expected a point').name);
+```
+
+This code will panic with the specified message.
+
+### Nullable operator
+
+Here is a useful operator, that works both on nullable and optional types. It allows to access a member of the given value only if it is not `null` (for nullable types) or `none` (for optional types). If it is, it will simply return either `null` if we are using a nullable type or `none` else. This way, the program won't fail at runtime.
+
+Also, this operator allows us to not write `expect!` for each item:
+
+```sn
+struct Hero {
+  identity: {
+    name: string;
+  }
+}
+
+val jack = some!(Hero {
+  identity: {
+    name: 'Jack'
+  }
+});
+
+val john = none;
+
+println!(expect!(jack).identity.name); // ERROR
+
+println!(jack?.identity?.name?); // Prints: 'Jack'
+println!(john?.identity?.name?); // Prints: ''
+```
+
+Let's detail the constants' type:
+
+```sn
+typeof jack; // Option<Hero>
+
+typeof jack?.identity; // Hero.identity
+typeof jack?.identity?; // Option<Hero.identity>
+
+typeof jack?.identity?.name; // string
+typeof jack?.identity?.name?; // Option<string>
+```
+
+The same applies for `john`.
+
+As you can see, it's possible to chain nullable operators. Indeed, if we just wrote `jack?.identity.name`, it would have failed because `jack?.identity` holds `none`.
