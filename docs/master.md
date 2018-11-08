@@ -4899,6 +4899,22 @@ println!(added[0]); // Prints: '4' (1 + 3)
 println!(added[1]); // Prints: '6' (2 + 4)
 ```
 
+### Symbols
+
+Symbols are useful values to identify and separate data. A symbol holds a unique identifier we cannot access, as well as an optional string which is its _value_. Two symbols are considered as equal if and only if they share the same identifier - so they are only equal to themselves.
+
+```sn
+val sym1 = new Symbol('This is a great symbol');
+val sym2 = new Symbol('This is a sympathic symbol');
+
+println!(sym1.message); // Prints: 'This is a great symbol'
+
+sym1 == sym1; // true
+sym1 == sym2; // false
+sym2 == sym1; // false
+sym2 == sym2; // true
+```
+
 ### Descriptor types
 
 Descriptor types are types that describe other types. For instance, the `Type` type refers to all existing types, while `Structure` refers to existing structure types.
