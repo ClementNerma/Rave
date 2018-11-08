@@ -2273,7 +2273,7 @@ Also, be aware of the map: its cells can be modified anytime. Indeed, though map
 
 Classes have other features we will see in this chapter.
 
-### Scope-dropping
+### Values dropping
 
 First, let's introduce the concept of _overload_: an overload is a class method, starting with a purcent symbol `%`. It is called like this because it _overloads_ a behavior of the language: the constructor overloads the behavior of instanciation.
 
@@ -2290,11 +2290,7 @@ The first `A` instance is dropped when the second assignment occurs, because no 
 
 Still, we could want to notify some of the code the user is going to be dropped. For that, we can use the _destructor_, which is called just before the instance is dropped.
 
-**NOTE:** The end of the program marks the drop of all values, but for performance reasons their destructor is not called. To force the program to call the destructor of all values anyway, we have to specify a _head directive_:
-
 ```sn
-#![main_scope_dropping];
-
 class User {
   private static counter = 0u;
   private id: uint;
