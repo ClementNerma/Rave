@@ -306,7 +306,7 @@ val num = 127b; // i8 (-128 to 127)
 println!(num + 1); // Prints: '-128'
 ```
 
-The `println!` statement allows to display a value in the console. Here, where we expect it to display `128`, it shows `-128`. This is because our number _overflowed_: because it can't handle numbers higher than `128`, it goes back to its minimum bound (`-128`). The operation is not stopped, though:
+The `println!` statement allows to display a value in the console. `println!` is a flex - a special function we will deal with later -. Here, where we expect it to display `128`, it shows `-128`. This is because our number _overflowed_: because it can't handle numbers higher than `128`, it goes back to its minimum bound (`-128`). The operation is not stopped, though:
 
 ```sn
 val num = 127b;
