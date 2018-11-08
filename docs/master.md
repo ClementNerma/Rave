@@ -2497,6 +2497,66 @@ Here is the list of overloadable arithmetic operators:
 * `%mod` for `%` ;
 * `%pow` for `**`
 
+### Comparison overloads
+
+As for arithmetic operators, comparison operators can be overloaded in classes.
+
+```sn
+class Hero {
+  public readonly name: string;
+
+  public fn %new (name: string) {
+    @name = name;
+  }
+
+  public fn %equal (another: _self) : bool {
+    return @name == another.name;
+  }
+}
+
+println!(new Hero('Jack') == new Hero('Jack')); // Prints: 'true'
+println!(new Hero('Jack') == new Hero('John')); // Prints: 'false'
+
+println!(new Hero('Jack') != new Hero('Jack')); // Prints: 'false'
+println!(new Hero('Jack') != new Hero('John')); // Prints: 'true'
+```
+
+The `%equal` overload returns `true` if the compared entity is equal to itself, `false` else. The inequality operator (`!=`) is automatically supported as the opposite (returns `true` if `%equal` returns `false`).
+
+Classes implementing this overload implement the `EqualityChecking<T>` interface, where `T` is the type of the argument specified in the overload (here, `Hero`).
+
+There is also a more advanced overload to compare values in a more advanced way:
+
+```sn
+class BankAccount {
+  public readonly amount: uint;
+
+  public fn %new (amount: uint) {
+    @amount = amount;
+  }
+
+  public fn %compare (another: _self) : Comparison {
+    if @amount > another.amount {
+      return Comparison.GREATER;
+    } elsif @amount < another.amount {
+      return Comparison.SMALLER;
+    } else {
+      return Comparison.EQUAL;
+    }
+  }
+}
+
+println!(new BankAccount(2000u) == new BankAccount(2000u)); // Prints: 'true'
+println!(new BankAccount(2000u) != new BankAccount(1000u)); // Prints: 'true'
+
+println!(new BankAccount(2000u) > new BankAccount(1000u)); // Prints: 'true'
+println!(new BankAccount(2000u) < new BankAccount(1000u)); // Prints: 'false'
+```
+
+The `%compare` overload returns one of the `Comparison` enumeration's values: either `GREATER` to indicate the current instance is greater than the one it compares too, either `SMALLER` to indicate its smaller, or finally `EQUAL` to indicate they are both equal.
+
+Implementing `%compare` automatically implements `%equal`. To avoid duplicate and useless code, they cannot be put together in the same class. Also, all classes implementing this overload implement the `ComparableTo<T>` overload, where `T` is the type of the argument specified in the overload.
+
 ### Friends
 
 A class' _friend_ is a function or a whole class that is allowed to access the class' instances' private members:
