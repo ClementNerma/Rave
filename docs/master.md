@@ -5071,8 +5071,10 @@ println!(counter); // Prints: '5'
 
 As the proxy model is a simple object, we can create it by advance and store it inside an object to use the same model across several proxies. The object will be cloned each time we create a proxy from it.
 
+A specificity is that models must be declared using the `prxmodel` keyword. Also, they cannot be read or write ; writing `myProxyModel.prop` will always fail.
+
 ```sn
-val counterProxy = ProxyModel {
+prxmodel counterProxy {
   value: 0u,
   getter: () => ++ @value
 };
