@@ -3420,16 +3420,24 @@ Note that we don't specify the dash before the type's name when we call the func
 
 ### Typechecking
 
-It's possible for a template to accept any type that inherits from a class, implements an interface or use a trait. For all these scenarios, we use the _template typechecking operator_: `~`.
+It's possible for a template to accept any type that inherits from a class, implements an interface or use a trait:
 
 ```sn
-fn takeNum<T ~ number> (num: T) {
+fn takeNum<T extends number> (num: T) {
   println!(num);
 }
 
 takeNum<int>(2); // Prints: '2'
 takeNum<uint>(2u); // Prints: '2'
 ```
+
+We can ues use the following syntaxes:
+
+* `T extends X`: T must inherit from X;
+* `T implements X`: T must implement the X interface;
+* `T uses X`: T must use the X trait.
+
+They can also be chained, like `T extends X implements Y`.
 
 ### Template inference
 
@@ -3455,7 +3463,7 @@ fn newValue (value: int) : int {
   return value * 2;
 }
 
-fn newValue<T ~ number> (value: T) : T {
+fn newValue<T extends number> (value: T) : T {
   return value * 4;
 }
 
@@ -3593,7 +3601,7 @@ class MyArrayClass<T> {
   // Declare a segment
   // All items in it will be available only if the condition is met
   // - which means only if 'T' is a sub-type of 'number'
-  segment T ~ number {
+  segment T extends number {
     // Our '.sum()' function
     public fn sum () : T {
       // Do some stuff here;
@@ -3618,7 +3626,7 @@ For that, we use a templated version of the addition overload:
 
 ```sn
 class LargeNumber {
-  public fn %add<T ~ number> (num: T) : T {
+  public fn %add<T extends number> (num: T) : T {
     // Do some stuff here
   }
 }
