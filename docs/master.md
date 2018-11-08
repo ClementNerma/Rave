@@ -5338,3 +5338,43 @@ val myTuple: TupleOfThree<int> = (2, 8, 5);
 ```
 
 As type aliases are _aliases_ and not real types, there is no typecasting problem ; in our example, writing `TupleOfThree<int>` is **exactly** the same as writing `(T, T, T)`.
+
+### Unsafe typecasting
+
+Unsafe typecasting allow to typecast a value from its official type to its hidden type. Let's take an example:
+
+```sn
+val something: Any = 'Hello world!';
+```
+
+The _official type_ of `something` is `Any`: this is the type it sure has. But its real type, called the _hidden type_, is `string`: in fact, `something` holds a `string`.
+
+Still, we may want to convert this value back to its original type. This can be achieved only through _unsafe_ typecasting:
+
+```sn
+try {
+  cast_unsafe!<string>(something); // Returns a string
+}
+
+catch (e: UnsafeCastError) {
+  println!('Failed to typecast!');
+}
+```
+
+This program will work fine. If we tried to cast unsafely `something` to **any** other type, it would have failed and throw an error.
+
+Because using a `try`-`catch` block is a bit heavy, we can use its nullable version:
+
+```sn
+val str = <?string> something;
+```
+
+The `str` entity has the `string?` value: if the typecast succeeds, it holds the typecast value. But if it fails, instead of throwing an error, it returns `null` ; that's why the returned value is nullable.
+
+If we are absolutely sure about the typecasting being write - and so we don't want the final value to be nullable, we can use another syntax:
+
+```sn
+val str = <!string> something;
+```
+
+Using this one, if the typecast fails, the program will panic. Be **really** aware when using it - its usage is strongly discouraged most of the time.
