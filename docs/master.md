@@ -2442,9 +2442,9 @@ If you want to be ensure the serialized content is valid, it's possible to make 
 
 The big advantage of checksum is that it highly reduces the risks to get invalid values, but the downside is that both serialization and unserialization will be considerably slower.
 
-### Overloading operators
+### Arithmetic overloads
 
-Some operators can be overloaded in a class, allowing to use them on the class' instances:
+Some arithmetic operators can be overloaded in a class, allowing to use them on the class' instances:
 
 ```sn
 class MyInt {
@@ -2488,7 +2488,7 @@ val two = new MyInt(2);
 println!(one + two); // Prints: '3'
 ```
 
-Here is the list of overloadable operators:
+Here is the list of overloadable arithmetic operators:
 
 * `%add` for `+` ;
 * `%sub` for `-` ;
