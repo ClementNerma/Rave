@@ -4132,7 +4132,7 @@ When the program faces a situation that makes it unable to continue. We already 
 * We try to access an inexisting index in a dictionary;
 * We run out of memory
 
-A panic makes the program exit by force and display a panic message in the console. Note that it's not possible to "catch" panics, when one is raised, the program will exit no matter what happens.
+A panic makes the program exit by force and display a panic message in the console.
 
 We can manually make the program panic by using `panic!`:
 
@@ -4141,6 +4141,24 @@ panic!('This is a panic message');
 ```
 
 But its usage is mostly discouraged ; vast majority of the cases are handlable through _errors_.
+
+Note that it's possible to catch most panics by using the `catchPanic!` flex:
+
+```sn
+val handle = catchPanic!(ALL, () => {
+  // If the program panics during this function, it
+  //  will be caught and returned by the `catchPanic!` flex instead
+  // At the moment the panic raises, the function is stopped and returns by force
+});
+
+if not fail.ok {
+  println!('Something wrong happened: ' + fail.message);
+}
+```
+
+The `ALL` plain constant indicates we want to catch all kind of panics. We can also specify a specific one, or a list of the panic to catch. `ALL` is simply a tuple containing all of them.
+
+Only a few panics are not catchable ; for example, the `OUT_OF_MEMORY` panic will force the program to exit no matter what happens.
 
 ### Throwing errors
 
@@ -5286,11 +5304,11 @@ Also, if the constraint fails during assignment, the program panics. The only wa
 ```sn
 val notEmpty: string with (not _.empty()) = 'Hello world';
 
-val fail = handlePanic(CATCHABLE_TYPE_CONSTRAINTS_FAILS, () => {
+val fail = catchPanic!(CATCHABLE_TYPE_CONSTRAINTS_FAILS, () => {
   notEmpty = ''; // Function stops here and returns because of the fail
 });
 
-if fail == true {
+if not fail.ok {
   println!('Assignment failed'); // Will be printed
 }
 ```
