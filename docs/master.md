@@ -5254,3 +5254,55 @@ println!(copy); // Prints: 'Hello world!'
 This proxy is especially complex, so let's detail it. First, it takes two templates: a first one which is of the `T` type, with `T` being its second template. So, when we read it by giving it a value as a template, `T` is inferred and matches `DATA`'s type.
 
 The type of the proxy itself is a plain type. Its getter, a flex, simply returns `T`. So, when we call this proxy with a value as a template, it returns its type as a plain value.
+
+### Constrained types
+
+Constrained types are a way to ensure a value holds validated data in a way far easier than a proxy. The main difference are we don't attach it to an entity but to a value.
+
+Considering we want to ensure a string is not empty, we can declare a constrain the `string` type by putting a callback on it that checks, when we try to assign a value using this type, if it is not empty. Here is how it goes:
+
+```sn
+val notEmptyStr: string with ((candidate: string) => not candidate.empty()) = 'Hello world!';
+```
+
+This is a bit long, of course, so we can shorten our definition:
+
+```sn
+val notEmptyStr: string with (c => not c.empty()) = 'Hello world';
+```
+
+There is also a shorter syntax that gets rids of the function syntax and replace the candidate value by the `_` entity:
+
+```sn
+val notEmptyStr: string with (not _.empty()) = 'Hello world';
+```
+
+The presence of the callback ensures the value has been validated, and so we don't have to perform any additional check.
+
+The counterpart of constrained types is that the callback is called at each assignment, which reduces performances when writing. When reading, nothing changes, though.
+
+Also, if the constraint fails during assignment, the program panics. The only way to handle such errors when we don't know if the test will pass is to use the following behavior:
+
+```sn
+val notEmpty: string with (not _.empty()) = 'Hello world';
+
+val fail = handlePanic(CATCHABLE_TYPE_CONSTRAINTS_FAILS, () => {
+  notEmpty = ''; // Function stops here and returns because of the fail
+});
+
+if fail == true {
+  println!('Assignment failed'); // Will be printed
+}
+```
+
+To avoid having to write the again and again the same type constraint, and to unify them across your programs, you can use the `type` keyword which allows to make type aliases:
+
+```sn
+type NotEmptyString = string with (not _.empty());
+
+val notEmpty: NotEmptyString = 'Hello world';
+```
+
+As you may have noticed, values of a given type are automatically typecastable to all its constrained versions. When this happens, the checker function is triggered. If it fails, the program will panic, as for a standard assignment.
+
+Also, constrained types are automatically typecastable to their original version, without any risk of fail. This is achieved automatically because constrained types are considered sub-types of their original one.
