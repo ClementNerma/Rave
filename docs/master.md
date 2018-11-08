@@ -965,6 +965,15 @@ let ages = { #
 
 Here, `ages` is a `Map<string, uint>`. We can use to shorten this type its alias, `Collection<uint>` - a `Collection<T>` simply being a `Map<string, T>`. Note that all values must be of the same type.
 
+It's also possible to use non-string keys too, by wrapping them between parenthesis:
+
+```sn
+let ages = { #
+  (true): 'Yeah',
+  (false): 'So bad'
+}; // Map<bool, string>
+```
+
 Below is a summary of all IST's syntaxes:
 
 * `[ a, b, c ]` produces an array (`T[SIZE]`) ;
