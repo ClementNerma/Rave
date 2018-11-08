@@ -4917,6 +4917,61 @@ pln myStruct = Hero;
 
 These types are especially useful in flexes.
 
+### Statics
+
+Statics are instances of structures. For example, `{ name: 'Jack' }` is a static, while neither `new SomeClass()` nor `'Hello'` are.
+
+These can be described using the `Static<T>` type, where `T` is a common type of all fields in the structure. For example, a static can be described with `Static<Primitive>` if all its fields hold primitives:
+
+```sn
+val static1: Static<Primitive> = {
+  name: 'Jack'
+};
+```
+
+In fact, all statics are automatically typecastable to any `Static<T>` type able to describe them. Once we hold such a described value, we can iterate it:
+
+```sn
+struct Hero {
+  name: string;
+  hp: uint;
+  atk: uint;
+  exp: uint;
+}
+
+val jack = Hero {
+  name: 'Jack',
+  hp: 100u,
+  atk: 20u,
+  exp: 0u
+};
+
+for field in (jack as Static<Primitive>) {
+  println!(field + ' => ' + jack[field]);
+}
+```
+
+The `field` entity does not have the `string` type here, it has the `keyof Hero` type, which indicates it contains a string with the name of one of the structure's fields.
+
+While we cannot use indexes on statics, it is possible by using a certified key of the structure. So, to get the type certifying a value is a key of the structure, we simply have to use the `keyof typeof someStatic` type.
+
+The `Static<T>` type is used, for example, to serialize structures. Here is an example of a very simple stringification function:
+
+```sn
+fn stringifyStatic (obj: Static<Stringifyable>) : string {
+  return (field + ' => ' + obj[field] for field in obj).join('\n');
+}
+
+println!(stringifyStatic({
+  name: 'Jack',
+  age: 0u
+}));
+// Prints:
+//
+// name => Jack
+// age => 0
+```
+
 ### Flexs
 
 Remember when we encountered `println!` for the very first time? We told at this moment is was a _flex_, and that we would see what it is later. Now, time has come to see it in details.
