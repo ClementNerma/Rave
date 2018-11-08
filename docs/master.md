@@ -4796,3 +4796,53 @@ println!(cstRef === &mut i); // Prints: 'false'
 println!(mutRef === &i); // Prints: 'false'
 println!(mutRef === &mut i); // Prints: 'true'
 ```
+
+## Advanced concepts
+
+### Bindings
+
+_Bindings_ are a simple way to access all properties of a given object as if they were part of the current scope. This can be useful when dealing with large libraries. Let's take the example of a game engine, with the following code:
+
+```sn
+engine.run(lib => {
+  val window = lib.createWindow(640, 480, 'My super game');
+
+  val scene = lib.createScene();
+
+  val polygons = (
+    lib.createPolygon(lib.randInt(), lib.randInt(), lib.randColor()
+    for i in 1...10
+  );
+
+  scene.attachAll(polygons);
+
+  window.setScene(scene);
+
+  window.display();
+});
+```
+
+The same version, with bindings:
+
+```sn
+engine.run(lib => {
+  // Bind "lib"'s property to the current scope
+  #bind lib;
+
+  val window = createWindow(640, 480, 'My super game');
+
+  val scene = createScene();
+
+  val polygons = (createPolyon(randInt(), randInt(), randColor()) for i in 1...10);
+
+  scene.attachAll(polygons);
+
+  window.setScene(scene);
+
+  window.display();
+});
+```
+
+That sure is simplifier and more easy to read, isn't it?
+
+Note that you can make multiple bindings in a function, but they must always be located at its top - bindings must not be followed by any instruction.
