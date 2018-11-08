@@ -4251,3 +4251,488 @@ catch (e: Error) {
   // *ALL* errors will be caught here
 }
 ```
+
+## References and pointers
+
+As this chapter is a bit complex, feel free to read it several times in order to fully understand the concept of references and pointers, as that's an important feature of the language.
+
+The way primitives and objects work currently imply two problems in programs:
+
+1. We can't assign a whole new object and having the original entity having it reflected on it;
+2. Primitives are cloned each time we manipulate them ;
+3. We can't "share" a primitive across multiple functions or entities and having the changes on one reflected on all others automatically.
+
+### Object identifiers
+
+Each object has a unique identifier associated to it, called its OID (Object Identifier), which is unique. This means that, when we do a `new SomeClass()` for example, an invisible identifier is put on it. We cannot access it ourselves, but it allows the program to compare if two objects are equal, by comparing their OID.
+
+When we give an object to, let's say, a function, it doesn't clone the full object - as it would take a really long time for big objects, and could introduce bugs in the program - but simply send its OID. Then, when we access the object, the program retrieves the object through this OID. That's what allows us to modify an object's property in a function and having the same change reflected on the original object.
+
+Also, as primitives aren't objects, they don't have OID, and that's why they are fully cloned when we give them to a function for example.
+
+While being very memory and programmaticly efficient, this concept introduces the problems we saw a bit above.
+
+Let's take an example for the first point:
+
+```sn
+struct Hero {
+  mut name: string;
+}
+
+fn nameHeroJohn (hero: Hero) {
+  hero.name = 'John';
+}
+
+val jack = Hero {
+  mut name: 'Jack'
+};
+
+println!(jack.name); // Prints: 'Jack'
+
+nameHeroJohn(jack);
+
+println!(jack.name); // Prints: 'John'
+```
+
+When we call `nameHeroJohn`, the program gives it `jack`'s OID. Then, when we attempt to modify its `name` field, it retrives the object through this OID and so the change on this field through `hero` is reflected on `jack`, as they contain the _same_ object.
+
+Now, let's take another example:
+
+```sn
+struct Hero {
+  mut name: string;
+}
+
+fn nameHeroJohn (hero: Hero) {
+  // Assignment
+  hero = {
+    mut name: 'John'
+  };
+  // ----------
+}
+
+val jack = Hero {
+  mut name: 'Jack'
+};
+
+println!(jack.name); // Prints: 'Jack'
+
+nameHeroJohn(jack);
+
+println!(jack.name); // Prints: 'Jack'
+```
+
+Only the part wrapped by the two comments changed. Still, `jack`'s name has not been updated. Why? Because, when we assign a whole new object to it, this object gets a brand new OID - which is not the same as the previous object. This is because OID is not linked to the _entity_, but to the _object_, and so by giving another OID to `hero`, it doesn't have the same than `jack` anymore. That's why our changes are not reflected.
+
+Furthermore, if we modify `hero` after this assignment, changes won't be reflected on `jack`.
+
+### Entity identifiers
+
+Here we'll deal with the remaining problems of the list.
+
+Like objects, each single entity has its unique, invisible identifier, called EID (which stands for Entity Identifier). When we read an entity, its content is retrieved through its EID.
+
+If we take the following entity:
+
+```sn
+val jack = { name: 'Jack' };
+```
+
+There is an EID attached to `jack` and an OID attached to the object itself - not `jack`. These two are completely distincts ; if we assign a brand new value to the entity, its EID will stay the same. Also, if we assign an object with the same OID to two different entities, they will still keep two different EID - but their value will share the same OID.
+
+The problem that happens here is that, because primitives don't have an OID, they are cloned each time we use it. For example, when we give a primitive to a function, it is cloned. When we create an object with a field containing a primitive, it is cloned. When we assign it to an entity, it is cloned.
+
+But, cloning isn't free, both in term of memory and compute time. For example, considering the following code:
+
+```sn
+val str = '';
+
+for i in 0..1000000 {
+  str += i + ',';
+}
+
+val copy = str;
+```
+
+The resulting `str` string contains 6.888.890 characters. When we assign it to `copy`, because it contains a primitive, the value is cloned. This makes the program taking twice as memory, because the content of `str` and `copy` is distinct. Plus, this takes a bit of time to copy near to 7 million characters in the memory.
+
+The other problem is the sharing: if we give a string to a function, and the function modifies it, the reflects won't be reflected on the original entity's value.
+
+### Constant references
+
+References allows to get rid of these two problems.
+
+A reference is simply a "marker" that refers to an entity, called its _referred_. We can then read _through_ this reference, and the result we'll get is the original entity's value. If another function changes it, we will be aware of the changes thanks to the reference not referring to the value but to the entity itself.
+
+Let's take an example. Given we have the following mutable:
+
+```sn
+val name: string = 'Jack';
+```
+
+We make a reference of it by writing:
+
+```sn
+&name;
+```
+
+The `&` symbol, prefixing an entity, creates a reference to it. As a reference is a value, we can assign it to an entity. Still, the type of this reference will not be `string`, but `*string`, the `*` symbol indicating we are using a reference type:
+
+```sn
+val ref: *string = &name;
+```
+
+Inferred typing work with reference types, but we still must indicate we are using a reference:
+
+```sn
+val ref: * = &name;
+```
+
+Also, we can't read the entity's value just by writing the reference's name ; we must prefix it with the `*` symbol to indicate we don't want to get the reference, but the value of the entity it refers too:
+
+```sn
+println!(ref); // ERROR ('*string' is not stringifyable)
+println!(*ref); // Prints: 'Jack'
+
+typeof ref; // *string
+typeof *ref; // string
+```
+
+That's when we retrieve the value through the reference to give it to another function for example, that it is cloned - just like for entities. But if we give the reference to a function, it won't be cloned - allowing to save time and memory, but also to get aware of all changes made to the original entity:
+
+```sn
+fn readName (someName: *string) {
+  println!(`Hello, ${*someName}!`);
+}
+
+val name = 'Jack';
+
+val ref: * = &name;
+
+readName(ref); // Prints: 'Hello, Jack!'
+
+name = 'John';
+
+readName(ref); // Prints: 'Hello, John!'
+```
+
+As you can see, the value printed by the function is different although the content of `ref` didn't change.
+
+We can also make references to a specific property of an object:
+
+```sn
+fn readName (someName: *string) {
+  println!(`Hello, ${*someName}!`);
+}
+
+struct Hero {
+  name: string;
+}
+
+val jack = {
+  name: 'Jack'
+};
+
+readName(&(jack.name)); // Prints: 'Hello, Jack!'
+```
+
+This solves our second and third problem, as we are now able to share _and_ avoid useless cloning of primitives.
+
+#### References on values
+
+Because we may want to create references to direct values, instead of creating an entity containing them, we can use the `wrap!` flex:
+
+```sn
+val cstRef: * = & wrap!(2);
+val mutRef: *mut = &mut wrap!(2);
+```
+
+### Constantness trap
+
+There is a common trap when dealing with constant references: that's not because a reference is constant that its referred's value is, too. Let's say we have a mutable entity and we make a constant reference to it, even though the reference itself is constant, when we read the referred's value through it it may change during the program's execution. Be aware of this behavior in your programs.
+
+### Mutable references
+
+We just made _constant_ references, which are references we can only read through. But we can also make _mutable_ ones, to assign values to the original entity.
+
+When we assign something _through_ a mutable reference, it doesn't modify the reference itself but the value of entity it refers to. For example, if we make a reference to an entity containing a primitive, and we assign something through this reference, the original entity's value will be modified.
+
+Mutable constants are created using the `&mut` prefix (requiring a space after it), and the reference type is prefixed by `*mut` (requiring a space after it too). To assign a new value through the reference, we prefix it with the `*`, like for reading:
+
+```sn
+fn nameItJohn (someName: *mut string) {
+  *someName = 'John';
+}
+
+let name = 'Jack';
+
+val ref: *mut = &mut name;
+
+println!(name); // Prints: 'Jack'
+
+nameItJohn(ref);
+
+println!(name); // Prints: 'John'
+```
+
+This works as expected. Accessing an entity through a reference is called _depointerization_. Note that the `ref` constant is still optional here:
+
+```sn
+fn nameItJohn (someName: *mut string) {
+  *someName = 'John';
+}
+
+let name = 'Jack';
+
+println!(name); // Prints: 'Jack'
+
+nameItJohn(&mut name);
+
+println!(name); // Prints: 'John'
+```
+
+The third problem is now solved, as we can now overwrite objects easily:
+
+```sn
+struct Hero {
+  mut name: string;
+}
+
+fn nameHeroJohn (hero: *mut Hero) {
+  // Assignment
+  *hero = {
+    mut name: 'John'
+  };
+  // ----------
+}
+
+let jack = Hero {
+  mut name: 'Jack'
+};
+
+println!(jack.name); // Prints: 'Jack'
+
+nameHeroJohn(&mut jack);
+
+println!(jack.name); // Prints: 'Jack'
+```
+
+A good point about references (both constants and mutables) is the _automatic reference resolution_: as reference types do not have any member, when we try to access one, it considers we are trying to access a member of the referred's value:
+
+```sn
+let jack = Hero {
+  mut name: 'Jack'
+};
+
+val ref: *mut = &mut jack;
+
+// This:
+println!((*jack).name);
+// Is strictly equivalent to:
+println!(jack.name);
+```
+
+Here is the list of possible syntaxes:
+
+```sn
+&jack.field;   // Make a reference to `jack` and get `name` from it
+&(jack).name; // Make a reference to `jack` and get `name` from it
+(&jack).name; // Make a reference to `jack` and get `name` from it
+&(jack.name); // Make a reference to `jack.name`
+ 
+&mut jack.name;   // Make a reference to `jack` and get `name` from it
+&mut (jack).name; // Make a reference to `jack` and get `name` from it
+(&mut jack).name; // Make a reference to `jack` and get `name` from it
+&mut (jack.name); // Make a reference to `jack.name`
+```
+
+### Pointers
+
+A _pointer_ is simply an entity containing a reference.
+
+We can't make mutable refences on constants. That's an absolute rule that prevents from surprising behaviors: if the referred is declared as constant, it is constant, so we cannot make a mutable reference to it. Still, we can make a constant reference on a mutable, and that's what you should alaways do unless you **need** to write through the reference. This avoids unexpected modifications of your entities by a function, for example.
+
+The pointer can either be mutable or constant. If it is mutable, we will simply be abel to assign a new reference to it, so it will refer to another entity. If it is constant, this will not be possible, but if it contains a mutable reference, we can still assign new values to the referred.
+
+To sum up this, there are three mutability to take in account:
+
+* The _referred_'s mutability: if it is constant, we cannot make a mutable reference on it;
+* The _reference_'s mutability: if it is constant, we cannot write the referred through it;
+* The _pointer_'s mutability: if it is constant, we cannot assign new references to it.
+
+Remember, these three points are **completely** distinct. They are not linked to each other.
+
+### References compatibility
+
+Type compatibility is simple with references: mutable ones can be used as constant ones, but constants ones cannot be used as mutables:
+
+```sn
+let i = 1;
+
+let ptr1: *mut = &mut i;
+let ptr2: * = &i;
+
+let mut_ptr: *mut = ptr1; // Works fine
+let mut_ptr: *mut = ptr2; // ERROR (incompatible types)
+let val_ptr: *    = ptr1; // Works fine
+let val_ptr: *    = ptr2; // Works fine
+```
+
+In fact, when a mutable reference is found where a constant one is expected, it is automatically casted.
+
+This behavior makes that, if we want to make a function that takes both constant pointers and mutable pointers, we simply have to make a function that accepts constant ones - mutable pointers will be automatically typecasted:
+
+```sn
+fn printRefValue (ptr: *Stringifyable) : void {
+  println!(*ptr);
+}
+
+val n = 2;
+
+printRefValue(&n); // Prints: '2'
+printRefValue(&mut n); // Prints: '2'
+```
+
+### References typecasting
+
+It is possible to cast safely a mutable reference to a constant one, or to cast a type from another if it keeps the same reference type (e.g. constant or mutable), but not both at once:
+
+```sn
+val i = & wrap!(2);
+val j = &mut wrap!(2);
+
+<*int> i; // Works fine (does nothing)
+<*mut int> i; // ERROR (cannot cast constant reference to mutable)
+<*uint> i; // Works fine (casts from *int to *uint)
+
+<*int> j; // Works fine (casts to a constant reference)
+<*mut int> j; // Works fine (does nothing)
+<*uint> j; // ERROR (cannot cast reference mutability + type at once)
+<*mut uint> j; // Works fine (casts from *mut int to *mut uint)
+
+// To cast a '*mut int' to a '*uint':
+
+<*uint> <*mut uint> j; // Works fine
+<*uint> <*int> j; // Works fine
+```
+
+### Multi-level references
+
+Multi-level references simply consist in referring to a reference and so on. Here is an example:
+
+```sn
+val i = 0;
+
+val ptr1: * = &i;
+val ptr2: ** = &ptr1;
+```
+
+If we access `ptr2`, it contains a level 2 reference, while `ptr1` contains a level 1 reference. If we access `ptr2`'s referred (`*ptr2`), we will get the reference stored inside `ptr1`, which is called `ptr2`'s intermediate reference:
+
+```sn
+// All the following statements are 'true'
+
+// Get the pointer's value
+ptr2 == &ptr1;
+
+// Get the referred's value
+// (intermediate reference's value)
+*ptr2 == ptr1;
+*ptr2 == &i;
+
+// Get the referred's value's referred's value
+// (intermediate reference's referred's value)
+**ptr2 == *ptr1;
+**ptr2 == i;
+```
+
+### Checking a reference
+
+We can check if a value is a reference thanks to the `is_ref!` flex:
+
+```sn
+val i = 0;
+val ptr: * = &i;
+
+println!(is_ref!(i)); // Prints: 'true'
+println!(is_ref!(ptr)); // Prints: 'false'
+```
+
+For multi-level references, we can get their level with the `ref_level!` flex:
+
+```sn
+val i = 0;
+val ptr1: * = &i;
+val ptr2: ** = &ptr1;
+
+println!(ref_level!(i)); // Prints: '0'
+println!(ref_level!(ptr1)); // Prints: '1'
+println!(ref_level!(ptr2)); // Prints: '2"
+```
+
+We can also check a pointer's mutability using the `is_mut_ref!` flex:
+
+```sn
+let i = 0;
+
+val cstPtr: * = &i;
+val mutPtr: *mut = &mut i;
+
+println!(is_mut_ref!(i)); // ERROR
+println!(is_mut_ref!(cstPtr)); // Prints: 'false'
+println!(is_mut_ref!(mutPtr)); // Prints: 'true'
+```
+
+This only gets the mutability of the top-level reference, though:
+
+```sn
+println!(is_mut_ref!(&mut wrap!(& wrap!(2)))); // Prints: 'true'
+println!(is_mut_ref!(&wrap!(&mut wrap!(2)))); // Prints: 'false'
+```
+
+Finally, the `ref_stats!` flex returns all informations on a reference:
+
+```sn
+let i = 0;
+let ptr1: * = &i;
+val ptr2: *mut = &mut ptr1;
+let ptr3: * = *ptr2;
+
+val infos = ref_stats!(ptr3);
+
+// Contains:
+[
+  {
+    level: 0,
+    mut: false,
+    ref: &i
+  },
+
+  {
+    level: 1,
+    mut: true,
+    ref: &mut ptr1
+  },
+
+  {
+    level: 2,
+    mut: false,
+    ref: &ptr2
+  }
+]
+```
+
+The referred can also be checked using the equality operators, thanks to them using the same EID. Are considered equal references that have the same referred and the same mutability:
+
+```sn
+let i = 0;
+
+val cstRef: * = &i;
+val mutRef: *mut = &i;
+
+println!(cstRef === &i); // Prints: 'true'
+println!(cstRef === &mut i); // Prints: 'false'
+
+println!(mutRef === &i); // Prints: 'false'
+println!(mutRef === &mut i); // Prints: 'true'
+```
