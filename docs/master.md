@@ -4866,3 +4866,20 @@ Here is an example:
   println!('You are using a MacOS system.');
 #end
 ```
+
+### Superoverloads
+
+Superoverloads are global overloads of arithmetic and comparison operators. They work exactly the same way as classes, but they take two arguments instead of one: a value to compare another with, and the compared value.
+
+Showcase:
+
+```sn
+fn %add<SIZE: usize> (left: int[SIZE], right: int[SIZE]) : string {
+  return (left[i] + right[i] for i in 0..SIZE);
+}
+
+val added = [ 1, 2 ] + [ 3, 4 ];
+
+println!(added[0]); // Prints: '4' (1 + 3)
+println!(added[1]); // Prints: '6' (2 + 4)
+```
