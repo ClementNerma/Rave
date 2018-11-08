@@ -215,7 +215,7 @@ In this book, we will abbreviate "floating-point numbers" by the "floats" term.
 
 **NOTE:** Floats are represented according to the IEEE-754 standard. `f32` is a single-precision float, while `f64` has double precision.
 
-### Numeric operators
+### Arithmetic operators
 
 There are several operators to manipulate numbers:
 
@@ -266,7 +266,7 @@ a >> 2; // 0000 1111 : 15
 ~ a;    // 1100 0100 : -60 (for signed integers - two's complement form)
 ```
 
-### Numeric suffix
+### Numeric suffixes
 
 It's possible to write a number of another type than `int` without specifying the variable's type, by using a _numeric suffix_, which indicates explicitly the number's type:
 
