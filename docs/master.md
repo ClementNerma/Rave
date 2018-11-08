@@ -3162,7 +3162,7 @@ interface Stringifyable {
 Every class that implements the `%to<-string>` typecast overload will be `Stringifyable`. Note that the visibility is not indicted here as an interface only describes public members.
 
 ```sn
-class A implements Stringifyable {
+class A impl Stringifyable {
   public fn %to<-string> () {
     return 'Hello world!';
   }
@@ -3173,7 +3173,7 @@ val obj: Stringifyable = new A;
 println!(obj as string); // Prints: 'Hello world!'
 ```
 
-You may notice the `implements Stringifyable` part: it indicates the class implements a given interface. Though it's entirely optionnal - this could would have worked without this code - it's highly recommanded because it explicits the class' intentions (it is intended to be stringifyable) and avoids forgetting to implement a given member of the interface.
+You may notice the `impl Stringifyable` part: it indicates the class implements a given interface. Though it's entirely optionnal - this could would have worked without this code - it's highly recommanded because it explicits the class' intentions (it is intended to be stringifyable) and avoids forgetting to implement a given member of the interface.
 
 There is another widely-used interface:
 
@@ -3235,7 +3235,7 @@ interface Vehicle {
   val speed: f32;
 }
 
-trait Bike implements Vehicle {
+trait Bike impl Vehicle {
   val speed: f32;
 
   fn accelerate () : string {
@@ -3434,10 +3434,10 @@ takeNum<uint>(2u); // Prints: '2'
 We can ues use the following syntaxes:
 
 * `T extends X`: T must inherit from X;
-* `T implements X`: T must implement the X interface;
+* `T impl X`: T must implement the X interface;
 * `T uses X`: T must use the X trait.
 
-They can also be chained, like `T extends X implements Y`.
+They can also be chained, like `T extends X impl Y`.
 
 ### Template inference
 
@@ -3696,7 +3696,7 @@ dict Custom<K, V> {
 If you want to grant additional template to your dictionary class, you must manually implement the dictionary interface:
 
 ```sn
-dict Custom<T, V, K> implements Dictionary<V, K> {
+dict Custom<T, V, K> impl Dictionary<V, K> {
   // ...
 }
 ```
