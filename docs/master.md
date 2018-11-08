@@ -3518,12 +3518,12 @@ The resolution keywords refer to their actual classes with all their templates:
 ```sn
 class Example<T> {
   public fn test () {
-    // Here, '_this' refers to 'Example<T>'
+    // Here, '_self' refers to 'Example<T>'
     //  and not 'Example'
   }
 }
 
-(new Example<uint>).test(); // In '.test': _this == Example<uint>
+(new Example<uint>).test(); // In '.test': _self == Example<uint>
 ```
 
 We can change get the current class with other templates by rewriting them:
@@ -3531,8 +3531,8 @@ We can change get the current class with other templates by rewriting them:
 ```sn
 class Example<T> {
   public fn test () {
-    // _this == Example<T>
-    // _this<int> == Example<int>
+    // _self == Example<T>
+    // _self<int> == Example<int>
   }
 }
 ```
