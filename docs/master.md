@@ -5131,3 +5131,30 @@ println!(copy); // Prints: 'Hello world!'
 This proxy is especially complex, so let's detail it. First, it takes two templates: a first one which is of the `T` type, with `T` being its second template. So, when we read it by giving it a value as a template, `T` is inferred and matches `DATA`'s type.
 
 The type of the proxy itself is a plain type. Its getter, a flex, simply returns `T`. So, when we call this proxy with a value as a template, it returns its type as a plain value.
+
+### Descriptor types
+
+Descriptor types are types that describe other types. For instance, the `Type` type refers to all existing types, while `Structure` refers to existing structure types.
+
+Here is the list of them:
+
+* `Type` accepts all existing types;
+* `Structure` accepts all structures;
+* `Enumeration` accepts all enumeration;
+* `Interface` accepts all interfaces;
+* `Trait` accepts all traits;
+* `Class` accepts all classes.
+
+For instance, the following code is valid:
+
+```sn
+struct Hero {
+  name: string;
+}
+
+pln myStruct: Structure = Hero;
+// With inferred typing:
+pln myStruct = Hero;
+```
+
+These types are especially useful in flexes.
