@@ -5020,3 +5020,67 @@ The only downside of this flex is that the new tuple only has constant members -
 Also, note that, as flexes are rewritten at each call, calling flexes inside flexes can quickly make an enormous code to copy-paste. If we make a tuple of a hundred elements for example, the callback flex in `reverseTuple` will be called a hundred times!
 
 Final word: as you can see, flexs are complex to handle, and you may not need very often. But the point is that, if you need it, they are here.
+
+### Proxies
+
+Proxies are entities that don't have a real value. Instead, when we attempt to either read or write them, a related callback is called.
+
+Proxies are defined using the `proxy` keyword, with an object containing the callback called when the object is read - called the "getter" - and the one when the object is written - called the "setter" -. Note that the setter is optional ; if none is specified, all assignments will result in an error at build time.
+
+```sn
+val _counter = 0u;
+
+proxy counter: uint from {
+  getter: fn () : uint {
+    return ++ _counter;
+  },
+
+  setter: fn (value: uint) : bool {
+    _counter = value;
+    return true;
+  }
+};
+```
+
+Our `counter` proxy is declared as an entity of the `uint` type. The object located after the `from` keyword is called the proxy's _model_. The getter must be a function taking no argument and returning a value of the same type than the entity. The setter must be a function taking a value, which can be of any type - not necessarily the entity's one - and return a boolean: `true` if the value was assigned, `false` if it can't - because it is invalid, or so on.
+
+Let's try it:
+
+```sn
+println!(counter); // Prints: '1'
+println!(counter); // Prints: '2'
+println!(counter); // Prints: '3'
+```
+
+And so on. Note that it is possible to put any addition field in the object, and so we can integrate the counter variable inside our proxy. This way, we can make a counter that only increments itself and cannot be decremented:
+
+```sn
+proxy counter: uint from {
+  value: 0u,
+  getter: () => ++ @value
+};
+
+println!(counter); // Prints: '1'
+println!(counter); // Prints: '2'
+println!(counter); // Prints: '3'
+println!(counter); // Prints: '4'
+println!(counter); // Prints: '5'
+```
+
+#### Prepared proxy models
+
+As the proxy model is a simple object, we can create it by advance and store it inside an object to use the same model across several proxies. The object will be cloned each time we create a proxy from it.
+
+```sn
+val counterProxy = ProxyModel {
+  value: 0u,
+  getter: () => ++ @value
+};
+
+proxy counter1 from counterProxy;
+proxy counter2 from counterProxy;
+
+println!(counter1); // Prints: '1'
+println!(counter1); // Prints: '2'
+println!(counter2); // Prints: '1'
+```
