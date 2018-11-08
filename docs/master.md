@@ -1515,7 +1515,7 @@ area(10.0, 5.0, 80.0); // Prints the message
 
 Each time we will have to compute the area, we will simply have to call the function, which is a lot more easier, readable and maintanable than re-writing the whole code each time. If we want to change anything in the computation, we simply have to change it in a single place.
 
-**NOTE :** As functions use braces, they of course have their own scopes. Furthermore, as functions declaration are blocks, their head is part of the scope too, which is how we can access its arguments.
+**NOTE:** As functions use braces, they of course have their own scopes. Furthermore, as functions declaration are blocks, their head is part of the scope too, which is how we can access its arguments.
 
 ### Returning values
 
