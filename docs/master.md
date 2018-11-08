@@ -1546,6 +1546,22 @@ The second change is the `return` statement at the end of the function. The valu
 val trapezoidArea = area(1.0, 2.0, 3.0));
 ```
 
+### Arguments mutability
+
+By default, a function's arguments are constants. They can be made mutable or plain using the same keywords than in structures:
+
+```sn
+fn test (mut mutable: bool, constant: bool, pln plain: bool) {
+  mutable = true; // Works fine
+  constant = true; // ERROR
+  plain = true; // ERROR
+
+  pln p1 = mutable; // ERROR
+  pln p2 = constant; // ERROR
+  pln p3 = plain; // Works fine
+}
+```
+
 ### Optional arguments
 
 Like we did with structures, we can make some arguments optional by giving them a default value. Though, such arguments must be placed at the very end of the arguments list.
