@@ -5324,3 +5324,17 @@ val notEmpty: NotEmptyString = 'Hello world';
 As you may have noticed, values of a given type are automatically typecastable to all its constrained versions. When this happens, the checker function is triggered. If it fails, the program will panic, as for a standard assignment.
 
 Also, constrained types are automatically typecastable to their original version, without any risk of fail. This is achieved automatically because constrained types are considered sub-types of their original one.
+
+#### Type aliasing
+
+Type aliasing allows to create an _alias_ which links an unused type name to an existing type. It can be absolutely any type, including structures, classes, constrained types, etc.
+
+They can also be templated:
+
+```sn
+type TupleOfThree<T> = (T, T, T);
+
+val myTuple: TupleOfThree<int> = (2, 8, 5);
+```
+
+As type aliases are _aliases_ and not real types, there is no typecasting problem ; in our example, writing `TupleOfThree<int>` is **exactly** the same as writing `(T, T, T)`.
