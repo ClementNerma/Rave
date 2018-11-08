@@ -4972,6 +4972,20 @@ println!(stringifyStatic({
 // age => 0
 ```
 
+### Plainable types
+
+Plainable types are types which can be used as a type for a plain constant as well as by the `pln<T>` wrapper. Their list is stored inside a native, plain tuple to allow identiying them during program's execution (is this type plainable?):
+
+```sn
+pln PLAINABLE = (void, bool, number, string, Function, Structure, Enumeration, Interface, Trait, Class, Type, Static<?>);
+```
+
+Creating a plain constant with a type that doesn't figure in this tuple will result in an error at build time.
+
+Note that children of these types are accepted, which means we can make a plain constant containing an `int` for example.
+
+This also means we can create any static as plain.
+
 ### Flexs
 
 Remember when we encountered `println!` for the very first time? We told at this moment is was a _flex_, and that we would see what it is later. Now, time has come to see it in details.
