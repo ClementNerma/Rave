@@ -3073,11 +3073,11 @@ val jack = B {
 };
 ```
 
-### Static typecasting
+### Safe typecasting
 
-Static typecasting allows to convert any value of a given type to another one. It is checked at build time and cannot fail at runtime.
+Safe typecasting allows to convert any value of a given type to another one. It is checked at build time and cannot fail at runtime.
 
-Statically typecasting a value of type `A` to type `B` is allowed when:
+Safely typecasting a value of type `A` to type `B` is allowed when:
 
 * `B` is a parent type of `A` (e.g. a mother class of `A`) ;
 * `A` implements a typecasting overload to `B`
@@ -3168,7 +3168,7 @@ let a: A = new A;
 let b: B = a; // Works fine (prints: 'Typecasting to B')
 ```
 
-This last instruction would have fail at build time if we haven't used the `#auto` directive. Instead, we would have had to use a static typecast.
+This last instruction would have fail at build time if we haven't used the `#auto` directive. Instead, we would have had to use a safe typecast.
 
 Arrays use this automatic behaviour, that's why it's possible to use an unknown-sized array (`int[]`) where expecting a fixed-size one (`int[3]`) without any explicit conversion, as well as the opposite.
 
