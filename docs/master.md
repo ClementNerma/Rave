@@ -4599,7 +4599,7 @@ Here is the list of possible syntaxes:
 &(jack).name; // Make a reference to `jack` and get `name` from it
 (&jack).name; // Make a reference to `jack` and get `name` from it
 &(jack.name); // Make a reference to `jack.name`
- 
+
 &mut jack.name;   // Make a reference to `jack` and get `name` from it
 &mut (jack).name; // Make a reference to `jack` and get `name` from it
 (&mut jack).name; // Make a reference to `jack` and get `name` from it
