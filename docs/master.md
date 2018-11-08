@@ -4846,3 +4846,23 @@ engine.run(lib => {
 That sure is simplifier and more easy to read, isn't it?
 
 Note that you can make multiple bindings in a function, but they must always be located at its top - bindings must not be followed by any instruction.
+
+### Conditional directives
+
+Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the conditional directives: `#if`, `#else`, `#elsif`, `#end`. The code located in them is simply removed from the source code if the condition is (or is not) filled, before the program starts to run. They can only use plain values, as well as native constants, which give informations about the type of execution (interpreted, compiled, ...), the platform (Windows, Linux, ...) the processor's architecture (ARM, x86, ...).
+
+Here is an example:
+
+```sn
+#if PROC_ARCH == 'ARM'
+  println!('This program has been compiled for ARM.');
+#end
+
+#if OS == 'Windows'
+  println!('You are using a Windows system.');
+#elsif OS == 'Linux'
+  println!('You are using a Linux system.');
+#elsif OS == 'Darwin'
+  println!('You are using a MacOS system.');
+#end
+```
