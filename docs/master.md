@@ -1707,6 +1707,22 @@ add(add(2, add(5, 7)), add(3, 4));
 
 Which is a lot more readable.
 
+For operator functions that return a boolean, we can use the `not` keyword before their name to revert the result:
+
+```sn
+op fn greaterThan (left: int, right: int) : bool {
+  return left > right;
+}
+
+if 2 greaterThan 5 {
+  println!('There is a problem...');
+}
+
+if 2 not greaterThan 5 {
+  println!('Everything seems fine.');
+}
+```
+
 ### Polymorphism
 
 _Polymorphism_ allow to declare the same function several times. Each declaration, though, must use different arguments - this can be an additional argument, one less argument, or an existing argument that gets a new type:
