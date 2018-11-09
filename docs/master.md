@@ -5463,6 +5463,61 @@ struct B {
 type Both = A & B; // ERROR
 ```
 
+### Union types
+
+Union types are the opposite of intersection types: instead of describing a value has having several types, the value is described as having _one_ of the types of the union:
+
+```sn
+let data: string |  uint = 'Hello world'; // Works fine
+data = 2u; // Works fine
+```
+
+Any type is automatically typecastable to any union type containing it (like `string` to `string | uint`). It is too from any union type to any type of the union (like `string | uint` to `string`), BUT if the hidden type of the value is not the typecast's target one, the program will panic:
+
+```sn
+val data: string | uint = 'Hello world';
+
+val str: string = data; // Works fine
+val num: uint = data; // ERROR
+```
+
+Union types make available any member all the types of the union implement. Example:
+
+```sn
+struct HasMotor {
+  isAnObject: bool;
+  horsesPower: uint;
+}
+
+struct HasWheels {
+  isAnObject: bool;
+  wheels: uint;
+}
+
+val vehicle: HasMotor | HasWheels = HasMotor {
+  isAnObject: true,
+  horsesPower: 1u
+};
+
+vehicle.isAnObject; // Works fine
+vehicle.horsesPower; // ERROR
+vehicle.wheels; // ERROR
+```
+
+Note that, as for intersection types, if two types define a property with the same name but using a different type, build will fail:
+
+```sn
+struct A {
+  prop: int;
+}
+
+struct B {
+  prop: uint;
+}
+
+type AnyOfThem = A | B; // ERROR
+```
+
 ### Type assertion
 
 Let's say we want to create a function that takes any value as an argument. If it is stringifyable, we stringify it, else we return `null`.
