@@ -5131,6 +5131,39 @@ While, before the single-line comment, we had an `hero` entity typed as an `Hero
 
 The second declaration of `hero` replaces the first one (we say it _shadows_ it). Note that entities can be shadowed multiple times.
 
+### Late initialization
+
+Late initialization consists in declaring an entity without an initialization value. It is useful when its value is decided by a large condition, for example, especially when we are dealing with a constant:
+
+```sn
+val name: string;
+
+println!(name); // ERROR ('name' has not been initialized)
+
+name = 'Jack'; // Works fine
+name = 'John'; // ERROR (constants are read-only)
+
+println!(name); // Prints: 'Jack'
+```
+
+Note that this does not work with plain constants.
+
+This is the method used by classes to declare attributes but initializing them only in the constructor. Accessing an entity before we are sure it has been initialized will raise an error at build time.
+
+Also, for classes, if any member remains uninitialized when the constructor ends, an error is also raised at build time:
+
+```sn
+class A {
+  public name: string;
+  public age: uint;
+
+  public fn %new (name: string, age: uint) {
+    @name = name;
+    // ERROR: 'age' has not been initialized
+  }
+}
+```
+
 ### Flexs
 
 Remember when we encountered `println!` for the very first time? We told at this moment is was a _flex_, and that we would see what it is later. Now, time has come to see it in details.
