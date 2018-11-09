@@ -6326,15 +6326,19 @@ virtual class A {
    * Create a new value of @class and return it
    * @returns A new instance of @class
    */
-  public fn create () : _real;
+  abstract public fn create () : _real;
 }
 
 class B extends A {
-  public fn create () : _real => new self();
+  public fn create () : _real {
+    return new self();
+  }
 }
 
 class C extends A {
-  public fn create () : _real => new self();
+  public fn create () : _real {
+    return new self();
+  }
 }
 ```
 
@@ -6346,7 +6350,7 @@ virtual class A {
    * Create a new value of A and return it
    * @returns A new instance of A
    */
-  public fn create () : _real;
+  abstract public fn create () : _real;
 }
 
 class B extends A {
@@ -6354,7 +6358,9 @@ class B extends A {
    * Create a new value of B and return it
    * @returns A new instance of B
    */
-  public fn create () : _real => new self();
+  public fn create () : _real {
+    return new self();
+  }
 }
 
 class C extends A {
@@ -6362,7 +6368,9 @@ class C extends A {
    * Create a new value of C and return it
    * @returns A new instance of C
    */
-  public fn create () : _real => new self();
+  public fn create () : _real {
+    return new self();
+  }
 }
 ```
 
@@ -6376,7 +6384,7 @@ class Number {
   /**
    * Do some @class stuff
    */
-  public fn nothing () {};
+  public fn nothing () {}
 }
 
 /**
@@ -6392,13 +6400,13 @@ class Number {
   /**
    * Do some number stuff
    */
-  public fn nothing () {};
+  public fn nothing () {}
 }
 
 class SignedNumber extends A {
   /**
    * Do some signed number stuff
    */
-  public fn nothing () {};
+  public fn nothing () {}
 }
 ```
