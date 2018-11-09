@@ -4952,17 +4952,16 @@ println!(original.name); // Prints: 'Jack'
 
 ### Plainable types
 
-Plainable types are types which can be used as a type for a plain constant as well as by the `pln<T>` wrapper. Their list is stored inside a native, plain tuple to allow identiying them during program's execution (is this type plainable?):
+Plainable types are types which can be used as a type for a plain constant as well as by the `pln<T>` wrapper. Their list is stored inside a native union type:
 
 ```sn
-pln PLAINABLE = (void, bool, number, string, Function, Structure, Enumeration, Interface, Trait, Class, Type, Static<?>);
+type Plainable = void | bool | number | string | Function | Structure | Enumeration |
+                 Interface | Trait | Class | Type | Static<Plainable>;
 ```
 
-Creating a plain constant with a type that doesn't figure in this tuple will result in an error at build time.
+Creating a plain constant with a type that doesn't figure in this union will result in an error at build time.
 
 Note that children of these types are accepted, which means we can make a plain constant containing an `int` for example.
-
-This also means we can create any static as plain.
 
 ### Iterators
 
