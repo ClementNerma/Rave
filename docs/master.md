@@ -6393,7 +6393,7 @@ class Number {
 class SignedNumber extends A {}
 ```
 
-Equivalence:
+This will be converted to:
 
 ```sn
 class Number {
