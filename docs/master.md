@@ -2406,7 +2406,7 @@ class Example {
     @name = newName;
   }
 
-  public fn %clone () : _self {
+  public fn %clone () : self {
     println!('Instance has been cloned.');
     return new Example(@name);
   }
@@ -2479,7 +2479,7 @@ class MyInt {
     @value = value;
   }
 
-  public fn %add (another: _self) {
+  public fn %add (another: self) {
     return new MyInt(@value + another);
   }
 }
@@ -2534,7 +2534,7 @@ class Hero {
     @name = name;
   }
 
-  public fn %equal (another: _self) : bool {
+  public fn %equal (another: self) : bool {
     return @name == another.name;
   }
 }
@@ -2560,7 +2560,7 @@ class BankAccount {
     @amount = amount;
   }
 
-  public fn %compare (another: _self) : Comparison {
+  public fn %compare (another: self) : Comparison {
     if @amount > another.amount {
       return Comparison.GREATER;
     } elsif @amount < another.amount {
@@ -3422,7 +3422,7 @@ Templates can be _fixed_, which means they can only be a single value. This can 
 ```sn
 class A {
   // 'int' is a fixed template
-  public fn %to<-int> () : _self { /* Some stuff here */ }
+  public fn %to<-int> () : self { /* Some stuff here */ }
 }
 ```
 
@@ -3527,12 +3527,12 @@ The resolution keywords refer to their actual classes with all their templates:
 ```sn
 class Example<T> {
   public fn test () {
-    // Here, '_self' refers to 'Example<T>'
+    // Here, 'self' refers to 'Example<T>'
     //  and not 'Example'
   }
 }
 
-(new Example<uint>).test(); // In '.test': _self == Example<uint>
+(new Example<uint>).test(); // In '.test': self == Example<uint>
 ```
 
 We can change get the current class with other templates by rewriting them:
@@ -3540,8 +3540,8 @@ We can change get the current class with other templates by rewriting them:
 ```sn
 class Example<T> {
   public fn test () {
-    // _self == Example<T>
-    // _self<int> == Example<int>
+    // self == Example<T>
+    // self<int> == Example<int>
   }
 }
 ```
@@ -6334,7 +6334,7 @@ class B extends A {
 }
 
 class C extends A {
-  public fn create () : real => new _self();
+  public fn create () : real => new self();
 }
 ```
 
@@ -6354,7 +6354,7 @@ class B extends A {
    * Create a new value of B and return it
    * @returns A new instance of B
    */
-  public fn create () : _this => new _self();
+  public fn create () : _this => new self();
 }
 
 class C extends A {
@@ -6362,7 +6362,7 @@ class C extends A {
    * Create a new value of C and return it
    * @returns A new instance of C
    */
-  public fn create () : _this => new _self();
+  public fn create () : _this => new self();
 }
 ```
 
