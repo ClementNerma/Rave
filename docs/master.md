@@ -5088,7 +5088,7 @@ flex getFamilyTypeOf (value: number) : pln<Type> {
 
 Let's introduce a few new concepts here. First of all, the `Type` type obviously refers to a type. The `pln<T>` wrapper indicates this is a plain value, meaning it is predictable right at build time. So, `pln<Type>` is a plain `Type` value - a predictable type.
 
-The `instanceof` keyword is the _typechecking operator_: it checks if the given value is an instance of the provided type or of one of its sub-types.
+The `instanceof` keyword is the _typechecking operator_: it checks if the given value is an instance of the provided type or of one of its sub-types. If we want to check if a value's type implements a specific type for example, we will have to check using the `typeof` operator like `(typeof value) implements Stringifyable` - the same keyword than for templates.
 
 Let's try our flex:
 
