@@ -5480,7 +5480,7 @@ println!(A & B == B); // Prints: 'true'
 println!(A & B == A); // Prints: 'false'
 ```
 
-Type absorption is performed automatically by the program, but that's still important to understand why `A & B` could result in `B` alone.
+Intersection absorptions are performed automatically by the program, but that's still important to understand why `A & B` could result in `B` alone.
 
 ### Union types
 
