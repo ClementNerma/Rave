@@ -5518,6 +5518,20 @@ struct B {
 type AnyOfThem = A | B; // ERROR
 ```
 
+Note also that type inference will **never** result in an union type. In some specific cases like when dealing with vectors, it will use the 'Best Common Type' method to determine the value's type:
+
+```sn
+virtual class Animal {}
+
+// These three types have in common their 'Animal' parent
+class Lion extends Animal {}
+class Rhino extends Animal {}
+class Bear extends Animal {}
+
+val array = [ new Lion(), new Rhino(), new Bear() ];
+// 'array' is of the 'Animal[]' type
+```
+
 ### Type assertion
 
 Let's say we want to create a function that takes any value as an argument. If it is stringifyable, we stringify it, else we return `null`.
