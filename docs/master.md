@@ -5585,6 +5585,20 @@ If both blocks return the same type of value, type absorption will make it resul
 val data = try divideInt(a, b) catch () : int => 0; // int | int == int
 ```
 
+#### Automatic sub-typing
+
+An union type will be automatically typecastable to any type that is a common parent type to all types in the union. Showcase:
+
+```sn
+virtual class A {}
+
+class B extends A {}
+class C extends A {}
+
+let b: B | C = new B();
+let a: A = b; // Works (as 'B' and 'C' are both sub-types of 'A')
+```
+
 ### Type assertion
 
 Let's say we want to create a function that takes any value as an argument. If it is stringifyable, we stringify it, else we return `null`.
