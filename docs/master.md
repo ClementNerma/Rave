@@ -565,6 +565,8 @@ println!(arr[9]); // Prints: '19'
 
 One of the main points that make ranges interesting, aside not having to write all numbers manually, is that they take near-to-zero memory space. Even a range of 1000 billion numbers (let's say, `0..1_000_000_000_000`) will take only a few bytes in memory, while its hand-written version would take much more memory than your computer can handle (about 4096 gigabytes of RAM).
 
+Note that ranges only work with positive numbers, and are typed as `usize` values.
+
 #### Lists
 
 Lists, on their size, are defined using the `List<T>` type, where `T` is the same as for arrays:
