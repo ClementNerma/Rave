@@ -5730,3 +5730,284 @@ val obj = new ~Any {
 
 obj.onClick(); // Prints: 'Triggered!'
 ```
+
+## Asynchronous behaviors
+
+Sometimes we can't foretell when an event will occur. For example, if we are making a web server, we can't predict when there will be incoming connections. This is called an _asynchronous behaviour_ and we will see in this chapter how to deal with it.
+
+Some of the concepts we will see, like promises, are also very useful when dealing with multi-treading, a great tool that allows our code to run several pieces of code simultaneously.
+
+### The problem
+
+Some events are synchronous even though they appear to be asynchronous. For example, catch blocks call may appear to be asynchronous becacuse they are called only if an error occured, and implicitly. But in fact, they are called synchronously, because the analyzer turns all throw instructions inside a try block to a jump to the catch one (which is not possible manually). So, the catch block works synchronously.
+
+Another case is callbacks. In the following code:
+
+```sn
+class Event {
+  private static handler: () => void;
+
+  public static fn handle (handler: () => void) => @handler = handler;
+
+  public static fn trigger () {
+    @handler();
+  }
+}
+
+Event.handle(() => println!('Callback was triggered'));
+Event.trigger();
+```
+
+If we don't have the source code of `Event`, we could think this is asynchronous because the function is not called directly but only when a specific event occurs. But it's still synchronous, because the callback is ran in the `Event.trigger()` function.
+
+Globally, there are three cases of asynchronous behaviors:
+
+* When dealing with threads;
+* When the program is going to be transpiled in an asynchronous language and uses an asynchronous API from it;
+* When using asynchronous API in frontend or third-party APIs
+
+We will only talk about the second point, as we will deal with in another chapter.
+
+In some languages, such as JavaScript, several functions can be ran at the same time automatically. For example, the `setTimeout()` function that takes a callback and a delay in miliseconds runs the given function after the specified delay, even if the program is already running some tasks. This will not block the main tasks' execution, because the callback will run in parallel of the main tasks. This specificity makes JavaScript a _non-blocking language_, which means it can run several functions at the same time without blocking another.
+
+The Node.js platform takes advantage of this feature to allow JavaScript being used in servers. When five clients connect at the same time to the server, they can be delivered simultaneously. In a synchronous language, the first client would be served first, and when it's done it would be the second client's turn, then the third one, and so on... That makes a long waiting time for the last clients, though. That's why synchronous languages are never used to deliver resources on a server.
+
+Thanks to transpiling, we can take advantage of this using promises as we will see now.
+
+### Promises
+
+Promises are a great tool when coming to handling asynchronous behaviors. A promise is simply an object which can either _succeed_ if the task it has been created for succeeds, or _fail_ if it fails.
+
+Promises are basically a software conception of tasks that can either return a result or throw an error. Here is an example of promises, when dealing with filesystem tasks:
+
+```sn
+// We admit the function below is already defined
+fn readAsync (fileName: string) : Promise<string, Error>;
+
+// Let's use it
+readAsync('hello.txt')
+  .then((content: string) => println!(`File's size is ${content.length} bytes.`))
+  .catch((err: Error) => println!(`Something went wrong: ${content.message}`));
+
+// And with ICT:
+readAsync('hello.txt')
+  .then(content => println!(`File's size is ${content.length} bytes.`))
+  .catch(err => println!(`Something went wrong: ${content.message}`));
+```
+
+The `.then()` function simply registers the callback which will be called if the promise succeeds, while `.catch()` registers the callback for the case it fails. Here, we don't use any `try`-`catch` block to handle potential errors ; there is callback for that.
+
+We can also use `.finally()` to run a function after the other callbacks, whatever the promise succeeded or failed.
+
+Let's now write the `readAsync` function:
+
+```sn
+val files = new Map<string, string>;
+
+fn readAsync (fileName: string) : Promise<string, Error> {
+  // Make a promise a return it
+  return new Promise<string, Error>((resolve, reject) => {
+    if fileName in files {
+      // Success
+      resolve(files[fileName]);
+    } else {
+      // Fail
+      reject(new Error('File not found'));
+    }
+  });
+}
+```
+
+The `resolve` and `reject` arguments of the promise's function are the callback which will be called when the promise succeeds or fails. It is transparently binded to the callbacks registered by `.then()`, `.catch()` and `.finally()`.
+
+### Asynchronous functions
+
+Asynchronous functions are a simplier way to write functions based on promises. These are simple functions, prefixed at declaration time by the `async` keyword, and which can access additional keywords and return features.
+
+If we rewrite our function in an asynchronous function, here is how it looks:
+
+```sn
+async fn readAsync (fileName: string) : (string, Error) {
+  if filename in files {
+    resolve files[fileName];
+  } else {
+    reject new Error('File not found');
+  }
+}
+```
+
+A lot simplier and easier to read, right?
+
+An asynchronous function implicitly returns a promise. Its return type is shortened: instead of returning a `Promise<X, Y>`, it indicates returning a `(X, Y)`, and is automatically replaced by the builder. So, our function will, in reality, return a `Promise<string, Error>`.
+
+Then, we don't have to instanciate the `Promise<X, Y>` class: the function's body is implicitly wrapped inside a promise's function. We also have access to two new keywords: `resolve`, which calls the resolution callback, and `reject`, which calls the rejection callback.
+
+Note that, when these keywords are called, the function immedialy stops. At the opposite of calling a function manually, these stop the function's execution, even inside a sub-function:
+
+```sn
+async fn test () : (void, void) {
+  (() => {
+    resolve null;
+  })();
+
+  println!('Hello world!');
+}
+
+test(); // Will never print anything
+```
+
+Also, asynchronous functions are allowed to return values. In such case, it will be considered as a resolution.
+
+### Error-free promises
+
+Error-free promises are promises that cannot fail. These take only one template instead of twos, and all calls to `.catch()` will work but have no effect. Also, the promise's function only take the resolution callback, as it cannot perform a rejection:
+
+```sn
+new Promise<string>(resolve => {
+  resolve('It works.');
+});
+```
+
+With asynchronous functions, it simply consists in returning a single type instead of a tuple of two types. Also, the `reject` keyword becomes unavailable:
+
+```sn
+async fn test () : string {
+  reject 'Nope'; // ERROR
+  resolve 'It works'; // Works fine
+}
+```
+
+For promises that do not return any kind of value, the return type can even be omitted (it will be considered as `void`):
+
+```sn
+async fn test () {
+  resolve ; // Works fine
+}
+```
+
+### Single resolution
+
+It's possible to resolve several promises at once, using `Promise.all`:
+
+```sn
+val single = Promise<string, Error>.all([
+  readAsync('file1.txt'),
+  readAsync('file2.txt'),
+  readAsync('file3.txt')
+]); // Promise<string[3], PromiseChainError<string, Error> ==
+    // Promise<string[3], (Error, usize, Promise<string, Error>, string[])>
+
+// Inferred typing:
+val single = Promise.all([
+  readAsync('file1.txt'),
+  readAsync('file2.txt'),
+  readAsync('file3.txt')
+]);
+```
+
+The resulting promise will succeed only if all provided promises succeed too. In this case, it will return the list of data returned by them. If any fails, it will call the rejection callback and provide it a tuple containing: the error, the number of promise's number, the promise itself, and the data returned by the promises that succeded before the error (if any).
+
+Note that it's possible to use promises which return different resolution and/or rejection types ; in this case the 'Best Common Type' method will be applied:
+
+```sn
+val single = Promise.all([
+  new Promise<int, int>((resolve, reject) => resolve(2)),
+  new Promise<bool, bool>((resolve, reject) => resolve(true))
+]); // Promise<Primitive[2], PromiseChainError<Primitive, Primitive>
+```
+
+### Waiting for promises
+
+Sometimes we have to perform some asynchronous actions and wait for their completion in order for the program to continue. For example, this can happen when loading a resource from the web or waiting for a user's input.
+
+For this, we can use the `await` keyword which allows, inside an asynchronous function, to wait for the completion of a promise:
+
+```sn
+// Considering the following function:
+async fn sleep (delay: uint);
+
+// Function: Print a message after a specific delay
+fn delayedPrint (message: string, delay: uint) {
+  // Wait for sleep()
+  await sleep(delay);
+
+  // Print the message
+  println!(message);
+}
+
+delayedPrint('Hello', 1000)
+  .then(i => println!('Finished')); // Will print after 1 second
+```
+
+The result of the promise is returned as a value, so it's possible to write `val constant = await somePromise;`, for instance.
+
+Note that, if the promise is not error-free, `await` may throw an `AwaitRejectionError<T>` error (with `T` being the provided promise's rejection type), so it must be wrapped in a `try` block.
+
+The `await` keyword is not available outside asynchronous functions:
+
+```sn
+fn test () {
+  (() => {
+    await sleep(delay); // ERROR (this lambda is not an asynchronous function)
+  })();
+}
+```
+
+### Synchronous waiting
+
+As we saw, `await` is a great tool as it allows us to wait synchronously for a promise. But, it's unavailable when we are _outside_ an asynchronous function.
+
+In fact, the point of this keyword is not to make promises synchronous or to block the function's execution until the promise is either resolved or rejected ; it's simply a way to resolve a promise without all the `.then()` and `.catch()` stuff, but it **never** aims to block the execution of the program.  That's why it only works in asynchronous functions: waiting for a promise in a function that is already asynchronous doesn't block the program, it only 'blocks' the promise, which in all cases won't block the program itself.
+
+Still, there are cases when we explicitly want to block the program's execution while the promise is not resolved nor rejected. For example, let's consider we want to make a program that retrieves the ten last articles from a blog and displays them in the terminal. Getting the articles from the web is, of course, asynchronous.
+
+A first idea to achieve this would be to make ten promises, and when they are all resolved or rejected, display the result in a terminal. Here is the code:
+
+```sn
+// Considering the following function:
+async fn getArticle (id: uint) : (string, Error);
+
+// The code:
+Promise
+  .all(fetchArticle(i) for i in 0..10)
+  .then(articles =>
+    println!(article) for article in articles;
+  )
+  .catch(err => println!('Failed to fetch articles: ' + err.message));
+```
+
+The main problem of this code is that we couldn't integrate it to a loop, for example. Let's imagine we have a `for` loop that does a lot of stuff and, in the middle of its body, retrieves the article, then do other stuff on it. We would have to transform the code in an asynchronous process that do the stuff while preparing each promise, and do the second stuff when they are resolved. That's heavy and isn't possible in all cases - for example if our loop is in a process that MUST be synchronous.
+
+Another, more explicit example, of the limitations of `await` is when we deal with synchronous callbacks. For example, if we have an array of strings, and for each of them we want to return the content of an article (still in a process that must be synchronous), we are blocked because the callback of `.map()` (for instance) must be synchronous.
+
+To solve this problem, we can make _synchronously_ wait for promises thanks to the `sync` keyword. It does the same thing than `await`, but works even outside asynchronous functions. So, why do we have two different keywords?
+
+That's all a question of goal: while `await` aims to have a lighter and 'synchronous' wait of promises inside of another promise, `sync` aims to **block** the execution while the promise is not resolved nor rejected.
+
+Here is the syntax:
+
+```sn
+for i in 0..10 {
+  try {
+    println!(sync fetchArticle(i));
+  }
+
+  catch (e) {
+    println!(`Failed to fetch article ${i}: ${e.message}`);
+  }
+}
+```
+
+This way, the loop is ran a synchronous way. To take again our `.map()` example:
+
+```sn
+val articles = [ 2, 5, 8 ];
+val articlesBody = articles.map(
+  id => try sync fetchArticle(i) catch 'Failed to fetch article: ' + err.message
+); // string[3]
+
+// Print them
+for body in articlesBody {
+  println!(body);
+}
+```
