@@ -5599,6 +5599,44 @@ let b: B | C = new B();
 let a: A = b; // Works (as 'B' and 'C' are both sub-types of 'A')
 ```
 
+#### Union error types
+
+In a `catch` block, it is possible to not provide its head entity's type. If so, its type will be the union type of all throwable types inside the `try` block:
+
+```sn
+fn fnA () throws AError, BError {}
+fn fnB () throws CError {}
+
+try {
+  fnA();
+  fnB();
+}
+
+catch (e) {
+  // 'e' is typed as an 'AError | BError | CError'
+}
+```
+
+Already caught types are also eliminated from the union:
+
+```sn
+fn fnA () throws AError, BError {}
+fn fnB () throws CError {}
+
+try {
+  fnA();
+  fnB();
+}
+
+catch (e: BError) {
+  // 'e' is typed as a 'BError'
+}
+
+catch (e) {
+  // 'e' is typed as an 'AError | CError'
+}
+```
+
 ### Type assertion
 
 Let's say we want to create a function that takes any value as an argument. If it is stringifyable, we stringify it, else we return `null`.
