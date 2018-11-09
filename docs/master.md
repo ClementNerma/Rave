@@ -2654,7 +2654,7 @@ println!(new BankAccount(2000u) < new BankAccount(1000u)); // Prints: 'false'
 
 The `%compare` overload returns one of the `Comparison` enumeration's values: either `GREATER` to indicate the current instance is greater than the one it compares too, either `SMALLER` to indicate its smaller, or finally `EQUAL` to indicate they are both equal.
 
-Implementing `%compare` automatically implements `%equal`. To avoid duplicate and useless code, they cannot be put together in the same class. Also, all classes implementing this overload implement the `ComparableTo<T>` overload, where `T` is the type of the argument specified in the overload.
+Implementing `%compare` automatically implements `%equal`. To avoid duplicate and useless code, they cannot be put together in the same class. Also, all classes implementing this overload implement the `ComparableTo<T>` overload, where `T` is the type of the argument specified in the overload. A type comparable to itself will be `Comparable`.
 
 ### Friends
 
