@@ -4918,6 +4918,8 @@ println!(stringifyStatic({
 
 Also, as tuple types are considered as structures (we can create them using the `struct` keyword after all), the same process applies. This time though, the iterator will contain `usize` values instead of `string`.
 
+**NOTE:** Class extensions are not allowed on the `Static<T>` type.
+
 ### Plainable types
 
 Plainable types are types which can be used as a type for a plain constant as well as by the `pln<T>` wrapper. Their list is stored inside a native, plain tuple to allow identiying them during program's execution (is this type plainable?):
