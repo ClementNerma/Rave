@@ -5076,9 +5076,9 @@ Another advantage of flexs is that they can return plain values, at the opposite
 
 ```sn
 flex getFamilyTypeOf (value: number) : pln<Type> {
-  if value ~ int {
+  if value instanceof int {
     return int;
-  } elsif value ~ uint {
+  } elsif value instanceof uint {
     return uint;
   } else {
     return number;
@@ -5088,7 +5088,7 @@ flex getFamilyTypeOf (value: number) : pln<Type> {
 
 Let's introduce a few new concepts here. First of all, the `Type` type obviously refers to a type. The `pln<T>` wrapper indicates this is a plain value, meaning it is predictable right at build time. So, `pln<Type>` is a plain `Type` value - a predictable type.
 
-The `~` is the _typechecking operator_: it checks if the given value either is instance of the provided type or of one of its sub-types, if it implements the provided interface, or if it uses the provided trait.
+The `instanceof` keyword is the _typechecking operator_: it checks if the given value is an instance of the provided type or of one of its sub-types.
 
 Let's try our flex:
 
