@@ -3928,9 +3928,9 @@ We will have two attributes for this class: a list of keys, and a list of values
   }
 ```
 
-## Nullability and optional types
+## Nullable types
 
-A nullable type is a type that can hold values of itself as well as voids. For example, the nullable `int` type can handle any 32-bit signed integer, as well as the `null` value.
+A nullable type is a type that may not hold a value of the provided type.
 
 ### An example with points
 
@@ -3952,100 +3952,13 @@ fn getNilPoint (points: Point[]) : Point {
 }
 ```
 
-This works fine. Now, what if we run this code:
+This function won't compile because of `getNilPoint` not returning a `Point` value on all paths. This is because, if we exit the loop and haven't find any valid point, the function will not return anything.
+
+To solve this problem, we could simply use a structure which indicates wether a point was found or not. There is already a type for that: `Option<T>`. It can handle a value of the `T` type:
 
 ```sn
-val point: Point = getNilPoint([]);
-```
-
-Our program will crash because getNilPoint returned a void while a Point was expected. This is simply due to the fact no point matched the condition in the for loop, so the function ended without returning anything (which is equivalent to returning `null`). So, in order to make this function work anyway, and without returning a whole structure with a success boolean or something like that, we can use a nullable type:
-
-```sn
-fn getNilPoint (points: Point[]) : Point? {
-```
-
-This allows the function to return a `Point` instance or a `void` instance (`null`). But, our program will still crash with an error message telling that a `void` cannot be converted to a `Point`. That's simply because we declared our constant with the `Point` type, but we must now tell it can also contain a void:
-
-```sn
-val point: Point? = getNilPoint([]);
-```
-
-Now our program works as expected, and `point` is equal to `null`. We can also use inferred typing on nullable types:
-
-```sn
-val point = getNilPoint();
-
-println!(typeof point == Point?); // Prints: 'true'
-```
-
-### The `null` value
-
-As we saw, the `getNilPoint()` function can now return an instance of `void` (the famous `null` value).
-
-A strict equivalent to our function:
-
-```sn
-fn getNilPoint (array: Point[]) : Point? {
-  for point in array {
-    if point.x == 0 && point.y == 0 {
-      return point;
-    }
-  }
-
-  // Optional
-  return null;
-}
-```
-
-This is exactly the same thing.
-
-Be aware though, using inferred typing with `null` will result in the following behavior:
-
-```sn
-let point = null;
-point = getNilPoint([]); // ERROR
-```
-
-This will result in an error because inferred typing gave the `void` type to `point`, so it can't receive a `Point?` value. We must replace this code by:
-
-```sn
-let point = nullable!(Point);
-point = getNilPoint([]); // Works fine
-```
-
-Now we've seen all this, let's try our function:
-
-```sn
-val point1 = getNilPoint([ { name: 'Test point', x: 0, y: 0 } ]);
-println!(point1.name); // Prints: 'Test point'
-
-val point2 = getNilPoint([]);
-println!(point2.name); // ERROR
-```
-
-The second call to `getNilPoint()` makes our program crash. Why? Simply because `point2` is a `void` instance. This is the main downside of nullable types: if we try to access their members while they are `null`, the program panics.
-
-So, in order to avoid such problems, we have to check first if our constant contains a `null` value or not, thanks to the equality operator `==` or the difference operator `!=`. This can be done thanks to the fact two instances of the same class can be compared with these two operators (we'll see that in details in the pointers chapter). So we can write:
-
-```sn
-val point = getNilPoint([]);
-
-if point == null {
-  println!('No point found.');
-} else {
-  println!(`A point was found: ${point.name}`);
-}
-```
-
-Note that we can still use some native operators like `!` or `point ? doSomething() : doSomethingElse()` on our constant, as they don't care about the value's type - only if it's NIL or not.
-
-### Optional type
-
-The optional type is a nullable type that cannot fail at runtime. The downside is that we can't simply manipulate it like a simple nullable value: before accessing _any_ of its members, we must first ensure it is not `null`. Here is how it goes:
-
-```sn
-fn getNilPoint (array: Point[]) : Option<Point> {
-  for point in array {
+fn getNilPoint (points: Point[]) : Option<Point> {
+  for point in points {
     if point.x == 0 && point.y == 0 {
       return some!(point);
     }
@@ -4055,37 +3968,61 @@ fn getNilPoint (array: Point[]) : Option<Point> {
 }
 ```
 
-Note that `none` is a value that is automatically typecastable to any `Option<T>` type, which allows us to use it where a `Option<T>` value is expected.
-
-As we do not return a nullable value now but an optional value (an instance of the `Option<Point>` type), we can't use `Point`'s members. For that, we must get the point itself, which requires to ensure it is not null:
+The `Option<T>` type can also simply be written `?T`:
 
 ```sn
-val point = getNilPoint([]);
-
-if point.ok {
-  println!(expect!(point).name);
-} else {
-  println!('No point found');
+fn getNilPoint (points: Point[]) : ?Point {
+  // ...
 }
 ```
 
-This code will print "No point found".
-
-Calling `expect!` make it retrieve the value. If it is `none`, the program will panic. Note that it is also possible to not check for `ok` and simply display a custom panic message in the case it is `none`:
+This works fine. We can now check if we got a value or a "none":
 
 ```sn
-val point = getNilPoint([]);
+val point: ?Point = getNilPoints([]);
 
-println!(expect!(point, 'Expected a point').name);
+match point.type {
+  Some -> println!('Foud a point: ' + point.value.name),
+  None -> println!('No point was found.')
+}
 ```
 
-This code will panic with the specified message.
+In fact, the `Option<T>` type is simply an union of `None` and `Some<T>`.
 
-### Nullable operator
+To simplify checking, we can also use the `.none()` and `.some()` methods:
 
-Here is a useful operator, that works both on nullable and optional types. It allows to access a member of the given value only if it is not `null` (for nullable types) or `none` (for optional types). If it is, it will simply return either `null` if we are using a nullable type or `none` else. This way, the program won't fail at runtime.
+```sn
+val point = getNilPoints([]);
 
-Also, this operator allows us to not write `expect!` for each item:
+point.some(value => println!('Found a point:' + value.name));
+
+point.none(() => println!('No pas was found.'));
+```
+
+### The nullable operator
+
+The nullable operator is a useful operator that tries to get a structure's field, a class' member, or a dictionary's key safely. Instead of requiring to try and catch the operation, the operator simply returns a `none` value in case of fail:
+
+```sn
+struct Hero {
+  name: string;
+}
+
+val jack = some!(Hero {
+  name: 'Jack'
+});
+
+val john = none;
+
+jack?.name.some(name => println!(name)); // Prints: 'Jack'
+john?.name.some(name => println!(name)); // Does nothing
+
+// List of types:
+typeof jack; // ?Hero
+typeof jack?.name; // ?string
+```
+
+This operator also supports chaining:
 
 ```sn
 struct Hero {
@@ -4102,10 +4039,13 @@ val jack = some!(Hero {
 
 val john = none;
 
-println!(expect!(jack).identity.name); // ERROR
+jack?.identity?.name.some(name => println!(name)); // Prints: 'Jack'
+john?.identity?.name.some(name => println!(name)); // Does nothing
 
-println!(jack?.identity?.name?); // Prints: 'Jack'
-println!(john?.identity?.name?); // Prints: ''
+// List of types:
+typeof jack; // ?Hero
+typeof jack?.identity; // ?({identity: {name: string} })
+typeof jack?.identity?.name; // ?string
 ```
 
 Let's detail the constants' type:
@@ -4243,13 +4183,13 @@ This program will print a message telling the division failed, but the `finally`
 
 When assigning a value to a mutable or a constant that may throw an error, we face the following problem: as we cannot simply do `val constant = divideInt(a, b);` because `divideInt` may throw an error, we have first to declare the constant, then to make the assignment inside a `try` block, and catch errors in a `catch` block.
 
-To simplify this process, we can perform an _inline catching_. It consists in trying to evaluate an expression and, if that doesn't work, get the `null` value. Showcase:
+To simplify this process, we can perform an _inline catching_. It consists in trying to evaluate an expression and, if that doesn't work, get the `none` value. Showcase:
 
 ```sn
-val num = try? divideInt(a, b);
+val num = try? divideInt(a, b); // ?int
 ```
 
-If the division works, it will return its value. Else (if `b` is equal to `0`), `num` will get the `null` value. This makes the constant having the `int?` type.
+If the division works, it will return its value holded by an optional type. Else (if `b` is equal to `0`), `num` will get the `none` value. This makes the constant having the `?int` type.
 
 ### Custom error classes
 
@@ -5348,15 +5288,15 @@ This program will work fine. If we tried to cast unsafely `something` to **any**
 Because using a `try`-`catch` block is a bit heavy, we can use its nullable version:
 
 ```sn
-val str = <?string> something;
+val str = <?string> something; // ?string
 ```
 
-The `str` entity has the `string?` value: if the typecast succeeds, it holds the typecast value. But if it fails, instead of throwing an error, it returns `null` ; that's why the returned value is nullable.
+The `str` entity has the `?string` value: if the typecast succeeds, it holds the typecast value. But if it fails, instead of throwing an error, it returns `none` ; that's why the returned value is nullable.
 
 If we are absolutely sure about the typecasting being write - and so we don't want the final value to be nullable, we can use another syntax:
 
 ```sn
-val str = <!string> something;
+val str = <!string> something; // string
 ```
 
 Using this one, if the typecast fails, the program will panic. Be **really** aware when using it - its usage is strongly discouraged most of the time.
@@ -5626,11 +5566,11 @@ Let's say we want to create a function that takes any value as an argument. If i
 This can be achieved through _type assertion_:
 
 ```sn
-fn convertToString (value: Any) : string? {
+fn convertToString (value: Any) : ?string {
   if value ~ Stringifyable {
     // ...
   } else {
-    return null;
+    return none;
   }
 }
 ```
@@ -5646,16 +5586,16 @@ Note that we can specify multiple type assertions at a type in a type assertion 
 Let's go back to our function:
 
 ```sn
-fn convertToString (value: Any) : string? {
+fn convertToString (value: Any) : ?string {
   if value ~ Stringifyable {
-    return value as string; // Works fine
+    return some!(value as string); // Works fine
   } else {
-    return null;
+    return none;
   }
 }
 
-println!(convertToString(25u)); // Prints: '25'
-println!(convertToString({})); // Prints: ''
+convertToString(25u).some(str => println!(str)); // Prints: '25'
+convertToString({}).some(str => println!(str)); // Does nothing
 ```
 
 This is as simple as that.
@@ -5674,8 +5614,8 @@ Also, we can use type assertions in ternary conditions as well as in inline cond
 
 ```sn
 // Ternary condition
-fn convertToString (value: Any) : string? {
-  return value ~ Stringifyable ? value as string : null;
+fn convertToString (value: Any) : ?string {
+  return value ~ Stringifyable ? some!(value as string) : none;
 }
 
 // Inline condition
