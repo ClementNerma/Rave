@@ -1885,10 +1885,10 @@ The solution to this problem is to use a class:
 
 ```sn
 class Hero {
-  public readonly name: string;
-  public readonly hp: uint;
-  public readonly atk: uint;
-  public readonly exp: uint;
+  public name: string;
+  public hp: uint;
+  public atk: uint;
+  public exp: uint;
 }
 ```
 
@@ -1896,16 +1896,16 @@ A class is made of _members_, which are either _attributes_ - entities - like we
 
 Through this book, we will often talk about the _inside_ of the class, which refers to anything in the class' scope, and to the _outside_ of the class, which is anything outside this scope.
 
-Here, all attributes are marked as public using the `public` keyword, meaning they can be accessed from the outside, but they are also marked as read-only using the `readonly` keyword. This is different than `val` in the way it prevents these attributes from being written from the outside, but not from the inside - where they stay mutable.
+Here, all attributes are marked as public using the `public` keyword, meaning they can be accessed from the outside, but by default attributes cannot be writted from the outside. This is different than `val` in the way it prevents these attributes from being written from the outside, but not from the inside - where they stay mutable.
 
 Like structures, classes can be instanciated. But for that, they need a _constructor_, which is a special method called when the class is created:
 
 ```sn
 class Hero {
-  public readonly name: string;
-  public readonly hp: uint;
-  public readonly atk: uint;
-  public readonly exp: uint;
+  public name: string;
+  public hp: uint;
+  public atk: uint;
+  public exp: uint;
 
   public fn %new (name: string, hp: uint, atk: uint, exp: uint) {
     this.name = name;
@@ -1985,10 +1985,10 @@ Here is the whole code for reference:
 
 ```sn
 class Hero {
-  public readonly name: string;
-  public readonly hp: uint;
-  public readonly atk: uint;
-  public readonly exp: uint;
+  public name: string;
+  public hp: uint;
+  public atk: uint;
+  public exp: uint;
 
   public fn %new (name: string, hp: uint, atk: uint, exp: uint) {
     this.name = name;
@@ -2199,16 +2199,16 @@ Here is our constructor's signature:
 We have to store our map, as well as the current player's coordinates. So we have three attributes:
 
 ```sn
-  public readonly map: Cell[][];
-  public readonly x: usize;
-  public readonly y: usize;
+  public map: Cell[][];
+  public x: usize;
+  public y: usize;
 ```
 
 But it's easier to also have an attribute to check if the player is trapped, so let's add a fourth one:
 
 ```sn
   // ...
-  public readonly trapped: bool = false;
+  public trapped: bool = false;
 ```
 
 Thanks to the attributes being public, we can check at anytime the player's coordinates with `.x` and `.y`, as well as if it's trapped or not using `.trapped`.
@@ -2312,10 +2312,10 @@ Here is the full solution:
 class Map {
   public enum Cell { EMPTY, ROCK, TRAP };
 
-  public readonly map: Cell[][];
-  public readonly x: usize;
-  public readonly y: usize;
-  public readonly trapped: bool = false;
+  public map: Cell[][];
+  public x: usize;
+  public y: usize;
+  public trapped: bool = false;
 
   public fn %new (map: Cell[][], x: usize, y: size) {
     @map = map;
@@ -2468,7 +2468,7 @@ The cloning overload is a method that takes no argument and returns an instance 
 
 ```sn
 class Example {
-  public readonly name: string;
+  public name: string;
 
   public fn %new (name: string) {
     @name = name;
@@ -2545,7 +2545,7 @@ Some arithmetic operators can be overloaded in a class, allowing to use them on 
 
 ```sn
 class MyInt {
-  public readonly value: int;
+  public value: int;
 
   public fn %new (value: int) {
     @value = value;
@@ -2568,7 +2568,7 @@ If we don't provide types, operator overloads take an instance of the current cl
 
 ```sn
 class MyInt {
-  public readonly value: int;
+  public value: int;
 
   public fn %new (value: int) {
     @value = value;
@@ -2600,7 +2600,7 @@ As for arithmetic operators, comparison operators can be overloaded in classes.
 
 ```sn
 class Hero {
-  public readonly name: string;
+  public name: string;
 
   public fn %new (name: string) {
     @name = name;
@@ -2626,7 +2626,7 @@ There is also a more advanced overload to compare values in a more advanced way:
 
 ```sn
 class BankAccount {
-  public readonly amount: uint;
+  public amount: uint;
 
   public fn %new (amount: uint) {
     @amount = amount;
@@ -2705,13 +2705,13 @@ The simpliest way to achieve this is the following:
 
 ```sn
 class Hero {
-  public readonly wizard: bool;
-  public readonly name: string;
-  public readonly hp: uint;
-  public readonly atk: uint;
-  public readonly exp: uint;
-  public readonly rage: uint;
-  public readonly mp: uint;
+  public wizard: bool;
+  public name: string;
+  public hp: uint;
+  public atk: uint;
+  public exp: uint;
+  public rage: uint;
+  public mp: uint;
 
   public fn %new (wizard: bool, name: string, hp: uint,
                   atk: uint, exp: uint, rage: uint, mp: uint) {
@@ -2736,10 +2736,10 @@ A solution to this is to use _inheritance_. It simply consists in creating a bas
 
 ```sn
 open class Hero {
-  public readonly name: string;
-  public readonly hp: uint;
-  public readonly atk: uint;
-  public readonly exp: uint;
+  public name: string;
+  public hp: uint;
+  public atk: uint;
+  public exp: uint;
 
   public fn %new (name: string, hp: uint, atk: uint, exp: uint) {
     @name = name;
@@ -2787,7 +2787,7 @@ You may wonder why we define one as the warrior fights a different way. That's b
 
 ```sn
 class Warrior extends Hero {
-  public readonly rage: uint;
+  public rage: uint;
 
   public fn %new (name: string, hp: uint, atk: uint, exp: uint, rage: uint) {
     @name = name;
@@ -2820,7 +2820,7 @@ Let's write our wizard class:
 
 ```sn
 class Wizard extends Hero {
-  public readonly mp: uint;
+  public mp: uint;
 
   public fn %new (name: string, hp: uint, atk: uint, exp: uint, mp: uint) {
     super(name, hp, atk, exp);
@@ -3201,7 +3201,7 @@ class A {
 }
 
 class B {
-  public readonly message: string;
+  public message: string;
 
   public fn %new (message: string) {
     @message = message;
@@ -3247,7 +3247,7 @@ class A {
 }
 
 class B {
-  public readonly message: string;
+  public message: string;
 
   public fn %new (message: string) {
     @message = message;
@@ -3655,7 +3655,7 @@ This accepts any list with an unknown template. Note that we can still get eleme
 
 ```sn
 class Example<T> {
-  public readonly value: T;
+  public value: T;
 
   public fn %new (value: T) {
     @size = size;
