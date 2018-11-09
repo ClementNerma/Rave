@@ -4241,7 +4241,7 @@ This program will print a message telling the division failed, but the `finally`
 
 When assigning a value to a mutable or a constant that may throw an error, we face the following problem: as we cannot simply do `val constant = divideInt(a, b);` because `divideInt` may throw an error, we have first to declare the constant, then to make the assignment inside a `try` block, and catch errors in a `catch` block.
 
-To simplify this process, we can perform an _inline catching_. It consists in trying to call a function and, if that doesn't work, get the `null` value. Showcase:
+To simplify this process, we can perform an _inline catching_. It consists in trying to evaluate an expression and, if that doesn't work, get the `null` value. Showcase:
 
 ```sn
 val num = try? divideInt(a, b);
