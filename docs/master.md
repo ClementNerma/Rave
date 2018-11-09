@@ -3997,7 +3997,7 @@ fn getNilPoint (array: Point[]) : Point? {
 
 This is exactly the same thing.
 
-Be aware though, using inferred typing with `null` could result in the following behavior:
+Be aware though, using inferred typing with `null` will result in the following behavior:
 
 ```sn
 let point = null;
