@@ -3123,7 +3123,7 @@ Typecasting overloads allow to statically typecast a given type to another, even
 class A {
   private message = 'Hello world!';
 
-  public fn %to<-B> () {
+  public fn %to[B] () {
     return new B(@message);
   }
 }
@@ -3157,6 +3157,8 @@ small = <i8> large; // Works fine (but overflows)
 println!(small); // Prints: '2'
 ```
 
+Note that typecasting overloads use a normally forbidden syntax: polymorphism by return type. Even though these overloads do not take any template nor argument, we can declare several of them in the same class, just changing their return type. It's an exception.
+
 #### Automatic typecast
 
 These overloads can be triggered automatically thanks to the `#auto` directive. To take again our example, this means that any `A` value would automatically be converted to `B` where a `B` value is expected, without using the `as` keyword:
@@ -3166,7 +3168,7 @@ class A {
   private message = 'Hello world!';
 
   #auto
-  public fn %to<-B> () {
+  public fn %to[B] () {
     println!('Typecasting to B');
     return new B(@message);
   }
@@ -3196,15 +3198,15 @@ Interfaces allow to describe members of a class. Like for structure compatibilit
 
 ```sn
 interface Stringifyable {
-  fn %to<-string> ();
+  fn %to[B] ();
 }
 ```
 
-Every class that implements the `%to<-string>` typecast overload will be `Stringifyable`. Note that the visibility is not indicted here as an interface only describes public members.
+Every class that implements the `%to[string]` typecast overload will be `Stringifyable`. Note that the visibility is not indicted here as an interface only describes public members.
 
 ```sn
 class A impl Stringifyable {
-  public fn %to<-string> () {
+  public fn %to[string] () {
     return 'Hello world!';
   }
 }
@@ -3295,13 +3297,13 @@ Let's consider the following code:
 
 ```sn
 class A {
-  public fn %to<-B> () {
+  public fn %to[B] () {
     return new B;
   }
 }
 
 class B {
-  public fn %to<-C> () {
+  public fn %to[C] () {
     return new C;
   }
 }
@@ -3352,14 +3354,14 @@ interface ConvertibleToF {
 
 // Candidate
 class D {
-  public fn %to<-F> () {
+  public fn %to[F] () {
     return new F;
   }
 }
 
 // Candidate
 class E {
-  public fn %to<-F> () {
+  public fn %to[F] () {
     return new F;
   }
 }
@@ -3369,12 +3371,12 @@ class F {}
 
 // A sample class
 class G {
-  public fn %to<-D> () {
+  public fn %to[D] () {
     println!('Typecasted to D');
     return new D;
   }
 
-  public fn %to<-E> () {
+  public fn %to[E] () {
     println!('Typecasted to E');
     return new E;
   }
@@ -3430,34 +3432,6 @@ interface CanAdd<T, X = T> {
 ```
 
 As you can see, this interface takes two templates, but the second one, which is the return type of the `%add` overload, is optionnal. If omitted, it will be `T`, so `CanAdd<T>` will only accept types that implement the `%add` overload taking a `T` value **and returning** a `T` value.
-
-### Fixed templates
-
-Templates can be _fixed_, which means they can only be a single value. This can be useful is specific situations, like in typecasting overloads: the target type is a template, as we can see by the fact it's wrapped between a `<` and a `>` symbol:
-
-```sn
-class A {
-  // 'int' is a fixed template
-  public fn %to<-int> () : self { /* Some stuff here */ }
-}
-```
-
-This can also be used to distinguish several functions without accepting any type:
-
-```sn
-fn printValue<-int> (value: int) {
-  println!('int:' + value);
-}
-
-fn printValue<-string> (value: string) {
-  println!('value: ' + value);
-}
-
-printValue<int>(2); // Prints: 'int: 2'
-printValue<string>('H'); // Prints: 'string: H'
-```
-
-Note that we don't specify the dash before the type's name when we call the function.
 
 ### Typechecking
 
