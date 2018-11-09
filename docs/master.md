@@ -4805,108 +4805,7 @@ println!(mutRef === &i); // Prints: 'false'
 println!(mutRef === &mut i); // Prints: 'true'
 ```
 
-## Advanced concepts
-
-### Bindings
-
-_Bindings_ are a simple way to access all properties of a given object as if they were part of the current scope. This can be useful when dealing with large libraries. Let's take the example of a game engine, with the following code:
-
-```sn
-engine.run(lib => {
-  val window = lib.createWindow(640, 480, 'My super game');
-
-  val scene = lib.createScene();
-
-  val polygons = (
-    lib.createPolygon(lib.randInt(), lib.randInt(), lib.randColor()
-    for i in 1...10
-  );
-
-  scene.attachAll(polygons);
-
-  window.setScene(scene);
-
-  window.display();
-});
-```
-
-The same version, with bindings:
-
-```sn
-engine.run(lib => {
-  // Bind "lib"'s property to the current scope
-  #bind lib;
-
-  val window = createWindow(640, 480, 'My super game');
-
-  val scene = createScene();
-
-  val polygons = (createPolyon(randInt(), randInt(), randColor()) for i in 1...10);
-
-  scene.attachAll(polygons);
-
-  window.setScene(scene);
-
-  window.display();
-});
-```
-
-That sure is simplifier and more easy to read, isn't it?
-
-Note that you can make multiple bindings in a function, but they must always be located at its top - bindings must not be followed by any instruction.
-
-### Conditional directives
-
-Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the conditional directives: `#if`, `#else`, `#elsif`, `#end`. The code located in them is simply removed from the source code if the condition is (or is not) filled, before the program starts to run. They can only use plain values, as well as native constants, which give informations about the type of execution (interpreted, compiled, ...), the platform (Windows, Linux, ...) the processor's architecture (ARM, x86, ...).
-
-Here is an example:
-
-```sn
-#if PROC_ARCH == 'ARM'
-  println!('This program has been compiled for ARM.');
-#end
-
-#if OS == 'Windows'
-  println!('You are using a Windows system.');
-#elsif OS == 'Linux'
-  println!('You are using a Linux system.');
-#elsif OS == 'Darwin'
-  println!('You are using a MacOS system.');
-#end
-```
-
-### Superoverloads
-
-Superoverloads are global overloads of arithmetic and comparison operators. They work exactly the same way as classes, but they take two arguments instead of one: a value to compare another with, and the compared value.
-
-Showcase:
-
-```sn
-fn %add<SIZE: usize> (left: int[SIZE], right: int[SIZE]) : string {
-  return (left[i] + right[i] for i in 0..SIZE);
-}
-
-val added = [ 1, 2 ] + [ 3, 4 ];
-
-println!(added[0]); // Prints: '4' (1 + 3)
-println!(added[1]); // Prints: '6' (2 + 4)
-```
-
-### Symbols
-
-Symbols are useful values to identify and separate data. A symbol holds a unique identifier we cannot access, as well as an optional string which is its _value_. Two symbols are considered as equal if and only if they share the same identifier - so they are only equal to themselves.
-
-```sn
-val sym1 = new Symbol('This is a great symbol');
-val sym2 = new Symbol('This is a sympathic symbol');
-
-println!(sym1.message); // Prints: 'This is a great symbol'
-
-sym1 == sym1; // true
-sym1 == sym2; // false
-sym2 == sym1; // false
-sym2 == sym2; // true
-```
+## Types in depth
 
 ### Descriptor types
 
@@ -5102,309 +5001,6 @@ for i -> num in fibonacci(1000u) {
   println!('${i}: ${num}');
 }
 ```
-
-### Entities shadowing
-
-Entities shadowing consist in declaring two entities with the same name inside the same scope. In such scenario, the second entity replaces the first one. This can be useful to change the definitive type of an entity after manipulating its content, for instance. Here is an example:
-
-```sn
-struct Hero {
-  name: string;
-}
-
-struct AdvancedHero {
-  name: string;
-  superHero: bool;
-}
-
-val hero = Hero { name: 'Jack' };
-
-// do some stuff with 'hero' here
-
-val hero = AdvancedHero {
-  name: hero.name,
-  superHero: name == 'Jack'
-};
-```
-
-While, before the single-line comment, we had an `hero` entity typed as an `Hero`, we now finally have at the end of the program an `hero` entity typed as an `AdvancedHero`.
-
-The second declaration of `hero` replaces the first one (we say it _shadows_ it). Note that entities can be shadowed multiple times.
-
-### Late initialization
-
-Late initialization consists in declaring an entity without an initialization value. It is useful when its value is decided by a large condition, for example, especially when we are dealing with a constant:
-
-```sn
-val name: string;
-
-println!(name); // ERROR ('name' has not been initialized)
-
-name = 'Jack'; // Works fine
-name = 'John'; // ERROR (constants are read-only)
-
-println!(name); // Prints: 'Jack'
-```
-
-Note that this does not work with plain constants.
-
-This is the method used by classes to declare attributes but initializing them only in the constructor. Accessing an entity before we are sure it has been initialized will raise an error at build time.
-
-Also, for classes, if any member remains uninitialized when the constructor ends, an error is also raised at build time:
-
-```sn
-class A {
-  public name: string;
-  public age: uint;
-
-  public fn %new (name: string, age: uint) {
-    @name = name;
-    // ERROR: 'age' has not been initialized
-  }
-}
-```
-
-### Flexs
-
-Remember when we encountered `println!` for the very first time? We told at this moment is was a _flex_, and that we would see what it is later. Now, time has come to see it in details.
-
-The _flex_ term stands for _flexible function_. These work basically like functions, simply using the `flex` keyword instead of `fn`. But what make them specials are three key differences.
-
-First, their content is copy-pasted when it is called. This means that, when we call it, its call is replaced by its full body. This also means that, if you call a given flex 10 times, its content will appear 10 times in the code. That's why flexs should always be as short and concise as possible.
-
-Secondly, and that's the reason of the first point, they can use _dynamic sub-types_. This allows to indicate an argument accepts a `number`, but if an `int` is given, it will be typed as an `int` and not as a `number`. This is possible because, as the flex's body is fully copied where we call it, so it is possible to make tests on it.
-
-Finally, type checking is disabled on them until their call. And type checking is so performed individually for each call. This allows to make some data manipulation a lot easier as we will see now, but it also requires to write them with many care, in order to avoid errors when we call them with specific types or data.
-
-Here is an example:
-
-```sn
-fn doubleNumberFn (value: number) : number {
-  return value * 2;
-}
-
-flex doubleNumberFlex (value: >number) : >number {
-  return value * 2;
-}
-
-typeof doubleNumberFn(2); // number
-typeof doubleNumberFlex!(2); // int
-```
-
-As you can see, flexes are called using the `!` symbol.
-
-The `typeof` operator can also be used for the return type:
-
-```sn
-flex doubleNumberFlex (value: >number) : typeof value {
-  return value * 2;
-}
-```
-
-This second writing is better in our case because it is more precise: we know that it will return a value of the same type than its only argument.
-
-Note that flexes can be part of classes and traits as methods, but not in interfaces as it would be impossible to predict the implemented content of the flex.
-
-Another advantage of flexs is that they can return plain values, at the opposite of functions, which allows to use them as types:
-
-```sn
-flex getFamilyTypeOf (value: number) : pln<Type> {
-  if value instanceof int {
-    return int;
-  } elsif value instanceof uint {
-    return uint;
-  } else {
-    return number;
-  }
-}
-```
-
-Let's introduce a few new concepts here. First of all, the `Type` type obviously refers to a type. The `pln<T>` wrapper indicates this is a plain value, meaning it is predictable right at build time. So, `pln<Type>` is a plain `Type` value - a predictable type.
-
-The `instanceof` keyword is the _typechecking operator_: it checks if the given value is an instance of the provided type or of one of its sub-types. If we want to check if a value's type implements a specific type for example, we will have to check using the `typeof` operator like `(typeof value) implements Stringifyable` - the same keyword than for templates.
-
-Let's try our flex:
-
-```sn
-getFamilyTypeOf!(2); // int
-getFamilyTypeOf!(2u); // uint
-
-getFamilyTypeOf!(2b); // int
-getFamilyTypeOf!(2S); // uint
-
-getFamilyTypeOf!(2.0); // number
-```
-
-As you can see, it returns the right types. Because it returns a plain type, we can use it as an entity's type, for example:
-
-```sn
-val num: number = 2b;
-
-val someInt: getFamilyTypeOf!(num) = 8; // int ; works fine
-```
-
-To be more precise, when a flex is called, its code isn't just copy-pasted without any change. Its code is put inside a dedicated scope, to avoid polluating the current one, and only its return value - if there is one - is put where the flex was called. Else, a `null` is put instead.
-
-This little code above works even though the real type of `num` is hidden by its official `number` type. But, the typechecking operator looks for the real type_ of the provided value, and not to its official one.
-
-Flexs can be useful in specific situations, like when iterating a tuple. While we can iterate it using their `iterFn` method, the callback function will receive only values of the `Any` type, while when using their `iter` method, the callback flex will receive values with the real type of the value. Showcase:
-
-```sn
-val tuple = ( null, true, 2, 'Hello world!' );
-
-tuple.iterFn(value => {
-  typeof value; // Always 'Any'
-});
-
-tuple.iter!(flex (value: >Any) {
-  typeof value; // 'void', 'bool', 'int' and then 'string'
-});
-```
-
-Here is an example of a flex returning a reversed version of a given tuple, using the tuples' `.map!` method which allows to create a new tuple with the same number of elements:
-
-```sn
-flex reverseTuple (tuple: #tuple) : #tuple {
-  return tuple.map!(flex (value: >Any, pln index: usize) : >Any {
-    return tuple[tuple.size - index - 1];
-  });
-}
-```
-
-Here, we create a flex which takes a tuple as an argument, and return another one. We use tuples' `.map!` flex to create a new tuple from the provided one.
-
-We give to this method a flex callback which takes the value of the current index (we don't care about it) as well as the index. Our flex returns a value that can be of any official type (`>Any`). This way, if we return an `int`, the returned value will be an official `int` and not an `int` hidden behind an `Any` official type.
-
-Our callback then returns the value at the opposite of the tuple. The generated tuple is returned right after its creation.
-
-Another way to write this flex is using the `createTuple!` flex which allows to create a tuple from a flex:
-
-```sn
-flex reverseTuple (tuple: #tuple) : #tuple {
-  return createTuple!(tuple.size, flex (pln index: usize) : >Any {
-    return tuple[tuple.size - index - 1];
-  });
-}
-```
-
-This one uses the same declaration, but generates a tuple dynamically. The `createTuple!` flex requires a plain `usize` value, so we provide the original tuple's size (which is a plain value for all tuples). Then, we provide a callback that takes the current index and returns the value at the opposite in the original tuple.
-
-The only downside of this flex is that the new tuple only has constant members - no plain nor mutable ones. We could solve this problem by using the `createAdvancedTuple!` which uses a more complex API.
-
-Also, note that, as flexes are rewritten at each call, calling flexes inside flexes can quickly make an enormous code to copy-paste. If we make a tuple of a hundred elements for example, the callback flex in `reverseTuple` will be called a hundred times!
-
-Final word: as you can see, flexs are complex to handle, and you may not need very often. But the point is that, if you need it, they are here.
-
-### Proxies
-
-Proxies are entities that don't have a real value. Instead, when we attempt to either read or write them, a related callback is called.
-
-Proxies are defined using the `proxy` keyword, with an object containing the callback called when the object is read - called the "getter" - and the one when the object is written - called the "setter" -. Note that the setter is optional ; if none is specified, all assignments will result in an error at build time.
-
-```sn
-val _counter = 0u;
-
-proxy counter: uint from {
-  getter: fn () : uint {
-    return ++ _counter;
-  },
-
-  setter: fn (value: uint) : bool {
-    _counter = value;
-    return true;
-  }
-};
-```
-
-Our `counter` proxy is declared as an entity of the `uint` type. The object located after the `from` keyword is called the proxy's _model_. The getter must be a function taking no argument and returning a value of the same type than the entity. The setter must be a function taking a value, which can be of any type - not necessarily the entity's one - and return a boolean: `true` if the value was assigned, `false` if it can't - because it is invalid, or so on.
-
-Let's try it:
-
-```sn
-println!(counter); // Prints: '1'
-println!(counter); // Prints: '2'
-println!(counter); // Prints: '3'
-```
-
-And so on. Note that it is possible to put any addition field in the object, and so we can integrate the counter variable inside our proxy. This way, we can make a counter that only increments itself and cannot be decremented:
-
-```sn
-proxy counter: uint from {
-  value: 0u,
-  getter: () => ++ @value
-};
-
-println!(counter); // Prints: '1'
-println!(counter); // Prints: '2'
-println!(counter); // Prints: '3'
-println!(counter); // Prints: '4'
-println!(counter); // Prints: '5'
-```
-
-#### Prepared proxy models
-
-As the proxy model is a simple object, we can create it by advance and store it inside an object to use the same model across several proxies. The object will be cloned each time we create a proxy from it.
-
-A specificity is that models must be declared using the `prxmodel` keyword. Also, they cannot be read or write ; writing `myProxyModel.prop` will always fail.
-
-```sn
-prxmodel counterProxy {
-  value: 0u,
-  getter: () => ++ @value
-};
-
-proxy counter1 from counterProxy;
-proxy counter2 from counterProxy;
-
-println!(counter1); // Prints: '1'
-println!(counter1); // Prints: '2'
-println!(counter2); // Prints: '1'
-```
-
-### Flexible proxies
-
-_Flexible proxies_ are proxies that use flexs instead of simple functions as their getter and eventual setter. It is useful in several situations, like when the proxy must return a plain value.
-
-We declare them using the `proxy!` keyword:
-
-```sn
-proxy! hello: pln<string> from {
-  getter: flex () : pln<string> {
-    return 'Hello world!';
-  }
-};
-
-pln message = hello; // Works fine
-println!(hello); // Prints: 'Hello world!'
-```
-
-This proxy declares itself as containing a plain `string` value. Because its getter is a flex, it can return such a type.
-
-#### Templated proxies
-
-Proxies are allowed to take templates, too. This can be useful to type them dynamically:
-
-```sn
-proxy! typeOf<DATA: T, T>: pln<Type> from {
-  getter: flex () : pln<Type> {
-    return T;
-  }
-};
-
-typeOf!<null>; // void
-typeOf!<true>; // bool
-typeOf!<2.0>; // f32
-typeOf!<'Hello world!'>; // string
-
-val str = 'Hello world!';
-val copy: typeOf!<str> = str; // Works fine
-
-println!(copy); // Prints: 'Hello world!'
-```
-
-This proxy is especially complex, so let's detail it. First, it takes two templates: a first one which is of the `T` type, with `T` being its second template. So, when we read it by giving it a value as a template, `T` is inferred and matches `DATA`'s type.
-
-The type of the proxy itself is a plain type. Its getter, a flex, simply returns `T`. So, when we call this proxy with a value as a template, it returns its type as a plain value.
 
 ### Constrained types
 
@@ -5948,6 +5544,414 @@ println!(serialize!(Users::users)); // ERROR ('users' is a private member of the
 ```
 
 Note that even structures our namespaces can be exported from a namespace.
+
+### Flexs
+
+Remember when we encountered `println!` for the very first time? We told at this moment is was a _flex_, and that we would see what it is later. Now, time has come to see it in details.
+
+The _flex_ term stands for _flexible function_. These work basically like functions, simply using the `flex` keyword instead of `fn`. But what make them specials are three key differences.
+
+First, their content is copy-pasted when it is called. This means that, when we call it, its call is replaced by its full body. This also means that, if you call a given flex 10 times, its content will appear 10 times in the code. That's why flexs should always be as short and concise as possible.
+
+Secondly, and that's the reason of the first point, they can use _dynamic sub-types_. This allows to indicate an argument accepts a `number`, but if an `int` is given, it will be typed as an `int` and not as a `number`. This is possible because, as the flex's body is fully copied where we call it, so it is possible to make tests on it.
+
+Finally, type checking is disabled on them until their call. And type checking is so performed individually for each call. This allows to make some data manipulation a lot easier as we will see now, but it also requires to write them with many care, in order to avoid errors when we call them with specific types or data.
+
+Here is an example:
+
+```sn
+fn doubleNumberFn (value: number) : number {
+  return value * 2;
+}
+
+flex doubleNumberFlex (value: >number) : >number {
+  return value * 2;
+}
+
+typeof doubleNumberFn(2); // number
+typeof doubleNumberFlex!(2); // int
+```
+
+As you can see, flexes are called using the `!` symbol.
+
+The `typeof` operator can also be used for the return type:
+
+```sn
+flex doubleNumberFlex (value: >number) : typeof value {
+  return value * 2;
+}
+```
+
+This second writing is better in our case because it is more precise: we know that it will return a value of the same type than its only argument.
+
+Note that flexes can be part of classes and traits as methods, but not in interfaces as it would be impossible to predict the implemented content of the flex.
+
+Another advantage of flexs is that they can return plain values, at the opposite of functions, which allows to use them as types:
+
+```sn
+flex getFamilyTypeOf (value: number) : pln<Type> {
+  if value instanceof int {
+    return int;
+  } elsif value instanceof uint {
+    return uint;
+  } else {
+    return number;
+  }
+}
+```
+
+Let's introduce a few new concepts here. First of all, the `Type` type obviously refers to a type. The `pln<T>` wrapper indicates this is a plain value, meaning it is predictable right at build time. So, `pln<Type>` is a plain `Type` value - a predictable type.
+
+The `instanceof` keyword is the _typechecking operator_: it checks if the given value is an instance of the provided type or of one of its sub-types. If we want to check if a value's type implements a specific type for example, we will have to check using the `typeof` operator like `(typeof value) implements Stringifyable` - the same keyword than for templates.
+
+Let's try our flex:
+
+```sn
+getFamilyTypeOf!(2); // int
+getFamilyTypeOf!(2u); // uint
+
+getFamilyTypeOf!(2b); // int
+getFamilyTypeOf!(2S); // uint
+
+getFamilyTypeOf!(2.0); // number
+```
+
+As you can see, it returns the right types. Because it returns a plain type, we can use it as an entity's type, for example:
+
+```sn
+val num: number = 2b;
+
+val someInt: getFamilyTypeOf!(num) = 8; // int ; works fine
+```
+
+To be more precise, when a flex is called, its code isn't just copy-pasted without any change. Its code is put inside a dedicated scope, to avoid polluating the current one, and only its return value - if there is one - is put where the flex was called. Else, a `null` is put instead.
+
+This little code above works even though the real type of `num` is hidden by its official `number` type. But, the typechecking operator looks for the real type_ of the provided value, and not to its official one.
+
+Flexs can be useful in specific situations, like when iterating a tuple. While we can iterate it using their `iterFn` method, the callback function will receive only values of the `Any` type, while when using their `iter` method, the callback flex will receive values with the real type of the value. Showcase:
+
+```sn
+val tuple = ( null, true, 2, 'Hello world!' );
+
+tuple.iterFn(value => {
+  typeof value; // Always 'Any'
+});
+
+tuple.iter!(flex (value: >Any) {
+  typeof value; // 'void', 'bool', 'int' and then 'string'
+});
+```
+
+Here is an example of a flex returning a reversed version of a given tuple, using the tuples' `.map!` method which allows to create a new tuple with the same number of elements:
+
+```sn
+flex reverseTuple (tuple: #tuple) : #tuple {
+  return tuple.map!(flex (value: >Any, pln index: usize) : >Any {
+    return tuple[tuple.size - index - 1];
+  });
+}
+```
+
+Here, we create a flex which takes a tuple as an argument, and return another one. We use tuples' `.map!` flex to create a new tuple from the provided one.
+
+We give to this method a flex callback which takes the value of the current index (we don't care about it) as well as the index. Our flex returns a value that can be of any official type (`>Any`). This way, if we return an `int`, the returned value will be an official `int` and not an `int` hidden behind an `Any` official type.
+
+Our callback then returns the value at the opposite of the tuple. The generated tuple is returned right after its creation.
+
+Another way to write this flex is using the `createTuple!` flex which allows to create a tuple from a flex:
+
+```sn
+flex reverseTuple (tuple: #tuple) : #tuple {
+  return createTuple!(tuple.size, flex (pln index: usize) : >Any {
+    return tuple[tuple.size - index - 1];
+  });
+}
+```
+
+This one uses the same declaration, but generates a tuple dynamically. The `createTuple!` flex requires a plain `usize` value, so we provide the original tuple's size (which is a plain value for all tuples). Then, we provide a callback that takes the current index and returns the value at the opposite in the original tuple.
+
+The only downside of this flex is that the new tuple only has constant members - no plain nor mutable ones. We could solve this problem by using the `createAdvancedTuple!` which uses a more complex API.
+
+Also, note that, as flexes are rewritten at each call, calling flexes inside flexes can quickly make an enormous code to copy-paste. If we make a tuple of a hundred elements for example, the callback flex in `reverseTuple` will be called a hundred times!
+
+Final word: as you can see, flexs are complex to handle, and you may not need very often. But the point is that, if you need it, they are here.
+
+### Symbols
+
+Symbols are useful values to identify and separate data. A symbol holds a unique identifier we cannot access, as well as an optional string which is its _value_. Two symbols are considered as equal if and only if they share the same identifier - so they are only equal to themselves.
+
+```sn
+val sym1 = new Symbol('This is a great symbol');
+val sym2 = new Symbol('This is a sympathic symbol');
+
+println!(sym1.message); // Prints: 'This is a great symbol'
+
+sym1 == sym1; // true
+sym1 == sym2; // false
+sym2 == sym1; // false
+sym2 == sym2; // true
+```
+
+## Advanced entities
+
+### Entities shadowing
+
+Entities shadowing consist in declaring two entities with the same name inside the same scope. In such scenario, the second entity replaces the first one. This can be useful to change the definitive type of an entity after manipulating its content, for instance. Here is an example:
+
+```sn
+struct Hero {
+  name: string;
+}
+
+struct AdvancedHero {
+  name: string;
+  superHero: bool;
+}
+
+val hero = Hero { name: 'Jack' };
+
+// do some stuff with 'hero' here
+
+val hero = AdvancedHero {
+  name: hero.name,
+  superHero: name == 'Jack'
+};
+```
+
+While, before the single-line comment, we had an `hero` entity typed as an `Hero`, we now finally have at the end of the program an `hero` entity typed as an `AdvancedHero`.
+
+The second declaration of `hero` replaces the first one (we say it _shadows_ it). Note that entities can be shadowed multiple times.
+
+### Late initialization
+
+Late initialization consists in declaring an entity without an initialization value. It is useful when its value is decided by a large condition, for example, especially when we are dealing with a constant:
+
+```sn
+val name: string;
+
+println!(name); // ERROR ('name' has not been initialized)
+
+name = 'Jack'; // Works fine
+name = 'John'; // ERROR (constants are read-only)
+
+println!(name); // Prints: 'Jack'
+```
+
+Note that this does not work with plain constants.
+
+This is the method used by classes to declare attributes but initializing them only in the constructor. Accessing an entity before we are sure it has been initialized will raise an error at build time.
+
+Also, for classes, if any member remains uninitialized when the constructor ends, an error is also raised at build time:
+
+```sn
+class A {
+  public name: string;
+  public age: uint;
+
+  public fn %new (name: string, age: uint) {
+    @name = name;
+    // ERROR: 'age' has not been initialized
+  }
+}
+```
+
+### Proxies
+
+Proxies are entities that don't have a real value. Instead, when we attempt to either read or write them, a related callback is called.
+
+Proxies are defined using the `proxy` keyword, with an object containing the callback called when the object is read - called the "getter" - and the one when the object is written - called the "setter" -. Note that the setter is optional ; if none is specified, all assignments will result in an error at build time.
+
+```sn
+val _counter = 0u;
+
+proxy counter: uint from {
+  getter: () : uint {
+    return ++ _counter;
+  },
+
+  setter: (value: uint) : bool {
+    _counter = value;
+    return true;
+  }
+};
+```
+
+Our `counter` proxy is declared as an entity of the `uint` type. The object located after the `from` keyword is called the proxy's _model_. The getter must be a function taking no argument and returning a value of the same type than the entity. The setter must be a function taking a value, which can be of any type - not necessarily the entity's one - and return a boolean: `true` if the value was assigned, `false` if it can't - because it is invalid, or so on.
+
+Let's try it:
+
+```sn
+println!(counter); // Prints: '1'
+println!(counter); // Prints: '2'
+println!(counter); // Prints: '3'
+```
+
+And so on. Note that it is possible to put any addition field in the object, and so we can integrate the counter variable inside our proxy. This way, we can make a counter that only increments itself and cannot be decremented:
+
+```sn
+proxy counter: uint from {
+  value: 0u,
+  getter: () => ++ @value
+};
+
+println!(counter); // Prints: '1'
+println!(counter); // Prints: '2'
+println!(counter); // Prints: '3'
+println!(counter); // Prints: '4'
+println!(counter); // Prints: '5'
+```
+
+#### Prepared proxy models
+
+As the proxy model is a simple object, we can create it by advance and store it inside an object to use the same model across several proxies. The object will be cloned each time we create a proxy from it.
+
+A specificity is that models must be declared using the `prxmodel` keyword. Also, they cannot be read or write ; writing `myProxyModel.prop` will always fail.
+
+```sn
+prxmodel counterProxy {
+  value: 0u,
+  getter: () => ++ @value
+};
+
+proxy counter1 from counterProxy;
+proxy counter2 from counterProxy;
+
+println!(counter1); // Prints: '1'
+println!(counter1); // Prints: '2'
+println!(counter2); // Prints: '1'
+```
+
+### Flexible proxies
+
+_Flexible proxies_ are proxies that use flexs instead of simple functions as their getter and eventual setter. It is useful in several situations, like when the proxy must return a plain value.
+
+We declare them using the `proxy!` keyword:
+
+```sn
+proxy! hello: pln<string> from {
+  getter: flex () : pln<string> {
+    return 'Hello world!';
+  }
+};
+
+pln message = hello; // Works fine
+println!(hello); // Prints: 'Hello world!'
+```
+
+This proxy declares itself as containing a plain `string` value. Because its getter is a flex, it can return such a type.
+
+#### Templated proxies
+
+Proxies are allowed to take templates, too. This can be useful to type them dynamically:
+
+```sn
+proxy! typeOf<DATA: T, T>: pln<Type> from {
+  getter: flex () : pln<Type> {
+    return T;
+  }
+};
+
+typeOf!<null>; // void
+typeOf!<true>; // bool
+typeOf!<2.0>; // f32
+typeOf!<'Hello world!'>; // string
+
+val str = 'Hello world!';
+val copy: typeOf!<str> = str; // Works fine
+
+println!(copy); // Prints: 'Hello world!'
+```
+
+This proxy is especially complex, so let's detail it. First, it takes two templates: a first one which is of the `T` type, with `T` being its second template. So, when we read it by giving it a value as a template, `T` is inferred and matches `DATA`'s type.
+
+The type of the proxy itself is a plain type. Its getter, a flex, simply returns `T`. So, when we call this proxy with a value as a template, it returns its type as a plain value.
+
+## Additional features
+
+### Bindings
+
+_Bindings_ are a simple way to access all properties of a given object as if they were part of the current scope. This can be useful when dealing with large libraries. Let's take the example of a game engine, with the following code:
+
+```sn
+engine.run(lib => {
+  val window = lib.createWindow(640, 480, 'My super game');
+
+  val scene = lib.createScene();
+
+  val polygons = (
+    lib.createPolygon(lib.randInt(), lib.randInt(), lib.randColor()
+    for i in 1...10
+  );
+
+  scene.attachAll(polygons);
+
+  window.setScene(scene);
+
+  window.display();
+});
+```
+
+The same version, with bindings:
+
+```sn
+engine.run(lib => {
+  // Bind "lib"'s property to the current scope
+  #bind lib;
+
+  val window = createWindow(640, 480, 'My super game');
+
+  val scene = createScene();
+
+  val polygons = (createPolyon(randInt(), randInt(), randColor()) for i in 1...10);
+
+  scene.attachAll(polygons);
+
+  window.setScene(scene);
+
+  window.display();
+});
+```
+
+That sure is simplifier and more easy to read, isn't it?
+
+Note that you can make multiple bindings in a function, but they must always be located at its top - bindings must not be followed by any instruction.
+
+### Conditional directives
+
+Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the conditional directives: `#if`, `#else`, `#elsif`, `#end`. The code located in them is simply removed from the source code if the condition is (or is not) filled, before the program starts to run. They can only use plain values, as well as native constants, which give informations about the type of execution (interpreted, compiled, ...), the platform (Windows, Linux, ...) the processor's architecture (ARM, x86, ...).
+
+Here is an example:
+
+```sn
+#if PROC_ARCH == 'ARM'
+  println!('This program has been compiled for ARM.');
+#end
+
+#if OS == 'Windows'
+  println!('You are using a Windows system.');
+#elsif OS == 'Linux'
+  println!('You are using a Linux system.');
+#elsif OS == 'Darwin'
+  println!('You are using a MacOS system.');
+#end
+```
+
+### Superoverloads
+
+Superoverloads are global overloads of arithmetic and comparison operators. They work exactly the same way as classes, but they take two arguments instead of one: a value to compare another with, and the compared value.
+
+Showcase:
+
+```sn
+fn %add<SIZE: usize> (left: int[SIZE], right: int[SIZE]) : string {
+  return (left[i] + right[i] for i in 0..SIZE);
+}
+
+val added = [ 1, 2 ] + [ 3, 4 ];
+
+println!(added[0]); // Prints: '4' (1 + 3)
+println!(added[1]); // Prints: '6' (2 + 4)
+```
 
 ## Asynchronous behaviors
 
