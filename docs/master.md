@@ -4950,19 +4950,6 @@ println!(copy.name); // Prints: 'John'
 println!(original.name); // Prints: 'Jack'
 ```
 
-### Plainable types
-
-Plainable types are types which can be used as a type for a plain constant as well as by the `pln<T>` wrapper. Their list is stored inside a native union type:
-
-```sn
-type Plainable = void | bool | number | string | Function | Structure | Enumeration |
-                 Interface | Trait | Class | Type | Static<Plainable>;
-```
-
-Creating a plain constant with a type that doesn't figure in this union will result in an error at build time.
-
-Note that children of these types are accepted, which means we can make a plain constant containing an `int` for example.
-
 ### Iterators
 
 Iterators are instances of the `Iterator<T>` class. Here is an example of the famous Fibanocci suite implemented using an iterator:
@@ -5602,6 +5589,19 @@ println!(serialize!(Users::users)); // ERROR ('users' is a private member of the
 ```
 
 Note that even structures our namespaces can be exported from a namespace.
+
+### Plainable types
+
+Plainable types are types which can be used as a type for a plain constant as well as by the `pln<T>` wrapper. Their list is stored inside a native union type:
+
+```sn
+type Plainable = void | bool | number | string | Function | Structure | Enumeration |
+                 Interface | Trait | Class | Type | Static<Plainable>;
+```
+
+Creating a plain constant with a type that doesn't figure in this union will result in an error at build time.
+
+Note that children of these types are accepted, which means we can make a plain constant containing an `int` for example.
 
 ### Flexs
 
