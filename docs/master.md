@@ -5449,6 +5449,20 @@ vehicleDetails(WheeledVehicleWithMotor {
 
 Intersection types are automatically typecastable to any type of the intersection (like `HasMotor & HasWheels` to `HasMotor`) or to sub-intersections (like `A & B & C` to `A & C`).
 
+Be aware: if two types define a property of the same name but with a different type, an error will raise at build time:
+
+```sn
+struct A {
+  prop: int;
+}
+
+struct B {
+  prop: bool;
+}
+
+type Both = A & B; // ERROR
+```
+
 ### Type assertion
 
 Let's say we want to create a function that takes any value as an argument. If it is stringifyable, we stringify it, else we return `null`.
