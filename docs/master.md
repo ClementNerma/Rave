@@ -5379,6 +5379,76 @@ val str = <!string> something;
 
 Using this one, if the typecast fails, the program will panic. Be **really** aware when using it - its usage is strongly discouraged most of the time.
 
+### Intersection types
+
+An intersection type is the mix of several types. For example, an intersection type could be `A & B`, describing a value has having both the `A` and the `B` type. It looks like this:
+
+```sn
+struct HasMotor {
+  isAnObject: bool;
+  horsesPower: uint;
+}
+
+struct HasWheels {
+  isAnObject: bool;
+  wheels: uint;
+}
+
+fn vehicleDetails (vehicle: HasMotor & HasWheels) {
+  println!(`Horses power = ${car.horsesPower} / Wheels = ${car.wheels}`);
+}
+
+vehicleDetails((HasMotor & HasWheels) {
+  isAnObject: true,
+  horsesPower: 1u,
+  wheels: 4u
+}); // Prints: 'Horses power = 1 / Wheels = 4'
+```
+
+An intersection type gives access to every member of every type of the intersection. An intersection can be made between more than two types, too. Here, `vehicle` can access both `horsesPower` and `wheels` because it explicitly implements the two interfaces `HasMotor` and `HasWheels`.
+
+Note that type inferring will never result in an intersection type when writing a static, but they are automatically compatible with the intersection types implementing the same members:
+
+```sn
+val vehicle = {
+  isAnObject: true,
+  horsesPower: 1u,
+  wheels: 4u
+}; // Type: {isAnObject: bool, horsesPower: uint, wheels: uint}
+   // And not 'HasMotor & HasWheels'
+
+vehicleDetails(vehicle); // Works fine
+vehicle as (HasMotor & HasWheels); // Works fine
+```
+
+Besides, we can shorten our definition using type aliasing:
+
+```sn
+struct HasMotor {
+  isAnObject: bool;
+  horsesPower: uint;
+}
+
+struct HasWheels {
+  isAnObject: bool;
+  wheels: uint;
+}
+
+type WheeledVehicleWithMotor = HasMotor & HasWheels;
+
+fn vehicleDetails (vehicle: WheeledVehicleWithMotor) {
+  println!(`Horses power = ${car.horsesPower} / Wheels = ${car.wheels}`);
+}
+
+vehicleDetails(WheeledVehicleWithMotor {
+  isAnObject: true,
+  horsesPower: 1u,
+  wheels: 4u
+}); // Prints: 'Horses power = 1 / Wheels = 4'
+```
+
+Intersection types are automatically typecastable to any type of the intersection (like `HasMotor & HasWheels` to `HasMotor`) or to sub-intersections (like `A & B & C` to `A & C`).
+
 ### Type assertion
 
 Let's say we want to create a function that takes any value as an argument. If it is stringifyable, we stringify it, else we return `null`.
