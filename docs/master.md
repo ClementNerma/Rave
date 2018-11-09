@@ -4064,6 +4064,26 @@ The same applies for `john`.
 
 As you can see, it's possible to chain nullable operators. Indeed, if we just wrote `jack?.identity.name`, it would have failed because `jack?.identity` holds `none`.
 
+This also works with dictionaries:
+
+```sn
+val personsAge = {# Jack: 24u };
+
+val age = personsAge['Jack']?; // Prints: ?uint
+
+age.some(age => println!(age)); // Prints: '24'
+```
+
+Note that it doesn't catch any error in the getter, it simply checks if the key is contained in the dictionary:
+
+```sn
+// This:
+personsAge['Jack']?; // ?uint
+
+// Is strictly equivalent to:
+'Jack' in personsAge ? some!(personsAge['Jack']) : none;
+```
+
 ## Errors and panics
 
 ### Panics
