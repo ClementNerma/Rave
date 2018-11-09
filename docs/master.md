@@ -5103,6 +5103,34 @@ for i -> num in fibonacci(1000u) {
 }
 ```
 
+### Entities shadowing
+
+Entities shadowing consist in declaring two entities with the same name inside the same scope. In such scenario, the second entity replaces the first one. This can be useful to change the definitive type of an entity after manipulating its content, for instance. Here is an example:
+
+```sn
+struct Hero {
+  name: string;
+}
+
+struct AdvancedHero {
+  name: string;
+  superHero: bool;
+}
+
+val hero = Hero { name: 'Jack' };
+
+// do some stuff with 'hero' here
+
+val hero = AdvancedHero {
+  name: hero.name,
+  superHero: name == 'Jack'
+};
+```
+
+While, before the single-line comment, we had an `hero` entity typed as an `Hero`, we now finally have at the end of the program an `hero` entity typed as an `AdvancedHero`.
+
+The second declaration of `hero` replaces the first one (we say it _shadows_ it). Note that entities can be shadowed multiple times.
+
 ### Flexs
 
 Remember when we encountered `println!` for the very first time? We told at this moment is was a _flex_, and that we would see what it is later. Now, time has come to see it in details.
