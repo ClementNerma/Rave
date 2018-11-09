@@ -1898,6 +1898,8 @@ Through this book, we will often talk about the _inside_ of the class, which ref
 
 Here, all attributes are marked as public using the `public` keyword, meaning they can be accessed from the outside, but by default attributes cannot be writted from the outside. This is different than `val` in the way it prevents these attributes from being written from the outside, but not from the inside - where they stay mutable.
 
+In the case we'd like to allow modifications from the outside, we simply have to add the `writable` keyword after `public` (e.g. `public writable name: string;`).
+
 Like structures, classes can be instanciated. But for that, they need a _constructor_, which is a special method called when the class is created:
 
 ```sn
