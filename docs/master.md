@@ -2830,9 +2830,9 @@ There are four _resolution keywords_:
 * `this`, which refers to the instance we are manipulating ;
 * `self`, which refers to the current class ;
 * `super`, which refers to the current class' mother (if there is one, else it is simply not defined) ;
-* `_real`, which refers to the real class of the instance we are manipulating
+* `real`, which refers to the real class of the instance we are manipulating
 
-This last keyword is a bit special. For example, in our `Hero` class, `self` will always refer to `Hero`, but `_real` may refer either to `Hero`, `Warrior` or `Wizard`. In our `jack` object, it would refer to `Warrior`, and to `Wizard` for `john`. This may not appear very useful, but we will see some useful applications of it later.
+This last keyword is a bit special. For example, in our `Hero` class, `self` will always refer to `Hero`, but `real` may refer either to `Hero`, `Warrior` or `Wizard`. In our `jack` object, it would refer to `Warrior`, and to `Wizard` for `john`. This may not appear very useful, but we will see some useful applications of it later.
 
 ### Constructor inheritance
 
@@ -5092,7 +5092,7 @@ val someInt: getFamilyTypeOf!(num) = 8; // int ; works fine
 
 To be more precise, when a flex is called, its code isn't just copy-pasted without any change. Its code is put inside a dedicated scope, to avoid polluating the current one, and only its return value - if there is one - is put where the flex was called. Else, a `null` is put instead.
 
-This little code above works even though the real type of `num` is hidden by its official `number` type. But, the typechecking operator looks for the _real type_ of the provided value, and not to its official one.
+This little code above works even though the real type of `num` is hidden by its official `number` type. But, the typechecking operator looks for the real type_ of the provided value, and not to its official one.
 
 Flexs can be useful in specific situations, like when iterating a tuple. While we can iterate it using their `iterFn` method, the callback function will receive only values of the `Any` type, while when using their `iter` method, the callback flex will receive values with the real type of the value. Showcase:
 
@@ -6009,5 +6009,396 @@ val articlesBody = articles.map(
 // Print them
 for body in articlesBody {
   println!(body);
+}
+```
+
+## Documenting the code
+
+Making code is great, but it's even better if it's documented. When you are using a library (e.g. a package downloaded from the official repository), it's always better to know how functions work, right? So, we have several solutions:
+
+* Write the documentation by hand ;
+* Document the code and generate the documentation automatically
+
+The second solution is, most of the time, the better. Why? Because, when we document our code directly, we and our program's users (as developers) get several advantages:
+
+* The documentation is located under a single location ;
+* It's directly integrated in the source code and makes it more readable ;
+* It's faster to write than a whole document ;
+* We don't have to search through the web how it works ;
+* IDEs and some code editors will provide help and auto-complete ;
+* It doesn't require to manipulate another documentation-generation tool
+
+So, let's see how this works.
+
+### Assignable entities
+
+The syntax of documentation is pretty the same than in many other languages: a multi-line comment, starting with a double `*` symbol. Here is the syntax for assignable entities:
+
+```sn
+/**
+ * The name of a person
+ */
+let name: string;
+```
+
+The first line contains two `*` symbols, meaning it's a _documentation comment_. Every next line will start by optional spaces (for indentation) then by another `*` symbol and a content depending on what we want to do. Conventionally, the first line describes the entity (what it contains/does). Because it's an assignable entity, we write what it contains: the name of a person.
+
+### Functions and arguments
+
+For functions, we have to document what the function does, what is its return value, and each of its arguments. Here is an example of a summation function:
+
+```sn
+/**
+ * Make a summation from a list of numbers
+ * @param numbers A list of numbers
+ * @returns The summation
+ */
+fn sum (...numbers: int[]) : int {
+  let summation = 0;
+
+  for num in numbers {
+    summation += num;
+  }
+
+  return summation;
+}
+```
+
+The first line describes, as usual, the function (what it does): make a summation from a list of numbers. Then, we describe each argument using `@param` (it's called an _annotation_), followed by the argument's name, and what it contains: a list of numbers. Finally, we indicate what the function returns using `@returns` followed by the returned value: the summation.
+
+Note that we don't have to use `@returns` for void-typed functions.
+
+### Nested functions
+
+To document nested functions (e.g. callbacks), we document them as usual functions using a `>` symbol, with the argument's annotation being the callback's one:
+
+```sn
+/**
+ * Make a summation from a generator function
+ * @param generator The generator to make the summation from
+ * > @returns A list of values
+ * @returns The summation
+ */
+fn sum (generator: () => int[]) : int {
+  let summation = 0;
+
+  for num in generator() {
+    summation += num;
+  }
+
+  return summation;
+}
+```
+
+If we had double-nested functions (like a function), we would have used two `>` symbols to describes the callback's callback.
+
+### Functions' templates
+
+Templates are documented like arguments, but with `@template`:
+
+```sn
+/**
+ * Make a summation from an iterator
+ * @template T The numbers' type
+ * @param iterator The iterator to make the summation from
+ * @returns The summation
+ */
+fn sum<T extends number> (iterator: Iterator<T>) : T {
+  let summation: T = 0;
+
+  for num in iterator {
+    summation += num;
+  }
+
+  return summation;
+}
+```
+
+### Examples
+
+The `@example` annotation gives an example on how to use the function:
+
+```sn
+/**
+ * Increment an integer through a reference
+ * @param num A mutable reference to an integer
+ * @example let i = 0; increment (&mut i); i == 1;
+ */
+fn increment (num: *mut int) {
+  *num += 1;
+}
+```
+
+Examples aim to be as short and as explicit as possible. Note that it's possible to give several examples for the same function. Usually, it's an expression, but it's not forced too.
+
+### Errors throwing
+
+The `@throws` annotation allows us to describe each case of error throwing:
+
+```sn
+/**
+ * Double a positive integer
+ * @param num The integer to double
+ * @throws ErrorType1 If the integer is negative
+ * @throws ErrorType2 If the integer is equal to 0
+ * @returns The double value of the provided integer
+ */
+fn double (num: int) : int throws ErrorType1, ErrorType2 {
+  throw new ErrorType1('Integer is negative') if num < 0;
+  throw new ErrorType2('Integer is zero') if num == 0;
+  return num * 2;
+}
+```
+
+### Conditions
+
+The `@condition` annotation indicates a condition that must be matched in order for the function to work properly. It is useful to indicate conditions required to avoid runtime errors, that aren't declared using the `throws` keyword.
+
+```sn
+/**
+ * Get a value from an array
+ * @param arr The array to get a value from
+ * @param index The index of the value to get
+ * @returns The requested value
+ * @condition 0 <= index <= arr.length
+ */
+fn getValue (arr: int[], index: usize) : int {
+  return arr[index];
+}
+```
+
+It is usually an expression, but it's not forced too.
+
+### Polymorph functions
+
+Polymorph functions that does exactly the same actions but on different types can use the `@samedef` annotation to keep the exact same description across its definitions:
+
+```sn
+/**
+ * Get a value from an array
+ * @param arr The array to get a value from
+ * @param index The index of the value to get
+ * @returns The requested value
+ * @condition 0 <= index <= arr.length
+ */
+fn getValue (arr: int[], index: usize) : int {
+  return arr[index];
+}
+
+/**
+ * @samedef
+ */
+fn getValue (arr: string[], index: usize) : string {
+  return arr[index];
+}
+```
+
+### Classes, interfaces, traits
+
+Classes are described like assignable entities. Their templates can be described using `@template`:
+
+```sn
+/**
+ * Container for an integer value
+ */
+class A {
+  public value: int = 0;
+}
+
+/**
+ * Container for a value of an arbitrary type
+ * @template T Type of the value
+ */
+interface B<T> {
+  public value: T;
+}
+```
+
+### Type aliases
+
+Type aliases are described like classes:
+
+```sn
+/**
+ * Alias for the 'int' type
+ */
+type A = int;
+
+/**
+ * Collection of values
+ * @template T Type of the values
+ */
+type Collection<T> = Map<string, T>;
+```
+
+### Segments
+
+Segments are described like assignable entities:
+
+```sn
+class B<T> {
+  public value: T;
+
+  /**
+   * Segment for number types
+   */
+  segment (T ~ number) {
+    public fn double () => @value * 2;
+  }
+}
+```
+
+### Namespaces
+
+Namespaces are described like assignable entities:
+
+```sn
+/**
+ * Mathematic functions
+ */
+namespace SuperMath {
+  /**
+   * Increment an integer through a reference
+   * @param num A mutable reference to an integer
+   * @example let i = 0; increment (&mut i); i == 1;
+   */
+  fn increment (num: *mut int) {
+    *num += 1;
+  }
+
+  // Export the function
+  export { increment };
+}
+```
+
+### Files
+
+Files can be documented as well, using three indicators: `@file`, which indicates what the file contains and does, `@author` which describes its author(s), and `@license` which gives informations about the license the file uses. Here is how it does:
+
+```sn
+/**
+ * @file Provides a summation function
+ * @author Your Name
+ * @license MIT
+ */
+
+/**
+ * Make a summation from a list of numbers
+ * @param numbers A list of numbers
+ * @returns The summation
+ */
+fn sum (...numbers: int) : int {
+  let summation = 0;
+
+  for num in numbers {
+    summation += num;
+  }
+
+  return summation;
+}
+```
+
+### Inline annotations
+
+Inline annotations are part of the language and describe a part of the program. There must be placed at the beginning of a single-line comment, or at the beginning of the first non-empty line of a multi-line comment.
+
+```sn
+// NOTE: This part may not work under specific circumstances
+
+// OPTIMIZE: This part needs to be optimized
+
+// TODO: Improve this part
+
+// HACK: This code is not proper but works fine
+
+// FIXME: This part doesn't work properly
+
+// BUG: There is this specific bug: ...
+```
+
+### Dynamic annotations
+
+Dynamic annotations allow to set and read a value using annotations. It can be useful to document functions that are re-implemented in child classes, without rewriting the whole documentation in the children. Here is an example, using the `@class` class which is automatically replaced by the real class name (`real`' name):
+
+```sn
+virtual class A {
+  /**
+   * Create a new value of @class and return it
+   * @returns A new instance of @class
+   */
+  public fn create () : real;
+}
+
+class B extends A {
+  public fn create () : real => new self();
+}
+
+class C extends A {
+  public fn create () : real => new _self();
+}
+```
+
+This code is strictly equivalent to:
+
+```sn
+virtual class A {
+  /**
+   * Create a new value of A and return it
+   * @returns A new instance of A
+   */
+  public fn create () : _this;
+}
+
+class B extends A {
+  /**
+   * Create a new value of B and return it
+   * @returns A new instance of B
+   */
+  public fn create () : _this => new _self();
+}
+
+class C extends A {
+  /**
+   * Create a new value of C and return it
+   * @returns A new instance of C
+   */
+  public fn create () : _this => new _self();
+}
+```
+
+In some cases, renaming could be required, and can be performed using the `@classname` annotation:
+
+```sn
+/**
+ * @classname(number)
+ */
+class Number {
+  /**
+   * Do some @class stuff
+   */
+  public fn nothing () {};
+}
+
+/**
+ * @classname(signed number)
+ */
+class SignedNumber extends A {}
+```
+
+Equivalence:
+
+```sn
+class Number {
+  /**
+   * Do some number stuff
+   */
+  public fn nothing () {};
+}
+
+class SignedNumber extends A {
+  /**
+   * Do some signed number stuff
+   */
+  public fn nothing () {};
 }
 ```
