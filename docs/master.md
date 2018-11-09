@@ -2116,6 +2116,33 @@ class Example {
 Example.printName(); // Prints: 'Hello'
 ```
 
+#### Implicit assignments in the constructor
+
+We can specify some arguments to be assigned automatically when passed to the constructor:
+
+```sn
+class A {
+  private name: string;
+  private hp: uint;
+  private atk: uint;
+  private def: uint;
+
+  // This declaration:
+  public fn %new (@name, @hp, @atk, @def) {}
+  // Is strictly equivalent to this one:
+  public fn %new (name: string, hp: uint, atk: uint, def: uint) {
+    @name = name;
+    @hp = hp;
+    @atk = atk;
+    @def = def;
+  }
+}
+```
+
+This syntax has a double advantage: first we don't have to make the assignments ourselves, but also we don't have to type the arguments in the constructor.
+
+Note that we can still specify other arguments, anywhere in the list.
+
 ### Data structure members
 
 Data structures can also be members of classes ; they then become a local type of the class:
