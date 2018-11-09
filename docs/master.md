@@ -181,6 +181,15 @@ val name: string = 'Hello world!';
 
 They can be delimited using single quotes (`'`) or double quotes (`"`).
 
+Multi-line strings can be written using backquotes:
+
+```sn
+val name: string = `This
+is a
+multi-line
+string!`;
+```
+
 ## Numbers and operators
 
 ### Integers
@@ -502,22 +511,13 @@ println!('Hello ' + 'world!'); // Prints: 'Hello world!'
 
 ### String expressions
 
-This operator is a little bit special because it only works inside multi-line strings, which are delimited by backquotes:
-
-```sn
-val str = `this
-is a
-multi-line
-string`;
-```
-
-The operator allows to evaluate an expression inside the string and is replaced by its result:
+It's possible to evaluate expression inside a string:
 
 ```sn
 val a = 4;
 val b = 2;
 
-println!(`4 ** 2 = ${a ** b}`); // Prints: '4 ** 2 = 16'
+println!('4 ** 2 = ${a ** b}'); // Prints: '4 ** 2 = 16'
 ```
 
 ## Data structures
@@ -1653,7 +1653,7 @@ The same goes with tuples, allowing to use values of different types.
 
 ```sn
 fn sayHello (name: string, amount: uint) {
-  println!(`Hello ${name}!`) for i in 0..amount;
+  println!('Hello ${name}!') for i in 0..amount;
 }
 
 val args = ('Jack', 5u);
@@ -1826,7 +1826,7 @@ To provide multiple instructions, braces can be used after the arrow:
 
 ```sn
 list.filter(value => {
-  println!(`Filtering value ${value}...`);
+  println!('Filtering value ${value}...');
   return value > 2;
 });
 ```
@@ -1910,16 +1910,16 @@ class Hero {
   // ...
   public fn fight (ennemy: Hero) {
     if this.hp == 0 {
-      println!(`${this.name} cannot fight because he's dead.`);
+      println!('${this.name} cannot fight because he is dead.');
       return ;
     }
 
     if ennemy.hp == 0 {
-      println!(`${ennemy.hp} cannot fight because he's dead.`);
+      println!('${ennemy.hp} cannot fight because he is dead.');
       return ;
     }
 
-    println!(`${this.name} is fighting ${ennemy.name}!`);
+    println!('${this.name} is fighting ${ennemy.name}!');
 
     if this.atk > ennemy.hp {
       // Won the fight
@@ -1968,16 +1968,16 @@ class Hero {
 
   public fn fight (ennemy: Hero) {
     if this.hp == 0 {
-      println!(`${this.name} cannot fight because he's dead.`);
+      println!("${this.name} cannot fight because he's dead.");
       return ;
     }
 
     if ennemy.hp == 0 {
-      println!(`${ennemy.hp} cannot fight because he's dead.`);
+      println!('${ennemy.hp} cannot fight because he's dead.');
       return ;
     }
 
-    println!(`${this.name} is fighting ${ennemy.name}!`);
+    println!('${this.name} is fighting ${ennemy.name}!');
 
     if this.atk > ennemy.hp {
       // Won the fight
@@ -2337,11 +2337,11 @@ class User {
   public fn %new () {
     self.counter ++;
     @id = self.counter;
-    println!(`User ${@id} has been created`);
+    println!('User ${@id} has been created');
   }
 
   public fn %drop () {
-    println!(`User ${@id} will be dropped`);
+    println!('User ${@id} will be dropped');
   }
 }
 
@@ -2693,16 +2693,16 @@ open class Hero {
   // Returns 'true' if the fight has been done successfully
   public fn fight (ennemy: Hero) : bool {
     if @hp == 0 {
-      println!(`${@name} cannot fight because he's dead.`);
+      println!('${@name} cannot fight because he is dead.');
       return false;
     }
 
     if ennemy.hp == 0 {
-      println!(`${ennemy.hp} cannot fight because he's dead.`);
+      println!('${ennemy.hp} cannot fight because he is dead.');
       return false;
     }
 
-    println!(`${@name} is fighting ${ennemy.name}!`);
+    println!('${@name} is fighting ${ennemy.name}!');
 
     if @atk > ennemy.hp {
       // Won the fight
@@ -2783,7 +2783,7 @@ class Wizard extends Hero {
     // Temporarily increase the attack to launch the fireball
     @atk *= 2;
 
-    println!(`${@name} is launching a fireball!`);
+    println!('${@name} is launching a fireball!');
 
     @fight(ennemy);
 
@@ -4425,7 +4425,7 @@ That's when we retrieve the value through the reference to give it to another fu
 
 ```sn
 fn readName (someName: *string) {
-  println!(`Hello, ${*someName}!`);
+  println!('Hello, ${*someName}!');
 }
 
 val name = 'Jack';
@@ -4445,7 +4445,7 @@ We can also make references to a specific property of an object:
 
 ```sn
 fn readName (someName: *string) {
-  println!(`Hello, ${*someName}!`);
+  println!('Hello, ${*someName}!');
 }
 
 struct Hero {
@@ -5325,7 +5325,7 @@ struct HasWheels {
 }
 
 fn vehicleDetails (vehicle: HasMotor & HasWheels) {
-  println!(`Horses power = ${car.horsesPower} / Wheels = ${car.wheels}`);
+  println!('Horses power = ${car.horsesPower} / Wheels = ${car.wheels}');
 }
 
 vehicleDetails((HasMotor & HasWheels) {
@@ -5367,7 +5367,7 @@ struct HasWheels {
 type WheeledVehicleWithMotor = HasMotor & HasWheels;
 
 fn vehicleDetails (vehicle: WheeledVehicleWithMotor) {
-  println!(`Horses power = ${car.horsesPower} / Wheels = ${car.wheels}`);
+  println!('Horses power = ${car.horsesPower} / Wheels = ${car.wheels}');
 }
 
 vehicleDetails(WheeledVehicleWithMotor {
@@ -5801,13 +5801,13 @@ fn readAsync (fileName: string) : Promise<string, Error>;
 
 // Let's use it
 readAsync('hello.txt')
-  .then((content: string) => println!(`File's size is ${content.length} bytes.`))
-  .catch((err: Error) => println!(`Something went wrong: ${content.message}`));
+  .then((content: string) => println!("File's size is ${content.length} bytes."))
+  .catch((err: Error) => println!('Something went wrong: ${content.message}'));
 
 // And with ICT:
 readAsync('hello.txt')
-  .then(content => println!(`File's size is ${content.length} bytes.`))
-  .catch(err => println!(`Something went wrong: ${content.message}`));
+  .then(content => println!("File's size is ${content.length} bytes."))
+  .catch(err => println!('Something went wrong: ${content.message}'));
 ```
 
 The `.then()` function simply registers the callback which will be called if the promise succeeds, while `.catch()` registers the callback for the case it fails. Here, we don't use any `try`-`catch` block to handle potential errors ; there is callback for that.
@@ -6008,7 +6008,7 @@ for i in 0..10 {
   }
 
   catch (e) {
-    println!(`Failed to fetch article ${i}: ${e.message}`);
+    println!('Failed to fetch article ${i}: ${e.message}');
   }
 }
 ```
