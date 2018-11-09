@@ -2116,9 +2116,9 @@ class Example {
 Example.printName(); // Prints: 'Hello'
 ```
 
-#### Implicit assignments in the constructor
+#### Implicit assignments
 
-We can specify some arguments to be assigned automatically when passed to the constructor:
+We can specify some arguments to be assigned automatically when passed to methods:
 
 ```sn
 class A {
@@ -2139,7 +2139,7 @@ class A {
 }
 ```
 
-This syntax has a double advantage: first we don't have to make the assignments ourselves, but also we don't have to type the arguments in the constructor.
+This syntax has a double advantage: first we don't have to make the assignments ourselves, but also we don't have to type the arguments in the constructor. This also works with any other method, even non-overload ones.
 
 Note that we can still specify other arguments, anywhere in the list.
 
