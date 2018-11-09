@@ -5532,6 +5532,21 @@ val array = [ new Lion(), new Rhino(), new Bear() ];
 // 'array' is of the 'Animal[]' type
 ```
 
+#### Union tries
+
+_Union tries_ consist in returning a value from an inline `catch` block. The resulting value will then have an union type: the type of value returned by the `try` block as the first type, the type of value returned by the `catch` block as the second one:
+
+```sn
+val data = try divideInt(a, b) catch () : string => 'FAILED'; // int | string
+```
+
+If both blocks return the same type of value, type absorption will make it result in a single type
+:
+
+```sn
+val data = try divideInt(a, b) catch () : int => 0; // int | int == int
+```
+
 ### Type assertion
 
 Let's say we want to create a function that takes any value as an argument. If it is stringifyable, we stringify it, else we return `null`.
