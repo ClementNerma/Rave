@@ -4961,6 +4961,103 @@ Note that children of these types are accepted, which means we can make a plain 
 
 This also means we can create any static as plain.
 
+### Iterators
+
+Iterators are instances of the `Iterator<T>` class. Here is an example of the famous Fibanocci suite implemented using an iterator:
+
+```sn
+class Fibonacci extends Iterator<uint> {
+  public val max: uint;
+
+  private a = 0;
+  private b = 1;
+
+  public fn %new (max: uint) {
+    @max = max;
+  }
+  
+  public fn next () : ?uint {
+    return none if @b >= @max;
+
+    val c = @a + @b;
+    @b = @a;
+    @a = c;
+
+    if @b >= @max {
+      @done = true;
+    }
+
+    return some!(c);
+  }
+}
+```
+
+Let's detail this a bit. First, we call _iterator class_ any class inheriting from `Iterator<T>`. Instances of iterator classes are so iterators, of course.
+
+Iterator classes must implement a `.next()` method which returns a `?T` value. If the iterator generated a value, it returns a "some" value, while if all values have been generated, it returns a `none`. That's what we do here.
+
+We can now use our iterator class by instanciating it:
+
+```sn
+val fibo = new Fibonacci(1000u);
+
+let value: ?uint = none;
+
+do {
+  value = fibo.next();
+  value.some(num => println!(num));
+} until (value == none);
+```
+
+But we can also use special syntaxes of the `for` loop instead:
+
+```sn
+// With values:
+for num in fibo {
+  println!('${num.value}');
+}
+
+// With indexes + values:
+for i -> num in fibo {
+  println!('${i}: ${num.value}');
+}
+```
+
+As you can see, even though the iterator returns an `?uint` value, we don't have to deal with it in the loop, because the builder knows that this `for` loop usage will stop at the moment a `none` is got, so there are only will be "some" values.
+
+Because writing iterators is heavy, we can use an _iterator function_ instead:
+
+```sn
+iter fn fibonacci (max: uint) : uint {
+  let a = 0;
+  let b = 0;
+
+  while a < max {
+    val c = @a + @b;
+    @b = @a;
+    @a = c;
+
+    yield c;
+  }
+}
+```
+
+Iterator functions are declared prefixed with the `iter` function. Its return type is the type of value it generates. When a value has been generated, it can be "returned" with the `yield` keyword. This pauses the function and goes back to the caller, like a normal `return` (though it works even within sub-functions). When we ask the iterator for a new value, the function is not ran again from the beginning, but simply resumed, and so we can use its local variables to store informations.
+
+We can now use it:
+
+```sn
+// With values:
+for num in fibonacci(1000u) {
+  println!(num);
+}
+
+// With indexes + values:
+for i -> num in fibonacci(1000u) {
+  println!('${i}: ${num}');
+}
+```
+
 ### Flexs
 
 Remember when we encountered `println!` for the very first time? We told at this moment is was a _flex_, and that we would see what it is later. Now, time has come to see it in details.
