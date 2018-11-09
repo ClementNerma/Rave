@@ -2868,6 +2868,20 @@ john.fireball(jack); // ERROR ('fireball' does not exist in 'Hero')
 
 Conceptually, sub-typing allows to use any sub-type's value instead of the expected type's value.
 
+#### Functions sub-typing
+
+Functions have a special sub-typing support:
+
+* `() => X` is a sub-type of `() => Y` is `X` is a sub-type of `Y`;
+* `(X) => void` is a sub-type of `(Y) => void` if `X` is a parent type of `Y`;
+* The following statements can be mixed together and repeated.
+
+Examples:
+
+```sn
+val fn: (a: number) => Primitive = (a: int) : string => 'Hello world'; // Works fine
+```
+
 #### Resolution keywords
 
 There are four _resolution keywords_:
