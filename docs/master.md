@@ -5525,7 +5525,7 @@ val obj = new ~Any {
 obj.onClick(); // Prints: 'Triggered!'
 ```
 
-### Namespaces
+### Namespaces and paths
 
 A _namespace_ is a named scope which can export some of its entities to its direct parent scope:
 
@@ -5589,6 +5589,43 @@ println!(serialize!(Users::users)); // ERROR ('users' is a private member of the
 ```
 
 Note that even structures our namespaces can be exported from a namespace.
+
+#### Paths
+
+Namespaces can be accessed from other namespaces using chained `::`:
+
+```sn
+namespace A {
+  namespace B {
+    pln MESSAGE = 'Hello world!';
+
+    export MESSAGE;
+  }
+
+  export B;
+}
+
+println!(A::B::MESSAGE); // Prints: 'Hello world!'
+```
+
+It's also possible to access namespaces from the global scope using an antislash before their name:
+
+```sn
+namespace A {
+  namespace B {
+    pln MESSAGE = 'Hello world!';
+
+    export MESSAGE;
+  }
+
+  export B;
+}
+
+namespace C {
+  println!(A::B::MESSAGE); // ERROR ('A' is not present in this scope)
+  println!(\A::B::MESSAGE); // Prints: 'Hello world'
+}
+```
 
 ### Plainable types
 
