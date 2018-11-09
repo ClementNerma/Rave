@@ -5557,7 +5557,19 @@ println!(convertToString(25u)); // Prints: '25'
 println!(convertToString({})); // Prints: ''
 ```
 
-This is as simple as that. Also, we can use type assertions in ternary conditions as well as in inline condition blocks:
+This is as simple as that.
+
+If we specify multiple types for the same entity, it will result as the entity having an intersection type:
+
+```sn
+fn someFn (value: Any) {
+  if value ~ Stringifyable && value ~ Numerizable {
+    typeof value; // 'Stringifyable & Numerizable'
+  }
+}
+```
+
+Also, we can use type assertions in ternary conditions as well as in inline condition blocks:
 
 ```sn
 // Ternary condition
