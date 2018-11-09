@@ -5113,6 +5113,12 @@ val myTuple: TupleOfThree<int> = (2, 8, 5);
 
 As type aliases are _aliases_ and not real types, there is no typecasting problem ; in our example, writing `TupleOfThree<int>` is **exactly** the same as writing `(T, T, T)`.
 
+Type aliasing can also the `_` type, which is the equivalent of `_real`, but for type aliasing:
+
+```sn
+type Comparable = ComparableTo<_>;
+```
+
 ### Unsafe typecasting
 
 Unsafe typecasting allow to typecast a value from its official type to its hidden type. Let's take an example:
