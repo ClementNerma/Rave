@@ -5551,6 +5551,25 @@ val array = [ new Lion(), new Rhino(), new Bear() ];
 // 'array' is of the 'Animal[]' type
 ```
 
+#### Union absorptions
+
+_Union absorptions_ consists in converting an `A | B` intersection type where `B` is a sub-type of `A` to `A` alone. Example:
+
+```sn
+struct A {
+  propA: int;
+}
+
+struct B extends A {
+  propB: string;
+}
+
+println!(A | B == B); // Prints: 'false'
+println!(A | B == A); // Prints: 'true'
+```
+
+As for intersection absorptions, union absorptions are performed automatically by the program.
+
 #### Union tries
 
 _Union tries_ consist in returning a value from an inline `catch` block. The resulting value will then have an union type: the type of value returned by the `try` block as the first type, the type of value returned by the `catch` block as the second one:
