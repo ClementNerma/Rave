@@ -4249,26 +4249,6 @@ val num = try? divideInt(a, b);
 
 If the division works, it will return its value. Else (if `b` is equal to `0`), `num` will get the `null` value. This makes the constant having the `int?` type.
 
-We can also call a function if this fails:
-
-```sn
-val num = try divideInt(a, b) catch e => println!('FAILED!');
-
-// Preparing the callback:
-val callback = (e: Error) => println!('FAILED!');
-val num = try divideInt(a, b) catch callback;
-```
-
-Note that the callback can return a value of the same type as the value in the `try` block ; if so, it becomes a kind of "default value", and allows the final value to be non-nullable - as we are sure a value will be returned in all cases.
-
-```sn
-val num = try divideInt(a, b) catch e => 0;
-
-// Preparing the callback:
-val callback = (e: Error) : int => 0;
-val num = try divideInt(a, b) catch callback;
-```
-
 ### Custom error classes
 
 It's possible to create custom error classes to indicate clearly what type of error has been thrown. Error classes are simply classes that inherit from the base `Error` class:
@@ -5575,14 +5555,14 @@ As for intersection absorptions, union absorptions are performed automatically b
 _Union tries_ consist in returning a value from an inline `catch` block. The resulting value will then have an union type: the type of value returned by the `try` block as the first type, the type of value returned by the `catch` block as the second one:
 
 ```sn
-val data = try divideInt(a, b) catch () : string => 'FAILED'; // int | string
+val data = try divideInt(a, b) catch 'FAILED'; // int | string
 ```
 
 If both blocks return the same type of value, type absorption will make it result in a single type
 :
 
 ```sn
-val data = try divideInt(a, b) catch () : int => 0; // int | int == int
+val data = try divideInt(a, b) catch 0; // int | int == int
 ```
 
 #### Automatic sub-typing
