@@ -224,6 +224,19 @@ As you can see, the floating-point types can handle huge ranges, but they don't 
 
 In this book, we will abbreviate "floating-point numbers" by the "floats" term.
 
+Besides, the `infinity` floating-point value is available for these types. It refers to the infinity and can either be positive or negative (`-infinity`). Positive infinity is greater than any number except itself, while negative infinity is smaller than any number except iself:
+
+```sn
+infinity > 10000000000000000000000000000000000000000000d; // true
+-infinity < -10000000000000000000000000000000000000000000d; // true
+
+infinity == infinity; // true
+infinity == -(-infinity); // true
+
+val num32: f32 = infinity; // Works fine
+val num64: f64 = infinity; // Works fine
+```
+
 **NOTE:** Floats are represented according to the IEEE-754 standard. `f32` is a single-precision float, while `f64` has double precision.
 
 ### Arithmetic operators
