@@ -5648,3 +5648,53 @@ fn convertToString (value: Any) : string? {
 val value: Any = 'Hello world';
 println!(value as string) if value ~ Stringifyable;
 ```
+
+### Lambda classes
+
+_Lambda classes_ are to classes what lambdas are to functions. These are unnamed classes that are written inline, which must either extend from another class, implement an interface, or use a trait (or several of these). For example, let's consider the following code:
+
+```sn
+virtual class MouseClickHandler {
+  abstract public fn onClick ();
+}
+
+fn triggerHandler (handler: MouseClickHandler) {
+  handler.onClick();
+}
+```
+
+If we want to make a new trigger, a first idea would be to write this:
+
+```sn
+class MyMouseClickHandler extends MouseClickHandler {
+  public fn onClick () {
+    println!('Triggered!');
+  }
+}
+
+triggerHandler(new MyMouseClickHandler());
+```
+
+But if our class is only used once, that's heavy as we have to declare a whole new class and inherit from it. Plus, it will appears as one of the program's classes. Lambda classes allow us to get rid of these problems ; our previous code can be rewritten like this:
+
+```sn
+triggerHandler(new ~MouseClickHandler {
+  public fn onClick () {
+    println!('Triggered!');
+  }
+});
+```
+
+That sure is lighter, right? As you can see, lambda classes must be instanciated as soon as they are created.
+
+If we want to make a class with no constraint (no inherited member nor abstract member to implement), we can simply make a class implementing the `Any` interface:
+
+```sn
+val obj = new ~Any {
+  public fn onClick () {
+    println!('Triggered!');
+  }
+};
+
+obj.onClick(); // Prints: 'Triggered!'
+```
