@@ -1719,8 +1719,8 @@ add(2.0, 5.0); // Prints: 'Add: uint'
 There is a risk of ambiguity at build time if the function uses endless arguments and we don't provide any (which is allowed):
 
 ```sn
-fn sumOf (...nums: int) : int { /* ... */ }
-fn sumOf (...nums: f32) : f32 { /* ... */ }
+fn sumOf (...nums: int[]) : int { /* ... */ }
+fn sumOf (...nums: f32[]) : f32 { /* ... */ }
 
 sumOf(); // ERROR (ambiguity)
 
@@ -6287,7 +6287,7 @@ Files can be documented as well, using three indicators: `@file`, which indicate
  * @param numbers A list of numbers
  * @returns The summation
  */
-fn sum (...numbers: int) : int {
+fn sum (...numbers: int[]) : int {
   let summation = 0;
 
   for num in numbers {
