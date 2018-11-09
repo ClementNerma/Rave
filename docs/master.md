@@ -5733,6 +5733,71 @@ val obj = new ~Any {
 obj.onClick(); // Prints: 'Triggered!'
 ```
 
+### Namespaces
+
+A _namespace_ is a named scope which can export some of its entities to its direct parent scope:
+
+```sn
+namespace Users {
+  struct User {
+    name: string;
+    age: uint;
+  }
+
+  val users = new Map<string, User>;
+
+  fn createUser (name: string, age: uint) {
+    users[name] = age;
+  }
+
+  fn getUser (name: string) : User throws Error {
+    if name not in users {
+      throw new Error('User not found');
+    } else {
+      return users[name];
+    }
+  }
+
+  fn deleteUser (name: string) throws Error {
+    if name not in users {
+      throw new Error('User not found');
+    } else {
+      delete useres[name];
+    }
+  }
+}
+```
+
+At this point, all entities of the namespace are _private_. We can make them _public_ by _exporting_ them:
+
+```sn
+namespace Users {
+  // ...
+
+  export createUser,
+         getUser,
+         deleteUser;
+}
+```
+
+This way, we can access the three exported functions, but not anything else. To access a namespace's content, we have to write its name followed by two double point symbols:
+
+```sn
+namespace Users {
+  // ...
+}
+
+createUser('Jack', 24u); // ERROR ('createUser' not found in this scope)
+
+Users::createUser('Jack', 24u); // Works fine
+
+println!(Users::getUser('Jack')); // Works fine
+
+println!(serialize!(Users::users)); // ERROR ('users' is a private member of the scope)
+```
+
+Note that even structures our namespaces can be exported from a namespace.
+
 ## Asynchronous behaviors
 
 Sometimes we can't foretell when an event will occur. For example, if we are making a web server, we can't predict when there will be incoming connections. This is called an _asynchronous behaviour_ and we will see in this chapter how to deal with it.
