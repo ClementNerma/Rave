@@ -1637,16 +1637,28 @@ sumOf(3.0); // Works fine
 sumOf(); // Works fine
 ```
 
-### Vector expansion
+### Vector and tuples expansion
 
-It's also possible to use a vector in the place of an endless arguments, using _vector expansion_:
+It's also possible to use a vector in the place of an endless arguments, using the `...` _expansion operator_:
 
 ```sn
 val nums = [ 2, 3, 4 ];
 
-sumOf(nums..., 5.0);
+sumOf(...nums, 5.0);
 // Equivalent to:
 sumOf(2, 3, 4, 5.0);
+```
+
+The same goes with tuples, allowing to use values of different types.
+
+```sn
+fn sayHello (name: string, amount: uint) {
+  println!(`Hello ${name}!`) for i in 0..amount;
+}
+
+val args = ('Jack', 5u);
+
+sayHello(...args); // Prints: 'Hello Jack!' 5 times
 ```
 
 ### Operator functions
