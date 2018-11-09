@@ -2908,7 +2908,7 @@ Functions have a special sub-typing support:
 Examples:
 
 ```sn
-val fn: (a: number) => Primitive = (a: int) : string => 'Hello world'; // Works fine
+val fn: (a: number) => primitive = (a: int) : string => 'Hello world'; // Works fine
 ```
 
 #### Resolution keywords
@@ -4867,10 +4867,10 @@ These types are especially useful in flexes.
 
 Statics are instances of structures. For example, `{ name: 'Jack' }` is a static, while neither `new SomeClass()` nor `'Hello'` are.
 
-These can be described using the `Static<T>` type, where `T` is a common type of all fields in the structure. For example, a static can be described with `Static<Primitive>` if all its fields hold primitives:
+These can be described using the `Static<T>` type, where `T` is a common type of all fields in the structure. For example, a static can be described with `Static<primitive>` if all its fields hold primitives:
 
 ```sn
-val static1: Static<Primitive> = {
+val static1: Static<primitive> = {
   name: 'Jack'
 };
 ```
@@ -4892,7 +4892,7 @@ val jack = Hero {
   exp: 0u
 };
 
-for field in (jack as Static<Primitive>) {
+for field in (jack as Static<primitive>) {
   println!(field + ' => ' + jack[field]);
 }
 ```
@@ -6236,7 +6236,7 @@ Note that it's possible to use promises which return different resolution and/or
 val single = Promise.all([
   new Promise<int, int>((resolve, reject) => resolve(2)),
   new Promise<bool, bool>((resolve, reject) => resolve(true))
-]); // Promise<Primitive[2], PromiseChainError<Primitive, Primitive>
+]); // Promise<primitive[2], PromiseChainError<primitive, primitive>
 ```
 
 ### Waiting for promises
