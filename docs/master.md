@@ -2844,8 +2844,8 @@ open class Mother {
     println!(name);
   }
 
-  public fn %new (name: string[2]) {
-    println!(name);
+  public fn %new (name: string[]) {
+    println!(name.join(' '));
   }
 }
 
@@ -2862,8 +2862,8 @@ open class Mother {
     println!(name);
   }
 
-  public fn %new (name: string[2]) {
-    println!(name);
+  public fn %new (name: string[]) {
+    println!(name.join(' '));
   }
 }
 
