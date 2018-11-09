@@ -5463,6 +5463,25 @@ struct B {
 type Both = A & B; // ERROR
 ```
 
+#### Intersection absorptions
+
+_Intersection absorptions_ consists in converting an `A & B` intersection type where `B` is a sub-type of `A` to `B` alone. Example:
+
+```sn
+struct A {
+  propA: int;
+}
+
+struct B extends A {
+  propB: string;
+}
+
+println!(A & B == B); // Prints: 'true'
+println!(A & B == A); // Prints: 'false'
+```
+
+Type absorption is performed automatically by the program, but that's still important to understand why `A & B` could result in `B` alone.
+
 ### Union types
 
 Union types are the opposite of intersection types: instead of describing a value has having several types, the value is described as having _one_ of the types of the union:
