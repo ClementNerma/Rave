@@ -41,7 +41,7 @@ Still, it may not be suited for:
 
 ### Setting up environment
 
-_This part will be achieved when the toolchain will be made available._
+_real part will be achieved when the toolchain will be made available._
 
 ### Terminology
 
@@ -2830,9 +2830,9 @@ There are four _resolution keywords_:
 * `this`, which refers to the instance we are manipulating ;
 * `self`, which refers to the current class ;
 * `super`, which refers to the current class' mother (if there is one, else it is simply not defined) ;
-* `real`, which refers to the real class of the instance we are manipulating
+* `_real`, which refers to the real class of the instance we are manipulating
 
-This last keyword is a bit special. For example, in our `Hero` class, `self` will always refer to `Hero`, but `real` may refer either to `Hero`, `Warrior` or `Wizard`. In our `jack` object, it would refer to `Warrior`, and to `Wizard` for `john`. This may not appear very useful, but we will see some useful applications of it later.
+This last keyword is a bit special. For example, in our `Hero` class, `self` will always refer to `Hero`, but `_real` may refer either to `Hero`, `Warrior` or `Wizard`. In our `jack` object, it would refer to `Warrior`, and to `Wizard` for `john`. This may not appear very useful, but we will see some useful applications of it later.
 
 ### Constructor inheritance
 
@@ -6318,7 +6318,7 @@ Inline annotations are part of the language and describe a part of the program. 
 
 ### Dynamic annotations
 
-Dynamic annotations allow to set and read a value using annotations. It can be useful to document functions that are re-implemented in child classes, without rewriting the whole documentation in the children. Here is an example, using the `@class` class which is automatically replaced by the real class name (`real`' name):
+Dynamic annotations allow to set and read a value using annotations. It can be useful to document functions that are re-implemented in child classes, without rewriting the whole documentation in the children. Here is an example, using the `@class` class which is automatically replaced by the real class name (`_real`' name):
 
 ```sn
 virtual class A {
@@ -6326,15 +6326,15 @@ virtual class A {
    * Create a new value of @class and return it
    * @returns A new instance of @class
    */
-  public fn create () : real;
+  public fn create () : _real;
 }
 
 class B extends A {
-  public fn create () : real => new self();
+  public fn create () : _real => new self();
 }
 
 class C extends A {
-  public fn create () : real => new self();
+  public fn create () : _real => new self();
 }
 ```
 
@@ -6346,7 +6346,7 @@ virtual class A {
    * Create a new value of A and return it
    * @returns A new instance of A
    */
-  public fn create () : _this;
+  public fn create () : _real;
 }
 
 class B extends A {
@@ -6354,7 +6354,7 @@ class B extends A {
    * Create a new value of B and return it
    * @returns A new instance of B
    */
-  public fn create () : _this => new self();
+  public fn create () : _real => new self();
 }
 
 class C extends A {
@@ -6362,7 +6362,7 @@ class C extends A {
    * Create a new value of C and return it
    * @returns A new instance of C
    */
-  public fn create () : _this => new self();
+  public fn create () : _real => new self();
 }
 ```
 
