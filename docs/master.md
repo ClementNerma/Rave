@@ -4922,6 +4922,34 @@ Also, as tuple types are considered as structures (we can create them using the 
 
 **NOTE:** Class extensions are not allowed on the `Static<T>` type.
 
+#### Statics spread operator
+
+Clonable statics can take benefit of the spread operator:
+
+```sn
+val original = {
+  name: 'Jack',
+  age: 20
+};
+
+val copy = {
+  ...original,
+  isCopy: true
+};
+
+println!(copy.name); // Prints: 'Jack'
+println!(copy.isCopy); // Prints: 'true'
+```
+
+The spread operator fully clones the object, so they are not linked:
+
+```sn
+copy.name = 'John';
+
+println!(copy.name); // Prints: 'John'
+println!(original.name); // Prints: 'Jack'
+```
+
 ### Plainable types
 
 Plainable types are types which can be used as a type for a plain constant as well as by the `pln<T>` wrapper. Their list is stored inside a native, plain tuple to allow identiying them during program's execution (is this type plainable?):
