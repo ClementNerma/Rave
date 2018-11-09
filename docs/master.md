@@ -5378,3 +5378,55 @@ val str = <!string> something;
 ```
 
 Using this one, if the typecast fails, the program will panic. Be **really** aware when using it - its usage is strongly discouraged most of the time.
+
+### Type assertion
+
+Let's say we want to create a function that takes any value as an argument. If it is stringifyable, we stringify it, else we return `null`.
+
+This can be achieved through _type assertion_:
+
+```sn
+fn convertToString (value: Any) : string? {
+  if value ~ Stringifyable {
+    // ...
+  } else {
+    return null;
+  }
+}
+```
+
+The `~` operator is called the _type assertion operator_: it checks if the provided entity matches the type on its right - it can be either a class, trait, interface...
+
+Checking if a value's hidden type matches another is called a _type assertion_.
+
+When a conditional block's head is only made of type assertions, if the condition is not nil its body will be ran with all specified entities having the provided types as official types.
+
+Note that we can specify multiple type assertions at a type in a type assertion block, but only with the `&&` operator - no `||` or any other operator.
+
+Let's go back to our function:
+
+```sn
+fn convertToString (value: Any) : string? {
+  if value ~ Stringifyable {
+    return value as string; // Works fine
+  } else {
+    return null;
+  }
+}
+
+println!(convertToString(25u)); // Prints: '25'
+println!(convertToString({})); // Prints: ''
+```
+
+This is as simple as that. Also, we can use type assertions in ternary conditions as well as in inline condition blocks:
+
+```sn
+// Ternary condition
+fn convertToString (value: Any) : string? {
+  return value ~ Stringifyable ? value as string : null;
+}
+
+// Inline condition
+val value: Any = 'Hello world';
+println!(value as string) if value ~ Stringifyable;
+```
