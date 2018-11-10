@@ -3770,7 +3770,7 @@ dict Custom<K, V> {
   // Associate a value to a key
   public fn %set (key: K, value: V) throws KeyAssignmentError;
   // Remove a key and its associated value
-  public fn %unset (key: K);
+  public fn %unset (key: K) throws KeyNotFoundError;
   // Get the number of key/value pairs
   public fn %size () : usize;
   // Check if a key exists
@@ -3886,7 +3886,7 @@ catch (e) {
 }
 ```
 
-The same applies for `%set`.
+The same applies for `%set` and `%unset`.
 
 ### Practice: unique values
 
