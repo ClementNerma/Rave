@@ -820,10 +820,10 @@ It's also possible to hold values in an enumeration:
 enum Color {
   White,
   Black,
-  Rgb(u8, u8, u8)
+  Custom(u8, u8, u8)
 }
 
-val red = Color.Rgb(255B, 0B, 0B);
+val red = Color.Custom(255B, 0B, 0B);
 ```
 
 ### Tuples
@@ -1384,15 +1384,15 @@ Enumerations are especially useful when dealing with enumerations:
 enum Color {
   White,
   Black,
-  Rgb(u8, u8, u8)
+  Custom(u8, u8, u8)
 }
 
-val red = Color.Rgb(255B, 0B, 0B);
+val red = Color.Custom(255B, 0B, 0B);
 
 match red {
   White -> println!('Color is white'),
   Black -> println!('Color is black'),
-  Rgb(r, g, b) -> println!('r = ${r}, g = ${g}, b = ${b}')
+  Custom(r, g, b) -> println!('r = ${r}, g = ${g}, b = ${b}')
 }
 ```
 
