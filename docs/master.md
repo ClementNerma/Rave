@@ -814,6 +814,18 @@ enum Color2 {
 };
 ```
 
+It's also possible to hold values in an enumeration:
+
+```sn
+enum Color {
+  White,
+  Black,
+  Rgb(u8, u8, u8)
+}
+
+val red = Color.Rgb(255B, 0B, 0B);
+```
+
 ### Tuples
 
 Tuples are a mix between structures and arrays. Their indexes are plain `usize` values, but each value can have a different type:
@@ -1342,11 +1354,11 @@ This code will print `0`, `1`, `3` and `4` - the `println!` call for `2` has bee
 The `match` keyword allow to run a set of instructions depending on a value. Let's consider we have a color taken from a `Color` enumeration and we want to print a message depending on it. A first idea could be to write:
 
 ```sn
-if color == Color.RED {
+if color == Color.Red {
   println!('Color is red');
-} elsif color == Color.GREEN {
+} elsif color == Color.Green {
   println!('Color is green');
-} elsif color == Color.BLUE {
+} elsif color == Color.Blue {
   println!('Color is blue');
 } else {
   println!('Unknown color');
@@ -1357,9 +1369,9 @@ This is a bit heavy, and can be replaced by a match:
 
 ```sn
 match color {
-  Color.RED   -> println!('Color is red');
-  Color.GREEN -> println!('Color is green');
-  Color.BLUE  -> println!('Color is blue');
+  Color.Red   -> println!('Color is red');
+  Color.Green -> println!('Color is green');
+  Color.Blue  -> println!('Color is blue');
   default     -> println!('Unknown color');
 }
 ```
