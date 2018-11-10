@@ -4060,9 +4060,7 @@ We will have two attributes for this class: a list of keys, and a list of values
   }
 ```
 
-## Nullable types
-
-A nullable type is a type that may not hold a value of the provided type.
+## Optional types
 
 ### An example with points
 
@@ -4131,9 +4129,9 @@ point.some(value => println!('Found a point:' + value.name));
 point.none(() => println!('No pas was found.'));
 ```
 
-### The nullable operator
+### The optional operator
 
-The nullable operator is a useful operator that tries to get a structure's field, a class' member, or a dictionary's key safely. Instead of requiring to try and catch the operation, the operator simply returns a `none` value in case of fail:
+The optional operator is a useful operator that tries to get a structure's field, a class' member, or a dictionary's key safely. Instead of requiring to try and catch the operation, the operator simply returns a `none` value in case of fail:
 
 ```sn
 struct Hero {
@@ -4194,7 +4192,7 @@ typeof jack?.identity?.name?; // Option<string>
 
 The same applies for `john`.
 
-As you can see, it's possible to chain nullable operators. Indeed, if we just wrote `jack?.identity.name`, it would have failed because `jack?.identity` holds `none`.
+As you can see, it's possible to chain optional operators. Indeed, if we just wrote `jack?.identity.name`, it would have failed because `jack?.identity` holds `none`.
 
 This also works with dictionaries:
 
@@ -5213,15 +5211,15 @@ catch (e: UnsafeCastError) {
 
 This program will work fine. If we tried to cast unsafely `something` to **any** other type, it would have failed and throw an error.
 
-Because using a `try`-`catch` block is a bit heavy, we can use its nullable version:
+Because using a `try`-`catch` block is a bit heavy, we can use its optional version:
 
 ```sn
 val str = <?string> something; // ?string
 ```
 
-The `str` entity has the `?string` value: if the typecast succeeds, it holds the typecast value. But if it fails, instead of throwing an error, it returns `none` ; that's why the returned value is nullable.
+The `str` entity has the `?string` value: if the typecast succeeds, it holds the typecast value. But if it fails, instead of throwing an error, it returns `none` ; that's why the returned value is optional.
 
-If we are absolutely sure about the typecasting being write - and so we don't want the final value to be nullable, we can use another syntax:
+If we are absolutely sure about the typecasting being write - and so we don't want the final value to be optional, we can use another syntax:
 
 ```sn
 val str = <!string> something; // string
