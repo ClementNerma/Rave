@@ -798,7 +798,7 @@ val green = Color.Green;
 val blue = Color.Blue;
 ```
 
-By default, the first identifier of the enumeration is an `u8` value starting at `0`. The second is equal to `1`, the third is equal to `2`, etc. Though, it's possible to set a specific number:
+By default, the first identifier of the enumeration is an `u8` value starting at `0`. The second is equal to `1`, the third is equal to `2`, etc. Though, it's possible to set a specific value:
 
 ```sn
 enum Color1 {
@@ -813,6 +813,8 @@ enum Color2 {
   Blue // 9
 };
 ```
+
+The only limitation is that the value must be a plain one.
 
 It's also possible to hold values in an enumeration:
 
