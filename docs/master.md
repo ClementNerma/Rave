@@ -4111,22 +4111,20 @@ This works fine. We can now check if we got a value or a "none":
 ```sn
 val point: ?Point = getNilPoints([]);
 
-match point.type {
-  Some -> println!('Foud a point: ' + point.value.name),
+match point {
+  Some(name) -> println!('Foud a point: ' + name),
   None -> println!('No point was found.')
 }
 ```
 
-In fact, the `Option<T>` type is simply an union of `None` and `Some<T>`.
+In fact, the `Option<T>` type is simply an enumeration containing `None` and `Some(T)`.
 
-To simplify checking, we can also use the `.none()` and `.some()` methods:
+To simplify checking, we can also use an `if` statement:
 
 ```sn
-val point = getNilPoints([]);
-
-point.some(value => println!('Found a point:' + value.name));
-
-point.none(() => println!('No pas was found.'));
+if point as Some(name) {
+  println!('Found a point: ' + name);
+}
 ```
 
 ### The optional operator
@@ -4144,8 +4142,13 @@ val jack = some!(Hero {
 
 val john = none;
 
-jack?.name.some(name => println!(name)); // Prints: 'Jack'
-john?.name.some(name => println!(name)); // Does nothing
+if jack?.name as Some(name) {
+  println!(name); // Prints: 'Jack'
+}
+
+if john?.name as Some(name) {
+  println!(name); // Does nothing
+}
 
 // List of types:
 typeof jack; // ?Hero
@@ -4169,8 +4172,13 @@ val jack = some!(Hero {
 
 val john = none;
 
-jack?.identity?.name.some(name => println!(name)); // Prints: 'Jack'
-john?.identity?.name.some(name => println!(name)); // Does nothing
+if jack?.identity?.name as Some(name) {
+  println!(name); // Prints: 'Jack'
+}
+
+if john?.identity?.name as Some(name) {
+  println!(name); // Does nothing
+}
 
 // List of types:
 typeof jack; // ?Hero
@@ -4201,7 +4209,9 @@ val personsAge = {# Jack: 24u };
 
 val age = personsAge['Jack']?; // Prints: ?uint
 
-age.some(age => println!(age)); // Prints: '24'
+if age as Some(age) {
+  println!(age); // Prints: '24'
+}
 ```
 
 Note that it doesn't catch any error in the getter, it simply checks if the key is contained in the dictionary:
@@ -5062,7 +5072,8 @@ let value: ?uint = none;
 
 do {
   value = fibo.next();
-  value.some(num => println!(num));
+
+  println!(num) if value as Some(num);
 } until (value == none);
 ```
 
@@ -5520,8 +5531,13 @@ fn convertToString (value: Any) : ?string {
   }
 }
 
-convertToString(25u).some(str => println!(str)); // Prints: '25'
-convertToString({}).some(str => println!(str)); // Does nothing
+if convertToString(25u) as Some(str) {
+  println!(str); // Prints: '25'
+}
+
+if convertToString({}) as Some(str) {
+  println!(str); // Does nothing
+}
 ```
 
 This is as simple as that.
