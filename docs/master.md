@@ -1378,6 +1378,24 @@ match color {
 
 Which is a lot more readable. The `default` keyword runs its related set of instructions if none of the other values matched the provided one.
 
+Enumerations are especially useful when dealing with enumerations:
+
+```sn
+enum Color {
+  White,
+  Black,
+  Rgb(u8, u8, u8)
+}
+
+val red = Color.Rgb(255B, 0B, 0B);
+
+match red {
+  White -> println!('Color is white'),
+  Black -> println!('Color is black'),
+  Rgb(r, g, b) -> println!('r = ${r}, g = ${g}, b = ${b}')
+}
+```
+
 It's also possible to provide conditions for matches, by wrapping them between brackets:
 
 ```sn
