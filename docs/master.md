@@ -1223,6 +1223,36 @@ if 1 + 1 == 4 {
 
 As soon as a block runs its set of instructions, the next one in the chain are ignored. Also, note that the `else` block must be placed at the very end of the chain.
 
+#### With enumerations
+
+Conditional blocks are especially useful with enumerations. Considering the following enumeration:
+
+```sn
+struct Color {
+  White,
+  Black,
+  Custom(u8, u8, u8)
+}
+
+val red = Color.Custom(255B, 0B, 0B);
+```
+
+We can check if our entity is white:
+
+```sn
+if red as White {
+  println!('Color is white');
+}
+```
+
+Or if it's a custom color, with values extraction:
+
+```sn
+if red as Custom(r, g, b) {
+  println!('red = ${r}, green = ${g}, blue = ${b}');
+}
+```
+
 ### Repetition blocks
 
 There are two main blocks to repeat a set of instructions: the incremental repetition block (`for`), and the conditional repetition block (`while`). They are called _loop blocks_.
@@ -1354,11 +1384,11 @@ This code will print `0`, `1`, `3` and `4` - the `println!` call for `2` has bee
 The `match` keyword allow to run a set of instructions depending on a value. Let's consider we have a color taken from a `Color` enumeration and we want to print a message depending on it. A first idea could be to write:
 
 ```sn
-if color == Color.Red {
+if color as Red {
   println!('Color is red');
-} elsif color == Color.Green {
+} elsif color as Green {
   println!('Color is green');
-} elsif color == Color.Blue {
+} elsif color as Blue {
   println!('Color is blue');
 } else {
   println!('Unknown color');
