@@ -3944,6 +3944,8 @@ catch (e) {
 
 The same applies for `%set` and `%unset`.
 
+**NOTE:** Using the `delete` keyword on vectors (even lists) will make the program panic, as they are contiguous (meaning all key number smust be consecutive).
+
 ### Practice: unique values
 
 Here is an example of a dictionary class: it links a key (of any type) to a value (of any type, too), but its specificity is that it doesn't accept the same value twice.
