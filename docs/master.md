@@ -4264,6 +4264,19 @@ personsAge['Jack']?; // ?uint
 'Jack' in personsAge ? some!(personsAge['Jack']) : none;
 ```
 
+### Default value operator
+
+It is possible to provide a default value of the same type than the one holded by the optional type, in the case it is `None`:
+
+```sn
+fn getValue () : ?string {
+  // do some stuff and optionally return something
+  return none;
+}
+
+println!(getValue() ?? 'No value returned');
+```
+
 ## Errors and panics
 
 ### Panics
