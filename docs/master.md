@@ -3766,7 +3766,7 @@ They are declared using the `dict` keyword instead of the `class` one. Dictionar
 // V = type of values
 dict Custom<K, V> {
   // Get a value from a key
-  public fn %get (key: K) : V;
+  public fn %get (key: K) : V throws KeyNotFoundError;
   // Associate a value to a key
   public fn %set (key: K, value: V) throws KeyAssignmentError;
   // Remove a key and its associated value
@@ -3874,17 +3874,19 @@ for key -> value in personsAge {
 }
 ```
 
-Note that, even though the `%set` overload may throw an error, we are not forced to catch it. If we don't and an error is thrown, the program will panic. We can also catch it like for a standard function:
+Note that, even though the `%get` overload may throw an error, we are not forced to catch it. If we don't and an error is thrown, the program will panic. We can also catch it like for a standard function:
 
 ```sn
 try {
-  personsAge['john'] = 24;
+  personsAge['keyThatDoesNotExist'];
 }
 
 catch (e) {
   println!(e.message);
 }
 ```
+
+The same applies for `%set`.
 
 ### Practice: unique values
 
