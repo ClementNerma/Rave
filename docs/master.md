@@ -1369,9 +1369,9 @@ This is a bit heavy, and can be replaced by a match:
 
 ```sn
 match color {
-  Color.Red   -> println!('Color is red');
-  Color.Green -> println!('Color is green');
-  Color.Blue  -> println!('Color is blue');
+  Red   -> println!('Color is red');
+  Green -> println!('Color is green');
+  Blue  -> println!('Color is blue');
   default     -> println!('Unknown color');
 }
 ```
