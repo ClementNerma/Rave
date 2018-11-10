@@ -4112,7 +4112,7 @@ This works fine. We can now check if we got a value or a "none":
 val point: ?Point = getNilPoints([]);
 
 match point {
-  Some(name) -> println!('Foud a point: ' + name),
+  Some(name) -> println!('Found a point: ' + name),
   None -> println!('No point was found.')
 }
 ```
