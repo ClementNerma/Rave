@@ -787,30 +787,30 @@ Enumerations allow to use a set of identifiers, linked to automatically-generate
 ```sn
 // Declare an enumeration
 enum Color {
-  RED,
-  GREEN,
-  BLUE
+  Red,
+  Green,
+  Blue
 };
 
 // Use it
-val red = Color.RED;
-val green = Color.GREEN;
-val blue = Color.BLUE;
+val red = Color.Red;
+val green = Color.Green;
+val blue = Color.Blue;
 ```
 
 By default, the first identifier of the enumeration is an `u8` value starting at `0`. The second is equal to `1`, the third is equal to `2`, etc. Though, it's possible to set a specific number:
 
 ```sn
 enum Color1 {
-  RED = 5, // 5
-  GREEN, // 6
-  BLUE // 7
+  Red = 5, // 5
+  Green, // 6
+  Blue // 7
 };
 
 enum Color2 {
-  RED, // 0
-  GREEN = 8, // 8
-  BLUE // 9
+  Red, // 0
+  Green = 8, // 8
+  Blue // 9
 };
 ```
 
@@ -2183,7 +2183,7 @@ To represent the cells, we will use a simple enumeration. Because it is specific
 
 ```sn
 class Map {
-  public enum Cell { EMPTY, ROCK, TRAP };
+  public enum Cell { Empty, Rock, Trap };
 ```
 
 #### Part 2: The constructor
@@ -2312,7 +2312,7 @@ Here is the full solution:
 
 ```sn
 class Map {
-  public enum Cell { EMPTY, ROCK, TRAP };
+  public enum Cell { Empty, Rock, Trap };
 
   public map: Cell[][];
   public x: usize;
@@ -2346,7 +2346,7 @@ class Map {
     }
 
     // Can't run into a rock
-    elsif @map[y][x] == Cell.ROCK {
+    elsif @map[y][x] == Cell.Rock {
       println!('Cannot run into a rock');
     }
 
@@ -2355,7 +2355,7 @@ class Map {
       @x = x;
       @y = y;
 
-      if @map[y][x] == Cell.TRAP {
+      if @map[y][x] == Cell.Trap {
         println!('You just felt in a trap!');
         @trapped = true;
       }
