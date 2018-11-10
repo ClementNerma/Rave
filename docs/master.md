@@ -1920,6 +1920,42 @@ list.filter(value => {
 });
 ```
 
+### Parametered strings
+
+_Parametered strings_ allow to call specific functions with a raw string, meaning expressions are not evaluated, backslashes are kept, and so on. Here is how it goes:
+
+```sn
+translate`You just ordered ${nb} products. They will be delivered on the ${deliverDate}.`
+```
+
+And here is the `translate` function:
+
+```sn
+val order = {#
+  nb: 2,
+  deliverDate: '10-05-2018'
+};
+
+fn translate (pieces: StringPiece[]) : string {
+  // 'pieces' contains [ 'You just ordered ', ' products. They will be delivered on the ', '.' ]
+  // 'params' contains [ 'nb', 'deliverDate' ]
+
+  return pieces.map(piece => {
+    // 'piece.str' contains 'You just ordered ', then ' products. The will [...]' and then '.'
+    // 'piece.param' contains 'nb', then 'deliverDate'
+
+    return piece.str + orderDate[piece];
+  });
+}
+```
+
+Note that our function is not forced to return a `string`, it's just for the example. Here is the result:
+
+```sn
+println!(translate`You just ordered ${nb} products. They will be delivered on the ${deliverDate}.`);
+  // Prints: 'You just ordered 2 products. They will be delivered on the 10-05-2018.'
+```
+
 ## Classes
 
 Classes are kind of extended structures. The main difference is they can have methods, which are functions that can't change through the different instances, and private members, which are entities that are not visible from the outside. There are plenty of other differences, but here are the major ones.
