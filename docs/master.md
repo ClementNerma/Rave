@@ -6579,7 +6579,7 @@ class B<T> {
   /**
    * Segment for number types
    */
-  segment (T ~ number) {
+  segment T extends number {
     public fn double () => @value * 2;
   }
 }
