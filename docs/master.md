@@ -818,8 +818,9 @@ It's also possible to hold values in an enumeration:
 
 ```sn
 enum Color {
-  White,
-  Black,
+  Red,
+  Green,
+  Blue,
   Custom(u8, u8, u8)
 }
 
@@ -1390,8 +1391,8 @@ if color as Red {
   println!('Color is green');
 } elsif color as Blue {
   println!('Color is blue');
-} else {
-  println!('Unknown color');
+} elsif color as Some(r, g, b) {
+  println!('red = ${r}, green = ${g}, blue = ${b}');
 }
 ```
 
@@ -1411,18 +1412,13 @@ Which is a lot more readable. The `default` keyword runs its related set of inst
 Enumerations are especially useful when dealing with enumerations:
 
 ```sn
-enum Color {
-  White,
-  Black,
-  Custom(u8, u8, u8)
-}
-
 val red = Color.Custom(255B, 0B, 0B);
 
 match red {
-  White -> println!('Color is white'),
-  Black -> println!('Color is black'),
-  Custom(r, g, b) -> println!('r = ${r}, g = ${g}, b = ${b}')
+  Red   -> println!('Color is red'),
+  Green -> println!('Color is green'),
+  Blue  -> println!('Color is blue'),
+  Custom(r, g, b) -> println!('red = ${r}, green = ${g}, blue = ${b}')
 }
 ```
 
