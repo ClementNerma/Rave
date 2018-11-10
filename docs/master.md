@@ -5592,6 +5592,93 @@ val value: Any = 'Hello world';
 println!(value as string) if value ~ Stringifyable;
 ```
 
+### Discriminating unions
+
+Discriminating an union consists in guessing the value have a sub-type of the union using one of its members which use an union value.
+
+Let's take an example - we have the following code:
+
+```sn
+struct A {
+  type: 'Type1';
+}
+
+class B {
+  public val type: 'Type2';
+}
+
+type C = A | B;
+```
+
+The `C` union type is _discriminitable_ because all its member types (`A` and `B`) implement a public, constant member named the same way, and which use a different union value: we know that each `A` value will have its `type` member set to `Type1`, while for `B` it will be `Type2`. Even though these members are not plain, we know they can only contain these values thanks to the union value.
+
+So, if we know that a `C` value's `type` member is equal to `Type1`, it will be of `A` type. This behavior can be used in condition blocks, as well as in matches:
+
+```sn
+val value: C = /* value goes here */;
+
+if value.type == 'Type1' {
+  // 'value' is typed as an 'A' here
+} else {
+  // 'value' is typed as a 'B' here
+}
+
+match value.type {
+  'Type1' -> println!("'value' is typed as an 'A' here"),
+  'Type2' -> println!("'value' is typed as a 'B' here")
+}
+```
+
+Another example:
+
+```sn
+struct A { type: 'Type1'; }
+interface B { type: 'Type2'; }
+class C { public val type: 'Type3'; }
+
+val value: C = /* values goes here */;
+
+if value.type == 'Type1' {
+  // 'value' is typed as an 'A' here
+} else {
+  // 'value' is typed as a 'B | C' here
+}
+
+match value.type {
+  'Type2' -> println!("'value' is typed as a 'B' here"),
+  default -> println!("'value' is typed as an 'A | C' here"),
+}
+```
+
+It's also possible to use an enumeration. In this case, this is much simplier, as we can also use a plain member (e.g. in classes) with the enumeration's type, instead of the value's type:
+
+```sn
+enum HeroType {
+  Warrior,
+  WhiteWizard,
+  BlackWizard
+}
+
+class Warrior { public pln type = HeroType.Warrior; }
+
+struct WhiteWizard {
+  type: HeroType.WhiteWizard;
+}
+
+interface BlackWizard {
+  public pln type = HeroType.BlackWizard;
+}
+
+type C = Warrior | WhiteWizard | BlackWizard;
+
+val value: C = /* value goes here */;
+
+match value.type {
+  Warrior -> println!(typeof value), // Would print: 'Warrior',
+  default -> println!(typeof value)  // Would print: 'WhiteWizard | BlackWizard'
+}
+```
+
 ### Lambda classes
 
 _Lambda classes_ are to classes what lambdas are to functions. These are unnamed classes that are written inline, which must either extend from another class, implement an interface, or use a trait (or several of these). For example, let's consider the following code:
