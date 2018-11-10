@@ -5510,6 +5510,19 @@ catch (e) {
 }
 ```
 
+### Union values
+
+Union values are similar union types: instead of allowing a value to be of one of the union's type, it allows it to be one of the values specified in the union:
+
+```sn
+type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+
+val day1: DayOfWeek = 'Monday'; // Works fine
+val day2: DayOfWeek = 'Someday'; // ERROR (at build time)
+```
+
+Union values can only be made of plain primitives.
+
 ### Type assertion
 
 Let's say we want to create a function that takes any value as an argument. If it is stringifyable, we stringify it, else we return `null`.
