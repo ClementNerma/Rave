@@ -3768,7 +3768,7 @@ dict Custom<K, V> {
   // Get a value from a key
   public fn %get (key: K) : V;
   // Associate a value to a key
-  public fn %set (key: K, value: V);
+  public fn %set (key: K, value: V) throws KeyAssignmentError;
   // Remove a key and its associated value
   public fn %unset (key: K);
   // Get the number of key/value pairs
@@ -3871,6 +3871,18 @@ delete personsAge['john'];
 // Get the array of all keys
 for key -> value in personsAge {
   // ...
+}
+```
+
+Note that, even though the `%set` overload may throw an error, we are not forced to catch it. If we don't and an error is thrown, the program will panic. We can also catch it like for a standard function:
+
+```sn
+try {
+  personsAge['john'] = 24;
+}
+
+catch (e) {
+  println!(e.message);
 }
 ```
 
