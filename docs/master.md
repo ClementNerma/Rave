@@ -4147,7 +4147,7 @@ if jack?.name as Some(name) {
 }
 
 if john?.name as Some(name) {
-  println!(name); // Does nothing
+  println!(name); // Not executed
 }
 
 // List of types:
@@ -4177,7 +4177,7 @@ if jack?.identity?.name as Some(name) {
 }
 
 if john?.identity?.name as Some(name) {
-  println!(name); // Does nothing
+  println!(name); // Not executed
 }
 
 // List of types:
@@ -5536,7 +5536,7 @@ if convertToString(25u) as Some(str) {
 }
 
 if convertToString({}) as Some(str) {
-  println!(str); // Does nothing
+  println!(str); // Not executed
 }
 ```
 
