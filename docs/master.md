@@ -1241,7 +1241,7 @@ val red = Color.Custom(255B, 0B, 0B);
 We can check if our entity is white:
 
 ```sn
-if red as White {
+if red is White {
   println!('Color is white');
 }
 ```
@@ -1249,7 +1249,7 @@ if red as White {
 Or if it's a custom color, with values extraction:
 
 ```sn
-if red as Custom(r, g, b) {
+if red is Custom(r, g, b) {
   println!('red = ${r}, green = ${g}, blue = ${b}');
 }
 ```
@@ -1385,13 +1385,13 @@ This code will print `0`, `1`, `3` and `4` - the `println!` call for `2` has bee
 The `match` keyword allow to run a set of instructions depending on a value. Let's consider we have a color taken from a `Color` enumeration and we want to print a message depending on it. A first idea could be to write:
 
 ```sn
-if color as Red {
+if color is Red {
   println!('Color is red');
-} elsif color as Green {
+} elsif color is Green {
   println!('Color is green');
-} elsif color as Blue {
+} elsif color is Blue {
   println!('Color is blue');
-} elsif color as Some(r, g, b) {
+} elsif color is Some(r, g, b) {
   println!('red = ${r}, green = ${g}, blue = ${b}');
 }
 ```
@@ -4122,7 +4122,7 @@ In fact, the `Option<T>` type is simply an enumeration containing `None` and `So
 To simplify checking, we can also use an `if` statement:
 
 ```sn
-if point as Some(name) {
+if point is Some(name) {
   println!('Found a point: ' + name);
 }
 ```
@@ -4142,11 +4142,11 @@ val jack = some!(Hero {
 
 val john = none;
 
-if jack?.name as Some(name) {
+if jack?.name is Some(name) {
   println!(name); // Prints: 'Jack'
 }
 
-if john?.name as Some(name) {
+if john?.name is Some(name) {
   println!(name); // Not executed
 }
 
@@ -4172,11 +4172,11 @@ val jack = some!(Hero {
 
 val john = none;
 
-if jack?.identity?.name as Some(name) {
+if jack?.identity?.name is Some(name) {
   println!(name); // Prints: 'Jack'
 }
 
-if john?.identity?.name as Some(name) {
+if john?.identity?.name is Some(name) {
   println!(name); // Not executed
 }
 
@@ -4209,7 +4209,7 @@ val personsAge = {# Jack: 24u };
 
 val age = personsAge['Jack']?; // Prints: ?uint
 
-if age as Some(age) {
+if age is Some(age) {
   println!(age); // Prints: '24'
 }
 ```
@@ -5073,7 +5073,7 @@ let value: ?uint = none;
 do {
   value = fibo.next();
 
-  println!(num) if value as Some(num);
+  println!(num) if value is Some(num);
 } until (value == none);
 ```
 
@@ -5531,11 +5531,11 @@ fn convertToString (value: Any) : ?string {
   }
 }
 
-if convertToString(25u) as Some(str) {
+if convertToString(25u) is Some(str) {
   println!(str); // Prints: '25'
 }
 
-if convertToString({}) as Some(str) {
+if convertToString({}) is Some(str) {
   println!(str); // Not executed
 }
 ```
