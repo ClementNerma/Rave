@@ -395,14 +395,16 @@ println!(num8); // Prints: '8'
 
 There is also an automatic typecasting feature that automatically typecasting a given number type to any of its signed and unsigned counterpart with a higher number of bits. To be more explicit, here the full list of automatic typecasts:
 
-* `i8` to either `i16`, `u16`, `i32`, `u32`, `i64`, `u64` ;
-* `u8` to either `i16`, `u16`, `i32`, `u32`, `i64`, `u64` ;
-* `i16` to either `i32`, `u32`, `i64`, `u64` ;
-* `u16` to either `i32`, `u32`, `i64`, `u64` ;
-* `i32` to either `i64`, `u64` ;
-* `u32` to either `i64`, `u64` ;
-* `usize` to `u64` ;
-* `f32` to `f64`
+| Number type |    Is automatically typecastable to...   |
+|-------------|------------------------------------------|
+|     `i8`    | `i16`, `u16`, `i32`, `u32`, `i64`, `u64` |
+|     `u8`    | `i16`, `u16`, `i32`, `u32`, `i64`, `u64` |
+|     `i16`   | `i32`, `u32`, `i64`, `u64`               |
+|     `u16`   | `i32`, `u32`, `i64`, `u64`               |
+|     `i32`   | `i64`, `u64`                             |
+|     `u32`   | `i64`, `u64`                             |
+|    `usize`  | `u64`                                    |
+|     `f32`   | `f64`                                    |
 
 Showcase:
 
