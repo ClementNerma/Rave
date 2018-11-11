@@ -4996,19 +4996,19 @@ val infos = ref_stats!(ptr3);
 // Contains:
 [
   {
-    level: 0,
+    level: 0p,
     mut: false,
     ref: &i
   },
 
   {
-    level: 1,
+    level: 1p,
     mut: true,
     ref: &mut ptr1
   },
 
   {
-    level: 2,
+    level: 2p,
     mut: false,
     ref: &ptr2
   }
