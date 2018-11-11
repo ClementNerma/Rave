@@ -419,7 +419,33 @@ Also, as the `usize` type is, at maximum, an `u64` value, it can be converted to
 
 The only exception is for float types: integers cannot be automatically converted to floats, as the precision could result in inexact rounds.
 
-**NOTE:** Operations are permitted between different number types. For example, dividing an unsigned number by a signed one is accepted and will return a number of the same type than the left operand.
+**NOTE:** Operations are **not** permitted between different number types. For example, dividing an unsigned number by a signed one will require to cast the second one to the same type as the first one:
+
+```sn
+val smaller: u8 = 2B;
+val greater: i16 = 4s;
+
+smaller = greater; // ERROR
+smaller = greater as u8; // Works fine
+
+greater = smaller; // Works fine - without explicit typecasting
+```
+
+The only exceptions are for types which are castable _from_ the second argument (e.g. dividing an `i16` by an `u8` is allowed because the `u8` type is automatically typecastable to an `i16`). Here is the list for more simplicity:
+
+| Number type |        Right argument can be of type...       |
+|-------------|-----------------------------------------------|
+|     `i8`    | `i8`                                          |
+|     `u8`    | `u8`                                          |
+|     `i16`   | `i8`, `u8`, `i16`                             |
+|     `u16`   | `i8`, `u8`, `u16`                             |
+|     `i32`   | `i8`, `u8`, `i16`, `u16`, `i32`               |
+|     `u32`   | `i8`, `u8`, `i16`, `u16`, `u32`               |
+|     `i64`   | `i8`, `u8`, `i16`, `u16`, `i32`, `u32`, `i64` |
+|     `u64`   | `i8`, `u8`, `i16`, `u16`, `i32`, `u32`, `u64` |
+|    `usize`  | `i8`, `u8`, `i16`, `u16`, `usize`             |
+|     `f32`   | `f32`                                         |
+|     `f64`   | `f32`, `f64`                                  |
 
 ### Assignment operators
 
