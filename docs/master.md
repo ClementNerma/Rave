@@ -4313,6 +4313,35 @@ fn getValue () : ?string {
 println!(getValue() ?? 'No value returned');
 ```
 
+### Optional catching
+
+Currently, if we want to try to run a function, and run a code if it succeeded, we would write something like this:
+
+```sn
+// Considering the following function:
+fn getArticleBody (id: usize) : string throws Error;
+
+// Default syntax: multi-line
+if (try? getArticleBody(0)) is Some(content) {
+  println!(content);
+}
+
+// Default syntax: inline
+println!(content) if (try? getArticleBody(0)) is Some(content);
+```
+
+Optional catching is a special syntax of the `if` block which allows to run the block's body if the specified expression runs without any error. The result of the expression is then stored in a new entity scoped to the body. Here is how it goes:
+
+```sn
+// Multi-line
+if try getArticleBody(0) as content {
+  println!(content);
+}
+
+// Inline
+println!(content) if try getArticleBody(0) as content;
+```
+
 ## Errors and panics
 
 ### Panics
