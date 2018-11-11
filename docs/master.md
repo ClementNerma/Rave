@@ -449,6 +449,14 @@ The only exceptions are for types which are castable _from_ the second argument 
 |     `f32`   | `f32`                                         |
 |     `f64`   | `f32`, `f64`                                  |
 
+### Plain numbers typecasting
+
+There is a special rule for plain numbers, however. When we write a plain number without any suffix, it is automatically typecastable to any other number type (if it doesn't exceeds its minimum nor maximum value, of course):
+
+```sn
+val num: u8 = 2; // Works fine
+```
+
 ### Assignment operators
 
 Assignments operators are numeric operators applied on the assignment operator (`=`). They allow for example to add a value to an entity without writing its name twice. Here is the syntax:
