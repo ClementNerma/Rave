@@ -6168,6 +6168,47 @@ class A {
 }
 ```
 
+### Arrays typecasting
+
+Natively, it is not possible to convert an `int[]` to an `int[3]` for example, even though the opposite is allowed:
+
+```sn
+// Automatic typecasting doesn't work
+val arr1: int[] = [ 2, 3, 4 ];
+val arr2: int[3] = arr1; // ERROR (type mismatch)
+
+// Safe typecasting doesn't work
+//  - because if the array does not have the exact same size as the target,
+//    the program would have to panic!
+val arr1: int[] = [ 2, 3, 4 ];
+val arr2: int[3] = arr1 as int[3]; // ERROR (not typecastable)
+
+// Unsafe typecasting doesn't work
+//  - because 'arr1''s real type is 'int[]' and not 'int[3]'
+val arr1: int[] = [ 2, 3, 4 ];
+val arr2: int[3];
+
+if <?int[3]> arr1 as arr2 {
+  println!('It worked!'); // Not executed
+} else {
+  println!('An error occured.'); // Executed
+}
+```
+
+So, in order to perform this typecast, we have to use arrays' dedicated `.toFixed()` method:
+
+```sn
+val arr1: int[] = [ 2, 3, 4 ];
+
+if try arr1.toFixed(3) as arr2 {
+  println!('It worked!'); // Executed
+} else {
+  println!('An error occured.'); // Not executed
+}
+```
+
+This function throws an error if the typecast failed, so if we tried to typecast `arr1` to an array with any other size, it would have failed and run the `else`'s body instead.
+
 ### Proxies
 
 Proxies are entities that don't have a real value. Instead, when we attempt to either read or write them, a related callback is called.
