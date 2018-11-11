@@ -6168,7 +6168,7 @@ class A {
 }
 ```
 
-### Arrays typecasting
+### Vectors typecasting
 
 Natively, it is not possible to convert an `int[]` to an `int[3]` for example, even though the opposite is allowed:
 
@@ -6208,6 +6208,28 @@ if try arr1.toFixed(3) as arr2 {
 ```
 
 This function throws an error if the typecast failed, so if we tried to typecast `arr1` to an array with any other size, it would have failed and run the `else`'s body instead.
+
+A second point about vectors typecasting is that any vector holding `X` values can be automatically typecasted to an equivalent vector holding `Y` values if `Y` is a parent type of `X`. Showcase:
+
+```sn
+val list1: int[#] = [# 0];
+val list2: number[#] = list1; // Works fine
+
+val arr1: int[3] = [ 1, 2, 3 ];
+val arr2: number[3] = arr1; // Works fine
+```
+
+Note that such typecasts automatically clone the vector, to avoid such problems:
+
+```sn
+val list1: int[#] = [# 0];
+val list2: number[#] = list1; // Works fine
+
+// If vectors weren't cloned:
+list2[0] = 2.0; // Works fine in 'list2' because it holds 'number' values
+                // But would also fail because 'list1' only holds 'int' values
+                //  and without cloning 'list2''s value holds the same OID as 'list1'
+```
 
 ### Proxies
 
