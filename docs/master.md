@@ -55,13 +55,13 @@ The _build time_ refers to the moment the source code is given to the builder. I
 
 Programs can be commented using single-line comments:
 
-```sn
+```rave
 // This is a single-line comment
 ```
 
 For multi-lines comment, we use the following syntax:
 
-```sn
+```rave
 /* This is
    a multi-line
    comment */
@@ -77,7 +77,7 @@ To illustrate what an entity is, think it as crate. The crate contains something
 
 There are several types of entities: the first ones are mutables. Their value may change during program execution. They are defined using the `let` keyword:
 
-```sn
+```rave
 let mutable = 2;
 ```
 
@@ -87,13 +87,13 @@ You may notice we haven't written the entity's type. In fact, the builder _infer
 
 We can also indicate the entity's type explicitly:
 
-```sn
+```rave
 let mutable: int = 2;
 ```
 
 We can then change its value by assigning another:
 
-```sn
+```rave
 let mutable: int = 2;
 
 mutable = 3;
@@ -101,7 +101,7 @@ mutable = 3;
 
 Note that, after an entity is declared, its type is fixed and won't change. It also won't accept values that are not of the same type. For example, assigning a `string` value to an `int` entity results in an error.
 
-```sn
+```rave
 let mutable: int = 2;
 
 mutable = 'Hello'; // ERROR
@@ -111,7 +111,7 @@ mutable = 'Hello'; // ERROR
 
 Constants are another type of entity. They work like mutables, except their value can't change after their declaration. They use the `val` keyword:
 
-```sn
+```rave
 // Inferred type
 val constant = 2;
 
@@ -130,7 +130,7 @@ Literal constants are constants that only accept _literal values_, also abbrevia
 
 A literal constant is declared using the `lit` keyword:
 
-```sn
+```rave
 // Inferred type
 lit LITERAL = 2;
 
@@ -154,7 +154,7 @@ There are two categories of types: primitives, which we will see now, and object
 
 Voids use the `void` type and can only take a single value: `null`.
 
-```sn
+```rave
 val value: void = null;
 ```
 
@@ -162,7 +162,7 @@ val value: void = null;
 
 Booleans use the `bool` type and can take either the `true` or the `false` value.
 
-```sn
+```rave
 val value1: bool = true;
 val value2: bool = false;
 ```
@@ -175,7 +175,7 @@ Numbers are by default represented by the `int` type ; we will see more about th
 
 Strings use the `string` type and are made of a suite of characters.
 
-```sn
+```rave
 val name: string = 'Hello world!';
 ```
 
@@ -183,7 +183,7 @@ They can be delimited using single quotes (`'`) or double quotes (`"`).
 
 Multi-line strings can be written using backquotes:
 
-```sn
+```rave
 val name: string = `This
 is a
 multi-line
@@ -226,7 +226,7 @@ In this book, we will abbreviate "floating-point numbers" by the "floats" term.
 
 Besides, the `infinity` floating-point value is available for these types. It refers to the infinity and can either be positive or negative (`-infinity`). Positive infinity is greater than any number except itself, while negative infinity is smaller than any number except iself:
 
-```sn
+```rave
 infinity > 10000000000000000000000000000000000000000000d; // true
 -infinity < -10000000000000000000000000000000000000000000d; // true
 
@@ -243,7 +243,7 @@ val num64: f64 = infinity; // Works fine
 
 There are several operators to manipulate numbers:
 
-```sn
+```rave
 // addition
 val sum = 6 + 2; // 8
 
@@ -278,7 +278,7 @@ Bitwise operators work on each bit of the number. They take two numbers to retur
 * `>>` (binary right shift operator)
 * `~` (one's complement) - takes a single number
 
-```sn
+```rave
 lit a = 60; // a : 0011 1100
 lit b = 13; // b : 0000 1101
 
@@ -294,7 +294,7 @@ a >> 2; // 0000 1111 : 15
 
 It's possible to write a number of another type than `int` without specifying the variable's type, by using a _numeric suffix_, which indicates explicitly the number's type:
 
-```sn
+```rave
 2b; // i8
 2B; // u8
 2s; // i16
@@ -310,13 +310,13 @@ It's possible to write a number of another type than `int` without specifying th
 
 We can then assign these values to an entity:
 
-```sn
+```rave
 val num = 2b; // 'num' is typed as a 'i8'
 ```
 
 Note that, when a decimal part is found after a number, it is automatically considered as an `f32`, even if it's zero:
 
-```sn
+```rave
 val float = 2.0; // f32
 ```
 
@@ -324,7 +324,7 @@ val float = 2.0; // f32
 
 Overflow occurs when we exceed a number type's maximum bound, and leads it to returning to its minimum bound before continuing the operation:
 
-```sn
+```rave
 val num = 127b; // i8 (-128 to 127)
 
 println!(num + 1); // Prints: '-128'
@@ -332,7 +332,7 @@ println!(num + 1); // Prints: '-128'
 
 The `println!` statement allows to display a value in the console. `println!` is a flex - a special function we will deal with later -. Here, where we expect it to display `128`, it shows `-128`. This is because our number _overflowed_: because it can't handle numbers higher than `128`, it goes back to its minimum bound (`-128`). The operation is not stopped, though:
 
-```sn
+```rave
 val num = 127b;
 
 println!(num + 3); // Prints: '-126'
@@ -340,7 +340,7 @@ println!(num + 3); // Prints: '-126'
 
 Underflow is the exact opposite concept: it occurs when we exceed the number's minimum bound, which makes it go to its maximum bound:
 
-```sn
+```rave
 val num = -128b;
 
 println!(num - 3); // Prints: '125'
@@ -350,7 +350,7 @@ println!(num - 3); // Prints: '125'
 
 Literal numbers accept a _separator_, which is the underscore symbol (`_`) to make them more readable:
 
-```sn
+```rave
 val num = 1_000_000;
 // Equivalent to:
 val num = 1000000;
@@ -360,7 +360,7 @@ Underscores are simply ignored in the number. Note that you can't start or end a
 
 It's also possible to write numbers in alternative bases, such as hexadecimal, by starting the number with `0` and a base symbol: `d` for decimal (base 10, the default one), `b` for binary (base 2), `o` for octal (base 8), and `x` for hexadecimal (base 16).
 
-```sn
+```rave
 val dec1 =    92; // Decimal (92)
 val dec2 = 0d192; // Decimal (192)
 
@@ -373,7 +373,7 @@ val hex = 0xFFA; // Hexadecimal (4090)
 
 Number types are incompatible with them, for the most part. This means we cannot assign an `u16` number in an `u8` entity, for example. This avoids many overflow and underflow problems when converting implicitly a number type to another one. Let's take an example:
 
-```sn
+```rave
 let num8: u8 = 3B;
 let num16: u16 = 4328S;
 
@@ -384,7 +384,7 @@ This code results in an error, because we can't assign an `u16` to an `u8`. If t
 
 Still, if we are sure we want to convert a number to another type, we can use manual _typecasting_:
 
-```sn
+```rave
 let num8: u8 = 3B;
 let num16: u16 = 8S;
 
@@ -408,7 +408,7 @@ There is also an automatic typecasting feature that automatically typecasting a 
 
 Showcase:
 
-```sn
+```rave
 let num8: u8 = 2B;
 let num16: i16 = num8; // Works fine
 
@@ -423,7 +423,7 @@ The only exception is for float types: integers cannot be automatically converte
 
 **NOTE:** Operations are **not** permitted between different number types. For example, dividing an unsigned number by a signed one will require to cast the second one to the same type as the first one:
 
-```sn
+```rave
 val smaller: u8 = 2B;
 val greater: i16 = 4s;
 
@@ -453,7 +453,7 @@ The only exceptions are for types which are castable _from_ the second argument 
 
 There is a special rule for literal numbers, however. When we write a literal number without any suffix, it is automatically typecastable to any other number type (if it doesn't exceeds its minimum nor maximum value, of course):
 
-```sn
+```rave
 val num: u8 = 2; // Works fine
 ```
 
@@ -461,7 +461,7 @@ val num: u8 = 2; // Works fine
 
 Assignments operators are numeric operators applied on the assignment operator (`=`). They allow for example to add a value to an entity without writing its name twice. Here is the syntax:
 
-```sn
+```rave
 let num = 2;
 
 // Short syntax
@@ -472,7 +472,7 @@ num = num + 3;
 
 All numeric operators (including bitwise ones) can be used:
 
-```sn
+```rave
 let num = 2;
 
 num **= 3;
@@ -487,7 +487,7 @@ There are four additional operators for assignment, which all return a number:
 * `-- variable`: pre-decremental operator, it decrements the variable and return the new value ;
 * `variable --`: post-decremental operator, it decrements the variable and return its previous value
 
-```sn
+```rave
 let i = 0;
 
 if ++ i == 1 {
@@ -519,7 +519,7 @@ Here is the list of operators, taking two operands: `a` on their left, `b` on th
 
 There is an additional operator, `!` (not) which returns `true` if its single operand (on its right) is a nil value.
 
-```sn
+```rave
 lit N1 = 10;
 lit N2 = 5;
 
@@ -541,7 +541,7 @@ N1 xor N2; // false
 
 Note that all operators that work on numbers will work on two different number types. For example, comparing an `u16` to an `i8` will work perfectly, the smallest number type being compared to the highest one to avoid overflows:
 
-```sn
+```rave
 let num8: u16 = 2S;
 let num16: i8 = 2b;
 
@@ -554,7 +554,7 @@ if num8 == num16 {
 
 The _concatenation operator_ takes two strings and returns the resulting one:
 
-```sn
+```rave
 println!('Hello ' + 'world!'); // Prints: 'Hello world!'
 ```
 
@@ -562,7 +562,7 @@ println!('Hello ' + 'world!'); // Prints: 'Hello world!'
 
 It's possible to evaluate expression inside a string:
 
-```sn
+```rave
 val a = 4;
 val b = 2;
 
@@ -581,19 +581,19 @@ Vectors provide a way to represent chain of datas. There are divided in two type
 
 Arrays are defined this way:
 
-```sn
+```rave
 val array: int[3] = [ 2, 3, 4 ];
 ```
 
 As you can see, the type for arrays is `T[LENGTH]`, where `T` is the type of value the array contains and `LENGTH` its length. Note that, as inferred typing also works on arrays, we can omit the array type:
 
-```sn
+```rave
 val array = [ 2, 3, 4 ]; // int[3]
 ```
 
 When we want to accept any array of a given type, whatever their length are, we can omit the size:
 
-```sn
+```rave
 let arr1: int[3] = [ 2, 3, 4 ];
 arr1 = [ 2, 3, 4, 5 ]; // ERROR (size mismatch)
 
@@ -605,7 +605,7 @@ arr2 = [ 2, 3, 4, 5 ]; // Works fine
 
 Ranges are a shortened syntax to make arrays that go from a given integer to another. For example, if we want to make an array containing all integers from `10` to `19`, we can just write:
 
-```sn
+```rave
 val arr = 10...19;
 
 println!(arr[0]); // Prints: '10'
@@ -620,7 +620,7 @@ Note that ranges only work with positive numbers, and are typed as `usize` value
 
 Lists, on their size, are defined using the `List<T>` type, where `T` is the same as for arrays:
 
-```sn
+```rave
 val list: int[#] = [ # 2, 3, 4 ];
 ```
 
@@ -628,13 +628,13 @@ Notice the `#` symbol at the beginning of the list? It indicates we are not writ
 
 As for arrays, lists support inferred typing, so we can simply write:
 
-```sn
+```rave
 val list = [ # 2, 3, 4 ];
 ```
 
 To make empty lists, we can use an alternate syntax:
 
-```sn
+```rave
 // Empty list of strings
 val list1 = string:[#];
 
@@ -648,7 +648,7 @@ Don't forget the `:` symbol between the type name and the opening bracket: it in
 
 We can grab any element from a vector using the following syntax:
 
-```sn
+```rave
 val arr = [ 2, 3, 4 ];
 
 println!(arr[0]); // Prints: '2'
@@ -660,7 +660,7 @@ The number written between brackets is called the _index_. As in many other prog
 
 Note that trying to access an out-of-bounds index will panic the program, meaning it will suddenly stop with an error message:
 
-```sn
+```rave
 val arr = [ 2, 3, 4 ];
 val index = 3p;
 
@@ -669,7 +669,7 @@ arr[index]; // ERROR (index out of bounds)
 
 We can get the number of elements contained in a vector (array or list) using `.size`:
 
-```sn
+```rave
 val arr = [ 2, 3, 4 ];
 val list = [ # 5, 6, 7 ];
 
@@ -678,7 +678,7 @@ println!(arr.length == list.length); // Prints: 'true'
 
 Vectors support an additional operator: the inclusion operator. It takes two operators, a value and a vector, and returns `true` if the vector contains the provided value:
 
-```sn
+```rave
 val arr = [ 2, 3, 4 ];
 
 println!(2 in arr); // Prints: 'true'
@@ -686,7 +686,7 @@ println!(2 in arr); // Prints: 'true'
 
 For lists, we can add an element using the following syntax:
 
-```sn
+```rave
 val list = [ # 2, 3, 4 ];
 
 // Short way
@@ -698,7 +698,7 @@ list.push(5);
 
 We can remove the last element using `.pop`:
 
-```sn
+```rave
 val list = [ # 2, 3, 4 ];
 
 println!(list[2]); // Prints: '4'
@@ -715,7 +715,7 @@ Structures link fields (which are entity names) to values. They allow to represe
 
 Let's say we want to represent a hero. It has health points (HP), attack points (ATK) and experience (EXP). With arrays, we could do like this:
 
-```sn
+```rave
 val hero = [ 100u /* HP */, 20u /* ATK */, 0u /* EXP */ ];
 ```
 
@@ -725,7 +725,7 @@ Another problem is that we can't, for example, give a name to our hero, because 
 
 A way to represent this more easily is to use structures. Our example would go like this:
 
-```sn
+```rave
 // Define the structure (it's a type)
 struct Hero {
   name: string;
@@ -739,7 +739,7 @@ We now have an `Hero` type. This introduces a new notation concept: primitive ty
 
 To represent data using our new type, we need to _instanciate_ it using the following syntax:
 
-```sn
+```rave
 val jack = Hero {
   name: 'Jack',
   hp: 100u,
@@ -752,7 +752,7 @@ This produces an _object_, which is an instance of our `Hero` structure. Here, `
 
 Still, by default, fields are constant. This means we cannot modify our hero's experience, for instance. If we want to, we simply have to mark the field as mutable, using the `mut` keyword:
 
-```sn
+```rave
 struct Hero {
   name: string;
   hp: uint;
@@ -763,7 +763,7 @@ struct Hero {
 
 The instanciation keeps the same syntax. We can now increase our hero's experience:
 
-```sn
+```rave
 // Given our hero just defeated an ennemy
 jack.exp += 100u;
 
@@ -772,7 +772,7 @@ println!(jack.exp); // Prints: '100'
 
 For specific situations we will see later, we can also force a field to only store a literal, using the `lit` keyword:
 
-```sn
+```rave
 struct Hero {
   lit NAME: string;
   hp: uint;
@@ -793,7 +793,7 @@ jack.NAME = someVariable; // ERROR
 
 We can even put optional fields, by giving them a default value:
 
-```sn
+```rave
 struct Hero {
   name: string;
   hp = 100u; // Inferred typing is supported
@@ -820,7 +820,7 @@ Also, as you can see, even if we store the instance in a constant, that doesn't 
 
 Enumerations allow to use a set of identifiers, linked to automatically-generated values. Values using the enumeration's type can be one of the enumeration's identifiers. Here is the syntax:
 
-```sn
+```rave
 // Declare an enumeration
 enum Color {
   Red,
@@ -836,7 +836,7 @@ val blue = Color.Blue;
 
 By default, the first identifier of the enumeration is an `u8` value starting at `0`. The second is equal to `1`, the third is equal to `2`, etc. Though, it's possible to set a specific value:
 
-```sn
+```rave
 enum Color1 {
   Red = 5, // 5
   Green, // 6
@@ -854,7 +854,7 @@ The only limitation is that the value must be a literal one.
 
 It's also possible to hold values in an enumeration:
 
-```sn
+```rave
 enum Color {
   Red,
   Green,
@@ -869,7 +869,7 @@ val red = Color.Custom(255B, 0B, 0B);
 
 Tuples are a mix between structures and arrays. Their indexes are literal `usize` values, but each value can have a different type:
 
-```sn
+```rave
 val tuple: (int, f32, string) = (2, 4.8, 'Hello');
 
 tuple[0]; // int
@@ -879,7 +879,7 @@ tuple[2]; // string
 
 Note that, as indexes must be literal, we can't use a variable here:
 
-```sn
+```rave
 val tuple: (int) = (2);
 val num = 0p;
 
@@ -892,13 +892,13 @@ tuple[NUM]; // Works ('NUM' is a literal constant)
 
 Inferred typing also works on tuples:
 
-```sn
+```rave
 val tuple = (2, 'Hello'); // (int, string)
 ```
 
 As for structures, a tuple's values are constants by default. We can use the `mut` and `lit` keyword to change their state:
 
-```sn
+```rave
 val tuple: (mut int, string) = (2, 'Hello');
 
 tuple[0] = 8; // Works fine
@@ -907,7 +907,7 @@ tuple[1] = 'World'; // ERROR
 
 As for vectors, we can use the inclusion operator on tuples:
 
-```sn
+```rave
 val tuple = (2, 'Hello');
 
 2 in tuple; // true
@@ -918,7 +918,7 @@ val tuple = (2, 'Hello');
 
 Dictionaries work like vectors which could have any index type. The most common dictionary type is `Map<K, V>`, where `K` is the key type (`usize` in a vector) and `V` the type of values. It goes like this:
 
-```sn
+```rave
 // Declare a map (which is the most common type of dictionary)
 val age: Map<string, int> = new Map<string, int>; // Variable's type is omittable
 
@@ -935,7 +935,7 @@ In fact, vectors are a specific type of dictionaries, with `usize` keys. Also, k
 
 We can also delete a key (and its value) using the `delete` keyword:
 
-```sn
+```rave
 // Delete the key and its value
 delete age['Jack'];
 
@@ -947,7 +947,7 @@ Note that, on vectors, this operation will result in an error as we cannot remov
 
 The inclusion operator also works here, as well as the _key-of_ operator, which checks if a key exists in the dictionary:
 
-```sn
+```rave
 val age = new Map<int, string>;
 
 age['Jack'] = 24;
@@ -961,7 +961,7 @@ println!(24 in age); // Prints: 'true'
 
 As for vectors, we can get the number of key/value pairs using `.size`:
 
-```sn
+```rave
 val age = new Map<int, string>;
 
 age['Jack'] = 24;
@@ -976,7 +976,7 @@ _Inferred Structured Typing_, abbreviated _IST_, allows to deduce the structure 
 
 An implicit object is an object that is defined without a structure name, like this:
 
-```sn
+```rave
 val jack = {
   name: 'Jack',
   hp: 100u,
@@ -987,7 +987,7 @@ val jack = {
 
 This code is perfectly valid, and we can access our hero's fields just like we would have do with the `Hero` structure. Still, we haven't declared any structure here, so the object doesn't use any. This is why it is called an _implicit_ object: the builder deduces (infers) the structure behind the object. This means the builder will, in reality, turn the example above into this one:
 
-```sn
+```rave
 struct ImplicitStruct1 {
   lit name: string;
   lit hp: uint;
@@ -1007,7 +1007,7 @@ This is called Inferred Structured Typing, as it infers not the type of a primit
 
 Also, as you can see here, all fields are constant. We can use the `mut` keyword inside the implicit object to make them mutable:
 
-```sn
+```rave
 val jack = {
   name: 'Jack',
   hp: 100u,
@@ -1024,7 +1024,7 @@ Note that we already saw IST before. Inferred typing on arrays and lists use IST
 
 There is a last syntax for IST, which uses dictionaries:
 
-```sn
+```rave
 let ages = { #
   Jack: 24u,
   John: 26u
@@ -1035,7 +1035,7 @@ Here, `ages` is a `Map<string, uint>`. We can use to shorten this type its alias
 
 It's also possible to use non-string keys too, by wrapping them between parenthesis:
 
-```sn
+```rave
 let ages = { #
   (true): 'Yeah',
   (false): 'So bad'
@@ -1053,7 +1053,7 @@ Below is a summary of all IST's syntaxes:
 
 Structures and dictionaries allow to perform multiple assignments at once by _destructuring_ an object. Let's consider the following (implicit) object:
 
-```sn
+```rave
 val hero = {
   name: 'John',
   age: 20u,
@@ -1063,7 +1063,7 @@ val hero = {
 
 We want to store its properties in three constants, `name`, `age` and `warrior`. The most intuitive way would be to write:
 
-```sn
+```rave
 val name = hero.name;
 val age = hero.age;
 val warrior = hero.warrior;
@@ -1071,7 +1071,7 @@ val warrior = hero.warrior;
 
 But that's a bit long, so we can perform multiple assignments at once to shorten this in a single line:
 
-```sn
+```rave
 val { name, age, warrior } = hero;
 ```
 
@@ -1079,7 +1079,7 @@ We "extracted" some properties of `hero` and stored them into constants of the s
 
 The opposite is also possible: we can make an object from a group of entities:
 
-```sn
+```rave
 // Standard way
 val copy = {
   name: name,
@@ -1093,7 +1093,7 @@ val copy = { name, age, warrior };
 
 This syntax can also be mixed with other properties:
 
-```sn
+```rave
 val newHero = {
   name, // Implicit value
   age, // Implicit value
@@ -1103,7 +1103,7 @@ val newHero = {
 
 There is a similar syntax for vectors:
 
-```sn
+```rave
 // Make a sample array
 val arr = [ 2, 5, 8, 9 ];
 
@@ -1137,7 +1137,7 @@ val n1 = arr[0],
 
 Note that we can simply ignore some values in a vector by using the `...` symbol alone:
 
-```sn
+```rave
 // Middle slice
 val [ n1, ..., n4 ] = arr;
 // Equivalent to:
@@ -1149,7 +1149,7 @@ This avoids making a useless entity to store the middle values.
 
 Here is a last syntax, for tuples:
 
-```sn
+```rave
 val tuple = (1, 2);
 
 // Extract from tuple
@@ -1166,7 +1166,7 @@ println!(two); // Prints: '2'
 
 The slicing syntax allows to get a specific part of a dictionary. Considering the following one:
 
-```sn
+```rave
 val personsCity = { #
   Jack: 'New York',
   John: 'Washington',
@@ -1176,7 +1176,7 @@ val personsCity = { #
 
 We can _slice_ it to get only a part of it:
 
-```sn
+```rave
 val slice = personsCity[['Jack', 'John']];
 
 println!(slice[0]); // 'Jack'
@@ -1189,19 +1189,19 @@ By giving a tuple of indexes between the brackets, we get an array containing th
 
 We can also use a little trick for vectors. Considering the following array:
 
-```sn
+```rave
 val numbers = [ 'A', 'B', 'C', 'D', 'E' ];
 ```
 
 If we want to take for example values from index 1 to index 3, we can first use the usual slice syntax:
 
-```sn
+```rave
 val slice = numbers[[1, 2, 3]];
 ```
 
 But we can also use a number range for this:
 
-```sn
+```rave
 val slice = numbers[1..4];
 
 // Equivalent to:
@@ -1216,7 +1216,7 @@ Blocks provide ways to control the program's execution to omit or repeat groups 
 
 Conditionial blocks run a set of instructions only if a condition is met. The most common conditional block uses the `if` keyword and runs the provided instructions if the condition we write in it is not a nil value. Here is an example:
 
-```sn
+```rave
 if 2 + 2 == 4 {
   println!('OK');
 }
@@ -1228,7 +1228,7 @@ The part between the block's keyword (`if`) and the opening brace is called the 
 
 We can also use the `unless` block, which is the exact opposite of `if`: it runs the instruction if the condition results in a nil value.
 
-```sn
+```rave
 unless 2 + 3 == 4 {
   println!('OK');
 }
@@ -1238,7 +1238,7 @@ This code displays `'OK'`.
 
 Because we may want to do something if the instructions are not ran, we can use the `else` blocks, which takes no head and run the instructions only if the previous block has not ran its own ones:
 
-```sn
+```rave
 if 2 + 3 == 4 {
   println!('Strange...');
 } else {
@@ -1250,7 +1250,7 @@ This code displays `'OK'`.
 
 We can also use the `elsif` block, which acts as an `else` block but using another condition:
 
-```sn
+```rave
 if 1 + 1 == 4 {
   println!('Strange...');
 } elsif 1 + 1 == 3 {
@@ -1266,7 +1266,7 @@ As soon as a block runs its set of instructions, the next one in the chain are i
 
 Conditional blocks are especially useful with enumerations. Considering the following enumeration:
 
-```sn
+```rave
 struct Color {
   White,
   Black,
@@ -1278,7 +1278,7 @@ val red = Color.Custom(255B, 0B, 0B);
 
 We can check if our entity is white:
 
-```sn
+```rave
 if red is White {
   println!('Color is white');
 }
@@ -1286,7 +1286,7 @@ if red is White {
 
 Or if it's a custom color, with values extraction:
 
-```sn
+```rave
 if red is Custom(r, g, b) {
   println!('red = ${r}, green = ${g}, blue = ${b}');
 }
@@ -1298,7 +1298,7 @@ There are two main blocks to repeat a set of instructions: the incremental repet
 
 The first one has a specific head syntax: its first takes an _initialization instruction_, which is ran when the loop is met ; a _break condition_, which is evaluated each time the set of instructions is going to be ran, and exits the loop if it's a nil value ; and finally an _iteration instruction_, which is executed just before evaluating the break condition. Showcase:
 
-```sn
+```rave
 for i = 0; i < 5; i ++ {
   println!(i);
 }
@@ -1308,7 +1308,7 @@ This code will print `0`, then `1`, `2`, `3` and finally `4`. Just after this la
 
 Conventionally, in the above example, `i` is called the loop's _iterator_. It is automatically declared at the beginning of the loop. But it's optional ; the following code is perfectly valid as well:
 
-```sn
+```rave
 for null; true ; null {
   println!('Hello');
 }
@@ -1318,7 +1318,7 @@ This will print `'Hello'` endlessly.
 
 Note that our first loop example can be shortened using an iterator - we'll see what it is later:
 
-```sn
+```rave
 for i in 0..5 {
   println!(i);
 }
@@ -1326,7 +1326,7 @@ for i in 0..5 {
 
 This will print values from `0` to `4`. If we want to go up to the end value, we simply add a third point:
 
-```sn
+```rave
 for i in 0...5 {
   println!(i);
 }
@@ -1334,7 +1334,7 @@ for i in 0...5 {
 
 For more complex conditions, we can use the `while` block. Its head is evaluated each time the set of instructions is going to be ran ; if it's a nil value, the loop stops.
 
-```sn
+```rave
 let i = 0;
 
 while i < 5 {
@@ -1347,7 +1347,7 @@ This will print values from `0` to `4`.
 
 If we want to evaluate the condition at the end of the loop (which also means the instructions will be ran at least once), we can use the `do`...`while` block:
 
-```sn
+```rave
 let i = 0;
 
 do {
@@ -1360,7 +1360,7 @@ This code will print `0` - nothing would have been printed with a simple `while`
 
 These two blocks also have variants: `until` and `do`..`until`, which simply revert the condition (like `unless` does for `if`).
 
-```sn
+```rave
 let i = 0;
 
 // until
@@ -1378,7 +1378,7 @@ do {
 
 There is a last repetition block, which repeats its instructions endlessly: `loop`.
 
-```sn
+```rave
 loop {
   println!('Hello');
 }
@@ -1390,7 +1390,7 @@ This loop acts like a `while true`, but its point is to clearly indicate we are 
 
 Loops can be broken (stopped) at anytime using the `break` instruction:
 
-```sn
+```rave
 for i in 0..5 {
   println!(i);
 
@@ -1406,7 +1406,7 @@ This instruction is also the only way to exit a `loop` block.
 
 On the other side, the `continue` instruction goes to the next iteration of the loop, ignoring the instructions above it:
 
-```sn
+```rave
 for i in 0..5 {
   if i == 2 {
     continue ;
@@ -1422,7 +1422,7 @@ This code will print `0`, `1`, `3` and `4` - the `println!` call for `2` has bee
 
 The `match` keyword allow to run a set of instructions depending on a value. Let's consider we have a color taken from a `Color` enumeration and we want to print a message depending on it. A first idea could be to write:
 
-```sn
+```rave
 if color is Red {
   println!('Color is red');
 } elsif color is Green {
@@ -1436,7 +1436,7 @@ if color is Red {
 
 This is a bit heavy, and can be replaced by a match:
 
-```sn
+```rave
 match color {
   Red   -> println!('Color is red');
   Green -> println!('Color is green');
@@ -1449,7 +1449,7 @@ Which is a lot more readable. The `default` keyword runs its related set of inst
 
 Enumerations are especially useful when dealing with enumerations:
 
-```sn
+```rave
 val red = Color.Custom(255B, 0B, 0B);
 
 match red {
@@ -1462,7 +1462,7 @@ match red {
 
 It's also possible to provide conditions for matches, by wrapping them between brackets:
 
-```sn
+```rave
 val age = 24;
 let str = '';
 
@@ -1479,7 +1479,7 @@ The `_` entity refers to the provided value.
 
 Ternary conditions allow to write short conditions more easily:
 
-```sn
+```rave
 val str = age < 18 ? 'Not adult' : 'Adult';
 ```
 
@@ -1489,7 +1489,7 @@ The value after the `?` symbol is taken if the condition is not a nil value. If 
 
 Inline blocks are variants of the blocks we saw previously. They are written after an instruction and consider this one as their body. Showcase:
 
-```sn
+```rave
 val age = 24;
 
 println!('You are an adult') if age >= 18;
@@ -1498,7 +1498,7 @@ println!('You are an adult') unless age < 18;
 
 This works for absolutely any instruction and block:
 
-```sn
+```rave
 println!(i) for i in 0...5;
 ```
 
@@ -1514,7 +1514,7 @@ Inline generation allows to generate a list of values from an expression. The sy
 
 The parenthesis wrapping is required in order to perform inline generation, else it will simply repeat the instruction, like it does in our example with an inline `for` loop.
 
-```sn
+```rave
 val cubes = (i * i * i for i in 0..5); // int[#]
 
 println!(cube) for cube in cubes;
@@ -1524,7 +1524,7 @@ This code will print `0`, `1`, `8`, `27` and `64`.
 
 Because we may want an array instead of a list, we can use an alternative syntax using the `gen` keyword that produces an array:
 
-```sn
+```rave
 val cubes = (i * i * i for i -> 0..5) // int[5];
 ```
 
@@ -1536,7 +1536,7 @@ A _scope_ is a part of the source code that isolate resources such as variables 
 
 When declaring an entity, this one is binded to the current scope, meaning we can access it from within the current scope but not from the sub-scopes (called the _children scopes_).
 
-```sn
+```rave
 // Scope 0
 let i = 0; // Binded to scope 0
 
@@ -1557,7 +1557,7 @@ A given scope can access:
 
 But not an entity declared in a child scope. Showcase:
 
-```sn
+```rave
 // Scope 0
 let i = 0;
 
@@ -1583,7 +1583,7 @@ println!(j); // ERROR (undefined entity)
 
 Blocks are a special case: their scope includes their head, meaning it starts right after the block's keyword:
 
-```sn
+```rave
 if /* Scope begins */ 2 + 2 == 4 {
   println!('Hello world!');
 /* Scope ends */ }
@@ -1591,7 +1591,7 @@ if /* Scope begins */ 2 + 2 == 4 {
 
 Inline blocks implicitly create a scope for the whole instruction (including their head).
 
-```sn
+```rave
 val cubes = /* Scope begins */ i * i * i for i in 0..5 /* Scope ends */;
 ```
 
@@ -1603,7 +1603,7 @@ Functions are a specific type of blocks that allow to manually run a set of inst
 
 Let's imagine we want to calculate the area of a trapezoid and display a message if it exceeds 100. This is very simple and can be written like this:
 
-```sn
+```rave
 if (base + top) * height / 2 > 100 {
   println!('Area exceeds 100');
 }
@@ -1613,7 +1613,7 @@ But now, let's imagine we have to deal with several trapezoids in different plac
 
 A solution is to use a function. It goes like this:
 
-```sn
+```rave
 fn area (base: f32, top: f32, height: f32) {
   if (base + top) * height / 2 > 100 {
     println!('Area exceeds 100');
@@ -1629,7 +1629,7 @@ This first line is called the function's _signature_.
 
 Now, we can call our function:
 
-```sn
+```rave
 area(10.0, 5.0, 80.0); // Prints the message
 ```
 
@@ -1641,7 +1641,7 @@ Each time we will have to compute the area, we will simply have to call the func
 
 We may want to get the trapezoid's area after (optionally) displaying the message. For that, the function must _return_ the area, which requires us to change it a little bit:
 
-```sn
+```rave
 fn area (base: f32, top: f32, height: f32) : f32 {
   // Compute the area
   val result = (base + top) * height / 2;
@@ -1662,7 +1662,7 @@ First, we gave it a _return type_, written after the double point symbol just be
 
 The second change is the `return` statement at the end of the function. The value on its right is returned by the function, which can be used afterward:
 
-```sn
+```rave
 val trapezoidArea = area(1.0, 2.0, 3.0));
 ```
 
@@ -1670,7 +1670,7 @@ val trapezoidArea = area(1.0, 2.0, 3.0));
 
 By default, a function's arguments are constants. They can be made mutable or literal using the same keywords than in structures:
 
-```sn
+```rave
 fn test (mut mutable: bool, constant: bool, lit literal: bool) {
   mutable = true; // Works fine
   constant = true; // ERROR
@@ -1686,7 +1686,7 @@ fn test (mut mutable: bool, constant: bool, lit literal: bool) {
 
 Like we did with structures, we can make some arguments optional by giving them a default value. Though, such arguments must be placed at the very end of the arguments list.
 
-```sn
+```rave
 fn sayHello (name: string, repeat: uint = 1u) {
   println!(name) for i in 0..repeat;
 }
@@ -1700,7 +1700,7 @@ Note that default values can also be an expression, that will be evaluated when 
 
 As default values indicate the argument's type, we can omit it from the declaration:
 
-```sn
+```rave
 fn sayHello (name: string, repeat = 1u) {
   // ...
 ```
@@ -1709,7 +1709,7 @@ fn sayHello (name: string, repeat = 1u) {
 
 Endless arguments are prefixed with the `...` symbol, and accept from zero to an infinity of arguments:
 
-```sn
+```rave
 fn sumOf (...nums: int[]) : int {
   let sum = 0;
 
@@ -1727,7 +1727,7 @@ They are typed as arrays with an unknown length ; here, `nums` is an `int[]`.
 
 It's possible to provide multiple endless arguments, the only rule it that we can't write two consecutive endless arguments with the same type:
 
-```sn
+```rave
 fn sumOf (...ints: int[], ...floats: f32[]) : f32 {
   let sum = 0.0;
 
@@ -1750,7 +1750,7 @@ sumOf(); // Works fine
 
 It's also possible to use a vector in the place of an endless arguments, using the `...` _expansion operator_:
 
-```sn
+```rave
 val nums = [ 2, 3, 4 ];
 
 sumOf(...nums, 5.0);
@@ -1760,7 +1760,7 @@ sumOf(2, 3, 4, 5.0);
 
 The same goes with tuples, allowing to use values of different types.
 
-```sn
+```rave
 fn sayHello (name: string, amount: uint) {
   println!('Hello ${name}!') for i in 0..amount;
 }
@@ -1774,7 +1774,7 @@ sayHello(...args); // Prints: 'Hello Jack!' 5 times
 
 Operators functions act like traditional operators: they take one or two arguments, called their _operands_, and return a result. Their point is to keep a clean syntax in the program. For example, if we want to make a function that adds two numbers, we can go with a standard function:
 
-```sn
+```rave
 fn add (left: int, right: int) : int {
   return left + right;
 }
@@ -1786,13 +1786,13 @@ add(3, 8);
 
 This works fine. But what if we imbricate several additions?
 
-```sn
+```rave
 add(add(2, add(5, 7)), add(3, 4));
 ```
 
 This quickly becomes unreadable, and that's why we use operator functions:
 
-```sn
+```rave
 op fn add (left: int, right: int) : int {
   return left + right;
 }
@@ -1806,7 +1806,7 @@ add(2, 5);
 
 Our previous example becomes like this:
 
-```sn
+```rave
 // Standard syntax
 add(add(2, add(5, 7)), add(3, 4));
 
@@ -1818,7 +1818,7 @@ Which is a lot more readable.
 
 For operator functions that return a boolean, we can use the `not` keyword before their name to revert the result:
 
-```sn
+```rave
 op fn greaterThan (left: int, right: int) : bool {
   return left > right;
 }
@@ -1836,7 +1836,7 @@ if 2 not greaterThan 5 {
 
 _Polymorphism_ allow to declare the same function several times. Each declaration, though, must use different arguments - this can be an additional argument, one less argument, or an existing argument that gets a new type:
 
-```sn
+```rave
 fn add (a: int, b: int) : int {
   println!('Add: int');
   return a + b;
@@ -1850,14 +1850,14 @@ fn add (a: uint, b: uint) : uint {
 
 When we call it, the right function is chosen depending on the provided arguments and their type:
 
-```sn
+```rave
 add(2, 5); // Prints: 'Add: int'
 add(2.0, 5.0); // Prints: 'Add: uint'
 ```
 
 There is a risk of ambiguity at build time if the function uses endless arguments and we don't provide any (which is allowed):
 
-```sn
+```rave
 fn sumOf (...nums: int[]) : int { /* ... */ }
 fn sumOf (...nums: f32[]) : f32 { /* ... */ }
 
@@ -1874,7 +1874,7 @@ sumOf(vec...); // Works fine
 
 _Lambdas_, also called _anonymous functions_, are single values that can be used as callbacks. Here is an example:
 
-```sn
+```rave
 // The .filter function takes a function as an argument
 // It runs it for each element of the list
 // If the callback returns `false`, the value is dropped
@@ -1891,7 +1891,7 @@ The `filtered` list now contains the `3` and `4` values. As you can see, the lam
 
 It's possible to represent functions as a type:
 
-```sn
+```rave
 fn runLambda (func: fn (value: int) : bool) {
   if func(5) {
     println!('Returned: true');
@@ -1909,7 +1909,7 @@ This time, the type uses the `fn` keyword, because we may give an existing funct
 
 As functions are simple values, we can store it in entities, and even use inferred typing to omit their type:
 
-```sn
+```rave
 let sum = (a: int, b: int) : int => {
   return a + b;
 };
@@ -1919,7 +1919,7 @@ println!(sum(2, 5)); // Prints: '7'
 
 For lambdas only made of a `return` instruction, we can use the _inline syntax_ to shorten their writing:
 
-```sn
+```rave
 let sum = (a: int, b: int) : int => a + b;
 
 println!(sum(2, 5)); // Prints: '7'
@@ -1931,7 +1931,7 @@ The expression written after the arrow is evaluated when the function is called,
 
 A function is called a _callback_ when it is provided as a function's argument. Callbacks can be written in a shorter way than lambdas, thanks to a featured called _Inferred Callback Typing_ (abbreviated _ICT_) that infers the type of its arguments, as well as its return type:
 
-```sn
+```rave
 // Lambda syntax
 list.filter((value: int) : bool => value > 2);
 
@@ -1943,13 +1943,13 @@ This syntax doesn't work with non-callback lambdas (e.g. lambdas that are assign
 
 When the callback has a single argument, its wrapping parenthesis can be omitted:
 
-```sn
+```rave
 list.filter(value => value > 2);
 ```
 
 To provide multiple instructions, braces can be used after the arrow:
 
-```sn
+```rave
 list.filter(value => {
   println!('Filtering value ${value}...');
   return value > 2;
@@ -1960,13 +1960,13 @@ list.filter(value => {
 
 _Parametered strings_ allow to call specific functions with a raw string, meaning expressions are not evaluated, backslashes are kept, and so on. Here is how it goes:
 
-```sn
+```rave
 translate`You just ordered ${nb} products. They will be delivered on the ${deliverDate}.`
 ```
 
 And here is the `translate` function:
 
-```sn
+```rave
 val order = {#
   nb: 2,
   deliverDate: '10-05-2018'
@@ -1987,7 +1987,7 @@ fn translate (pieces: StringPiece[]) : string {
 
 Note that our function is not forced to return a `string`, it's just for the example. Here is the result:
 
-```sn
+```rave
 println!(translate`You just ordered ${nb} products. They will be delivered on the ${deliverDate}.`);
   // Prints: 'You just ordered 2 products. They will be delivered on the 10-05-2018.'
 ```
@@ -2000,7 +2000,7 @@ Classes are kind of extended structures. The main difference is they can have me
 
 Let's go back to a previous problem: representing a hero. The first option we saw was to use an array, but that was way too unreadable and restricted all the values to be of the same type. Then, we used a structure, which was a lot more convenient. It resulted in the following:
 
-```sn
+```rave
 struct Hero {
   name: string;
   hp: uint;
@@ -2013,7 +2013,7 @@ BUt now, let's imagine we want to allow our hero to fight another one. This acti
 
 The solution to this problem is to use a class:
 
-```sn
+```rave
 class Hero {
   public name: string;
   public hp: uint;
@@ -2032,7 +2032,7 @@ In the case we'd like to allow modifications from the outside, we simply have to
 
 Like structures, classes can be instanciated. But for that, they need a _constructor_, which is a special method called when the class is created:
 
-```sn
+```rave
 class Hero {
   public name: string;
   public hp: uint;
@@ -2052,13 +2052,13 @@ Inside the class, `this` refers to the current class. We can access all the clas
 
 We can now instanciate the class using the `new` keyword:
 
-```sn
+```rave
 val jack = new Hero('Jack', 100u, 20u, 0u);
 ```
 
 Note that the constructor's arguments are required:
 
-```sn
+```rave
 val jack = new Hero; // ERROR (4 arguments missing)
 ```
 
@@ -2068,7 +2068,7 @@ We can get its name, health points, attack points or experience by using the ded
 
 Let's write a method to fight another ennemy:
 
-```sn
+```rave
 class Hero {
   // ...
   public fn fight (ennemy: Hero) {
@@ -2102,7 +2102,7 @@ class Hero {
 
 As you can see, a class can read the private members of any other instance of itself. We can now make two ennemies fight against each other:
 
-```sn
+```rave
 val jack = new Hero('Jack', 100u, 20u, 0u);
 val john = new Hero('John', 100u, 10u, 0u);
 
@@ -2115,7 +2115,7 @@ println!(john.hp); // Prints: '80'
 
 Here is the whole code for reference:
 
-```sn
+```rave
 class Hero {
   public name: string;
   public hp: uint;
@@ -2172,7 +2172,7 @@ println!(john.hp); // Prints: '80'
 
 Members can either be public with `public`, so they can be accessed from the outside, or private with `private`, so they are only readable from the inside of the class:
 
-```sn
+```rave
 class Example {
   public known: string;
   private secret: string;
@@ -2191,7 +2191,7 @@ obj.secret; // ERROR (private member)
 
 This also works for methods: they can be public or private to be available - or not - from the outside. The `this` keyword can be replaced by the `@` symbol, too:
 
-```sn
+```rave
 class Example {
   public known: string;
   private secret: string;
@@ -2205,7 +2205,7 @@ class Example {
 
 We can provide a default value for attributes, so we don't have to assign them in the constructor:
 
-```sn
+```rave
 class Example {
   public known = 'Public data';
   private secret = 'Secret data';
@@ -2216,7 +2216,7 @@ class Example {
 
 Also, as attributes are entities, they can be marked as constant using `val`, or as literal using `lit`. By default, they are implicitly mutable.
 
-```sn
+```rave
 class Example {
   public lit KNOWN = 'Public data';
   private val secret = 'Secret data';
@@ -2225,7 +2225,7 @@ class Example {
 
 Another keyword for members is `static`, which makes the member accessible statically, meaning we have to refer to the class itself instead of referring to instance:
 
-```sn
+```rave
 class Example {
   public static name = 'Hello';
 }
@@ -2236,7 +2236,7 @@ println!((new Example).name); // ERROR (static member)
 
 Static attributes must have an initialization value. Classes can access their static members using the `self` keyword:
 
-```sn
+```rave
 class Example {
   public static name = 'Hello';
 
@@ -2252,7 +2252,7 @@ Example.printName(); // Prints: 'Hello'
 
 We can specify some arguments to be assigned automatically when passed to methods:
 
-```sn
+```rave
 class A {
   private name: string;
   private hp: uint;
@@ -2279,7 +2279,7 @@ Note that we can still specify other arguments, anywhere in the list.
 
 Data structures can also be members of classes ; they then become a local type of the class:
 
-```sn
+```rave
 class Example {
   public struct Hero {
     name: string;
@@ -2311,7 +2311,7 @@ The problem may appear to be complex but it is in fact very simple. Read the sol
 
 To represent the cells, we will use a simple enumeration. Because it is specific to our class, it will be a member of it:
 
-```sn
+```rave
 class Map {
   public enum Cell { Empty, Rock, Trap };
 ```
@@ -2322,7 +2322,7 @@ We told the constructor must accept the player's start position. We can simply t
 
 Here is our constructor's signature:
 
-```sn
+```rave
   public fn %new (map: Cell[][], x: usize, y: usize) {
 ```
 
@@ -2330,7 +2330,7 @@ Here is our constructor's signature:
 
 We have to store our map, as well as the current player's coordinates. So we have three attributes:
 
-```sn
+```rave
   public map: Cell[][];
   public x: usize;
   public y: usize;
@@ -2338,7 +2338,7 @@ We have to store our map, as well as the current player's coordinates. So we hav
 
 But it's easier to also have an attribute to check if the player is trapped, so let's add a fourth one:
 
-```sn
+```rave
   // ...
   public trapped: bool = false;
 ```
@@ -2349,7 +2349,7 @@ Thanks to the attributes being public, we can check at anytime the player's coor
 
 Let's initialize our attributes:
 
-```sn
+```rave
   // ...
   public fn %new (map: Cell[][], x: usize, y: size) {
     @map = map;
@@ -2362,7 +2362,7 @@ Let's initialize our attributes:
 
 Because our player can only move on adjacent cells, the easiest solution is to make height methods (up-left, up, up-right left, right, down-left, down, down-right). But because we will have to check, at each move, if the player is running into a rock or is being trapped, we will use a dedicated method in them:
 
-```sn
+```rave
   // ...
   public fn moveUpLeft    () { @move(x - 1, y - 1); }
   public fn moveUp        () { @move(x, y - 1); }
@@ -2379,14 +2379,14 @@ Because our player can only move on adjacent cells, the easiest solution is to m
 
 Let's make our `move` method. First, its signature:
 
-```sn
+```rave
   // ...
   public fn move (x: usize, y: usize) {
 ```
 
 We have to check that are moving to an adjacent case:
 
-```sn
+```rave
     // Moves are only allowed to adjacent cells
     if (@x - x).abs() > 1 || (@y - y).abs() > 1 {
       println!('Cannot move on a non-adjacent cell');
@@ -2395,7 +2395,7 @@ We have to check that are moving to an adjacent case:
 
 Also, the player cannot move if it's already trapped:
 
-```sn
+```rave
   // Moves are forbidden when the player is trapped
   elsif @trapped {
     println!('Cannot move because the player is trapped');
@@ -2404,7 +2404,7 @@ Also, the player cannot move if it's already trapped:
 
 We can't run into a rock:
 
-```sn
+```rave
   // Can't run into a rock
   elsif @map[y][x] == Cell.ROCK {
     println!('Cannot run into a rock');
@@ -2413,7 +2413,7 @@ We can't run into a rock:
 
 Else, we can move:
 
-```sn
+```rave
   // Move fine
   else {
     @x = x;
@@ -2423,7 +2423,7 @@ Else, we can move:
 
 But if we ran into a trap cell, we are now trapped:
 
-```sn
+```rave
   // Move fine
   else {
     @x = x;
@@ -2440,7 +2440,7 @@ But if we ran into a trap cell, we are now trapped:
 
 Here is the full solution:
 
-```sn
+```rave
 class Map {
   public enum Cell { Empty, Rock, Trap };
 
@@ -2508,7 +2508,7 @@ First, let's introduce the concept of _overload_: an overload is a class method,
 
 Let's now consider the following code, representing users:
 
-```sn
+```rave
 class User { /* ... */ }
 
 let value = new User;
@@ -2519,7 +2519,7 @@ The first `A` instance is dropped when the second assignment occurs, because no 
 
 Still, we could want to notify some of the code the user is going to be dropped. For that, we can use the _destructor_, which is called just before the instance is dropped.
 
-```sn
+```rave
 class User {
   private static counter = 0u;
   private id: uint;
@@ -2556,7 +2556,7 @@ As you can see, the dropping occurs only just before the new instance is assigne
 
 Cloning allows to get a new instance of a class that is equivalent to an existing, given instance. This feature is an answer to the following problem:
 
-```sn
+```rave
 fn squareList (array: int[]) : int[] {
   for i = 0p; i < array.length; i ++ {
     array[i] *= array[i];
@@ -2578,7 +2578,7 @@ This behavior is specific to objects and is their key difference with primitives
 
 The solution to our problem is to clone the array:
 
-```sn
+```rave
 fn squareList (array: int[]) : int[] {
   for i = 0p; i < array.length; i ++ {
     array[i] *= array[i];
@@ -2598,7 +2598,7 @@ By default, objects are not clonable. Vectors simply implement a cloning method.
 
 The cloning overload is a method that takes no argument and returns an instance of the current class. When we try to clone an instance, this overload is called and its return result is the returned clone:
 
-```sn
+```rave
 class Example {
   public name: string;
 
@@ -2635,7 +2635,7 @@ Serialization allows to save an object as a string, in order to restore it later
 
 The serialization overload takes no argument and returns a string. In our `Example` class, where we simply have to save a name, the string could simply be the name itself.
 
-```sn
+```rave
   // ...
   public fn %serialize () {
     return @name;
@@ -2644,7 +2644,7 @@ The serialization overload takes no argument and returns a string. In our `Examp
 
 The unserialization overload takes a string argument and returns an instance of the current class. It goes like this (we wil see what the `throws` part mean later):
 
-```sn
+```rave
   // ...
   public static fn %unserialize (serialized: string) throws UnserializationError {
     return new Example(serialized);
@@ -2653,7 +2653,7 @@ The unserialization overload takes a string argument and returns an instance of 
 
 When we have several fields, it becomes a bit more complicated, as we have to deal with specific representation of the data. In this case, we can use the _lazy overload_:
 
-```sn
+```rave
   // ...
   public lit %lazy_serial_fields = ('name');
 ```
@@ -2664,7 +2664,7 @@ With the lazy overload, the program will automatically handle serialization and 
 
 If you want to be ensure the serialized content is valid, it's possible to make the program computing a checksum that it'll join to the serialized content. At unserialization time, the checksum will be checked again to ensure data haven't been corrupted. To enable this feature, simply add a `WITH_CHECKSUM` item at the end of the tuple:
 
-```sn
+```rave
   // ...
   public lit %lazy_serial_fields = ('name', WITH_CHECKSUM);
 ```
@@ -2675,7 +2675,7 @@ The big advantage of checksum is that it highly reduces the risks to get invalid
 
 Some arithmetic operators can be overloaded in a class, allowing to use them on the class' instances:
 
-```sn
+```rave
 class MyInt {
   public value: int;
 
@@ -2698,7 +2698,7 @@ println!(three.value); // Prints: '3'
 
 If we don't provide types, operator overloads take an instance of the current class as an argument and return another. This behavior can be changed, though:
 
-```sn
+```rave
 class MyInt {
   public value: int;
 
@@ -2730,7 +2730,7 @@ Here is the list of overloadable arithmetic operators:
 
 As for arithmetic operators, comparison operators can be overloaded in classes.
 
-```sn
+```rave
 class Hero {
   public name: string;
 
@@ -2756,7 +2756,7 @@ Classes implementing this overload implement the `EqualityChecking<T>` interface
 
 There is also a more advanced overload to compare values in a more advanced way:
 
-```sn
+```rave
 class BankAccount {
   public amount: uint;
 
@@ -2790,7 +2790,7 @@ Implementing `%compare` automatically implements `%equal`. To avoid duplicate an
 
 A class' _friend_ is a function or a whole class that is allowed to access the class' instances' private members:
 
-```sn
+```rave
 class Example {
   // Declare a function as a friend
   friend fn function (obj: Example);
@@ -2809,7 +2809,7 @@ Classes are always friend of themselves, this is why they can access their own p
 
 Extensions are the only way to add a method to a class after the end of its declaration. For example, let's say we want to create a `.countA` function that couts the number of `A` letters in a string. Because the class was already declared before, we cannot add it a public method called `countA` ; so we use an _extension_:
 
-```sn
+```rave
 extension<string> fn countA () : uint {
   let counter = 0u;
 
@@ -2835,7 +2835,7 @@ Let's say we have a `Hero` class. We want to represent both a warrior and a wiza
 
 The simpliest way to achieve this is the following:
 
-```sn
+```rave
 class Hero {
   public wizard: bool;
   public name: string;
@@ -2866,7 +2866,7 @@ There are many problems here: we are mixing independant pieces of code (the code
 
 A solution to this is to use _inheritance_. It simply consists in creating a base class, called the _mother class_, which describes attributes and methods common to all types of heroes. Then, we create a _child class_ that inherits all its members and define its own. In our example, it goes like this:
 
-```sn
+```rave
 open class Hero {
   public name: string;
   public hp: uint;
@@ -2917,7 +2917,7 @@ The `open` keyword indicates the class can be inherited, which is not allowed by
 
 You may wonder why we define one as the warrior fights a different way. That's because our child class will implement its own fight method that will take in consideration the warrior's rage and then call its mother's fight method:
 
-```sn
+```rave
 class Warrior extends Hero {
   public rage: uint;
 
@@ -2950,7 +2950,7 @@ Also, constructors are not inherited by child classes. This is to avoid speciali
 
 Let's write our wizard class:
 
-```sn
+```rave
 class Wizard extends Hero {
   public mp: uint;
 
@@ -2989,7 +2989,7 @@ We shortened the child class' constructor by calling the mother's one using `sup
 
 The specificity of private members is that they cannot be accessed from the outside of the class, not even by the child classes. In order to make members that are not available from the outside of the class but still from its child classes, we can mark them as protected using the `protected` keyword:
 
-```sn
+```rave
 class Mother {
   public public = 1;
   protected protected = 2;
@@ -3011,13 +3011,13 @@ In classes, every child class of a given one are considered as its _sub-types_. 
 
 When a value of a given type is expected (for example in a function's argument), it's possible to give instead a value of any of its sub-types:
 
-```sn
+```rave
 val jack: Hero = new Warrior('Jack', 100u, 20u, 0u, 0u);
 ```
 
 The above code works, because `Warrior` is considered as being a `Hero` value. This is the main point of cross-typing. Note that, if we call `.fight` on it, it will call the overriden method, not the original one. The only limitation though is that we cannot access members that are directly declared in `Hero`, like `.fireball` for `Wizard`:
 
-```sn
+```rave
 val jack: Hero = new Warrior('Jack', 100u, 20u, 0u, 0u);
 val john: Hero = new Wizard('John', 100u, 10u, 0u, 0u);
 
@@ -3037,7 +3037,7 @@ Functions have a special sub-typing support:
 
 Examples:
 
-```sn
+```rave
 val fn: (a: number) => primitive = (a: int) : string => 'Hello world'; // Works fine
 ```
 
@@ -3058,7 +3058,7 @@ To simplify, `_real` is the type of `this`, so it is always a sub-type of `self`
 
 As we saw, constructors are not inherited by child classes. But we can force inheritance by indicating manually the constructors we want to inherit:
 
-```sn
+```rave
 open class Mother {
   public fn %new (name: string) {
     println!(name);
@@ -3076,7 +3076,7 @@ class Child extends Mother {
 
 Our `Child` class will inherit only the first constructor. It's also possible to inherit all constructors at once:
 
-```sn
+```rave
 open class Mother {
   public fn %new (name: string) {
     println!(name);
@@ -3098,7 +3098,7 @@ class Child extends Mother {
 
 We already saw a first _class state_: `open`. It allows a class to be inherited as it's not possible by default (in this case, the class is _sealed_):
 
-```sn
+```rave
 class MotherA {}
 open class MotherB {}
 
@@ -3110,7 +3110,7 @@ class ChildB extends MotherB {} // Works fine
 
 Classes can also be prefixed with the `virtual` state: it indicates the class cannot be instanciated. The only way to instanciate such a class is to create a child class of it and instanciate this last one. Virtual classes are automatically opened.
 
-```sn
+```rave
 virtual class Mother {}
 class Child extends Mother {}
 
@@ -3122,7 +3122,7 @@ new Child(); // Works fine
 
 The `static` state indicates the class only contains static members, and so it cannot be instanciated. Also, static classes cannot be inherited, which makes this state act like a virtual state but without opening.
 
-```sn
+```rave
 static class Mother {}
 
 class Child extends Mother {} // ERROR
@@ -3144,7 +3144,7 @@ new Mother(); // ERROR
 
 Methods can be stated, too. We already saw static methods, but they can also be virtual, meaning they must be defined in child classes. Such methods don't have a body in the original class, and so require the class itself to be virtual:
 
-```sn
+```rave
 virtual class Mother {
   virtual public fn sayHello ();
 }
@@ -3166,7 +3166,7 @@ Note that, if the child class is virtual itself, it doesn't have to re-declare t
 
 Abstract methods, on their side, are virtual methods declared with a body. This allows to call the method from the original class, and it is not forced to be virtual itself:
 
-```sn
+```rave
 class Mother {
   abstract public fn sayHello () {
     println!('Hello from mother!');
@@ -3191,7 +3191,7 @@ class ChildB extends Mother {
 
 Final methods are the opposite of abstract methods: they are defined in the original class but **cannot** be overriden in child classes:
 
-```sn
+```rave
 class Mother {
   final public fn sayHello () {
     println!('Hello from mother!');
@@ -3210,7 +3210,7 @@ class Child extends Mother {
 
 Any structure that implements every single field of another with the same mutability is considered as a sub-type of this last one. Example:
 
-```sn
+```rave
 struct A {
   name: string;
 }
@@ -3227,7 +3227,7 @@ Note that, if `name` was marked as mutable in a structure and not in the other, 
 
 Also, literal fields are tolerated where a constant field is expected:
 
-```sn
+```rave
 struct A {
   name: string;
 }
@@ -3246,7 +3246,7 @@ The field will simply act as constant and not literal.
 
 A last exception is for mutable fields when declaring objects. Let's take the following example:
 
-```sn
+```rave
 struct A {
   mut a: int;
 }
@@ -3262,7 +3262,7 @@ An error is thrown error because implicitly the `a` field in our `obj` constant 
 
 To solve this case, we must specify our field is mutable in `obj`:
 
-```sn
+```rave
 struct A {
   mut a: int;
 }
@@ -3278,7 +3278,7 @@ val casted: A = obj; // Works fine
 
 Structures can even inherit from other ones:
 
-```sn
+```rave
 struct A {
   name: string;
 }
@@ -3304,7 +3304,7 @@ Safely typecasting a value of type `A` to type `B` is allowed when:
 
 Here is how it goes for the first case:
 
-```sn
+```rave
 // Mother class
 class A {}
 
@@ -3323,7 +3323,7 @@ The second case is described below.
 
 Typecasting overloads allow to statically typecast a given type to another, even when they are not sub-type of the other:
 
-```sn
+```rave
 class A {
   private message = 'Hello world!';
 
@@ -3343,7 +3343,7 @@ class B {
 
 We can now statically typecast any `A` value to `B` (but not the opposite, as `B` does not implement any typecasting overload for that):
 
-```sn
+```rave
 let a = new A;
 let b = a as B; // Works fine
 
@@ -3352,7 +3352,7 @@ println!(b.message); // Prints: 'Hello world!'
 
 Numbers implement a typecasting overload for each other number type, so the following conversion is allowed:
 
-```sn
+```rave
 let small = 8b;
 let large = 2050u;
 
@@ -3367,7 +3367,7 @@ Note that typecasting overloads use a normally forbidden syntax: polymorphism by
 
 These overloads can be triggered automatically thanks to the `#auto` directive. To take again our example, this means that any `A` value would automatically be converted to `B` where a `B` value is expected, without using the `as` keyword:
 
-```sn
+```rave
 class A {
   private message = 'Hello world!';
 
@@ -3400,7 +3400,7 @@ A similar behavior to automatic typecasting overloads is implemented for parent 
 
 Interfaces allow to describe members of a class. Like for structure compatibility, each class that implements all of its members is considered as a sub-type of this interface. Some of widely used in the language, such as the following one:
 
-```sn
+```rave
 interface Stringifyable {
   fn %to[B] ();
 }
@@ -3408,7 +3408,7 @@ interface Stringifyable {
 
 Every class that implements the `%to[string]` typecast overload will be `Stringifyable`. Note that the visibility is not indicted here as an interface only describes public members.
 
-```sn
+```rave
 class A impl Stringifyable {
   public fn %to[string] () {
     return 'Hello world!';
@@ -3424,7 +3424,7 @@ You may notice the `impl Stringifyable` part: it indicates the class implements 
 
 There is another widely-used interface:
 
-```sn
+```rave
 interface Any {}
 ```
 
@@ -3436,7 +3436,7 @@ Also, every object that implements an interface's members is considered as one o
 
 Traits are kind of virtual classes: they describe a set of members, but their methods are declared with a body, too. The goal is to allow re-using some pieces of code across classes that are not mother and child of each other.
 
-```sn
+```rave
 trait Vehicle {
   val speed: f32;
 
@@ -3452,7 +3452,7 @@ trait Wheeled {
 
 As for interfaces, traits only describe public members and so there is no visibility keyword. Traits are implemented using the `use` keyword:
 
-```sn
+```rave
 class Car {
   use Vehicle, Wheeled;
 }
@@ -3465,7 +3465,7 @@ printlnl!(car.accelerate()); // Prints: 'Vroom!'
 
 Traits can also use other traits:
 
-```sn
+```rave
 trait Bike {
   use Vehicle;
 
@@ -3477,7 +3477,7 @@ trait Bike {
 
 Or even implement interfaces:
 
-```sn
+```rave
 interface Vehicle {
   val speed: f32;
 }
@@ -3499,7 +3499,7 @@ trait Bike impl Vehicle {
 
 Let's consider the following code:
 
-```sn
+```rave
 class A {
   public fn %to[B] () {
     return new B;
@@ -3519,7 +3519,7 @@ We want to create, let's say, a variable, which accepts any value that can be ty
 
 This can be achieved using a _typecasting path_, which goes like this:
 
-```sn
+```rave
 interface ConvertibleToC {
   // Typecasting path
   typepath C = B;
@@ -3528,7 +3528,7 @@ interface ConvertibleToC {
 
 It is divided in two parts: the _target_, which is `C`, and the _candidates_, which are the types that can be directly typecasted to the target. Any type that is typecastable to any of the candidates (or to the target type itself, of course) will be considered as implementing the path. When a typecast will be performed between this type and the target, it will first use typecast it to the given candidate type, and then to the target type. The value implementing this path itself will so support typecasting to the target:
 
-```sn
+```rave
 let short: A = new A;
 let long: ConvertibleToC = new A;
 
@@ -3543,7 +3543,7 @@ long as C; // Works fine
 
 The path can contain several types:
 
-```sn
+```rave
 interface ConvertibleToF {
   type F = D | E;
 }
@@ -3551,7 +3551,7 @@ interface ConvertibleToF {
 
 In the case our type implements typecasting overload to two or more types in the path, the first one in the list is taken:
 
-```sn
+```rave
 interface ConvertibleToF {
   type F = D | E;
 }
@@ -3597,7 +3597,7 @@ To illustrate the concept of templates, let's take an example. We want to create
 
 With what we've seen so far, this is impossible because the return type of a function must be fixed. Templates allow to change this:
 
-```sn
+```rave
 op fn plus<T> (left: CanAdd<T>, right: T) : T {
   return (left + right) as T;
 }
@@ -3609,7 +3609,7 @@ The operator's right operand has the template type, and this is the same type th
 
 We can now use our operator function:
 
-```sn
+```rave
 let i: int = 2u plus 5; // Works fine
 
 println!(i); // Prints: '7'
@@ -3621,7 +3621,7 @@ Templates can be used everywhere a fixed type could be used. Types that use temp
 
 Templates can be used in lambdas by prefixing the opening parenthesis by the templates:
 
-```sn
+```rave
 val lambda = <T> (value: T[]) : usize => value.length;
 ```
 
@@ -3629,7 +3629,7 @@ val lambda = <T> (value: T[]) : usize => value.length;
 
 Here is its declaration of the `CanAdd` interface:
 
-```sn
+```rave
 interface CanAdd<T, X = T> {
   fn %add (value: T) : X;
 }
@@ -3641,7 +3641,7 @@ As you can see, this interface takes two templates, but the second one, which is
 
 It's possible for a template to accept any type that inherits from a class, implements an interface or use a trait:
 
-```sn
+```rave
 fn takeNum<T extends number> (num: T) {
   println!(num);
 }
@@ -3662,7 +3662,7 @@ They can also be chained, like `T extends X impl Y`.
 
 _Template inference_ is the fourth and last type of inference (Type Inference, Inferred Structured Typing, Inferred Callback Typing, Template Inference). It allows to not omit a template, which will be inferred by the builder. Example:
 
-```sn
+```rave
 fn tupleOf<X, Y> (left: X, right: X) : (X, Y) {
   return (left, right);
 }
@@ -3677,7 +3677,7 @@ This is also why we wrote `2u plus 5` instead of `2u plus<int> 5` in our example
 
 There are two cases where template inference causes ambiguity though, and these cases result in an error at build time. The first case is the following one:
 
-```sn
+```rave
 fn newValue (value: int) : int {
   return value * 2;
 }
@@ -3691,19 +3691,19 @@ doubleValue(8); // ERROR: Template inference ambiguity
 
 There is an ambiguity because the builder doesn't know which function to use: the two match the call perfectly. To solve this problem, we must implicitly indicate what function we want to call. For the second function, we write this:
 
-```sn
+```rave
 doubleValue<int>(8); // Returns: 32
 ```
 
 For the first one, we use _void-templating_, which consists in explicitly telling we give no template to the class, which means we also reject template inference:
 
-```sn
+```rave
 doubleValue<>(8); // Returns: 16
 ```
 
 The other ambiguity happens when using undistinctable templates:
 
-```sn
+```rave
 class Example<K, V> {
   public fn %new (value: K) {}
   public fn %new (value: V) {}
@@ -3718,7 +3718,7 @@ The last instruction isn't valid because the builder can't guess what function t
 
 The resolution keywords refer to their actual classes with all their templates:
 
-```sn
+```rave
 class Example<T> {
   public fn test () {
     // Here, 'self' refers to 'Example<T>'
@@ -3731,7 +3731,7 @@ class Example<T> {
 
 We can change get the current class with other templates by rewriting them:
 
-```sn
+```rave
 class Example<T> {
   public fn test () {
     // self == Example<T>
@@ -3746,7 +3746,7 @@ There are two reasons to the fact _templates_ are not called _generics_ like in 
 
 While templates are, by default, types, they can be simple values like integers or strings:
 
-```sn
+```rave
 fn createIntArray <LENGTH: usize> () : int[LENGTH] {
   return (0 for i -> 0..LENGTH);
 }
@@ -3758,7 +3758,7 @@ In its body, we return an inline-generated array of `LENGTH` elements, all being
 
 We can now use our function:
 
-```sn
+```rave
 val arr = createIntArray<20>();
 println!(arr.length); // Prints: '20'
 ```
@@ -3771,7 +3771,7 @@ An important point though: when we provide a template to a given type, it must *
 
 The wildcard template can be used when we want to accept any template in a given type but won't use the template itself. Example:
 
-```sn
+```rave
 fn listLength<T> (value: T[#]) : usize {
   return value.size;
 }
@@ -3779,7 +3779,7 @@ fn listLength<T> (value: T[#]) : usize {
 
 In this function, we don't size the `T` template elsewhere than in the argument's type. So, we can instead replace it by the wildcard template:
 
-```sn
+```rave
 fn listLength (value: List<?>) : usize {
   return value.size;
 }
@@ -3787,7 +3787,7 @@ fn listLength (value: List<?>) : usize {
 
 This accepts any list with an unknown template. Note that we can still get elements from the list, but as we don't know what the template is, they will be automatically typecasted to `Any` values. We can also use all methods in the list, except those who require an argument of the same type than the template, as we don't know what it is:
 
-```sn
+```rave
 class Example<T> {
   public value: T;
 
@@ -3804,7 +3804,7 @@ Types that use the wildcard template can be typecasted to their original type us
 
 Note that it's not possible to instanciate types using the wildcard template directly:
 
-```sn
+```rave
 val obj: Example<?> = new Example<?>(2); // ERROR
 val obj: Example<?> = new Example<int>(2); // Works fine
 ```
@@ -3817,7 +3817,7 @@ With all we've seen so far, this is not possible: the method will simply be avai
 
 Class segments allow to solve this problem by making our method available only if a condition we give is met. The main point is that conditions must be predictable: the builder must be able to evaluate the condition at build time. A type of valid condition is checking if a template is implementing a specific interface, using a trait or inheriting from a class:
 
-```sn
+```rave
 class MyArrayClass<T> {
   // Declare a segment
   // All items in it will be available only if the condition is met
@@ -3833,7 +3833,7 @@ class MyArrayClass<T> {
 
 We can now try it:
 
-```sn
+```rave
 (new MyArrayClass<int>).sum(); // Works fine
 (new MyArrayClass<number>).sum(); // Works fine
 (new MyArrayClass<bool>).sum(); // Works fine
@@ -3845,7 +3845,7 @@ Let's say we have a class representing a very large number type (e.g. 512 bits u
 
 For that, we use a templated version of the addition overload:
 
-```sn
+```rave
 class LargeNumber {
   public fn %add<T extends number> (num: T) : T {
     // Do some stuff here
@@ -3863,7 +3863,7 @@ typeof (largeNum + 8u); // uint
 
 Generally speaking, it's always possible to use as many templates as we want on overloads, but only if the template can be inferred at build time:
 
-```sn
+```rave
 class BankAccount {
   // ...
 
@@ -3893,7 +3893,7 @@ Dictionary classes are special classes that behaves like a dictionary, which is 
 
 They are declared using the `dict` keyword instead of the `class` one. Dictionary classes automatically implement the `Dictionary<K, V>` which describes a set of overloads they must implement:
 
-```sn
+```rave
 // K = type of keys
 // V = type of values
 dict Custom<K, V> {
@@ -3916,7 +3916,7 @@ dict Custom<K, V> {
 
 If you want to grant additional template to your dictionary class, you must manually implement the dictionary interface:
 
-```sn
+```rave
 dict Custom<T, V, K> impl Dictionary<V, K> {
   // ...
 }
@@ -3924,7 +3924,7 @@ dict Custom<T, V, K> impl Dictionary<V, K> {
 
 Most dictionary classes should inherit from the `Map<K, V>` class which comes with many useful functions like `.filter` or `%clone`, without any restriction on the overloads itself (they can also be overwritten):
 
-```sn
+```rave
 dict Custom<K, V> extends Map<K, V> {
   // ...
 }
@@ -3932,7 +3932,7 @@ dict Custom<K, V> extends Map<K, V> {
 
 In this case, the dictionary class can access two protected members: `keys: List<K>` and `values: List<V>`. To force a template value, like vectors do, we can use a fixed template:
 
-```sn
+```rave
 dict Vector<T> extends Map<usize, T> {
   // ...
 }
@@ -3944,7 +3944,7 @@ Note that we can do in a dictionary class anything we can do in a standard class
 
 This overload can be used even in non-dictionary classes, like in the `string` class:
 
-```sn
+```rave
 'a' in 'abc'; // Works even though 'string'
               // is not a dictionary class
 ```
@@ -3953,7 +3953,7 @@ This overload can be used even in non-dictionary classes, like in the `string` c
 
 We already _explored_ dictionaries before, notably by using the `for value in array` loop. There are several loops for this:
 
-```sn
+```rave
 // Create a map
 val map = new Collection<int>;
 map['a'] = 2;
@@ -3981,7 +3981,7 @@ In fact, the `in` and `of` keyword in a `for` loop automatically call the `%iter
 
 Dictionaries can be manipulated using dedicated syntaxes, shown below:
 
-```sn
+```rave
 // Get a value from a key
 personsAge['me'];
 
@@ -4008,7 +4008,7 @@ for key -> value in personsAge {
 
 Note that, even though the `%get` overload may throw an error, we are not forced to catch it. If we don't and an error is thrown, the program will panic. We can also catch it like for a standard function:
 
-```sn
+```rave
 try {
   personsAge['keyThatDoesNotExist'];
 }
@@ -4034,7 +4034,7 @@ As we are declaring a dictionary class, we will use the `dict` keyword. Also, fo
 
 Here is our class' skeleton:
 
-```sn
+```rave
 dict UniqueMap<K, V> extends Map<K, V> {}
 ```
 
@@ -4042,14 +4042,14 @@ dict UniqueMap<K, V> extends Map<K, V> {}
 
 We will have two attributes for this class: a list of keys, and a list of values. That's the traditional way in dictionaries, as it allows to manage keys and values separately.
 
-```sn
+```rave
   private keys = K:[#];
   private values = V:[#];
 ```
 
 #### Part 3: the setter
 
-```sn
+```rave
   // ...
   public fn %set (key: K, value: V) {
     // If the value already exists in the dictionary, panic
@@ -4070,7 +4070,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 #### Part 4: the getter
 
-```sn
+```rave
   // ...
   public fn %get (key: K, value: V) {
     // If the key doesn't exist, panic
@@ -4083,7 +4083,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 #### Part 5: the deleter
 
-```sn
+```rave
   // ...
   public fn %unset (key: K) {
     // If the key doesn't exist, panic
@@ -4100,7 +4100,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 #### Part 6: the key checker
 
-```sn
+```rave
   // ...
   public fn %has (key: K) : bool {
     // Check if the key exists
@@ -4110,7 +4110,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 #### Part 7: the value checker
 
-```sn
+```rave
   // ...
   public fn %contains (value: V) : bool {
     // Check if the value exists
@@ -4120,7 +4120,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 #### Part 8: the size getter
 
-```sn
+```rave
   // ...
   public fn %size () : usize {
     // Return the number of elements in the dictionary
@@ -4130,7 +4130,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 #### Part 9: the iterator
 
-```sn
+```rave
   // ...
   public fn %iterate () : Iterator<(K, V)> {
     // Return an iterator on a key-value tuple
@@ -4144,7 +4144,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 To take an example, let's imagine we have a function that looks for a point with `x` and `y` attributes both equals to zero. It could look like this:
 
-```sn
+```rave
 struct Point {
   name: string;
   x: int;
@@ -4164,7 +4164,7 @@ This function won't compile because of `getNilPoint` not returning a `Point` val
 
 To solve this problem, we could simply use a structure which indicates wether a point was found or not. There is already a type for that: `Option<T>`. It can handle a value of the `T` type:
 
-```sn
+```rave
 fn getNilPoint (points: Point[]) : Option<Point> {
   for point in points {
     if point.x == 0 && point.y == 0 {
@@ -4178,7 +4178,7 @@ fn getNilPoint (points: Point[]) : Option<Point> {
 
 The `Option<T>` type can also simply be written `?T`:
 
-```sn
+```rave
 fn getNilPoint (points: Point[]) : ?Point {
   // ...
 }
@@ -4186,7 +4186,7 @@ fn getNilPoint (points: Point[]) : ?Point {
 
 This works fine. We can now check if we got a value or a "none":
 
-```sn
+```rave
 val point: ?Point = getNilPoints([]);
 
 match point {
@@ -4199,7 +4199,7 @@ In fact, the `Option<T>` type is simply an enumeration containing `None` and `So
 
 To simplify checking, we can also use an `if` statement:
 
-```sn
+```rave
 if point is Some(name) {
   println!('Found a point: ' + name);
 }
@@ -4209,7 +4209,7 @@ if point is Some(name) {
 
 The optional operator is a useful operator that tries to get a structure's field, a class' member, or a dictionary's key safely. Instead of requiring to try and catch the operation, the operator simply returns a `none` value in case of fail:
 
-```sn
+```rave
 struct Hero {
   name: string;
 }
@@ -4235,7 +4235,7 @@ typeof jack?.name; // ?string
 
 This operator also supports chaining:
 
-```sn
+```rave
 struct Hero {
   identity: {
     name: string;
@@ -4266,7 +4266,7 @@ typeof jack?.identity?.name; // ?string
 
 Let's detail the constants' type:
 
-```sn
+```rave
 typeof jack; // Option<Hero>
 
 typeof jack?.identity; // Hero.identity
@@ -4282,7 +4282,7 @@ As you can see, it's possible to chain optional operators. Indeed, if we just wr
 
 This also works with dictionaries:
 
-```sn
+```rave
 val personsAge = {# Jack: 24u };
 
 val age = personsAge['Jack']?; // Prints: ?uint
@@ -4294,7 +4294,7 @@ if age is Some(age) {
 
 Note that it doesn't catch any error in the getter, it simply checks if the key is contained in the dictionary:
 
-```sn
+```rave
 // This:
 personsAge['Jack']?; // ?uint
 
@@ -4306,7 +4306,7 @@ personsAge['Jack']?; // ?uint
 
 It is possible to provide a default value of the same type than the one holded by the optional type, in the case it is `None`:
 
-```sn
+```rave
 fn getValue () : ?string {
   // do some stuff and optionally return something
   return none;
@@ -4319,7 +4319,7 @@ println!(getValue() ?? 'No value returned');
 
 Currently, if we want to try to run a function, and run a code if it succeeded, we would write something like this:
 
-```sn
+```rave
 // Considering the following function:
 fn getArticleBody (id: usize) : string throws Error;
 
@@ -4334,7 +4334,7 @@ println!(content) if (try? getArticleBody(0)) is Some(content);
 
 Optional catching is a special syntax of the `if` block which allows to run the block's body if the specified expression runs without any error. The result of the expression is then stored in a new entity scoped to the body. Here is how it goes:
 
-```sn
+```rave
 // Multi-line
 if try getArticleBody(0) as content {
   println!(content);
@@ -4358,7 +4358,7 @@ A panic makes the program exit by force and display a panic message in the conso
 
 We can manually make the program panic by using `panic!`:
 
-```sn
+```rave
 panic!('This is a panic message');
 ```
 
@@ -4366,7 +4366,7 @@ But its usage is mostly discouraged ; vast majority of the cases are handlable t
 
 Note that it's possible to catch most panics by using the `catchPanic!` flex:
 
-```sn
+```rave
 val handle = catchPanic!(ALL, () => {
   // If the program panics during this function, it
   //  will be caught and returned by the `catchPanic!` flex instead
@@ -4386,14 +4386,14 @@ Only a few panics are not catchable ; for example, the `OUT_OF_MEMORY` panic wil
 
 Throwing an error consists in using the `throw` keyword, followed by an instance of the `Error` class. Usually, it looks like this:
 
-```sn
+```rave
 // ...
 throw new Error('Something went wrong!');
 ```
 
 But, errors cannot be thrown everywhere. Only functions can throw errors - meaning we can't throw errors in the main scope - if they declare them. Here is how it looks:
 
-```sn
+```rave
 fn divideInt (left: int, right: int) : int throws Error {
   if right == 0 {
     throw new Error('Division by zero is not allowed');
@@ -4411,13 +4411,13 @@ Note that this function indicates it may throw an instance of the `Error` class 
 
 Now, if we try to call our function, this won't work:
 
-```sn
+```rave
 divideInt(6, 3); // ERROR
 ```
 
 This fails because, when we call a function that may throw an error, we must _catch_ this error. This is done by using two blocks: `try` and `catch`.
 
-```sn
+```rave
 try {
   divideInt(6, 3);
 }
@@ -4435,7 +4435,7 @@ The above program won't display anything. If we divided by 0, it would have disp
 
 You may create data in your `try` block you want to clone afterwise. This can be achieved through the `finally` block, which runs whatever happens after `try` (and `catch` if it is called). Even if a `return` statement is ran in the `try` or `catch` block, the `finally` one will be called just before returning.
 
-```sn
+```rave
 fn doSomething () : int {
   val counter = 0;
 
@@ -4465,7 +4465,7 @@ When assigning a value to a mutable or a constant that may throw an error, we fa
 
 To simplify this process, we can perform an _inline catching_. It consists in trying to evaluate an expression and, if that doesn't work, get the `none` value. Showcase:
 
-```sn
+```rave
 val num = try? divideInt(a, b); // ?int
 ```
 
@@ -4475,7 +4475,7 @@ If the division works, it will return its value holded by an optional type. Else
 
 It's possible to create custom error classes to indicate clearly what type of error has been thrown. Error classes are simply classes that inherit from the base `Error` class:
 
-```sn
+```rave
 class DivisionByZeroError extends Error {
   super(message: string);
 }
@@ -4483,7 +4483,7 @@ class DivisionByZeroError extends Error {
 
 We can now use it in our function:
 
-```sn
+```rave
 fn divideInt (left: int, right: int) : int throws DivisionByZeroError {
   if right == 0 {
     throw new DivisionByZeroError('Division by zero is not allowed');
@@ -4495,7 +4495,7 @@ fn divideInt (left: int, right: int) : int throws DivisionByZeroError {
 
 And when we catch errors:
 
-```sn
+```rave
 try {
   divideInt(a, b);
 }
@@ -4507,7 +4507,7 @@ catch (e: DivisionByZeroError) {
 
 A function can also throw different type of errors:
 
-```sn
+```rave
 fn doSomething () throws AError, BError {
   if ... {
     throw new AError('Error of type A occured!');
@@ -4521,7 +4521,7 @@ fn doSomething () throws AError, BError {
 
 We can then do a chain catch:
 
-```sn
+```rave
 try {
   doSomething();
 }
@@ -4537,7 +4537,7 @@ catch (e: BError) {
 
 But we can also get them all at once:
 
-```sn
+```rave
 try {
   doSomething();
 }
@@ -4569,7 +4569,7 @@ While being very memory and programmaticly efficient, this concept introduces th
 
 Let's take an example for the first point:
 
-```sn
+```rave
 struct Hero {
   mut name: string;
 }
@@ -4593,7 +4593,7 @@ When we call `nameHeroJohn`, the program gives it `jack`'s OID. Then, when we at
 
 Now, let's take another example:
 
-```sn
+```rave
 struct Hero {
   mut name: string;
 }
@@ -4629,7 +4629,7 @@ Like objects, each single entity has its unique, invisible identifier, called EI
 
 If we take the following entity:
 
-```sn
+```rave
 val jack = { name: 'Jack' };
 ```
 
@@ -4639,7 +4639,7 @@ The problem that happens here is that, because primitives don't have an OID, the
 
 But, cloning isn't free, both in term of memory and compute time. For example, considering the following code:
 
-```sn
+```rave
 val str = '';
 
 for i in 0..1000000 {
@@ -4661,31 +4661,31 @@ A reference is simply a "marker" that refers to an entity, called its _referred_
 
 Let's take an example. Given we have the following mutable:
 
-```sn
+```rave
 val name: string = 'Jack';
 ```
 
 We make a reference of it by writing:
 
-```sn
+```rave
 &name;
 ```
 
 The `&` symbol, prefixing an entity, creates a reference to it. As a reference is a value, we can assign it to an entity. Still, the type of this reference will not be `string`, but `*string`, the `*` symbol indicating we are using a reference type:
 
-```sn
+```rave
 val ref: *string = &name;
 ```
 
 Inferred typing work with reference types, but we still must indicate we are using a reference:
 
-```sn
+```rave
 val ref: * = &name;
 ```
 
 Also, we can't read the entity's value just by writing the reference's name ; we must prefix it with the `*` symbol to indicate we don't want to get the reference, but the value of the entity it refers too:
 
-```sn
+```rave
 println!(ref); // ERROR ('*string' is not stringifyable)
 println!(*ref); // Prints: 'Jack'
 
@@ -4695,7 +4695,7 @@ typeof *ref; // string
 
 That's when we retrieve the value through the reference to give it to another function for example, that it is cloned - just like for entities. But if we give the reference to a function, it won't be cloned - allowing to save time and memory, but also to get aware of all changes made to the original entity:
 
-```sn
+```rave
 fn readName (someName: *string) {
   println!('Hello, ${*someName}!');
 }
@@ -4715,7 +4715,7 @@ As you can see, the value printed by the function is different although the cont
 
 We can also make references to a specific property of an object:
 
-```sn
+```rave
 fn readName (someName: *string) {
   println!('Hello, ${*someName}!');
 }
@@ -4737,7 +4737,7 @@ This solves our second and third problem, as we are now able to share _and_ avoi
 
 Because we may want to create references to direct values, instead of creating an entity containing them, we can use the `wrap!` flex:
 
-```sn
+```rave
 val cstRef: * = & wrap!(2);
 val mutRef: *mut = &mut wrap!(2);
 ```
@@ -4754,7 +4754,7 @@ When we assign something _through_ a mutable reference, it doesn't modify the re
 
 Mutable constants are created using the `&mut` prefix (requiring a space after it), and the reference type is prefixed by `*mut` (requiring a space after it too). To assign a new value through the reference, we prefix it with the `*`, like for reading:
 
-```sn
+```rave
 fn nameItJohn (someName: *mut string) {
   *someName = 'John';
 }
@@ -4772,7 +4772,7 @@ println!(name); // Prints: 'John'
 
 This works as expected. Accessing an entity through a reference is called _depointerization_. Note that the `ref` constant is still optional here:
 
-```sn
+```rave
 fn nameItJohn (someName: *mut string) {
   *someName = 'John';
 }
@@ -4788,7 +4788,7 @@ println!(name); // Prints: 'John'
 
 The third problem is now solved, as we can now overwrite objects easily:
 
-```sn
+```rave
 struct Hero {
   mut name: string;
 }
@@ -4814,7 +4814,7 @@ println!(jack.name); // Prints: 'Jack'
 
 A good point about references (both constants and mutables) is the _automatic reference resolution_: as reference types do not have any member, when we try to access one, it considers we are trying to access a member of the referred's value:
 
-```sn
+```rave
 let jack = Hero {
   mut name: 'Jack'
 };
@@ -4829,7 +4829,7 @@ println!(jack.name);
 
 Here is the list of possible syntaxes:
 
-```sn
+```rave
 &jack.field;   // Make a reference to `jack` and get `name` from it
 &(jack).name; // Make a reference to `jack` and get `name` from it
 (&jack).name; // Make a reference to `jack` and get `name` from it
@@ -4861,7 +4861,7 @@ Remember, these three points are **completely** distinct. They are not linked to
 
 Type compatibility is simple with references: mutable ones can be used as constant ones, but constants ones cannot be used as mutables:
 
-```sn
+```rave
 let i = 1;
 
 let ptr1: *mut = &mut i;
@@ -4877,7 +4877,7 @@ In fact, when a mutable reference is found where a constant one is expected, it 
 
 This behavior makes that, if we want to make a function that takes both constant pointers and mutable pointers, we simply have to make a function that accepts constant ones - mutable pointers will be automatically typecasted:
 
-```sn
+```rave
 fn printRefValue (ptr: *Stringifyable) : void {
   println!(*ptr);
 }
@@ -4892,7 +4892,7 @@ printRefValue(&mut n); // Prints: '2'
 
 It is possible to cast safely a mutable reference to a constant one, or to cast a type from another if it keeps the same reference type (e.g. constant or mutable), but not both at once:
 
-```sn
+```rave
 val i = & wrap!(2);
 val j = &mut wrap!(2);
 
@@ -4915,7 +4915,7 @@ val j = &mut wrap!(2);
 
 Multi-level references simply consist in referring to a reference and so on. Here is an example:
 
-```sn
+```rave
 val i = 0;
 
 val ptr1: * = &i;
@@ -4924,7 +4924,7 @@ val ptr2: ** = &ptr1;
 
 If we access `ptr2`, it contains a level 2 reference, while `ptr1` contains a level 1 reference. If we access `ptr2`'s referred (`*ptr2`), we will get the reference stored inside `ptr1`, which is called `ptr2`'s intermediate reference:
 
-```sn
+```rave
 // All the following statements are 'true'
 
 // Get the pointer's value
@@ -4945,7 +4945,7 @@ ptr2 == &ptr1;
 
 We can check if a value is a reference thanks to the `is_ref!` flex:
 
-```sn
+```rave
 val i = 0;
 val ptr: * = &i;
 
@@ -4955,7 +4955,7 @@ println!(is_ref!(ptr)); // Prints: 'false'
 
 For multi-level references, we can get their level with the `ref_level!` flex:
 
-```sn
+```rave
 val i = 0;
 val ptr1: * = &i;
 val ptr2: ** = &ptr1;
@@ -4967,7 +4967,7 @@ println!(ref_level!(ptr2)); // Prints: '2"
 
 We can also check a pointer's mutability using the `is_mut_ref!` flex:
 
-```sn
+```rave
 let i = 0;
 
 val cstPtr: * = &i;
@@ -4980,14 +4980,14 @@ println!(is_mut_ref!(mutPtr)); // Prints: 'true'
 
 This only gets the mutability of the top-level reference, though:
 
-```sn
+```rave
 println!(is_mut_ref!(&mut wrap!(& wrap!(2)))); // Prints: 'true'
 println!(is_mut_ref!(&wrap!(&mut wrap!(2)))); // Prints: 'false'
 ```
 
 Finally, the `ref_stats!` flex returns all informations on a reference:
 
-```sn
+```rave
 let i = 0;
 let ptr1: * = &i;
 val ptr2: *mut = &mut ptr1;
@@ -5019,7 +5019,7 @@ val infos = ref_stats!(ptr3);
 
 The referred can also be checked using the equality operators, thanks to them using the same EID. Are considered equal references that have the same referred and the same mutability:
 
-```sn
+```rave
 let i = 0;
 
 val cstRef: * = &i;
@@ -5049,7 +5049,7 @@ Here is the list of them:
 
 For instance, the following code is valid:
 
-```sn
+```rave
 struct Hero {
   name: string;
 }
@@ -5067,7 +5067,7 @@ Statics are instances of structures. For example, `{ name: 'Jack' }` is a static
 
 These can be described using the `Static<T>` type, where `T` is a common type of all fields in the structure. For example, a static can be described with `Static<primitive>` if all its fields hold primitives:
 
-```sn
+```rave
 val static1: Static<primitive> = {
   name: 'Jack'
 };
@@ -5075,7 +5075,7 @@ val static1: Static<primitive> = {
 
 In fact, all statics are automatically typecastable to any `Static<T>` type able to describe them. Once we hold such a described value, we can iterate it:
 
-```sn
+```rave
 struct Hero {
   name: string;
   hp: uint;
@@ -5101,7 +5101,7 @@ While we cannot use indexes on statics, it is possible by using a certified key 
 
 The `Static<T>` type is used, for example, to serialize structures. Here is an example of a very simple stringification function:
 
-```sn
+```rave
 fn stringifyStatic (obj: Static<Stringifyable>) : string {
   return (field + ' => ' + obj[field] for field in obj).join('\n');
 }
@@ -5124,7 +5124,7 @@ Also, as tuple types are considered as structures (we can create them using the 
 
 Clonable statics can take benefit of the spread operator:
 
-```sn
+```rave
 val original = {
   name: 'Jack',
   age: 20
@@ -5141,7 +5141,7 @@ println!(copy.isCopy); // Prints: 'true'
 
 The spread operator fully clones the object, so they are not linked:
 
-```sn
+```rave
 copy.name = 'John';
 
 println!(copy.name); // Prints: 'John'
@@ -5152,7 +5152,7 @@ println!(original.name); // Prints: 'Jack'
 
 Iterators are instances of the `Iterator<T>` class. Here is an example of the famous Fibanocci suite implemented using an iterator:
 
-```sn
+```rave
 class Fibonacci extends Iterator<uint> {
   public val max: uint;
 
@@ -5185,7 +5185,7 @@ Iterator classes must implement a `.next()` method which returns a `?T` value. I
 
 We can now use our iterator class by instanciating it:
 
-```sn
+```rave
 val fibo = new Fibonacci(1000u);
 
 let value: ?uint = none;
@@ -5199,7 +5199,7 @@ do {
 
 But we can also use special syntaxes of the `for` loop instead:
 
-```sn
+```rave
 // With values:
 for num in fibo {
   println!('${num.value}');
@@ -5215,7 +5215,7 @@ As you can see, even though the iterator returns an `?uint` value, we don't have
 
 Because writing iterators is heavy, we can use an _iterator function_ instead:
 
-```sn
+```rave
 iter fn fibonacci (max: uint) : uint {
   let a = 0;
   let b = 0;
@@ -5234,7 +5234,7 @@ Iterator functions are declared prefixed with the `iter` function. Its return ty
 
 We can now use it:
 
-```sn
+```rave
 // With values:
 for num in fibonacci(1000u) {
   println!(num);
@@ -5248,7 +5248,7 @@ for i -> num in fibonacci(1000u) {
 
 Note that an iterator can be asynchronous, too:
 
-```sn
+```rave
 async iter fn readArticles (upTo: usize) : ?string {
   for i in 0p..upTo {
     yield try? await fetchArticle(i);
@@ -5262,19 +5262,19 @@ Constrained types are a way to ensure a value holds validated data in a way far 
 
 Considering we want to ensure a string is not empty, we can declare a constrain the `string` type by putting a callback on it that checks, when we try to assign a value using this type, if it is not empty. Here is how it goes:
 
-```sn
+```rave
 val notEmptyStr: string with ((candidate: string) => not candidate.empty()) = 'Hello world!';
 ```
 
 This is a bit long, of course, so we can shorten our definition:
 
-```sn
+```rave
 val notEmptyStr: string with (c => not c.empty()) = 'Hello world';
 ```
 
 There is also a shorter syntax that gets rids of the function syntax and replace the candidate value by the `_` entity:
 
-```sn
+```rave
 val notEmptyStr: string with (not _.empty()) = 'Hello world';
 ```
 
@@ -5284,7 +5284,7 @@ The counterpart of constrained types is that the callback is called at each assi
 
 Also, if the constraint fails during assignment, the program panics. The only way to handle such errors when we don't know if the test will pass is to use the following behavior:
 
-```sn
+```rave
 val notEmpty: string with (not _.empty()) = 'Hello world';
 
 val fail = catchPanic!(CATCHABLE_TYPE_CONSTRAINTS_FAILS, () => {
@@ -5298,7 +5298,7 @@ if not fail.ok {
 
 To avoid having to write the again and again the same type constraint, and to unify them across your programs, you can use the `type` keyword which allows to make type aliases:
 
-```sn
+```rave
 type NotEmptyString = string with (not _.empty());
 
 val notEmpty: NotEmptyString = 'Hello world';
@@ -5314,7 +5314,7 @@ Type aliasing allows to create an _alias_ which links an unused type name to an 
 
 They can also be templated:
 
-```sn
+```rave
 type TupleOfThree<T> = (T, T, T);
 
 val myTuple: TupleOfThree<int> = (2, 8, 5);
@@ -5324,7 +5324,7 @@ As type aliases are _aliases_ and not real types, there is no typecasting proble
 
 Type aliasing can also the `_` type, which is the equivalent of `_real`, but for type aliasing:
 
-```sn
+```rave
 type Comparable = ComparableTo<_>;
 ```
 
@@ -5332,7 +5332,7 @@ type Comparable = ComparableTo<_>;
 
 Unsafe typecasting allow to typecast a value from its official type to its hidden type. Let's take an example:
 
-```sn
+```rave
 val something: Any = 'Hello world!';
 ```
 
@@ -5340,7 +5340,7 @@ The _official type_ of `something` is `Any`: this is the type it sure has. But i
 
 Still, we may want to convert this value back to its original type. This can be achieved only through _unsafe_ typecasting:
 
-```sn
+```rave
 try {
   cast_unsafe!<string>(something); // Returns a string
 }
@@ -5354,7 +5354,7 @@ This program will work fine. If we tried to cast unsafely `something` to **any**
 
 Because using a `try`-`catch` block is a bit heavy, we can use its optional version:
 
-```sn
+```rave
 val str = <?string> something; // ?string
 ```
 
@@ -5362,7 +5362,7 @@ The `str` entity has the `?string` value: if the typecast succeeds, it holds the
 
 If we are absolutely sure about the typecasting being write - and so we don't want the final value to be optional, we can use another syntax:
 
-```sn
+```rave
 val str = <!string> something; // string
 ```
 
@@ -5372,7 +5372,7 @@ Using this one, if the typecast fails, the program will panic. Be **really** awa
 
 An intersection type is the mix of several types. For example, an intersection type could be `A & B`, describing a value has having both the `A` and the `B` type. It looks like this:
 
-```sn
+```rave
 struct HasMotor {
   isAnObject: bool;
   horsesPower: uint;
@@ -5398,7 +5398,7 @@ An intersection type gives access to every member of every type of the intersect
 
 Note that type inferring will never result in an intersection type when writing a static, but they are automatically compatible with the intersection types implementing the same members:
 
-```sn
+```rave
 val vehicle = {
   isAnObject: true,
   horsesPower: 1u,
@@ -5412,7 +5412,7 @@ vehicle as (HasMotor & HasWheels); // Works fine
 
 Besides, we can shorten our definition using type aliasing:
 
-```sn
+```rave
 struct HasMotor {
   isAnObject: bool;
   horsesPower: uint;
@@ -5440,7 +5440,7 @@ Intersection types are automatically typecastable to any type of the intersectio
 
 Be aware: if two types define a property of the same name but with a different type, an error will raise at build time:
 
-```sn
+```rave
 struct A {
   prop: int;
 }
@@ -5456,7 +5456,7 @@ type Both = A & B; // ERROR
 
 _Intersection absorptions_ consists in converting an `A & B` intersection type where `B` is a sub-type of `A` to `B` alone. Example:
 
-```sn
+```rave
 struct A {
   propA: int;
 }
@@ -5475,14 +5475,14 @@ Intersection absorptions are performed automatically by the program, but that's 
 
 Union types are the opposite of intersection types: instead of describing a value has having several types, the value is described as having _one_ of the types of the union:
 
-```sn
+```rave
 let data: string |  uint = 'Hello world'; // Works fine
 data = 2u; // Works fine
 ```
 
 Any type is automatically typecastable to any union type containing it (like `string` to `string | uint`). It is too from any union type to any type of the union (like `string | uint` to `string`), BUT if the hidden type of the value is not the typecast's target one, the program will panic:
 
-```sn
+```rave
 val data: string | uint = 'Hello world';
 
 val str: string = data; // Works fine
@@ -5491,7 +5491,7 @@ val num: uint = data; // ERROR
 
 Union types make available any member all the types of the union implement. Example:
 
-```sn
+```rave
 struct HasMotor {
   isAnObject: bool;
   horsesPower: uint;
@@ -5514,7 +5514,7 @@ vehicle.wheels; // ERROR
 
 Note that, as for intersection types, if two types define a property with the same name but using a different type, build will fail:
 
-```sn
+```rave
 struct A {
   prop: int;
 }
@@ -5528,7 +5528,7 @@ type AnyOfThem = A | B; // ERROR
 
 Note also that type inference will **never** result in an union type. In some specific cases like when dealing with vectors, it will use the 'Best Common Type' method to determine the value's type:
 
-```sn
+```rave
 virtual class Animal {}
 
 // These three types have in common their 'Animal' parent
@@ -5544,7 +5544,7 @@ val array = [ new Lion(), new Rhino(), new Bear() ];
 
 _Union absorptions_ consists in converting an `A | B` intersection type where `B` is a sub-type of `A` to `A` alone. Example:
 
-```sn
+```rave
 struct A {
   propA: int;
 }
@@ -5563,14 +5563,14 @@ As for intersection absorptions, union absorptions are performed automatically b
 
 _Union tries_ consist in returning a value from an inline `catch` block. The resulting value will then have an union type: the type of value returned by the `try` block as the first type, the type of value returned by the `catch` block as the second one:
 
-```sn
+```rave
 val data = try divideInt(a, b) catch 'FAILED'; // int | string
 ```
 
 If both blocks return the same type of value, type absorption will make it result in a single type
 :
 
-```sn
+```rave
 val data = try divideInt(a, b) catch 0; // int | int == int
 ```
 
@@ -5578,7 +5578,7 @@ val data = try divideInt(a, b) catch 0; // int | int == int
 
 An union type will be automatically typecastable to any type that is a common parent type to all types in the union. Showcase:
 
-```sn
+```rave
 virtual class A {}
 
 class B extends A {}
@@ -5592,7 +5592,7 @@ let a: A = b; // Works (as 'B' and 'C' are both sub-types of 'A')
 
 In a `catch` block, it is possible to not provide its head entity's type. If so, its type will be the union type of all throwable types inside the `try` block:
 
-```sn
+```rave
 fn fnA () throws AError, BError {}
 fn fnB () throws CError {}
 
@@ -5608,7 +5608,7 @@ catch (e) {
 
 Already caught types are also eliminated from the union:
 
-```sn
+```rave
 fn fnA () throws AError, BError {}
 fn fnB () throws CError {}
 
@@ -5630,7 +5630,7 @@ catch (e) {
 
 Union values are similar union types: instead of allowing a value to be of one of the union's type, it allows it to be one of the values specified in the union:
 
-```sn
+```rave
 type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
 
 val day1: DayOfWeek = 'Monday'; // Works fine
@@ -5645,7 +5645,7 @@ Let's say we want to create a function that takes any value as an argument. If i
 
 This can be achieved through _type assertion_:
 
-```sn
+```rave
 fn convertToString (value: Any) : ?string {
   if value ~ Stringifyable {
     // ...
@@ -5665,7 +5665,7 @@ Note that we can specify multiple type assertions at a type in a type assertion 
 
 Let's go back to our function:
 
-```sn
+```rave
 fn convertToString (value: Any) : ?string {
   if value ~ Stringifyable {
     return some!(value as string); // Works fine
@@ -5687,7 +5687,7 @@ This is as simple as that.
 
 If we specify multiple types for the same entity, it will result as the entity having an intersection type:
 
-```sn
+```rave
 fn someFn (value: Any) {
   if value ~ Stringifyable && value ~ Numerizable {
     typeof value; // 'Stringifyable & Numerizable'
@@ -5697,7 +5697,7 @@ fn someFn (value: Any) {
 
 Also, we can use type assertions in ternary conditions as well as in inline condition blocks:
 
-```sn
+```rave
 // Ternary condition
 fn convertToString (value: Any) : ?string {
   return value ~ Stringifyable ? some!(value as string) : none;
@@ -5714,7 +5714,7 @@ Discriminating an union consists in guessing the value have a sub-type of the un
 
 Let's take an example - we have the following code:
 
-```sn
+```rave
 struct A {
   type: 'Type1';
 }
@@ -5730,7 +5730,7 @@ The `C` union type is _discriminitable_ because all its member types (`A` and `B
 
 So, if we know that a `C` value's `type` member is equal to `Type1`, it will be of `A` type. This behavior can be used in condition blocks, as well as in matches:
 
-```sn
+```rave
 val value: C = /* value goes here */;
 
 if value.type == 'Type1' {
@@ -5747,7 +5747,7 @@ match value.type {
 
 Another example:
 
-```sn
+```rave
 struct A { type: 'Type1'; }
 interface B { type: 'Type2'; }
 class C { public val type: 'Type3'; }
@@ -5768,7 +5768,7 @@ match value.type {
 
 It's also possible to use an enumeration. In this case, this is much simplier, as we can also use a literal member (e.g. in classes) with the enumeration's type, instead of the value's type:
 
-```sn
+```rave
 enum HeroType {
   Warrior,
   WhiteWizard,
@@ -5799,7 +5799,7 @@ match value.type {
 
 _Lambda classes_ are to classes what lambdas are to functions. These are unnamed classes that are written inline, which must either extend from another class, implement an interface, or use a trait (or several of these). For example, let's consider the following code:
 
-```sn
+```rave
 virtual class MouseClickHandler {
   abstract public fn onClick ();
 }
@@ -5811,7 +5811,7 @@ fn triggerHandler (handler: MouseClickHandler) {
 
 If we want to make a new trigger, a first idea would be to write this:
 
-```sn
+```rave
 class MyMouseClickHandler extends MouseClickHandler {
   public fn onClick () {
     println!('Triggered!');
@@ -5823,7 +5823,7 @@ triggerHandler(new MyMouseClickHandler());
 
 But if our class is only used once, that's heavy as we have to declare a whole new class and inherit from it. Plus, it will appears as one of the program's classes. Lambda classes allow us to get rid of these problems ; our previous code can be rewritten like this:
 
-```sn
+```rave
 triggerHandler(new ~MouseClickHandler {
   public fn onClick () {
     println!('Triggered!');
@@ -5835,7 +5835,7 @@ That sure is lighter, right? As you can see, lambda classes must be instanciated
 
 If we want to make a class with no constraint (no inherited member nor abstract member to implement), we can simply make a class implementing the `Any` interface:
 
-```sn
+```rave
 val obj = new ~Any {
   public fn onClick () {
     println!('Triggered!');
@@ -5849,7 +5849,7 @@ obj.onClick(); // Prints: 'Triggered!'
 
 A _namespace_ is a named scope which can export some of its entities to its direct parent scope:
 
-```sn
+```rave
 namespace Users {
   struct User {
     name: string;
@@ -5882,7 +5882,7 @@ namespace Users {
 
 At this point, all entities of the namespace are _private_. We can make them _public_ by _exporting_ them:
 
-```sn
+```rave
 namespace Users {
   // ...
 
@@ -5894,7 +5894,7 @@ namespace Users {
 
 This way, we can access the three exported functions, but not anything else. To access a namespace's content, we have to write its name followed by two double point symbols:
 
-```sn
+```rave
 namespace Users {
   // ...
 }
@@ -5914,7 +5914,7 @@ Note that even structures our namespaces can be exported from a namespace.
 
 Namespaces can be accessed from other namespaces using chained `::`:
 
-```sn
+```rave
 namespace A {
   namespace B {
     lit MESSAGE = 'Hello world!';
@@ -5930,7 +5930,7 @@ println!(A::B::MESSAGE); // Prints: 'Hello world!'
 
 It's also possible to access namespaces from the global scope using an antislash before their name:
 
-```sn
+```rave
 namespace A {
   namespace B {
     lit MESSAGE = 'Hello world!';
@@ -5951,7 +5951,7 @@ namespace C {
 
 Literal types are types which can be used as a type for a literal constant as well as by the `lit<T>` wrapper. Their list is stored inside a native union type:
 
-```sn
+```rave
 type Literal = void | bool | number | string | Function | Structure | Enumeration |
                Interface | Trait | Class | Type | Static<Literal>;
 ```
@@ -5974,7 +5974,7 @@ Finally, type checking is disabled on them until their call. And type checking i
 
 Here is an example:
 
-```sn
+```rave
 fn doubleNumberFn (value: number) : number {
   return value * 2;
 }
@@ -5991,7 +5991,7 @@ As you can see, flexes are called using the `!` symbol.
 
 The `typeof` operator can also be used for the return type:
 
-```sn
+```rave
 flex doubleNumberFlex (value: >number) : typeof value {
   return value * 2;
 }
@@ -6003,7 +6003,7 @@ Note that flexes can be part of classes and traits as methods, but not in interf
 
 Another advantage of flexs is that they can return literal values, at the opposite of functions, which allows to use them as types:
 
-```sn
+```rave
 flex getFamilyTypeOf (value: number) : lit<Type> {
   if value instanceof int {
     return int;
@@ -6021,7 +6021,7 @@ The `instanceof` keyword is the _typechecking operator_: it checks if the given 
 
 Let's try our flex:
 
-```sn
+```rave
 getFamilyTypeOf!(2); // int
 getFamilyTypeOf!(2u); // uint
 
@@ -6033,7 +6033,7 @@ getFamilyTypeOf!(2.0); // number
 
 As you can see, it returns the right types. Because it returns a literal type, we can use it as an entity's type, for example:
 
-```sn
+```rave
 val num: number = 2b;
 
 val someInt: getFamilyTypeOf!(num) = 8; // int ; works fine
@@ -6045,7 +6045,7 @@ This little code above works even though the real type of `num` is hidden by its
 
 Flexs can be useful in specific situations, like when iterating a tuple. While we can iterate it using their `iterFn` method, the callback function will receive only values of the `Any` type, while when using their `iter` method, the callback flex will receive values with the real type of the value. Showcase:
 
-```sn
+```rave
 val tuple = ( null, true, 2, 'Hello world!' );
 
 tuple.iterFn(value => {
@@ -6059,7 +6059,7 @@ tuple.iter!(flex (value: >Any) {
 
 Here is an example of a flex returning a reversed version of a given tuple, using the tuples' `.map!` method which allows to create a new tuple with the same number of elements:
 
-```sn
+```rave
 flex reverseTuple (tuple: #tuple) : #tuple {
   return tuple.map!(flex (value: >Any, lit index: usize) : >Any {
     return tuple[tuple.size - index - 1];
@@ -6075,7 +6075,7 @@ Our callback then returns the value at the opposite of the tuple. The generated 
 
 Another way to write this flex is using the `createTuple!` flex which allows to create a tuple from a flex:
 
-```sn
+```rave
 flex reverseTuple (tuple: #tuple) : #tuple {
   return createTuple!(tuple.size, flex (lit index: usize) : >Any {
     return tuple[tuple.size - index - 1];
@@ -6095,7 +6095,7 @@ Final word: as you can see, flexs are complex to handle, and you may not need ve
 
 Symbols are useful values to identify and separate data. A symbol holds a unique identifier we cannot access, as well as an optional string which is its _value_. Two symbols are considered as equal if and only if they share the same identifier - so they are only equal to themselves.
 
-```sn
+```rave
 val sym1 = new Symbol('This is a great symbol');
 val sym2 = new Symbol('This is a sympathic symbol');
 
@@ -6113,7 +6113,7 @@ sym2 == sym2; // true
 
 Entities shadowing consist in declaring two entities with the same name inside the same scope. In such scenario, the second entity replaces the first one. This can be useful to change the definitive type of an entity after manipulating its content, for instance. Here is an example:
 
-```sn
+```rave
 struct Hero {
   name: string;
 }
@@ -6141,7 +6141,7 @@ The second declaration of `hero` replaces the first one (we say it _shadows_ it)
 
 Late initialization consists in declaring an entity without an initialization value. It is useful when its value is decided by a large condition, for example, especially when we are dealing with a constant:
 
-```sn
+```rave
 val name: string;
 
 println!(name); // ERROR ('name' has not been initialized)
@@ -6158,7 +6158,7 @@ This is the method used by classes to declare attributes but initializing them o
 
 Also, for classes, if any member remains uninitialized when the constructor ends, an error is also raised at build time:
 
-```sn
+```rave
 class A {
   public name: string;
   public age: uint;
@@ -6174,7 +6174,7 @@ class A {
 
 Natively, it is not possible to convert an `int[]` to an `int[3]` for example, even though the opposite is allowed:
 
-```sn
+```rave
 // Automatic typecasting doesn't work
 val arr1: int[] = [ 2, 3, 4 ];
 val arr2: int[3] = arr1; // ERROR (type mismatch)
@@ -6199,7 +6199,7 @@ if <?int[3]> arr1 as arr2 {
 
 So, in order to perform this typecast, we have to use arrays' dedicated `.toFixed()` method:
 
-```sn
+```rave
 val arr1: int[] = [ 2, 3, 4 ];
 
 if try arr1.toFixed(3) as arr2 {
@@ -6213,7 +6213,7 @@ This function throws an error if the typecast failed, so if we tried to typecast
 
 A second point about vectors typecasting is that any vector holding `X` values can be automatically typecasted to an equivalent vector holding `Y` values if `Y` is a parent type of `X`. Showcase:
 
-```sn
+```rave
 val list1: int[#] = [# 0];
 val list2: number[#] = list1; // Works fine
 
@@ -6223,7 +6223,7 @@ val arr2: number[3] = arr1; // Works fine
 
 Note that such typecasts automatically clone the vector, to avoid such problems:
 
-```sn
+```rave
 val list1: int[#] = [# 0];
 val list2: number[#] = list1; // Works fine
 
@@ -6239,7 +6239,7 @@ Proxies are entities that don't have a real value. Instead, when we attempt to e
 
 Proxies are defined using the `proxy` keyword, with an object containing the callback called when the object is read - called the "getter" - and the one when the object is written - called the "setter" -. Note that the setter is optional ; if none is specified, all assignments will result in an error at build time.
 
-```sn
+```rave
 val _counter = 0u;
 
 proxy counter: uint from {
@@ -6258,7 +6258,7 @@ Our `counter` proxy is declared as an entity of the `uint` type. The object loca
 
 Let's try it:
 
-```sn
+```rave
 println!(counter); // Prints: '1'
 println!(counter); // Prints: '2'
 println!(counter); // Prints: '3'
@@ -6266,7 +6266,7 @@ println!(counter); // Prints: '3'
 
 And so on. Note that it is possible to put any addition field in the object, and so we can integrate the counter variable inside our proxy. This way, we can make a counter that only increments itself and cannot be decremented:
 
-```sn
+```rave
 proxy counter: uint from {
   value: 0u,
   getter: () => ++ @value
@@ -6285,7 +6285,7 @@ As the proxy model is a simple object, we can create it by advance and store it 
 
 A specificity is that models must be declared using the `prxmodel` keyword. Also, they cannot be read or write ; writing `myProxyModel.prop` will always fail.
 
-```sn
+```rave
 prxmodel counterProxy {
   value: 0u,
   getter: () => ++ @value
@@ -6305,7 +6305,7 @@ _Flexible proxies_ are proxies that use flexs instead of simple functions as the
 
 We declare them using the `proxy!` keyword:
 
-```sn
+```rave
 proxy! hello: lit<string> from {
   getter: flex () : lit<string> {
     return 'Hello world!';
@@ -6322,7 +6322,7 @@ This proxy declares itself as containing a literal `string` value. Because its g
 
 Proxies are allowed to take templates, too. This can be useful to type them dynamically:
 
-```sn
+```rave
 proxy! typeOf<DATA: T, T>: lit<Type> from {
   getter: flex () : lit<Type> {
     return T;
@@ -6350,7 +6350,7 @@ The type of the proxy itself is a literal type. Its getter, a flex, simply retur
 
 _Bindings_ are a simple way to access all properties of a given object as if they were part of the current scope. This can be useful when dealing with large libraries. Let's take the example of a game engine, with the following code:
 
-```sn
+```rave
 engine.run(lib => {
   val window = lib.createWindow(640, 480, 'My super game');
 
@@ -6371,7 +6371,7 @@ engine.run(lib => {
 
 The same version, with bindings:
 
-```sn
+```rave
 engine.run(lib => {
   // Bind "lib"'s property to the current scope
   #bind lib;
@@ -6400,7 +6400,7 @@ Sometimes, we will want to use a piece of code for a specific platform or langua
 
 Here is an example:
 
-```sn
+```rave
 #if PROC_ARCH == 'ARM'
   println!('This program has been compiled for ARM.');
 #end
@@ -6420,7 +6420,7 @@ Superoverloads are global overloads of arithmetic and comparison operators. They
 
 Showcase:
 
-```sn
+```rave
 fn %add<SIZE: usize> (left: int[SIZE], right: int[SIZE]) : string {
   return (left[i] + right[i] for i -> 0..SIZE);
 }
@@ -6443,7 +6443,7 @@ Some events are synchronous even though they appear to be asynchronous. For exam
 
 Another case is callbacks. In the following code:
 
-```sn
+```rave
 class Event {
   private static handler: () => void;
 
@@ -6480,7 +6480,7 @@ Promises are a great tool when coming to handling asynchronous behaviors. A prom
 
 Promises are basically a software conception of tasks that can either return a result or throw an error. Here is an example of promises, when dealing with filesystem tasks:
 
-```sn
+```rave
 // We admit the function below is already defined
 fn readAsync (fileName: string) : Promise<string, Error>;
 
@@ -6501,7 +6501,7 @@ We can also use `.finally()` to run a function after the other callbacks, whatev
 
 Let's now write the `readAsync` function:
 
-```sn
+```rave
 val files = new Map<string, string>;
 
 fn readAsync (fileName: string) : Promise<string, Error> {
@@ -6526,7 +6526,7 @@ Asynchronous functions are a simplier way to write functions based on promises. 
 
 If we rewrite our function in an asynchronous function, here is how it looks:
 
-```sn
+```rave
 async fn readAsync (fileName: string) : (string, Error) {
   if filename in files {
     resolve files[fileName];
@@ -6544,7 +6544,7 @@ Then, we don't have to instanciate the `Promise<X, Y>` class: the function's bod
 
 Note that, when these keywords are called, the function immedialy stops. At the opposite of calling a function manually, these stop the function's execution, even inside a sub-function:
 
-```sn
+```rave
 async fn test () : (void, void) {
   (() => {
     resolve null;
@@ -6562,7 +6562,7 @@ Also, asynchronous functions are allowed to return values. In such case, it will
 
 Error-free promises are promises that cannot fail. These take only one template instead of twos, and all calls to `.catch()` will work but have no effect. Also, the promise's function only take the resolution callback, as it cannot perform a rejection:
 
-```sn
+```rave
 new Promise<string>(resolve => {
   resolve('It works.');
 });
@@ -6570,7 +6570,7 @@ new Promise<string>(resolve => {
 
 With asynchronous functions, it simply consists in returning a single type instead of a tuple of two types. Also, the `reject` keyword becomes unavailable:
 
-```sn
+```rave
 async fn test () : string {
   reject 'Nope'; // ERROR
   resolve 'It works'; // Works fine
@@ -6579,7 +6579,7 @@ async fn test () : string {
 
 For promises that do not return any kind of value, the return type can even be omitted (it will be considered as `void`):
 
-```sn
+```rave
 async fn test () {
   resolve ; // Works fine
 }
@@ -6589,7 +6589,7 @@ async fn test () {
 
 It's possible to resolve several promises at once, using `Promise.all`:
 
-```sn
+```rave
 val single = Promise<string, Error>.all([
   readAsync('file1.txt'),
   readAsync('file2.txt'),
@@ -6609,7 +6609,7 @@ The resulting promise will succeed only if all provided promises succeed too. In
 
 Note that it's possible to use promises which return different resolution and/or rejection types ; in this case the 'Best Common Type' method will be applied:
 
-```sn
+```rave
 val single = Promise.all([
   new Promise<int, int>((resolve, reject) => resolve(2)),
   new Promise<bool, bool>((resolve, reject) => resolve(true))
@@ -6622,7 +6622,7 @@ Sometimes we have to perform some asynchronous actions and wait for their comple
 
 For this, we can use the `await` keyword which allows, inside an asynchronous function, to wait for the completion of a promise:
 
-```sn
+```rave
 // Considering the following function:
 async fn sleep (delay: uint);
 
@@ -6645,7 +6645,7 @@ Note that, if the promise is not error-free, `await` may throw an `AwaitRejectio
 
 The `await` keyword is not available outside asynchronous functions:
 
-```sn
+```rave
 fn test () {
   (() => {
     await sleep(delay); // ERROR (this lambda is not an asynchronous function)
@@ -6663,7 +6663,7 @@ Still, there are cases when we explicitly want to block the program's execution 
 
 A first idea to achieve this would be to make ten promises, and when they are all resolved or rejected, display the result in a terminal. Here is the code:
 
-```sn
+```rave
 // Considering the following function:
 async fn getArticle (id: uint) : (string, Error);
 
@@ -6686,7 +6686,7 @@ That's all a question of goal: while `await` aims to have a lighter and 'synchro
 
 Here is the syntax:
 
-```sn
+```rave
 for i in 0..10 {
   try {
     println!(sync fetchArticle(i));
@@ -6700,7 +6700,7 @@ for i in 0..10 {
 
 This way, the loop is ran a synchronous way. To take again our `.map()` example:
 
-```sn
+```rave
 val articles = [ 2, 5, 8 ];
 val articlesBody = articles.map(
   id => try sync fetchArticle(i) catch 'Failed to fetch article: ' + err.message
@@ -6734,7 +6734,7 @@ So, let's see how this works.
 
 The syntax of documentation is pretty the same than in many other languages: a multi-line comment, starting with a double `*` symbol. Here is the syntax for assignable entities:
 
-```sn
+```rave
 /**
  * The name of a person
  */
@@ -6747,7 +6747,7 @@ The first line contains two `*` symbols, meaning it's a _documentation comment_.
 
 For functions, we have to document what the function does, what is its return value, and each of its arguments. Here is an example of a summation function:
 
-```sn
+```rave
 /**
  * Make a summation from a list of numbers
  * @param numbers A list of numbers
@@ -6772,7 +6772,7 @@ Note that we don't have to use `@returns` for void-typed functions.
 
 To document nested functions (e.g. callbacks), we document them as usual functions using a `>` symbol, with the argument's annotation being the callback's one:
 
-```sn
+```rave
 /**
  * Make a summation from a generator function
  * @param generator The generator to make the summation from
@@ -6796,7 +6796,7 @@ If we had double-nested functions (like a function), we would have used two `>` 
 
 Templates are documented like arguments, but with `@template`:
 
-```sn
+```rave
 /**
  * Make a summation from an iterator
  * @template T The numbers' type
@@ -6818,7 +6818,7 @@ fn sum<T extends number> (iterator: Iterator<T>) : T {
 
 The `@example` annotation gives an example on how to use the function:
 
-```sn
+```rave
 /**
  * Increment an integer through a reference
  * @param num A mutable reference to an integer
@@ -6835,7 +6835,7 @@ Examples aim to be as short and as explicit as possible. Note that it's possible
 
 The `@throws` annotation allows us to describe each case of error throwing:
 
-```sn
+```rave
 /**
  * Double a positive integer
  * @param num The integer to double
@@ -6854,7 +6854,7 @@ fn double (num: int) : int throws ErrorType1, ErrorType2 {
 
 The `@condition` annotation indicates a condition that must be matched in order for the function to work properly. It is useful to indicate conditions required to avoid runtime errors, that aren't declared using the `throws` keyword.
 
-```sn
+```rave
 /**
  * Get a value from an array
  * @param arr The array to get a value from
@@ -6873,7 +6873,7 @@ It is usually an expression, but it's not forced too.
 
 Polymorph functions that does exactly the same actions but on different types can use the `@samedef` annotation to keep the exact same description across its definitions:
 
-```sn
+```rave
 /**
  * Get a value from an array
  * @param arr The array to get a value from
@@ -6897,7 +6897,7 @@ fn getValue (arr: string[], index: usize) : string {
 
 Classes are described like assignable entities. Their templates can be described using `@template`:
 
-```sn
+```rave
 /**
  * Container for an integer value
  */
@@ -6918,7 +6918,7 @@ interface B<T> {
 
 Type aliases are described like classes:
 
-```sn
+```rave
 /**
  * Alias for the 'int' type
  */
@@ -6935,7 +6935,7 @@ type Collection<T> = Map<string, T>;
 
 Segments are described like assignable entities:
 
-```sn
+```rave
 class B<T> {
   public value: T;
 
@@ -6952,7 +6952,7 @@ class B<T> {
 
 Namespaces are described like assignable entities:
 
-```sn
+```rave
 /**
  * Mathematic functions
  */
@@ -6975,7 +6975,7 @@ namespace SuperMath {
 
 Files can be documented as well, using three indicators: `@file`, which indicates what the file contains and does, `@author` which describes its author(s), and `@license` which gives informations about the license the file uses. Here is how it does:
 
-```sn
+```rave
 /**
  * @file Provides a summation function
  * @author Your Name
@@ -7002,7 +7002,7 @@ fn sum (...numbers: int[]) : int {
 
 Inline annotations are part of the language and describe a part of the program. There must be placed at the beginning of a single-line comment, or at the beginning of the first non-empty line of a multi-line comment.
 
-```sn
+```rave
 // NOTE: This part may not work under specific circumstances
 
 // OPTIMIZE: This part needs to be optimized
@@ -7020,7 +7020,7 @@ Inline annotations are part of the language and describe a part of the program. 
 
 Dynamic annotations allow to set and read a value using annotations. It can be useful to document functions that are re-implemented in child classes, without rewriting the whole documentation in the children. Here is an example, using the `@class` class which is automatically replaced by the real class name (`_real`' name):
 
-```sn
+```rave
 virtual class A {
   /**
    * Create a new value of @class and return it
@@ -7044,7 +7044,7 @@ class C extends A {
 
 This code is strictly equivalent to:
 
-```sn
+```rave
 virtual class A {
   /**
    * Create a new value of A and return it
@@ -7076,7 +7076,7 @@ class C extends A {
 
 In some cases, renaming could be required, and can be performed using the `@classname` annotation:
 
-```sn
+```rave
 /**
  * @classname(number)
  */
@@ -7095,7 +7095,7 @@ class SignedNumber extends A {}
 
 This will be converted to:
 
-```sn
+```rave
 class Number {
   /**
    * Do some number stuff

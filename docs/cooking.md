@@ -16,8 +16,10 @@ The program managing the toolchain is called Raven ; you can download it from [t
 
 To ensure Raven is installed correctly, open a terminal and type:
 
-```bash
+```shell
 raven -v
 ```
 
 If it displays a version number, then Raven is successfully installed on your system!
+
+All examples in this book will be given for the Linux platform, but they work the same way on Windows, Mac OS and other systems.
