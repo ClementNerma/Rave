@@ -6422,7 +6422,7 @@ Showcase:
 
 ```sn
 fn %add<SIZE: usize> (left: int[SIZE], right: int[SIZE]) : string {
-  return (left[i] + right[i] for i in 0..SIZE);
+  return (left[i] + right[i] for i -> 0..SIZE);
 }
 
 val added = [ 1, 2 ] + [ 3, 4 ];
