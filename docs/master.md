@@ -124,27 +124,27 @@ val constant: int; // ERROR
 
 Always prefer writing a constant to a mutable ; this will prevent accidentally modifying its content. Plus, in some languages like JavaScript, it makes the program a bit faster.
 
-### Plain constants
+### Literal constants
 
-Plain constants are constants that only accept _plain values_, which are values we can predict before the program begins to run, and whatever the platform/context is. In some other programming languages, plain values are called _literals_.
+Literal constants are constants that only accept _literal values_, also abbreviated _literals_, which are values we can predict before the program begins to run, and whatever the platform/context is.
 
-A plain constant is declared using the `pln` keyword:
+A literal constant is declared using the `lit` keyword:
 
 ```sn
 // Inferred type
-pln PLAIN = 2;
+lit LITERAL = 2;
 
 // Explicit type
-pln PLAIN: int = 8;
+lit LITERAL: int = 8;
 
 // Initialization is required
-pln PLAIN: int; // ERROR
+lit LITERAL: int; // ERROR
 
-// Non-plain values are not accepted
-pln PLAIN = mutable1; // ERROR
+// Non-literal values are not accepted
+lit LITERAL = mutable1; // ERROR
 ```
 
-Note that, by convention, the name of plain constants is written using only uppercase characters, digits and underscores (`_`).
+Note that, by convention, the name of literal constants is written using only uppercase characters, digits and underscores (`_`).
 
 ### Primitive types
 
@@ -279,8 +279,8 @@ Bitwise operators work on each bit of the number. They take two numbers to retur
 * `~` (one's complement) - takes a single number
 
 ```sn
-pln a = 60; // a : 0011 1100
-pln b = 13; // b : 0000 1101
+lit a = 60; // a : 0011 1100
+lit b = 13; // b : 0000 1101
 
 a & b;  // 0000 1100 : 12
 a | b;  // 0011 1101 : 61
@@ -348,7 +348,7 @@ println!(num - 3); // Prints: '125'
 
 ### Separator and alternative bases
 
-Plain numbers accept a _separator_, which is the underscore symbol (`_`) to make them more readable:
+Literal numbers accept a _separator_, which is the underscore symbol (`_`) to make them more readable:
 
 ```sn
 val num = 1_000_000;
@@ -356,7 +356,7 @@ val num = 1_000_000;
 val num = 1000000;
 ```
 
-Underscores are simply ignored in the number. Note that you can't start or end a plain number by an underscore symbol.
+Underscores are simply ignored in the number. Note that you can't start or end a literal number by an underscore symbol.
 
 It's also possible to write numbers in alternative bases, such as hexadecimal, by starting the number with `0` and a base symbol: `d` for decimal (base 10, the default one), `b` for binary (base 2), `o` for octal (base 8), and `x` for hexadecimal (base 16).
 
@@ -449,9 +449,9 @@ The only exceptions are for types which are castable _from_ the second argument 
 |     `f32`   | `f32`                                         |
 |     `f64`   | `f32`, `f64`                                  |
 
-### Plain numbers typecasting
+### Literal numbers typecasting
 
-There is a special rule for plain numbers, however. When we write a plain number without any suffix, it is automatically typecastable to any other number type (if it doesn't exceeds its minimum nor maximum value, of course):
+There is a special rule for literal numbers, however. When we write a literal number without any suffix, it is automatically typecastable to any other number type (if it doesn't exceeds its minimum nor maximum value, of course):
 
 ```sn
 val num: u8 = 2; // Works fine
@@ -520,8 +520,8 @@ Here is the list of operators, taking two operands: `a` on their left, `b` on th
 There is an additional operator, `!` (not) which returns `true` if its single operand (on its right) is a nil value.
 
 ```sn
-pln N1 = 10;
-pln N2 = 5;
+lit N1 = 10;
+lit N2 = 5;
 
 N1 && N2; // true
 N1 || N2; // true
@@ -770,11 +770,11 @@ jack.exp += 100u;
 println!(jack.exp); // Prints: '100'
 ```
 
-For specific situations we will see later, we can also force a field to only store a plain value, using the `pln` keyword:
+For specific situations we will see later, we can also force a field to only store a literal, using the `lit` keyword:
 
 ```sn
 struct Hero {
-  pln NAME: string;
+  lit NAME: string;
   hp: uint;
   atk: uint;
   mut exp: uint;
@@ -850,7 +850,7 @@ enum Color2 {
 };
 ```
 
-The only limitation is that the value must be a plain one.
+The only limitation is that the value must be a literal one.
 
 It's also possible to hold values in an enumeration:
 
@@ -867,7 +867,7 @@ val red = Color.Custom(255B, 0B, 0B);
 
 ### Tuples
 
-Tuples are a mix between structures and arrays. Their indexes are plain `usize` values, but each value can have a different type:
+Tuples are a mix between structures and arrays. Their indexes are literal `usize` values, but each value can have a different type:
 
 ```sn
 val tuple: (int, f32, string) = (2, 4.8, 'Hello');
@@ -877,7 +877,7 @@ tuple[1]; // f32
 tuple[2]; // string
 ```
 
-Note that, as indexes must be plain values, we can't use a variable here:
+Note that, as indexes must be literal, we can't use a variable here:
 
 ```sn
 val tuple: (int) = (2);
@@ -885,9 +885,9 @@ val num = 0p;
 
 tuple[num]; // ERROR
 
-pln NUM = 0p;
+lit NUM = 0p;
 
-tuple[NUM]; // Works ('NUM' is a plain constant)
+tuple[NUM]; // Works ('NUM' is a literal constant)
 ```
 
 Inferred typing also works on tuples:
@@ -896,7 +896,7 @@ Inferred typing also works on tuples:
 val tuple = (2, 'Hello'); // (int, string)
 ```
 
-As for structures, a tuple's values are constants by default. We can use the `mut` and `pln` keyword to change their state:
+As for structures, a tuple's values are constants by default. We can use the `mut` and `lit` keyword to change their state:
 
 ```sn
 val tuple: (mut int, string) = (2, 'Hello');
@@ -989,10 +989,10 @@ This code is perfectly valid, and we can access our hero's fields just like we w
 
 ```sn
 struct ImplicitStruct1 {
-  pln name: string;
-  pln hp: uint;
-  pln atk: uint;
-  pln exp: uint;
+  lit name: string;
+  lit hp: uint;
+  lit atk: uint;
+  lit exp: uint;
 }
 
 val jack = Hero {
@@ -1003,7 +1003,7 @@ val jack = Hero {
 };
 ```
 
-This is called Inferred Structured Typing, as it infers not the type of a primitive value, but the structure behind a whole object. The fields were all inferred as plain here, because we provided plain values. If we used variables instead, they wouldn't have been marked as plain, of course.
+This is called Inferred Structured Typing, as it infers not the type of a primitive value, but the structure behind a whole object. The fields were all inferred as literal constants here, because we provided literals. If we used variables instead, they wouldn't have been marked as literal constants, of course.
 
 Also, as you can see here, all fields are constant. We can use the `mut` keyword inside the implicit object to make them mutable:
 
@@ -1668,17 +1668,17 @@ val trapezoidArea = area(1.0, 2.0, 3.0));
 
 ### Arguments mutability
 
-By default, a function's arguments are constants. They can be made mutable or plain using the same keywords than in structures:
+By default, a function's arguments are constants. They can be made mutable or literal using the same keywords than in structures:
 
 ```sn
-fn test (mut mutable: bool, constant: bool, pln plain: bool) {
+fn test (mut mutable: bool, constant: bool, lit literal: bool) {
   mutable = true; // Works fine
   constant = true; // ERROR
-  plain = true; // ERROR
+  literal = true; // ERROR
 
-  pln p1 = mutable; // ERROR
-  pln p2 = constant; // ERROR
-  pln p3 = plain; // Works fine
+  lit p1 = mutable; // ERROR
+  lit p2 = constant; // ERROR
+  lit p3 = literal; // Works fine
 }
 ```
 
@@ -2214,11 +2214,11 @@ class Example {
 }
 ```
 
-Also, as attributes are entities, they can be marked as constant using `val`, or as plain using `pln`. By default, they are implicitly mutable.
+Also, as attributes are entities, they can be marked as constant using `val`, or as literal using `lit`. By default, they are implicitly mutable.
 
 ```sn
 class Example {
-  public pln KNOWN = 'Public data';
+  public lit KNOWN = 'Public data';
   private val secret = 'Secret data';
 }
 ```
@@ -2655,10 +2655,10 @@ When we have several fields, it becomes a bit more complicated, as we have to de
 
 ```sn
   // ...
-  public pln %lazy_serial_fields = ('name');
+  public lit %lazy_serial_fields = ('name');
 ```
 
-This plain tuple contains the list of the attributes to serialize. The specified attributes must be serializable themselves.
+This literal tuple contains the list of the attributes to serialize. The specified attributes must be serializable themselves.
 
 With the lazy overload, the program will automatically handle serialization and unserialization, as well as checking if the serialized content is valid or not.
 
@@ -2666,7 +2666,7 @@ If you want to be ensure the serialized content is valid, it's possible to make 
 
 ```sn
   // ...
-  public pln %lazy_serial_fields = ('name', WITH_CHECKSUM);
+  public lit %lazy_serial_fields = ('name', WITH_CHECKSUM);
 ```
 
 The big advantage of checksum is that it highly reduces the risks to get invalid values, but the downside is that both serialization and unserialization will be considerably slower.
@@ -3225,7 +3225,7 @@ Here, `B` is a sub-type of `A`, because it implements all the fields `A` has, pl
 
 Note that, if `name` was marked as mutable in a structure and not in the other, `B` wouldn't have been a sub-type of `A`.
 
-Also, plain fields are tolerated where a constant field is expected:
+Also, literal fields are tolerated where a constant field is expected:
 
 ```sn
 struct A {
@@ -3233,7 +3233,7 @@ struct A {
 }
 
 struct B {
-  pln name: string;
+  lit name: string;
   age: uint;
 }
 
@@ -3242,7 +3242,7 @@ val jack: A = B {
 }; // Works fine
 ```
 
-The field will simply act as constant and not plain.
+The field will simply act as constant and not literal.
 
 A last exception is for mutable fields when declaring objects. Let's take the following example:
 
@@ -3258,7 +3258,7 @@ val obj = {
 val casted: A = obj; // ERROR
 ```
 
-An error is thrown error because implicitly the `a` field in our `obj` constant is a plain constant, so it can only be accepted if the target structure's field is a plain constant or a simple constant, but not if it is mutable.
+An error is thrown error because implicitly the `a` field in our `obj` constant is a literal constant, so it can only be accepted if the target structure's field is a literal constant or a simple constant, but not if it is mutable.
 
 To solve this case, we must specify our field is mutable in `obj`:
 
@@ -4347,7 +4347,7 @@ if not fail.ok {
 }
 ```
 
-The `ALL` plain constant indicates we want to catch all kind of panics. We can also specify a specific one, or a list of the panic to catch. `ALL` is simply a tuple containing all of them.
+The `ALL` literal constant indicates we want to catch all kind of panics. We can also specify a specific one, or a list of the panic to catch. `ALL` is simply a tuple containing all of them.
 
 Only a few panics are not catchable ; for example, the `OUT_OF_MEMORY` panic will force the program to exit no matter what happens.
 
@@ -5023,9 +5023,9 @@ struct Hero {
   name: string;
 }
 
-pln myStruct: Structure = Hero;
+lit myStruct: Structure = Hero;
 // With inferred typing:
-pln myStruct = Hero;
+lit myStruct = Hero;
 ```
 
 These types are especially useful in flexes.
@@ -5606,7 +5606,7 @@ val day1: DayOfWeek = 'Monday'; // Works fine
 val day2: DayOfWeek = 'Someday'; // ERROR (at build time)
 ```
 
-Union values can only be made of plain primitives.
+Union values can only be made of literal primitives.
 
 ### Type assertion
 
@@ -5695,7 +5695,7 @@ class B {
 type C = A | B;
 ```
 
-The `C` union type is _discriminitable_ because all its member types (`A` and `B`) implement a public, constant member named the same way, and which use a different union value: we know that each `A` value will have its `type` member set to `Type1`, while for `B` it will be `Type2`. Even though these members are not plain, we know they can only contain these values thanks to the union value.
+The `C` union type is _discriminitable_ because all its member types (`A` and `B`) implement a public, constant member named the same way, and which use a different union value: we know that each `A` value will have its `type` member set to `Type1`, while for `B` it will be `Type2`. Even though these members are not literal, we know they can only contain these values thanks to the union value.
 
 So, if we know that a `C` value's `type` member is equal to `Type1`, it will be of `A` type. This behavior can be used in condition blocks, as well as in matches:
 
@@ -5735,7 +5735,7 @@ match value.type {
 }
 ```
 
-It's also possible to use an enumeration. In this case, this is much simplier, as we can also use a plain member (e.g. in classes) with the enumeration's type, instead of the value's type:
+It's also possible to use an enumeration. In this case, this is much simplier, as we can also use a literal member (e.g. in classes) with the enumeration's type, instead of the value's type:
 
 ```sn
 enum HeroType {
@@ -5744,14 +5744,14 @@ enum HeroType {
   BlackWizard
 }
 
-class Warrior { public pln type = HeroType.Warrior; }
+class Warrior { public lit type = HeroType.Warrior; }
 
 struct WhiteWizard {
   type: HeroType.WhiteWizard;
 }
 
 interface BlackWizard {
-  public pln type = HeroType.BlackWizard;
+  public lit type = HeroType.BlackWizard;
 }
 
 type C = Warrior | WhiteWizard | BlackWizard;
@@ -5886,7 +5886,7 @@ Namespaces can be accessed from other namespaces using chained `::`:
 ```sn
 namespace A {
   namespace B {
-    pln MESSAGE = 'Hello world!';
+    lit MESSAGE = 'Hello world!';
 
     export MESSAGE;
   }
@@ -5902,7 +5902,7 @@ It's also possible to access namespaces from the global scope using an antislash
 ```sn
 namespace A {
   namespace B {
-    pln MESSAGE = 'Hello world!';
+    lit MESSAGE = 'Hello world!';
 
     export MESSAGE;
   }
@@ -5916,18 +5916,18 @@ namespace C {
 }
 ```
 
-### Plainable types
+### Literal types
 
-Plainable types are types which can be used as a type for a plain constant as well as by the `pln<T>` wrapper. Their list is stored inside a native union type:
+Literal types are types which can be used as a type for a literal constant as well as by the `lit<T>` wrapper. Their list is stored inside a native union type:
 
 ```sn
-type Plainable = void | bool | number | string | Function | Structure | Enumeration |
-                 Interface | Trait | Class | Type | Static<Plainable>;
+type Literal = void | bool | number | string | Function | Structure | Enumeration |
+               Interface | Trait | Class | Type | Static<Literal>;
 ```
 
-Creating a plain constant with a type that doesn't figure in this union will result in an error at build time.
+Creating a literal constant with a type that doesn't figure in this union will result in an error at build time.
 
-Note that children of these types are accepted, which means we can make a plain constant containing an `int` for example.
+Note that children of these types are accepted, which means we can make a literal constant containing an `int` for example.
 
 ### Flexs
 
@@ -5970,10 +5970,10 @@ This second writing is better in our case because it is more precise: we know th
 
 Note that flexes can be part of classes and traits as methods, but not in interfaces as it would be impossible to predict the implemented content of the flex.
 
-Another advantage of flexs is that they can return plain values, at the opposite of functions, which allows to use them as types:
+Another advantage of flexs is that they can return literal values, at the opposite of functions, which allows to use them as types:
 
 ```sn
-flex getFamilyTypeOf (value: number) : pln<Type> {
+flex getFamilyTypeOf (value: number) : lit<Type> {
   if value instanceof int {
     return int;
   } elsif value instanceof uint {
@@ -5984,7 +5984,7 @@ flex getFamilyTypeOf (value: number) : pln<Type> {
 }
 ```
 
-Let's introduce a few new concepts here. First of all, the `Type` type obviously refers to a type. The `pln<T>` wrapper indicates this is a plain value, meaning it is predictable right at build time. So, `pln<Type>` is a plain `Type` value - a predictable type.
+Let's introduce a few new concepts here. First of all, the `Type` type obviously refers to a type. The `lit<T>` wrapper indicates this is a literal value, meaning it is predictable right at build time. So, `lit<Type>` is a literal `Type` value - a predictable type.
 
 The `instanceof` keyword is the _typechecking operator_: it checks if the given value is an instance of the provided type or of one of its sub-types. If we want to check if a value's type implements a specific type for example, we will have to check using the `typeof` operator like `(typeof value) implements Stringifyable` - the same keyword than for templates.
 
@@ -6000,7 +6000,7 @@ getFamilyTypeOf!(2S); // uint
 getFamilyTypeOf!(2.0); // number
 ```
 
-As you can see, it returns the right types. Because it returns a plain type, we can use it as an entity's type, for example:
+As you can see, it returns the right types. Because it returns a literal type, we can use it as an entity's type, for example:
 
 ```sn
 val num: number = 2b;
@@ -6030,7 +6030,7 @@ Here is an example of a flex returning a reversed version of a given tuple, usin
 
 ```sn
 flex reverseTuple (tuple: #tuple) : #tuple {
-  return tuple.map!(flex (value: >Any, pln index: usize) : >Any {
+  return tuple.map!(flex (value: >Any, lit index: usize) : >Any {
     return tuple[tuple.size - index - 1];
   });
 }
@@ -6046,15 +6046,15 @@ Another way to write this flex is using the `createTuple!` flex which allows to 
 
 ```sn
 flex reverseTuple (tuple: #tuple) : #tuple {
-  return createTuple!(tuple.size, flex (pln index: usize) : >Any {
+  return createTuple!(tuple.size, flex (lit index: usize) : >Any {
     return tuple[tuple.size - index - 1];
   });
 }
 ```
 
-This one uses the same declaration, but generates a tuple dynamically. The `createTuple!` flex requires a plain `usize` value, so we provide the original tuple's size (which is a plain value for all tuples). Then, we provide a callback that takes the current index and returns the value at the opposite in the original tuple.
+This one uses the same declaration, but generates a tuple dynamically. The `createTuple!` flex requires a literal `usize` value, so we provide the original tuple's size (which is a literal value for all tuples). Then, we provide a callback that takes the current index and returns the value at the opposite in the original tuple.
 
-The only downside of this flex is that the new tuple only has constant members - no plain nor mutable ones. We could solve this problem by using the `createAdvancedTuple!` which uses a more complex API.
+The only downside of this flex is that the new tuple only has constant members - no literal nor mutable ones. We could solve this problem by using the `createAdvancedTuple!` which uses a more complex API.
 
 Also, note that, as flexes are rewritten at each call, calling flexes inside flexes can quickly make an enormous code to copy-paste. If we make a tuple of a hundred elements for example, the callback flex in `reverseTuple` will be called a hundred times!
 
@@ -6121,7 +6121,7 @@ name = 'John'; // ERROR (constants are read-only)
 println!(name); // Prints: 'Jack'
 ```
 
-Note that this does not work with plain constants.
+Note that this does not work with literal constants.
 
 This is the method used by classes to declare attributes but initializing them only in the constructor. Accessing an entity before we are sure it has been initialized will raise an error at build time.
 
@@ -6207,30 +6207,30 @@ println!(counter2); // Prints: '1'
 
 ### Flexible proxies
 
-_Flexible proxies_ are proxies that use flexs instead of simple functions as their getter and eventual setter. It is useful in several situations, like when the proxy must return a plain value.
+_Flexible proxies_ are proxies that use flexs instead of simple functions as their getter and eventual setter. It is useful in several situations, like when the proxy must return a literal value.
 
 We declare them using the `proxy!` keyword:
 
 ```sn
-proxy! hello: pln<string> from {
-  getter: flex () : pln<string> {
+proxy! hello: lit<string> from {
+  getter: flex () : lit<string> {
     return 'Hello world!';
   }
 };
 
-pln message = hello; // Works fine
+lit message = hello; // Works fine
 println!(hello); // Prints: 'Hello world!'
 ```
 
-This proxy declares itself as containing a plain `string` value. Because its getter is a flex, it can return such a type.
+This proxy declares itself as containing a literal `string` value. Because its getter is a flex, it can return such a type.
 
 #### Templated proxies
 
 Proxies are allowed to take templates, too. This can be useful to type them dynamically:
 
 ```sn
-proxy! typeOf<DATA: T, T>: pln<Type> from {
-  getter: flex () : pln<Type> {
+proxy! typeOf<DATA: T, T>: lit<Type> from {
+  getter: flex () : lit<Type> {
     return T;
   }
 };
@@ -6248,7 +6248,7 @@ println!(copy); // Prints: 'Hello world!'
 
 This proxy is especially complex, so let's detail it. First, it takes two templates: a first one which is of the `T` type, with `T` being its second template. So, when we read it by giving it a value as a template, `T` is inferred and matches `DATA`'s type.
 
-The type of the proxy itself is a plain type. Its getter, a flex, simply returns `T`. So, when we call this proxy with a value as a template, it returns its type as a plain value.
+The type of the proxy itself is a literal type. Its getter, a flex, simply returns `T`. So, when we call this proxy with a value as a template, it returns its type as a literal value.
 
 ## Additional features
 
@@ -6302,7 +6302,7 @@ Note that you can make multiple bindings in a function, but they must always be 
 
 ### Conditional directives
 
-Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the conditional directives: `#if`, `#else`, `#elsif`, `#end`. The code located in them is simply removed from the source code if the condition is (or is not) filled, before the program starts to run. They can only use plain values, as well as native constants, which give informations about the type of execution (interpreted, compiled, ...), the platform (Windows, Linux, ...) the processor's architecture (ARM, x86, ...).
+Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the conditional directives: `#if`, `#else`, `#elsif`, `#end`. The code located in them is simply removed from the source code if the condition is (or is not) filled, before the program starts to run. They can only use literals, as well as native constants, which give informations about the type of execution (interpreted, compiled, ...), the platform (Windows, Linux, ...) the processor's architecture (ARM, x86, ...).
 
 Here is an example:
 
