@@ -156,3 +156,30 @@ To enable it, we must provide the `--meta` flag to the interpreter:
 ```shell
 raven -i "main.rv" --meta
 ```
+
+### Transpiling
+
+### What is transpiling?
+
+Programs can also be _transpiled_, meaning we turn a valid Rave source code into another language's valid source code, for instance JavaScript.
+
+This allows to write a Rave application and use it on the Web, for example. As JavaScript is the only language currently directly available in web pages and in all browsers, we can simply _transpile_ our Rave programs into a valid JavaScript source code.
+
+### How to transpile?
+
+Transpiling works the following way:
+
+```shell
+raven -t "main.rv" -l javascript
+```
+
+This will produce a `main.js` file containing equivalent JavaScript source code. If you run it using [Node.js](https://nodejs.org/) or directly in the browser, it will print "Hello world!" in the console.
+
+Here is the list of supported target languages:
+
+* C++, for fast and low-level applications (intensive 3D applications, drivers, ...);
+* JavaScript, for web applications;
+* Java, for Android applications;
+* Swift, for iOS applications
+
+Note that the target language's native library can be accessed using _frontend libraries_, a concept we will see a bit later in this book.
