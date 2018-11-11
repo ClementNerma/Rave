@@ -3765,6 +3765,8 @@ println!(arr.length); // Prints: '20'
 
 Fixed-size arrays use this feature: they take a `T` template indicating the type of elements they contain, as well as a `LENGTH` template which is their number of elements.
 
+An important point though: when we provide a template to a given type, it must **always** be a literal value.
+
 ### Wildcard template
 
 The wildcard template can be used when we want to accept any template in a given type but won't use the template itself. Example:
