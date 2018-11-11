@@ -86,3 +86,73 @@ raven -c "main.rv" -s linux -p arm64
 The `-s` option is a shortcut for `--system`, and `-p` for `--proc-arch` (processor architecture).
 
 This will create three outputs files, called `main_win_x64.exe`, `main_win_x86_64.exe` and `main_linux_arm64`.
+
+### Interpreting
+
+### What is interpretation?
+
+Another way to run programs is to _interpret_ them. This simply consists in running the program as it is, without creating any additional file. This also means there is no file to share with other people.
+
+The point of interpretation is to test quickly the code. Also, as the program is checked and ran at once, testing a small program is faster than by compiling it and then running it.
+
+A big downside of interpretation though is that performances are a big step below compiled ones. That's why the interpreter is mostly design for test purposes.
+
+### How to interpret?
+
+Interpretation is much simpler than compilation:
+
+```shell
+raven -i "main.rv"
+```
+
+That's as simple as this.
+
+### The meta mode
+
+The **meta mode** is a special mode usable to debug interpreted programs. It simply consists in giving access to a global object named `Meta`, which allows to manipulate the program.
+
+This object is useful for debugging ; given the following code:
+
+```rave
+class Hello {
+  private secret: string;
+
+  public fn %new (@secret) {}
+
+  public fn printSecret () {
+    println!(@secret);
+  }
+}
+
+val obj = new Hello('This is my secret');
+```
+
+We can debug it this way:
+
+```rave
+Meta.structOf!(obj);
+```
+
+This will print the entity's name, its type as well as the structure of the `Hello` class (including private members).
+
+We can also display its content using the following flex:
+
+```rave
+Meta.print!(obj);
+```
+
+This will print the value of all members of the object, including `secret`.
+
+We can also access private members:
+
+```rave
+println!(Mave.accessPrivate!(obj, 'secret')); // Prints: 'This is my secret'
+```
+
+And there is a lot of other useful stuff.
+
+To enable it, we must provide the `--meta` flag to the interpreter:
+
+```shell
+raven -i "main.rv" --meta
+```
