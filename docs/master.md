@@ -421,6 +421,8 @@ Also, as the `usize` type is, at maximum, an `u64` value, it can be converted to
 
 The only exception is for float types: integers cannot be automatically converted to floats, as the precision could result in inexact rounds.
 
+**NOTE:** You should always prefer unsigned number types over signed ones (such as `uint` over `int`), because most functions don't need negative numbers and those could introduce bugs and security issues. Because of this, only use signed integer types if you really need to handle negative numbers. Plus, they can handle larger positive numbers.
+
 **NOTE:** Operations are **not** permitted between different number types. For example, dividing an unsigned number by a signed one will require to cast the second one to the same type as the first one:
 
 ```rave
