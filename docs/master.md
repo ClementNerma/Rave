@@ -3656,11 +3656,12 @@ takeNum<uint>(2u); // Prints: '2'
 
 We can ues use the following syntaxes:
 
-* `T extends X`: T must inherit from X;
-* `T impl X`: T must implement the X interface;
-* `T uses X`: T must use the X trait.
+* `T extends X`: `T` must inherit from `X`;
+* `T impl X`: `T` must implement the `X` interface;
+* `T uses X`: `T` must use the `X` trait;
+* `T in v`: `T` must be contained in the `v` tuple or in the `v` union
 
-They can also be chained, like `T extends X impl Y`.
+We'll see unions later in this book. Template constraints can also be chained, like `T in v extends X impl Y`.
 
 ### Template inference
 
