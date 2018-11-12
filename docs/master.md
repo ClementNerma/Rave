@@ -4348,6 +4348,16 @@ if try getArticleBody(0) as content {
 println!(content) if try getArticleBody(0) as content;
 ```
 
+It's also possible to catch the error object with an `else` block:
+
+```rave
+if try getArticleBody(1000) as content {
+  println!(content);
+} else catch e {
+  println!('Failed: ' + e.message);
+}
+```
+
 ## Errors and panics
 
 ### Panics
