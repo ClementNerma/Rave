@@ -2752,7 +2752,7 @@ println!(new Hero('Jack') != new Hero('John')); // Prints: 'true'
 
 The `%equal` overload returns `true` if the compared entity is equal to itself, `false` else. The inequality operator (`!=`) is automatically supported as the opposite (returns `true` if `%equal` returns `false`).
 
-Classes implementing this overload implement the `EqualityChecking<T>` interface, where `T` is the type of the argument specified in the overload (here, `Hero`).
+Classes implementing this overload are `EqualityChecking<T>` types, where `T` is the type of the argument specified in the overload (here, `Hero`).
 
 There is also a more advanced overload to compare values in a more advanced way:
 
@@ -2784,7 +2784,7 @@ println!(new BankAccount(2000u) < new BankAccount(1000u)); // Prints: 'false'
 
 The `%compare` overload returns one of the `Comparison` enumeration's values: either `GREATER` to indicate the current instance is greater than the one it compares too, either `SMALLER` to indicate its smaller, or finally `EQUAL` to indicate they are both equal.
 
-Implementing `%compare` automatically implements `%equal`. To avoid duplicate and useless code, they cannot be put together in the same class. Also, all classes implementing this overload implement the `ComparableTo<T>` overload, where `T` is the type of the argument specified in the overload. A type comparable to itself will be `Comparable`.
+Implementing `%compare` automatically implements `%equal`. To avoid duplicate and useless code, they cannot be put together in the same class. Also, all classes implementing this overload implement are `ComparableTo<T>` types, where `T` is the type of the argument specified in the overload. A type comparable to itself will be `Comparable`.
 
 ### Friends
 
