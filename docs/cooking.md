@@ -662,3 +662,7 @@ if try dom::document.body?.querySelector('h1')? as mainTitle {
   mainTitle.innerHTML = 'New title';
 }
 ```
+
+### Conclusion
+
+You can see there are many frontend libraries for a wide variety of usages. In our project, we will use several of them, like `network` or `touch`.
