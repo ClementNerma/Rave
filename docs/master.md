@@ -3891,7 +3891,9 @@ In this chapter, we will see all the concepts about dictionaries.
 
 Dictionary classes are special classes that behaves like a dictionary, which is a set of key/value pairs. They allow to associate arbitrary keys and values. For example, vector classes are dictionary classes, as well as the `Map<K, V>` class.
 
-They are declared using the `dict` keyword instead of the `class` one. Dictionary classes automatically implement the `Dictionary<K, V>` which describes a set of overloads they must implement:
+For now, we will only see _dynamic_ dictionaries, which are dictionaries that can be extended - meaning we can add keys to it and remove existing ones.
+
+They are declared using the `dict` keyword instead of the `class` one. Dynamic dictionary classes automatically implement the `DynamicDictionary<K, V>` which describes a set of overloads they must implement:
 
 ```rave
 // K = type of keys
@@ -6106,6 +6108,55 @@ sym1 == sym2; // false
 sym2 == sym1; // false
 sym2 == sym2; // true
 ```
+
+### Tuple dictionaries
+
+We previously saw _dynamic dictionaries_, which are classes that implement the `DynamicDictionary<K, V>` interface. We will know see _tuple dictionaries_, which implement the `TupleDictionary<K, V>` one and are a little bit different.
+
+While, in a dynamic dictionary, we can add new keys and remove the existing ones, we can't in a tuple one. The goal of a tuple dictionary is to ensure the keys stay the same from its creation (instanciation) to its destruction (e.g. dropping) and for all instances of this dictionary class.
+
+Tuple dictionaries are declared using the `tuple` keyword:
+
+```rave
+tuple dict Custom<K in Literal, V> {
+  // The list of keys
+  public lit keys: Tuple<keyof self>;
+  // Get a value from a key
+  public fn %get (key: keyof self) : V;
+  // Associate a value to a key
+  public fn %set (key: keyof self, value: V) throws KeyAssignmentError;
+  // Check if a value is associated to a key
+  public fn %contains (value: V) : bool;
+  // Get an iterator on key-value pairs
+  public fn %iterate () : Iterator<(K, V)>;
+}
+```
+
+The main difference here is that we don't provide a `K` value for the dictionary's getter and setter, but a `keyof self` one. This is a special type available only for tuple-keys dictionaries that indicates if a value is a key of a dictionary class. Because, given a `K` and `V` types, all keys will be identical for all instances of `Custom<K, V>`.
+
+The list of keys of the dictionary class is stored inside its `keys` tuple. Note that the key type of a tupel dictionary must be a literal type!
+
+A widely-used tuple dictionary is `Array<T, SIZE: usize>`:
+
+```rave
+val item: int[5] = [ 2, 4, 8, 12, 5 ];
+
+let key: keyof typeof item; // keyof int[5];
+
+key = -1; // ERROR
+
+key = 0; // Works fine
+key = 1; // Works fine
+key = 2; // Works fine
+key = 3; // Works fine
+key = 4; // Works fine
+
+key = 5; // ERROR
+```
+
+Note that it's possible to use a type that is not a `keyof` type to access a dictionary class' value, as the values are automatically typecastable to their `keyof` equivalent. Still, it has two downsides: the first one is that there is a little performance cost because the program has the check if the key is stored inside the class' `keys` members, and also because if it is not, the program panics. So, it's always preferrable to use a `keyof` type dealing with a tuple dictionary.
+
+By the way, `T[SIZE]` is an alias for `Array<T, SIZE>`, and `T[]` is an alias for `T[?]` which itself results in `Array<T, ?>`.
 
 ## Advanced entities
 
