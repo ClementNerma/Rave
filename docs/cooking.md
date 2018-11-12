@@ -24,6 +24,18 @@ If it displays a version number, then Raven is successfully installed on your sy
 
 All examples in this book will be given for the Linux platform, but they work the same way on Windows, Mac OS and other systems.
 
+### The toolchain's point
+
+Through this book, we will take a large example to understand all of the toolchain's points. We consider being a developer/society who wants to make a 2D MMORPG. In order to target a large audience, we want to make a desktop application which runs on Windows, Mac OS and Linux ; a mobile application for Android and iOS ; and finally a web application to run the game inside the browser, as it is lightweight.
+
+Because of the game being an MMO, we will also have to make a web server.
+
+If we decided to make this program without Rave, the simplest, viable solution would be to make desktop applications using Java (as it is cross-plaform). The Android application would also be written in Java, with major changes though, because the structure of an Android application is different from a desktop one. The iOS application would be made in Swift and the web application in either in JavaScript or TypeScript. This makes, at least, 3 different languages.
+
+Add to it the fact that each platform has its own API to handle network connections, visuals, touchscreen, etc., and that quickly becomes hard to develop and maintain. Also, if we wish to add a feature to our game, we may have to update the 4 applications at once.
+
+We will see in this book how Rave with Raven can help us with this complex situation. The last chapter will be about building such an application and deploying it.
+
 ## Compiling
 
 ### What is compilation?
@@ -33,6 +45,8 @@ Before talking about the compiler itself, let's have a closer look on how the to
 The toolchain is split into several tools called _modules_. Each module has a specific purpose, and some are inter-connected. When we decide to build our program, we use the _builder_, which is itself a set of sub-modules.
 
 When we decide to run our code, we have several options. One of them is to _compile_ the program, which means we turn the source code into a file we can run distinctly. Once it is done, we can remove the source files, share the program with other people, etc.
+
+For desktop applications, we will compile our source code in order to make it work for Windows, Mac OS and Linux at once. This way, we can get great performances without installing any additional tools like the Java runtime or anything else.
 
 ### How to compile?
 
@@ -96,6 +110,8 @@ Another way to run programs is to _interpret_ them. This simply consists in runn
 The point of interpretation is to test quickly the code. Also, as the program is checked and ran at once, testing a small program is faster than by compiling it and then running it.
 
 A big downside of interpretation though is that performances are a big step below compiled ones. That's why the interpreter is mostly design for test purposes.
+
+During the development of our application, we will interpret it to ensure it works as expected, without getting bored by any compilation time.
 
 ### How to interpret?
 
@@ -165,6 +181,8 @@ Programs can also be _transpiled_, meaning we turn a valid Rave source code into
 
 This allows to write a Rave application and use it on the Web, for example. As JavaScript is the only language currently directly available in web pages and in all browsers, we can simply _transpile_ our Rave programs into a valid JavaScript source code.
 
+We will use transpiling to build the web version of our game.
+
 ### How to transpile?
 
 Transpiling works the following way:
@@ -232,7 +250,9 @@ The builder then returns to the CLI. If the `--lint` flag was specified, the CLI
 
 The same goes for the optimizer, which is ran using the `--optimize` flag ; it analyzes a given RVT and optimizes it by applying a bunch of optimization rules on it. For example, the `let i = 2; i += 3;` code will be reduced to `let i = 5;`, because it does exactly the same thing.
 
-Note that optimizing makes compilation slower, but increases greatly the program's execution speed.
+Note that optimizing makes compilation slower, but increases greatly the program's execution speed as well as the output program's size.
+
+We will use it when our program will be working fine, in order to improve its performances.
 
 ### The LLIC converter
 
