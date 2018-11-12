@@ -183,3 +183,67 @@ Here is the list of supported target languages:
 * Swift, for iOS applications
 
 Note that the target language's native library can be accessed using _frontend libraries_, a concept we will see a bit later in this book.
+
+## Toolchain in depth
+
+We told previously the toolchain was build upon several modules. In fact, when we compile a program, for instance, it runs the following modules:
+
+* Command-Line Interface (CLI);
+* Builder
+* | Normalizer
+* | Lexer
+* | Parser
+* | Static analyzer
+* | Linter (optional)
+* | Optimizer (optional)
+* LLIC converter
+* Compiler
+* Output streamer
+
+That's a huge amount of modules. Let's detail them!
+
+### The CLI
+
+The _CLI_, standing for _**C**ommand-**L**ine **I**nterface_, is the program which parses command-line arguments and guess what you want to do. For example, when we run the following command:
+
+```shell
+raven -c "main.rv"
+```
+
+The `raven` command calls the CLI, which sees we have a `-c` option, so it knows we want to compile a program. Then, it looks at the provided filename, `main.rv`. Without even checking if the file exists, it calls the builder and indicate it the program will be compiled and the source code file is called `main.rv`.
+
+### The builder
+
+The builder, on its side, is a set of sub-modules.
+
+First, there is the _normalizer_, which reads the required file on the disk and use the line break symbol everywhere (the line break symbol is not the same on all operating systems), organizes folders, etc. It produces a _NSC_ (_**N**ormalized **S**ource **C**ode_), which is a simple string. If the source files are not found, it reports an error.
+
+The _lexer_ will, from a NSC, analyze the program to detect keywords, literals, etc. It detect only a few syntax errors (like unterminated strings). If no error is detected, it produces a _LIT_ (_**L**exed **I**ntermediate **T**ree_).
+
+The _parser_ takes this LIT and analyze it by looking for blocks, declaration statements, numeric operations, etc. It detects and reports all syntax errors. If no error is detected, it produces an _AST_ (_**A**bstract **S**yntax **T**ree_). An AST is guaranteed to represent a syntax error-free program.
+
+The _static analyzer_, then, analyzes an AST's logic by verifying the right types are used, that there is not two entities with the same name, that child classes implement all the abstract methods described by their direct mother class, and so on. If no error is detected, it produces an RVT (_**R**ave **V**alid **T**ree_), which is guaranteed to represent a fully-valid program.
+
+#### The linter
+
+The builder then returns to the CLI. If the `--lint` flag was specified, the CLI will call the builder's _linter_, which simply checks for code conventions (for example, `let   hello: string;` will produce a warning because of there are more than one space between the `let` keyword and the mutable's name). Note that, at the opposite of the other modules, a linter will never report an error, only warnings.
+
+#### The optimizer
+
+The same goes for the optimizer, which is ran using the `--optimize` flag ; it analyzes a given RVT and optimizes it by applying a bunch of optimization rules on it. For example, the `let i = 2; i += 3;` code will be reduced to `let i = 5;`, because it does exactly the same thing.
+
+Note that optimizing makes compilation slower, but increases greatly the program's execution speed.
+
+### The LLIC converter
+
+The _LLIC converter_ is a module that turns any RVT into an _LLIC_ (_**L**ow-**L**evel **I**ntermediary **C**ode_). This is a special programming language designed to simplify conversion from Rave to binary programs.
+
+### The compiler
+
+The _compiler_, on its side, will turn any LLIC into an _OFT_ (_**O**utput **F**iles **T**ree_), which is an object representing all the output files (usually, it will contain a single file).
+
+This OFT contains the output program in binary format, which is the format understood by the target platform and architecture.
+
+### The output streamer
+
+The _output streamer_, finally, takes any OFT and turn in into files on your hard drive.
