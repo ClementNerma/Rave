@@ -267,3 +267,398 @@ This OFT contains the output program in binary format, which is the format under
 ### The output streamer
 
 The _output streamer_, finally, takes any OFT and turn in into files on your hard drive.
+
+## Frontend libraries
+
+A key-concept of the toolchain is the _frontend libraries_. These are toolchain's built-in Rave libraries we can use for our programs. They are organized into three categories:
+
+The **Standard Frontend Libraries** (_SFL_) are libraries that are supported in every context. Weither we are compiling, interpreting and so on, we are guaranteed to have them availalable
+
+The **Core Frontend Libraries** (_CFL_), on their side, may not be available when programs are transpiled - this will depend on the target language. For example, if we transpile to JavaScript, we will not be able to access low-level memory management, as JavaScript does not support this. Still, some CFL may not work on some operating systems, like the multimedia library.
+
+The **Exclusive Frontend Libraries** (_EFL_) are reserved to specific contexts and may not be available to interpreted programs, too. For example, the touchscreen EFL will be available only for touchscreen devices.
+
+When we use a frontend library while transpiling, the transpiler binds the API of the library we use to the target languages' ones.
+
+The main goal of these libraries is to guarantee that, for any subject having a frontend library, we will use a single API cross all platforms and languages.
+
+Now, let's detail these libraries a bit.
+
+### SFL: Standard library
+
+The `std` library, which stands for _**St**an**d**ard Library_, is the only SFL. It contains definitions such as the primitive types (`void`, `bool`, `i32`, ...) as well as basic types (`Promise<X, Y>`, `Map<K, V>`, `Iterator<T>`, ...). All entities shown in [The Master Book](master.md) are part of it.
+
+That's also the only library to be imported automatically in all programs:
+
+```rave
+// Nothing to import here
+
+val cst: bool = true; // Works fine
+```
+
+### CFL: Machine statistics
+
+The `stats` library allows to get informations on the current machine: processor and memory usage, system's name, processor architecture, uptime, etc.
+
+```rave
+import cfl::stats;
+
+println!('CPU usage = ' + stats::cpu.getUsage() + '%');
+
+if stats::battery.check() as batteryStats {
+  println!('Remaining battery = ' + batteryStats.getRemaining() + '%');
+}
+```
+
+### CFL: Filesystem
+
+The `fs` library, standing for _**F**ile**s**ystem_, allows to access the computer's disk and manage files on it. It allows to create, edit, remove files, folders, symbolic links and so on.
+
+To use a frontend library, we simply need to use an `import` statement in our program. Libraries are organized as namespaces, so we use them the same way:
+
+```rave
+import cfl::fs;
+
+try? fs::writeFile('hello.txt', 'Hello world!', 'utf8');
+```
+
+### CFL: Network
+
+The `net` library, standing for _**Net**work_, manages network access such as accessing web pages, communicating with other computers, and so on.
+
+```rave
+import cfl::net;
+
+if try net::fetch('https://www.google.fr') as buffer {
+  try? fs::writeFile('hello.txt', buffer);
+}
+```
+
+### CFL: Screen
+
+The `screen` library manages access to the screen in order to display images, draw some figures, get the cursor's position, go fullscreen, etc.
+
+```rave
+import cfl::screen;
+
+screen::on(screen::CURSOR_MOVE, e => {
+  println!('Mouse cursor moved: x = ${e.x} ; y = ${e.y}');
+});
+```
+
+### CFL: Sound
+
+The `sound` library allows to play sound on the system.
+
+```rave
+import cfl::fs;
+import cfl::sound;
+
+if try fs::readFile('music.mp3') as music {
+  val player = new sound::MediaPlayer(music);
+  player.play();
+
+  sync player.promiseEnd();
+}
+```
+
+### CFL: Cryptography
+
+The `crypto` library allows to encrypt and decrypt data, as well as handling encryption keys:
+
+```rave
+import cfl::crypto;
+
+if try fs::readFile('pub.key') as pubKeyBuff {
+  val pubKey = crypto::keyFrom(pubKeyBuff, crypto::RSA);
+  val encrypted = crypto::encrypt(new Buffer('Hello world!'), pubKey);
+
+  println!(encrypted.toString('utf8'));
+}
+```
+
+### CFL: Processes
+
+The `pc` library, which stands for _**P**ro**c**esses_, allows to manage the processes. A process is basically a program running on the machine. The goal of having several processes is to improve performances by running some tasks in parallel as well as running other programs.
+
+```rave
+import cfl::pc;
+
+val child = pc::spawn('echo', [ 'salut' ]);
+
+child.stdout.on('data', data => println!('Child process printed: ' + data));
+
+child.stderr.on('data', data => println!('Child process printed error: ' + data));
+
+child.on('close', code => println!('Child process exited with code ${code}.'));
+```
+
+### CFL: Threads
+
+The `threads` library allows to manage our program's threads. A threads is, to simplify, several parts of the program that runs in parallel. This allows to improve greatly performances when it is well-performed, but also creates problems such as _data races_. We will study threads in a dedicated chapter.
+
+Here is an example to compute the sum of an array using threads:
+
+```rave
+import cfl::threads;
+
+async fn sum<T impl Computable> (arr: T[], fromIndex: keyof arr, toIndex: keyof arr) : T {
+  let sum = arr[0];
+
+  for i = 1; i < toIndex.length; i ++ {
+    sum += arr[i];
+  }
+
+  return sum;
+}
+
+val nums = (3u for i -> 0..1000000);
+val pool = threads::createPool(4);
+
+for i in 0..4 {
+  pool.add(i, threads::createThread(() => nums(
+    i as uint * 250000,
+    (i as uint + 1) * 250000 - 1
+  );
+}
+
+if try sync pool.promise() is results {
+  // results: uint[]
+  println!(results.sum()); // Prints: '3000000'
+}
+```
+
+### CFL: Console
+
+The `console` library allows to print messages in the console, supports colored output, user inputs, etc.
+
+```rave
+import cfl::console;
+
+if try console::readInt('Input an integer: ') as input {
+  console::println('${input} * 2 = ${input * 2}', console::Color.Cyan);
+}
+```
+
+### CFL: Big numbers
+
+The `bignums` library, which stands for _**Big** **Num**ber**s**_, allows to manipulate very large numbers with a high precision.
+
+Indeed, native number types such as `u16` or `f32` has limited bounds as well as, for floating-point types, limited precision. Big numbers allow to get rid of these problems as we can specify arbitrary bounds and precision.
+
+In addition to this, big numbers operations are inter-compatible, which means any big numbers can be added, substracted, divided by etc. another big number, without any precision lost.
+
+The only downside to this is that operations on big numbers are far slower than on native number types, that's why they should be reserved to parts of applications where precision is really required.
+
+Also, big number support operation with any native number type as the right operand, meaning it's possible to add, substract, etc. any number value to an existing big number.
+
+```rave
+import cfl::bignums;
+
+val PRECISION   = 2S;
+val LOWER_BOUND = new bignums::BigNumbers('-200000000000000');
+val UPPER_BOUND = new bignums::BigNumbers('+200000000000000');
+
+val num = new bignums::BigNumber('10.22', PRECISION, LOWER_BOUND, UPPER_BOUND);
+
+println!(num); // Prints: '10.2'
+
+num += 10; // Works fine
+
+println!(num); // Prints: '20.2'
+
+num += num; // Works fine
+
+println!(num); // Prints: '40.4'
+```
+
+### CFL: Shared libraries
+
+The `sharedlibs` library allows to access external library files stored on the disk, such as `.dll` files on Windows and `.so` files on Linux:
+
+```rave
+import cfl::fs;
+import cfl::sharedlibs;
+
+// Describe the library's content
+interface TheSharedLibrary {
+  fn soMagicStuff (num: int) : int;
+}
+
+// Import it
+if try fs::readFile('my_super_shared_lib.dll') as sharedLibBuffer {
+  if try sharedlibs::instanciate<TheSharedLibrary>(sharedLibBuffer) as sharedLib {
+    println!(sharedLib.soMagicStuff(2)); // Will print a number
+  }
+}
+```
+
+### CFL: Regular expressions
+
+The `regexp` library, which stands for _**Reg**ular **Exp**ressions_, allow to manipulate PCRE regular expressions.
+
+Note that the language contains a syntax sugar to build regular expressions:
+
+```rave
+import cfl::regexp;
+
+// Traditional syntax
+val expr = regexp::create("My name is ([a-zA-Z]+)\\!");
+// Syntax sugar
+val expr = /My name is ([a-zA-Z]+)\!/;
+
+if 'My name is Jack'.match(expr) as vars {
+  println!(vars[0]); // Prints: 'Jack'
+}
+```
+
+### CFL: Times
+
+The `times` library allows to manipulate date and time objects, as well as getting informations about system's time.
+
+```rave
+import cfl::times;
+
+println!('Current date is: ' + times::clock.toString('m-d-y'));
+
+val date = clone times::clock;
+date.addDays(7);
+
+println!('Date in a week is: ' + date.toString('m-d-y'));
+```
+
+It also grants some timing tools:
+
+```rave
+import cfl::times;
+
+println!('Next message will appear in two seconds.');
+
+sync times::promiseAfter(times::Second * 2u);
+
+println!('Hello world!');
+```
+
+### CFL: System
+
+The `system` library allows to make the computer sleep, hibernate, to power it off, etc.
+
+```rave
+import cfl::times;
+import cfl::system;
+
+println!('Your machine will be powered off in 60 seconds.');
+println!('To cancel, stop this program now.');
+
+times::runAfter(times::Minute * 60u, () => {
+  println!('Turning your computer off...');
+  system::powerOff();
+});
+```
+
+### CFL: Notify
+
+The `notify` library allows to create and manage simple and complex notification bubbles.
+
+```rave
+import cfl::times;
+import cfl::notify;
+
+val remaining = times::Second * 10u;
+val notif = notify::create('Remaining time: 10 second(s)');
+
+times::each(times::Second, timer => {
+  notif.setContent('Remaining time: ${-- remaining} second(s)');
+
+  if not remaining {
+    timer.cancel();
+    notif.destroy();
+  }
+});
+```
+
+### CFL: XML
+
+The `xml` library allows to parse XML strings and converts serializable values to XML:
+
+```rave
+import cfl::xml;
+
+xml::serialize({
+  name: 'Hello',
+  hp: 100u
+}); // Returns a string containing a valid XML document
+```
+
+### CFL: JSON
+
+The `json` library allows to parse JSON strings and converts serializable values to JSON:
+
+```rave
+import cfl::json;
+
+json::serialize({
+  name: 'Hello',
+  hp: 100u
+}); // {name:'Hello',hp:100}
+```
+
+### CFL: YAML
+
+The `json` library allows to parse JSON strings and converts serializable values to JSON:
+
+```rave
+import cfl::json;
+
+json::serialize({
+  name: 'Hello',
+  hp: 100u
+});
+// name: 'Hello'
+// hp: 100
+```
+
+### CFL: Zlib
+
+The `zlib` library allows to manipulate GZip data:
+
+```rave
+import cfl::zlib;
+
+if try fs::readFileSync('archive.gz') as archiveBuffer {
+  if try gzip::inflateSync(archiveBuffer) as archive {
+    println!('List of files:');
+
+    for entry in archive.entries() {
+      println!(entry) if entry.type == gzip::ItemType.File;
+    }
+  } else catch e {
+    println!('Failed to uncompress the archive: ' + e.message);
+  }
+}
+```
+
+### EFL: Touch
+
+The `touch` library allows to get input from touch screens:
+
+```rave
+import efl::touch;
+
+touch::handle(e =>
+  println!('Finger 0 clicked at: x = ${e.fingers[0].x} ;' +
+           'y = ${e.fingers[0].y} ; fingers = ${e.fingers}')
+);
+```
+
+### EFL: DOM
+
+The `dom` library, which stands for _**D**ocument **O**bject **M**odel_, allows to interact with JavaScript's DOM - this library when transpiling to JavaScript:
+
+```rave
+import efl::dom;
+
+if try dom::document.body?.querySelector('h1')? as mainTitle {
+  mainTitle.innerHTML = 'New title';
+}
+```
