@@ -2726,6 +2726,8 @@ Here is the list of overloadable arithmetic operators:
 * `%mod` for `%` ;
 * `%pow` for `**`
 
+Types implementing all these overloads are `ComputableWith<X, Y>` types, where `X` is the type of the argument used in these overloads and `Y` the return type. Types that are computable with themselves and return instances of themselves in all these overloads are `Computable`.
+
 ### Comparison overloads
 
 As for arithmetic operators, comparison operators can be overloaded in classes.
