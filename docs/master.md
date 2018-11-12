@@ -2547,9 +2547,9 @@ Let's see the timeline of events:
 
 * A first user is instanciated (`User 1 has been created`) ;
 * It is assigned to `value` ;
+* The first user is dropped because there are no reference to it anymore (`User 1 will be dropped`) ;
 * A second user is instanciated (`User 2 has been created`) ;
 * It is assigned to `value` ;
-* The first user is dropped because there are no reference to it anymore (`User 1 will be dropped`) ;
 * We reach the end of the scope, the second user is dropped (`User 2 will be dropped`)
 
 As you can see, the dropping occurs only just before the new instance is assigned to the entity, and not when it is created. Also, note that, when the destructor returns, the instance is definitely freed.
