@@ -2770,11 +2770,11 @@ class BankAccount {
 
   public fn %compare (another: self) : Comparison {
     if @amount > another.amount {
-      return Comparison.GREATER;
+      return Comparison.Greater;
     } elsif @amount < another.amount {
-      return Comparison.SMALLER;
+      return Comparison.Smaller;
     } else {
-      return Comparison.EQUAL;
+      return Comparison.Equal;
     }
   }
 }
@@ -2786,7 +2786,7 @@ println!(new BankAccount(2000u) > new BankAccount(1000u)); // Prints: 'true'
 println!(new BankAccount(2000u) < new BankAccount(1000u)); // Prints: 'false'
 ```
 
-The `%compare` overload returns one of the `Comparison` enumeration's values: either `GREATER` to indicate the current instance is greater than the one it compares too, either `SMALLER` to indicate its smaller, or finally `EQUAL` to indicate they are both equal.
+The `%compare` overload returns one of the `Comparison` enumeration's values: either `Greater` to indicate the current instance is greater than the one it compares too, either `Smaller` to indicate its smaller, or finally `Equal` to indicate they are both equal.
 
 Implementing `%compare` automatically implements `%equal`. To avoid duplicate and useless code, they cannot be put together in the same class. Also, all classes implementing this overload implement are `ComparableTo<T>` types, where `T` is the type of the argument specified in the overload. A type comparable to itself will be `Comparable`.
 
