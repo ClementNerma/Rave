@@ -6834,6 +6834,24 @@ The first line describes, as usual, the function (what it does): make a summatio
 
 Note that we don't have to use `@returns` for void-typed functions.
 
+Also, note that iterators don't use this annotation, but the `@yields` one instead (as they do not really return a value):
+
+```rave
+/**
+ * Generate consecutive positive integers
+ * @param startAt Start at the given number
+ * @param endAt End at the given number
+ * @yields The next consecutive number
+ */
+iter fn genIntegers (startAt: uint, endAt: uint) : uint {
+  let n = startAt;
+
+  while n < endAt {
+    yield ++ n;
+  }
+}
+```
+
 ### Nested functions
 
 To document nested functions (e.g. callbacks), we document them as usual functions using a `>` symbol, with the argument's annotation being the callback's one:
