@@ -2756,7 +2756,7 @@ println!(new Hero('Jack') != new Hero('John')); // Prints: 'true'
 
 The `%equal` overload returns `true` if the compared entity is equal to itself, `false` else. The inequality operator (`!=`) is automatically supported as the opposite (returns `true` if `%equal` returns `false`).
 
-Classes implementing this overload are `EqualityChecking<T>` types, where `T` is the type of the argument specified in the overload (here, `Hero`).
+Classes implementing this overload are `EquatableTo<T>` types, where `T` is the type of the argument specified in the overload (here, `Hero`). If `T` is current class, it is `Equatable`.
 
 There is also a more advanced overload to compare values in a more advanced way:
 
