@@ -1,0 +1,70 @@
+/**
+ * @file Gauss-Jordan linear equations solver
+ * @author Clément Nerma
+ * @license Apache-2.0
+ */
+
+// Import the matrix library
+import cfl::maths::types as math_types;
+
+/**
+ * Solve a linear equation system using Gauss-Jordan elimination algorithm
+ * @template P The floating-point type to use
+ * @param matrix The matrix to solve
+ */
+ fn solveGaussJordan (matrix: math_types::Matrix<int>) : math_types::Matrix<int> {
+  // Let's call 'A' the matrix
+
+  // We first clone it and get a floating-point version
+  // This will allow to perform divisions and get a tangible result
+  val mat = matrix as f32;
+
+  // Last found pivot row
+  let r = -1;
+
+  // For each column...
+  for j in 0..mat.cols() {
+    // Get the 'max(A[i,j], r + 1 <= i <= n)'
+    // 'k' is the number of the row containing the maximum
+    val k = mat.slice(r + 1, rows - 1)
+                  .maxRow(i)
+                  + r + 1; // Add 'r + 1' as the slice starts at it
+
+    // 'A[k][j]' is the pivot
+    if (mat[k][j] !== 0) {
+      // Increase the pivot row number
+      r ++;
+
+      // Divide the 'k' row by 'A[k][j]'
+      mat.row(k).map(cell => cell / mat[k][j]);
+
+      // Permute the 'k' and 'r' rows
+      mat.permute(k, r);
+
+      // For each row...
+      for i in 0..mat.rows() {
+        // If it's not the pivot row...
+        if i != r {
+          // Substract it to the 'r' line multiplied by 'A[i][j]'
+          mat.row(i).map((cell, col) => cell - mat[r][col] * mat[i][j]);
+        }
+      }
+    }
+  }
+
+  // Return the result
+  return matrix;
+}
+
+// ========== D E M O ========== //
+val solved = solveGaussJordan([
+  [  2, -1,  0 ],
+  [ -1,  2, -1 ],
+  [  0,  -1, 2 ]
+]);
+// The resulting matrix contains:
+//
+//   [ 1, 0, 0 ],
+//   [ 0, 1, 0 ],
+//   [ 0, 0, 1 ]
+//
