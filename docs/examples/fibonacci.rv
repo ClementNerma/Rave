@@ -1,0 +1,44 @@
+/**
+ * @file Compute fibonacci suite
+ * @author Clément Nerma
+ * @license Apache-2.0
+ */
+
+/**
+ * Compute fibonacci suite
+ * @param upTo Stop when reaching or exceeding this number
+ * @yields A new term of the suite
+ */
+iter fn fibonacci (upTo: uint) : (uint, uint) {
+  // n-1 term
+  val a = 0;
+  // n-2 term
+  val b = 0;
+
+  // Temporary term
+  val c = 0;
+
+  // Term number...
+  val term = 0;
+
+  // Until we reach the maximum value...
+  while a < upTo {
+    // Compute the next term
+    c = a + b;
+
+    // Update the term number
+    term ++;
+
+    // Yield them
+    yield (term, c);
+
+    // Update the previous ones
+    b = a;
+    a = c;
+  }
+}
+
+// Generate numbers from the fibonacci suite from 0 to 1000
+for term -> value in fibonacci(1000u) {
+  println!('fibonacci(${term}) = ${value}');
+}
