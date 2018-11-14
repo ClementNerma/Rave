@@ -1,0 +1,154 @@
+/**
+ * @file Doubly Linked List
+ * @author Clément Nerma
+ * @license Apache-2.0
+ */
+
+/**
+ * Node in a doubly linked list
+ * @template T Type of data holded by the node
+ */
+class self {
+  /**
+   * The previous node in the list
+   * NOTE: Will be 'none' if this node is the first one
+   */
+  public writable prev: ?self;
+
+  /**
+   * The next node in the list
+   * NOTE: Will be 'none' if this node is the last one
+   */
+  public writable next: ?self;
+
+  /**
+   * The value holded by this node
+   */
+  public writable value: T;
+
+  /**
+   * Create a node
+   * @param value Its value
+   * @param prev Its previous element
+   * @param next Its next element
+   */
+  public fn %new (@value, @prev = none, @next = none) {
+    // Set the previous node's next node
+    prevNode.next = this if @prev as prevNode;
+
+    // Set the next node's previous node
+    nextNode.prev = this if @next as nextNode;
+  }
+
+  /**
+   * Create a node on the next of this one
+   * @param value The value holded by this one
+   * @returns The created node
+   */
+  public fn insert (@value) : self {
+    // Create the new node
+    // * value = the provided one
+    // * prev  = this node
+    // * next  = this node's previously next element
+    //  then return the node
+    return new self(@value, this, @next);
+  }
+
+  /**
+   * Get the first node of the list
+   * @returns The first node
+   */
+  public fn first () : self {
+    // The current node
+    let node = this;
+
+    // While there is a previous one...
+    while node.prev as prevNode {
+      // Set it as the current node
+      node = prevNode;
+    }
+
+    // Return the first node
+    return node;
+  }
+  
+  /**
+   * Get the last node of the list
+   * @returns The last node
+   */
+  public fn last () : self {
+    // The current node
+    let node = this;
+
+    // While there is a next one...
+    while node.next as prevNode {
+      // Set it as the current node
+      node = prevNode;
+    }
+
+    // Return the last node
+    return node;
+  }
+
+  /**
+   * Get all nodes starting from this one
+   * @returns A list of nodes
+   */
+  public fn getNextNodes () : List<self> {
+    // Create an (extendable) list containing the current node
+    let nodes = [# this];
+
+    loop {
+      // Get the next element
+      // If there is one...
+      if this.last().next as nextNode {
+        // Add it to the list
+        nodes[] = nextNode;
+      } else {
+        // Else, exit the loop
+        break ;
+      }
+    }
+
+    // Return the collected list of nodes
+    return nodes;
+  }
+
+  /**
+   * Get all nodes of this list
+   * @returns A list of nodes
+   */
+  public fn getNodes () : List<self> {
+    // Return all nodes from the first one
+    return @first().getNextNodes();
+  }
+
+  /**
+   * Convert this doubly linked list to a simple list
+   * @returns All values in this list
+   */
+  public fn %to[List<T>] {
+    // Get the value of each node of the list
+    //  and return the result
+    return (node.value for node in @getNodes());
+  }
+}
+
+// ========== D E M O ========== //
+
+// Create a node
+val node = new Node(0u);
+
+// Create 10 nodes after it
+for i in 0..10 {
+  node.insert(i + 1);
+}
+
+// Get all nodes as a list from the last one
+val list = node.last() as List<uint>;
+
+// Print the number of elements
+println!(list.size); // Prints: '11'
+
+// Get the list's sum
+println!(list.sum()); // Prints: '45'
