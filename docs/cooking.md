@@ -296,6 +296,47 @@ That's also the only library to be imported automatically in all programs:
 val cst: bool = true; // Works fine
 ```
 
+### CFL: Random
+
+The `random` is pretty simple: it allows to generate random values:
+
+```rave
+import cfl::random;
+
+println!('10 random numbers:');
+
+for n in 0..10 {
+  print!(' ' + random::integer());
+}
+```
+
+### CFL: Mathematics
+
+The `maths` library exposes many types and functions useful for mathematics:
+
+```rave
+import cfl::maths;
+
+// Create a linear system of equations
+val matrix = new maths::Matrix(
+  [  2, -1,  0 ],
+  [ -1,  2, -1 ],
+  [  0,  -1, 2 ]
+);
+
+// Solve it using the Gauss-Jordan elimination algorithm
+println!(maths::solvers::gaussJordan(matrix).printable());
+// [
+//   [ 1, 0, 0 ],
+//   [ 0, 1, 0 ],
+//   [ 0, 0, 1 ]
+// ]
+```
+
+### CFL: Build internals
+
+The `builtin` library allows to access the program's asset - a concept we will see soon.
+
 ### CFL: Machine statistics
 
 The `stats` library allows to get informations on the current machine: processor and memory usage, system's name, processor architecture, uptime, etc.
