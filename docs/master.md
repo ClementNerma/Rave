@@ -634,14 +634,14 @@ As for arrays, lists support inferred typing, so we can simply write:
 val list = [ # 2, 3, 4 ];
 ```
 
-To make empty lists, we can use an alternate syntax:
+To make empty lists, we use the following syntax:
 
 ```rave
 // Empty list of strings
-val list1 = string:[#];
+val list1 = new List<string>;
 
 // Empty list of integers
-val list2 = int:[#];
+val list2 = new List<int>;
 ```
 
 Don't forget the `:` symbol between the type name and the opening bracket: it indicates we are not writing a type name (`int[#]` refers to a list of integers) but an _empty list_ of the given type.
@@ -1868,7 +1868,7 @@ sumOf(); // ERROR (ambiguity)
 // The compiler doesn't know what declaration to use
 // We must tell it explicitly by using a vector of elements
 
-val vec = int:[#];
+val vec = new List<int>;
 sumOf(vec...); // Works fine
 ```
 
@@ -4050,8 +4050,8 @@ dict UniqueMap<K, V> extends Map<K, V> {}
 We will have two attributes for this class: a list of keys, and a list of values. That's the traditional way in dictionaries, as it allows to manage keys and values separately.
 
 ```rave
-  private keys = K:[#];
-  private values = V:[#];
+  private keys = new List<K>;
+  private values = new List<V>;
 ```
 
 #### Part 3: the setter
