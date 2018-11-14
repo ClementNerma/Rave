@@ -8,7 +8,7 @@
  * Node in a doubly linked list
  * @template T Type of data holded by the node
  */
-class self {
+class Node<T> {
   /**
    * The previous node in the list
    * NOTE: Will be 'none' if this node is the first one
