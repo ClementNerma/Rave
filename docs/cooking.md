@@ -699,7 +699,7 @@ The `dom` library, which stands for _**D**ocument **O**bject **M**odel_, allows 
 ```rave
 import efl::dom;
 
-if try dom::document.body?.querySelector('h1')? as mainTitle {
+if try dom::document.querySelector('h1') as mainTitle {
   mainTitle.innerHTML = 'New title';
 }
 ```
