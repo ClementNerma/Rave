@@ -268,6 +268,23 @@ This OFT contains the output program in binary format, which is the format under
 
 The _output streamer_, finally, takes any OFT and turn in into files on your hard drive.
 
+### General overview
+
+Generally speaking, when we perform a build from the command line, the following modules are _always_ ran:
+
+* Command-Line Interface (CLI)
+* Builder
+* | Normalizer
+* | Lexer
+* | Parser
+* | Static analyzer
+* | Linter (optional)
+* | Optimizer (optional)
+* Transformer
+* Output streamer
+
+The _transformer_ is the set of modules that turns the produced RVT into an OFT. In the case of compilation, it is made of the LLIC converter + the compiler.
+
 ## Frontend libraries
 
 A key-concept of the toolchain is the _frontend libraries_. These are toolchain's built-in Rave libraries we can use for our programs. They are organized into three categories:
