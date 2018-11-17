@@ -3365,7 +3365,7 @@ small = <i8> large; // Works fine (but overflows)
 println!(small); // Prints: '2'
 ```
 
-Note that typecasting overloads use a normally forbidden syntax: polymorphism by return type. Even though these overloads do not take any template nor argument, we can declare several of them in the same class, just changing their return type. It's an exception.
+Note that typecasting overloads use a normally forbidden syntax: polymorphism by return type. Even though these overloads do not take any argument, we can declare several of them in the same class, just changing their return type. It's an exception.
 
 #### Automatic typecast
 
