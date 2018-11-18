@@ -7213,3 +7213,29 @@ class SignedNumber extends A {
   public fn nothing () {}
 }
 ```
+
+### Documentation inheritance
+
+Documentation can be inherited from a mother class using the `@inheritdoc` annotation on members:
+
+```rave
+/**
+ * My super mother class
+ */
+class Mother {
+  /**
+   * Do some stuff with @class
+   */
+  fn doStuff ();
+}
+
+/**
+ * My super child class
+ */
+class Child {
+  /**
+   * @inheritdoc
+   */
+  fn doStuff();
+}
+```
