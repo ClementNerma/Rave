@@ -36,10 +36,7 @@ Given the points above, the language is perfect for developers who want to:
 * Get rid of high-level languages' lack of riguor ;
 * Use a stable language with a very explicit behavior
 
-Still, it may not be suited for:
-
-* Very low-level programs - direct communication with hardware, direct memory management, drivers, ... ;
-* Programs in which memory and threads safety is critical (not better than C or C++)
+Still, it may not be suited for some specific cases like very low-level programs, such as the ones that communicate directly with the hardware or manage manually the memory.
 
 ### Setting up environment
 
