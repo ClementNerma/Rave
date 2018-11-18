@@ -1437,10 +1437,10 @@ This is a bit heavy, and can be replaced by a match:
 
 ```rave
 match color {
-  Red   -> println!('Color is red');
-  Green -> println!('Color is green');
-  Blue  -> println!('Color is blue');
-  default     -> println!('Unknown color');
+  Red   -> println!('Color is red'),
+  Green -> println!('Color is green'),
+  Blue  -> println!('Color is blue'),
+  default     -> println!('Unknown color')
 }
 ```
 
@@ -1466,9 +1466,9 @@ val age = 24;
 let str = '';
 
 match age {
-  [_ < 12] -> str = 'Child';
-  [_ < 18] -> str = 'Teenager';
-  default  -> str = 'Adult';
+  [_ < 12] -> str = 'Child',
+  [_ < 18] -> str = 'Teenager',
+  default  -> str = 'Adult'
 }
 ```
 
