@@ -17,7 +17,7 @@ fn evaluateBf (source: string, lit MEMORY_SIZE = 1024u) : ?u8[MEMORY_SIZE] {
   val memory = u8[MEMORY_SIZE].of(0);
 
   // The current pointer
-  val pointer = usize(2);
+  val pointer = 2 as usize;
 
   // The list of opened conditions
   val loops = new List<usize>;
