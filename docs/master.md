@@ -6362,6 +6362,28 @@ println!(counter1); // Prints: '2'
 println!(counter2); // Prints: '1'
 ```
 
+### Alias proxies
+
+Proxies can also be aliases for other entities:
+
+```rave
+val arr = [
+  [ 0, 1, 2 ],
+  [ 2, 3, 4 ],
+  [ 6, 7, 8 ]
+];
+
+proxy middle = arr[1][1];
+
+println!(middle); // Prints: '3'
+println!(arr[1][1]); // Prints: '3'
+
+middle += 2; // Works fine
+
+println!(middle); // Prints: '5'
+println!(arr[1][1]); // Prints: '5'
+```
+
 ### Flexible proxies
 
 _Flexible proxies_ are proxies that use flexs instead of simple functions as their getter and eventual setter. It is useful in several situations, like when the proxy must return a literal value.
