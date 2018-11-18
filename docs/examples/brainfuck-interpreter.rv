@@ -26,7 +26,7 @@ fn evaluateBf (source: string, lit MEMORY_SIZE = 1024u) : ?u8[MEMORY_SIZE] {
   proxy current as memory[pointer];
 
   // For each character in the source...  
-  for i in 0..source.length {
+  for i = 0; i < source.length; i ++ {
     // Match it
     match source.charAt(i) {
       // '<' = point to the previous cell
@@ -52,7 +52,7 @@ fn evaluateBf (source: string, lit MEMORY_SIZE = 1024u) : ?u8[MEMORY_SIZE] {
         if current == 0 {
           // Do not evaluate the loop's content
           // Go to the next ']' symbol matching this one
-          i = source.nextWithMatch(i, ']', '[') + 1;
+          i = source.nextWithMatch(i, ']', '[');
         } else {
           // Else, remember this loop
           loops[] = i;
