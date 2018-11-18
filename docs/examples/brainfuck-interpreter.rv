@@ -1,0 +1,87 @@
+/**
+ * @file Brainfuck interpreter
+ * @author Clément Nerma
+ * @license Apache-2.0
+ */
+
+// Import the console library
+import cfl::console;
+
+/**
+ * Evaluate a Brainfuck program
+ * @param source The program's source code
+ * @returns The machine's memory or `none` if an unknown symbol was encountered
+ */
+fn evaluateBf (source: string, lit MEMORY_SIZE = 1024u) : ?u8[MEMORY_SIZE] {
+  // Declare an array containing the program's memory
+  val memory = u8[MEMORY_SIZE].of(0);
+
+  // The current pointer
+  val pointer = usize(2);
+
+  // The list of opened conditions
+  val loops = new List<usize>;
+
+  // The current memory cell
+  proxy current as memory[pointer];
+
+  // For each character in the source...  
+  for i in 0..source.length {
+    // Match it
+    match source.charAt(i) {
+      // '<' = point to the previous cell
+      '<' -> pointer --;
+
+      // '>' = point to the next cell
+      '>' -> pointer ++;
+
+      // '+' = increment the current cell
+      '+' -> current ++;
+
+      // '-' = decrement the current cell
+      '-' -> current --;
+ 
+      // '.' = print the current cell's value as an ASCII character
+      '.' -> print!(current.toAscii());
+
+      // ',' = input an ASCII character and put its value in the current cell
+      ',' -> current = sync console::readChar();
+
+      // '[' = open a loop (while the current cell is not 0...)
+      '[' -> {
+        if current == 0 {
+          // Do not evaluate the loop's content
+          // Go to the next ']' symbol matching this one
+          i = source.nextWithMatch(i, ']', '[') + 1;
+        } else {
+          // Else, remember this loop
+          loops[] = i;
+        }
+      },
+
+      // ']' = close a loop (go to the loop's beginning)
+      // NOTE: We optimize this in: if the current cell's value is not 0, go to the loop's beginning
+      //       This avoids going back to this part if the current cell's value is equal to 0
+      ']' -> {
+        if current != 0 {
+          // Evaluate the loop, again
+          i = loops.last() + 1;
+        }
+      },
+
+      // Unknown symbol
+      else -> {
+        // Print an error message
+        println!(`Unknown symbol "${_}"`, OutputType.Error);
+        // Exit
+        return none;
+      }
+    }
+  }
+
+  // Return the program's memory
+  return memory;
+}
+
+// Ask the user for a Brainfuck program
+evaluateBf(sync console::ask('Brainfuck> '));
