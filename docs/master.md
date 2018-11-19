@@ -6373,7 +6373,7 @@ val arr = [
   [ 6, 7, 8 ]
 ];
 
-proxy middle = arr[1][1];
+proxy middle as arr[1][1];
 
 println!(middle); // Prints: '3'
 println!(arr[1][1]); // Prints: '3'
@@ -6382,6 +6382,22 @@ middle += 2; // Works fine
 
 println!(middle); // Prints: '5'
 println!(arr[1][1]); // Prints: '5'
+```
+
+It's also possible to create a read-only proxy from an expression:
+
+```rave
+let counter = 0;
+
+proxy incCounter = () : int => counter + 1;
+
+println!(counter); // Prints: '0'
+println!(incCounter); // Prints: '1'
+
+counter ++;
+
+println!(counter); // Prints: '1'
+println!(incCounter); // Prints: '2'
 ```
 
 ### Flexible proxies
