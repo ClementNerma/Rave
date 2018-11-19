@@ -1881,7 +1881,7 @@ _Lambdas_, also called _anonymous functions_, are single values that can be used
 
 val list = [ # 2, 3, 4 ];
 
-val filtered = list.filter((value: int) : bool {
+val filtered = list.filter(fn (value: int) : bool {
   return value > 2;
 });
 ```
@@ -1891,7 +1891,7 @@ The `filtered` list now contains the `3` and `4` values. As you can see, the lam
 It's possible to represent functions as a type:
 
 ```rave
-fn runLambda (func: fn (value: int) : bool) {
+fn runLambda (func: (value: int) => bool) {
   if func(5) {
     println!('Returned: true');
   } else {
@@ -1899,7 +1899,7 @@ fn runLambda (func: fn (value: int) : bool) {
   }
 }
 
-runLambda((value: int) : bool => {
+runLambda(fn (value: int) : bool {
   return true;
 }); // Prints: 'Returned: true'
 ```
@@ -1909,7 +1909,7 @@ This time, the type uses the `fn` keyword, because we may give an existing funct
 As functions are simple values, we can store it in entities, and even use inferred typing to omit their type:
 
 ```rave
-let sum = (a: int, b: int) : int => {
+let sum = fn (a: int, b: int) : int {
   return a + b;
 };
 
@@ -1919,12 +1919,12 @@ println!(sum(2, 5)); // Prints: '7'
 For lambdas only made of a `return` instruction, we can use the _inline syntax_ to shorten their writing:
 
 ```rave
-let sum = (a: int, b: int) : int => a + b;
+let sum = (a: int, b: int) => a + b;
 
 println!(sum(2, 5)); // Prints: '7'
 ```
 
-The expression written after the arrow is evaluated when the function is called, and then returned.
+The expression written after the arrow is evaluated when the function is called, and then returned. As you can see, the return type is inferred. Note that, if some asks for a function returning a void, we can provide a function with the same signature returning any other type - the return value will simply be ignored.
 
 ### Inferred Callback Typing
 
@@ -1932,7 +1932,7 @@ A function is called a _callback_ when it is provided as a function's argument. 
 
 ```rave
 // Lambda syntax
-list.filter((value: int) : bool => value > 2);
+list.filter((value: int) => value > 2);
 
 // ICT
 list.filter((value) => value > 2);
@@ -3039,7 +3039,7 @@ Functions have a special sub-typing support:
 Examples:
 
 ```rave
-val fn: (a: number) => primitive = (a: int) : string => 'Hello world'; // Works fine
+val fn: (a: number) => primitive = (a: int) => 'Hello world'; // Works fine
 ```
 
 #### Resolution keywords
@@ -3623,7 +3623,7 @@ Templates can be used everywhere a fixed type could be used. Types that use temp
 Templates can be used in lambdas by prefixing the opening parenthesis by the templates:
 
 ```rave
-val lambda = <T> (value: T[]) : usize => value.length;
+val lambda = <T> (value: T[]) => value.length;
 ```
 
 ### Optional templates
@@ -6389,7 +6389,7 @@ It's also possible to create a read-only proxy from an expression:
 ```rave
 let counter = 0;
 
-proxy incCounter = () : int => counter + 1;
+proxy incCounter = () => counter + 1;
 
 println!(counter); // Prints: '0'
 println!(incCounter); // Prints: '1'
