@@ -994,7 +994,7 @@ struct ImplicitStruct1 {
   lit exp: uint;
 }
 
-val jack = Hero {
+val jack = ImplicitStruct1 {
   name: 'Jack',
   hp: 100u,
   atk: 20u,
