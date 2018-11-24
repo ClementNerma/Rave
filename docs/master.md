@@ -1247,12 +1247,12 @@ if 2 + 3 == 4 {
 
 This code displays `'OK'`.
 
-We can also use the `elsif` block, which acts as an `else` block but using another condition:
+We can also use the `elif` block, which acts as an `else` block but using another condition:
 
 ```rave
 if 1 + 1 == 4 {
   println!('Strange...');
-} elsif 1 + 1 == 3 {
+} elif 1 + 1 == 3 {
   println!('Strange...');
 } else {
   println!('OK');
@@ -1424,11 +1424,11 @@ The `match` keyword allow to run a set of instructions depending on a value. Let
 ```rave
 if color is Red {
   println!('Color is red');
-} elsif color is Green {
+} elif color is Green {
   println!('Color is green');
-} elsif color is Blue {
+} elif color is Blue {
   println!('Color is blue');
-} elsif color is Some(r, g, b) {
+} elif color is Some(r, g, b) {
   println!('red = ${r}, green = ${g}, blue = ${b}');
 }
 ```
@@ -2396,7 +2396,7 @@ Also, the player cannot move if it's already trapped:
 
 ```rave
   // Moves are forbidden when the player is trapped
-  elsif @trapped {
+  elif @trapped {
     println!('Cannot move because the player is trapped');
   }
 ```
@@ -2405,7 +2405,7 @@ We can't run into a rock:
 
 ```rave
   // Can't run into a rock
-  elsif @map[y][x] == Cell.ROCK {
+  elif @map[y][x] == Cell.ROCK {
     println!('Cannot run into a rock');
   }
 ```
@@ -2470,12 +2470,12 @@ class Map {
     }
 
     // Moves are forbidden when the player is trapped
-    elsif @trapped {
+    elif @trapped {
       println!('Cannot move because the player is trapped');
     }
 
     // Can't run into a rock
-    elsif @map[y][x] == Cell.Rock {
+    elif @map[y][x] == Cell.Rock {
       println!('Cannot run into a rock');
     }
 
@@ -2768,7 +2768,7 @@ class BankAccount {
   public fn %compare (another: self) : Comparison {
     if @amount > another.amount {
       return Comparison.Greater;
-    } elsif @amount < another.amount {
+    } elif @amount < another.amount {
       return Comparison.Smaller;
     } else {
       return Comparison.Equal;
@@ -6021,7 +6021,7 @@ Another advantage of flexs is that they can return literal values, at the opposi
 flex getFamilyTypeOf (value: number) : lit<Type> {
   if value instanceof int {
     return int;
-  } elsif value instanceof uint {
+  } elif value instanceof uint {
     return uint;
   } else {
     return number;
@@ -6497,7 +6497,7 @@ Note that you can make multiple bindings in a function, but they must always be 
 
 ### Conditional directives
 
-Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the conditional directives: `#if`, `#else`, `#elsif`, `#end`. The code located in them is simply removed from the source code if the condition is (or is not) filled, before the program starts to run. They can only use literals, as well as native constants, which give informations about the type of execution (interpreted, compiled, ...), the platform (Windows, Linux, ...) the processor's architecture (ARM, x86, ...).
+Sometimes, we will want to use a piece of code for a specific platform or language. For that, we can use the conditional directives: `#if`, `#else`, `#elif`, `#end`. The code located in them is simply removed from the source code if the condition is (or is not) filled, before the program starts to run. They can only use literals, as well as native constants, which give informations about the type of execution (interpreted, compiled, ...), the platform (Windows, Linux, ...) the processor's architecture (ARM, x86, ...).
 
 Here is an example:
 
@@ -6508,9 +6508,9 @@ Here is an example:
 
 #if OS == 'Windows'
   println!('You are using a Windows system.');
-#elsif OS == 'Linux'
+#elif OS == 'Linux'
   println!('You are using a Linux system.');
-#elsif OS == 'Darwin'
+#elif OS == 'Darwin'
   println!('You are using a MacOS system.');
 #end
 ```
