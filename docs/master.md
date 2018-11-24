@@ -1266,7 +1266,7 @@ As soon as a block runs its set of instructions, the next one in the chain are i
 Conditional blocks are especially useful with enumerations. Considering the following enumeration:
 
 ```rave
-struct Color {
+enum Color {
   White,
   Black,
   Custom(u8, u8, u8)
