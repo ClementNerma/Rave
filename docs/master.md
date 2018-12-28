@@ -2142,7 +2142,7 @@ class Hero {
 }
 ```
 
-Inside the class, `this` refers to the current class. We can access all the class' attributes (even private ones) using it.
+Inside the class, `this` refers to the current class. We can access all the class' attributes (even private ones) using it. Note the `fn` keyword is optional for class methods.
 
 We can now instanciate the class using the `new` keyword:
 
@@ -2165,7 +2165,7 @@ Let's write a method to fight another ennemy:
 ```rave
 class Hero {
   // ...
-  fn fight (ennemy: Hero) {
+  fight (ennemy: Hero) {
     if this.hp == 0 {
       println!('${this.name} cannot fight because he is dead.');
       return ;
@@ -2216,14 +2216,14 @@ class Hero {
   atk: uint;
   exp: uint;
 
-  fn %new (name: string, hp: uint, atk: uint, exp: uint) {
+  %new (name: string, hp: uint, atk: uint, exp: uint) {
     this.name = name;
     this.hp = hp;
     this.atk = atk;
     this.exp = exp;
   }
 
-  fn fight (ennemy: Hero) {
+  fight (ennemy: Hero) {
     if this.hp == 0 {
       println!("${this.name} cannot fight because he's dead.");
       return ;
@@ -2271,7 +2271,7 @@ class Example {
   known: string;
   private secret: string;
 
-  fn %new () {
+  %new () {
     this.known = 'Public data';
     this.secret = 'Secret data';
   }
@@ -2290,7 +2290,7 @@ class Example {
   known: string;
   private secret: string;
 
-  fn %new () {
+  %new () {
     this.known = 'Public data';
     this.secret = 'Secret data';
   }
@@ -2304,7 +2304,7 @@ class Example {
   known = 'Public data';
   private secret = 'Secret data';
 
-  public fn %new () {}
+  %new () {}
 }
 ```
 
@@ -2334,7 +2334,7 @@ Static attributes must have an initialization value. Classes can access their st
 class Example {
   static name = 'Hello';
 
-  static fn printName () {
+  static printName () {
     println!(self.name);
   }
 }
@@ -2354,9 +2354,9 @@ class A {
   private def: uint;
 
   // This declaration:
-  fn %new (this.name, this.hp, this.atk, this.def) {}
+  %new (this.name, this.hp, this.atk, this.def) {}
   // Is strictly equivalent to this one:
-  fn %new (name: string, hp: uint, atk: uint, def: uint) {
+  %new (name: string, hp: uint, atk: uint, def: uint) {
     this.name = name;
     this.hp = hp;
     this.atk = atk;
@@ -2417,7 +2417,7 @@ We told the constructor must accept the player's start position. We can simply t
 Here is our constructor's signature:
 
 ```rave
-  fn %new (map: Cell[][], x: usize, y: usize) {
+  %new (map: Cell[][], x: usize, y: usize) {
 ```
 
 #### Part 3: The attributes
@@ -2445,7 +2445,7 @@ Let's initialize our attributes:
 
 ```rave
   // ...
-  fn %new (map: Cell[][], x: usize, y: size) {
+  %new (map: Cell[][], x: usize, y: size) {
     this.map = map;
     this.x = x;
     this.y = y;
@@ -2458,14 +2458,14 @@ Because our player can only move on adjacent cells, the easiest solution is to m
 
 ```rave
   // ...
-  fn moveUpLeft    () { this.move(x - 1, y - 1); }
-  fn moveUp        () { this.move(x, y - 1); }
-  fn moveUpRight   () { this.move(x + 1, y - 1); }
-  fn moveLeft      () { this.move(x - 1, y); }
-  fn moveRight     () { this.move(x + 1, y); }
-  fn moveDownLeft  () { this.move(x - 1, y + 1); }
-  fn moveDown      () { this.move(x, y + 1); }
-  fn moveDownRight () { this.move(x + 1, y + 1); }
+  moveUpLeft    () { this.move(x - 1, y - 1); }
+  moveUp        () { this.move(x, y - 1); }
+  moveUpRight   () { this.move(x + 1, y - 1); }
+  moveLeft      () { this.move(x - 1, y); }
+  moveRight     () { this.move(x + 1, y); }
+  moveDownLeft  () { this.move(x - 1, y + 1); }
+  moveDown      () { this.move(x, y + 1); }
+  moveDownRight () { this.move(x + 1, y + 1); }
 
 ```
 
@@ -2475,7 +2475,7 @@ Let's make our `move` method. First, its signature:
 
 ```rave
   // ...
-  fn move (x: usize, y: usize) {
+  move (x: usize, y: usize) {
 ```
 
 We have to check that are moving to an adjacent case:
@@ -2543,22 +2543,22 @@ class Map {
   y: usize;
   trapped: bool = false;
 
-  fn %new (map: Cell[][], x: usize, y: size) {
+  %new (map: Cell[][], x: usize, y: size) {
     this.map = map;
     this.x = x;
     this.y = y;
   }
 
-  fn moveUpLeft    () { this.move(x - 1, y - 1); }
-  fn moveUp        () { this.move(x, y - 1); }
-  fn moveUpRight   () { this.move(x + 1, y - 1); }
-  fn moveLeft      () { this.move(x - 1, y); }
-  fn moveRight     () { this.move(x + 1, y); }
-  fn moveDownLeft  () { this.move(x - 1, y + 1); }
-  fn moveDown      () { this.move(x, y + 1); }
-  fn moveDownRight () { this.move(x + 1, y + 1); }
+  moveUpLeft    () { this.move(x - 1, y - 1); }
+  moveUp        () { this.move(x, y - 1); }
+  moveUpRight   () { this.move(x + 1, y - 1); }
+  moveLeft      () { this.move(x - 1, y); }
+  moveRight     () { this.move(x + 1, y); }
+  moveDownLeft  () { this.move(x - 1, y + 1); }
+  moveDown      () { this.move(x, y + 1); }
+  moveDownRight () { this.move(x + 1, y + 1); }
 
-  fn move (x: usize, y: usize) {
+  move (x: usize, y: usize) {
     // Moves are only allowed to adjacent cells
     if (this.x - x).abs() > 1 || (this.y - y).abs() > 1 {
       println!('Cannot move on a non-adjacent cell');
@@ -2618,13 +2618,13 @@ class User {
   private static counter = 0u;
   private id: uint;
 
-  fn %new () {
+  %new () {
     self.counter ++;
     this.id = self.counter;
     println!('User ${this.id} has been created');
   }
 
-  fn %drop () {
+  %drop () {
     println!('User ${this.id} will be dropped');
   }
 }
@@ -2696,15 +2696,15 @@ The cloning overload is a method that takes no argument and returns an instance 
 class Example {
   name: string;
 
-  fn %new (name: string) {
+  %new (name: string) {
     this.name = name;
   }
 
-  fn setName (newName: string) {
+  setName (newName: string) {
     this.name = newName;
   }
 
-  fn %clone () : self {
+  %clone () : self {
     println!('Instance has been cloned.');
     return new Example(this.name);
   }
@@ -2731,7 +2731,7 @@ The serialization overload takes no argument and returns a string. In our `Examp
 
 ```rave
   // ...
-  fn %serialize () {
+  %serialize () {
     return this.name;
   }
 ```
@@ -2740,7 +2740,7 @@ The unserialization overload takes a string argument and returns an instance of 
 
 ```rave
   // ...
-  static fn %unserialize (serialized: string) throws UnserializationError {
+  static %unserialize (serialized: string) throws UnserializationError {
     return new Example(serialized);
   }
 ```
@@ -2773,11 +2773,11 @@ Some arithmetic operators can be overloaded in a class, allowing to use them on 
 class MyInt {
   value: int;
 
-  fn %new (value: int) {
+  %new (value: int) {
     this.value = value;
   }
 
-  fn %add (another: self) {
+  %add (another: self) {
     return new MyInt(this.value + another);
   }
 }
@@ -2796,11 +2796,11 @@ If we don't provide types, operator overloads take an instance of the current cl
 class MyInt {
   value: int;
 
-  fn %new (value: int) {
+  %new (value: int) {
     this.value = value;
   }
 
-  fn %add (another: MyInt) : int {
+  %add (another: MyInt) : int {
     return this.value + another.value;
   }
 }
@@ -2830,11 +2830,11 @@ As for arithmetic operators, comparison operators can be overloaded in classes.
 class Hero {
   name: string;
 
-  fn %new (name: string) {
+  %new (name: string) {
     this.name = name;
   }
 
-  fn %equal (another: self) : bool {
+  %equal (another: self) : bool {
     return this.name == another.name;
   }
 }
@@ -2856,11 +2856,11 @@ There is also a more advanced overload to compare values in a more advanced way:
 class BankAccount {
   amount: uint;
 
-  fn %new (amount: uint) {
+  %new (amount: uint) {
     this.amount = amount;
   }
 
-  fn %compare (another: self) : Comparison {
+  %compare (another: self) : Comparison {
     if this.amount > another.amount {
       return Comparison.Greater;
     } elif this.amount < another.amount {
@@ -2941,8 +2941,8 @@ class Hero {
   rage: uint;
   mp: uint;
 
-  fn %new (wizard: bool, name: string, hp: uint,
-                  atk: uint, exp: uint, rage: uint, mp: uint) {
+  %new (wizard: bool, name: string, hp: uint,
+        atk: uint, exp: uint, rage: uint, mp: uint) {
     this.wizard = wizard;
     this.name = name;
     this.hp = hp;
@@ -2969,7 +2969,7 @@ open class Hero {
   atk: uint;
   exp: uint;
 
-  fn %new (name: string, hp: uint, atk: uint, exp: uint) {
+  %new (name: string, hp: uint, atk: uint, exp: uint) {
     this.name = name;
     this.hp = hp;
     this.atk = atk;
@@ -2977,7 +2977,7 @@ open class Hero {
   }
 
   // Returns 'true' if the fight has been done successfully
-  fn fight (ennemy: Hero) : bool {
+  fight (ennemy: Hero) : bool {
     if this.hp == 0 {
       println!('${this.name} cannot fight because he is dead.');
       return false;
@@ -3017,7 +3017,7 @@ You may wonder why we define one as the warrior fights a different way. That's b
 class Warrior extends Hero {
   rage: uint;
 
-  fn %new (name: string, hp: uint, atk: uint, exp: uint, rage: uint) {
+  %new (name: string, hp: uint, atk: uint, exp: uint, rage: uint) {
     this.name = name;
     this.hp = hp;
     this.atk = atk;
@@ -3025,7 +3025,7 @@ class Warrior extends Hero {
     this.rage = rage;
   }
 
-  fn fight (ennemy: Hero) {
+  fight (ennemy: Hero) {
     // Call mother's fight method
     // If it succeeds, win rage points (limited to 20)
     if super.fight(ennemy) && this.rage < 20 {
@@ -3050,12 +3050,12 @@ Let's write our wizard class:
 class Wizard extends Hero {
   mp: uint;
 
-  fn %new (name: string, hp: uint, atk: uint, exp: uint, mp: uint) {
+  %new (name: string, hp: uint, atk: uint, exp: uint, mp: uint) {
     super(name, hp, atk, exp);
     this.mp = mp;
   }
 
-  fn fireball (ennemy: Hero) {
+  fireball (ennemy: Hero) {
     if this.hp == 0 {
       println!('Cannot launch a fireball while being dead');
       return ;
@@ -3156,11 +3156,11 @@ As we saw, constructors are not inherited by child classes. But we can force inh
 
 ```rave
 open class Mother {
-  fn %new (name: string) {
+  %new (name: string) {
     println!(name);
   }
 
-  fn %new (name: string[]) {
+  %new (name: string[]) {
     println!(name.join(' '));
   }
 }
@@ -3174,11 +3174,11 @@ Our `Child` class will inherit only the first constructor. It's also possible to
 
 ```rave
 open class Mother {
-  fn %new (name: string) {
+  %new (name: string) {
     println!(name);
   }
 
-  fn %new (name: string[]) {
+  %new (name: string[]) {
     println!(name.join(' '));
   }
 }
@@ -3242,7 +3242,7 @@ Methods can be stated, too. We already saw static methods, but they can also be 
 
 ```rave
 virtual class Mother {
-  virtual fn sayHello ();
+  virtual sayHello ();
 }
 
 class ChildA extends Mother {
@@ -3250,7 +3250,7 @@ class ChildA extends Mother {
 }
 
 class ChildB extends Mother {
-  fn sayHello () {
+  sayHello () {
     println!('Hello world!');
   }
 }
@@ -3264,7 +3264,7 @@ Abstract methods, on their side, are virtual methods declared with a body. This 
 
 ```rave
 class Mother {
-  abstract fn sayHello () {
+  abstract sayHello () {
     println!('Hello from mother!');
   }
 }
@@ -3274,7 +3274,7 @@ class ChildA extends Mother {
 }
 
 class ChildB extends Mother {
-  fn sayHello () {
+  sayHello () {
     println!('Hello from child!');
   }
 }
@@ -3289,14 +3289,14 @@ Final methods are the opposite of abstract methods: they are defined in the orig
 
 ```rave
 class Mother {
-  final fn sayHello () {
+  final sayHello () {
     println!('Hello from mother!');
   }
 }
 
 class Child extends Mother {
   // ERROR: method is final
-  fn sayHello () {
+  sayHello () {
     println!('Hello from child!');
   }
 }
@@ -3404,7 +3404,7 @@ Typecasting overloads allow to statically typecast a given type to another, even
 class A {
   private message = 'Hello world!';
 
-  fn %to[B] () {
+  %to[B] () {
     return new B(this.message);
   }
 }
@@ -3412,7 +3412,7 @@ class A {
 class B {
   message: string;
 
-  fn %new (message: string) {
+  %new (message: string) {
     this.message = message;
   }
 }
@@ -3449,7 +3449,7 @@ class A {
   private message = 'Hello world!';
 
   #auto
-  fn %to[B] () {
+  %to[B] () {
     println!('Typecasting to B');
     return new B(this.message);
   }
@@ -3458,7 +3458,7 @@ class A {
 class B {
   message: string;
 
-  fn %new (message: string) {
+  %new (message: string) {
     this.message = message;
   }
 }
@@ -3479,7 +3479,7 @@ Interfaces allow to describe members of a class. Like for structure compatibilit
 
 ```rave
 interface Stringifyable {
-  fn %to[B] ();
+  %to[B] ();
 }
 ```
 
@@ -3487,7 +3487,7 @@ Every class that implements the `%to[string]` typecast overload will be `Stringi
 
 ```rave
 class A impl Stringifyable {
-  fn %to[string] () {
+  %to[string] () {
     return 'Hello world!';
   }
 }
@@ -3517,7 +3517,7 @@ Traits are kind of virtual classes: they describe a set of members, but their me
 trait Vehicle {
   val speed: f32;
 
-  fn accelerate () : string {
+  accelerate () : string {
     return 'Vroom!';
   }
 }
@@ -3546,7 +3546,7 @@ Traits can also use other traits:
 trait Bike {
   use Vehicle;
 
-  fn stop () : string {
+  stop () : string {
     return 'Scriiii';
   }
 }
@@ -3562,11 +3562,11 @@ interface Vehicle {
 trait Bike impl Vehicle {
   val speed: f32;
 
-  fn accelerate () : string {
+  accelerate () : string {
     return 'Vroom!';
   }
 
-  fn stop () : string {
+  stop () : string {
     return 'Scriiii';
   }
 }
@@ -3578,13 +3578,13 @@ Let's consider the following code:
 
 ```rave
 class A {
-  fn %to[B] () {
+  %to[B] () {
     return new B;
   }
 }
 
 class B {
-  fn %to[C] () {
+  %to[C] () {
     return new C;
   }
 }
@@ -3635,14 +3635,14 @@ interface ConvertibleToF {
 
 // Candidate
 class D {
-  fn %to[F] () {
+  %to[F] () {
     return new F;
   }
 }
 
 // Candidate
 class E {
-  fn %to[F] () {
+  %to[F] () {
     return new F;
   }
 }
@@ -3652,12 +3652,12 @@ class F {}
 
 // A sample class
 class G {
-  fn %to[D] () {
+  %to[D] () {
     println!('Typecasted to D');
     return new D;
   }
 
-  fn %to[E] () {
+  %to[E] () {
     println!('Typecasted to E');
     return new E;
   }
@@ -3708,7 +3708,7 @@ Here is its declaration of the `CanAdd` interface:
 
 ```rave
 interface CanAdd<T, X = T> {
-  fn %add (value: T) : X;
+  %add (value: T) : X;
 }
 ```
 
@@ -3783,8 +3783,8 @@ The other ambiguity happens when using undistinctable templates:
 
 ```rave
 class Example<K, V> {
-  fn %new (value: K) {}
-  fn %new (value: V) {}
+  %new (value: K) {}
+  %new (value: V) {}
 }
 
 new Example(2); // ERROR: Template inference ambiguity
@@ -3798,7 +3798,7 @@ The resolution keywords refer to their actual classes with all their templates:
 
 ```rave
 class Example<T> {
-  fn test () {
+  test () {
     // Here, 'self' refers to 'Example<T>'
     //  and not 'Example'
   }
@@ -3811,7 +3811,7 @@ We can change get the current class with other templates by rewriting them:
 
 ```rave
 class Example<T> {
-  fn test () {
+  test () {
     // self == Example<T>
     // self<int> == Example<int>
   }
@@ -3869,7 +3869,7 @@ This accepts any list with an unknown template. Note that we can still get eleme
 class Example<T> {
   value: T;
 
-  fn %new (value: T) {
+  %new (value: T) {
     this.size = size;
   }
 }
@@ -3902,7 +3902,7 @@ class MyArrayClass<T> {
   // - which means only if 'T' is a sub-type of 'number'
   segment T extends number {
     // Our '.sum()' function
-    fn sum () : T {
+    sum () : T {
       // Do some stuff here;
     }
   }
@@ -3925,7 +3925,7 @@ For that, we use a templated version of the addition overload:
 
 ```rave
 class LargeNumber {
-  fn %add<T extends number> (num: T) : T {
+  %add<T extends number> (num: T) : T {
     // Do some stuff here
   }
 }
@@ -3946,16 +3946,16 @@ class BankAccount {
   // ...
 
   // Doesn't work because 'T' cannot be guessed
-  fn %add<T> (left: string, right: int) : int[];
+  %add<T> (left: string, right: int) : int[];
 
   // Doesn't work because 'T' cannot be guessed
-  fn %add<T> (left: string, right: int) : T;
+  %add<T> (left: string, right: int) : T;
 
   // Works fine
-  fn %add<T> (left: T, right: int) : bool;
+  %add<T> (left: T, right: int) : bool;
 
   // Works fine
-  fn %add<T> (left: string, right: Map<int, T>) : string[];
+  %add<T> (left: string, right: Map<int, T>) : string[];
 
   // ...
 }
@@ -3978,19 +3978,19 @@ They are declared using the `dict` keyword instead of the `class` one. Dynamic d
 // V = type of values
 dict Custom<K, V> {
   // Get a value from a key
-  fn %get (key: K) : V throws KeyNotFoundError;
+  %get (key: K) : V throws KeyNotFoundError;
   // Associate a value to a key
-  fn %set (key: K, value: V) throws KeyAssignmentError;
+  %set (key: K, value: V) throws KeyAssignmentError;
   // Remove a key and its associated value
-  fn %unset (key: K) throws KeyNotFoundError;
+  %unset (key: K) throws KeyNotFoundError;
   // Get the number of key/value pairs
-  fn %size () : usize;
+  %size () : usize;
   // Check if a key exists
-  fn %has (key: K) : bool;
+  %has (key: K) : bool;
   // Check if a value is associated to a key
-  fn %contains (value: V) : bool;
+  %contains (value: V) : bool;
   // Get an iterator on key-value pairs
-  fn %iterate () : Iterator<(K, V)>;
+  %iterate () : Iterator<(K, V)>;
 }
 ```
 
@@ -4131,7 +4131,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 ```rave
   // ...
-  fn %set (key: K, value: V) {
+  %set (key: K, value: V) {
     // If the value already exists in the dictionary, panic
     panic!('Trying to use a duplicate value.') if value in this.values;
 
@@ -4152,7 +4152,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 ```rave
   // ...
-  fn %get (key: K, value: V) {
+  %get (key: K, value: V) {
     // If the key doesn't exist, panic
     panic!('Key not found') if key not in this.keys;
 
@@ -4165,7 +4165,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 ```rave
   // ...
-  fn %unset (key: K) {
+  %unset (key: K) {
     // If the key doesn't exist, panic
     panic!('Key not found') if key not in this.keys;
 
@@ -4182,7 +4182,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 ```rave
   // ...
-  fn %has (key: K) : bool {
+  %has (key: K) : bool {
     // Check if the key exists
     return key in this.keys;
   }
@@ -4192,7 +4192,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 ```rave
   // ...
-  fn %contains (value: V) : bool {
+  %contains (value: V) : bool {
     // Check if the value exists
     return value in this.values;
   }
@@ -4202,7 +4202,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 ```rave
   // ...
-  fn %size () : usize {
+  %size () : usize {
     // Return the number of elements in the dictionary
     return size!(this.keys);
   }
@@ -4212,7 +4212,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 ```rave
   // ...
-  fn %iterate () : Iterator<(K, V)> {
+  %iterate () : Iterator<(K, V)> {
     // Return an iterator on a key-value tuple
     return Iterator.fromBinom(this.keys, this.values);
   }
@@ -5244,11 +5244,11 @@ class Fibonacci extends Iterator<uint> {
   private a = 0;
   private b = 1;
 
-  fn %new (max: uint) {
+  %new (max: uint) {
     this.max = max;
   }
   
-  fn next () : ?uint {
+  next () : ?uint {
     return none if this.b >= this.max;
 
     val c = this.a + this.b;
@@ -5886,7 +5886,7 @@ _Lambda classes_ are to classes what lambdas are to functions. These are unnamed
 
 ```rave
 virtual class MouseClickHandler {
-  abstract fn onClick ();
+  abstract onClick ();
 }
 
 fn triggerHandler (handler: MouseClickHandler) {
@@ -5898,7 +5898,7 @@ If we want to make a new trigger, a first idea would be to write this:
 
 ```rave
 class MyMouseClickHandler extends MouseClickHandler {
-  fn onClick () {
+  onClick () {
     println!('Triggered!');
   }
 }
@@ -5910,7 +5910,7 @@ But if our class is only used once, that's heavy as we have to declare a whole n
 
 ```rave
 triggerHandler(new ~MouseClickHandler {
-  fn onClick () {
+  onClick () {
     println!('Triggered!');
   }
 });
@@ -5922,7 +5922,7 @@ If we want to make a class with no constraint (no inherited member nor abstract 
 
 ```rave
 val obj = new ~Any {
-  fn onClick () {
+  onClick () {
     println!('Triggered!');
   }
 };
@@ -5943,11 +5943,11 @@ namespace Users {
 
   val users = new Map<string, User>;
 
-  fn createUser (name: string, age: uint) {
+  createUser (name: string, age: uint) {
     users[name] = age;
   }
 
-  fn getUser (name: string) : User throws Error {
+  getUser (name: string) : User throws Error {
     if name not in users {
       throw new Error('User not found');
     } else {
@@ -5955,7 +5955,7 @@ namespace Users {
     }
   }
 
-  fn deleteUser (name: string) throws Error {
+  deleteUser (name: string) throws Error {
     if name not in users {
       throw new Error('User not found');
     } else {
@@ -6205,13 +6205,13 @@ tuple dict Custom<K in Literal, V> {
   // The list of keys
   lit keys: Tuple<keyof self>;
   // Get a value from a key
-  fn %get (key: keyof self) : V;
+  %get (key: keyof self) : V;
   // Associate a value to a key
-  fn %set (key: keyof self, value: V) throws KeyAssignmentError;
+  %set (key: keyof self, value: V) throws KeyAssignmentError;
   // Check if a value is associated to a key
-  fn %contains (value: V) : bool;
+  %contains (value: V) : bool;
   // Get an iterator on key-value pairs
-  fn %iterate () : Iterator<(K, V)>;
+  %iterate () : Iterator<(K, V)>;
 }
 ```
 
@@ -6297,7 +6297,7 @@ class A {
   name: string;
   age: uint;
 
-  fn %new (name: string, age: uint) {
+  %new (name: string, age: uint) {
     this.name = name;
     // ERROR: 'age' has not been initialized
   }
@@ -6619,7 +6619,7 @@ Superoverloads are global overloads of arithmetic and comparison operators. They
 Showcase:
 
 ```rave
-fn %add<SIZE: usize> (left: int[SIZE], right: int[SIZE]) : string {
+%add<SIZE: usize> (left: int[SIZE], right: int[SIZE]) : string {
   return (left[i] + right[i] for i -> 0..SIZE);
 }
 
@@ -6690,9 +6690,9 @@ Another case is callbacks. In the following code:
 class Event {
   private static handler: () => void;
 
-  static fn handle (handler: () => void) => this.handler = handler;
+  static handle (handler: () => void) => this.handler = handler;
 
-  static fn trigger () {
+  static trigger () {
     this.handler();
   }
 }
@@ -7229,7 +7229,7 @@ class B<T> {
    * Segment for number types
    */
   segment T extends number {
-    fn double () => this.value * 2;
+    double () => this.value * 2;
   }
 }
 ```
@@ -7312,17 +7312,17 @@ virtual class A {
    * Create a new value of @class and return it
    * @returns A new instance of @class
    */
-  abstract fn create () : _real;
+  abstract create () : _real;
 }
 
 class B extends A {
-  fn create () : _real {
+  create () : _real {
     return new self();
   }
 }
 
 class C extends A {
-  fn create () : _real {
+  create () : _real {
     return new self();
   }
 }
@@ -7336,7 +7336,7 @@ virtual class A {
    * Create a new value of A and return it
    * @returns A new instance of A
    */
-  abstract fn create () : _real;
+  abstract create () : _real;
 }
 
 class B extends A {
@@ -7344,7 +7344,7 @@ class B extends A {
    * Create a new value of B and return it
    * @returns A new instance of B
    */
-  fn create () : _real {
+  create () : _real {
     return new self();
   }
 }
@@ -7354,7 +7354,7 @@ class C extends A {
    * Create a new value of C and return it
    * @returns A new instance of C
    */
-  fn create () : _real {
+  create () : _real {
     return new self();
   }
 }
@@ -7370,7 +7370,7 @@ class Number {
   /**
    * Do some @class stuff
    */
-  fn nothing () {}
+  nothing () {}
 }
 
 /**
@@ -7386,14 +7386,14 @@ class Number {
   /**
    * Do some number stuff
    */
-  fn nothing () {}
+  nothing () {}
 }
 
 class SignedNumber extends A {
   /**
    * Do some signed number stuff
    */
-  fn nothing () {}
+  nothing () {}
 }
 ```
 
@@ -7409,7 +7409,7 @@ class Mother {
   /**
    * Do some stuff with @class
    */
-  fn doStuff ();
+  doStuff ();
 }
 
 /**
@@ -7419,7 +7419,7 @@ class Child {
   /**
    * @inheritdoc
    */
-  fn doStuff();
+  doStuff();
 }
 ```
 
