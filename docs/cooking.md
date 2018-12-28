@@ -340,6 +340,23 @@ import hello_world::messages;
 println!(messages::greetings); // Prints: 'Hello everybody!'
 ```
 
+It's even possible to import a namespace in the global scope:
+
+```rave
+// Import in the current scope
+scope import hello_world::messages;
+
+println!(greetings); // Prints: 'Hello everbody!'
+
+// Import locally and then extract in the scope
+import hello_world;
+
+using hello_world::messages;
+
+println!(greetings); // Prints: 'Hello everybody!'
+```
+
+
 ### Re-usability
 
 When downloading a project from the web, it usually doesn't have a `packages` folder. Dependencies can so be downloaded using the following command:
