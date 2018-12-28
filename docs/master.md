@@ -3357,7 +3357,7 @@ Numbers implement a typecasting overload for each other number type, so the foll
 let small = 8b;
 let large = 2050u;
 
-small = <i8> large; // Works fine (but overflows)
+small = large as i8; // Works fine (but overflows)
 
 println!(small); // Prints: '2'
 ```
@@ -4910,19 +4910,19 @@ It is possible to cast safely a mutable reference to a constant one, or to cast 
 val i = & wrap!(2);
 val j = &mut wrap!(2);
 
-<*int> i; // Works fine (does nothing)
-<*mut int> i; // ERROR (cannot cast constant reference to mutable)
-<*uint> i; // Works fine (casts from *int to *uint)
+i as *int; // Works fine (does nothing)
+i as *mut int; // ERROR (cannot cast constant reference to mutable)
+i as *uint; // Works fine (casts from *int to *uint)
 
-<*int> j; // Works fine (casts to a constant reference)
-<*mut int> j; // Works fine (does nothing)
-<*uint> j; // ERROR (cannot cast reference mutability + type at once)
-<*mut uint> j; // Works fine (casts from *mut int to *mut uint)
+j as *int; // Works fine (casts to a constant reference)
+j as *mut int; // Works fine (does nothing)
+j as *uint; // ERROR (cannot cast reference mutability + type at once)
+j as *mut uint; // Works fine (casts from *mut int to *mut uint)
 
 // To cast a '*mut int' to a '*uint':
 
-<*uint> <*mut uint> j; // Works fine
-<*uint> <*int> j; // Works fine
+(j as *mut uint) as *uint; // Works fine
+(j as *int) as *uint; // Works fine
 ```
 
 ### Multi-level references
@@ -5377,15 +5377,15 @@ This program will work fine. If we tried to cast unsafely `something` to **any**
 Because using a `try`-`catch` block is a bit heavy, we can use its optional version:
 
 ```rave
-val str = <?string> something; // ?string
+val str = something as? string; // ?string
 ```
 
 The `str` entity has the `?string` value: if the typecast succeeds, it holds the typecast value. But if it fails, instead of throwing an error, it returns `none` ; that's why the returned value is optional.
 
-If we are absolutely sure about the typecasting being write - and so we don't want the final value to be optional, we can use another syntax:
+If we are absolutely sure about the typecasting being write - and so we don't want the final value to be optional, we can use the `expect!` flex:
 
 ```rave
-val str = <!string> something; // string
+val str = expect! something as? string; // string
 ```
 
 Using this one, if the typecast fails, the program will panic. Be **really** aware when using it - its usage is strongly discouraged most of the time.
@@ -6261,7 +6261,7 @@ val arr2: int[3] = arr1 as int[3]; // ERROR (not typecastable)
 val arr1: int[] = [ 2, 3, 4 ];
 val arr2: int[3];
 
-if <?int[3]> arr1 some arr2 {
+if arr1 as? int[3] some arr2 {
   println!('It worked!'); // Not executed
 } else {
   println!('An error occured.'); // Executed
