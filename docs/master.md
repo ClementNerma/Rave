@@ -7436,3 +7436,42 @@ class Child {
   fn doStuff();
 }
 ```
+
+### Deprecation notice
+
+The `@deprecated` decorator indicates the following entity still works but should not be used anymore (e.g. it will be removed in the future). It may be followed by a text explaining the deprecation in details:
+
+```rave
+/**
+ * Make a summation from a list of numbers
+ * @param numbers A list of numbers
+ * @returns The summation
+ */
+@deprecated
+fn sum (...numbers: int[]) : int {
+  let summation = 0;
+
+  for num in numbers {
+    summation += num;
+  }
+
+  return summation;
+}
+
+/**
+ * Make a summation from a list of values
+ * @param values A list of values
+ * @returns The summation
+ */
+fn sumDynamic<T extends Addable> (...values: T[]) : T {
+  let summation = 0;
+
+  for num in values {
+    summation += num;
+  }
+
+  return summation;
+}
+```
+
+This decorator also emits a warning at build time when using the entity it is applied on.
