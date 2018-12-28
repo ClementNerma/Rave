@@ -4340,18 +4340,18 @@ Optional catching is a special syntax of the `if` block which allows to run the 
 
 ```rave
 // Multi-line
-if try getArticleBody(0) as content {
+if try getArticleBody(0) some content {
   println!(content);
 }
 
 // Inline
-println!(content) if try getArticleBody(0) as content;
+println!(content) if try getArticleBody(0) some content;
 ```
 
 It's also possible to catch the error object with an `else` block:
 
 ```rave
-if try getArticleBody(1000) as content {
+if try getArticleBody(1000) some content {
   println!(content);
 } else catch e {
   println!('Failed: ' + e.message);
@@ -5323,7 +5323,7 @@ type NotEmptyString = string with (not _.empty());
 
 val notEmpty: NotEmptyString;
 
-if 'Hello world!' as? NotEmptyString as typecasted {
+if ('Hello world!' as? NotEmptyString) some typecasted {
   notEmpty = typecasted;
 }
 ```
@@ -6261,7 +6261,7 @@ val arr2: int[3] = arr1 as int[3]; // ERROR (not typecastable)
 val arr1: int[] = [ 2, 3, 4 ];
 val arr2: int[3];
 
-if <?int[3]> arr1 as arr2 {
+if <?int[3]> arr1 some arr2 {
   println!('It worked!'); // Not executed
 } else {
   println!('An error occured.'); // Executed
@@ -6273,7 +6273,7 @@ So, in order to perform this typecast, we have to use arrays' dedicated `.toFixe
 ```rave
 val arr1: int[] = [ 2, 3, 4 ];
 
-if try arr1.toFixed(3) as arr2 {
+if try arr1.toFixed(3) some arr2 {
   println!('It worked!'); // Executed
 } else {
   println!('An error occured.'); // Not executed
