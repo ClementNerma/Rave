@@ -6935,6 +6935,20 @@ fn test () {
 }
 ```
 
+It's also possible to simplify catching of `await` errors:
+
+```rave
+// Standard way
+if try? await failableMethod() some result {
+  println!(result);
+}
+
+// Shortened way
+if await? failableMethod() some result {
+  println!(result);
+}
+```
+
 ### Synchronous waiting
 
 As we saw, `await` is a great tool as it allows us to wait synchronously for a promise. But, it's unavailable when we are _outside_ an asynchronous function.
