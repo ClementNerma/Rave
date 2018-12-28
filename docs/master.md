@@ -300,7 +300,7 @@ It's possible to write a number of another type than `int` without specifying th
 2u; // u32
 2l; // i64
 2L; // u64
-2p; // usize
+2P; // usize
 2f; // f32
 2d; // f64
 ```
@@ -661,7 +661,7 @@ Note that trying to access an out-of-bounds index will panic the program, meanin
 
 ```rave
 val arr = [ 2, 3, 4 ];
-val index = 3p;
+val index = 3P;
 
 arr[index]; // ERROR (index out of bounds)
 ```
@@ -880,11 +880,11 @@ Note that, as indexes must be literal, we can't use a variable here:
 
 ```rave
 val tuple: (int) = (2);
-val num = 0p;
+val num = 0P;
 
 tuple[num]; // ERROR
 
-lit NUM = 0p;
+lit NUM = 0P;
 
 tuple[NUM]; // Works ('NUM' is a literal constant)
 ```
@@ -2629,7 +2629,7 @@ Cloning allows to get a new instance of a class that is equivalent to an existin
 
 ```rave
 fn squareList (array: int[]) : int[] {
-  for i = 0p; i < array.length; i ++ {
+  for i = 0P; i < array.length; i ++ {
     array[i] *= array[i];
   }
 
@@ -2651,7 +2651,7 @@ The solution to our problem is to clone the array:
 
 ```rave
 fn squareList (array: int[]) : int[] {
-  for i = 0p; i < array.length; i ++ {
+  for i = 0P; i < array.length; i ++ {
     array[i] *= array[i];
   }
 
@@ -5084,19 +5084,19 @@ val infos = ref_stats!(ptr3);
 // Contains:
 [
   {
-    level: 0p,
+    level: 0P,
     mut: false,
     ref: &i
   },
 
   {
-    level: 1p,
+    level: 1P,
     mut: true,
     ref: &mut ptr1
   },
 
   {
-    level: 2p,
+    level: 2P,
     mut: false,
     ref: &ptr2
   }
@@ -5336,7 +5336,7 @@ Note that an iterator can be asynchronous, too:
 
 ```rave
 async iter fn readArticles (upTo: usize) : ?string {
-  for i in 0p..upTo {
+  for i in 0P..upTo {
     yield try? await fetchArticle(i);
   }
 }
