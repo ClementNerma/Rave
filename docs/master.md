@@ -5277,19 +5277,25 @@ Constrained types are a way to ensure a value holds validated data in a way far 
 Considering we want to ensure a string is not empty, we can declare a constrain the `string` type by putting a callback on it that checks, when we try to assign a value using this type, if it is not empty. Here is how it goes:
 
 ```rave
-val notEmptyStr: string with ((candidate: string) => not candidate.empty()) = 'Hello world!';
+val notEmptyStr: string with ((candidate: string) => not candidate.empty());
+
+if try? (notEmptyStr = 'Hello world!') {
+  println!('It worked fine');
+}
 ```
 
-This is a bit long, of course, so we can shorten our definition:
+Here, we are forced to catch errors because as assignment may fail.
+
+As our type is a bit long, we can shorten it a bit:
 
 ```rave
-val notEmptyStr: string with (c => not c.empty()) = 'Hello world';
+val notEmptyStr: string with (c => not c.empty());
 ```
 
 There is also a shorter syntax that gets rids of the function syntax and replace the candidate value by the `_` entity:
 
 ```rave
-val notEmptyStr: string with (not _.empty()) = 'Hello world';
+val notEmptyStr: string with (not _.empty());
 ```
 
 The presence of the callback ensures the value has been validated, and so we don't have to perform any additional check.
@@ -5299,13 +5305,13 @@ The counterpart of constrained types is that the callback is called at each assi
 Also, if the constraint fails during assignment, the program panics. The only way to handle such errors when we don't know if the test will pass is to use the following behavior:
 
 ```rave
-val notEmpty: string with (not _.empty()) = 'Hello world';
+val notEmpty: string with (not _.empty());
 
 val fail = catchPanic!(CATCHABLE_TYPE_CONSTRAINTS_FAILS, () => {
   notEmpty = ''; // Function stops here and returns because of the fail
 });
 
-if not fail.ok {
+if fail == true {
   println!('Assignment failed'); // Will be printed
 }
 ```
@@ -5315,12 +5321,14 @@ To avoid having to write the again and again the same type constraint, and to un
 ```rave
 type NotEmptyString = string with (not _.empty());
 
-val notEmpty: NotEmptyString = 'Hello world';
+val notEmpty: NotEmptyString;
+
+if 'Hello world!' as? NotEmptyString as typecasted {
+  notEmpty = typecasted;
+}
 ```
 
-As you may have noticed, values of a given type are automatically typecastable to all its constrained versions. When this happens, the checker function is triggered. If it fails, the program will panic, as for a standard assignment.
-
-Also, constrained types are automatically typecastable to their original version, without any risk of fail. This is achieved automatically because constrained types are considered sub-types of their original one.
+Note that constrained types are automatically typecastable to their original version, without any risk of fail. This is achieved automatically because constrained types are considered sub-types of their original ones.
 
 #### Type aliasing
 
