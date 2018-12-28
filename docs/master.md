@@ -1991,6 +1991,54 @@ println!(translate`You just ordered ${nb} products. They will be delivered on th
   // Prints: 'You just ordered 2 products. They will be delivered on the 10-05-2018.'
 ```
 
+### Block lambdas
+
+Blocks lambdas allow to write lambdas as blocks when it's the last argument of a function, which can be more lightweight:
+
+```rave
+// Lambda
+myFunction(() => {
+  println!('Hello !');
+});
+
+// Block
+myFunction {
+  println!('Hello !');
+}
+```
+
+This also works if the callback takes arguments:
+
+```rave
+// Lambda
+myFunction(name => {
+  println!('Hello ${name}!');
+});
+
+// Block
+myFunction { name ->
+  println!('Hello ${name}!');
+}
+```
+
+And also if the called function takes other arguments:
+
+```rave
+// Lambda
+myFunction(2, (name, times) => {
+  for i in 0..times {
+    println!('Hello ${name}!');
+  }
+});
+
+// Block
+myFunction(2) { names, times ->
+  for i in 0..times {
+    println!('Hello ${name}!');
+  }
+}
+```
+
 ## Classes
 
 Classes are kind of extended structures. The main difference is they can have methods, which are functions that can't change through the different instances, and private members, which are entities that are not visible from the outside. There are plenty of other differences, but here are the major ones.
@@ -4381,11 +4429,11 @@ But its usage is mostly discouraged ; vast majority of the cases are handlable t
 Note that it's possible to catch most panics by using the `catchPanic!` flex:
 
 ```rave
-val handle = catchPanic!(ALL, () => {
+val handle = catchPanic!(ALL) {
   // If the program panics during this function, it
   //  will be caught and returned by the `catchPanic!` flex instead
   // At the moment the panic raises, the function is stopped and returns by force
-});
+};
 
 if not fail.ok {
   println!('Something wrong happened: ' + fail.message);
@@ -5307,9 +5355,9 @@ Also, if the constraint fails during assignment, the program panics. The only wa
 ```rave
 val notEmpty: string with (not _.empty());
 
-val fail = catchPanic!(CATCHABLE_TYPE_CONSTRAINTS_FAILS, () => {
+val fail = catchPanic!(CATCHABLE_TYPE_CONSTRAINTS_FAILS) {
   notEmpty = ''; // Function stops here and returns because of the fail
-});
+}
 
 if fail == true {
   println!('Assignment failed'); // Will be printed
@@ -6563,7 +6611,10 @@ class Event {
   }
 }
 
-Event.handle(() => println!('Callback was triggered'));
+Event.handle {
+  println!('Callback was triggered');
+}
+
 Event.trigger();
 ```
 
