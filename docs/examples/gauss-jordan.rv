@@ -5,7 +5,7 @@
  */
 
 // Import the matrix library
-scope import cfl::maths::types;
+scope import maths::types;
 
 /**
  * Solve a linear equation system using Gauss-Jordan elimination algorithm

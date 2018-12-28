@@ -34,10 +34,10 @@ class Node<T> {
    */
   fn %new (@value, @prev = none, @next = none) {
     // Set the previous node's next node
-    prevNode.next = this if @prev as prevNode;
+    prevNode.next = this if @prev some prevNode;
 
     // Set the next node's previous node
-    nextNode.prev = this if @next as nextNode;
+    nextNode.prev = this if @next some nextNode;
   }
 
   /**
@@ -63,7 +63,7 @@ class Node<T> {
     let node = this;
 
     // While there is a previous one...
-    while node.prev as prevNode {
+    while node.prev some prevNode {
       // Set it as the current node
       node = prevNode;
     }
@@ -81,7 +81,7 @@ class Node<T> {
     let node = this;
 
     // While there is a next one...
-    while node.next as prevNode {
+    while node.next some prevNode {
       // Set it as the current node
       node = prevNode;
     }
@@ -101,7 +101,7 @@ class Node<T> {
     loop {
       // Get the next element
       // If there is one...
-      if this.last().next as nextNode {
+      if this.last().next some nextNode {
         // Add it to the list
         nodes[] = nextNode;
       } else {
