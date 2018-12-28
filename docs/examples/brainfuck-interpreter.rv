@@ -14,7 +14,7 @@ import cfl::console;
  */
 fn evaluateBf (source: string, lit MEMORY_SIZE = 1024u) : ?u8[MEMORY_SIZE] {
   // Declare an array containing the program's memory
-  val memory = u8[MEMORY_SIZE].of(0);
+  val memory = new u8[MEMORY_SIZE](fill = 0);
 
   // The current pointer
   val pointer = 2 as usize;
