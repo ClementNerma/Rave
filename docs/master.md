@@ -1905,6 +1905,24 @@ val vec = new List<int>;
 sumOf(vec...); // Works fine
 ```
 
+### Expression functions
+
+It's possible to define _expression functions_, which are functions that return the result of an expression, to have their return type inferred:
+
+```rave
+// Full syntax
+fn hello (name: string) : string {
+  return 'Hello ${name}!';
+}
+
+// Single-instruction
+fn hello (name: string) = 'Hello ${name}!';
+
+// Can be splitten on multiple lines:
+fn hello (name: string) =
+  'Hello ${name}!';
+```
+
 ### Lambdas
 
 _Lambdas_, also called _anonymous functions_, are single values that can be used as callbacks. Here is an example:
