@@ -4402,43 +4402,36 @@ fn getValue () : ?string {
 println!(getValue() ?? 'No value returned');
 ```
 
-### Optional catching
+### Concrete checking
 
-Currently, if we want to try to run a function, and run a code if it succeeded, we would write something like this:
+_Concrete checking_ is a special syntax of the conditional block, which runs its set of instructions if the provided value is a not `none`, with an entity containing its value:
+
+```rave
+val value = some!(2);
+
+// The syntax we've seen so far
+if value is Some(content) {
+  println!(content);
+}
+
+// Concrete checking
+if value some content {
+  println!(content);
+}
+```
+
+This allows to write lighter conditions. Here is an example with inline catching:
 
 ```rave
 // Considering the following function:
 fn getArticleBody (id: usize) : string throws Error;
 
-// Default syntax: multi-line
-if (try? getArticleBody(0)) is Some(content) {
+if try? getArticleBody(0) some content {
   println!(content);
 }
 
-// Default syntax: inline
-println!(content) if (try? getArticleBody(0)) is Some(content);
-```
-
-Optional catching is a special syntax of the `if` block which allows to run the block's body if the specified expression runs without any error. The result of the expression is then stored in a new entity scoped to the body. Here is how it goes:
-
-```rave
-// Multi-line
-if try getArticleBody(0) some content {
-  println!(content);
-}
-
-// Inline
-println!(content) if try getArticleBody(0) some content;
-```
-
-It's also possible to catch the error object with an `else` block:
-
-```rave
-if try getArticleBody(1000) some content {
-  println!(content);
-} else catch e {
-  println!('Failed: ' + e.message);
-}
+// Also works inline
+println!(content) if try? getArticleBody(0) some content;
 ```
 
 ## Errors and panics
