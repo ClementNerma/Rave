@@ -7008,6 +7008,14 @@ for body in articlesBody {
 }
 ```
 
+Note that, as for `await`, `sync` has an optional keyword, too:
+
+```rave
+if sync? fetchArticle(2) some content {
+  println!('Article\'s content: ' + content);
+}
+```
+
 ## Documenting the code
 
 Making code is great, but it's even better if it's documented. When you are using a library (e.g. a package downloaded from the official repository), it's always better to know how functions work, right? So, we have several solutions:
