@@ -17,7 +17,7 @@ scope import cfl::maths::types;
 
   // We first clone it and get a floating-point version
   // This will allow to perform divisions and get a tangible result
-  val mat = matrix as f32;
+  val mat = matrix as Matrix<f32>;
 
   // Last found pivot row
   let r = -1;
