@@ -493,7 +493,7 @@ Below is the list of all CFL.
 The `random` is pretty simple: it allows to generate random values:
 
 ```rave
-import cfl::random;
+import random;
 
 println!('10 random numbers:');
 
@@ -507,7 +507,7 @@ for n in 0..10 {
 The `maths` library exposes many types and functions useful for mathematics:
 
 ```rave
-import cfl::maths;
+import maths;
 
 // Create a linear system of equations
 val matrix = new maths::Matrix(
@@ -534,7 +534,7 @@ The `builtin` library allows to access the program's asset - a concept we will s
 The `stats` library allows to get informations on the current machine: processor and memory usage, system's name, processor architecture, uptime, etc.
 
 ```rave
-import cfl::stats;
+import stats;
 
 println!('CPU usage = ' + stats::cpu.getUsage() + '%');
 
@@ -550,7 +550,7 @@ The `fs` library, standing for _**F**ile**s**ystem_, allows to access the comput
 To use a frontend library, we simply need to use an `import` statement in our program. Libraries are organized as namespaces, so we use them the same way:
 
 ```rave
-import cfl::fs;
+import fs;
 
 try? fs::writeFile('hello.txt', 'Hello world!', 'utf8');
 ```
@@ -560,7 +560,7 @@ try? fs::writeFile('hello.txt', 'Hello world!', 'utf8');
 The `net` library, standing for _**Net**work_, manages network access such as accessing web pages, communicating with other computers, and so on.
 
 ```rave
-import cfl::net;
+import net;
 
 if try net::fetch('https://www.google.fr') as buffer {
   try? fs::writeFile('hello.txt', buffer);
@@ -572,7 +572,7 @@ if try net::fetch('https://www.google.fr') as buffer {
 The `screen` library manages access to the screen in order to display images, draw some figures, get the cursor's position, go fullscreen, etc.
 
 ```rave
-import cfl::screen;
+import screen;
 
 screen::on(screen::CURSOR_MOVE, e => {
   println!('Mouse cursor moved: x = ${e.x} ; y = ${e.y}');
@@ -584,8 +584,8 @@ screen::on(screen::CURSOR_MOVE, e => {
 The `sound` library allows to play sound on the system.
 
 ```rave
-import cfl::fs;
-import cfl::sound;
+import fs;
+import sound;
 
 if try fs::readFile('music.mp3') as music {
   val player = new sound::MediaPlayer(music);
@@ -600,7 +600,7 @@ if try fs::readFile('music.mp3') as music {
 The `crypto` library allows to encrypt and decrypt data, as well as handling encryption keys:
 
 ```rave
-import cfl::crypto;
+import crypto;
 
 if try fs::readFile('pub.key') as pubKeyBuff {
   val pubKey = crypto::keyFrom(pubKeyBuff, crypto::RSA);
@@ -615,7 +615,7 @@ if try fs::readFile('pub.key') as pubKeyBuff {
 The `pc` library, which stands for _**P**ro**c**esses_, allows to manage the processes. A process is basically a program running on the machine. The goal of having several processes is to improve performances by running some tasks in parallel as well as running other programs.
 
 ```rave
-import cfl::pc;
+import pc;
 
 val child = pc::spawn('echo', [ 'salut' ]);
 
@@ -633,7 +633,7 @@ The `threads` library allows to manage our program's threads. A threads is, to s
 Here is an example to compute the sum of an array using threads:
 
 ```rave
-import cfl::threads;
+import threads;
 
 async fn sum<T impl Computable> (arr: T[], fromIndex: keyof arr, toIndex: keyof arr) : T {
   let sum = arr[0];
@@ -666,7 +666,7 @@ if try sync pool.promise() is results {
 The `console` library allows to print messages in the console, supports colored output, user inputs, etc.
 
 ```rave
-import cfl::console;
+import console;
 
 if try console::readInt('Input an integer: ') as input {
   console::println('${input} * 2 = ${input * 2}', console::Color.Cyan);
@@ -686,7 +686,7 @@ The only downside to this is that operations on big numbers are far slower than 
 Also, big number support operation with any native number type as the right operand, meaning it's possible to add, substract, etc. any number value to an existing big number.
 
 ```rave
-import cfl::bignums;
+import bignums;
 
 val PRECISION   = 2S;
 val LOWER_BOUND = new bignums::BigNumbers('-200000000000000');
@@ -710,8 +710,8 @@ println!(num); // Prints: '40.4'
 The `sharedlibs` library allows to access external library files stored on the disk, such as `.dll` files on Windows and `.so` files on Linux:
 
 ```rave
-import cfl::fs;
-import cfl::sharedlibs;
+import fs;
+import sharedlibs;
 
 // Describe the library's content
 interface TheSharedLibrary {
@@ -733,7 +733,7 @@ The `regexp` library, which stands for _**Reg**ular **Exp**ressions_, allow to m
 Note that the language contains a syntax sugar to build regular expressions:
 
 ```rave
-import cfl::regexp;
+import regexp;
 
 // Traditional syntax
 val expr = regexp::create("My name is ([a-zA-Z]+)\\!");
@@ -750,7 +750,7 @@ if 'My name is Jack'.match(expr) as vars {
 The `times` library allows to manipulate date and time objects, as well as getting informations about system's time.
 
 ```rave
-import cfl::times;
+import times;
 
 println!('Current date is: ' + times::clock.toString('m-d-y'));
 
@@ -763,7 +763,7 @@ println!('Date in a week is: ' + date.toString('m-d-y'));
 It also grants some timing tools:
 
 ```rave
-import cfl::times;
+import times;
 
 println!('Next message will appear in two seconds.');
 
@@ -777,8 +777,8 @@ println!('Hello world!');
 The `system` library allows to make the computer sleep, hibernate, to power it off, etc.
 
 ```rave
-import cfl::times;
-import cfl::system;
+import times;
+import system;
 
 println!('Your machine will be powered off in 60 seconds.');
 println!('To cancel, stop this program now.');
@@ -794,8 +794,8 @@ times::runAfter(times::Minute * 60u, () => {
 The `notify` library allows to create and manage simple and complex notification bubbles.
 
 ```rave
-import cfl::times;
-import cfl::notify;
+import times;
+import notify;
 
 val remaining = times::Second * 10u;
 val notif = notify::create('Remaining time: 10 second(s)');
@@ -815,7 +815,7 @@ times::each(times::Second, timer => {
 The `xml` library allows to parse XML strings and converts serializable values to XML:
 
 ```rave
-import cfl::xml;
+import xml;
 
 xml::serialize({
   name: 'Hello',
@@ -828,7 +828,7 @@ xml::serialize({
 The `json` library allows to parse JSON strings and converts serializable values to JSON:
 
 ```rave
-import cfl::json;
+import json;
 
 json::serialize({
   name: 'Hello',
@@ -841,7 +841,7 @@ json::serialize({
 The `json` library allows to parse JSON strings and converts serializable values to JSON:
 
 ```rave
-import cfl::json;
+import json;
 
 json::serialize({
   name: 'Hello',
@@ -856,7 +856,7 @@ json::serialize({
 The `zlib` library allows to manipulate GZip data:
 
 ```rave
-import cfl::zlib;
+import zlib;
 
 if try fs::readFileSync('archive.gz') as archiveBuffer {
   if try gzip::inflateSync(archiveBuffer) as archive {
@@ -876,7 +876,7 @@ if try fs::readFileSync('archive.gz') as archiveBuffer {
 The `input` library allows to handle user inputs:
 
 ```rave
-import cfl::input;
+import input;
 
 if input::getMouse() as mouse {
   mouse.on('click') { e ->
@@ -900,7 +900,7 @@ The _exclusive_ frontend libraries are libraries that are available only in spec
 The `touch` library allows to get input from touch screens:
 
 ```rave
-import efl::touch;
+import touch;
 
 touch::handle(e =>
   println!('Finger 0 clicked at: x = ${e.fingers[0].x} ;' +
@@ -915,9 +915,9 @@ It is only available for programs transpiled to Java with the `android` wrapper,
 The `dom` library, which stands for _**D**ocument **O**bject **M**odel_, allows to interact with JavaScript's DOM - this library when transpiling to JavaScript:
 
 ```rave
-import efl::dom;
+import dom;
 
-if try dom::document.querySelector('h1') as mainTitle {
+if try? dom::document.querySelector('h1') some mainTitle {
   mainTitle.innerHTML = 'New title';
 }
 ```
@@ -933,7 +933,7 @@ Note that programs which use an LFL can only be transpiled to the provided langu
 An example is the JavaScript LFL:
 
 ```rave
-import lfl::javascript;
+import javascript;
 
 println!(javascript::Math.abs(-2)); // Prints in the console: '2'
 ```
