@@ -6198,7 +6198,7 @@ We previously saw _dynamic dictionaries_, which are classes that implement the `
 
 While, in a dynamic dictionary, we can add new keys and remove the existing ones, we can't in a tuple one. The goal of a tuple dictionary is to ensure the keys stay the same from its creation (instanciation) to its destruction (e.g. dropping) and for all instances of this dictionary class.
 
-Tuple dictionaries are declared using the `tuple` keyword:
+Tuple dictionaries are declared using the `tuple dict` keywords:
 
 ```rave
 tuple dict Custom<K in Literal, V> {
