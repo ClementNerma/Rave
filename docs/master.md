@@ -780,11 +780,8 @@ jack.exp += 100u;
 println!(jack.exp); // Prints: '100'
 ```
 
-For specific situations we will see later, we can also force a field to only store a literal, using the `lit` keyword:
-
 ```rave
 struct Hero {
-  lit NAME: string,
   hp: uint,
   atk: uint,
   mut exp: uint
@@ -906,7 +903,7 @@ Inferred typing also works on tuples:
 val tuple = (2, 'Hello'); // (int, string)
 ```
 
-As for structures, a tuple's values are constants by default. We can use the `mut` and `lit` keyword to change their state:
+As for structures, a tuple's values are constants by default. We can use the `mut` keyword to change their state:
 
 ```rave
 val tuple: (mut int, string) = (2, 'Hello');
@@ -999,10 +996,10 @@ This code is perfectly valid, and we can access our hero's fields just like we w
 
 ```rave
 struct ImplicitStruct1 {
-  lit name: string,
-  lit hp: uint,
-  lit atk: uint,
-  lit exp: uint
+  name: string,
+  hp: uint,
+  atk: uint,
+  exp: uint
 }
 
 val jack = ImplicitStruct1 {
@@ -1679,17 +1676,13 @@ val trapezoidArea = area(1.0, 2.0, 3.0));
 
 ### Arguments mutability
 
-By default, a function's arguments are constants. They can be made mutable or literal using the same keywords than in structures:
+By default, a function's arguments are constants. They can be made mutable using the same keywords than in structures:
 
 ```rave
-fn test (mut mutable: bool, constant: bool, lit literal: bool) {
+fn test (mut mutable: bool, constant: bool, literal: bool) {
   mutable = true; // Works fine
   constant = true; // ERROR
   literal = true; // ERROR
-
-  lit p1 = mutable; // ERROR
-  lit p2 = constant; // ERROR
-  lit p3 = literal; // Works fine
 }
 ```
 
@@ -3328,26 +3321,7 @@ Here, `B` is a sub-type of `A`, because it implements all the fields `A` has, pl
 
 Note that, if `name` was marked as mutable in a structure and not in the other, `B` wouldn't have been a sub-type of `A`.
 
-Also, literal fields are tolerated where a constant field is expected:
-
-```rave
-struct A {
-  name: string
-}
-
-struct B {
-  lit name: string,
-  age: uint
-}
-
-val jack: A = B {
-  name: 'Jack'
-}; // Works fine
-```
-
-The field will simply act as constant and not literal.
-
-A last exception is for mutable fields when declaring objects. Let's take the following example:
+Another exception is for mutable fields when declaring objects. Let's take the following example:
 
 ```rave
 struct A {
@@ -6178,7 +6152,7 @@ flex reverseTuple (tuple: #tuple) : #tuple {
 }
 ```
 
-Here, we create a flex which takes a tuple as an argument, and return another one. We use tuples' `.map!` flex to create a new tuple from the provided one.
+Here, we create a flex which takes a tuple as an argument, and return another one. We use tuples' `.map!` flex to create a new tuple from the provided one. Note that, thanks to the nature of flexs, they can take literal arguments, which are prefixed with the `lit` keyboard.
 
 We give to this method a flex callback which takes the value of the current index (we don't care about it) as well as the index. Our flex returns a value that can be of any official type (`>Any`). This way, if we return an `int`, the returned value will be an official `int` and not an `int` hidden behind an `Any` official type.
 
