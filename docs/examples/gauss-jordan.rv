@@ -5,14 +5,14 @@
  */
 
 // Import the matrix library
-import cfl::maths::types as math_types;
+scope import cfl::maths::types;
 
 /**
  * Solve a linear equation system using Gauss-Jordan elimination algorithm
  * @template P The floating-point type to use
  * @param matrix The matrix to solve
  */
- fn solveGaussJordan (matrix: math_types::Matrix<int>) : math_types::Matrix<int> {
+ fn solveGaussJordan (matrix: Matrix<int>) : Matrix<int> {
   // Let's call 'A' the matrix
 
   // We first clone it and get a floating-point version

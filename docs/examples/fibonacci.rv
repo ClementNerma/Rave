@@ -39,6 +39,6 @@ iter fn fibonacci (upTo: uint) : (uint, uint) {
 }
 
 // Generate numbers from the fibonacci suite from 0 to 1000
-for term -> value in fibonacci(1000u) {
+for term -> value in fibonacci(1000) {
   println!('fibonacci(${term}) = ${value}');
 }

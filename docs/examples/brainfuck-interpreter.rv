@@ -5,14 +5,14 @@
  */
 
 // Import the console library
-import cfl::console;
+import console;
 
 /**
  * Evaluate a Brainfuck program
  * @param source The program's source code
  * @returns The machine's memory or `none` if an unknown symbol was encountered
  */
-fn evaluateBf (source: string, lit MEMORY_SIZE = 1024u) : ?u8[MEMORY_SIZE] {
+fn evaluateBf<MEMORY_SIZE = 1024u> (source: string) : ?u8[MEMORY_SIZE] {
   // Declare an array containing the program's memory
   val memory = new u8[MEMORY_SIZE](fill = 0);
 

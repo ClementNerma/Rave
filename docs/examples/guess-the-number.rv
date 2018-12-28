@@ -5,9 +5,8 @@
  */
 
 // Import frontend libraries to handle the console
-import cfl::console;
 //  and generate random numbers
-import cfl::random;
+import console, random;
 
 // Did the user ask for exit?
 let exit = false;
@@ -41,6 +40,7 @@ until exit {
         // Ask the user if they wish to continue
         //  and block the program until getting the input
         exit = sync console::ask('Do you want to continue?');
+
         break ;
       }
     }

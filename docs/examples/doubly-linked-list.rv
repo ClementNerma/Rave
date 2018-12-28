@@ -13,18 +13,18 @@ class Node<T> {
    * The previous node in the list
    * NOTE: Will be 'none' if this node is the first one
    */
-  public writable prev: ?self;
+  writable prev: ?self;
 
   /**
    * The next node in the list
    * NOTE: Will be 'none' if this node is the last one
    */
-  public writable next: ?self;
+  writable next: ?self;
 
   /**
    * The value holded by this node
    */
-  public writable value: T;
+  writable value: T;
 
   /**
    * Create a node
@@ -32,7 +32,7 @@ class Node<T> {
    * @param prev Its previous element
    * @param next Its next element
    */
-  public fn %new (@value, @prev = none, @next = none) {
+  fn %new (@value, @prev = none, @next = none) {
     // Set the previous node's next node
     prevNode.next = this if @prev as prevNode;
 
@@ -45,7 +45,7 @@ class Node<T> {
    * @param value The value holded by this one
    * @returns The created node
    */
-  public fn insert (@value) : self {
+  insert (@value) : self {
     // Create the new node
     // * value = the provided one
     // * prev  = this node
@@ -58,7 +58,7 @@ class Node<T> {
    * Get the first node of the list
    * @returns The first node
    */
-  public fn first () : self {
+  first () : self {
     // The current node
     let node = this;
 
@@ -76,7 +76,7 @@ class Node<T> {
    * Get the last node of the list
    * @returns The last node
    */
-  public fn last () : self {
+  last () : self {
     // The current node
     let node = this;
 
@@ -94,7 +94,7 @@ class Node<T> {
    * Get all nodes starting from this one
    * @returns A list of nodes
    */
-  public fn getNextNodes () : List<self> {
+  getNextNodes () : List<self> {
     // Create an (extendable) list containing the current node
     let nodes = [# this];
 
@@ -118,7 +118,7 @@ class Node<T> {
    * Get all nodes of this list
    * @returns A list of nodes
    */
-  public fn getNodes () : List<self> {
+  getNodes () : List<self> {
     // Return all nodes from the first one
     return @first().getNextNodes();
   }
@@ -127,7 +127,7 @@ class Node<T> {
    * Convert this doubly linked list to a simple list
    * @returns All values in this list
    */
-  public fn %to[List<T>] {
+  %to[List<T>] {
     // Get the value of each node of the list
     //  and return the result
     return (node.value for node in @getNodes());

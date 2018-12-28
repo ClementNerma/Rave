@@ -8,11 +8,11 @@
  * Heroes
  */
 struct Hero {
-  name: string;
-  hp: uint;
-  atk: uint;
-  def: uint;
-  level: uint;
+  name: string,
+  hp: uint,
+  atk: uint,
+  def: uint,
+  level: uint
 }
 
 // Create a hero
@@ -28,7 +28,7 @@ val jack = Hero {
 val str: string = serialize!(jack);
 
 // Unserialize it
-if try unserialize!<Hero>(str) as jack2 {
+if try? unserialize!<Hero>(str) some jack2 {
   println!(jack2.name); // Prints: 'Jack'
 
   // Check they are equal
