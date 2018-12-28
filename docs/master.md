@@ -6306,11 +6306,11 @@ Proxies are defined using the `proxy` keyword, with an object containing the cal
 val _counter = 0u;
 
 proxy counter: uint from {
-  getter: () : uint {
+  getter: fn () : uint {
     return ++ _counter;
   },
 
-  setter: (value: uint) : bool {
+  setter: fn (value: uint) : bool {
     _counter = value;
     return true;
   }
