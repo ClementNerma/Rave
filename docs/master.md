@@ -2098,10 +2098,10 @@ The solution to this problem is to use a class:
 
 ```rave
 class Hero {
-  public name: string;
-  public hp: uint;
-  public atk: uint;
-  public exp: uint;
+  name: string;
+  hp: uint;
+  atk: uint;
+  exp: uint;
 }
 ```
 
@@ -2109,7 +2109,7 @@ A class is made of _members_, which are either _attributes_ - entities - like we
 
 Through this book, we will often talk about the _inside_ of the class, which refers to anything in the class' scope, and to the _outside_ of the class, which is anything outside this scope.
 
-Here, all attributes are marked as public using the `public` keyword, meaning they can be accessed from the outside, but by default attributes cannot be writted from the outside. This is different than `val` in the way it prevents these attributes from being written from the outside, but not from the inside - where they stay mutable.
+By default, all members in a class are public, meaning they can be accessed from the outside, but by default attributes cannot be writted from the outside. This is different than `val` in the way it prevents these attributes from being written from the outside, but not from the inside - where they stay mutable.
 
 In the case we'd like to allow modifications from the outside, we simply have to add the `writable` keyword after `public` (e.g. `public writable name: string;`).
 
@@ -2117,12 +2117,12 @@ Like structures, classes can be instanciated. But for that, they need a _constru
 
 ```rave
 class Hero {
-  public name: string;
-  public hp: uint;
-  public atk: uint;
-  public exp: uint;
+  name: string;
+  hp: uint;
+  atk: uint;
+  exp: uint;
 
-  public fn %new (name: string, hp: uint, atk: uint, exp: uint) {
+  fn %new (name: string, hp: uint, atk: uint, exp: uint) {
     this.name = name;
     this.hp = hp;
     this.atk = atk;
@@ -2154,7 +2154,7 @@ Let's write a method to fight another ennemy:
 ```rave
 class Hero {
   // ...
-  public fn fight (ennemy: Hero) {
+  fn fight (ennemy: Hero) {
     if this.hp == 0 {
       println!('${this.name} cannot fight because he is dead.');
       return ;
@@ -2200,19 +2200,19 @@ Here is the whole code for reference:
 
 ```rave
 class Hero {
-  public name: string;
-  public hp: uint;
-  public atk: uint;
-  public exp: uint;
+  name: string;
+  hp: uint;
+  atk: uint;
+  exp: uint;
 
-  public fn %new (name: string, hp: uint, atk: uint, exp: uint) {
+  fn %new (name: string, hp: uint, atk: uint, exp: uint) {
     this.name = name;
     this.hp = hp;
     this.atk = atk;
     this.exp = exp;
   }
 
-  public fn fight (ennemy: Hero) {
+  fn fight (ennemy: Hero) {
     if this.hp == 0 {
       println!("${this.name} cannot fight because he's dead.");
       return ;
@@ -2253,14 +2253,14 @@ println!(john.hp); // Prints: '80'
 
 ### Members in depth
 
-Members can either be public with `public`, so they can be accessed from the outside, or private with `private`, so they are only readable from the inside of the class:
+We can make members private by prefixing their name with the `private` keyword. This makes them hidden from the outside of the class, so no one will be able to read it except the class it belongs to:
 
 ```rave
 class Example {
-  public known: string;
+  known: string;
   private secret: string;
 
-  public fn %new () {
+  fn %new () {
     this.known = 'Public data';
     this.secret = 'Secret data';
   }
@@ -2276,10 +2276,10 @@ This also works for methods: they can be public or private to be available - or 
 
 ```rave
 class Example {
-  public known: string;
+  known: string;
   private secret: string;
 
-  public fn %new () {
+  fn %new () {
     @known = 'Public data';
     @secret = 'Secret data';
   }
@@ -2290,7 +2290,7 @@ We can provide a default value for attributes, so we don't have to assign them i
 
 ```rave
 class Example {
-  public known = 'Public data';
+  known = 'Public data';
   private secret = 'Secret data';
 
   public fn %new () {}
@@ -2301,7 +2301,7 @@ Also, as attributes are entities, they can be marked as constant using `val`, or
 
 ```rave
 class Example {
-  public lit KNOWN = 'Public data';
+  lit KNOWN = 'Public data';
   private val secret = 'Secret data';
 }
 ```
@@ -2310,7 +2310,7 @@ Another keyword for members is `static`, which makes the member accessible stati
 
 ```rave
 class Example {
-  public static name = 'Hello';
+  static name = 'Hello';
 }
 
 println!(Example.name); // Prints: 'Hello'
@@ -2321,9 +2321,9 @@ Static attributes must have an initialization value. Classes can access their st
 
 ```rave
 class Example {
-  public static name = 'Hello';
+  static name = 'Hello';
 
-  public static fn printName () {
+  static fn printName () {
     println!(self.name);
   }
 }
@@ -2343,9 +2343,9 @@ class A {
   private def: uint;
 
   // This declaration:
-  public fn %new (@name, @hp, @atk, @def) {}
+  fn %new (@name, @hp, @atk, @def) {}
   // Is strictly equivalent to this one:
-  public fn %new (name: string, hp: uint, atk: uint, def: uint) {
+  fn %new (name: string, hp: uint, atk: uint, def: uint) {
     @name = name;
     @hp = hp;
     @atk = atk;
@@ -2364,14 +2364,14 @@ Data structures can also be members of classes ; they then become a local type o
 
 ```rave
 class Example {
-  public struct Hero {
+  struct Hero {
     name: string,
     hp: uint,
     atk: uint,
     mut exp: uint
   }
 
-  public val hero = Hero {
+  val hero = Hero {
     name: 'Jack',
     hp: 100u,
     atk: 20u,
@@ -2396,7 +2396,7 @@ To represent the cells, we will use a simple enumeration. Because it is specific
 
 ```rave
 class Map {
-  public enum Cell { Empty, Rock, Trap };
+  enum Cell { Empty, Rock, Trap };
 ```
 
 #### Part 2: The constructor
@@ -2406,7 +2406,7 @@ We told the constructor must accept the player's start position. We can simply t
 Here is our constructor's signature:
 
 ```rave
-  public fn %new (map: Cell[][], x: usize, y: usize) {
+  fn %new (map: Cell[][], x: usize, y: usize) {
 ```
 
 #### Part 3: The attributes
@@ -2414,16 +2414,16 @@ Here is our constructor's signature:
 We have to store our map, as well as the current player's coordinates. So we have three attributes:
 
 ```rave
-  public map: Cell[][];
-  public x: usize;
-  public y: usize;
+  map: Cell[][];
+  x: usize;
+  y: usize;
 ```
 
 But it's easier to also have an attribute to check if the player is trapped, so let's add a fourth one:
 
 ```rave
   // ...
-  public trapped: bool = false;
+  trapped: bool = false;
 ```
 
 Thanks to the attributes being public, we can check at anytime the player's coordinates with `.x` and `.y`, as well as if it's trapped or not using `.trapped`.
@@ -2434,7 +2434,7 @@ Let's initialize our attributes:
 
 ```rave
   // ...
-  public fn %new (map: Cell[][], x: usize, y: size) {
+  fn %new (map: Cell[][], x: usize, y: size) {
     @map = map;
     @x = x;
     @y = y;
@@ -2447,14 +2447,14 @@ Because our player can only move on adjacent cells, the easiest solution is to m
 
 ```rave
   // ...
-  public fn moveUpLeft    () { @move(x - 1, y - 1); }
-  public fn moveUp        () { @move(x, y - 1); }
-  public fn moveUpRight   () { @move(x + 1, y - 1); }
-  public fn moveLeft      () { @move(x - 1, y); }
-  public fn moveRight     () { @move(x + 1, y); }
-  public fn moveDownLeft  () { @move(x - 1, y + 1); }
-  public fn moveDown      () { @move(x, y + 1); }
-  public fn moveDownRight () { @move(x + 1, y + 1); }
+  fn moveUpLeft    () { @move(x - 1, y - 1); }
+  fn moveUp        () { @move(x, y - 1); }
+  fn moveUpRight   () { @move(x + 1, y - 1); }
+  fn moveLeft      () { @move(x - 1, y); }
+  fn moveRight     () { @move(x + 1, y); }
+  fn moveDownLeft  () { @move(x - 1, y + 1); }
+  fn moveDown      () { @move(x, y + 1); }
+  fn moveDownRight () { @move(x + 1, y + 1); }
 
 ```
 
@@ -2464,7 +2464,7 @@ Let's make our `move` method. First, its signature:
 
 ```rave
   // ...
-  public fn move (x: usize, y: usize) {
+  fn move (x: usize, y: usize) {
 ```
 
 We have to check that are moving to an adjacent case:
@@ -2525,29 +2525,29 @@ Here is the full solution:
 
 ```rave
 class Map {
-  public enum Cell { Empty, Rock, Trap };
+  enum Cell { Empty, Rock, Trap };
 
-  public map: Cell[][];
-  public x: usize;
-  public y: usize;
-  public trapped: bool = false;
+  map: Cell[][];
+  x: usize;
+  y: usize;
+  trapped: bool = false;
 
-  public fn %new (map: Cell[][], x: usize, y: size) {
+  fn %new (map: Cell[][], x: usize, y: size) {
     @map = map;
     @x = x;
     @y = y;
   }
 
-  public fn moveUpLeft    () { @move(x - 1, y - 1); }
-  public fn moveUp        () { @move(x, y - 1); }
-  public fn moveUpRight   () { @move(x + 1, y - 1); }
-  public fn moveLeft      () { @move(x - 1, y); }
-  public fn moveRight     () { @move(x + 1, y); }
-  public fn moveDownLeft  () { @move(x - 1, y + 1); }
-  public fn moveDown      () { @move(x, y + 1); }
-  public fn moveDownRight () { @move(x + 1, y + 1); }
+  fn moveUpLeft    () { @move(x - 1, y - 1); }
+  fn moveUp        () { @move(x, y - 1); }
+  fn moveUpRight   () { @move(x + 1, y - 1); }
+  fn moveLeft      () { @move(x - 1, y); }
+  fn moveRight     () { @move(x + 1, y); }
+  fn moveDownLeft  () { @move(x - 1, y + 1); }
+  fn moveDown      () { @move(x, y + 1); }
+  fn moveDownRight () { @move(x + 1, y + 1); }
 
-  public fn move (x: usize, y: usize) {
+  fn move (x: usize, y: usize) {
     // Moves are only allowed to adjacent cells
     if (@x - x).abs() > 1 || (@y - y).abs() > 1 {
       println!('Cannot move on a non-adjacent cell');
@@ -2607,13 +2607,13 @@ class User {
   private static counter = 0u;
   private id: uint;
 
-  public fn %new () {
+  fn %new () {
     self.counter ++;
     @id = self.counter;
     println!('User ${@id} has been created');
   }
 
-  public fn %drop () {
+  fn %drop () {
     println!('User ${@id} will be dropped');
   }
 }
@@ -2683,17 +2683,17 @@ The cloning overload is a method that takes no argument and returns an instance 
 
 ```rave
 class Example {
-  public name: string;
+  name: string;
 
-  public fn %new (name: string) {
+  fn %new (name: string) {
     @name = name;
   }
 
-  public fn setName (newName: string) {
+  fn setName (newName: string) {
     @name = newName;
   }
 
-  public fn %clone () : self {
+  fn %clone () : self {
     println!('Instance has been cloned.');
     return new Example(@name);
   }
@@ -2720,7 +2720,7 @@ The serialization overload takes no argument and returns a string. In our `Examp
 
 ```rave
   // ...
-  public fn %serialize () {
+  fn %serialize () {
     return @name;
   }
 ```
@@ -2729,7 +2729,7 @@ The unserialization overload takes a string argument and returns an instance of 
 
 ```rave
   // ...
-  public static fn %unserialize (serialized: string) throws UnserializationError {
+  static fn %unserialize (serialized: string) throws UnserializationError {
     return new Example(serialized);
   }
 ```
@@ -2738,7 +2738,7 @@ When we have several fields, it becomes a bit more complicated, as we have to de
 
 ```rave
   // ...
-  public lit %lazy_serial_fields = ('name');
+  lit %lazy_serial_fields = ('name');
 ```
 
 This literal tuple contains the list of the attributes to serialize. The specified attributes must be serializable themselves.
@@ -2749,7 +2749,7 @@ If you want to be ensure the serialized content is valid, it's possible to make 
 
 ```rave
   // ...
-  public lit %lazy_serial_fields = ('name', WITH_CHECKSUM);
+  lit %lazy_serial_fields = ('name', WITH_CHECKSUM);
 ```
 
 The big advantage of checksum is that it highly reduces the risks to get invalid values, but the downside is that both serialization and unserialization will be considerably slower.
@@ -2760,13 +2760,13 @@ Some arithmetic operators can be overloaded in a class, allowing to use them on 
 
 ```rave
 class MyInt {
-  public value: int;
+  value: int;
 
-  public fn %new (value: int) {
+  fn %new (value: int) {
     @value = value;
   }
 
-  public fn %add (another: self) {
+  fn %add (another: self) {
     return new MyInt(@value + another);
   }
 }
@@ -2783,13 +2783,13 @@ If we don't provide types, operator overloads take an instance of the current cl
 
 ```rave
 class MyInt {
-  public value: int;
+  value: int;
 
-  public fn %new (value: int) {
+  fn %new (value: int) {
     @value = value;
   }
 
-  public fn %add (another: MyInt) : int {
+  fn %add (another: MyInt) : int {
     return @value + another.value;
   }
 }
@@ -2817,13 +2817,13 @@ As for arithmetic operators, comparison operators can be overloaded in classes.
 
 ```rave
 class Hero {
-  public name: string;
+  name: string;
 
-  public fn %new (name: string) {
+  fn %new (name: string) {
     @name = name;
   }
 
-  public fn %equal (another: self) : bool {
+  fn %equal (another: self) : bool {
     return @name == another.name;
   }
 }
@@ -2843,13 +2843,13 @@ There is also a more advanced overload to compare values in a more advanced way:
 
 ```rave
 class BankAccount {
-  public amount: uint;
+  amount: uint;
 
-  public fn %new (amount: uint) {
+  fn %new (amount: uint) {
     @amount = amount;
   }
 
-  public fn %compare (another: self) : Comparison {
+  fn %compare (another: self) : Comparison {
     if @amount > another.amount {
       return Comparison.Greater;
     } elif @amount < another.amount {
@@ -2922,15 +2922,15 @@ The simpliest way to achieve this is the following:
 
 ```rave
 class Hero {
-  public wizard: bool;
-  public name: string;
-  public hp: uint;
-  public atk: uint;
-  public exp: uint;
-  public rage: uint;
-  public mp: uint;
+  wizard: bool;
+  name: string;
+  hp: uint;
+  atk: uint;
+  exp: uint;
+  rage: uint;
+  mp: uint;
 
-  public fn %new (wizard: bool, name: string, hp: uint,
+  fn %new (wizard: bool, name: string, hp: uint,
                   atk: uint, exp: uint, rage: uint, mp: uint) {
     @wizard = wizard;
     @name = name;
@@ -2953,12 +2953,12 @@ A solution to this is to use _inheritance_. It simply consists in creating a bas
 
 ```rave
 open class Hero {
-  public name: string;
-  public hp: uint;
-  public atk: uint;
-  public exp: uint;
+  name: string;
+  hp: uint;
+  atk: uint;
+  exp: uint;
 
-  public fn %new (name: string, hp: uint, atk: uint, exp: uint) {
+  fn %new (name: string, hp: uint, atk: uint, exp: uint) {
     @name = name;
     @hp = hp;
     @atk = atk;
@@ -2966,7 +2966,7 @@ open class Hero {
   }
 
   // Returns 'true' if the fight has been done successfully
-  public fn fight (ennemy: Hero) : bool {
+  fn fight (ennemy: Hero) : bool {
     if @hp == 0 {
       println!('${@name} cannot fight because he is dead.');
       return false;
@@ -3004,9 +3004,9 @@ You may wonder why we define one as the warrior fights a different way. That's b
 
 ```rave
 class Warrior extends Hero {
-  public rage: uint;
+  rage: uint;
 
-  public fn %new (name: string, hp: uint, atk: uint, exp: uint, rage: uint) {
+  fn %new (name: string, hp: uint, atk: uint, exp: uint, rage: uint) {
     @name = name;
     @hp = hp;
     @atk = atk;
@@ -3014,7 +3014,7 @@ class Warrior extends Hero {
     @rage = rage;
   }
 
-  public fn fight (ennemy: Hero) {
+  fn fight (ennemy: Hero) {
     // Call mother's fight method
     // If it succeeds, win rage points (limited to 20)
     if super.fight(ennemy) && @rage < 20 {
@@ -3037,14 +3037,14 @@ Let's write our wizard class:
 
 ```rave
 class Wizard extends Hero {
-  public mp: uint;
+  mp: uint;
 
-  public fn %new (name: string, hp: uint, atk: uint, exp: uint, mp: uint) {
+  fn %new (name: string, hp: uint, atk: uint, exp: uint, mp: uint) {
     super(name, hp, atk, exp);
     @mp = mp;
   }
 
-  public fn fireball (ennemy: Hero) {
+  fn fireball (ennemy: Hero) {
     if @hp == 0 {
       println!('Cannot launch a fireball while being dead');
       return ;
@@ -3076,18 +3076,18 @@ The specificity of private members is that they cannot be accessed from the outs
 
 ```rave
 class Mother {
-  public public = 1;
-  protected protected = 2;
-  private private = 3;
+  public_attr = 1;
+  protected protected_attr = 2;
+  private private_attr = 3;
 
-  // Available here: 'public', 'protected', 'private'
+  // Available here: 'public_attr', 'protected_attr', 'private_attr'
 }
 
 class Child extends Mother {
-  // Available here: 'public', 'protected', but not 'private'
+  // Available here: 'public_attr', 'protected_attr', but not 'private_attr'
 }
 
-new Child; // Available here: 'public', but not 'protected' and 'private'
+new Child; // Available here: 'public_attr', but not 'protected_attr' nor 'private_attr'
 ```
 
 ### Introducing sub-typing
@@ -3145,11 +3145,11 @@ As we saw, constructors are not inherited by child classes. But we can force inh
 
 ```rave
 open class Mother {
-  public fn %new (name: string) {
+  fn %new (name: string) {
     println!(name);
   }
 
-  public fn %new (name: string[]) {
+  fn %new (name: string[]) {
     println!(name.join(' '));
   }
 }
@@ -3163,11 +3163,11 @@ Our `Child` class will inherit only the first constructor. It's also possible to
 
 ```rave
 open class Mother {
-  public fn %new (name: string) {
+  fn %new (name: string) {
     println!(name);
   }
 
-  public fn %new (name: string[]) {
+  fn %new (name: string[]) {
     println!(name.join(' '));
   }
 }
@@ -3231,7 +3231,7 @@ Methods can be stated, too. We already saw static methods, but they can also be 
 
 ```rave
 virtual class Mother {
-  virtual public fn sayHello ();
+  virtual fn sayHello ();
 }
 
 class ChildA extends Mother {
@@ -3239,7 +3239,7 @@ class ChildA extends Mother {
 }
 
 class ChildB extends Mother {
-  public fn sayHello () {
+  fn sayHello () {
     println!('Hello world!');
   }
 }
@@ -3253,7 +3253,7 @@ Abstract methods, on their side, are virtual methods declared with a body. This 
 
 ```rave
 class Mother {
-  abstract public fn sayHello () {
+  abstract fn sayHello () {
     println!('Hello from mother!');
   }
 }
@@ -3263,7 +3263,7 @@ class ChildA extends Mother {
 }
 
 class ChildB extends Mother {
-  public fn sayHello () {
+  fn sayHello () {
     println!('Hello from child!');
   }
 }
@@ -3278,14 +3278,14 @@ Final methods are the opposite of abstract methods: they are defined in the orig
 
 ```rave
 class Mother {
-  final public fn sayHello () {
+  final fn sayHello () {
     println!('Hello from mother!');
   }
 }
 
 class Child extends Mother {
   // ERROR: method is final
-  public fn sayHello () {
+  fn sayHello () {
     println!('Hello from child!');
   }
 }
@@ -3412,15 +3412,15 @@ Typecasting overloads allow to statically typecast a given type to another, even
 class A {
   private message = 'Hello world!';
 
-  public fn %to[B] () {
+  fn %to[B] () {
     return new B(@message);
   }
 }
 
 class B {
-  public message: string;
+  message: string;
 
-  public fn %new (message: string) {
+  fn %new (message: string) {
     @message = message;
   }
 }
@@ -3457,16 +3457,16 @@ class A {
   private message = 'Hello world!';
 
   #auto
-  public fn %to[B] () {
+  fn %to[B] () {
     println!('Typecasting to B');
     return new B(@message);
   }
 }
 
 class B {
-  public message: string;
+  message: string;
 
-  public fn %new (message: string) {
+  fn %new (message: string) {
     @message = message;
   }
 }
@@ -3495,7 +3495,7 @@ Every class that implements the `%to[string]` typecast overload will be `Stringi
 
 ```rave
 class A impl Stringifyable {
-  public fn %to[string] () {
+  fn %to[string] () {
     return 'Hello world!';
   }
 }
@@ -3586,13 +3586,13 @@ Let's consider the following code:
 
 ```rave
 class A {
-  public fn %to[B] () {
+  fn %to[B] () {
     return new B;
   }
 }
 
 class B {
-  public fn %to[C] () {
+  fn %to[C] () {
     return new C;
   }
 }
@@ -3643,14 +3643,14 @@ interface ConvertibleToF {
 
 // Candidate
 class D {
-  public fn %to[F] () {
+  fn %to[F] () {
     return new F;
   }
 }
 
 // Candidate
 class E {
-  public fn %to[F] () {
+  fn %to[F] () {
     return new F;
   }
 }
@@ -3660,12 +3660,12 @@ class F {}
 
 // A sample class
 class G {
-  public fn %to[D] () {
+  fn %to[D] () {
     println!('Typecasted to D');
     return new D;
   }
 
-  public fn %to[E] () {
+  fn %to[E] () {
     println!('Typecasted to E');
     return new E;
   }
@@ -3791,8 +3791,8 @@ The other ambiguity happens when using undistinctable templates:
 
 ```rave
 class Example<K, V> {
-  public fn %new (value: K) {}
-  public fn %new (value: V) {}
+  fn %new (value: K) {}
+  fn %new (value: V) {}
 }
 
 new Example(2); // ERROR: Template inference ambiguity
@@ -3806,7 +3806,7 @@ The resolution keywords refer to their actual classes with all their templates:
 
 ```rave
 class Example<T> {
-  public fn test () {
+  fn test () {
     // Here, 'self' refers to 'Example<T>'
     //  and not 'Example'
   }
@@ -3819,7 +3819,7 @@ We can change get the current class with other templates by rewriting them:
 
 ```rave
 class Example<T> {
-  public fn test () {
+  fn test () {
     // self == Example<T>
     // self<int> == Example<int>
   }
@@ -3875,9 +3875,9 @@ This accepts any list with an unknown template. Note that we can still get eleme
 
 ```rave
 class Example<T> {
-  public value: T;
+  value: T;
 
-  public fn %new (value: T) {
+  fn %new (value: T) {
     @size = size;
   }
 }
@@ -3910,7 +3910,7 @@ class MyArrayClass<T> {
   // - which means only if 'T' is a sub-type of 'number'
   segment T extends number {
     // Our '.sum()' function
-    public fn sum () : T {
+    fn sum () : T {
       // Do some stuff here;
     }
   }
@@ -3933,7 +3933,7 @@ For that, we use a templated version of the addition overload:
 
 ```rave
 class LargeNumber {
-  public fn %add<T extends number> (num: T) : T {
+  fn %add<T extends number> (num: T) : T {
     // Do some stuff here
   }
 }
@@ -3954,16 +3954,16 @@ class BankAccount {
   // ...
 
   // Doesn't work because 'T' cannot be guessed
-  public fn %add<T> (left: string, right: int) : int[];
+  fn %add<T> (left: string, right: int) : int[];
 
   // Doesn't work because 'T' cannot be guessed
-  public fn %add<T> (left: string, right: int) : T;
+  fn %add<T> (left: string, right: int) : T;
 
   // Works fine
-  public fn %add<T> (left: T, right: int) : bool;
+  fn %add<T> (left: T, right: int) : bool;
 
   // Works fine
-  public fn %add<T> (left: string, right: Map<int, T>) : string[];
+  fn %add<T> (left: string, right: Map<int, T>) : string[];
 
   // ...
 }
@@ -3986,19 +3986,19 @@ They are declared using the `dict` keyword instead of the `class` one. Dynamic d
 // V = type of values
 dict Custom<K, V> {
   // Get a value from a key
-  public fn %get (key: K) : V throws KeyNotFoundError;
+  fn %get (key: K) : V throws KeyNotFoundError;
   // Associate a value to a key
-  public fn %set (key: K, value: V) throws KeyAssignmentError;
+  fn %set (key: K, value: V) throws KeyAssignmentError;
   // Remove a key and its associated value
-  public fn %unset (key: K) throws KeyNotFoundError;
+  fn %unset (key: K) throws KeyNotFoundError;
   // Get the number of key/value pairs
-  public fn %size () : usize;
+  fn %size () : usize;
   // Check if a key exists
-  public fn %has (key: K) : bool;
+  fn %has (key: K) : bool;
   // Check if a value is associated to a key
-  public fn %contains (value: V) : bool;
+  fn %contains (value: V) : bool;
   // Get an iterator on key-value pairs
-  public fn %iterate () : Iterator<(K, V)>;
+  fn %iterate () : Iterator<(K, V)>;
 }
 ```
 
@@ -4139,7 +4139,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 ```rave
   // ...
-  public fn %set (key: K, value: V) {
+  fn %set (key: K, value: V) {
     // If the value already exists in the dictionary, panic
     panic!('Trying to use a duplicate value.') if value in @values;
 
@@ -4160,7 +4160,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 ```rave
   // ...
-  public fn %get (key: K, value: V) {
+  fn %get (key: K, value: V) {
     // If the key doesn't exist, panic
     panic!('Key not found') if key not in @keys;
 
@@ -4173,7 +4173,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 ```rave
   // ...
-  public fn %unset (key: K) {
+  fn %unset (key: K) {
     // If the key doesn't exist, panic
     panic!('Key not found') if key not in @keys;
 
@@ -4190,7 +4190,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 ```rave
   // ...
-  public fn %has (key: K) : bool {
+  fn %has (key: K) : bool {
     // Check if the key exists
     return key in @keys;
   }
@@ -4200,7 +4200,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 ```rave
   // ...
-  public fn %contains (value: V) : bool {
+  fn %contains (value: V) : bool {
     // Check if the value exists
     return value in @values;
   }
@@ -4210,7 +4210,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 ```rave
   // ...
-  public fn %size () : usize {
+  fn %size () : usize {
     // Return the number of elements in the dictionary
     return size!(@keys);
   }
@@ -4220,7 +4220,7 @@ We will have two attributes for this class: a list of keys, and a list of values
 
 ```rave
   // ...
-  public fn %iterate () : Iterator<(K, V)> {
+  fn %iterate () : Iterator<(K, V)> {
     // Return an iterator on a key-value tuple
     return Iterator.fromBinom(@keys, @values);
   }
@@ -5247,16 +5247,16 @@ Iterators are instances of the `Iterator<T>` class. Here is an example of the fa
 
 ```rave
 class Fibonacci extends Iterator<uint> {
-  public val max: uint;
+  val max: uint;
 
   private a = 0;
   private b = 1;
 
-  public fn %new (max: uint) {
+  fn %new (max: uint) {
     @max = max;
   }
   
-  public fn next () : ?uint {
+  fn next () : ?uint {
     return none if @b >= @max;
 
     val c = @a + @b;
@@ -5823,7 +5823,7 @@ struct A {
 }
 
 class B {
-  public val type: 'Type2';
+  val type: 'Type2';
 }
 
 type C = A | B;
@@ -5853,7 +5853,7 @@ Another example:
 ```rave
 struct A { type: 'Type1' }
 interface B { type: 'Type2'; }
-class C { public val type: 'Type3'; }
+class C { val type: 'Type3'; }
 
 val value: C = /* values goes here */;
 
@@ -5878,14 +5878,14 @@ enum HeroType {
   BlackWizard
 }
 
-class Warrior { public lit type = HeroType.Warrior; }
+class Warrior { lit type = HeroType.Warrior; }
 
 struct WhiteWizard {
   type: HeroType.WhiteWizard
 }
 
 interface BlackWizard {
-  public lit type = HeroType.BlackWizard;
+  lit type = HeroType.BlackWizard;
 }
 
 type C = Warrior | WhiteWizard | BlackWizard;
@@ -5904,7 +5904,7 @@ _Lambda classes_ are to classes what lambdas are to functions. These are unnamed
 
 ```rave
 virtual class MouseClickHandler {
-  abstract public fn onClick ();
+  abstract fn onClick ();
 }
 
 fn triggerHandler (handler: MouseClickHandler) {
@@ -5916,7 +5916,7 @@ If we want to make a new trigger, a first idea would be to write this:
 
 ```rave
 class MyMouseClickHandler extends MouseClickHandler {
-  public fn onClick () {
+  fn onClick () {
     println!('Triggered!');
   }
 }
@@ -5928,7 +5928,7 @@ But if our class is only used once, that's heavy as we have to declare a whole n
 
 ```rave
 triggerHandler(new ~MouseClickHandler {
-  public fn onClick () {
+  fn onClick () {
     println!('Triggered!');
   }
 });
@@ -5940,7 +5940,7 @@ If we want to make a class with no constraint (no inherited member nor abstract 
 
 ```rave
 val obj = new ~Any {
-  public fn onClick () {
+  fn onClick () {
     println!('Triggered!');
   }
 };
@@ -6221,15 +6221,15 @@ Tuple dictionaries are declared using the `tuple` keyword:
 ```rave
 tuple dict Custom<K in Literal, V> {
   // The list of keys
-  public lit keys: Tuple<keyof self>;
+  lit keys: Tuple<keyof self>;
   // Get a value from a key
-  public fn %get (key: keyof self) : V;
+  fn %get (key: keyof self) : V;
   // Associate a value to a key
-  public fn %set (key: keyof self, value: V) throws KeyAssignmentError;
+  fn %set (key: keyof self, value: V) throws KeyAssignmentError;
   // Check if a value is associated to a key
-  public fn %contains (value: V) : bool;
+  fn %contains (value: V) : bool;
   // Get an iterator on key-value pairs
-  public fn %iterate () : Iterator<(K, V)>;
+  fn %iterate () : Iterator<(K, V)>;
 }
 ```
 
@@ -6312,10 +6312,10 @@ Also, for classes, if any member remains uninitialized when the constructor ends
 
 ```rave
 class A {
-  public name: string;
-  public age: uint;
+  name: string;
+  age: uint;
 
-  public fn %new (name: string, age: uint) {
+  fn %new (name: string, age: uint) {
     @name = name;
     // ERROR: 'age' has not been initialized
   }
@@ -6663,9 +6663,9 @@ Another case is callbacks. In the following code:
 class Event {
   private static handler: () => void;
 
-  public static fn handle (handler: () => void) => @handler = handler;
+  static fn handle (handler: () => void) => @handler = handler;
 
-  public static fn trigger () {
+  static fn trigger () {
     @handler();
   }
 }
@@ -7139,7 +7139,7 @@ Classes are described like assignable entities. Their templates can be described
  * Container for an integer value
  */
 class A {
-  public value: int = 0;
+  value: int = 0;
 }
 
 /**
@@ -7147,7 +7147,7 @@ class A {
  * @template T Type of the value
  */
 interface B<T> {
-  public value: T;
+  value: T;
 }
 ```
 
@@ -7174,13 +7174,13 @@ Segments are described like assignable entities:
 
 ```rave
 class B<T> {
-  public value: T;
+  value: T;
 
   /**
    * Segment for number types
    */
   segment T extends number {
-    public fn double () => @value * 2;
+    fn double () => @value * 2;
   }
 }
 ```
@@ -7263,17 +7263,17 @@ virtual class A {
    * Create a new value of @class and return it
    * @returns A new instance of @class
    */
-  abstract public fn create () : _real;
+  abstract fn create () : _real;
 }
 
 class B extends A {
-  public fn create () : _real {
+  fn create () : _real {
     return new self();
   }
 }
 
 class C extends A {
-  public fn create () : _real {
+  fn create () : _real {
     return new self();
   }
 }
@@ -7287,7 +7287,7 @@ virtual class A {
    * Create a new value of A and return it
    * @returns A new instance of A
    */
-  abstract public fn create () : _real;
+  abstract fn create () : _real;
 }
 
 class B extends A {
@@ -7295,7 +7295,7 @@ class B extends A {
    * Create a new value of B and return it
    * @returns A new instance of B
    */
-  public fn create () : _real {
+  fn create () : _real {
     return new self();
   }
 }
@@ -7305,7 +7305,7 @@ class C extends A {
    * Create a new value of C and return it
    * @returns A new instance of C
    */
-  public fn create () : _real {
+  fn create () : _real {
     return new self();
   }
 }
@@ -7321,7 +7321,7 @@ class Number {
   /**
    * Do some @class stuff
    */
-  public fn nothing () {}
+  fn nothing () {}
 }
 
 /**
@@ -7337,14 +7337,14 @@ class Number {
   /**
    * Do some number stuff
    */
-  public fn nothing () {}
+  fn nothing () {}
 }
 
 class SignedNumber extends A {
   /**
    * Do some signed number stuff
    */
-  public fn nothing () {}
+  fn nothing () {}
 }
 ```
 
