@@ -871,6 +871,26 @@ if try fs::readFileSync('archive.gz') as archiveBuffer {
 }
 ```
 
+#### Library: Input
+
+The `input` library allows to handle user inputs:
+
+```rave
+import cfl::input;
+
+if input::getMouse() as mouse {
+  mouse.on('click') { e ->
+    println!('Mouse clicked at (x = ${e.x}, y = ${e.y}!');
+  }
+}
+
+if input::getKeyboard() as keyboard {
+  keyboard.on('keydown') { e ->
+    println!('A key was pressed: ${e.keyName}');
+  }
+}
+```
+
 ### Exclusive Frontend Libraries
 
 The _exclusive_ frontend libraries are libraries that are available only in specific build modes with specific parameters.
