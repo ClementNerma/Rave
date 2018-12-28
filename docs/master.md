@@ -6665,6 +6665,51 @@ println!(added[0]); // Prints: '4' (1 + 3)
 println!(added[1]); // Prints: '6' (2 + 4)
 ```
 
+### Decorators
+
+_Decorators_ are a way to decorate entities (constants, class attributes and methods, ...) with function calls. Here is an example:
+
+```rave
+fn log (entity: DecoratorTarget.Entity<Stringifyable>) {
+  entity.watch { newValue ->
+    println!(
+      'New value assigned to entity "${entity.name}"' +
+        if newValue ~ Stringifyable
+        then ': ' + newValue
+        else ' (not stringifyable)'
+    );
+  }
+}
+
+@log
+let name = 'Hello'; // Prints: 'New value assigned to entity "name": Hello'
+
+name = 'Yoh'; // Prints: 'New value assigned to entity "name": Yoh'
+```
+
+There are several types available for decorators, to allow making ones for any type of entity. Another example:
+
+```rave
+fn keepMinimum<T extends Comparable> (min: T, entity: DecoratorTarget.Entity<T>) {
+  entity.watch { newValue ->
+    if newValue < min {
+      *(entity.ref) = min;
+    }
+  }
+}
+
+@keepMinimum(100)
+let money: int;
+
+money = 102;
+
+println!(money); // Prints: '102'
+
+money = 98;
+
+println!(money); // Prints: '100'
+```
+
 ## Asynchronous behaviors
 
 Sometimes we can't foretell when an event will occur. For example, if we are making a web server, we can't predict when there will be incoming connections. This is called an _asynchronous behaviour_ and we will see in this chapter how to deal with it.
