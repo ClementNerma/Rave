@@ -1485,16 +1485,6 @@ match age {
 
 The `_` entity refers to the provided value.
 
-### Ternary conditions
-
-Ternary conditions allow to write short conditions more easily:
-
-```rave
-val str = age < 18 ? 'Not adult' : 'Adult';
-```
-
-The value after the `?` symbol is taken if the condition is not a nil value. If it's a nil a value, the value written after the `:` symbol is taken instead.
-
 ### Inline blocks
 
 Inline blocks are variants of the blocks we saw previously. They are written after an instruction and consider this one as their body. Showcase:
@@ -1513,6 +1503,17 @@ println!(i) for i in 0...5;
 ```
 
 This code will print numbers from `0` to `5`.
+
+There is a block that only exists in inline version:
+
+```rave
+val str = if age >= 18 then 'You are an adult' else 'You are a child';
+
+// Can be used on several lines, for more clarity
+val str = if age >= 18
+          then 'You are an adult'
+          else 'You are a child';
+```
 
 ### Inline generation
 
@@ -4383,10 +4384,12 @@ Note that it doesn't catch any error in the getter, it simply checks if the key 
 
 ```rave
 // This:
-personsAge['Jack']?; // ?uint
+val value = personsAge['Jack']?; // ?uint
 
 // Is strictly equivalent to:
-'Jack' in personsAge ? some!(personsAge['Jack']) : none;
+val value = if 'Jack' in personsAge
+            then some!(personsAge['Jack'])
+            else none;
 ```
 
 ### Default value operator
@@ -5798,7 +5801,9 @@ Also, we can use type assertions in ternary conditions as well as in inline cond
 ```rave
 // Ternary condition
 fn convertToString (value: Any) : ?string {
-  return value ~ Stringifyable ? some!(value as string) : none;
+  return if value ~ Stringifyable
+         then some!(value as string)
+         else none;
 }
 
 // Inline condition
