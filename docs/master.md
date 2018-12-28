@@ -2290,7 +2290,7 @@ obj.known; // Works fine
 obj.secret; // ERROR (private member)
 ```
 
-This also works for methods: they can be public or private to be available - or not - from the outside. The `this` keyword can be replaced by the `@` symbol, too:
+This also works for methods: they can be public or private to be available - or not - from the outside.
 
 ```rave
 class Example {
@@ -2298,8 +2298,8 @@ class Example {
   private secret: string;
 
   fn %new () {
-    @known = 'Public data';
-    @secret = 'Secret data';
+    this.known = 'Public data';
+    this.secret = 'Secret data';
   }
 }
 ```
@@ -2361,13 +2361,13 @@ class A {
   private def: uint;
 
   // This declaration:
-  fn %new (@name, @hp, @atk, @def) {}
+  fn %new (this.name, this.hp, this.atk, this.def) {}
   // Is strictly equivalent to this one:
   fn %new (name: string, hp: uint, atk: uint, def: uint) {
-    @name = name;
-    @hp = hp;
-    @atk = atk;
-    @def = def;
+    this.name = name;
+    this.hp = hp;
+    this.atk = atk;
+    this.def = def;
   }
 }
 ```
@@ -2453,9 +2453,9 @@ Let's initialize our attributes:
 ```rave
   // ...
   fn %new (map: Cell[][], x: usize, y: size) {
-    @map = map;
-    @x = x;
-    @y = y;
+    this.map = map;
+    this.x = x;
+    this.y = y;
   }
 ```
 
@@ -2465,14 +2465,14 @@ Because our player can only move on adjacent cells, the easiest solution is to m
 
 ```rave
   // ...
-  fn moveUpLeft    () { @move(x - 1, y - 1); }
-  fn moveUp        () { @move(x, y - 1); }
-  fn moveUpRight   () { @move(x + 1, y - 1); }
-  fn moveLeft      () { @move(x - 1, y); }
-  fn moveRight     () { @move(x + 1, y); }
-  fn moveDownLeft  () { @move(x - 1, y + 1); }
-  fn moveDown      () { @move(x, y + 1); }
-  fn moveDownRight () { @move(x + 1, y + 1); }
+  fn moveUpLeft    () { this.move(x - 1, y - 1); }
+  fn moveUp        () { this.move(x, y - 1); }
+  fn moveUpRight   () { this.move(x + 1, y - 1); }
+  fn moveLeft      () { this.move(x - 1, y); }
+  fn moveRight     () { this.move(x + 1, y); }
+  fn moveDownLeft  () { this.move(x - 1, y + 1); }
+  fn moveDown      () { this.move(x, y + 1); }
+  fn moveDownRight () { this.move(x + 1, y + 1); }
 
 ```
 
@@ -2489,7 +2489,7 @@ We have to check that are moving to an adjacent case:
 
 ```rave
     // Moves are only allowed to adjacent cells
-    if (@x - x).abs() > 1 || (@y - y).abs() > 1 {
+    if (this.x - x).abs() > 1 || (this.y - y).abs() > 1 {
       println!('Cannot move on a non-adjacent cell');
     }
 ```
@@ -2498,7 +2498,7 @@ Also, the player cannot move if it's already trapped:
 
 ```rave
   // Moves are forbidden when the player is trapped
-  elif @trapped {
+  elif this.trapped {
     println!('Cannot move because the player is trapped');
   }
 ```
@@ -2507,7 +2507,7 @@ We can't run into a rock:
 
 ```rave
   // Can't run into a rock
-  elif @map[y][x] == Cell.ROCK {
+  elif this.map[y][x] == Cell.ROCK {
     println!('Cannot run into a rock');
   }
 ```
@@ -2517,8 +2517,8 @@ Else, we can move:
 ```rave
   // Move fine
   else {
-    @x = x;
-    @y = y;
+    this.x = x;
+    this.y = y;
   }
 ```
 
@@ -2527,12 +2527,12 @@ But if we ran into a trap cell, we are now trapped:
 ```rave
   // Move fine
   else {
-    @x = x;
-    @y = y;
+    this.x = x;
+    this.y = y;
 
-    if @map[y][x] == Cell.TRAP {
+    if this.map[y][x] == Cell.TRAP {
       println!('You just felt in a trap!');
-      @trapped = true;
+      this.trapped = true;
     }
   }
 ```
@@ -2551,44 +2551,44 @@ class Map {
   trapped: bool = false;
 
   fn %new (map: Cell[][], x: usize, y: size) {
-    @map = map;
-    @x = x;
-    @y = y;
+    this.map = map;
+    this.x = x;
+    this.y = y;
   }
 
-  fn moveUpLeft    () { @move(x - 1, y - 1); }
-  fn moveUp        () { @move(x, y - 1); }
-  fn moveUpRight   () { @move(x + 1, y - 1); }
-  fn moveLeft      () { @move(x - 1, y); }
-  fn moveRight     () { @move(x + 1, y); }
-  fn moveDownLeft  () { @move(x - 1, y + 1); }
-  fn moveDown      () { @move(x, y + 1); }
-  fn moveDownRight () { @move(x + 1, y + 1); }
+  fn moveUpLeft    () { this.move(x - 1, y - 1); }
+  fn moveUp        () { this.move(x, y - 1); }
+  fn moveUpRight   () { this.move(x + 1, y - 1); }
+  fn moveLeft      () { this.move(x - 1, y); }
+  fn moveRight     () { this.move(x + 1, y); }
+  fn moveDownLeft  () { this.move(x - 1, y + 1); }
+  fn moveDown      () { this.move(x, y + 1); }
+  fn moveDownRight () { this.move(x + 1, y + 1); }
 
   fn move (x: usize, y: usize) {
     // Moves are only allowed to adjacent cells
-    if (@x - x).abs() > 1 || (@y - y).abs() > 1 {
+    if (this.x - x).abs() > 1 || (this.y - y).abs() > 1 {
       println!('Cannot move on a non-adjacent cell');
     }
 
     // Moves are forbidden when the player is trapped
-    elif @trapped {
+    elif this.trapped {
       println!('Cannot move because the player is trapped');
     }
 
     // Can't run into a rock
-    elif @map[y][x] == Cell.Rock {
+    elif this.map[y][x] == Cell.Rock {
       println!('Cannot run into a rock');
     }
 
     // Move fine
     else {
-      @x = x;
-      @y = y;
+      this.x = x;
+      this.y = y;
 
-      if @map[y][x] == Cell.Trap {
+      if this.map[y][x] == Cell.Trap {
         println!('You just felt in a trap!');
-        @trapped = true;
+        this.trapped = true;
       }
     }
   }
@@ -2627,12 +2627,12 @@ class User {
 
   fn %new () {
     self.counter ++;
-    @id = self.counter;
-    println!('User ${@id} has been created');
+    this.id = self.counter;
+    println!('User ${this.id} has been created');
   }
 
   fn %drop () {
-    println!('User ${@id} will be dropped');
+    println!('User ${this.id} will be dropped');
   }
 }
 
@@ -2704,16 +2704,16 @@ class Example {
   name: string;
 
   fn %new (name: string) {
-    @name = name;
+    this.name = name;
   }
 
   fn setName (newName: string) {
-    @name = newName;
+    this.name = newName;
   }
 
   fn %clone () : self {
     println!('Instance has been cloned.');
-    return new Example(@name);
+    return new Example(this.name);
   }
 }
 
@@ -2739,7 +2739,7 @@ The serialization overload takes no argument and returns a string. In our `Examp
 ```rave
   // ...
   fn %serialize () {
-    return @name;
+    return this.name;
   }
 ```
 
@@ -2781,11 +2781,11 @@ class MyInt {
   value: int;
 
   fn %new (value: int) {
-    @value = value;
+    this.value = value;
   }
 
   fn %add (another: self) {
-    return new MyInt(@value + another);
+    return new MyInt(this.value + another);
   }
 }
 
@@ -2804,11 +2804,11 @@ class MyInt {
   value: int;
 
   fn %new (value: int) {
-    @value = value;
+    this.value = value;
   }
 
   fn %add (another: MyInt) : int {
-    return @value + another.value;
+    return this.value + another.value;
   }
 }
 
@@ -2838,11 +2838,11 @@ class Hero {
   name: string;
 
   fn %new (name: string) {
-    @name = name;
+    this.name = name;
   }
 
   fn %equal (another: self) : bool {
-    return @name == another.name;
+    return this.name == another.name;
   }
 }
 
@@ -2864,13 +2864,13 @@ class BankAccount {
   amount: uint;
 
   fn %new (amount: uint) {
-    @amount = amount;
+    this.amount = amount;
   }
 
   fn %compare (another: self) : Comparison {
-    if @amount > another.amount {
+    if this.amount > another.amount {
       return Comparison.Greater;
-    } elif @amount < another.amount {
+    } elif this.amount < another.amount {
       return Comparison.Smaller;
     } else {
       return Comparison.Equal;
@@ -2950,13 +2950,13 @@ class Hero {
 
   fn %new (wizard: bool, name: string, hp: uint,
                   atk: uint, exp: uint, rage: uint, mp: uint) {
-    @wizard = wizard;
-    @name = name;
-    @hp = hp;
-    @atk = atk;
-    @exp = exp;
-    @rage = rage;
-    @mp = mp;
+    this.wizard = wizard;
+    this.name = name;
+    this.hp = hp;
+    this.atk = atk;
+    this.exp = exp;
+    this.rage = rage;
+    this.mp = mp;
   }
 
   // ...
@@ -2977,16 +2977,16 @@ open class Hero {
   exp: uint;
 
   fn %new (name: string, hp: uint, atk: uint, exp: uint) {
-    @name = name;
-    @hp = hp;
-    @atk = atk;
-    @exp = exp;
+    this.name = name;
+    this.hp = hp;
+    this.atk = atk;
+    this.exp = exp;
   }
 
   // Returns 'true' if the fight has been done successfully
   fn fight (ennemy: Hero) : bool {
-    if @hp == 0 {
-      println!('${@name} cannot fight because he is dead.');
+    if this.hp == 0 {
+      println!('${this.name} cannot fight because he is dead.');
       return false;
     }
 
@@ -2995,16 +2995,16 @@ open class Hero {
       return false;
     }
 
-    println!('${@name} is fighting ${ennemy.name}!');
+    println!('${this.name} is fighting ${ennemy.name}!');
 
-    if @atk > ennemy.hp {
+    if this.atk > ennemy.hp {
       // Won the fight
       ennemy.hp = 0;
 
       // Win some experience
-      @exp += 100u;
+      this.exp += 100u;
     } else {
-      ennemy.hp -= @atk;
+      ennemy.hp -= this.atk;
     }
 
     // It's ennemy turn!
@@ -3025,19 +3025,19 @@ class Warrior extends Hero {
   rage: uint;
 
   fn %new (name: string, hp: uint, atk: uint, exp: uint, rage: uint) {
-    @name = name;
-    @hp = hp;
-    @atk = atk;
-    @exp = exp;
-    @rage = rage;
+    this.name = name;
+    this.hp = hp;
+    this.atk = atk;
+    this.exp = exp;
+    this.rage = rage;
   }
 
   fn fight (ennemy: Hero) {
     // Call mother's fight method
     // If it succeeds, win rage points (limited to 20)
-    if super.fight(ennemy) && @rage < 20 {
-      @rage += 10;
-      @attack += 10;
+    if super.fight(ennemy) && this.rage < 20 {
+      this.rage += 10;
+      this.attack += 10;
     }
   }
 }
@@ -3059,29 +3059,29 @@ class Wizard extends Hero {
 
   fn %new (name: string, hp: uint, atk: uint, exp: uint, mp: uint) {
     super(name, hp, atk, exp);
-    @mp = mp;
+    this.mp = mp;
   }
 
   fn fireball (ennemy: Hero) {
-    if @hp == 0 {
+    if this.hp == 0 {
       println!('Cannot launch a fireball while being dead');
       return ;
     }
 
-    if @mp < 10 {
+    if this.mp < 10 {
       println!('At least 10 MP are required to launch a fireball');
       return ;
     }
 
     // Temporarily increase the attack to launch the fireball
-    @atk *= 2;
+    this.atk *= 2;
 
-    println!('${@name} is launching a fireball!');
+    println!('${this.name} is launching a fireball!');
 
-    @fight(ennemy);
+    this.fight(ennemy);
 
     // Go back to a normal attack
-    @atk *= 2;
+    this.atk *= 2;
   }
 }
 ```
@@ -3431,7 +3431,7 @@ class A {
   private message = 'Hello world!';
 
   fn %to[B] () {
-    return new B(@message);
+    return new B(this.message);
   }
 }
 
@@ -3439,7 +3439,7 @@ class B {
   message: string;
 
   fn %new (message: string) {
-    @message = message;
+    this.message = message;
   }
 }
 ```
@@ -3477,7 +3477,7 @@ class A {
   #auto
   fn %to[B] () {
     println!('Typecasting to B');
-    return new B(@message);
+    return new B(this.message);
   }
 }
 
@@ -3485,7 +3485,7 @@ class B {
   message: string;
 
   fn %new (message: string) {
-    @message = message;
+    this.message = message;
   }
 }
 
@@ -3896,7 +3896,7 @@ class Example<T> {
   value: T;
 
   fn %new (value: T) {
-    @size = size;
+    this.size = size;
   }
 }
 
@@ -4159,17 +4159,17 @@ We will have two attributes for this class: a list of keys, and a list of values
   // ...
   fn %set (key: K, value: V) {
     // If the value already exists in the dictionary, panic
-    panic!('Trying to use a duplicate value.') if value in @values;
+    panic!('Trying to use a duplicate value.') if value in this.values;
 
     // If the key already exists...
-    if key in @keys {
+    if key in this.keys {
       // Set a new value
-      @values[@keys.indexOf(key)] = value;
+      this.values[this.keys.indexOf(key)] = value;
     } else {
       // Else, push the new key
-      @keys[] = key;
+      this.keys[] = key;
       // And push the new value too
-      @values[] = value;
+      this.values[] = value;
     }
   }
 ```
@@ -4180,10 +4180,10 @@ We will have two attributes for this class: a list of keys, and a list of values
   // ...
   fn %get (key: K, value: V) {
     // If the key doesn't exist, panic
-    panic!('Key not found') if key not in @keys;
+    panic!('Key not found') if key not in this.keys;
 
     // Return the value
-    return @values[@keys.indexOf(key)];
+    return this.values[this.keys.indexOf(key)];
   }
 ```
 
@@ -4193,14 +4193,14 @@ We will have two attributes for this class: a list of keys, and a list of values
   // ...
   fn %unset (key: K) {
     // If the key doesn't exist, panic
-    panic!('Key not found') if key not in @keys;
+    panic!('Key not found') if key not in this.keys;
 
     // Get the key index
-    val keyIndex = @keys.indexOf(key);
+    val keyIndex = this.keys.indexOf(key);
 
     // Remove it
-    delete @values[keyIndex];
-    delete @keys[keyIndex];
+    delete this.values[keyIndex];
+    delete this.keys[keyIndex];
   }
 ```
 
@@ -4210,7 +4210,7 @@ We will have two attributes for this class: a list of keys, and a list of values
   // ...
   fn %has (key: K) : bool {
     // Check if the key exists
-    return key in @keys;
+    return key in this.keys;
   }
 ```
 
@@ -4220,7 +4220,7 @@ We will have two attributes for this class: a list of keys, and a list of values
   // ...
   fn %contains (value: V) : bool {
     // Check if the value exists
-    return value in @values;
+    return value in this.values;
   }
 ```
 
@@ -4230,7 +4230,7 @@ We will have two attributes for this class: a list of keys, and a list of values
   // ...
   fn %size () : usize {
     // Return the number of elements in the dictionary
-    return size!(@keys);
+    return size!(this.keys);
   }
 ```
 
@@ -4240,7 +4240,7 @@ We will have two attributes for this class: a list of keys, and a list of values
   // ...
   fn %iterate () : Iterator<(K, V)> {
     // Return an iterator on a key-value tuple
-    return Iterator.fromBinom(@keys, @values);
+    return Iterator.fromBinom(this.keys, this.values);
   }
 ```
 
@@ -5271,18 +5271,18 @@ class Fibonacci extends Iterator<uint> {
   private b = 1;
 
   fn %new (max: uint) {
-    @max = max;
+    this.max = max;
   }
   
   fn next () : ?uint {
-    return none if @b >= @max;
+    return none if this.b >= this.max;
 
-    val c = @a + @b;
-    @b = @a;
-    @a = c;
+    val c = this.a + this.b;
+    this.b = this.a;
+    this.a = c;
 
-    if @b >= @max {
-      @done = true;
+    if this.b >= this.max {
+      this.done = true;
     }
 
     return some!(c);
@@ -5332,9 +5332,9 @@ iter fn fibonacci (max: uint) : uint {
   let b = 0;
 
   while a < max {
-    val c = @a + @b;
-    @b = @a;
-    @a = c;
+    val c = this.a + this.b;
+    this.b = this.a;
+    this.a = c;
 
     yield c;
   }
@@ -6334,7 +6334,7 @@ class A {
   age: uint;
 
   fn %new (name: string, age: uint) {
-    @name = name;
+    this.name = name;
     // ERROR: 'age' has not been initialized
   }
 }
@@ -6465,7 +6465,7 @@ And so on. Note that it is possible to put any addition field in the object, and
 ```rave
 proxy counter: uint from {
   value: 0u,
-  getter: () => ++ @value
+  getter: () => ++ this.value
 };
 
 println!(counter); // Prints: '1'
@@ -6484,7 +6484,7 @@ A specificity is that models must be declared using the `prxmodel` keyword. Also
 ```rave
 prxmodel counterProxy {
   value: 0u,
-  getter: () => ++ @value
+  getter: () => ++ this.value
 };
 
 proxy counter1 from counterProxy;
@@ -6681,10 +6681,10 @@ Another case is callbacks. In the following code:
 class Event {
   private static handler: () => void;
 
-  static fn handle (handler: () => void) => @handler = handler;
+  static fn handle (handler: () => void) => this.handler = handler;
 
   static fn trigger () {
-    @handler();
+    this.handler();
   }
 }
 
@@ -7031,7 +7031,7 @@ To document nested functions (e.g. callbacks), we document them as usual functio
 /**
  * Make a summation from a generator function
  * @param generator The generator to make the summation from
- * > @returns A list of values
+ * > this.returns A list of values
  * @returns The summation
  */
 fn sum (generator: () => int[]) : int {
@@ -7198,7 +7198,7 @@ class B<T> {
    * Segment for number types
    */
   segment T extends number {
-    fn double () => @value * 2;
+    fn double () => this.value * 2;
   }
 }
 ```
