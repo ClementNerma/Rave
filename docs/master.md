@@ -4100,7 +4100,7 @@ try {
   personsAge['keyThatDoesNotExist'];
 }
 
-catch (e) {
+catch e {
   println!(e.message);
 }
 ```
@@ -4512,7 +4512,7 @@ try {
   divideInt(6, 3);
 }
 
-catch (e: Error) {
+catch e: Error {
   println!('Division failed');
 }
 ```
@@ -4534,7 +4534,7 @@ fn doSomething () : int {
     counter += divideInt(6, 0);
   }
 
-  catch (e: Error) {
+  catch e: Error {
     println!('Division failed');
     return -1;
   }
@@ -4590,7 +4590,7 @@ try {
   divideInt(a, b);
 }
 
-catch (e: DivisionByZeroError) {
+catch e: DivisionByZeroError {
   println!(e.message); // May print: 'Division by zero is not allowed'
 }
 ```
@@ -4616,11 +4616,11 @@ try {
   doSomething();
 }
 
-catch (e: AError) {
+catch e: AError {
   // ...
 }
 
-catch (e: BError) {
+catch e: BError {
   // ...
 }
 ```
@@ -4632,7 +4632,7 @@ try {
   doSomething();
 }
 
-catch (e: Error) {
+catch e: Error {
   // *ALL* errors will be caught here
 }
 ```
@@ -5443,7 +5443,7 @@ try {
   cast_unsafe!<string>(something); // Returns a string
 }
 
-catch (e: UnsafeCastError) {
+catch e: UnsafeCastError {
   println!('Failed to typecast!');
 }
 ```
@@ -5699,7 +5699,7 @@ try {
   fnB();
 }
 
-catch (e) {
+catch e {
   // 'e' is typed as an 'AError | BError | CError'
 }
 ```
@@ -5715,11 +5715,11 @@ try {
   fnB();
 }
 
-catch (e: BError) {
+catch e: BError {
   // 'e' is typed as a 'BError'
 }
 
-catch (e) {
+catch e {
   // 'e' is typed as an 'AError | CError'
 }
 ```
@@ -6906,7 +6906,7 @@ for i in 0..10 {
     println!(sync fetchArticle(i));
   }
 
-  catch (e) {
+  catch e {
     println!('Failed to fetch article ${i}: ${e.message}');
   }
 }
