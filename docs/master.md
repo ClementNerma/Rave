@@ -6324,6 +6324,32 @@ class A {
 }
 ```
 
+It's also possible to not declare the type of the entity, to let it be inferred:
+
+```rave
+val message;
+
+if 2 + 2 == 4 {
+  message = 'All is fine.';
+} else {
+  message = 'Something weird happened.';
+}
+```
+
+Here, `message` will be inferred as a `string`. Note that this feature requires the entity to receive only a single type of value at initialization time:
+
+```rave
+val entity;
+
+if 2 + 2 == 4 {
+  entity = true;
+} else {
+  entity = 1; // ERROR (type mismatch)
+}
+```
+
+Also, this doesn't work with class attributes ; these must be explicitly typed if they are not initialized at declaration time.
+
 ### Vectors typecasting
 
 Natively, it is not possible to convert an `int[]` to an `int[3]` for example, even though the opposite is allowed:
