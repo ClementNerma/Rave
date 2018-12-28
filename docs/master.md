@@ -1704,6 +1704,30 @@ fn sayHello (name: string, repeat = 1u) {
   // ...
 ```
 
+### Explicit naming
+
+The last arguments given to a function can be explicitly named, to indicate to which argument they refer:
+
+```rave
+fn sayHello (name: string, repeat: uint = 1u) {
+  println!(name) for i in 0..repeat;
+}
+
+sayHello(name = 'Jack');    // Prints: 'Jack'
+sayHello('Jack', repeat = 1); // Prints: 'Jack'
+sayHello(name = 'Jack', repeat = 2); // Prints: 'Jack' (twice)
+```
+
+This can help to make the code clearer, but this is especially useful when we want to provide the value for not all the optional arguments of a function:
+
+```rave
+fn sayHello (firstName: string, lastName: string = 'Unknown', repeat: uint = 1u) {
+  println!(firstName + ' ' + lastName) for i in 0..repeat;
+}
+
+sayHello('Jack', repeat = 2); // Prints: 'Jack Unknown' twice
+```
+
 ### Endless arguments
 
 Endless arguments are prefixed with the `...` symbol, and accept from zero to an infinity of arguments:
