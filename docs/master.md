@@ -3134,7 +3134,7 @@ Functions have a special sub-typing support:
 Examples:
 
 ```rave
-val fn: (a: number) => primitive = (a: int) => 'Hello world'; // Works fine
+val func: (a: number) => primitive = (a: int) => 'Hello world'; // Works fine
 ```
 
 #### Resolution keywords
