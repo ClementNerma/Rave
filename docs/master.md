@@ -1521,7 +1521,7 @@ println!(cube) for cube in cubes;
 
 This code will print `0`, `1`, `8`, `27` and `64`.
 
-Because we may want an array instead of a list, we can use an alternative syntax using the `gen` keyword that produces an array:
+Because we may want an array instead of a list, we can use an alternative syntax using the `->` symbol that produces an array:
 
 ```rave
 val cubes = (i * i * i for i -> 0..5) // int[5];
