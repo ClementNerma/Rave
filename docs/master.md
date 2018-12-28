@@ -5357,16 +5357,6 @@ for i -> num in fibonacci(1000u) {
 }
 ```
 
-Note that an iterator can be asynchronous, too:
-
-```rave
-async iter fn readArticles (upTo: usize) : ?string {
-  for i in 0P..upTo {
-    yield try? await fetchArticle(i);
-  }
-}
-```
-
 ### Constrained types
 
 Constrained types are a way to ensure a value holds validated data in a way far easier than a proxy. The main difference is we don't attach it to an entity but to a value.
