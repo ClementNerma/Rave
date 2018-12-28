@@ -5272,7 +5272,7 @@ async iter fn readArticles (upTo: usize) : ?string {
 
 ### Constrained types
 
-Constrained types are a way to ensure a value holds validated data in a way far easier than a proxy. The main difference are we don't attach it to an entity but to a value.
+Constrained types are a way to ensure a value holds validated data in a way far easier than a proxy. The main difference is we don't attach it to an entity but to a value.
 
 Considering we want to ensure a string is not empty, we can declare a constrain the `string` type by putting a callback on it that checks, when we try to assign a value using this type, if it is not empty. Here is how it goes:
 
