@@ -727,10 +727,10 @@ A way to represent this more easily is to use structures. Our example would go l
 ```rave
 // Define the structure (it's a type)
 struct Hero {
-  name: string;
-  hp: uint;
-  atk: uint;
-  exp: uint;
+  name: string,
+  hp: uint,
+  atk: uint,
+  exp: uint
 }
 ```
 
@@ -753,10 +753,10 @@ Still, by default, fields are constant. This means we cannot modify our hero's e
 
 ```rave
 struct Hero {
-  name: string;
-  hp: uint;
-  atk: uint;
-  mut exp: uint;
+  name: string,
+  hp: uint,
+  atk: uint,
+  mut exp: uint
 }
 ```
 
@@ -773,10 +773,10 @@ For specific situations we will see later, we can also force a field to only sto
 
 ```rave
 struct Hero {
-  lit NAME: string;
-  hp: uint;
-  atk: uint;
-  mut exp: uint;
+  lit NAME: string,
+  hp: uint,
+  atk: uint,
+  mut exp: uint
 }
 
 val jack = Hero {
@@ -794,10 +794,10 @@ We can even put optional fields, by giving them a default value:
 
 ```rave
 struct Hero {
-  name: string;
-  hp = 100u; // Inferred typing is supported
-  atk = 20u;
-  exp = 0u;
+  name: string,
+  hp = 100u, // Inferred typing is supported
+  atk = 20u,
+  exp = 0u
 }
 
 val jack = {
@@ -988,10 +988,10 @@ This code is perfectly valid, and we can access our hero's fields just like we w
 
 ```rave
 struct ImplicitStruct1 {
-  lit name: string;
-  lit hp: uint;
-  lit atk: uint;
-  lit exp: uint;
+  lit name: string,
+  lit hp: uint,
+  lit atk: uint,
+  lit exp: uint
 }
 
 val jack = ImplicitStruct1 {
@@ -2001,10 +2001,10 @@ Let's go back to a previous problem: representing a hero. The first option we sa
 
 ```rave
 struct Hero {
-  name: string;
-  hp: uint;
-  atk: uint;
-  mut exp: uint;
+  name: string,
+  hp: uint,
+  atk: uint,
+  mut exp: uint
 }
 ```
 
@@ -2281,10 +2281,10 @@ Data structures can also be members of classes ; they then become a local type o
 ```rave
 class Example {
   public struct Hero {
-    name: string;
-    hp: uint;
-    atk: uint;
-    mut exp: uint;
+    name: string,
+    hp: uint,
+    atk: uint,
+    mut exp: uint
   }
 
   public val hero = Hero {
@@ -3213,12 +3213,12 @@ Any structure that implements every single field of another with the same mutabi
 
 ```rave
 struct A {
-  name: string;
+  name: string
 }
 
 struct B {
-  name: string;
-  age: uint;
+  name: string,
+  age: uint
 }
 ```
 
@@ -3230,12 +3230,12 @@ Also, literal fields are tolerated where a constant field is expected:
 
 ```rave
 struct A {
-  name: string;
+  name: string
 }
 
 struct B {
-  lit name: string;
-  age: uint;
+  lit name: string,
+  age: uint
 }
 
 val jack: A = B {
@@ -3249,7 +3249,7 @@ A last exception is for mutable fields when declaring objects. Let's take the fo
 
 ```rave
 struct A {
-  mut a: int;
+  mut a: int
 }
 
 val obj = {
@@ -3265,7 +3265,7 @@ To solve this case, we must specify our field is mutable in `obj`:
 
 ```rave
 struct A {
-  mut a: int;
+  mut a: int
 }
 
 val obj = {
@@ -3281,11 +3281,11 @@ Structures can even inherit from other ones:
 
 ```rave
 struct A {
-  name: string;
+  name: string
 }
 
 struct B extends A {
-  age: uint;
+  age: uint
 }
 
 val jack = B {
@@ -4150,9 +4150,9 @@ To take an example, let's imagine we have a function that looks for a point with
 
 ```rave
 struct Point {
-  name: string;
-  x: int;
-  y: int;
+  name: string,
+  x: int,
+  y: int
 }
 
 fn getNilPoint (points: Point[]) : Point {
@@ -4215,7 +4215,7 @@ The optional operator is a useful operator that tries to get a structure's field
 
 ```rave
 struct Hero {
-  name: string;
+  name: string
 }
 
 val jack = some!(Hero {
@@ -4242,7 +4242,7 @@ This operator also supports chaining:
 ```rave
 struct Hero {
   identity: {
-    name: string;
+    name: string
   }
 }
 
@@ -4585,7 +4585,7 @@ Let's take an example for the first point:
 
 ```rave
 struct Hero {
-  mut name: string;
+  mut name: string
 }
 
 fn nameHeroJohn (hero: Hero) {
@@ -4609,7 +4609,7 @@ Now, let's take another example:
 
 ```rave
 struct Hero {
-  mut name: string;
+  mut name: string
 }
 
 fn nameHeroJohn (hero: Hero) {
@@ -4735,7 +4735,7 @@ fn readName (someName: *string) {
 }
 
 struct Hero {
-  name: string;
+  name: string
 }
 
 val jack = {
@@ -4804,7 +4804,7 @@ The third problem is now solved, as we can now overwrite objects easily:
 
 ```rave
 struct Hero {
-  mut name: string;
+  mut name: string
 }
 
 fn nameHeroJohn (hero: *mut Hero) {
@@ -5065,7 +5065,7 @@ For instance, the following code is valid:
 
 ```rave
 struct Hero {
-  name: string;
+  name: string
 }
 
 lit myStruct: Structure = Hero;
@@ -5091,10 +5091,10 @@ In fact, all statics are automatically typecastable to any `Static<T>` type able
 
 ```rave
 struct Hero {
-  name: string;
-  hp: uint;
-  atk: uint;
-  exp: uint;
+  name: string,
+  hp: uint,
+  atk: uint,
+  exp: uint
 }
 
 val jack = Hero {
@@ -5396,13 +5396,13 @@ An intersection type is the mix of several types. For example, an intersection t
 
 ```rave
 struct HasMotor {
-  isAnObject: bool;
-  horsesPower: uint;
+  isAnObject: bool,
+  horsesPower: uint
 }
 
 struct HasWheels {
-  isAnObject: bool;
-  wheels: uint;
+  isAnObject: bool,
+  wheels: uint
 }
 
 fn vehicleDetails (vehicle: HasMotor & HasWheels) {
@@ -5436,13 +5436,13 @@ Besides, we can shorten our definition using type aliasing:
 
 ```rave
 struct HasMotor {
-  isAnObject: bool;
-  horsesPower: uint;
+  isAnObject: bool,
+  horsesPower: uint
 }
 
 struct HasWheels {
-  isAnObject: bool;
-  wheels: uint;
+  isAnObject: bool,
+  wheels: uint
 }
 
 type WheeledVehicleWithMotor = HasMotor & HasWheels;
@@ -5464,11 +5464,11 @@ Be aware: if two types define a property of the same name but with a different t
 
 ```rave
 struct A {
-  prop: int;
+  prop: int
 }
 
 struct B {
-  prop: bool;
+  prop: bool
 }
 
 type Both = A & B; // ERROR
@@ -5480,11 +5480,11 @@ _Intersection absorptions_ consists in converting an `A & B` intersection type w
 
 ```rave
 struct A {
-  propA: int;
+  propA: int
 }
 
 struct B extends A {
-  propB: string;
+  propB: string
 }
 
 println!(A & B == B); // Prints: 'true'
@@ -5515,13 +5515,13 @@ Union types make available any member all the types of the union implement. Exam
 
 ```rave
 struct HasMotor {
-  isAnObject: bool;
-  horsesPower: uint;
+  isAnObject: bool,
+  horsesPower: uint
 }
 
 struct HasWheels {
-  isAnObject: bool;
-  wheels: uint;
+  isAnObject: bool,
+  wheels: uint
 }
 
 val vehicle: HasMotor | HasWheels = HasMotor {
@@ -5538,11 +5538,11 @@ Note that, as for intersection types, if two types define a property with the sa
 
 ```rave
 struct A {
-  prop: int;
+  prop: int
 }
 
 struct B {
-  prop: uint;
+  prop: uint
 }
 
 type AnyOfThem = A | B; // ERROR
@@ -5568,11 +5568,11 @@ _Union absorptions_ consists in converting an `A | B` intersection type where `B
 
 ```rave
 struct A {
-  propA: int;
+  propA: int
 }
 
 struct B extends A {
-  propB: string;
+  propB: string
 }
 
 println!(A | B == B); // Prints: 'false'
@@ -5738,7 +5738,7 @@ Let's take an example - we have the following code:
 
 ```rave
 struct A {
-  type: 'Type1';
+  type: 'Type1'
 }
 
 class B {
@@ -5770,7 +5770,7 @@ match value.type {
 Another example:
 
 ```rave
-struct A { type: 'Type1'; }
+struct A { type: 'Type1' }
 interface B { type: 'Type2'; }
 class C { public val type: 'Type3'; }
 
@@ -5800,7 +5800,7 @@ enum HeroType {
 class Warrior { public lit type = HeroType.Warrior; }
 
 struct WhiteWizard {
-  type: HeroType.WhiteWizard;
+  type: HeroType.WhiteWizard
 }
 
 interface BlackWizard {
@@ -5874,8 +5874,8 @@ A _namespace_ is a named scope which can export some of its entities to its dire
 ```rave
 namespace Users {
   struct User {
-    name: string;
-    age: uint;
+    name: string,
+    age: uint
   }
 
   val users = new Map<string, User>;
@@ -6186,12 +6186,12 @@ Entities shadowing consist in declaring two entities with the same name inside t
 
 ```rave
 struct Hero {
-  name: string;
+  name: string
 }
 
 struct AdvancedHero {
-  name: string;
-  superHero: bool;
+  name: string,
+  superHero: bool
 }
 
 val hero = Hero { name: 'Jack' };
