@@ -357,6 +357,20 @@ using hello_world::messages;
 println!(greetings); // Prints: 'Hello everybody!'
 ```
 
+### Files inclusion
+
+It's possible to "include" a file, by importing all its entities inside the current one:
+
+```rave
+// name.rv
+lit name = 'Jack';
+
+// main.rv
+import * from "./name.rv";
+
+println!(name); // Prints: 'Jack'
+```
+
 ### Re-usability
 
 When downloading a project from the web, it usually doesn't have a `packages` folder. Dependencies can so be downloaded using the following command:
