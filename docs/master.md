@@ -5724,7 +5724,7 @@ Union values can only be made of literal primitives.
 
 ### Type assertion
 
-Let's say we want to create a function that takes any value as an argument. If it is stringifyable, we stringify it, else we return `null`.
+Let's say we want to create a function that takes any value as an argument. If it is stringifyable, we stringify it, else we return `none`.
 
 This can be achieved through _type assertion_:
 
