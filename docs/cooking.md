@@ -336,6 +336,8 @@ We can also import only a specific namespace from the package:
 
 ```rave
 import hello_world::messages;
+// OR:
+import messages from hello_world;
 
 println!(messages::greetings); // Prints: 'Hello everybody!'
 ```
@@ -344,13 +346,12 @@ It's even possible to import a namespace in the global scope:
 
 ```rave
 // Import in the current scope
-scope import hello_world::messages;
+import * from hello_world::messages;
 
 println!(greetings); // Prints: 'Hello everbody!'
 
 // Import locally and then extract in the scope
 import hello_world;
-
 using hello_world::messages;
 
 println!(greetings); // Prints: 'Hello everybody!'
