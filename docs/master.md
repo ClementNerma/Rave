@@ -2809,7 +2809,9 @@ Here is the list of overloadable arithmetic operators:
 * `%mod` for `%` ;
 * `%pow` for `**`
 
-Types implementing all these overloads are `ComputableWith<X, Y>` types, where `X` is the type of the argument used in these overloads and `Y` the return type. Types that are computable with themselves and return instances of themselves in all these overloads are `Computable`.
+Types implementing the first four overloads (addition, substraction, multiplication, division) are `ComputableWith<X, Y>` types, where `X` is the type of the argument used in these overloads and `Y` the return type. Types that are computable with themselves and return instances of themselves in all these overloads are `Computable`.
+
+Types implementing all six overloads are `FullComputableWith<X, Y>`, those that are fully computable with themselves are `FullyComputable`.
 
 ### Comparison overloads
 
