@@ -66,17 +66,6 @@ For multi-lines comment, we use the following syntax:
 
 Comments can be written everywhere in a line and will simply be ignored at build time.
 
-### File inclusion
-
-When your code base grows, you may want to split your code into several files. External files can be merged to the current one using the following syntax:
-
-```rave
-include "file1.rv"; // The content of 'file1.rv' is put here
-include "file2.rv"; // The content of 'file2.rv' is put here
-```
-
-Note that files must be included at the very beginning of the current file.
-
 ## Entities and types
 
 To illustrate what an entity is, think it as crate. The crate contains something, whatever it is, and has a label to indicate its owner. In our case, the entity is the crate, the thing it contains is its value, and the crate's label is its name. In addition to this, an entity has a _type_ which indicates what type of values it can store.
