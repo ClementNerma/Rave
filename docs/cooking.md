@@ -356,7 +356,6 @@ using hello_world::messages;
 println!(greetings); // Prints: 'Hello everybody!'
 ```
 
-
 ### Re-usability
 
 When downloading a project from the web, it usually doesn't have a `packages` folder. Dependencies can so be downloaded using the following command:
@@ -547,8 +546,6 @@ if stats::battery.check() as batteryStats {
 
 The `fs` library, standing for _**F**ile**s**ystem_, allows to access the computer's disk and manage files on it. It allows to create, edit, remove files, folders, symbolic links and so on.
 
-To use a frontend library, we simply need to use an `import` statement in our program. Libraries are organized as namespaces, so we use them the same way:
-
 ```rave
 import fs;
 
@@ -574,9 +571,9 @@ The `screen` library manages access to the screen in order to display images, dr
 ```rave
 import screen;
 
-screen::on(screen::CURSOR_MOVE, e => {
+screen::on(screen::CURSOR_MOVE) { e ->
   println!('Mouse cursor moved: x = ${e.x} ; y = ${e.y}');
-});
+}
 ```
 
 #### Library: Sound
@@ -587,7 +584,7 @@ The `sound` library allows to play sound on the system.
 import fs;
 import sound;
 
-if try fs::readFile('music.mp3') as music {
+if try? fs::readFile('music.mp3') some music {
   val player = new sound::MediaPlayer(music);
   player.play();
 
@@ -602,7 +599,7 @@ The `crypto` library allows to encrypt and decrypt data, as well as handling enc
 ```rave
 import crypto;
 
-if try fs::readFile('pub.key') as pubKeyBuff {
+if try? fs::readFile('pub.key') some pubKeyBuff {
   val pubKey = crypto::keyFrom(pubKeyBuff, crypto::RSA);
   val encrypted = crypto::encrypt(new Buffer('Hello world!'), pubKey);
 
@@ -619,11 +616,17 @@ import pc;
 
 val child = pc::spawn('echo', [ 'salut' ]);
 
-child.stdout.on('data', data => println!('Child process printed: ' + data));
+child.stdout.on('data') { data ->
+  println!('Child process printed: ' + data);
+}
 
-child.stderr.on('data', data => println!('Child process printed error: ' + data));
+child.stderr.on('data') { data ->
+  println!('Child process printed error: ' + data);
+}
 
-child.on('close', code => println!('Child process exited with code ${code}.'));
+child.on('close') { code ->
+  println!('Child process exited with code ${code}.');
+}
 ```
 
 #### Library: Threads
@@ -655,7 +658,7 @@ for i in 0..4 {
   );
 }
 
-if try sync pool.promise() is results {
+if sync? pool.promise() some results {
   // results: uint[]
   println!(results.sum()); // Prints: '3000000'
 }
@@ -668,7 +671,7 @@ The `console` library allows to print messages in the console, supports colored 
 ```rave
 import console;
 
-if try console::readInt('Input an integer: ') as input {
+if try? console::readInt('Input an integer: ') some input {
   console::println('${input} * 2 = ${input * 2}', console::Color.Cyan);
 }
 ```
@@ -719,8 +722,8 @@ interface TheSharedLibrary {
 }
 
 // Import it
-if try fs::readFile('my_super_shared_lib.dll') as sharedLibBuffer {
-  if try sharedlibs::instanciate<TheSharedLibrary>(sharedLibBuffer) as sharedLib {
+if try? fs::readFile('my_super_shared_lib.dll') some sharedLibBuffer {
+  if try? sharedlibs::instanciate<TheSharedLibrary>(sharedLibBuffer) some sharedLib {
     println!(sharedLib.soMagicStuff(2)); // Will print a number
   }
 }
@@ -740,7 +743,7 @@ val expr = regexp::create("My name is ([a-zA-Z]+)\\!");
 // Syntax sugar
 val expr = /My name is ([a-zA-Z]+)\!/;
 
-if 'My name is Jack'.match(expr) as vars {
+if 'My name is Jack'.match(expr) some vars {
   println!(vars[0]); // Prints: 'Jack'
 }
 ```
@@ -783,10 +786,10 @@ import system;
 println!('Your machine will be powered off in 60 seconds.');
 println!('To cancel, stop this program now.');
 
-times::runAfter(times::Minute * 60u, () => {
+times::runAfter(times::Minute * 60u) {
   println!('Turning your computer off...');
   system::powerOff();
-});
+}
 ```
 
 #### Library: Notify
@@ -800,14 +803,14 @@ import notify;
 val remaining = times::Second * 10u;
 val notif = notify::create('Remaining time: 10 second(s)');
 
-times::each(times::Second, timer => {
+times::each(times::Second) { timer ->
   notif.setContent('Remaining time: ${-- remaining} second(s)');
 
   if not remaining {
     timer.cancel();
     notif.destroy();
   }
-});
+}
 ```
 
 #### Library: XML
@@ -858,8 +861,8 @@ The `zlib` library allows to manipulate GZip data:
 ```rave
 import zlib;
 
-if try fs::readFileSync('archive.gz') as archiveBuffer {
-  if try gzip::inflateSync(archiveBuffer) as archive {
+if try? fs::readFileSync('archive.gz') some archiveBuffer {
+  if try? gzip::inflateSync(archiveBuffer) some archive {
     println!('List of files:');
 
     for entry in archive.entries() {
@@ -878,13 +881,13 @@ The `input` library allows to handle user inputs:
 ```rave
 import input;
 
-if input::getMouse() as mouse {
+if input::getMouse() some mouse {
   mouse.on('click') { e ->
     println!('Mouse clicked at (x = ${e.x}, y = ${e.y}!');
   }
 }
 
-if input::getKeyboard() as keyboard {
+if input::getKeyboard() some keyboard {
   keyboard.on('keydown') { e ->
     println!('A key was pressed: ${e.keyName}');
   }
@@ -902,10 +905,10 @@ The `touch` library allows to get input from touch screens:
 ```rave
 import touch;
 
-touch::handle(e =>
+touch::handle { e->
   println!('Finger 0 clicked at: x = ${e.fingers[0].x} ;' +
-           'y = ${e.fingers[0].y} ; fingers = ${e.fingers}')
-);
+           'y = ${e.fingers[0].y} ; fingers = ${e.fingers}');
+}
 ```
 
 It is only available for programs transpiled to Java with the `android` wrapper, or for programs Swift with the `ios` wrapper.
