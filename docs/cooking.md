@@ -524,9 +524,9 @@ println!(maths::solvers::gaussJordan(matrix).printable());
 // ]
 ```
 
-#### Library: Build internals
+#### Library: Assets
 
-The `builtin` library allows to access the program's asset - a concept we will see soon.
+The `assets` library allows to access the program's asset - a concept we will see soon.
 
 #### Library: Machine statistics
 
