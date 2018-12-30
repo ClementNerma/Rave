@@ -3137,7 +3137,23 @@ There are four _resolution keywords_:
 
 This last keyword is a bit special. For example, in our `Hero` class, `self` will always refer to `Hero`, but `_real` may refer either to `Hero`, `Warrior` or `Wizard`. In our `jack` object, it would refer to `Warrior`, and to `Wizard` for `john`. This may not appear very useful, but we will see some useful applications of it later.
 
-To simplify, `_real` is the type of `this`, so it is always a sub-type of `self`.
+To simplify, `_real` is the type of `this`, so it is always a sub-type of `self`. Think of it as a template:
+
+```rave
+open class A {
+  fn returnSomething () : _real { /* ... */ }
+}
+
+class B extends A {}
+
+// Is like writing:
+
+open class A<T> {
+  fn returnSomething () : T { /* ... */ }
+}
+
+class B extends A<self> {}
+```
 
 ### Constructor inheritance
 
