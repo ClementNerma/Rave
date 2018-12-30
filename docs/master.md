@@ -6493,7 +6493,7 @@ It's also possible to create a read-only proxy from an expression:
 ```rave
 let counter = 0;
 
-proxy incCounter = () => counter + 1;
+proxy incCounter -> counter + 1;
 
 println!(counter); // Prints: '0'
 println!(incCounter); // Prints: '1'
