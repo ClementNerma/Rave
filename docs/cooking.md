@@ -894,24 +894,20 @@ if input::getKeyboard() some keyboard {
 }
 ```
 
-### Exclusive Frontend Libraries
-
-The _exclusive_ frontend libraries are libraries that are available only in specific build modes with specific parameters.
-
-#### Library: Touch
-
-The `touch` library allows to get input from touch screens:
+It can also be used to manage a touchscreen, if there is one:
 
 ```rave
-import touch;
-
-touch::handle { e->
-  println!('Finger 0 clicked at: x = ${e.fingers[0].x} ;' +
+if input::getTouchScreen() some touchScreen {
+  touchScreen.on('press') { e ->
+    println!('Finger 0 clicked at: x = ${e.fingers[0].x} ;' +
            'y = ${e.fingers[0].y} ; fingers = ${e.fingers}');
+  }
 }
 ```
 
-It is only available for programs transpiled to Java with the `android` wrapper, or for programs Swift with the `ios` wrapper.
+### Exclusive Frontend Libraries
+
+The _exclusive_ frontend libraries are libraries that are available only in specific build modes with specific parameters.
 
 #### Library: DOM
 
