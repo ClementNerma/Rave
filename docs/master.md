@@ -7441,15 +7441,15 @@ class Child {
 
 ### Deprecation notice
 
-The `@deprecated` decorator indicates the following entity still works but should not be used anymore (e.g. it will be removed in the future). It may be followed by a text explaining the deprecation in details:
+The `@deprecated` annotation indicates the following entity still works but should not be used anymore (e.g. it will be removed in the future). It may be followed by a text explaining the deprecation in details:
 
 ```rave
 /**
  * Make a summation from a list of numbers
+ * @deprecated
  * @param numbers A list of numbers
  * @returns The summation
  */
-@deprecated
 fn sum (...numbers: int[]) : int {
   let summation = 0;
 
@@ -7476,4 +7476,4 @@ fn sumDynamic<T extends Addable> (...values: T[]) : T {
 }
 ```
 
-This decorator also emits a warning at build time when using the entity it is applied on.
+This annotation also emits a warning at build time when using the entity it is applied on.
