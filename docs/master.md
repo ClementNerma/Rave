@@ -3346,7 +3346,7 @@ struct A {
 
 val obj = {
   mut a: 2
-}:
+};
 
 val casted: A = obj; // Works fine
 ```
@@ -5820,21 +5820,21 @@ enum HeroType {
   BlackWizard
 }
 
-class Warrior { define type = HeroType.Warrior; }
+class Warrior { val heroType = HeroType.Warrior; }
 
 struct WhiteWizard {
   type: HeroType.WhiteWizard
 }
 
 interface BlackWizard {
-  define type = HeroType.BlackWizard;
+  val heroType = HeroType.BlackWizard;
 }
 
 type C = Warrior | WhiteWizard | BlackWizard;
 
 val value: C = /* value goes here */;
 
-match value.type {
+match value.heroType {
   Warrior -> println!(typeof value), // Would print: 'Warrior',
   default -> println!(typeof value)  // Would print: 'WhiteWizard | BlackWizard'
 }
