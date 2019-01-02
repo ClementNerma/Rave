@@ -327,7 +327,7 @@ val num = 127b; // i8 (-128 to 127)
 println!(num + 1); // Prints: '-128'
 ```
 
-The `println!` statement allows to display a value in the console. `println!` is a flex - a special function we will deal with later -. Here, where we expect it to display `128`, it shows `-128`. This is because our number _overflowed_: because it can't handle numbers higher than `128`, it goes back to its minimum bound (`-128`). The operation is not stopped, though:
+The `println!` statement allows to display a value in the console. Here, where we expect it to display `128`, it shows `-128`. This is because our number _overflowed_: because it can't handle numbers higher than `128`, it goes back to its minimum bound (`-128`). The operation is not stopped, though:
 
 ```rave
 val num = 127b;
@@ -4452,7 +4452,7 @@ panic!('This is a panic message');
 
 But its usage is mostly discouraged ; vast majority of the cases are handlable through _errors_.
 
-Note that it's possible to catch most panics by using the `catchPanic!` flex:
+Note that it's possible to catch most panics by using the `catchPanic!` function:
 
 ```rave
 val handle = catchPanic!(ALL) {
@@ -4825,11 +4825,11 @@ This solves our second and third problem, as we are now able to share _and_ avoi
 
 #### References on values
 
-Because we may want to create references to direct values, instead of creating an entity containing them, we can use the `wrap!` flex:
+Because we may want to create references to direct values, instead of creating an entity containing them, we can use the `.(value)` syntax:
 
 ```rave
-val cstRef: * = & wrap!(2);
-val mutRef: *mut = &mut wrap!(2);
+val cstRef: * = &.(2);
+val mutRef: *mut = &mut.(2);
 ```
 
 ### Constantness trap
@@ -5033,7 +5033,7 @@ ptr2 == &ptr1;
 
 ### Checking a reference
 
-We can check if a value is a reference thanks to the `is_ref!` flex:
+We can check if a value is a reference thanks to the `is_ref!` function:
 
 ```rave
 val i = 0;
@@ -5043,7 +5043,7 @@ println!(is_ref!(i)); // Prints: 'true'
 println!(is_ref!(ptr)); // Prints: 'false'
 ```
 
-For multi-level references, we can get their level with the `ref_level!` flex:
+For multi-level references, we can get their level with `ref_level!`:
 
 ```rave
 val i = 0;
@@ -5055,7 +5055,7 @@ println!(ref_level!(ptr1)); // Prints: '1'
 println!(ref_level!(ptr2)); // Prints: '2"
 ```
 
-We can also check a pointer's mutability using the `is_mut_ref!` flex:
+We can also check a pointer's mutability using `is_mut_ref!`:
 
 ```rave
 let i = 0;
@@ -5075,7 +5075,7 @@ println!(is_mut_ref!(&mut wrap!(& wrap!(2)))); // Prints: 'true'
 println!(is_mut_ref!(&wrap!(&mut wrap!(2)))); // Prints: 'false'
 ```
 
-Finally, the `ref_stats!` flex returns all informations on a reference:
+Finally, `ref_stats!` returns all informations on a reference:
 
 ```rave
 let i = 0;
@@ -5448,7 +5448,7 @@ val str = something as? string; // ?string
 
 The `str` entity has the `?string` value: if the typecast succeeds, it holds the typecast value. But if it fails, instead of throwing an error, it returns `none` ; that's why the returned value is optional.
 
-If we are absolutely sure about the typecasting being write - and so we don't want the final value to be optional, we can use the `expect!` flex:
+If we are absolutely sure about the typecasting being write - and so we don't want the final value to be optional, we can use the `expect!` function:
 
 ```rave
 val str = expect! something as? string; // string
@@ -6056,137 +6056,6 @@ type Literal = void | bool | number | string | Function | Structure | Enumeratio
 Creating a literal constant with a type that doesn't figure in this union will result in an error at build time.
 
 Note that children of these types are accepted, which means we can make a literal constant containing an `int` for example.
-
-### Flexs
-
-Remember when we encountered `println!` for the very first time? We told at this moment is was a _flex_, and that we would see what it is later. Now, time has come to see it in details.
-
-The _flex_ term stands for _flexible function_. These work basically like functions, simply using the `flex` keyword instead of `fn`. But what make them specials are three key differences.
-
-First, their content is copy-pasted when it is called. This means that, when we call it, its call is replaced by its full body. This also means that, if you call a given flex 10 times, its content will appear 10 times in the code. That's why flexs should always be as short and concise as possible.
-
-Secondly, and that's the reason of the first point, they can use _dynamic sub-types_. This allows to indicate an argument accepts a `number`, but if an `int` is given, it will be typed as an `int` and not as a `number`. This is possible because, as the flex's body is fully copied where we call it, so it is possible to make tests on it.
-
-Finally, type checking is disabled on them until their call. And type checking is so performed individually for each call. This allows to make some data manipulation a lot easier as we will see now, but it also requires to write them with many care, in order to avoid errors when we call them with specific types or data.
-
-Here is an example:
-
-```rave
-fn doubleNumberFn (value: number) : number {
-  return value * 2;
-}
-
-flex doubleNumberFlex (value: >number) : >number {
-  return value * 2;
-}
-
-typeof doubleNumberFn(2); // number
-typeof doubleNumberFlex!(2); // int
-```
-
-As you can see, flexes are called using the `!` symbol.
-
-The `typeof` operator can also be used for the return type:
-
-```rave
-flex doubleNumberFlex (value: >number) : typeof value {
-  return value * 2;
-}
-```
-
-This second writing is better in our case because it is more precise: we know that it will return a value of the same type than its only argument.
-
-Note that flexes can be part of classes and traits as methods, but not in interfaces as it would be impossible to predict the implemented content of the flex.
-
-Another advantage of flexs is that they can return literal values, at the opposite of functions, which allows to use them as types:
-
-```rave
-flex getFamilyTypeOf (value: number) : lit<Type> {
-  if value instanceof int {
-    return int;
-  } elif value instanceof uint {
-    return uint;
-  } else {
-    return number;
-  }
-}
-```
-
-Let's introduce a few new concepts here. First of all, the `Type` type obviously refers to a type. The `lit<T>` wrapper indicates this is a literal value, meaning it is predictable right at build time. So, `lit<Type>` is a literal `Type` value - a predictable type.
-
-The `instanceof` keyword is the _typechecking operator_: it checks if the given value is an instance of the provided type or of one of its sub-types. If we want to check if a value's type implements a specific type for example, we will have to check using the `typeof` operator like `(typeof value) implements Stringifyable` - the same keyword than for templates.
-
-Let's try our flex:
-
-```rave
-getFamilyTypeOf!(2); // int
-getFamilyTypeOf!(2u); // uint
-
-getFamilyTypeOf!(2b); // int
-getFamilyTypeOf!(2S); // uint
-
-getFamilyTypeOf!(2.0); // number
-```
-
-As you can see, it returns the right types. Because it returns a literal type, we can use it as an entity's type, for example:
-
-```rave
-val num: number = 2b;
-
-val someInt: getFamilyTypeOf!(num) = 8; // int ; works fine
-```
-
-To be more precise, when a flex is called, its code isn't just copy-pasted without any change. Its code is put inside a dedicated scope, to avoid polluating the current one, and only its return value - if there is one - is put where the flex was called. Else, a `null` is put instead.
-
-This little code above works even though the real type of `num` is hidden by its official `number` type. But, the typechecking operator looks for the real type_ of the provided value, and not to its official one.
-
-Flexs can be useful in specific situations, like when iterating a tuple. While we can iterate it using their `iterFn` method, the callback function will receive only values of the `Any` type, while when using their `iter` method, the callback flex will receive values with the real type of the value. Showcase:
-
-```rave
-val tuple = ( null, true, 2, 'Hello world!' );
-
-tuple.iterFn(value => {
-  typeof value; // Always 'Any'
-});
-
-tuple.iter!(flex (value: >Any) {
-  typeof value; // 'void', 'bool', 'int' and then 'string'
-});
-```
-
-Here is an example of a flex returning a reversed version of a given tuple, using the tuples' `.map!` method which allows to create a new tuple with the same number of elements:
-
-```rave
-flex reverseTuple (tuple: #tuple) : #tuple {
-  return tuple.map!(flex (value: >Any, lit index: usize) : >Any {
-    return tuple[tuple.size - index - 1];
-  });
-}
-```
-
-Here, we create a flex which takes a tuple as an argument, and return another one. We use tuples' `.map!` flex to create a new tuple from the provided one. Note that, thanks to the nature of flexs, they can take literal arguments, which are prefixed with the `lit` keyboard.
-
-We give to this method a flex callback which takes the value of the current index (we don't care about it) as well as the index. Our flex returns a value that can be of any official type (`>Any`). This way, if we return an `int`, the returned value will be an official `int` and not an `int` hidden behind an `Any` official type.
-
-Our callback then returns the value at the opposite of the tuple. The generated tuple is returned right after its creation.
-
-Another way to write this flex is using the `createTuple!` flex which allows to create a tuple from a flex:
-
-```rave
-flex reverseTuple (tuple: #tuple) : #tuple {
-  return createTuple!(tuple.size, flex (lit index: usize) : >Any {
-    return tuple[tuple.size - index - 1];
-  });
-}
-```
-
-This one uses the same declaration, but generates a tuple dynamically. The `createTuple!` flex requires a literal `usize` value, so we provide the original tuple's size (which is a literal value for all tuples). Then, we provide a callback that takes the current index and returns the value at the opposite in the original tuple.
-
-The only downside of this flex is that the new tuple only has constant members - no literal nor mutable ones. We could solve this problem by using the `createAdvancedTuple!` which uses a more complex API.
-
-Also, note that, as flexes are rewritten at each call, calling flexes inside flexes can quickly make an enormous code to copy-paste. If we make a tuple of a hundred elements for example, the callback flex in `reverseTuple` will be called a hundred times!
-
-Final word: as you can see, flexs are complex to handle, and you may not need very often. But the point is that, if you need it, they are here.
 
 ### Symbols
 
