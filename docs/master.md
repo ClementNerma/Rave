@@ -4499,6 +4499,8 @@ This function throws an error when we try to divide by zero. This way, if the di
 
 Note that this function indicates it may throw an instance of the `Error` class (right after the `throw` keyword). If we don't put this `throws Error` part, there will be an error at build time indicating the function can't throw an error without declaring it.
 
+All native errors inherit from the `NativeRuntimeError` class. Some of them inherit from the child `PanicableError` class, which describes an error that can be not caught, and in such case will make the program panic. The `DivisionByZeroError` class is one of them.
+
 ### Catching errors
 
 Now, if we try to call our function, this won't work:
