@@ -3969,9 +3969,7 @@ In this chapter, we will see all the concepts about dictionaries.
 
 Dictionary classes are special classes that behaves like a dictionary, which is a set of key/value pairs. They allow to associate arbitrary keys and values. For example, vector classes are dictionary classes, as well as the `Map<K, V>` class.
 
-For now, we will only see _dynamic_ dictionaries, which are dictionaries that can be extended - meaning we can add keys to it and remove existing ones.
-
-They are declared using the `dict` keyword instead of the `class` one. Dynamic dictionary classes automatically implement the `DynamicDictionary<K, V>` which describes a set of overloads they must implement:
+They are declared using the `dict` keyword instead of the `class` one. Dictionary classes automatically implement the `Dictionary<K, V>` which describes a set of overloads they must implement:
 
 ```rave
 // K = type of keys
