@@ -121,22 +121,6 @@ val constant: int; // ERROR
 
 Always prefer writing a constant to a mutable ; this will prevent accidentally modifying its content. Plus, in some languages like JavaScript, it makes the program a bit faster.
 
-### Literal constants
-
-Literal constants are constants that only accept _literal values_, also abbreviated _literals_, which are values we can predict before the program begins to run, and whatever the platform/context is.
-
-A literal constant is declared using the `define` keyword:
-
-```rave
-// Inferred type
-define LITERAL = 2;
-
-// Non-literal values are not accepted
-define LITERAL = mutable1; // ERROR
-```
-
-Note that, by convention, the name of literal constants is written using only uppercase characters, digits and underscores (`_`).
-
 ### Primitive types
 
 There are two categories of types: primitives, which we will see now, and objects, which are any type that is not a primitive.
@@ -871,13 +855,13 @@ Note that, as indexes must be literal, we can't use a variable here:
 
 ```rave
 val tuple: (int) = (2);
-val num = 0P;
 
+// With a constant:
+val num = 0P;
 tuple[num]; // ERROR
 
-define NUM = 0P;
-
-tuple[NUM]; // Works ('NUM' is a literal constant)
+// With a literal:
+tuple[0P]; // Works ('NUM' is a literal constant)
 ```
 
 Inferred typing also works on tuples:
@@ -2290,11 +2274,10 @@ class Example {
 }
 ```
 
-Also, as attributes are entities, they can be marked as constant using `val` or as literal constants using `define`. By default, they are implicitly mutable.
+Also, as attributes are entities, they can be marked as constant using `val`. By default, they are implicitly mutable.
 
 ```rave
 class Example {
-  define KNOWN = 'Public data';
   private val secret = 'Secret data';
 }
 ```
@@ -2731,10 +2714,10 @@ When we have several fields, it becomes a bit more complicated, as we have to de
 
 ```rave
   // ...
-  define %lazy_serial_fields = ('name');
+  val %lazy_serial_fields = ('name');
 ```
 
-This literal tuple contains the list of the attributes to serialize. The specified attributes must be serializable themselves.
+This tuple contains the list of the attributes to serialize. The specified attributes must be serializable themselves.
 
 With the lazy overload, the program will automatically handle serialization and unserialization, as well as checking if the serialized content is valid or not.
 
@@ -2742,7 +2725,7 @@ If you want to be ensure the serialized content is valid, it's possible to make 
 
 ```rave
   // ...
-  define %lazy_serial_fields = ('name', WITH_CHECKSUM);
+  val %lazy_serial_fields = ('name', WITH_CHECKSUM);
 ```
 
 The big advantage of checksum is that it highly reduces the risks to get invalid values, but the downside is that both serialization and unserialization will be considerably slower.
@@ -5976,15 +5959,15 @@ Namespaces can be accessed from other namespaces using chained `::`:
 ```rave
 namespace A {
   namespace B {
-    define MESSAGE = 'Hello world!';
+    val message = 'Hello world!';
 
-    export MESSAGE;
+    export message;
   }
 
   export B;
 }
 
-println!(A::B::MESSAGE); // Prints: 'Hello world!'
+println!(A::B::message); // Prints: 'Hello world!'
 ```
 
 It's also possible to access namespaces from the global scope using an antislash before their name:
@@ -5992,17 +5975,17 @@ It's also possible to access namespaces from the global scope using an antislash
 ```rave
 namespace A {
   namespace B {
-    define MESSAGE = 'Hello world!';
+    val message = 'Hello world!';
 
-    export MESSAGE;
+    export message;
   }
 
   export B;
 }
 
 namespace C {
-  println!(A::B::MESSAGE); // ERROR ('A' is not present in this scope)
-  println!(\A::B::MESSAGE); // Prints: 'Hello world'
+  println!(A::B::message); // ERROR ('A' is not present in this scope)
+  println!(\A::B::message); // Prints: 'Hello world'
 }
 ```
 
