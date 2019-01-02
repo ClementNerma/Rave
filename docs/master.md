@@ -4443,23 +4443,7 @@ panic!('This is a panic message');
 
 But its usage is mostly discouraged ; vast majority of the cases are handlable through _errors_.
 
-Note that it's possible to catch most panics by using the `catchPanic!` function:
-
-```rave
-val handle = catchPanic!(ALL) {
-  // If the program panics during this function, it
-  //  will be caught and returned by the `catchPanic!` flex instead
-  // At the moment the panic raises, the function is stopped and returns by force
-};
-
-if not fail.ok {
-  println!('Something wrong happened: ' + fail.message);
-}
-```
-
-The `ALL` literal constant indicates we want to catch all kind of panics. We can also specify a specific one, or a list of the panic to catch. `ALL` is simply a tuple containing all of them.
-
-Only a few panics are not catchable ; for example, the `OUT_OF_MEMORY` panic will force the program to exit no matter what happens.
+Note that panics cannot be caught ; when one happens, the program displays a panic message and exits.
 
 ### Throwing errors
 
