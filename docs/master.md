@@ -6026,55 +6026,6 @@ sym2 == sym1; // false
 sym2 == sym2; // true
 ```
 
-### Tuple dictionaries
-
-We previously saw _dynamic dictionaries_, which are classes that implement the `DynamicDictionary<K, V>` interface. We will know see _tuple dictionaries_, which implement the `TupleDictionary<K, V>` one and are a little bit different.
-
-While, in a dynamic dictionary, we can add new keys and remove the existing ones, we can't in a tuple one. The goal of a tuple dictionary is to ensure the keys stay the same from its creation (instanciation) to its destruction (e.g. dropping) and for all instances of this dictionary class.
-
-Tuple dictionaries are declared using the `tuple dict` keywords:
-
-```rave
-tuple dict Custom<K in Literal, V> {
-  // The list of keys
-  define keys: Tuple<keyof self>;
-  // Get a value from a key
-  %get (key: keyof self) : V;
-  // Associate a value to a key
-  %set (key: keyof self, value: V) throws KeyAssignmentError;
-  // Check if a value is associated to a key
-  %contains (value: V) : bool;
-  // Get an iterator on key-value pairs
-  %iterate () : Iterator<(K, V)>;
-}
-```
-
-The main difference here is that we don't provide a `K` value for the dictionary's getter and setter, but a `keyof self` one. This is a special type available only for tuple-keys dictionaries that indicates if a value is a key of a dictionary class. Because, given a `K` and `V` types, all keys will be identical for all instances of `Custom<K, V>`.
-
-The list of keys of the dictionary class is stored inside its `keys` tuple. Note that the key type of a tupel dictionary must be a literal type!
-
-A widely-used tuple dictionary is `Array<T, SIZE: usize>`:
-
-```rave
-val item: int[5] = [ 2, 4, 8, 12, 5 ];
-
-let key: keyof typeof item; // keyof int[5];
-
-key = -1; // ERROR
-
-key = 0; // Works fine
-key = 1; // Works fine
-key = 2; // Works fine
-key = 3; // Works fine
-key = 4; // Works fine
-
-key = 5; // ERROR
-```
-
-Note that it's possible to use a type that is not a `keyof` type to access a dictionary class' value, as the values are automatically typecastable to their `keyof` equivalent. Still, it has two downsides: the first one is that there is a little performance cost because the program has the check if the key is stored inside the class' `keys` members, and also because if it is not, the program panics. So, it's always preferrable to use a `keyof` type dealing with a tuple dictionary.
-
-By the way, `T[SIZE]` is an alias for `Array<T, SIZE>`, and `T[]` is an alias for `T[?]` which itself results in `Array<T, ?>`.
-
 ## Advanced entities
 
 ### Entities shadowing
