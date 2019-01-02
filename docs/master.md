@@ -6378,51 +6378,6 @@ println!(counter); // Prints: '1'
 println!(incCounter); // Prints: '2'
 ```
 
-### Flexible proxies
-
-_Flexible proxies_ are proxies that use flexs instead of simple functions as their getter and eventual setter. It is useful in several situations, like when the proxy must return a literal value.
-
-We declare them using the `proxy!` keyword:
-
-```rave
-proxy! hello: lit<string> from {
-  getter: flex () : lit<string> {
-    return 'Hello world!';
-  }
-};
-
-lit message = hello; // Works fine
-println!(hello); // Prints: 'Hello world!'
-```
-
-This proxy declares itself as containing a literal `string` value. Because its getter is a flex, it can return such a type.
-
-#### Templated proxies
-
-Proxies are allowed to take templates, too. This can be useful to type them dynamically:
-
-```rave
-proxy! typeOf<DATA: T, T>: lit<Type> from {
-  getter: flex () : lit<Type> {
-    return T;
-  }
-};
-
-typeOf!<null>; // void
-typeOf!<true>; // bool
-typeOf!<2.0>; // f32
-typeOf!<'Hello world!'>; // string
-
-val str = 'Hello world!';
-val copy: typeOf!<str> = str; // Works fine
-
-println!(copy); // Prints: 'Hello world!'
-```
-
-This proxy is especially complex, so let's detail it. First, it takes two templates: a first one which is of the `T` type, with `T` being its second template. So, when we read it by giving it a value as a template, `T` is inferred and matches `DATA`'s type.
-
-The type of the proxy itself is a literal type. Its getter, a flex, simply returns `T`. So, when we call this proxy with a value as a template, it returns its type as a literal value.
-
 ## Additional features
 
 ### Bindings
