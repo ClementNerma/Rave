@@ -4056,6 +4056,10 @@ for key -> value in map {
 
 In fact, the `in` and `of` keyword in a `for` loop automatically call the `%iterate` overload of the value on their right.
 
+Here we will encounter a problem with the `Map<K, V>` class: its internal implementation makes it _not sorted_, which means when we will iterate over it, we will not get the keys and values in their insertion order. In addition to this, there is no sort function on such maps.
+
+To get a map with sorting (by default in natural order), we have to use the `TreeMap<K, V>` class. It inherits from `Map<K, V>` and so it has all its methods, but this one is sorted - the only downside being a performance cost, because values must be compared at insertion time.
+
 ### Manipulating dictionaries
 
 Dictionaries can be manipulated using dedicated syntaxes, shown below:
