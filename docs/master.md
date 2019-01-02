@@ -3537,7 +3537,7 @@ class Car {
 // Sub-typing works fine
 val car: Vehicle = new Car();
 // Try a function
-printlnl!(car.accelerate()); // Prints: 'Vroom!'
+println!(car.accelerate()); // Prints: 'Vroom!'
 ```
 
 Traits can also use other traits:
