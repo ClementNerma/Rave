@@ -4009,15 +4009,7 @@ dict Custom<T, V, K> impl Dictionary<V, K> {
 }
 ```
 
-Most dictionary classes should inherit from the `Map<K, V>` class which comes with many useful functions like `.filter` or `%clone`, without any restriction on the overloads itself (they can also be overwritten):
-
-```rave
-dict Custom<K, V> extends Map<K, V> {
-  // ...
-}
-```
-
-In this case, the dictionary class can access two protected members: `keys: List<K>` and `values: List<V>`. To force a template value, like vectors do, we can use a fixed template:
+To force a template value, like vectors do, we can use a fixed template:
 
 ```rave
 dict Vector<T> extends Map<usize, T> {
