@@ -125,20 +125,14 @@ Always prefer writing a constant to a mutable ; this will prevent accidentally m
 
 Literal constants are constants that only accept _literal values_, also abbreviated _literals_, which are values we can predict before the program begins to run, and whatever the platform/context is.
 
-A literal constant is declared using the `lit` keyword:
+A literal constant is declared using the `define` keyword:
 
 ```rave
 // Inferred type
-lit LITERAL = 2;
-
-// Explicit type
-lit LITERAL: int = 8;
-
-// Initialization is required
-lit LITERAL: int; // ERROR
+define LITERAL = 2;
 
 // Non-literal values are not accepted
-lit LITERAL = mutable1; // ERROR
+define LITERAL = mutable1; // ERROR
 ```
 
 Note that, by convention, the name of literal constants is written using only uppercase characters, digits and underscores (`_`).
@@ -276,8 +270,8 @@ Bitwise operators work on each bit of the number. They take two numbers to retur
 * `~` (one's complement) - takes a single number
 
 ```rave
-lit a = 60; // a : 0011 1100
-lit b = 13; // b : 0000 1101
+val a = 60; // a : 0011 1100
+val b = 13; // b : 0000 1101
 
 a & b;  // 0000 1100 : 12
 a | b;  // 0011 1101 : 61
@@ -519,8 +513,8 @@ Here is the list of operators, taking two operands: `a` on their left, `b` on th
 There is an additional operator, `!` (not) which returns `true` if its single operand (on its right) is a nil value.
 
 ```rave
-lit N1 = 10;
-lit N2 = 5;
+val N1 = 10;
+val N2 = 5;
 
 N1 && N2; // true
 N1 || N2; // true
@@ -881,7 +875,7 @@ val num = 0P;
 
 tuple[num]; // ERROR
 
-lit NUM = 0P;
+define NUM = 0P;
 
 tuple[NUM]; // Works ('NUM' is a literal constant)
 ```
@@ -1668,10 +1662,9 @@ val trapezoidArea = area(1.0, 2.0, 3.0));
 By default, a function's arguments are constants. They can be made mutable using the same keywords than in structures:
 
 ```rave
-fn test (mut mutable: bool, constant: bool, literal: bool) {
+fn test (mut mutable: bool, constant: bool) {
   mutable = true; // Works fine
   constant = true; // ERROR
-  literal = true; // ERROR
 }
 ```
 
@@ -2297,11 +2290,11 @@ class Example {
 }
 ```
 
-Also, as attributes are entities, they can be marked as constant using `val`, or as literal using `lit`. By default, they are implicitly mutable.
+Also, as attributes are entities, they can be marked as constant using `val` or as literal constants using `define`. By default, they are implicitly mutable.
 
 ```rave
 class Example {
-  lit KNOWN = 'Public data';
+  define KNOWN = 'Public data';
   private val secret = 'Secret data';
 }
 ```
@@ -2738,7 +2731,7 @@ When we have several fields, it becomes a bit more complicated, as we have to de
 
 ```rave
   // ...
-  lit %lazy_serial_fields = ('name');
+  define %lazy_serial_fields = ('name');
 ```
 
 This literal tuple contains the list of the attributes to serialize. The specified attributes must be serializable themselves.
@@ -2749,7 +2742,7 @@ If you want to be ensure the serialized content is valid, it's possible to make 
 
 ```rave
   // ...
-  lit %lazy_serial_fields = ('name', WITH_CHECKSUM);
+  define %lazy_serial_fields = ('name', WITH_CHECKSUM);
 ```
 
 The big advantage of checksum is that it highly reduces the risks to get invalid values, but the downside is that both serialization and unserialization will be considerably slower.
@@ -3342,7 +3335,7 @@ val obj = {
 val casted: A = obj; // ERROR
 ```
 
-An error is thrown error because implicitly the `a` field in our `obj` constant is a literal constant, so it can only be accepted if the target structure's field is a literal constant or a simple constant, but not if it is mutable.
+An error is thrown error because implicitly the `a` field in our `obj` constant is a constant, so it can only be accepted if the target structure's field is a constant, but not if it is mutable.
 
 To solve this case, we must specify our field is mutable in `obj`:
 
@@ -5845,14 +5838,14 @@ enum HeroType {
   BlackWizard
 }
 
-class Warrior { lit type = HeroType.Warrior; }
+class Warrior { define type = HeroType.Warrior; }
 
 struct WhiteWizard {
   type: HeroType.WhiteWizard
 }
 
 interface BlackWizard {
-  lit type = HeroType.BlackWizard;
+  define type = HeroType.BlackWizard;
 }
 
 type C = Warrior | WhiteWizard | BlackWizard;
@@ -5987,7 +5980,7 @@ Namespaces can be accessed from other namespaces using chained `::`:
 ```rave
 namespace A {
   namespace B {
-    lit MESSAGE = 'Hello world!';
+    define MESSAGE = 'Hello world!';
 
     export MESSAGE;
   }
@@ -6003,7 +5996,7 @@ It's also possible to access namespaces from the global scope using an antislash
 ```rave
 namespace A {
   namespace B {
-    lit MESSAGE = 'Hello world!';
+    define MESSAGE = 'Hello world!';
 
     export MESSAGE;
   }
@@ -6057,7 +6050,7 @@ Tuple dictionaries are declared using the `tuple dict` keywords:
 ```rave
 tuple dict Custom<K in Literal, V> {
   // The list of keys
-  lit keys: Tuple<keyof self>;
+  define keys: Tuple<keyof self>;
   // Get a value from a key
   %get (key: keyof self) : V;
   // Associate a value to a key
