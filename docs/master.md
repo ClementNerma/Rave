@@ -4236,17 +4236,17 @@ fn getNilPoint (points: Point[]) : Point {
 
 This function won't compile because of `getNilPoint` not returning a `Point` value on all paths. This is because, if we exit the loop and haven't find any valid point, the function will not return anything.
 
-To solve this problem, we could simply use a structure which indicates wether a point was found or not. There is already a type for that: `Option<T>`. It can handle a value of the `T` type:
+To solve this problem, we could simply use a structure which indicates wether a point was found or not. For that, we use a simple enumeration: `Option<T>`. It has two members, `Some(T)` which holds a value of the `T` type, and `None`:
 
 ```rave
 fn getNilPoint (points: Point[]) : Option<Point> {
   for point in points {
     if point.x == 0 && point.y == 0 {
-      return some!(point);
+      return Option.Some(point);
     }
   }
 
-  return none;
+  return Option.None;
 }
 ```
 
@@ -4255,6 +4255,20 @@ The `Option<T>` type can also simply be written `?T`:
 ```rave
 fn getNilPoint (points: Point[]) : ?Point {
   // ...
+}
+```
+
+Also, its members can be shortened thanks to native entities:
+
+```rave
+fn getNilPoint (points: Point[]) : ?Point {
+  for point in points {
+    if point.x == 0 && point.y == 0 {
+      return some!(point);
+    }
+  }
+
+  return none;
 }
 ```
 
@@ -4268,8 +4282,6 @@ match point {
   None -> println!('No point was found.')
 }
 ```
-
-In fact, the `Option<T>` type is simply an enumeration containing `None` and `Some(T)`.
 
 To simplify checking, we can also use an `if` statement:
 
