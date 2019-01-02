@@ -1027,7 +1027,7 @@ let ages = { #
 };
 ```
 
-Here, `ages` is a `Map<string, uint>`. We can use to shorten this type its alias, `Collection<uint>` - a `Collection<T>` simply being a `Map<string, T>`. Note that all values must be of the same type.
+Here, `ages` is a `Map<string, uint>`.
 
 It's also possible to use non-string keys too, by wrapping them between parenthesis:
 
@@ -1043,7 +1043,7 @@ Below is a summary of all IST's syntaxes:
 * `[ a, b, c ]` produces an array (`T[SIZE]`) ;
 * `[ # a, b, c ]` produces a list (`List<T>`) ;
 * `{ a, b, c }` produces an implicit object (implicit structure type) ;
-* `{ # a, b, c }` produces a map (`Collection<T>`)
+* `{ # a, b, c }` produces a map
 
 ### Destructuring assignments
 
@@ -4042,7 +4042,7 @@ We already _explored_ dictionaries before, notably by using the `for value in ar
 
 ```rave
 // Create a map
-val map = new Collection<int>;
+val map = new Map<string, int>;
 map['a'] = 2;
 map['b'] = 8;
 
