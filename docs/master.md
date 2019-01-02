@@ -5124,33 +5124,6 @@ println!(mutRef === &mut i); // Prints: 'true'
 
 ## Types in depth
 
-### Descriptor types
-
-Descriptor types are types that describe other types. For instance, the `Type` type refers to all existing types, while `Structure` refers to existing structure types.
-
-Here is the list of them:
-
-* `Type` accepts all existing types;
-* `Structure` accepts all structures;
-* `Enumeration` accepts all enumeration;
-* `Interface` accepts all interfaces;
-* `Trait` accepts all traits;
-* `Class` accepts all classes.
-
-For instance, the following code is valid:
-
-```rave
-struct Hero {
-  name: string
-}
-
-lit myStruct: Structure = Hero;
-// With inferred typing:
-lit myStruct = Hero;
-```
-
-These types are especially useful in flexes.
-
 ### Statics
 
 Statics are instances of structures. For example, `{ name: 'Jack' }` is a static, while neither `new SomeClass()` nor `'Hello'` are.
