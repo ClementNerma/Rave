@@ -4198,7 +4198,7 @@ We will have two attributes for this class: a list of keys, and a list of values
   // ...
   %size () : usize {
     // Return the number of elements in the dictionary
-    return size!(this.keys);
+    return this.keys.%size();
   }
 ```
 
@@ -5018,19 +5018,21 @@ println!(is_ref!(i)); // Prints: 'true'
 println!(is_ref!(ptr)); // Prints: 'false'
 ```
 
-For multi-level references, we can get their level with `ref_level!`:
+For more advanced check, we have to create a `Ref<T>` object. We can then check the level of a multi-level reference:
 
 ```rave
 val i = 0;
 val ptr1: * = &i;
 val ptr2: ** = &ptr1;
 
-println!(ref_level!(i)); // Prints: '0'
-println!(ref_level!(ptr1)); // Prints: '1'
-println!(ref_level!(ptr2)); // Prints: '2"
+println!(new Ref(i).getLevel()); // Prints: '0'
+println!(new Ref(ptr1).getLevel()); // Prints: '1'
+println!(new Ref(ptr2).getLevel()); // Prints: '2"
 ```
 
-We can also check a pointer's mutability using `is_mut_ref!`:
+This class can handle even multi-level references and manipulate them.
+
+We can also check a reference's mutability:
 
 ```rave
 let i = 0;
@@ -5038,19 +5040,19 @@ let i = 0;
 val cstPtr: * = &i;
 val mutPtr: *mut = &mut i;
 
-println!(is_mut_ref!(i)); // ERROR
-println!(is_mut_ref!(cstPtr)); // Prints: 'false'
-println!(is_mut_ref!(mutPtr)); // Prints: 'true'
+println!(new Ref(i).isMutable()); // ERROR
+println!(new Ref(cstPtr).isMutable()); // Prints: 'false'
+println!(new Ref(mutPtr).isMutable()); // Prints: 'true'
 ```
 
 This only gets the mutability of the top-level reference, though:
 
 ```rave
-println!(is_mut_ref!(&mut wrap!(& wrap!(2)))); // Prints: 'true'
-println!(is_mut_ref!(&wrap!(&mut wrap!(2)))); // Prints: 'false'
+println!(new Ref(&mut wrap!(& wrap!(2))).isMutable()); // Prints: 'true'
+println!(new Ref(&wrap!(&mut wrap!(2))).isMutable()); // Prints: 'false'
 ```
 
-Finally, `ref_stats!` returns all informations on a reference:
+Finally, we can get generic informations about the reference:
 
 ```rave
 let i = 0;
@@ -5058,7 +5060,7 @@ let ptr1: * = &i;
 val ptr2: *mut = &mut ptr1;
 let ptr3: * = *ptr2;
 
-val infos = ref_stats!(ptr3);
+val infos = new Ref(ptr3).getStats();
 
 // Contains:
 [
