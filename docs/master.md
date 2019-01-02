@@ -6010,19 +6010,6 @@ namespace C {
 }
 ```
 
-### Literal types
-
-Literal types are types which can be used as a type for a literal constant as well as by the `lit<T>` wrapper. Their list is stored inside a native union type:
-
-```rave
-type Literal = void | bool | number | string | Function | Structure | Enumeration |
-               Interface | Trait | Class | Type | Static<Literal>;
-```
-
-Creating a literal constant with a type that doesn't figure in this union will result in an error at build time.
-
-Note that children of these types are accepted, which means we can make a literal constant containing an `int` for example.
-
 ### Symbols
 
 Symbols are useful values to identify and separate data. A symbol holds a unique identifier we cannot access, as well as an optional string which is its _value_. Two symbols are considered as equal if and only if they share the same identifier - so they are only equal to themselves.
