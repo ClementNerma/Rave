@@ -2395,7 +2395,7 @@ The problem may appear to be complex but it is in fact very simple. Read the sol
 To represent the cells, we will use a simple enumeration. Because it is specific to our class, it will be a member of it:
 
 ```rave
-class Map {
+class RPGMap {
   enum Cell { Empty, Rock, Trap };
 ```
 
@@ -2524,7 +2524,7 @@ But if we ran into a trap cell, we are now trapped:
 Here is the full solution:
 
 ```rave
-class Map {
+class RPGMap {
   enum Cell { Empty, Rock, Trap };
 
   map: Cell[][];
