@@ -5572,13 +5572,20 @@ let data: string |  uint = 'Hello world'; // Works fine
 data = 2u; // Works fine
 ```
 
-Any type is automatically typecastable to any union type containing it (like `string` to `string | uint`). It is too from any union type to any type of the union (like `string | uint` to `string`), BUT if the hidden type of the value is not the typecast's target one, the program will panic:
+Any type is automatically typecastable to any union type containing it (like `string` to `string | uint`). The opposite is not true, though:
 
 ```rave
 val data: string | uint = 'Hello world';
 
-val str: string = data; // Works fine
-val num: uint = data; // ERROR
+val str: string = data; // Not allowed
+
+if data as? string some casted {
+  println!(casted); // Prints: 'Hello world!'
+}
+
+if data as? uint some casted {
+  println!(casted); // Won't print anything
+}
 ```
 
 Union types make available any member all the types of the union implement. Example:
