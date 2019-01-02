@@ -4272,7 +4272,7 @@ fn getNilPoint (points: Point[]) : ?Point {
 }
 ```
 
-This works fine. We can now check if we got a value or a "none":
+This works fine. We can now check if we got a value (which is called a _concrete_ value) or a "none" (which is called an _empty_ value):
 
 ```rave
 val point: ?Point = getNilPoints([]);
@@ -4812,11 +4812,11 @@ This solves our second and third problem, as we are now able to share _and_ avoi
 
 #### References on values
 
-Because we may want to create references to direct values, instead of creating an entity containing them, we can use the `.(value)` syntax:
+Because we may want to create references to direct values, instead of creating an entity containing them, we can use the `ref!` and `ref_mut!` functions:
 
 ```rave
-val cstRef: * = &.(2);
-val mutRef: *mut = &mut.(2);
+val cstRef: * = ref!(2);
+val mutRef: *mut = ref_mut!(2);
 ```
 
 ### Constantness trap
@@ -4970,8 +4970,8 @@ printRefValue(&mut n); // Prints: '2'
 It is possible to cast safely a mutable reference to a constant one, or to cast a type from another if it keeps the same reference type (e.g. constant or mutable), but not both at once:
 
 ```rave
-val i = & wrap!(2);
-val j = &mut wrap!(2);
+val i = ref!(2);
+val j = mut_ref!(2);
 
 i as *int; // Works fine (does nothing)
 i as *mut int; // ERROR (cannot cast constant reference to mutable)
@@ -5060,8 +5060,8 @@ println!(new Ref(mutPtr).isMutable()); // Prints: 'true'
 This only gets the mutability of the top-level reference, though:
 
 ```rave
-println!(new Ref(&mut wrap!(& wrap!(2))).isMutable()); // Prints: 'true'
-println!(new Ref(&wrap!(&mut wrap!(2))).isMutable()); // Prints: 'false'
+println!(new Ref(&mut (ref!    (2))).isMutable()); // Prints: 'true'
+println!(new Ref(&    (ref_mut!(2))).isMutable()); // Prints: 'false'
 ```
 
 Finally, we can get generic informations about the reference:
