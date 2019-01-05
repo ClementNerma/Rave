@@ -3748,6 +3748,24 @@ We can now try it:
 (new MyArrayClass<bool>).sum(); // Works fine
 ```
 
+Also, segments can implement interfaces or use traits:
+
+```rave
+class MyArrayClass<T> {
+  public writable value: T;
+
+  public %new (value: T) {
+    this.value = value;
+  }
+
+  segment (T extends Stringifyable) impl Stringifyable {
+    toString () : string {
+      return 'Wrapper for: ' + this.value.toString();
+    }
+  }
+}
+```
+
 ### Templated overloads
 
 Let's say we have a class representing a very large number type (e.g. 512 bits unsigned integer, so it handles from 0 to 2^512 - 1). We want to be able to add such a number to any existing number type (e.g. add it to an `int`) and return a value of the added type.
