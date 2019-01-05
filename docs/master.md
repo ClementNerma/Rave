@@ -2696,6 +2696,13 @@ println!(b); // Prints: 'B'
 println!(c); // Prints: 'C'
 ```
 
+Note that, at the exception of the constructor and destructor, all overloads can be called manually from the outside of the class:
+
+```rave
+let b = a;
+let c = a.%clone(); // Works fine
+```
+
 ### Serialization
 
 Serialization allows to save an object as a string, in order to restore it later. It goes through two steps: serialization, with turns the instance into a string, and unserialization, which turns a string into an instance.
