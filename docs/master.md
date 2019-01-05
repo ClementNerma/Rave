@@ -3985,7 +3985,14 @@ dict Custom<K, V> {
   %has (key: K) : bool;
   // Check if a value is associated to a key
   %contains (value: V) : bool;
-  // Get an iterator on key-value pairs
+  // Get an iterator on all keys
+  %keys () : Iterator<K>;
+  // Get an iterator on all values
+  %values () : Iterator<V>;
+  // OPTIONAL: Get an iterator on key-value pairs
+  // It is automatically implemented on all dictionaries,
+  //  but in order to improve performances, you may want
+  //  to implement this method by yourself
   %iterate () : Iterator<(K, V)>;
 }
 ```
@@ -4043,7 +4050,7 @@ for key -> value in map {
 }
 ```
 
-In fact, the `in` and `of` keyword in a `for` loop automatically call the `%iterate` overload of the value on their right.
+In fact, the `in` and `of` keyword in a `for` loop automatically call the `%keys` or `%values` overload of the value on their right. For key-value pairs exploration, it calls `%iterate`, which by default retrieves all keys, and then retrieves the associated values.
 
 Here we will encounter a problem with the `Map<K, V>` class: its internal implementation makes it _not sorted_, which means when we will iterate over it, we will not get the keys and values in their insertion order. In addition to this, there is no sort function on such maps.
 
@@ -4200,13 +4207,19 @@ We will have two attributes for this class: a list of keys, and a list of values
   }
 ```
 
-#### Part 9: the iterator
+#### Part 9: the iterators
 
 ```rave
   // ...
-  %iterate () : Iterator<(K, V)> {
-    // Return an iterator on a key-value tuple
-    return Iterator.fromBinom(this.keys, this.values);
+  %keys () : Iterator<K> {
+    // Return an iterator on all keys
+    return new Iterator(this.keys);
+  }
+
+  // ...
+  %values () : Iterator<V> {
+    // Return an iterator on all values
+    return new Iterate(this.values);
   }
 ```
 
