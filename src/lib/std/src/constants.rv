@@ -1,0 +1,56 @@
+/**
+ * @file Native constants
+ * @author Clément Nerma
+ * @license Apache-2.0
+ */
+
+#[declaration];
+#[local_open];
+
+// ==================== Fixed constants ==================== //
+
+/**
+ * List of NIL values
+ */
+val NIL = (null, false, 0b, 0B, 0s, 0S, 0, 0u, 0l, 0L, 0P, 0f, 0d, '');
+
+// ==================== Build time constants ==================== //
+
+/**
+ * Build mode
+ */
+val BUILD_MODE: 'interpreted' | 'compiled' | 'transpiled';
+
+/**
+ * Target processor architecture
+ * Equal to `-` when build mode is not compilation
+ */
+val TARGET_PROC_ARCH: '-' | 'arm' | 'arm64' | 'ia32' | 'x64';
+
+/**
+ * Target operating system
+ * Equal to `-` when build mode is not compilation
+ */
+val TARGET_OS_NAME: string;
+
+// ==================== Runtime constants ==================== //
+
+/**
+ * Processor architecture
+ */
+val PROC_ARCH: 'arm' | 'arm64' | 'ia32' | 'x64';
+
+/**
+ * Number of processor's physical cores
+ */
+val PROC_CPUS: u8;
+
+/**
+ * Number of processor's virtual cores
+ */
+val PROC_THREADS: u8;
+
+/**
+ * Name of the operating system
+ */
+val OS_NAME: string;

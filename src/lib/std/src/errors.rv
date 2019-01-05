@@ -1,0 +1,117 @@
+/**
+ * @file Native error classes
+ * @author Clément Nerma
+ * @license Apache-2.0
+ */
+
+#[declaration];
+#[local_open];
+
+// ==================== Ancestor error type ==================== //
+
+/**
+ * Error class
+ */
+open class Error impl Stringifyable {
+  /**
+   * Create a new error object
+   * @param message An error message
+   */
+  %new (message: string);
+
+  /**
+   * Get the error's message
+   * @returns The error's message
+   */
+  toString (pretty = false) : string;
+}
+
+// ==================== Virtual error types ==================== //
+
+/**
+ * Native runtime error
+ */
+virtual class NativeRuntimeError extends Error { super(...); }
+
+/**
+ * Native runtime errors that must be caught
+ */
+virtual class SafeNativeError extends Error { super(...); }
+
+/**
+ * Native runtime errors that can be not caught
+ * In such case, these errors make the program panic
+ */
+virtual class PanicableError extends NativeRuntimeError { super(...); }
+
+// ==================== Panicable errors ==================== //
+
+/**
+ * Division by zero
+ */
+class DivisionByZero extends PanicableError { super(...); }
+
+/**
+ * Too large string or list
+ */
+class SizeLimitError extends PanicableError { super(...); }
+
+// ==================== Non-panicable errors ==================== //
+
+/**
+ * Unserialization error
+ */
+class UnserializationError extends SafeNativeError { super(...); }
+
+/**
+ * Key not found in a dictionary
+ */
+class KeyNotFound extends SafeNativeError { super(...); }
+
+/**
+ * Key assignment error in a dictionary
+ */
+class InvalidKeyAssignmentError extends SafeNativeError { super(...); }
+
+/**
+ * Key creation error in a dictionary
+ */
+class FixedKeysError extends SafeNativeError { super(...); }
+
+/**
+ * Duplicate value in a dictionary
+ */
+class DuplicateValueError extends SafeNativeError { super(...); }
+
+/**
+ * Map generation error
+ */
+class MapGenerationError extends SafeNativeError { super(...); }
+
+/**
+ * String to number conversion error
+ */
+class StringNumerizationError extends SafeNativeError { super(...); }
+
+/**
+ * Base64 decoding error
+ */
+class Base64DecodingError extends SafeNativeError { super(...); }
+
+/**
+ * Asynchronous waiting error
+ * @template X Rejection type
+ */
+class AwaitRejectionError<X> extends SafeNativeError {
+  /**
+   * The rejection data
+   */
+  val data: X;
+
+  /**
+   * Create a new asynchronous waiting error
+   * @param message The error message
+   * @param data The rejection data
+   */
+  %new (message: string, data: X);
+}

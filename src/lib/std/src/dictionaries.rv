@@ -1,0 +1,483 @@
+/**
+ * @file Dictionaries
+ * @author Clément Nerma
+ * @license Apache-2.0
+ */
+
+#[declaration];
+#[local_open];
+
+// ==================== Dictionaries ==================== //
+
+/**
+ * Dictionary
+ * @template K Type of keys
+ * @template V Type of values
+ */
+interface Dictionary<K, V> {
+  /**
+   * Check if a key exists
+   * @param key The key to check
+   * @returns `true` if the key exists
+   */
+  %has (key: K) : bool;
+
+  /**
+   * Check if a value is associated to a key
+   * @param value The value to check
+   * @returns `true` if it does
+   */
+  %contains (value: V) : bool;
+
+  /**
+   * Get a value from a key
+   * @param key The key to get the value of
+   * @returns The key's value
+   * @throws KeyNotFoundError If the provided key does not exist
+   */
+  %get (key: K) : V throws KeyNotFoundError;
+
+  /**
+   * Associate a value to a key
+   * @param key The key to associate a value to
+   * @param value A value
+   * @throws InvalidKeyAssignmentError Ability for custom dictionaries to throws assignment errors
+   */
+  %set (key: K, value: V) throws InvalidKeyAssignmentError;
+
+  /**
+   * Remove a key and its associated value
+   * @param key The key to remove
+   * @throws KeyNotFoudError If the provided key does not exist
+   * @throws FixedKeysError If keys cannot be removed
+   */
+  %unset (key: K) throws KeyNotFoudError, FixedKeysError;
+
+  /**
+   * Get the number of key/value pairs
+   * @returns The number of key/value pairs
+   */
+  %size () : usize;
+
+  /**
+   * Iterate over all keys
+   * @returns An iterator on all keys
+   */
+  %keys () : Iterator<K>;
+
+  /**
+   * Iterate over all values
+   * @returns An iterator on all values
+   */
+  %values () : Iterator<V>;
+
+  /**
+   * Iterate over all key/value pairs
+   * NOTE: Automatically implemented in most dictionary classes
+   * @returns An iterator on all key/value pairs
+   */
+  %iterate () : Iterator<(K, V)>;
+}
+
+// ==================== Generators ==================== //
+
+/**
+ * Generate
+ * @template T Type of values
+ */
+interface Generator<T> {
+  /**
+   * Generate the next value
+   * @returns The next value, or `none` if all values were already yield
+   */
+  next () : ?T;
+}
+
+// ==================== Iterators ==================== //
+
+/**
+ * Iterator
+ * @template T Type of values
+ */
+interface Iterator<T> impl Generator<T> {
+  /** @inheritdoc */
+  next () : ?T;
+
+  /**
+   * Get the last yield value
+   * @returns The last yield value
+   */
+  current () : ?T;
+
+  /**
+   * Go back to the previous value
+   * @returns The previous value
+   */
+  prev () : ?T;
+}
+
+// ==================== Concrete dictionary classes ==================== //
+
+/**
+ * Map dictionary
+ * @classname(map)
+ * @template K Type of keys
+ * @template V Type of values
+ */
+open dict Map<K, V> {
+  /**
+   * Create an empty @class
+   */
+  %new ();
+
+  /** @inheritdoc */
+  %has (key: K) : bool;
+
+  /** @inheritdoc */
+  %contains (value: V) : bool;
+
+  /** @inheritdoc */
+  %get (key: K) : V throws KeyNotFoundError;
+
+  /** @inheritdoc */
+  %set (key: K, value: V);
+
+  /** @inheritdoc */
+  %unset (key: K) throws InvalidKeyAssignmentError;
+
+  /** @inheritdoc */
+  %size () : usize;
+
+  /** @inheritdoc */
+  %iterate () : Iterator<(K, V)>;
+
+  /**
+   * Clonable dictionaries
+   */
+  segment (K ~ Clonable && V ~ Clonable) impl Clonable {
+    /**
+     * Clone this @class
+     * @returns A copy of this @class
+     */
+    %clone () : _real;
+  }
+
+  /**
+   * Serializable dictionaries
+   */
+  segment (K ~ Serializable && V ~ Serializable) impl Serializable {
+    /**
+     * Serialize this @class as a JSON object
+     * @returns This @class, serialized
+     */
+    %serialize () : string;
+
+    /**
+     * Unserialize a @class
+     * @param serialized A serialized @class
+     * @returns The unserialized @class
+     * @throws UnserializationError If the provided string is not a serialized @class
+     */
+    static %unserialize (serialized: string) : _real throws UnserializationError;
+  }
+
+  /**
+   * Equatable dictionaries
+   */
+  segment (K ~ Equatable && V ~ Equatable) impl Equatable {
+    /**
+     * Check if the current @class is equal to another
+     * @param another The @class to compare
+     * @returns `true` if they are equal
+     */
+    %equal (another: _real) : bool;
+  }
+
+  /**
+   * Filter this @class
+   * @param callback The callback to filter this @class with
+   * > @param key A key of this @class
+   * > @param value The value associated to this key
+   * > @returns `true` to keep this key/value pair, `false` to drop it
+   * @returns A new @class made of the filtered values
+   * @example [2, 5, -1].filter((k, v) => v > 0) isEqualTo! [2, 5]
+   */
+  filter (callback: (key: K, value: V) => bool) : _real;
+
+  /**
+   * Merge another @class to this one (affects the current @class)
+   * @param another The @class to merge to this one
+   * @returns The resulting @class
+   * @throws InvalidKeyAssignmentError If a key fails to set
+   */
+  merge (another: _real) : _real throws InvalidKeyAssignmentError;
+
+  /**
+   * Generate a new @class from this one through a mapping function
+   * @template X Type of mapped keys
+   * @template Y Type of mapped values
+   * @param callback The mapping callback
+   * > @param key A key of this @class
+   * > @param value The value associated to this key
+   * > @returns A mapped key/value pair
+   * @returns The resulting @class
+   */
+  map<X = K, Y = V> (callback: (key: K, value: V) => (K, V)) : _real<X, Y>;
+
+  /**
+   * Generate a new @class from this one through a mapping function
+   * @template T Type of mapped values
+   * @param callback The mapping callback
+   * > @param key A key of this @class
+   * > @param value The value associated to this key
+   * > @returns The mapped value (key is kept)
+   * @returns The resulting @class
+   */
+  map<T = V> (callback: (key: K, value: V) => V) : _real<K, T>;
+
+  /**
+   * Make a @class from a vector of keys and a vector of values
+   * @param keys List of keys
+   * @param values List of values
+   * @returns The @class generated from the provided lists
+   * @throws MapGenerationError If the vectors' size mismatches / if duplicate keys / if constraint violation
+   */
+  static fromArrays (keys: Vec<K>, values: Vec<V>) : _real throws MapGenerationError;
+}
+
+/**
+ * Sorted map based on a black-red tree
+ * @template K Type of keys
+ * @template V Type of values
+ */
+dict SortedMap<K ~ Comparable, V ~ Comparable> extends Map<K, V> {
+  /**
+   * Create a new sorted map
+   * @param comparator The sorting comparator
+   */
+  %new (comparator = V.%compare);
+
+  /**
+   * Sort the map using another comparator
+   * @param comparator The alternative comparator to use
+   * @returns The resulting map
+   */
+  sort (comparator: Comparator<V>) : self;
+}
+
+/**
+ * Collection of values
+ * @param V Type of values
+ */
+type Collection<V> = Map<string, V>;
+
+// ==================== Vectors ==================== //
+
+/**
+ * Vector
+ * @classname(vector)
+ * @template E Type of elements
+ */
+open dict Vec<E> extends SortedMap<usize, E> {
+  /**
+   * Number of elements in the @class
+   */
+  length: usize;
+
+  /**
+   * Concatenate another @class to this one
+   * @param another The @class to concatenate
+   * @returns The resulting @class
+   */
+  concat (another: _real) : _real;
+
+  /**
+   * Fill the @class with a unique value
+   * @param value The value to fill with
+   */
+  fill (value: E);
+
+  /**
+   * Get the index of a value
+   * @param lookfor The value to look for
+   * @returns The value's index
+   */
+  indexOf (lookfor: E) : ?usize;
+
+  /**
+   * Get all indexes of a value
+   * @param lookfor The value to look for
+   * @returns The list of its indexes
+   */
+  indexesOf (lookfor: E) : usize[];
+
+  /**
+   * Check if all values are equal
+   * @returns `true` if they are
+   */
+  isUniform () : bool;
+
+  /**
+   * Slice the @class
+   * @param start The start position
+   * @returns All elements from the given position
+   */
+  slice (start: usize) : _real<E>; // Wil result in `Array<E, ?>` for arrays
+
+  /**
+   * Slice the @class
+   * @param start The start position
+   * @param end The end position
+   * @returns The sliced @class
+   */
+  slice (start: usize, end: usize) : _real<E>; // Will result in `Array<E, ?>` for arrays
+
+  /**
+   * Reverse this @class
+   * @param store Store the result in the current @class
+   * @returns The reversed @class
+   */
+  reverse (store = false) : _real;
+
+  /**
+   * Cast this @class to an array
+   * @returns An array
+   */
+  toArray () : E[];
+
+  /**
+   * Cast this @class to a list
+   */
+  toList () : List<E>;
+
+  /**
+   * Summable @class
+   */
+  segment (V ~ Addable) {
+    /**
+     * Compute the sum of the @class
+     * Be aware of overflows!
+     * @returns The sum of all values in the @class
+     */
+    sum () : V;
+  }
+
+  /**
+   * Serializable @class
+   */
+  segment (K ~ Serializable && V ~ Serializable) {
+    /**
+     * @inheritdoc
+     * @returns The @class as a JSON array
+     */
+    %serialize () : string;
+
+    /** @inheritdoc */
+    static unserialize (serialized: string) : _real throws UnserializationError;
+  }
+}
+
+/**
+ * Array
+ * @classname(array)
+ * @template E Type of elements
+ * @template SIZE Size of the array
+ */
+dict Array<E, SIZE: usize> extends Vec<E> {
+  /**
+   * @inheritdoc
+   * Will always throw an error
+   */
+  %unset () throws FixedKeysError;
+}
+
+/**
+ * List
+ * @classname(list)
+ * @template E Type of elements
+ */
+open dict List<E> extends Vec<E> {
+
+  /**
+   * Get and remove the last element
+   * @returns The ex-last element
+   */
+  pop () : ?E;
+
+  /**
+   * Get and remove the last elements
+   * @param size The number of elements to remove
+   * @returns The ex-last elements
+   */
+  pop (size: usize) : E[];
+
+  /**
+   * Add values to the @class
+   * @param value The values to add
+   * @returns The @class's new size
+   */
+  push (...values: E[]) : usize;
+
+  /**
+   * Remove a value from the @class
+   * @param lookfor The value to remove
+   * @returns `true` if the value was found ; `false` else
+   */
+  remove (...value: E[]) : bool;
+
+  /**
+   * Remove the element at a given position
+   * @param pos The position of the element to remove
+   * @returns `true` if the position exists ; `false` else
+   */
+  removeAt (pos: usize) : bool;
+
+  /**
+   * Get and remove the first element
+   * @returns The ex-first element
+   */
+  shift () : ?E;
+
+  /**
+   * Get and remove the first elements
+   * @param size The number of elements remove
+   * @returns The ex-first elements
+   */
+  shift (size: usize) : E[];
+
+  /**
+   * Get and remove all elements from an index
+   * @param start The position to start the cut at
+   * @returns The removed elements
+   */
+  splice (start: usize) : E[];
+
+  /**
+   * Get and remove a part of the @class
+   * Equivalent to .slice() but affects the original @class
+   * @param start The start position
+   * @param end The end position
+   * @returns The removed elements
+   */
+  splice (start: usize, end: usize) : E[];
+
+  /**
+   * Push values at the beginning
+   * @param values The values to push
+   * @returns The @class's new size
+   */
+  shift (...values: Vec<E>) : usize;
+}
+
+/**
+ * Set (two elements cannot have the same value)
+ * @classname(set)
+ * @template E Type of elements
+ */
+dict Set<E ~ Equatable> extends List<E> {
+  /**
+   * @inheritdoc
+   * @throws DuplicateValueError If the provided value already exists
+   */
+  %set (key: usize, value: E) throws DuplicateValueError;
+}

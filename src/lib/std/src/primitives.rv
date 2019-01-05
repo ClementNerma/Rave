@@ -1,0 +1,471 @@
+/**
+ * @file Primitives
+ * @author Clément Nerma
+ * @license Apache-2.0
+ */
+
+#[declaration];
+#[local_open];
+
+// ==================== Primitives ==================== //
+
+virtual class primitive impl Booleanable, Stringifyable, Clonable, Serializable, Comparable {
+  /**
+   * Create a new @class value
+   */
+  virtual %new ();
+
+  /**
+   * Convert this @class to a string
+   * @param pretty Return a pretty string
+   * @returns This @class as a string
+   */
+  virtual toString (pretty = false) : string;
+
+  /**
+   * Clone this @class
+   * @returns A clone of this @class
+   */
+  virtual %clone () : _real;
+
+  /**
+   * Compare this @class to another one
+   * @param another Another @class
+   * @returns The comparison result
+   */
+  virtual %compare (another: _real) : Comparison;
+
+  /**
+   * Serialize this @class
+   * @returns This @class, serialized
+   */
+  virtual %serialize () : string;
+
+  /**
+   * Unserialize a @class
+   * @param serialized A serialized @class
+   * @returns The unserialized @class
+   * @throws UnserializationError If the provided string is not a serialized @class
+   */
+  virtual static %unserialize (serialized: string) : _real throws UnserializationError;
+}
+
+// ==================== Voids ====================//
+
+/**
+ * Void type
+ * @classname(void)
+ */
+class void extends primitive {
+  /** @inheritdoc */
+  %new ();
+  
+  /** @inheritdoc */
+  toString (pretty = false) : string;
+  
+  /** @inheritdoc */
+  %clone () : void;
+  
+  /** @inheritdoc */
+  %compare (another: void) : Comparison;
+  
+  /** @inheritdoc */
+  %serialize () : string;
+  
+  /** @inheritdoc */
+  static %unserialize (serialized: string) : void throws UnserializationError;
+}
+
+// ==================== Booleans ====================//
+
+/**
+ * Boolean type
+ * @classname(bool)
+ */
+class bool extends primitive {
+  /** @inheritdoc */
+  %new ();
+  
+  /** @inheritdoc */
+  toString (pretty = false) : string;
+  
+  /** @inheritdoc */
+  %clone () : bool;
+  
+  /** @inheritdoc */
+  %compare (another: bool) : Comparison;
+  
+  /** @inheritdoc */
+  %serialize () : string;
+  
+  /** @inheritdoc */
+  static %unserialize (serialized: string) : bool throws UnserializationError;
+}
+
+// ==================== Numbers ====================//
+
+/**
+ * Number type
+ * @classname(number)
+ */
+virtual class number extends primitive impl FullyComputable {
+  /** @inheritdoc */
+  %new ();
+  
+  /** @inheritdoc */
+  toString (pretty = false) : string;
+  
+  /** @inheritdoc */
+  %clone () : self;
+  
+  /** @inheritdoc */
+  %compare (another: self) : Comparison;
+  
+  /** @inheritdoc */
+  %serialize () : string;
+  
+  /** @inheritdoc */
+  static %unserialize (serialized: string) : self throws UnserializationError;
+
+  /** @inheritdoc */
+  %add (another: _real) : _real;
+
+  /** @inheritdoc */
+  %sub (another: _real) : _real;
+
+  /** @inheritdoc */
+  %mul (another: _real) : _real;
+
+  /** @inheritdoc */
+  %div (another: _real) : _real;
+
+  /** @inheritdoc */
+  %mod (another: _real) : _real;
+
+  /** @inheritdoc */
+  %pow (another: _real) : _real;
+}
+
+/**
+ * 8-bit unsigned integer
+ * @classname(8-bit unsigned integer)
+ */
+class u8 extends number {}
+
+/**
+ * 16-bit unsigned integer
+ * @classname(16-bit unsigned integer)
+ */
+class u16 extends number {}
+
+/**
+ * 32-bit unsigned integer
+ * @classname(32-bit unsigned integer)
+ */
+class u32 extends number {}
+
+/**
+ * 64-bit unsigned integer
+ * @classname(64-bit unsigned integer)
+ */
+class u64 extends number {}
+
+/**
+ * Platform-sized unsigned integer
+ * @classname(platform unsigned integer)
+ */
+class usize extends number {}
+
+/**
+ * 8-bit signed integer
+ * @classname(8-bit signed integer) 
+ */
+class i8 extends number {}
+
+/**
+ * 16-bit signed integer
+ * @classname(16-bit signed integer) 
+ */
+class i16 extends number {}
+
+/**
+ * 32-bit signed integer
+ * @classname(32-bit signed integer) 
+ */
+class i32 extends number {}
+
+/**
+ * 64-bit signed integer
+ * @classname(64-bit signed integer) 
+ */
+class i64 extends number {}
+
+/**
+ * Single precision floating-point number
+ * @classname(floating-point number)
+ */
+class float extends number {}
+
+/**
+ * Double precision floating-point number
+ * @classname(floating-point number)
+ */
+class double extends number {}
+
+/**
+ * 32-bit signed integer
+ */
+type int = i32;
+
+/**
+ * 64-bit unsigned integer
+ */
+type uint = u32;
+
+/**
+ * UTF-32 character type
+ */
+class char extends primitive {
+  /**
+   * Create a new character
+   * @param code The character's from
+   */
+  %new (code: u32);
+
+  /** @inheritdoc */
+  toString (pretty = false) : string;
+  
+  /** @inheritdoc */
+  %clone () : self;
+  
+  /** @inheritdoc */
+  %compare (another: self) : Comparison;
+  
+  /** @inheritdoc */
+  %serialize () : string;
+  
+  /** @inheritdoc */
+  static %unserialize (serialized: string) : self throws UnserializationError;
+
+  /**
+   * Get this character's codepoint
+   * @returns This character's codepoint
+   */
+  getCodePoint () : u32;
+}
+
+/**
+ * String type
+ */
+class string extends primitive {
+  /** @inheritdoc */
+  %new ();
+  
+  /** @inheritdoc */
+  toString (pretty = false) : string;
+  
+  /** @inheritdoc */
+  %clone () : self;
+  
+  /** @inheritdoc */
+  %compare (another: self) : Comparison;
+  
+  /** @inheritdoc */
+  %serialize () : string;
+  
+  /** @inheritdoc */
+  static %unserialize (serialized: string) : self throws UnserializationError;
+
+  /**
+   * The first character
+   */
+  proxy first -> this.charAt(0);
+
+  /**
+   * The last character
+   */
+  proxy last -> this.charAt(this.length - 1);
+
+  /**
+   * The string's size
+   */
+  proxy length -> this.charAt(this.length - 1);
+
+  /**
+   * Check if the current string contains another one
+   * @param lookfor The string to look for
+   * @returns `true` if it does
+   */
+  %contains (lookfor: string) : bool;
+
+  /**
+   * Get the character at a given position
+   * @param pos The position to get the character at
+   * @returns The requested character
+   */
+  charAt (pos: u32) : ?char;
+
+  /**
+   * Get the string as a list of bytes
+   * @returns The list of bytes this string is made of
+   */
+  getBytes () : u8[];
+
+  /**
+   * Get the string as a list of characters
+   * @returns The list of characters this string is made of
+   */
+  getChars () : char[];
+
+  /**
+   * Count the number of occurrences of a given string
+   * NOTE: Empty string will return 0
+   * @param lookfor The string to look for
+   * @returns The number of times it appears
+   */
+  count (lookfor: string) : u32;
+
+  /**
+   * Cut the string
+   * @param start The position to start the cut at
+   * @param end The position to end the cut at
+   * @returns The requested part of the string
+   * @example "Hello world!".cut(6, 11) == "world"
+   */
+  cut (start: u32, end: u32) : string;
+
+  /**
+   * Check if the string ends by another one
+   * @param lookfor The string to look for
+   * @returns `true` if it does
+   */
+  endsWith (lookfor: string) : bool;
+
+  /**
+   * Prefix some characters with a backslash
+   * NOTE: Backslashes are automatically prefixed
+   * @param chars The list of characters to prefix
+   * @returns The escaped string
+   */
+  escape (chars: Vec<string>) : string;
+
+  /**
+   * Get the position of a given string
+   * @param lookfor The string to look for
+   * @returns Its position
+   */
+  indexOf (lookfor: string) : ?u32;
+
+  /**
+   * Get the last index where a given string appears
+   * @param lookfor The string to look for
+   * @returns Its last position
+   */
+  indexOf (lookfor: string) : ?u32;
+
+  /**
+   * Get the list of positions a given string appears
+   * @param lookfor The string to look for
+   * @returns The list of its positions in the current string
+   */
+  indexesOf (lookfor: string) : u32[];
+
+  /**
+   * Check if the string contains another one
+   * @param lookfor The string to look for
+   * @returns `true` if it does
+   */
+  includes (lookfor: string) : bool;
+
+  /**
+   * Parse the string as a number
+   * @template T The output number type
+   * @param base The numerical base
+   * @returns The parsed number
+   * @throws StringNumerizationError If the provided string is not a valid number
+   * @example "28".parse() == 28
+   * @example "2.8".parse() == 2.8
+   * @example "2.8".parse<f64>() == 2.8d
+   */
+  parse<T ~ number = int> (base: u8 = 10) : T throws StringNumerizationError;
+
+  /**
+   * Repeat this string
+   * @param times The number of repetitions
+   * @returns The repeated string
+   * @throws StringSizeLimitError If the resulting string is too large
+   */
+  repeat (times: u32) : string;
+  
+  /**
+   * Split the string following a separator
+   * @param sep The separator
+   * @returns The split string
+   * @example "a,bc,def".split(',') isEqualTo! ["a","bc","def"]
+   */
+  split (sep: string) : string[];
+
+  /**
+   * Check if the string ends by another one
+   * @param lookfor The string to look for
+   * @returns `true` if it does
+   */
+  startsWith (lookfor: string) : bool;
+
+  /**
+   * Cut the string
+   * @param start The start position
+   * @param length The number of characters to cut (if omitted, will cut until the end of the string)
+   * @returns The requested part of the string
+   * @example "Hello world!".substr(6, 5) == "world"
+   * @example "Hello world!".substr(6) == "world!"
+   */
+  substr (start: u32, length?: u32) : string;
+
+  /**
+   * Convert the string to Base64
+   * @returns The string, base64-encoded
+   */
+  toBase64 () : string;
+
+  /**
+   * Lowercase the string
+   * @returns This string's lowercase version
+   */
+  toLowerCase () : string;
+
+  /**
+   * Uppercase the string
+   * @returns Thie string's uppercase version
+   */
+  toUpperCase () : string;
+
+  /**
+   * Trim the string
+   * @param chars Trimming characters
+   * @returns The trimmed string
+   */
+  trim (chars: Vec<char> = [' ']) : string;
+
+  /**
+   * Trim the string on the left
+   * @param chars Trimming characters
+   * @returns The trimmed string
+   */
+  trimLeft (chars: Vec<char> = [' ']) : string;
+
+  /**
+   * Trim the string on the right
+   * @param chars Trimming characters
+   * @returns The trimmed string
+   */
+  trimRight (chars: Vec<char> = [' ']) : string;
+
+  /**
+   * Decode a Base64 string
+   * @param b64str A Base64 string
+   * @returns The decoded string
+   * @throws Base64DecodingError If the provided string isn't a valid Base64 one
+   */
+  static fromBase64 (b64str: string) : string throws Base64DecodingError;
+}
