@@ -5274,6 +5274,26 @@ type I = ? extends D; // Equivalent to: 'D'
 type J = ? extends D; // Equivalent to: 'E'
 ```
 
+As well as _type exclusion_:
+
+```rave
+class A {}
+class B {}
+class C {}
+
+type Alias = not A; // Any type, except 'A'
+
+let var1: Alias = new A; // ERROR
+let var2: Alias = new B; // Works fine
+let var3: Alias = new C; // Works fine
+```
+
+This feature is used to define the `Object` type:
+
+```rave
+type Object = not primitive;
+```
+
 Type aliasing can also use the `_` type, which is the equivalent of `_real`, but for type aliasing:
 
 ```rave
