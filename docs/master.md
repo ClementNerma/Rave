@@ -7179,7 +7179,7 @@ List of primitive types:
 List of dictionary types:
 
 * `Map<K, V>` for unsorted maps ;
-* `Sorted<K, V>` for sortable maps ;
+* `SortedMap<K, V>` for sortable maps ;
 * `Vec<E>` for vectors (virtual class) ;
 * `Array<E, SIZE: usize>` for sortable arrays ;
 * `List<E>` for sortable lists ;
