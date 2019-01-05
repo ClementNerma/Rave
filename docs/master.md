@@ -4046,13 +4046,13 @@ We will have two attributes for this class: a list of keys, and a list of values
   // ...
   %keys () : Iterator<K> {
     // Return an iterator on all keys
-    return new Iterator(this.keys);
+    return this.keys.%iterate();
   }
 
   // ...
   %values () : Iterator<V> {
     // Return an iterator on all values
-    return new Iterate(this.values);
+    return this.values.%iterate();
   }
 ```
 
