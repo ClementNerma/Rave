@@ -3731,7 +3731,7 @@ class MyArrayClass<T> {
   // Declare a segment
   // All items in it will be available only if the condition is met
   // - which means only if 'T' is a sub-type of 'number'
-  segment T extends number {
+  segment (T extends number) {
     // Our '.sum()' function
     sum () : T {
       // Do some stuff here;
@@ -6886,7 +6886,7 @@ class B<T> {
   /**
    * Segment for number types
    */
-  segment T extends number {
+  segment (T extends number) {
     double () => this.value * 2;
   }
 }
