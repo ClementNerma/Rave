@@ -5313,17 +5313,15 @@ The presence of the callback ensures the value has been validated, and so we don
 
 The counterpart of constrained types is that the callback is called at each assignment, which reduces performances when writing. When reading, nothing changes, though.
 
-Also, if the constraint fails during assignment, the program panics. The only way to handle such errors when we don't know if the test will pass is to use the following behavior:
+Also, if the constraint fails during assignment, the program panics. The only way to handle such errors when we don't know if the test will pass is to catch the `ConstraintFailError` error:
 
 ```rave
 val notEmpty: string with (not _.empty());
 
-val fail = catchPanic!(CATCHABLE_TYPE_CONSTRAINTS_FAILS) {
-  notEmpty = ''; // Function stops here and returns because of the fail
-}
-
-if fail == true {
-  println!('Assignment failed'); // Will be printed
+try {
+  notEmpty = ''; // ERROR
+} catch e {
+  println!('Assignment failed'); // Prints: 'Assignment failed'
 }
 ```
 
