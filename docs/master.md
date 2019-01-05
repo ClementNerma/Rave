@@ -7099,6 +7099,33 @@ class Child {
 }
 ```
 
+It's also possible to write additional informations or even to override existing annotations when using it:
+
+```rave
+/**
+ * My super mother class
+ */
+class Mother {
+  /**
+   * Do some stuff with @class
+   * @param param The parameter
+   */
+  doStuff (param: string);
+}
+
+/**
+ * My super child class
+ */
+class Child {
+  /**
+   * @inheritdoc
+   * NOTE: Method re-implemented by the child
+   * @param param The parameter (child method)
+   */
+  doStuff();
+}
+```
+
 ### Deprecation notice
 
 The `@deprecated` annotation indicates the following entity still works but should not be used anymore (e.g. it will be removed in the future). It may be followed by a text explaining the deprecation in details:
