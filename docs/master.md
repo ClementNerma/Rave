@@ -5258,7 +5258,7 @@ val myTuple: TupleOfThree<int> = (2, 8, 5);
 
 As type aliases are _aliases_ and not real types, there is no typecasting problem ; in our example, writing `TupleOfThree<int>` is **exactly** the same as writing `(T, T, T)`.
 
-Type aliasing can also the `_` type, which is the equivalent of `_real`, but for type aliasing:
+Type aliasing can also use the `_` type, which is the equivalent of `_real`, but for type aliasing:
 
 ```rave
 type Comparable = ComparableTo<_>;
