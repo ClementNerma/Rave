@@ -165,6 +165,14 @@ multi-line
 string!`;
 ```
 
+### Characters
+
+Characters use the `char` type and are made of a single character. It can handle any [Unicode](https://unicode.org) character and is stored on 4 bytes. The easiest way to write one is to use a single-character string, prefixed by the `c` letter:
+
+```rave
+val chr: char = c'A'; // char
+```
+
 ## Numbers and operators
 
 ### Integers
