@@ -5044,12 +5044,12 @@ println!(copy.name); // Prints: 'John'
 println!(original.name); // Prints: 'Jack'
 ```
 
-### Iterators
+### Generators
 
-Iterators are instances of the `Iterator<T>` class. Here is an example of the famous Fibanocci suite implemented using an iterator:
+Generators are instances of the `Generator<T>` class. Here is an example of the famous Fibanocci suite implemented using an iterator:
 
 ```rave
-class Fibonacci extends Iterator<uint> {
+class Fibonacci impl Generator<uint> {
   val max: uint;
 
   private a = 0;
@@ -5075,9 +5075,9 @@ class Fibonacci extends Iterator<uint> {
 }
 ```
 
-Let's detail this a bit. First, we call _iterator class_ any class inheriting from `Iterator<T>`. Instances of iterator classes are so iterators, of course.
+Let's detail this a bit. First, we call _generator class_ any class implemeting the `Generator<T>` interface. Instances of generator classes are so generators, of course.
 
-Iterator classes must implement a `.next()` method which returns a `?T` value. If the iterator generated a value, it returns a "some" value, while if all values have been generated, it returns a `none`. That's what we do here.
+Generator classes must implement a `.next()` method which returns a `?T` value. If the generator generated a value, it returns a concrete value, while if all values have been generated, it returns a `none`. That's what we do here.
 
 We can now use our iterator class by instanciating it:
 
@@ -5107,12 +5107,12 @@ for i -> num in fibo {
 }
 ```
 
-As you can see, even though the iterator returns an `?uint` value, we don't have to deal with it in the loop, because the builder knows that this `for` loop usage will stop at the moment a `none` is got, so there are only will be "some" values.
+As you can see, even though the generator returns an `?uint` value, we don't have to deal with it in the loop, because the builder knows that this `for` loop usage will stop at the moment a `none` is got, so there are only will be concrete values.
 
-Because writing iterators is heavy, we can use an _iterator function_ instead:
+Because writing iterators is heavy, we can use a _generator function_ instead:
 
 ```rave
-iter fn fibonacci (max: uint) : uint {
+gen fn fibonacci (max: uint) : uint {
   let a = 0;
   let b = 0;
 
@@ -5126,7 +5126,7 @@ iter fn fibonacci (max: uint) : uint {
 }
 ```
 
-Iterator functions are declared prefixed with the `iter` function. Its return type is the type of value it generates. When a value has been generated, it can be "returned" with the `yield` keyword. This pauses the function and goes back to the caller, like a normal `return` (though it works even within sub-functions). When we ask the iterator for a new value, the function is not ran again from the beginning, but simply resumed, and so we can use its local variables to store informations.
+Generator functions are declared prefixed with the `gen` function. Its return type is the type of value it generates. When a value has been generated, it can be "returned" with the `yield` keyword. This pauses the function and goes back to the caller, like a normal `return` (though it works even within sub-functions). When we ask the iterator for a new value, the function is not ran again from the beginning, but simply resumed, and so we can use its local variables to store informations.
 
 We can now use it:
 
@@ -5139,6 +5139,62 @@ for num in fibonacci(1000u) {
 // With indexes + values:
 for i -> num in fibonacci(1000u) {
   println!('${i}: ${num}');
+}
+```
+
+### Iterators
+
+Iterators are a sub-type of generators. They work exactly the same way, at the noteable difference they have the ability to go back to any previously generated value. Here is an example:
+
+```rave
+class Counter impl Iterator<T> {
+  private counter = 0u;
+  private max: uint;
+
+  %new (max: uint) {
+    this.max = max;
+  }
+
+  next () {
+    return if   this.counter < this.max
+           then some!(++ this.counter)
+           else none;
+  }
+  
+  current () {
+    return some!(this.counter);
+  }
+
+  prev () {
+    return if   this.counter > 0
+           then some!(-- this.counter)
+           else none;
+  }
+}
+```
+
+Iterators have the good point they unlock the `back` keyword in `for` loops:
+
+```rave
+for num in (new Counter(3)) {
+  println!(i); // Prints: '1', '2' then '3'
+}
+
+for i -> num in (new Counter(3)) {
+  println!((i + 1) + ': ' + num); // Prints: '1: 1', '2: 2' then '3: 3'
+}
+```
+
+Dictionary overloads `%keys`, `%values` and `%iterate` all return an iterator, as well as number ranges (e.g. `0..10`). This allows to go back when iterating on them:
+
+```rave
+val goneBack = false;
+
+for i in 0..10 {
+  if i == 5 && ! goneBack {
+    goneBack = true;
+    back ;
+  }
 }
 ```
 
