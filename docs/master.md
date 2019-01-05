@@ -7180,3 +7180,29 @@ fn sumDynamic<T extends Addable> (...values: T[]) : T {
 ```
 
 This annotation also emits a warning at build time when using the entity it is applied on.
+
+## Annex
+
+### Types
+
+List of primitive types:
+
+* `void` ;
+* `bool` ;
+* `u8`, `u16`, `u32`, `u64`, `i8`, `i16`, `i32`, `i64` ;
+* `char`, `string`
+
+List of dictionary types:
+
+* `Map<K, V>` for unsorted maps ;
+* `Sorted<K, V>` for sortable maps ;
+* `Vec<E>` for vectors (virtual class) ;
+* `Array<E, SIZE: usize>` for sortable arrays ;
+* `List<E>` for sortable lists ;
+* `Set<E>` for sortable lists with unique values
+
+List of reference types:
+
+* `Ref<T>` for references (virtual class) ;
+* `RefCst<T>` for constant references ;
+* `RefMut<T>` for mutable references
