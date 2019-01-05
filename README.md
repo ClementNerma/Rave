@@ -8,7 +8,8 @@ Currently, Rave is only in its early development. Nothing has been validated or 
 
 Documentation resources:
 
-* [The Master Book](docs/master.md), a complete tutorial for the language.
+* [The Master Book](docs/master.md), a complete tutorial for the language ;
+* [The Cooking Book](docs/cooking.md), a complete tutorial for the language's compiler and libraries.
 
 ## License
 
