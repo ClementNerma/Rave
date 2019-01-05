@@ -1,0 +1,61 @@
+/**
+ * @file JSON library
+ * @author Clément Nerma
+ * @license Apache-2.0
+ */
+
+#[declaration];
+
+/**
+ * JSON parsing error
+ * Thrown when attempted to parse an invalid JSON string
+ */
+class JSONParsingError extends Error {}
+
+/**
+ * JSON Value
+ */
+type JSONValue = null | string | number | JSONObject | JSONValue[];
+
+/**
+ * JSON object
+ */
+dict JSONObject extends Map<string, JSONValue> {
+  /**
+   * Private constructor
+   * Prevents instanciation of this class from the outside
+   */
+  private %new ();
+
+  /**
+   * Parse a JSON string
+   * @param source A JSON string
+   * @returns A JSON object
+   * @throws JSONParsingError If the provided source is not a valid JSON string
+   */
+  static parse (source: string) : self throws JSONParsingError;
+
+  /**
+   * Create a JSON object from a dictionary
+   * @param source The source dictionary
+   * @returns A JSON object
+   */
+  static fromDictionary (source: Dictionary<string, JSONValue>) : self;
+
+  /**
+   * Convert the current object to a string
+   * @param pretty Outputs a spaced representation of the object
+   * @param indent Number of spaces used for indentation (requires 'pretty' to be 'true')
+   * @returns The current object as a string
+   */
+  stringify (pretty = false, indent: u8 = 4) : string;
+
+  /**
+   * Convert the current object to a string
+   * Alias of `stringify()`
+   */
+  %to[string];
+}
+
+// Export everything
+export *;
