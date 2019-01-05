@@ -65,3 +65,31 @@ class Promise<T> extends Promise<T, void> {
    */
   %new (core: (resolve: (data: T) => void) => void);
 }
+
+// ==================== Functions ==================== //
+
+/**
+ * Wait for a promise in an asynchronous function
+ * @param promise The promise to wait for
+ * @returns The promise's resolution data
+ */
+fn await<T> (promise: Promise<T>) : T;
+
+/**
+ * @samedef
+ * @throws AwaitRejectionError If the promise fails
+ */
+fn await<T, X> (promise: Promise<T, X>) : T throws AwaitRejectionError<X>;
+
+/**
+ * Wait synchronously for a promise
+ * @param promise The promise to wait for
+ * @returns The promise's resolution data
+ */
+fn sync<T> (promise: Promise<T>) : T;
+
+/**
+ * @samedef
+ * @throws AwaitRejectionError If the promise fails
+ */
+fn sync<T, X> (promise: Promise<T, X>) : T throws AwaitRejectionError<X>;

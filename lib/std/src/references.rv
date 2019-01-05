@@ -86,3 +86,31 @@ class RefMut<T> extends Ref<T> {
    */
   write (value: T);
 }
+
+// ==================== Functions ==================== //
+
+/**
+ * Create a constant reference on a value
+ * @param value A value
+ * @returns A constant reference to this value
+ */
+fn ref<T> (value: T) : *T;
+
+/**
+ * Create a mutable reference on a value
+ * @param value A value
+ * @returns A mutable reference to this value
+ */
+fn ref_mut<T> (value: T) : *mut T;
+
+/**
+ * Check if a reference is a pointer
+ * @param value The value to check
+ * @returns `true` if it is
+ */
+fn is_ref<T> (value: T) : false;
+
+/**
+ * @samedef
+ */
+fn is_ref<T> (value: Ref<T>) : true;
