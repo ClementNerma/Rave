@@ -1427,7 +1427,7 @@ match color {
 }
 ```
 
-Which is a lot more readable. The `default` keyword runs its related set of instructions if none of the other values matched the provided one.
+Which is a lot more readable. The `default` keyword runs its related set of instructions if None of the other values matched the provided one.
 
 Enumerations are especially useful when dealing with enumerations:
 
@@ -4104,11 +4104,11 @@ To solve this problem, we could simply use a structure which indicates wether a 
 fn getNilPoint (points: Point[]) : Option<Point> {
   for point in points {
     if point.x == 0 && point.y == 0 {
-      return Option.Some(point);
+      return Some(point);
     }
   }
 
-  return Option.None;
+  return None;
 }
 ```
 
@@ -4117,24 +4117,25 @@ The `Option<T>` type can also simply be written `?T`:
 ```rave
 fn getNilPoint (points: Point[]) : ?Point {
   // ...
-}
 ```
 
-Also, its members can be shortened thanks to native entities:
+Also, the `Option.None` entity can be shortened as the `None` entity is an alias to it.
+
+Finally, instead of returning `Some(point)`, we can use an alternate syntax of the `return` instruction:
 
 ```rave
 fn getNilPoint (points: Point[]) : ?Point {
   for point in points {
     if point.x == 0 && point.y == 0 {
-      return some!(point);
+      return? point; // Converts to an Some(...)
     }
   }
 
-  return none;
+  return None;
 }
 ```
 
-This works fine. We can now check if we got a value (which is called a _concrete_ value) or a "none" (which is called an _empty_ value):
+This works fine. We can now check if we got a value (which is called a _concrete_ value) or a "None" (which is called an _empty_ value):
 
 ```rave
 val point: ?Point = getNilPoints([]);
@@ -4155,18 +4156,18 @@ if point is Some(name) {
 
 ### The optional operator
 
-The optional operator is a useful operator that tries to get a structure's field, a class' member, or a dictionary's key safely. Instead of requiring to try and catch the operation, the operator simply returns a `none` value in case of fail:
+The optional operator is a useful operator that tries to get a structure's field, a class' member, or a dictionary's key safely. Instead of requiring to try and catch the operation, the operator simply returns a `None` value in case of fail:
 
 ```rave
 struct Hero {
   name: string
 }
 
-val jack = some!(Hero {
+val jack = Some(Hero {
   name: 'Jack'
 });
 
-val john = none;
+val john = None;
 
 if jack?.name is Some(name) {
   println!(name); // Prints: 'Jack'
@@ -4190,13 +4191,13 @@ struct Hero {
   }
 }
 
-val jack = some!(Hero {
+val jack = Some(Hero {
   identity: {
     name: 'Jack'
   }
 });
 
-val john = none;
+val john = None;
 
 if jack?.identity?.name is Some(name) {
   println!(name); // Prints: 'Jack'
@@ -4226,7 +4227,7 @@ typeof jack?.identity?.name?; // Option<string>
 
 The same applies for `john`.
 
-As you can see, it's possible to chain optional operators. Indeed, if we just wrote `jack?.identity.name`, it would have failed because `jack?.identity` holds `none`.
+As you can see, it's possible to chain optional operators. Indeed, if we just wrote `jack?.identity.name`, it would have failed because `jack?.identity` holds `None`.
 
 This also works with dictionaries:
 
@@ -4248,8 +4249,8 @@ val value = personsAge['Jack']?; // ?uint
 
 // Is strictly equivalent to:
 val value = if 'Jack' in personsAge
-            then some!(personsAge['Jack'])
-            else none;
+            then Some(personsAge['Jack'])
+            else None;
 ```
 
 ### Default value operator
@@ -4259,7 +4260,7 @@ It is possible to provide a default value of the same type than the one holded b
 ```rave
 fn getValue () : ?string {
   // do some stuff and optionally return something
-  return none;
+  return None;
 }
 
 println!(getValue() ?? 'No value returned');
@@ -4267,10 +4268,10 @@ println!(getValue() ?? 'No value returned');
 
 ### Concrete checking
 
-_Concrete checking_ is a special syntax of the conditional block, which runs its set of instructions if the provided value is a not `none`, with an entity containing its value:
+_Concrete checking_ is a special syntax of the conditional block, which runs its set of instructions if the provided value is a not `None`, with an entity containing its value:
 
 ```rave
-val value = some!(2);
+val value = Some(2);
 
 // The syntax we've seen so far
 if value is Some(content) {
@@ -4402,13 +4403,13 @@ This program will print a message telling the division failed, but the `finally`
 
 When assigning a value to a mutable or a constant that may throw an error, we face the following problem: as we cannot simply do `val constant = divideInt(a, b);` because `divideInt` may throw an error, we have first to declare the constant, then to make the assignment inside a `try` block, and catch errors in a `catch` block.
 
-To simplify this process, we can perform an _inline catching_. It consists in trying to evaluate an expression and, if that doesn't work, get the `none` value. Showcase:
+To simplify this process, we can perform an _inline catching_. It consists in trying to evaluate an expression and, if that doesn't work, get the `None` value. Showcase:
 
 ```rave
 val num = try? divideInt(a, b); // ?int
 ```
 
-If the division works, it will return its value holded by an optional type. Else (if `b` is equal to `0`), `num` will get the `none` value. This makes the constant having the `?int` type.
+If the division works, it will return its value holded by an optional type. Else (if `b` is equal to `0`), `num` will get the `None` value. This makes the constant having the `?int` type.
 
 ### Custom error classes
 
@@ -5078,7 +5079,7 @@ class Fibonacci impl Generator<uint> {
   }
   
   next () : ?uint {
-    return none if this.b >= this.max;
+    return None if this.b >= this.max;
 
     val c = this.a + this.b;
     this.b = this.a;
@@ -5088,27 +5089,27 @@ class Fibonacci impl Generator<uint> {
       this.done = true;
     }
 
-    return some!(c);
+    return Some(c);
   }
 }
 ```
 
 Let's detail this a bit. First, we call _generator class_ any class implemeting the `Generator<T>` interface. Instances of generator classes are so generators, of course.
 
-Generator classes must implement a `.next()` method which returns a `?T` value. If the generator generated a value, it returns a concrete value, while if all values have been generated, it returns a `none`. That's what we do here.
+Generator classes must implement a `.next()` method which returns a `?T` value. If the generator generated a value, it returns a concrete value, while if all values have been generated, it returns a `None`. That's what we do here.
 
 We can now use our iterator class by instanciating it:
 
 ```rave
 val fibo = new Fibonacci(1000u);
 
-let value: ?uint = none;
+let value: ?uint = None;
 
 do {
   value = fibo.next();
 
   println!(num) if value is Some(num);
-} until (value == none);
+} until (value == None);
 ```
 
 But we can also use special syntaxes of the `for` loop instead:
@@ -5125,7 +5126,7 @@ for i -> num in fibo {
 }
 ```
 
-As you can see, even though the generator returns an `?uint` value, we don't have to deal with it in the loop, because the builder knows that this `for` loop usage will stop at the moment a `none` is got, so there are only will be concrete values.
+As you can see, even though the generator returns an `?uint` value, we don't have to deal with it in the loop, because the builder knows that this `for` loop usage will stop at the moment a `None` is got, so there are only will be concrete values.
 
 Because writing iterators is heavy, we can use a _generator function_ instead:
 
@@ -5175,18 +5176,18 @@ class Counter impl Iterator<T> {
 
   next () {
     return if   this.counter < this.max
-           then some!(++ this.counter)
-           else none;
+           then Some(++ this.counter)
+           else None;
   }
   
   current () {
-    return some!(this.counter);
+    return Some(this.counter);
   }
 
   prev () {
     return if   this.counter > 0
-           then some!(-- this.counter)
-           else none;
+           then Some(-- this.counter)
+           else None;
   }
 }
 ```
@@ -5348,7 +5349,7 @@ Because using a `try`-`catch` block is a bit heavy, we can use its optional vers
 val str = something as? string; // ?string
 ```
 
-The `str` entity has the `?string` value: if the typecast succeeds, it holds the typecast value. But if it fails, instead of throwing an error, it returns `none` ; that's why the returned value is optional.
+The `str` entity has the `?string` value: if the typecast succeeds, it holds the typecast value. But if it fails, instead of throwing an error, it returns `None` ; that's why the returned value is optional.
 
 If we are absolutely sure about the typecasting being write - and so we don't want the final value to be optional, we can use the `expect!` function:
 
@@ -5638,7 +5639,7 @@ Union values can only be made of literal primitives.
 
 ### Type assertion
 
-Let's say we want to create a function that takes any value as an argument. If it is stringifyable, we stringify it, else we return `none`.
+Let's say we want to create a function that takes any value as an argument. If it is stringifyable, we stringify it, else we return `None`.
 
 This can be achieved through _type assertion_:
 
@@ -5647,7 +5648,7 @@ fn convertToString (value: Any) : ?string {
   if value ~ Stringifyable {
     // ...
   } else {
-    return none;
+    return None;
   }
 }
 ```
@@ -5665,9 +5666,9 @@ Let's go back to our function:
 ```rave
 fn convertToString (value: Any) : ?string {
   if value ~ Stringifyable {
-    return some!(value as string); // Works fine
+    return Some(value as string); // Works fine
   } else {
-    return none;
+    return None;
   }
 }
 
@@ -5698,8 +5699,8 @@ Also, we can use type assertions in ternary conditions as well as in inline cond
 // Ternary condition
 fn convertToString (value: Any) : ?string {
   return if value ~ Stringifyable
-         then some!(value as string)
-         else none;
+         then Some(value as string)
+         else None;
 }
 
 // Inline condition
@@ -6118,7 +6119,7 @@ list2[0] = 2.0; // Works fine in 'list2' because it holds 'number' values
 
 Proxies are entities that don't have a real value. Instead, when we attempt to either read or write them, a related callback is called.
 
-Proxies are defined using the `proxy` keyword, with an object containing the callback called when the object is read - called the "getter" - and the one when the object is written - called the "setter" -. Note that the setter is optional ; if none is specified, all assignments will result in an error at build time.
+Proxies are defined using the `proxy` keyword, with an object containing the callback called when the object is read - called the "getter" - and the one when the object is written - called the "setter" -. Note that the setter is optional ; if None is specified, all assignments will result in an error at build time.
 
 ```rave
 val _counter = 0u;
