@@ -5258,6 +5258,22 @@ val myTuple: TupleOfThree<int> = (2, 8, 5);
 
 As type aliases are _aliases_ and not real types, there is no typecasting problem ; in our example, writing `TupleOfThree<int>` is **exactly** the same as writing `(T, T, T)`.
 
+Type aliases also support _type development_:
+
+```rave
+class A {}
+class B extends A {}
+class C extends A {}
+class D extends B {}
+class E extends C {}
+
+type F = ? extends A; // Equivalent to: 'A | B | C | D | E | F'
+type G = ? extends B; // Equivalent to: 'B | D'
+type H = ? extends C; // Equivalent to: 'C | E'
+type I = ? extends D; // Equivalent to: 'D'
+type J = ? extends D; // Equivalent to: 'E'
+```
+
 Type aliasing can also use the `_` type, which is the equivalent of `_real`, but for type aliasing:
 
 ```rave
