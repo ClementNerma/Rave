@@ -1,0 +1,57 @@
+/**
+ * @file Access a program's assets
+ * @author Clément Nerma
+ * @license Apache-2.0
+ */
+
+#[declaration];
+
+/**
+ * Asset item
+ */
+struct Asset {
+  /** Asset's path */
+  path: string,
+
+  /** Asset's type */
+  type: AssetType
+}
+
+/**
+ * Asset type
+ */
+enum Asset {
+  Folder,
+  File
+}
+
+/**
+ * Check if an assets folder exists
+ * @param path The folder's path
+ * @returns `true` if the folder exists
+ */
+fn folderExists (path: string) : bool;
+
+/**
+ * Check if an assets file exists
+ * @param path The file's path
+ * @returns `true` if the file exists
+ */
+fn fileExists (path: string) : bool;
+
+/**
+ * Get the list of all assets files
+ * @example [ { path: 'folder', type: AssetType.Folder }, { path: 'folder/file', type: AssetType.File } ]
+ * @returns A list of files
+ */
+fn listFiles () : Asset[];
+
+/**
+ * Get the list of assets in an assets folder
+ * @param path The folder's path
+ * @returns A list of items
+ */
+fn readFolder (path: string) : string[];
+
+// Export everything
+export *;
