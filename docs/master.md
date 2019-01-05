@@ -6367,7 +6367,9 @@ Another case is callbacks. In the following code:
 class Event {
   private static handler: () => void;
 
-  static handle (handler: () => void) => this.handler = handler;
+  static handle (handler: () => void) {
+    return this.handler = handler;
+  }
 
   static trigger () {
     this.handler();
@@ -6906,7 +6908,9 @@ class B<T> {
    * Segment for number types
    */
   segment (T extends number) {
-    double () => this.value * 2;
+    double () : T {
+      return this.value * 2;
+    }
   }
 }
 ```
