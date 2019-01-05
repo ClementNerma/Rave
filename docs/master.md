@@ -3398,108 +3398,31 @@ val a = b as A; // Type: 'A'
 
 The second case is described below.
 
-### Typecasting overloads
-
-Typecasting overloads allow to statically typecast a given type to another, even when they are not sub-type of the other:
-
-```rave
-class A {
-  private message = 'Hello world!';
-
-  %to[B] () {
-    return new B(this.message);
-  }
-}
-
-class B {
-  message: string;
-
-  %new (message: string) {
-    this.message = message;
-  }
-}
-```
-
-We can now statically typecast any `A` value to `B` (but not the opposite, as `B` does not implement any typecasting overload for that):
-
-```rave
-let a = new A;
-let b = a as B; // Works fine
-
-println!(b.message); // Prints: 'Hello world!'
-```
-
-Numbers implement a typecasting overload for each other number type, so the following conversion is allowed:
-
-```rave
-let small = 8b;
-let large = 2050u;
-
-small = large as i8; // Works fine (but overflows)
-
-println!(small); // Prints: '2'
-```
-
-Note that typecasting overloads use a normally forbidden syntax: polymorphism by return type. Even though these overloads do not take any argument, we can declare several of them in the same class, just changing their return type. It's an exception.
-
-#### Automatic typecast
-
-These overloads can be triggered automatically thanks to the `#auto` directive. To take again our example, this means that any `A` value would automatically be converted to `B` where a `B` value is expected, without using the `as` keyword:
-
-```rave
-class A {
-  private message = 'Hello world!';
-
-  #auto
-  %to[B] () {
-    println!('Typecasting to B');
-    return new B(this.message);
-  }
-}
-
-class B {
-  message: string;
-
-  %new (message: string) {
-    this.message = message;
-  }
-}
-
-let a: A = new A;
-let b: B = a; // Works fine (prints: 'Typecasting to B')
-```
-
-This last instruction would have fail at build time if we haven't used the `#auto` directive. Instead, we would have had to use a safe typecast.
-
-Arrays use this automatic behaviour, that's why it's possible to use an unknown-sized array (`int[]`) where expecting a fixed-size one (`int[3]`) without any explicit conversion, as well as the opposite.
-
-A similar behavior to automatic typecasting overloads is implemented for parent types of a given one, which allows to give a value of a type where a value of a parent type is expected.
-
 ### Interfaces
 
 Interfaces allow to describe members of a class. Like for structure compatibility, each class that implements all of its members is considered as a sub-type of this interface. Some of widely used in the language, such as the following one:
 
 ```rave
-interface Stringifyable {
-  %to[B] ();
+interface Polite {
+  sayHello () : string;
 }
 ```
 
-Every class that implements the `%to[string]` typecast overload will be `Stringifyable`. Note that the visibility is not indicted here as an interface only describes public members.
+Every class that implements the `sayHello` method will be `Polite`. Note that the visibility is not indicted here as an interface only describes public members.
 
 ```rave
-class A impl Stringifyable {
-  %to[string] () {
+class A impl Polite {
+  sayHello () : string {
     return 'Hello world!';
   }
 }
 
-val obj: Stringifyable = new A;
+val obj: Polite = new A;
 
-println!(obj as string); // Prints: 'Hello world!'
+println!(obj.sayHello()); // Prints: 'Hello world!'
 ```
 
-You may notice the `impl Stringifyable` part: it indicates the class implements a given interface. Though it's entirely optionnal - this could would have worked without this code - it's highly recommanded because it explicits the class' intentions (it is intended to be stringifyable) and avoids forgetting to implement a given member of the interface.
+Note the `impl Polite` part: it indicates the class implements a given interface. Though it's entirely optionnal - this could would have worked without this code - it's highly recommanded because it explicits the class' intentions (it is intended to be stringifyable) and avoids forgetting to implement a given member of the interface.
 
 There is another widely-used interface:
 
@@ -3572,100 +3495,6 @@ trait Bike impl Vehicle {
     return 'Scriiii';
   }
 }
-```
-
-### Typecasting paths
-
-Let's consider the following code:
-
-```rave
-class A {
-  %to[B] () {
-    return new B;
-  }
-}
-
-class B {
-  %to[C] () {
-    return new C;
-  }
-}
-
-class C {}
-```
-
-We want to create, let's say, a variable, which accepts any value that can be typecasted to a `C`. This accepts `B` values but not `A` ones. Now, we want to accept any value that can be typecasted to a type that itself can be converted to a `C`. It would also accept `A` as we can get a `C` value by first typecasting it to a `B` one.
-
-This can be achieved using a _typecasting path_, which goes like this:
-
-```rave
-interface ConvertibleToC {
-  // Typecasting path
-  typepath C = B;
-}
-```
-
-It is divided in two parts: the _target_, which is `C`, and the _candidates_, which are the types that can be directly typecasted to the target. Any type that is typecastable to any of the candidates (or to the target type itself, of course) will be considered as implementing the path. When a typecast will be performed between this type and the target, it will first use typecast it to the given candidate type, and then to the target type. The value implementing this path itself will so support typecasting to the target:
-
-```rave
-let short: A = new A;
-let long: ConvertibleToC = new A;
-
-short as C; // ERROR (cannot be typecasted to C)
-
-long as C; // Works fine
-// Equivalent to:
-(long as ConvertibleToC) as C;
-// If we get rid of the path:
-(long as B) as C;
-```
-
-The path can contain several types:
-
-```rave
-interface ConvertibleToF {
-  type F = D | E;
-}
-```
-
-In the case our type implements typecasting overload to two or more types in the path, the first one in the list is taken:
-
-```rave
-interface ConvertibleToF {
-  type F = D | E;
-}
-
-// Candidate
-class D {
-  %to[F] () {
-    return new F;
-  }
-}
-
-// Candidate
-class E {
-  %to[F] () {
-    return new F;
-  }
-}
-
-// Target
-class F {}
-
-// A sample class
-class G {
-  %to[D] () {
-    println!('Typecasted to D');
-    return new D;
-  }
-
-  %to[E] () {
-    println!('Typecasted to E');
-    return new E;
-  }
-}
-
-(new G) as F; // Prints: 'Typecasted to D'
 ```
 
 ## Templates
