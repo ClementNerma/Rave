@@ -1772,9 +1772,9 @@ val args = ('Jack', 5u);
 sayHello(...args); // Prints: 'Hello Jack!' 5 times
 ```
 
-### Operator functions
+### Infix functions
 
-Operators functions act like traditional operators: they take one or two arguments, called their _operands_, and return a result. Their point is to keep a clean syntax in the program. For example, if we want to make a function that adds two numbers, we can go with a standard function:
+Infix functions act like traditional operators: they take one or two arguments, called their _operands_, and return a result. Their point is to keep a clean syntax in the program. For example, if we want to make a function that adds two numbers, we can go with a standard function:
 
 ```rave
 fn add (left: int, right: int) : int {
@@ -1792,10 +1792,10 @@ This works fine. But what if we imbricate several additions?
 add(add(2, add(5, 7)), add(3, 4));
 ```
 
-This quickly becomes unreadable, and that's why we use operator functions:
+This quickly becomes unreadable, and that's where we use infix functions:
 
 ```rave
-op fn add (left: int, right: int) : int {
+infix fn add (left: int, right: int) : int {
   return left + right;
 }
 
@@ -1818,10 +1818,10 @@ add(add(2, add(5, 7)), add(3, 4));
 
 Which is a lot more readable.
 
-For operator functions that return a boolean, we can use the `not` keyword before their name to revert the result:
+For infix functions that return a boolean, we can use the `not` keyword before their name to revert the result:
 
 ```rave
-op fn greaterThan (left: int, right: int) : bool {
+infix fn greaterThan (left: int, right: int) : bool {
   return left > right;
 }
 
@@ -3506,7 +3506,7 @@ To illustrate the concept of templates, let's take an example. We want to create
 With what we've seen so far, this is impossible because the return type of a function must be fixed. Templates allow to change this:
 
 ```rave
-op fn plus<T> (left: CanAdd<T>, right: T) : T {
+infix fn plus<T> (left: CanAdd<T>, right: T) : T {
   return (left + right) as T;
 }
 ```
