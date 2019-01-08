@@ -56,27 +56,27 @@ class DivisionByZero extends PanicableError { super(...); }
  */
 class SizeLimitError extends PanicableError { super(...); }
 
+/**
+ * Key not found in a dictionary
+ */
+class KeyNotFound extends PanicableError { super(...); }
+
+/**
+ * Key assignment error in a dictionary
+ */
+class InvalidKeyAssignmentError extends PanicableError { super(...); }
+
+/**
+ * Key creation error in a dictionary
+ */
+class FixedKeysError extends PanicableError { super(...); }
+
 // ==================== Non-panicable errors ==================== //
 
 /**
  * Unserialization error
  */
 class UnserializationError extends SafeNativeError { super(...); }
-
-/**
- * Key not found in a dictionary
- */
-class KeyNotFound extends SafeNativeError { super(...); }
-
-/**
- * Key assignment error in a dictionary
- */
-class InvalidKeyAssignmentError extends SafeNativeError { super(...); }
-
-/**
- * Key creation error in a dictionary
- */
-class FixedKeysError extends SafeNativeError { super(...); }
 
 /**
  * Duplicate value in a dictionary
