@@ -4154,6 +4154,20 @@ if point is Some(name) {
 }
 ```
 
+In order to simplify such statements, and because `Some(T)` only holds a single value, we can use a special shadowing syntax:
+
+```rave
+typeof point; // ?Point
+
+if some point {
+  typeof point; // Point
+
+  println!('Found a point: ' + point);
+}
+```
+
+Note this only works when performing the check on a single entity.
+
 ### The optional operator
 
 The optional operator is a useful operator that tries to get a structure's field, a class' member, or a dictionary's key safely. Instead of requiring to try and catch the operation, the operator simply returns a `None` value in case of fail:
@@ -4236,7 +4250,7 @@ val personsAge = {# Jack: 24u };
 
 val age = personsAge['Jack']?; // Prints: ?uint
 
-if age is Some(age) {
+if some age {
   println!(age); // Prints: '24'
 }
 ```
@@ -5076,7 +5090,7 @@ let value: ?uint = None;
 do {
   value = fibo.next();
 
-  println!(num) if value is Some(num);
+  println!(value) if some value;
 } until (value == None);
 ```
 
@@ -5446,12 +5460,12 @@ val data: string | uint = 'Hello world';
 
 val str: string = data; // Not allowed
 
-if data as? string is Some(casted) {
-  println!(casted); // Prints: 'Hello world!'
+if some data as? string {
+  println!(data); // Prints: 'Hello world!'
 }
 
-if data as? uint is Some(casted) {
-  println!(casted); // Won't print anything
+if some data as? uint {
+  println!(data); // Won't print anything
 }
 ```
 
@@ -6040,7 +6054,7 @@ val arr2: int[3] = arr1 as int[3]; // ERROR (not typecastable)
 val arr1: int[] = [ 2, 3, 4 ];
 val arr2: int[3];
 
-if arr1 as? int[3] is Some(arr2) {
+if some arr1 as? int[3] {
   println!('It worked!'); // Not executed
 } else {
   println!('An error occured.'); // Executed
@@ -6052,7 +6066,7 @@ So, in order to perform this typecast, we have to use arrays' dedicated `.toFixe
 ```rave
 val arr1: int[] = [ 2, 3, 4 ];
 
-if try arr1.toFixed(3) is Some(arr2) {
+if some try arr1.toFixed(3) {
   println!('It worked!'); // Executed
 } else {
   println!('An error occured.'); // Not executed
