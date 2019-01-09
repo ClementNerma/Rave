@@ -4266,38 +4266,6 @@ fn getValue () : ?string {
 println!(getValue() ?? 'No value returned');
 ```
 
-### Concrete checking
-
-_Concrete checking_ is a special syntax of the conditional block, which runs its set of instructions if the provided value is a not `None`, with an entity containing its value:
-
-```rave
-val value = Some(2);
-
-// The syntax we've seen so far
-if value is Some(content) {
-  println!(content);
-}
-
-// Concrete checking
-if value some content {
-  println!(content);
-}
-```
-
-This allows to write lighter conditions. Here is an example with inline catching:
-
-```rave
-// Considering the following function:
-fn getArticleBody (id: usize) : string throws Error;
-
-if try? getArticleBody(0) some content {
-  println!(content);
-}
-
-// Also works inline
-println!(content) if try? getArticleBody(0) some content;
-```
-
 ## Errors and panics
 
 ### Panics
@@ -5256,7 +5224,7 @@ type NotEmptyString = string with (not _.empty());
 
 val notEmpty: NotEmptyString;
 
-if ('Hello world!' as? NotEmptyString) some typecasted {
+if 'Hello world!' as? NotEmptyString is Some(typecasted) {
   notEmpty = typecasted;
 }
 ```
@@ -5478,11 +5446,11 @@ val data: string | uint = 'Hello world';
 
 val str: string = data; // Not allowed
 
-if data as? string some casted {
+if data as? string is Some(casted) {
   println!(casted); // Prints: 'Hello world!'
 }
 
-if data as? uint some casted {
+if data as? uint is Some(casted) {
   println!(casted); // Won't print anything
 }
 ```
@@ -6072,7 +6040,7 @@ val arr2: int[3] = arr1 as int[3]; // ERROR (not typecastable)
 val arr1: int[] = [ 2, 3, 4 ];
 val arr2: int[3];
 
-if arr1 as? int[3] some arr2 {
+if arr1 as? int[3] is Some(arr2) {
   println!('It worked!'); // Not executed
 } else {
   println!('An error occured.'); // Executed
@@ -6084,7 +6052,7 @@ So, in order to perform this typecast, we have to use arrays' dedicated `.toFixe
 ```rave
 val arr1: int[] = [ 2, 3, 4 ];
 
-if try arr1.toFixed(3) some arr2 {
+if try arr1.toFixed(3) is Some(arr2) {
   println!('It worked!'); // Executed
 } else {
   println!('An error occured.'); // Not executed
@@ -6582,12 +6550,12 @@ It's also possible to simplify catching of `await` errors:
 
 ```rave
 // Standard way
-if try? await failableMethod() some result {
+if try? await failableMethod() is Some(result) {
   println!(result);
 }
 
 // Shortened way
-if await? failableMethod() some result {
+if await? failableMethod() is Some(result) {
   println!(result);
 }
 ```
@@ -6654,7 +6622,7 @@ for body in articlesBody {
 Note that, as for `await`, `sync` has an optional keyword, too:
 
 ```rave
-if sync? fetchArticle(2) some content {
+if sync? fetchArticle(2) is Some(content) {
   println!('Article\'s content: ' + content);
 }
 ```
