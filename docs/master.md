@@ -2716,11 +2716,11 @@ The serialization overload takes no argument and returns a string. In our `Examp
   }
 ```
 
-The unserialization overload takes a string argument and returns an instance of the current class. It goes like this (we wil see what the `throws` part mean later):
+The unserialization overload takes a string argument and returns an instance of the current class. It goes like this (we will see the `Result<self, void>` part later):
 
 ```rave
   // ...
-  static %unserialize (serialized: string) throws UnserializationError {
+  static %unserialize (serialized: string) : Result<self, void> {
     return new Example(serialized);
   }
 ```
@@ -3825,11 +3825,11 @@ They are declared using the `dict` keyword instead of the `class` one. Dictionar
 // V = type of values
 dict Custom<K, V> {
   // Get a value from a key
-  %get (key: K) : V throws KeyNotFoundError;
+  %get (key: K) : V;
   // Associate a value to a key
-  %set (key: K, value: V) throws KeyAssignmentError;
+  %set (key: K, value: V);
   // Remove a key and its associated value
-  %unset (key: K) throws KeyNotFoundError;
+  %unset (key: K);
   // Get the number of key/value pairs
   %size () : usize;
   // Check if a key exists
@@ -3935,20 +3935,6 @@ for key -> value in personsAge {
   // ...
 }
 ```
-
-Note that, even though the `%get` overload may throw an error, we are not forced to catch it. If we don't and an error is thrown, the program will panic. We can also catch it like for a standard function:
-
-```rave
-try {
-  personsAge['keyThatDoesNotExist'];
-}
-
-catch e {
-  println!(e.message);
-}
-```
-
-The same applies for `%set` and `%unset`.
 
 **NOTE:** Using the `delete` keyword on vectors (even lists) will make the program panic, as they are contiguous (meaning all key number smust be consecutive).
 
@@ -4159,7 +4145,7 @@ In order to simplify such statements, and because `Some(T)` only holds a single 
 ```rave
 typeof point; // ?Point
 
-if some point {
+if point is Some(_) {
   typeof point; // Point
 
   println!('Found a point: ' + point);
@@ -4170,7 +4156,7 @@ Note this only works when performing the check on a single entity.
 
 ### The optional operator
 
-The optional operator is a useful operator that tries to get a structure's field, a class' member, or a dictionary's key safely. Instead of requiring to try and catch the operation, the operator simply returns a `None` value in case of fail:
+The optional operator is a useful operator that tries to get a structure's field, a class' member, or a dictionary's key safely. Instead of requiring to check the key before accessing the dictionary, the operator simply returns a `None` value in case of fail:
 
 ```rave
 struct Hero {
@@ -4250,7 +4236,7 @@ val personsAge = {# Jack: 24u };
 
 val age = personsAge['Jack']?; // Prints: ?uint
 
-if some age {
+if age is Some(_) {
   println!(age); // Prints: '24'
 }
 ```
@@ -4302,170 +4288,37 @@ But its usage is mostly discouraged ; vast majority of the cases are handlable t
 
 Note that panics cannot be caught ; when one happens, the program displays a panic message and exits.
 
-### Throwing errors
+### Errors
 
-Throwing an error consists in using the `throw` keyword, followed by an instance of the `Error` class. Usually, it looks like this:
+Unlike many programming languages, Rave has not support for _exceptions_ or similar mechanisms. Instead, it has the `Result<T, X>` type, which is an enumeration with two fields: `Ok(T)`, which indicates a successfull result, and `Err(X)`, which indicates something went wrong.
 
-```rave
-// ...
-throw new Error('Something went wrong!');
-```
+As these are simple values, they can be easily caught and will never make the program panic.
 
-But, errors cannot be thrown everywhere. Only functions can throw errors - meaning we can't throw errors in the main scope - if they declare them. Here is how it looks:
+Here is an example:
 
 ```rave
-fn divideInt (left: int, right: int) : int throws Error {
+fn safeDivision (left: int, right: int) : Result<int, string> {
   if right == 0 {
-    throw new Error('Division by zero is not allowed');
+    return Err('Division by zero is not allowed');
   }
 
-  return left / right;
+  return Ok(left / right);
 }
 ```
 
-This function throws an error when we try to divide by zero. This way, if the division fails, the program won't panic.
-
-Note that this function indicates it may throw an instance of the `Error` class (right after the `throw` keyword). If we don't put this `throws Error` part, there will be an error at build time indicating the function can't throw an error without declaring it.
-
-All native errors inherit from the `NativeRuntimeError` class. Some of them inherit from the child `PanicableError` class, which describes an error that can be not caught, and in such case will make the program panic. The `DivisionByZeroError` class is one of them.
-
-### Catching errors
-
-Now, if we try to call our function, this won't work:
+This function fails when we try to divide by zero. This way, if the division fails, the program won't panic.
 
 ```rave
-divideInt(6, 3); // ERROR
-```
+val result = safeDivision(1, 0); // Result<int, string>
 
-This fails because, when we call a function that may throw an error, we must _catch_ this error. This is done by using two blocks: `try` and `catch`.
-
-```rave
-try {
-  divideInt(6, 3);
+match result {
+  Ok(value) -> println!(value), // Will not print
+  Err(error) -> println!('ERROR: ' + error) // Will print
 }
 
-catch e: Error {
-  println!('Division failed');
-}
-```
-
-The `try` block is allowed to call any function throwing errors. When an error occurs, this block is stopped and the program jumps to the `catch` one.
-
-The above program won't display anything. If we divided by 0, it would have displayed the message, but without any error. If we put instructions after these blocks, they will run fine.
-
-#### Cleaning test data
-
-You may create data in your `try` block you want to clone afterwise. This can be achieved through the `finally` block, which runs whatever happens after `try` (and `catch` if it is called). Even if a `return` statement is ran in the `try` or `catch` block, the `finally` one will be called just before returning.
-
-```rave
-fn doSomething () : int {
-  val counter = 0;
-
-  try {
-    counter ++;
-    counter += divideInt(6, 0);
-  }
-
-  catch e: Error {
-    println!('Division failed');
-    return -1;
-  }
-
-  finally {
-    counter --;
-  }
-
-  return counter;
-}
-```
-
-This program will print a message telling the division failed, but the `finally` block will still be called before the function returns.
-
-### Inline catching
-
-When assigning a value to a mutable or a constant that may throw an error, we face the following problem: as we cannot simply do `val constant = divideInt(a, b);` because `divideInt` may throw an error, we have first to declare the constant, then to make the assignment inside a `try` block, and catch errors in a `catch` block.
-
-To simplify this process, we can perform an _inline catching_. It consists in trying to evaluate an expression and, if that doesn't work, get the `None` value. Showcase:
-
-```rave
-val num = try? divideInt(a, b); // ?int
-```
-
-If the division works, it will return its value holded by an optional type. Else (if `b` is equal to `0`), `num` will get the `None` value. This makes the constant having the `?int` type.
-
-### Custom error classes
-
-It's possible to create custom error classes to indicate clearly what type of error has been thrown. Error classes are simply classes that inherit from the base `Error` class:
-
-```rave
-class DivisionByZeroError extends Error {
-  super(message: string);
-}
-```
-
-We can now use it in our function:
-
-```rave
-fn divideInt (left: int, right: int) : int throws DivisionByZeroError {
-  if right == 0 {
-    throw new DivisionByZeroError('Division by zero is not allowed');
-  }
-
-  return left / right;
-}
-```
-
-And when we catch errors:
-
-```rave
-try {
-  divideInt(a, b);
-}
-
-catch e: DivisionByZeroError {
-  println!(e.message); // May print: 'Division by zero is not allowed'
-}
-```
-
-A function can also throw different type of errors:
-
-```rave
-fn doSomething () throws AError, BError {
-  if ... {
-    throw new AError('Error of type A occured!');
-  }
-
-  if ... {
-    throw new BError('Error of type B occured!');
-  }
-}
-```
-
-We can then do a chain catch:
-
-```rave
-try {
-  doSomething();
-}
-
-catch e: AError {
-  // ...
-}
-
-catch e: BError {
-  // ...
-}
-```
-
-But we can also get them all at once:
-
-```rave
-try {
-  doSomething();
-}
-
-catch e: Error {
-  // *ALL* errors will be caught here
+// Simplier
+if safeDivision(1, 0) is Ok(value) {
+  println!(value); // Won't print
 }
 ```
 
@@ -5090,7 +4943,7 @@ let value: ?uint = None;
 do {
   value = fibo.next();
 
-  println!(value) if some value;
+  println!(value) if value is Some(_);
 } until (value == None);
 ```
 
@@ -5208,40 +5061,22 @@ Considering we want to ensure a string is not empty, we can declare a constrain 
 ```rave
 val notEmptyStr: string with ((candidate: string) => not candidate.empty());
 
-if try? (notEmptyStr = 'Hello world!') {
+if (notEmptyStr = 'Hello world!') is Ok(_) {
   println!('It worked fine');
 }
 ```
 
 Here, we are forced to catch errors because as assignment may fail.
 
-As our type is a bit long, we can shorten it a bit:
+As our type is a bit long, we can shorten it by using a lambda:
 
 ```rave
-val notEmptyStr: string with (c => not c.empty());
-```
-
-There is also a shorter syntax that gets rids of the function syntax and replace the candidate value by the `_` entity:
-
-```rave
-val notEmptyStr: string with (not _.empty());
+val notEmpty: string with { not it.empty() };
 ```
 
 The presence of the callback ensures the value has been validated, and so we don't have to perform any additional check.
 
 The counterpart of constrained types is that the callback is called at each assignment, which reduces performances when writing. When reading, nothing changes, though.
-
-To avoid having to write the again and again the same type constraint, and to unify them across your programs, you can use the `type` keyword which allows to make type aliases:
-
-```rave
-type NotEmptyString = string with (not _.empty());
-
-val notEmpty: NotEmptyString;
-
-if 'Hello world!' as? NotEmptyString is Some(typecasted) {
-  notEmpty = typecasted;
-}
-```
 
 Note that constrained types are automatically typecastable to their original version, without any risk of fail. This is achieved automatically because constrained types are considered sub-types of their original ones.
 
@@ -5314,32 +5149,30 @@ The _official type_ of `something` is `Any`: this is the type it sure has. But i
 Still, we may want to convert this value back to its original type. This can be achieved only through _unsafe_ typecasting:
 
 ```rave
-try {
-  cast_unsafe!<string>(something); // Returns a string
-}
-
-catch e: UnsafeCastError {
-  println!('Failed to typecast!');
-}
-```
-
-This program will work fine. If we tried to cast unsafely `something` to **any** other type, it would have failed and throw an error.
-
-Because using a `try`-`catch` block is a bit heavy, we can use its optional version:
-
-```rave
 val str = something as? string; // ?string
 ```
 
 The `str` entity has the `?string` value: if the typecast succeeds, it holds the typecast value. But if it fails, instead of throwing an error, it returns `None` ; that's why the returned value is optional.
 
-If we are absolutely sure about the typecasting being write - and so we don't want the final value to be optional, we can use the `expect!` function:
+If we are absolutely sure about the typecasting being write - and so we don't want the final value to be optional, we can use the `p!` function:
 
 ```rave
-val str = expect! something as? string; // string
+val str = p! { something as? string }; // string
 ```
 
 Using this one, if the typecast fails, the program will panic. Be **really** aware when using it - its usage is strongly discouraged most of the time.
+
+Note that unsafe typecasting can also be used to lighten the usage of constrained types, by defining _type aliases_:
+
+```rave
+type LongString = string with { it.length > 5 };
+
+val hello = 'Hello world!';
+
+if hello as? LongString is Some(casted) {
+  println!(casted); // Prints: 'Hello world!'
+}
+```
 
 ### Intersection types
 
@@ -5460,11 +5293,11 @@ val data: string | uint = 'Hello world';
 
 val str: string = data; // Not allowed
 
-if some data as? string {
+if data as? string is Some(_) {
   println!(data); // Prints: 'Hello world!'
 }
 
-if some data as? uint {
+if data as? uint is Some(_) {
   println!(data); // Won't print anything
 }
 ```
@@ -5539,21 +5372,6 @@ println!(A | B == A); // Prints: 'true'
 
 As for intersection absorptions, union absorptions are performed automatically by the program.
 
-#### Union tries
-
-_Union tries_ consist in returning a value from an inline `catch` block. The resulting value will then have an union type: the type of value returned by the `try` block as the first type, the type of value returned by the `catch` block as the second one:
-
-```rave
-val data = try divideInt(a, b) catch 'FAILED'; // int | string
-```
-
-If both blocks return the same type of value, type absorption will make it result in a single type
-:
-
-```rave
-val data = try divideInt(a, b) catch 0; // int | int == int
-```
-
 #### Automatic sub-typing
 
 An union type will be automatically typecastable to any type that is a common parent type to all types in the union. Showcase:
@@ -5566,44 +5384,6 @@ class C extends A {}
 
 let b: B | C = new B();
 let a: A = b; // Works (as 'B' and 'C' are both sub-types of 'A')
-```
-
-#### Union error types
-
-In a `catch` block, it is possible to not provide its head entity's type. If so, its type will be the union type of all throwable types inside the `try` block:
-
-```rave
-fn fnA () throws AError, BError {}
-fn fnB () throws CError {}
-
-try {
-  fnA();
-  fnB();
-}
-
-catch e {
-  // 'e' is typed as an 'AError | BError | CError'
-}
-```
-
-Already caught types are also eliminated from the union:
-
-```rave
-fn fnA () throws AError, BError {}
-fn fnB () throws CError {}
-
-try {
-  fnA();
-  fnB();
-}
-
-catch e: BError {
-  // 'e' is typed as a 'BError'
-}
-
-catch e {
-  // 'e' is typed as an 'AError | CError'
-}
 ```
 
 ### Union values
@@ -5844,20 +5624,16 @@ namespace Users {
     users[name] = age;
   }
 
-  getUser (name: string) : User throws Error {
-    if name not in users {
-      throw new Error('User not found');
+  getUser (name: string) : Result<User, string> {
+    if name not keyof users {
+      return Err('User not found');
     } else {
-      return users[name];
+      return Ok(users[name]);
     }
   }
 
-  deleteUser (name: string) throws Error {
-    if name not in users {
-      throw new Error('User not found');
-    } else {
-      delete useres[name];
-    }
+  deleteUser (name: string) {
+    delete users[name] if name keyof users;
   }
 }
 ```
@@ -6054,7 +5830,7 @@ val arr2: int[3] = arr1 as int[3]; // ERROR (not typecastable)
 val arr1: int[] = [ 2, 3, 4 ];
 val arr2: int[3];
 
-if some arr1 as? int[3] {
+if arr1 as? int[3] is Some(_) {
   println!('It worked!'); // Not executed
 } else {
   println!('An error occured.'); // Executed
@@ -6066,14 +5842,14 @@ So, in order to perform this typecast, we have to use arrays' dedicated `.toFixe
 ```rave
 val arr1: int[] = [ 2, 3, 4 ];
 
-if some try arr1.toFixed(3) {
+if arr1.toFixed(3) is Some(_) {
   println!('It worked!'); // Executed
 } else {
   println!('An error occured.'); // Not executed
 }
 ```
 
-This function throws an error if the typecast failed, so if we tried to typecast `arr1` to an array with any other size, it would have failed and run the `else`'s body instead.
+This function fails if the typecast failed, so if we tried to typecast `arr1` to an array with any other size, it would have failed and run the `else`'s body instead.
 
 A second point about vectors typecasting is that any vector holding `X` values can be automatically typecasted to an equivalent vector holding `Y` values if `Y` is a parent type of `X`. Showcase:
 
@@ -6341,9 +6117,7 @@ Some of the concepts we will see, like promises, are also very useful when deali
 
 ### The problem
 
-Some events are synchronous even though they appear to be asynchronous. For example, catch blocks call may appear to be asynchronous becacuse they are called only if an error occured, and implicitly. But in fact, they are called synchronously, because the analyzer turns all throw instructions inside a try block to a jump to the catch one (which is not possible manually). So, the catch block works synchronously.
-
-Another case is callbacks. In the following code:
+Let's take an example for this one: callbacks. In the following code:
 
 ```rave
 class Event {
@@ -6402,7 +6176,7 @@ readAsync('hello.txt')
   .catch(err => println!('Something went wrong: ${content.message}'));
 ```
 
-The `.then()` function simply registers the callback which will be called if the promise succeeds, while `.catch()` registers the callback for the case it fails. Here, we don't use any `try`-`catch` block to handle potential errors ; there is callback for that.
+The `.then()` function simply registers the callback which will be called if the promise succeeds, while `.catch()` registers the callback for the case it fails. Here, we don't use any `Resut<T, X>` value to handle potential errors ; there is callback for each case.
 
 We can also use `.finally()` to run a function after the other callbacks, whatever the promise succeeded or failed.
 
@@ -6434,7 +6208,7 @@ Asynchronous functions are a simplier way to write functions based on promises. 
 If we rewrite our function in an asynchronous function, here is how it looks:
 
 ```rave
-async fn readAsync (fileName: string) : (string, Error) {
+async fn readAsync (fileName: string) : Result<string, Error> {
   if filename in files {
     resolve files[fileName];
   } else {
@@ -6445,7 +6219,7 @@ async fn readAsync (fileName: string) : (string, Error) {
 
 A lot simplier and easier to read, right?
 
-An asynchronous function implicitly returns a promise. Its return type is shortened: instead of returning a `Promise<X, Y>`, it indicates returning a `(X, Y)`, and is automatically replaced by the builder. So, our function will, in reality, return a `Promise<string, Error>`.
+An asynchronous function implicitly returns a promise. Because this isn't explicit, the function's return type is not stated as a promise, but as a `Result<T, X>` value, which will be translated at build time.
 
 Then, we don't have to instanciate the `Promise<X, Y>` class: the function's body is implicitly wrapped inside a promise's function. We also have access to two new keywords: `resolve`, which calls the resolution callback, and `reject`, which calls the rejection callback.
 
@@ -6546,9 +6320,7 @@ delayedPrint('Hello', 1000)
   .then(i => println!('Finished')); // Will print after 1 second
 ```
 
-The result of the promise is returned as a value, so it's possible to write `val constant = await somePromise;`, for instance.
-
-Note that, if the promise is not error-free, `await` may throw an `AwaitRejectionError<T>` error (with `T` being the provided promise's rejection type), so it must be wrapped in a `try` block.
+The result of the promise is returned as a value, so it's possible to write `val constant = await somePromise;`, for instance. For error-free promises, it returns the return value of the promise, else it returns a `Result<T, X>` value.
 
 The `await` keyword is not available outside asynchronous functions:
 
@@ -6560,11 +6332,11 @@ fn test () {
 }
 ```
 
-It's also possible to simplify catching of `await` errors:
+A common way to deal with `await` errors is to use pattern matching:
 
 ```rave
 // Standard way
-if try? await failableMethod() is Some(result) {
+if await failableMethod() is Some(result) {
   println!(result);
 }
 
@@ -6586,7 +6358,7 @@ A first idea to achieve this would be to make ten promises, and when they are al
 
 ```rave
 // Considering the following function:
-async fn getArticle (id: uint) : (string, Error);
+async fn getArticle (id: uint) : Result<string, string>;
 
 // The code:
 Promise
@@ -6609,13 +6381,7 @@ Here is the syntax:
 
 ```rave
 for i in 0..10 {
-  try {
-    println!(sync fetchArticle(i));
-  }
-
-  catch e {
-    println!('Failed to fetch article ${i}: ${e.message}');
-  }
+  sync fetchArticle(i)); // Result<string, string>
 }
 ```
 
@@ -6624,20 +6390,16 @@ This way, the loop is ran a synchronous way. To take again our `.map()` example:
 ```rave
 val articles = [ 2, 5, 8 ];
 val articlesBody = articles.map(
-  id => try sync fetchArticle(i) catch 'Failed to fetch article: ' + err.message
-); // string[3]
+  id => sync fetchArticle(i)
+); // Result<string, string>[3]
 
 // Print them
 for body in articlesBody {
-  println!(body);
-}
-```
-
-Note that, as for `await`, `sync` has an optional keyword, too:
-
-```rave
-if sync? fetchArticle(2) is Some(content) {
-  println!('Article\'s content: ' + content);
+  if body is Ok(str) {
+    println!(str);
+  } elif body is Err(error) {
+    println!('ERROR: ' + error);
+  }
 }
 ```
 
@@ -6778,28 +6540,9 @@ fn increment (num: *mut int) {
 
 Examples aim to be as short and as explicit as possible. Note that it's possible to give several examples for the same function. Usually, it's an expression, but it's not forced too.
 
-### Errors throwing
-
-The `@throws` annotation allows us to describe each case of error throwing:
-
-```rave
-/**
- * Double a positive integer
- * @param num The integer to double
- * @throws ErrorType1 If the integer is negative
- * @throws ErrorType2 If the integer is equal to 0
- * @returns The double value of the provided integer
- */
-fn double (num: int) : int throws ErrorType1, ErrorType2 {
-  throw new ErrorType1('Integer is negative') if num < 0;
-  throw new ErrorType2('Integer is zero') if num == 0;
-  return num * 2;
-}
-```
-
 ### Conditions
 
-The `@condition` annotation indicates a condition that must be matched in order for the function to work properly. It is useful to indicate conditions required to avoid runtime errors, that aren't declared using the `throws` keyword.
+The `@condition` annotation indicates a condition that must be matched in order for the function to work properly. It is useful to indicate conditions required to avoid programming errors.
 
 ```rave
 /**
