@@ -834,7 +834,7 @@ enum Color2 {
 
 The only limitation is that the value must be a literal one.
 
-It's also possible to hold values in an enumeration:
+It's also possible to hold values in an enumeration, either using a tuple:
 
 ```rave
 enum Color {
@@ -845,6 +845,19 @@ enum Color {
 }
 
 val red = Color.Custom(255B, 0B, 0B);
+```
+
+Or using an object:
+
+```rave
+enum Color {
+  Red,
+  Green,
+  Blue,
+  Custom { r: u8, g: u8, b: u8 }
+}
+
+val red = Color.Custom({ r: 255, g: 0, b: 0 });
 ```
 
 ### Tuples
