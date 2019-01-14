@@ -297,10 +297,10 @@ We can then assign these values to an entity:
 val num = 2b; // 'num' is typed as a 'i8'
 ```
 
-Note that, when a decimal part is found after a number, it is automatically considered as an `f32`, even if it's zero:
+Note that, when a decimal part is found after a number, it is automatically considered as an `f64`, even if it's zero:
 
 ```rave
-val float = 2.0; // f32
+val float = 2.0; // f64
 ```
 
 ### Overflow and underflow
@@ -852,7 +852,7 @@ val red = Color.Custom(255B, 0B, 0B);
 Tuples are a mix between structures and arrays. Their indexes are literal `usize` values, but each value can have a different type:
 
 ```rave
-val tuple: (int, f32, string) = (2, 4.8, 'Hello');
+val tuple: (int, f32, string) = (2, 4.8f, 'Hello');
 
 tuple[0]; // int
 tuple[1]; // f32
@@ -1598,7 +1598,7 @@ A solution is to use a function. It goes like this:
 
 ```rave
 fn area (base: f32, top: f32, height: f32) {
-  if (base + top) * height / 2 > 100 {
+  if (base + top) * height / 2f > 100 {
     println!('Area exceeds 100');
   }
 }
@@ -1731,7 +1731,7 @@ It's possible to provide multiple endless arguments, the only rule it that we ca
 
 ```rave
 fn sumOf (...ints: int[], ...floats: f32[]) : f32 {
-  let sum = 0.0;
+  let sum = 0f;
 
   for n in ints {
     sum += n as f32;
@@ -3782,7 +3782,7 @@ class LargeNumber {
 val largeNum = new LargeNumber;
 
 typeof (largeNum + 2); // int
-typeof (largeNum + 2.0); // f32
+typeof (largeNum + 2f); // f32
 typeof (largeNum + 8u); // uint
 ```
 
