@@ -1964,27 +1964,36 @@ A function is called a _callback_ when it is provided as a function's argument. 
 
 ```rave
 // Lambda syntax
-list.filter((value: int) => value > 2);
+list.filter({ value /* int */ -> value > 2 /* int */ });
+```
 
-// ICT
-list.filter((value) => value > 2);
+Note that, when the callback is the last provided argument, we can omit parenthesis:
+
+```rave
+list.filter { value -> value > 2 };
 ```
 
 This syntax doesn't work with non-callback lambdas (e.g. lambdas that are assigned to an entity before being used). Indeed, ICT works because the builder exactly knows what are the type of the callback's arguments, as well as its return type.
 
-When the callback has a single argument, its wrapping parenthesis can be omitted:
+When the callback has a single argument, we can omit it and use the `it` entity instead:
 
 ```rave
-list.filter(value => value > 2);
+list.filter { it > 2 };
 ```
 
-To provide multiple instructions, braces can be used after the arrow:
+This syntax also support multiple instructions:
 
 ```rave
-list.filter(value => {
+list.filter { value ->
   println!('Filtering value ${value}...');
   return value > 2;
-});
+}
+
+// Or:
+list.filter {
+  println!('Filtering value ${it}...');
+  return it > 2;
+}
 ```
 
 ### Parametered strings
@@ -2007,12 +2016,12 @@ fn translate (pieces: StringPiece[]) : string {
   // 'pieces' contains [ 'You just ordered ', ' products. They will be delivered on the ', '.' ]
   // 'params' contains [ 'nb', 'deliverDate' ]
 
-  return pieces.map(piece => {
-    // 'piece.str' contains 'You just ordered ', then ' products. The will [...]' and then '.'
-    // 'piece.param' contains 'nb', then 'deliverDate'
+  return pieces.map {
+    // 'it.str' contains 'You just ordered ', then ' products. The will [...]' and then '.'
+    // 'it.param' contains 'nb', then 'deliverDate'
 
-    return piece.str + orderDate[piece];
-  });
+    it.str + orderDate[it];
+  }
 }
 ```
 
@@ -2021,54 +2030,6 @@ Note that our function is not forced to return a `string`, it's just for the exa
 ```rave
 println!(translate`You just ordered ${nb} products. They will be delivered on the ${deliverDate}.`);
   // Prints: 'You just ordered 2 products. They will be delivered on the 10-05-2018.'
-```
-
-### Block lambdas
-
-Blocks lambdas allow to write lambdas as blocks when it's the last argument of a function, which can be more lightweight:
-
-```rave
-// Lambda
-myFunction(() => {
-  println!('Hello !');
-});
-
-// Block
-myFunction {
-  println!('Hello !');
-}
-```
-
-This also works if the callback takes arguments:
-
-```rave
-// Lambda
-myFunction(name => {
-  println!('Hello ${name}!');
-});
-
-// Block
-myFunction { name ->
-  println!('Hello ${name}!');
-}
-```
-
-And also if the called function takes other arguments:
-
-```rave
-// Lambda
-myFunction(2, (name, times) => {
-  for i in 0..times {
-    println!('Hello ${name}!');
-  }
-});
-
-// Block
-myFunction(2) { names, times ->
-  for i in 0..times {
-    println!('Hello ${name}!');
-  }
-}
 ```
 
 ## Classes
@@ -5079,7 +5040,7 @@ if (notEmptyStr = 'Hello world!') is Ok(_) {
 
 Here, we are forced to catch errors because as assignment may fail.
 
-As our type is a bit long, we can shorten it by using a lambda:
+As our type is a bit long, we can be greatly shortened it by using a lambda:
 
 ```rave
 val notEmpty: string with { not it.empty() };
@@ -5995,7 +5956,7 @@ println!(incCounter); // Prints: '2'
 _Bindings_ are a simple way to access all properties of a given object as if they were part of the current scope. This can be useful when dealing with large libraries. Let's take the example of a game engine, with the following code:
 
 ```rave
-engine.run(lib => {
+engine.run { lib ->
   val window = lib.createWindow(640, 480, 'My super game');
 
   val scene = lib.createScene();
@@ -6010,13 +5971,13 @@ engine.run(lib => {
   window.setScene(scene);
 
   window.display();
-});
+}
 ```
 
 The same version, with bindings:
 
 ```rave
-engine.run(lib => {
+engine.run { lib ->
   // Bind "lib"'s property to the current scope
   #bind lib;
 
@@ -6031,7 +5992,7 @@ engine.run(lib => {
   window.setScene(scene);
 
   window.display();
-});
+}
 ```
 
 That sure is simplifier and more easy to read, isn't it?
@@ -6178,13 +6139,13 @@ fn readAsync (fileName: string) : Promise<string, Error>;
 
 // Let's use it
 readAsync('hello.txt')
-  .then((content: string) => println!("File's size is ${content.length} bytes."))
-  .catch((err: Error) => println!('Something went wrong: ${content.message}'));
+  .then { content -> println!("File's size is ${content.length} bytes.") }
+  .catch { err -> println!('Something went wrong: ${err.message}') }
 
 // And with ICT:
 readAsync('hello.txt')
-  .then(content => println!("File's size is ${content.length} bytes."))
-  .catch(err => println!('Something went wrong: ${content.message}'));
+  .then { content -> println!("File's size is ${content.length} bytes.") }
+  .catch { err -> println!('Something went wrong: ${content.message}') }
 ```
 
 The `.then()` function simply registers the callback which will be called if the promise succeeds, while `.catch()` registers the callback for the case it fails. Here, we don't use any `Resut<T, X>` value to handle potential errors ; there is callback for each case.
@@ -6198,7 +6159,7 @@ val files = new Map<string, string>;
 
 fn readAsync (fileName: string) : Promise<string, Error> {
   // Make a promise a return it
-  return new Promise<string, Error>((resolve, reject) => {
+  return new Promise<string, Error> { resolve, reject ->
     if fileName in files {
       // Success
       resolve(files[fileName]);
@@ -6206,7 +6167,7 @@ fn readAsync (fileName: string) : Promise<string, Error> {
       // Fail
       reject(new Error('File not found'));
     }
-  });
+  }
 }
 ```
 
@@ -6255,9 +6216,9 @@ Also, asynchronous functions are allowed to return values. In such case, it will
 Error-free promises are promises that cannot fail. These take only one template instead of twos, and all calls to `.catch()` will work but have no effect. Also, the promise's function only take the resolution callback, as it cannot perform a rejection:
 
 ```rave
-new Promise<string>(resolve => {
+new Promise<string> { resolve ->
   resolve('It works.');
-});
+}
 ```
 
 With asynchronous functions, it simply consists in returning a single type instead of a tuple of two types. Also, the `reject` keyword becomes unavailable:
@@ -6303,8 +6264,8 @@ Note that it's possible to use promises which return different resolution and/or
 
 ```rave
 val single = Promise.all([
-  new Promise<int, int>((resolve, reject) => resolve(2)),
-  new Promise<bool, bool>((resolve, reject) => resolve(true))
+  new Promise<int, int> { resolve, reject -> resolve(2) },
+  new Promise<bool, bool> { resolve, reject -> resolve(true) }
 ]); // Promise<primitive[2], PromiseChainError<primitive, primitive>
 ```
 
@@ -6328,7 +6289,7 @@ fn delayedPrint (message: string, delay: uint) {
 }
 
 delayedPrint('Hello', 1000)
-  .then(i => println!('Finished')); // Will print after 1 second
+  .then { println!('Finished') } // Will print after 1 second
 ```
 
 The result of the promise is returned as a value, so it's possible to write `val constant = await somePromise;`, for instance. For error-free promises, it returns the return value of the promise, else it returns a `Result<T, X>` value.
@@ -6374,10 +6335,8 @@ async fn getArticle (id: uint) : Result<string, string>;
 // The code:
 Promise
   .all(fetchArticle(i) for i in 0..10)
-  .then(articles =>
-    println!(article) for article in articles;
-  )
-  .catch(err => println!('Failed to fetch articles: ' + err.message));
+  .then { println!(article) for article in it }
+  .catch { err -> println!('Failed to fetch articles: ' + err.message) }
 ```
 
 The main problem of this code is that we couldn't integrate it to a loop, for example. Let's imagine we have a `for` loop that does a lot of stuff and, in the middle of its body, retrieves the article, then do other stuff on it. We would have to transform the code in an asynchronous process that do the stuff while preparing each promise, and do the second stuff when they are resolved. That's heavy and isn't possible in all cases - for example if our loop is in a process that MUST be synchronous.
@@ -6400,9 +6359,7 @@ This way, the loop is ran a synchronous way. To take again our `.map()` example:
 
 ```rave
 val articles = [ 2, 5, 8 ];
-val articlesBody = articles.map(
-  id => sync fetchArticle(i)
-); // Result<string, string>[3]
+val articlesBody = articles.map { sync fetchArticle(it) } // Result<string, string>[3]
 
 // Print them
 for body in articlesBody {
