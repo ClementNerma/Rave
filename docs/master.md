@@ -591,7 +591,7 @@ arr2 = [ 2, 3, 4, 5 ]; // Works fine
 Ranges are a shortened syntax to make arrays that go from a given integer to another. For example, if we want to make an array containing all integers from `10` to `19`, we can just write:
 
 ```rave
-val arr = 10...19;
+val arr = 10..=19;
 
 println!(arr[0]); // Prints: '10'
 println!(arr[9]); // Prints: '19'
@@ -1187,7 +1187,7 @@ But we can also use a number range for this:
 val slice = numbers[1..4];
 
 // Equivalent to:
-val slice = numbers[1...3];
+val slice = numbers[1..=3];
 ```
 
 ## Blocks
@@ -1309,7 +1309,7 @@ for i in 0..5 {
 This will print values from `0` to `4`. If we want to go up to the end value, we simply add a third point:
 
 ```rave
-for i in 0...5 {
+for i in 0..=5 {
   println!(i);
 }
 ```
@@ -1471,7 +1471,7 @@ println!('You are an adult') unless age < 18;
 This works for absolutely any instruction and block:
 
 ```rave
-println!(i) for i in 0...5;
+println!(i) for i in 0..=5;
 ```
 
 This code will print numbers from `0` to `5`.
@@ -5991,7 +5991,7 @@ engine.run(lib => {
 
   val polygons = (
     lib.createPolygon(lib.randInt(), lib.randInt(), lib.randColor()
-    for i in 1...10
+    for i in 1..=10
   );
 
   scene.attachAll(polygons);
@@ -6013,7 +6013,7 @@ engine.run(lib => {
 
   val scene = createScene();
 
-  val polygons = (createPolyon(randInt(), randInt(), randColor()) for i in 1...10);
+  val polygons = (createPolyon(randInt(), randInt(), randColor()) for i in 1..=10);
 
   scene.attachAll(polygons);
 
