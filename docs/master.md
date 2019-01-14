@@ -1452,19 +1452,17 @@ match red {
   Green -> println!('Color is green'),
   Blue  -> println!('Color is blue'),
   Custom(r, g, b) -> println!('red = ${r}, green = ${g}, blue = ${b}')
+  // For objects
+  Custom { r: r_alias, g: g_alias, b: b_alias) -> println!('red = ${r_alias}, green = ${g_alias}, blue = ${b_alias}')
 }
 ```
 
-It's also possible to provide conditions for matches, by wrapping them between brackets:
+Union values are also supported:
 
 ```rave
-val age = 24;
-let str = '';
-
-match age {
-  [_ < 12] -> str = 'Child',
-  [_ < 18] -> str = 'Teenager',
-  default  -> str = 'Adult'
+match red {
+  Red | Green | Blue -> println!('Color is a primary one'),
+  Custom(r, g, b) -> println!('Color is custom (r = ${r}, g = ${g}, b = ${b})');
 }
 ```
 
