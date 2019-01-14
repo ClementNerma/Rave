@@ -1413,7 +1413,7 @@ for i in 0..5 {
 
 This code will print `0`, `1`, `3` and `4` - the `println!` call for `2` has been ignored because of the `continue` instruction above it.
 
-### Matches
+### Pattern matching
 
 The `match` keyword allow to run a set of instructions depending on a value. Let's consider we have a color taken from a `Color` enumeration and we want to print a message depending on it. A first idea could be to write:
 
