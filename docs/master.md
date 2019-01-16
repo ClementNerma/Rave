@@ -2224,7 +2224,7 @@ We can make members private by prefixing their name with the `private` keyword. 
 ```rave
 class Example {
   known: string;
-  private secret: string;
+  priv secret: string;
 
   %new () {
     this.known = 'Public data';
@@ -2243,7 +2243,7 @@ This also works for methods: they can be public or private to be available - or 
 ```rave
 class Example {
   known: string;
-  private secret: string;
+  priv secret: string;
 
   %new () {
     this.known = 'Public data';
@@ -2257,7 +2257,7 @@ We can provide a default value for attributes, so we don't have to assign them i
 ```rave
 class Example {
   known = 'Public data';
-  private secret = 'Secret data';
+  priv secret = 'Secret data';
 
   %new () {}
 }
@@ -2267,7 +2267,7 @@ Also, as attributes are entities, they can be marked as constant using `val`. By
 
 ```rave
 class Example {
-  private val secret = 'Secret data';
+  priv val secret = 'Secret data';
 }
 ```
 
@@ -2302,10 +2302,10 @@ We can specify some arguments to be assigned automatically when passed to method
 
 ```rave
 class A {
-  private name: string;
-  private hp: uint;
-  private atk: uint;
-  private def: uint;
+  priv name: string;
+  priv hp: uint;
+  priv atk: uint;
+  priv def: uint;
 
   // This declaration:
   %new (this.name, this.hp, this.atk, this.def) {}
@@ -2569,8 +2569,8 @@ Still, we could want to notify some of the code the user is going to be dropped.
 
 ```rave
 class User {
-  private static counter = 0u;
-  private id: uint;
+  priv static counter = 0u;
+  priv id: uint;
 
   %new () {
     self.counter ++;
@@ -3050,13 +3050,13 @@ We shortened the child class' constructor by calling the mother's one using `sup
 
 #### Protected members
 
-The specificity of private members is that they cannot be accessed from the outside of the class, not even by the child classes. In order to make members that are not available from the outside of the class but still from its child classes, we can mark them as protected using the `protected` keyword:
+The specificity of private members is that they cannot be accessed from the outside of the class, not even by the child classes. In order to make members that are not available from the outside of the class but still from its child classes, we can mark them as protected using the `prot` keyword:
 
 ```rave
 class Mother {
   public_attr = 1;
-  protected protected_attr = 2;
-  private private_attr = 3;
+  prot protected_attr = 2;
+  priv private_attr = 3;
 
   // Available here: 'public_attr', 'protected_attr', 'private_attr'
 }
@@ -3940,8 +3940,8 @@ dict UniqueMap<K, V> extends Map<K, V> {}
 We will have two attributes for this class: a list of keys, and a list of values. That's the traditional way in dictionaries, as it allows to manage keys and values separately.
 
 ```rave
-  private keys = new List<K>;
-  private values = new List<V>;
+  priv keys = new List<K>;
+  priv values = new List<V>;
 ```
 
 #### Part 3: the setter
@@ -4887,8 +4887,8 @@ Generators are instances of the `Generator<T>` class. Here is an example of the 
 class Fibonacci impl Generator<uint> {
   val max: uint;
 
-  private a = 0;
-  private b = 1;
+  priv a = 0;
+  priv b = 1;
 
   %new (max: uint) {
     this.max = max;
@@ -4983,8 +4983,8 @@ Iterators are a sub-type of generators. They work exactly the same way, at the n
 
 ```rave
 class Counter impl Iterator<T> {
-  private counter = 0u;
-  private max: uint;
+  priv counter = 0u;
+  priv max: uint;
 
   %new (max: uint) {
     this.max = max;
@@ -6102,7 +6102,7 @@ Let's take an example for this one: callbacks. In the following code:
 
 ```rave
 class Event {
-  private static handler: () => void;
+  priv static handler: () => void;
 
   static handle (handler: () => void) {
     return this.handler = handler;
