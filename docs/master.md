@@ -1445,11 +1445,11 @@ match color {
   Red   -> println!('Color is red'),
   Green -> println!('Color is green'),
   Blue  -> println!('Color is blue'),
-  default     -> println!('Unknown color')
+  _ -> println!('Unknown color')
 }
 ```
 
-Which is a lot more readable. The `default` keyword runs its related set of instructions if None of the other values matched the provided one.
+Which is a lot more readable. The `_` keyword runs its related set of instructions if None of the other values matched the provided one.
 
 Enumerations are especially useful when dealing with enumerations:
 
@@ -5505,7 +5505,7 @@ if value.type == 'Type1' {
 
 match value.type {
   'Type2' -> println!("'value' is typed as a 'B' here"),
-  default -> println!("'value' is typed as an 'A | C' here"),
+  _ -> println!("'value' is typed as an 'A | C' here"),
 }
 ```
 
@@ -5534,7 +5534,7 @@ val value: C = /* value goes here */;
 
 match value.heroType {
   Warrior -> println!(typeof value), // Would print: 'Warrior',
-  default -> println!(typeof value)  // Would print: 'WhiteWizard | BlackWizard'
+  _ -> println!(typeof value)  // Would print: 'WhiteWizard | BlackWizard'
 }
 ```
 
