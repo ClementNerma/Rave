@@ -3415,69 +3415,6 @@ Because it has no member, every class implements its members, and so every class
 
 Also, every object that implements an interface's members is considered as one of its sub-types, which means absolutely any value is an `Any` value (as primitive types generate special objects too).
 
-### Traits
-
-Traits are kind of virtual classes: they describe a set of members, but their methods are declared with a body, too. The goal is to allow re-using some pieces of code across classes that are not mother and child of each other.
-
-```rave
-trait Vehicle {
-  val speed: f32;
-
-  accelerate () : string {
-    return 'Vroom!';
-  }
-}
-
-trait Wheeled {
-  val wheels: uint;
-}
-```
-
-As for interfaces, traits only describe public members and so there is no visibility keyword. Traits are implemented using the `use` keyword:
-
-```rave
-class Car {
-  use Vehicle, Wheeled;
-}
-
-// Sub-typing works fine
-val car: Vehicle = new Car();
-// Try a function
-println!(car.accelerate()); // Prints: 'Vroom!'
-```
-
-Traits can also use other traits:
-
-```rave
-trait Bike {
-  use Vehicle;
-
-  stop () : string {
-    return 'Scriiii';
-  }
-}
-```
-
-Or even implement interfaces:
-
-```rave
-interface Vehicle {
-  val speed: f32;
-}
-
-trait Bike impl Vehicle {
-  val speed: f32;
-
-  accelerate () : string {
-    return 'Vroom!';
-  }
-
-  stop () : string {
-    return 'Scriiii';
-  }
-}
-```
-
 ## Templates
 
 ### The concept
@@ -3528,7 +3465,7 @@ As you can see, this interface takes two templates, but the second one, which is
 
 ### Typechecking
 
-It's possible for a template to accept any type that inherits from a class, implements an interface or use a trait:
+It's possible for a template to accept any type that inherits from a class or implements an interface:
 
 ```rave
 fn takeNum<T extends number> (num: T) {
@@ -3543,7 +3480,6 @@ We can ues use the following syntaxes:
 
 * `T extends X`: `T` must inherit from `X`;
 * `T impl X`: `T` must implement the `X` interface;
-* `T uses X`: `T` must use the `X` trait;
 * `T in v`: `T` must be contained in the `v` tuple or in the `v` union
 
 We'll see unions later in this book. Template constraints can also be chained, like `T in v extends X impl Y`.
@@ -3705,7 +3641,7 @@ Class segments allow to make a set of members available only if a specific condi
 
 With all we've seen so far, this is not possible: the method will simply be available whatever the type of content is, and must handle the case where it doesn't contain only numbers.
 
-Class segments allow to solve this problem by making our method available only if a condition we give is met. The main point is that conditions must be predictable: the builder must be able to evaluate the condition at build time. A type of valid condition is checking if a template is implementing a specific interface, using a trait or inheriting from a class:
+Class segments allow to solve this problem by making our method available only if a condition we give is met. The main point is that conditions must be predictable: the builder must be able to evaluate the condition at build time. A type of valid condition is checking if a template is implementing a specific interface or inheriting from a class:
 
 ```rave
 class MyArrayClass<T> {
@@ -3729,7 +3665,7 @@ We can now try it:
 (new MyArrayClass<bool>).sum(); // Works fine
 ```
 
-Also, segments can implement interfaces or use traits:
+Also, segments can implement interfaces:
 
 ```rave
 class MyArrayClass<T> {
@@ -5396,7 +5332,7 @@ fn convertToString (value: Any) : ?string {
 }
 ```
 
-The `~` operator is called the _type assertion operator_: it checks if the provided entity matches the type on its right - it can be either a class, trait, interface...
+The `~` operator is called the _type assertion operator_: it checks if the provided entity matches the type on its right - it can be either a class, interface...
 
 Checking if a value's hidden type matches another is called a _type assertion_.
 
@@ -5540,7 +5476,7 @@ match value.heroType {
 
 ### Lambda classes
 
-_Lambda classes_ are to classes what lambdas are to functions. These are unnamed classes that are written inline, which must either extend from another class, implement an interface, or use a trait (or several of these). For example, let's consider the following code:
+_Lambda classes_ are to classes what lambdas are to functions. These are unnamed classes that are written inline, which must either extend from another class, implement one or more interface(s). For example, let's consider the following code:
 
 ```rave
 virtual class MouseClickHandler {
@@ -6560,7 +6496,7 @@ fn getValue (arr: string[], index: usize) : string {
 }
 ```
 
-### Classes, interfaces, traits
+### Classes, interfaces
 
 Classes are described like assignable entities. Their templates can be described using `@template`:
 
