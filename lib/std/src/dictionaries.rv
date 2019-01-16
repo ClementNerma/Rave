@@ -222,7 +222,7 @@ open dict Map<K, V> {
    * > @returns A mapped key/value pair
    * @returns The resulting @class
    */
-  map<X = K, Y = V> (callback: (key: K, value: V) => (K, V)) : _real<X, Y>;
+  map<X = K, Y = V> (callback: (key: K, value: V) => (X, Y)) : _real<X, Y>;
 
   /**
    * Generate a new @class from this one through a mapping function
@@ -233,7 +233,19 @@ open dict Map<K, V> {
    * > @returns The mapped value (key is kept)
    * @returns The resulting @class
    */
-  map<T = V> (callback: (key: K, value: V) => V) : _real<K, T>;
+  map<Y = V> (callback: (key: K, value: V) => Y) : _real<K, Y>;
+
+  /**
+   * Map values of this @class through a mapping function
+   * @template X Type of mapped keys
+   * @template Y Type of mapped values
+   * @param callback The mapping callback
+   * > @param key A key of this @class
+   * > @param value The value associated to this key
+   * > @returns A mapped key/value pair
+   * @returns The resulting @class
+   */
+  apply (callback: (key: K, value: V) => (K, V));
 
   /**
    * Make a @class from a vector of keys and a vector of values
