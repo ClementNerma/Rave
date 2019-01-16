@@ -3203,7 +3203,30 @@ new Mother(); // ERROR
 
 #### Virtual methods
 
-Methods can be stated, too. We already saw static methods, but they can also be virtual, meaning they must be defined in child classes. Such methods don't have a body in the original class, and so require the class itself to be virtual:
+Methods can be stated, too. We already saw static methods, but they can also be virtual, meaning they must be defined in child classes:
+
+```rave
+class Mother {
+  virtual sayHello () {
+    println!('Hello from mother!');
+  }
+}
+
+class ChildA extends Mother {
+  // ERROR: 'sayHello' is not declared
+}
+
+class ChildB extends Mother {
+  sayHello () {
+    println!('Hello from child B!');
+  }
+}
+
+(new Mother).sayHello(); // Prints: 'Hello from mother!'
+(new ChildB).sayHello(); // Prints: 'Hello from the child B!'
+```
+
+Such methods may not have a body in the original class, in this case they require the class itself to be virtual:
 
 ```rave
 virtual class Mother {
@@ -3222,31 +3245,6 @@ class ChildB extends Mother {
 ```
 
 Note that, if the child class is virtual itself, it doesn't have to re-declare the same methods ; they are implicitly virtual and will have to be declared in its own child class.
-
-#### Abstract methods
-
-Abstract methods, on their side, are virtual methods declared with a body. This allows to call the method from the original class, and it is not forced to be virtual itself:
-
-```rave
-class Mother {
-  abstract sayHello () {
-    println!('Hello from mother!');
-  }
-}
-
-class ChildA extends Mother {
-  // ERROR: 'sayHello' is not declared
-}
-
-class ChildB extends Mother {
-  sayHello () {
-    println!('Hello from child!');
-  }
-}
-
-(new Mother).sayHello(); // Prints: 'Hello from mother!'
-(new ChildB).sayHello(); // Prints: 'Hello from child!'
-```
 
 #### Final methods
 
@@ -6613,7 +6611,7 @@ virtual class A {
    * Create a new value of @class and return it
    * @returns A new instance of @class
    */
-  abstract create () : _real;
+  virtual create () : _real;
 }
 
 class B extends A {
@@ -6637,7 +6635,7 @@ virtual class A {
    * Create a new value of A and return it
    * @returns A new instance of A
    */
-  abstract create () : _real;
+  virtual create () : _real;
 }
 
 class B extends A {
