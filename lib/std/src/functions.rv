@@ -1,29 +1,118 @@
 /**
- * @file Native functions
- * @author Clément Nerma
- * @license Apache-2.0
- */
-
-// ==================== Debug functions ==================== //
+* @file Native functions
+* @author Clément Nerma
+* @license Apache-2.0
+*/
 
 /**
- * Print values
+ * Print some values
  * @param values The values to print
  * @param pretty Pretty-print the values
  */
-fn print (...values: Stringifyable, pretty = true);
+fn print (...values: Stringifyable[]);
 
 /**
- * Print values followed by a newline symbol
+ * Print some values with newline symbols
  * @param values The values to print
  * @param pretty Pretty-print the values
  */
-fn println (...values: Stringifyable, pretty = true);
-
-// ==================== Error functions ==================== //
+fn println! (...values: Stringifyable[]);
 
 /**
  * Make the program panic
  * @param message The panic message
  */
-fn panic (message: string);
+fn panic<T> (message?: string);
+
+/**
+ * Check if a key is contained in a dictionary
+ * @param key The key to check
+ * @param dict A dictionary
+ * @returns `true` if the key is in the dictionary
+ */
+infix fn in<K, V> (key: K, dict: Dict<K, V>) : bool;
+
+/**
+ * Check if a value is contained in a dictionary
+ * @param value The value to check
+ * @param dict A dictionary
+ * @returns `true` if the value is in the dictionary
+ */
+infix fn valof<K, V> (value: K, dict: Dict<K, V>) : bool;
+
+/**
+ * Wait for a promise
+ * @param promise A promise
+ * @returns The resolution or rejection data
+ */
+infix fn await<T, X> (promise: Promise<T, X>) : Result<T, X>;
+
+/**
+ * Wait for an error-free promise
+ * @param promise A promise
+ * @returns The promise's resolution data
+ */
+infix fn await<T> (promise: Promise<T>) : T;
+
+/**
+ * Synchronously wait for a promise
+ * @param promise A promise
+ * @returns The promise's resolution or rejection data
+ */
+infix fn sync<T, X> (promise: Promise<T, X>) : Result<T, X>;
+
+/**
+ * Synchronously wait for an error-free promise
+ * @param promise A promise
+ * @returns The promise's resolution data
+ */
+infix fn sync<T> (promise: Promise<T>) : T;
+
+/**
+ * Create a constant reference from a value
+ * @param value A value
+ * @returns A constant reference to the provided value
+ */
+fn ref<T> (value: T) : *T;
+
+/**
+ * Create a mutable reference from a value
+ * @param value A value
+ * @returns A mutable reference to the provided value
+ */
+fn ref_mut<T> (value: T) : *mut T;
+
+/**
+ * Get the type of a value
+ * @param value A value
+ * @returns The provided value's type
+ */
+infix fn typeof<T> (value: T) : Type;
+
+/**
+ * Panic if a result data is an error
+ * @param value A result data
+ * @returns The result's success data
+ */
+infix fn p<T> (value: Result<T, ?>) : T;
+
+/**
+ * Panic if the provided boolean is not `true`
+ * @param value A boolean (i.e. test of a result)
+ */
+fn assert (value: bool);
+
+/**
+ * Panic if the provided values are not equals
+ * @param left A value
+ * @param right A value to compare to the first one
+ */
+fn assert_eq<T ~ Equatable> (left: T, right: T);
+
+/**
+ * Clone a value
+ * @param value The value to clone
+ * @returns A clone of the provided value
+ */
+infix fn clone<T ~ Clonable> (value: T) : T;
+```
