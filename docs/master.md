@@ -4951,8 +4951,6 @@ for i in 0..10 {
 
 ### Constrained types
 
-Constrained types are a way to ensure a value holds validated data in a way far easier than a proxy. The main difference is we don't attach it to an entity but to a value.
-
 Considering we want to ensure a string is not empty, we can declare a constrain the `string` type by putting a callback on it that checks, when we try to assign a value using this type, if it is not empty. Here is how it goes:
 
 ```rave
@@ -5770,108 +5768,22 @@ list2[0] = 2.0; // Works fine in 'list2' because it holds 'number' values
                 //  and without cloning 'list2''s value holds the same OID as 'list1'
 ```
 
-### Proxies
+## Proxies
 
-Proxies are entities that don't have a real value. Instead, when we attempt to either read or write them, a related callback is called.
-
-Proxies are defined using the `proxy` keyword, with an object containing the callback called when the object is read - called the "getter" - and the one when the object is written - called the "setter" -. Note that the setter is optional ; if None is specified, all assignments will result in an error at build time.
+Proxies are entity that run a callback when being read. They are read-only and allow to shorten retrieving of values:
 
 ```rave
-val _counter = 0u;
-
-proxy counter: uint from {
-  getter: fn () : uint {
-    return ++ _counter;
-  },
-
-  setter: fn (value: uint) : bool {
-    _counter = value;
-    return true;
-  }
-};
-```
-
-Our `counter` proxy is declared as an entity of the `uint` type. The object located after the `from` keyword is called the proxy's _model_. The getter must be a function taking no argument and returning a value of the same type than the entity. The setter must be a function taking a value, which can be of any type - not necessarily the entity's one - and return a boolean: `true` if the value was assigned, `false` if it can't - because it is invalid, or so on.
-
-Let's try it:
-
-```rave
-println!(counter); // Prints: '1'
-println!(counter); // Prints: '2'
-println!(counter); // Prints: '3'
-```
-
-And so on. Note that it is possible to put any addition field in the object, and so we can integrate the counter variable inside our proxy. This way, we can make a counter that only increments itself and cannot be decremented:
-
-```rave
-proxy counter: uint from {
-  value: 0u,
-  getter: () => ++ this.value
-};
-
-println!(counter); // Prints: '1'
-println!(counter); // Prints: '2'
-println!(counter); // Prints: '3'
-println!(counter); // Prints: '4'
-println!(counter); // Prints: '5'
-```
-
-#### Prepared proxy models
-
-As the proxy model is a simple object, we can create it by advance and store it inside an object to use the same model across several proxies. The object will be cloned each time we create a proxy from it.
-
-A specificity is that models must be declared using the `prxmodel` keyword. Also, they cannot be read or write ; writing `myProxyModel.prop` will always fail.
-
-```rave
-prxmodel counterProxy {
-  value: 0u,
-  getter: () => ++ this.value
-};
-
-proxy counter1 from counterProxy;
-proxy counter2 from counterProxy;
-
-println!(counter1); // Prints: '1'
-println!(counter1); // Prints: '2'
-println!(counter2); // Prints: '1'
-```
-
-### Alias proxies
-
-Proxies can also be aliases for other entities:
-
-```rave
-val arr = [
-  [ 0, 1, 2 ],
-  [ 2, 3, 4 ],
-  [ 6, 7, 8 ]
+val matrix = [
+  1, 2, 3,
+  4, 5, 6,
+  7, 8, 9
 ];
 
-proxy middle as arr[1][1];
+proxy first -> matrix[0][0];
+proxy last  -> matrix.last().last();
 
-println!(middle); // Prints: '3'
-println!(arr[1][1]); // Prints: '3'
-
-middle += 2; // Works fine
-
-println!(middle); // Prints: '5'
-println!(arr[1][1]); // Prints: '5'
-```
-
-It's also possible to create a read-only proxy from an expression:
-
-```rave
-let counter = 0;
-
-proxy incCounter -> counter + 1;
-
-println!(counter); // Prints: '0'
-println!(incCounter); // Prints: '1'
-
-counter ++;
-
-println!(counter); // Prints: '1'
-println!(incCounter); // Prints: '2'
+println!(first); // Prints: '1'
+println!(last); // Prints: '9'
 ```
 
 ## Additional features
