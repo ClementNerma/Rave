@@ -220,6 +220,8 @@ val num32: f32 = INFINITY; // Works fine
 val num64: f64 = INFINITY; // Works fine
 ```
 
+Note that, while dividing an integer by zero makes the program panic (which basically means it'll display an error message and exit immediatly), dividing a floating-point number by zero will result in the `INFINITY` value.
+
 **NOTE:** Floats are represented according to the IEEE-754 standard. `f32` is a single-precision float, while `f64` has double precision.
 
 ### Arithmetic operators
