@@ -4160,7 +4160,7 @@ fn getValue () : ?string {
   return None;
 }
 
-println!(getValue() ?? 'No value returned');
+println!(getValue() ?: 'No value returned');
 ```
 
 ## Errors and panics
