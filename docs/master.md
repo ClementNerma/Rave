@@ -1362,24 +1362,6 @@ do {
 
 This code will print `0` - nothing would have been printed with a simple `while` loop.
 
-These two blocks also have variants: `until` and `do`..`until`, which simply revert the condition (like `unless` does for `if`).
-
-```rave
-let i = 0;
-
-// until
-until i == 5 {
-  println!(i);
-  i ++;
-}
-
-// do...until
-do {
-  println!(i);
-  i ++;
-} until i == 5;
-```
-
 There is a last repetition block, which repeats its instructions endlessly: `loop`.
 
 ```rave
@@ -4861,7 +4843,7 @@ do {
   value = fibo.next();
 
   println!(value) if value is Some(_);
-} until (value == None);
+} while value != None;
 ```
 
 But we can also use special syntaxes of the `for` loop instead:
