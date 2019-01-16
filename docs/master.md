@@ -222,6 +222,13 @@ val num64: f64 = INFINITY; // Works fine
 
 Note that, while dividing an integer by zero makes the program panic (which basically means it'll display an error message and exit immediatly), dividing a floating-point number by zero will result in the `INFINITY` value.
 
+Also, dividing a floating-point number equal to `0` will result in the `NaN` value:
+
+```rave
+0f / 0 // NaN
+0d / 0 // NaN
+```
+
 **NOTE:** Floats are represented according to the IEEE-754 standard. `f32` is a single-precision float, while `f64` has double precision.
 
 ### Arithmetic operators
