@@ -1651,6 +1651,25 @@ The second change is the `return` statement at the end of the function. The valu
 val trapezoidArea = area(1.0, 2.0, 3.0));
 ```
 
+There is also a simplier way to return values: when an expression is either the last instruction of a function, or the last instruction of the last block chain of the function if this last one ends with a block, and if doesn't end with a semi-colon, it is considered as the function's return value.
+
+More concretely:
+
+```rave
+fn area (base: f32, top: f32, height: f32) : f32 {
+  // Compute the area
+  val result = (base + top) * height / 2;
+
+  // Print the message
+  if result > 100 {
+    println!('Area exceeds 100');
+  }
+
+  // Return the result
+  result // No semi-colon
+}
+```
+
 ### Arguments mutability
 
 By default, a function's arguments are constants. They can be made mutable using the same keywords than in structures:
@@ -1719,7 +1738,7 @@ fn sumOf (...nums: int[]) : int {
 
   sum += n for n in sums;
 
-  return sum;
+  sum
 }
 
 sumOf(1, 2, 3); // Works fine
@@ -1741,7 +1760,7 @@ fn sumOf (...ints: int[], ...floats: f32[]) : f32 {
 
   sum += n for f in floats;
 
-  return sum;
+  sum
 }
 
 sumOf(1, 2, 3.0); // Works fine
@@ -1798,7 +1817,7 @@ This quickly becomes unreadable, and that's where we use infix functions:
 
 ```rave
 infix fn add (left: int, right: int) : int {
-  return left + right;
+  left + right
 }
 
 // Standard syntax
@@ -1824,7 +1843,7 @@ For infix functions that return a boolean, we can use the `not` keyword before t
 
 ```rave
 infix fn greaterThan (left: int, right: int) : bool {
-  return left > right;
+  left > right
 }
 
 if 2 greaterThan 5 {
@@ -1843,12 +1862,12 @@ _Polymorphism_ allow to declare the same function several times. Each declaratio
 ```rave
 fn add (a: int, b: int) : int {
   println!('Add: int');
-  return a + b;
+  a + b
 }
 
 fn add (a: uint, b: uint) : uint {
   println!('Add: uint');
-  return a + b;
+  a + b
 }
 ```
 
@@ -1881,7 +1900,7 @@ It's possible to define _expression functions_, which are functions that return 
 ```rave
 // Full syntax
 fn hello (name: string) : string {
-  return 'Hello ${name}!';
+  'Hello ${name}!';
 }
 
 // Single-instruction
@@ -1905,7 +1924,7 @@ _Lambdas_, also called _anonymous functions_, are single values that can be used
 val list = [ # 2, 3, 4 ];
 
 val filtered = list.filter(fn (value: int) : bool {
-  return value > 2;
+  value > 2
 });
 ```
 
@@ -1923,7 +1942,7 @@ fn runLambda (func: (value: int) => bool) {
 }
 
 runLambda(fn (value: int) : bool {
-  return true;
+  true
 }); // Prints: 'Returned: true'
 ```
 
@@ -1933,7 +1952,7 @@ As functions are simple values, we can store it in entities, and even use inferr
 
 ```rave
 let sum = fn (a: int, b: int) : int {
-  return a + b;
+  a + b
 };
 
 println!(sum(2, 5)); // Prints: '7'
@@ -1977,13 +1996,13 @@ This syntax also support multiple instructions:
 ```rave
 list.filter { value ->
   println!('Filtering value ${value}...');
-  return value > 2;
+  value > 2
 }
 
 // Or:
 list.filter {
   println!('Filtering value ${it}...');
-  return it > 2;
+  it > 2
 }
 ```
 
@@ -2007,7 +2026,7 @@ fn translate (pieces: StringPiece[]) : string {
   // 'pieces' contains [ 'You just ordered ', ' products. They will be delivered on the ', '.' ]
   // 'params' contains [ 'nb', 'deliverDate' ]
 
-  return pieces.map {
+  pieces.map {
     // 'it.str' contains 'You just ordered ', then ' products. The will [...]' and then '.'
     // 'it.param' contains 'nb', then 'deliverDate'
 
@@ -2592,7 +2611,7 @@ fn squareList (array: int[]) : int[] {
     array[i] *= array[i];
   }
 
-  return array;
+  array
 }
 
 val array = [ 2, 7, 8 ];
@@ -2614,7 +2633,7 @@ fn squareList (array: int[]) : int[] {
     array[i] *= array[i];
   }
 
-  return array;
+  array
 }
 
 val array = [ 2, 7, 8 ];
@@ -2642,7 +2661,7 @@ class Example {
 
   %clone () : self {
     println!('Instance has been cloned.');
-    return new Example(this.name);
+    new Example(this.name)
   }
 }
 
@@ -2675,7 +2694,7 @@ The serialization overload takes no argument and returns a string. In our `Examp
 ```rave
   // ...
   %serialize () {
-    return this.name;
+    this.name
   }
 ```
 
@@ -2684,7 +2703,7 @@ The unserialization overload takes a string argument and returns an instance of 
 ```rave
   // ...
   static %unserialize (serialized: string) : Result<self, void> {
-    return new Example(serialized);
+    new Example(serialized)
   }
 ```
 
@@ -2721,7 +2740,7 @@ class MyInt {
   }
 
   %add (another: self) {
-    return new MyInt(this.value + another);
+    new MyInt(this.value + another)
   }
 }
 
@@ -2744,7 +2763,7 @@ class MyInt {
   }
 
   %add (another: MyInt) : int {
-    return this.value + another.value;
+    this.value + another.value
   }
 }
 
@@ -2780,7 +2799,7 @@ class Hero {
   }
 
   %equal (another: self) : bool {
-    return this.name == another.name;
+    this.name == another.name
   }
 }
 
@@ -2807,16 +2826,16 @@ class BankAccount {
 
   %compare (another: self) : Comparison {
     if this.amount > another.amount {
-      return Comparison.Greater;
+      Comparison.Greater
     } elif this.amount < another.amount {
-      return Comparison.Smaller;
+      Comparison.Smaller
     } else {
-      return Comparison.Equal;
+      Comparison.Equal
     }
   }
 
   %equal (another: self) : bool {
-    return this.amount == another.amount;
+    this.amount == another.amount
   }
 }
 
@@ -2862,7 +2881,7 @@ extension<string> fn countA () : uint {
     counter ++ if this.charAt(i) === 'a';
   }
 
-  return counter;
+  counter
 }
 
 println!('Hello Jack!'.countA()); // Prints: 1
@@ -2951,7 +2970,7 @@ open class Hero {
 
     // It's ennemy turn!
     ennemy.fight(this);
-    return true;
+    true
   }
 }
 ```
@@ -3374,7 +3393,7 @@ Every class that implements the `sayHello` method will be `Polite`. Note that th
 ```rave
 class A impl Polite {
   sayHello () : string {
-    return 'Hello world!';
+    'Hello world!'
   }
 }
 
@@ -3405,7 +3424,7 @@ With what we've seen so far, this is impossible because the return type of a fun
 
 ```rave
 infix fn plus<T> (left: CanAdd<T>, right: T) : T {
-  return (left + right) as T;
+  (left + right) as T
 }
 ```
 
@@ -3470,7 +3489,7 @@ _Template inference_ is the fourth and last type of inference (Type Inference, I
 
 ```rave
 fn tupleOf<X, Y> (left: X, right: X) : (X, Y) {
-  return (left, right);
+  (left, right)
 }
 
 // Standard syntax
@@ -3485,11 +3504,11 @@ There are two cases where template inference causes ambiguity though, and these 
 
 ```rave
 fn newValue (value: int) : int {
-  return value * 2;
+  value * 2
 }
 
 fn newValue<T extends number> (value: T) : T {
-  return value * 4;
+  value * 4
 }
 
 doubleValue(8); // ERROR: Template inference ambiguity
@@ -3554,7 +3573,7 @@ While templates are, by default, types, they can be simple values like integers 
 
 ```rave
 fn createIntArray <LENGTH: usize> () : int[LENGTH] {
-  return (0 for i -> 0..LENGTH);
+  (0 for i -> 0..LENGTH)
 }
 ```
 
@@ -3579,7 +3598,7 @@ The wildcard template can be used when we want to accept any template in a given
 
 ```rave
 fn listLength<T> (value: T[#]) : usize {
-  return value.size;
+  value.size
 }
 ```
 
@@ -3587,7 +3606,7 @@ In this function, we don't size the `T` template elsewhere than in the argument'
 
 ```rave
 fn listLength (value: List<?>) : usize {
-  return value.size;
+  value.size
 }
 ```
 
@@ -3657,7 +3676,7 @@ class MyArrayClass<T> {
 
   segment (T extends Stringifyable) impl Stringifyable {
     toString () : string {
-      return 'Wrapper for: ' + this.value.toString();
+      'Wrapper for: ' + this.value.toString()
     }
   }
 }
@@ -3890,7 +3909,7 @@ We will have two attributes for this class: a list of keys, and a list of values
     panic!('Key not found') if key not in this.keys;
 
     // Return the value
-    return this.values[this.keys.indexOf(key)];
+    this.values[this.keys.indexOf(key)]
   }
 ```
 
@@ -3917,7 +3936,7 @@ We will have two attributes for this class: a list of keys, and a list of values
   // ...
   %has (key: K) : bool {
     // Check if the key exists
-    return key in this.keys;
+    key in this.keys
   }
 ```
 
@@ -3927,7 +3946,7 @@ We will have two attributes for this class: a list of keys, and a list of values
   // ...
   %contains (value: V) : bool {
     // Check if the value exists
-    return value in this.values;
+    value in this.values
   }
 ```
 
@@ -3937,7 +3956,7 @@ We will have two attributes for this class: a list of keys, and a list of values
   // ...
   %size () : usize {
     // Return the number of elements in the dictionary
-    return this.keys.%size();
+    this.keys.%size()
   }
 ```
 
@@ -3947,13 +3966,13 @@ We will have two attributes for this class: a list of keys, and a list of values
   // ...
   %keys () : Iterator<K> {
     // Return an iterator on all keys
-    return this.keys.%iterate();
+    this.keys.%iterate()
   }
 
   // ...
   %values () : Iterator<V> {
     // Return an iterator on all values
-    return this.values.%iterate();
+    this.values.%iterate()
   }
 ```
 
@@ -3991,7 +4010,7 @@ fn getNilPoint (points: Point[]) : Option<Point> {
     }
   }
 
-  return None;
+  None
 }
 ```
 
@@ -4012,7 +4031,7 @@ fn getNilPoint (points: Point[]) : ?Point {
     }
   }
 
-  return None;
+  None
 }
 ```
 
@@ -4155,7 +4174,7 @@ It is possible to provide a default value of the same type than the one holded b
 ```rave
 fn getValue () : ?string {
   // do some stuff and optionally return something
-  return None;
+  None
 }
 
 println!(getValue() ?: 'No value returned');
@@ -4197,7 +4216,7 @@ fn safeDivision (left: int, right: int) : Result<int, string> {
     return Err('Division by zero is not allowed');
   }
 
-  return Ok(left / right);
+  Ok(left / right)
 }
 ```
 
@@ -4748,7 +4767,7 @@ The `Static<T>` type is used, for example, to serialize structures. Here is an e
 
 ```rave
 fn stringifyStatic (obj: Static<Stringifyable>) : string {
-  return (field + ' => ' + obj[field] for field in obj).join('\n');
+  (field + ' => ' + obj[field] for field in obj).join('\n')
 }
 
 println!(stringifyStatic({
@@ -4819,7 +4838,7 @@ class Fibonacci impl Generator<uint> {
       this.done = true;
     }
 
-    return Some(c);
+    Some(c)
   }
 }
 ```
@@ -4905,19 +4924,19 @@ class Counter impl Iterator<T> {
   }
 
   next () {
-    return if   this.counter < this.max
-           then Some(++ this.counter)
-           else None;
+    if   this.counter < this.max
+    then Some(++ this.counter)
+    else None
   }
   
   current () {
-    return Some(this.counter);
+    Some(this.counter)
   }
 
   prev () {
-    return if   this.counter > 0
-           then Some(-- this.counter)
-           else None;
+    if   this.counter > 0
+    then Some(-- this.counter)
+    else None
   }
 }
 ```
@@ -5313,7 +5332,7 @@ fn convertToString (value: Any) : ?string {
   if value ~ Stringifyable {
     // ...
   } else {
-    return None;
+    None
   }
 }
 ```
@@ -5331,9 +5350,9 @@ Let's go back to our function:
 ```rave
 fn convertToString (value: Any) : ?string {
   if value ~ Stringifyable {
-    return Some(value as string); // Works fine
+    Some(value as string) // Works fine
   } else {
-    return None;
+    None
   }
 }
 
@@ -5363,9 +5382,9 @@ Also, we can use type assertions in ternary conditions as well as in inline cond
 ```rave
 // Ternary condition
 fn convertToString (value: Any) : ?string {
-  return if value ~ Stringifyable
-         then Some(value as string)
-         else None;
+  if value ~ Stringifyable
+  then Some(value as string)
+  else None;
 }
 
 // Inline condition
@@ -5529,9 +5548,9 @@ namespace Users {
 
   getUser (name: string) : Result<User, string> {
     if name not keyof users {
-      return Err('User not found');
+      Err('User not found')
     } else {
-      return Ok(users[name]);
+      Ok(users[name])
     }
   }
 
@@ -5824,7 +5843,7 @@ Showcase:
 
 ```rave
 %add<SIZE: usize> (left: int[SIZE], right: int[SIZE]) : string {
-  return (left[i] + right[i] for i -> 0..SIZE);
+  (left[i] + right[i] for i -> 0..SIZE)
 }
 
 val added = [ 1, 2 ] + [ 3, 4 ];
@@ -5893,7 +5912,7 @@ class Event {
   priv static handler: () => void;
 
   static handle (handler: () => void) {
-    return this.handler = handler;
+    this.handler = handler;
   }
 
   static trigger () {
@@ -5956,7 +5975,7 @@ val files = new Map<string, string>;
 
 fn readAsync (fileName: string) : Promise<string, Error> {
   // Make a promise a return it
-  return new Promise<string, Error> { resolve, reject ->
+  new Promise<string, Error> { resolve, reject ->
     if fileName in files {
       // Success
       resolve(files[fileName]);
@@ -6216,7 +6235,7 @@ fn sum (...numbers: int[]) : int {
     summation += num;
   }
 
-  return summation;
+  summation
 }
 ```
 
@@ -6260,7 +6279,7 @@ fn sum (generator: () => int[]) : int {
     summation += num;
   }
 
-  return summation;
+  summation
 }
 ```
 
@@ -6284,7 +6303,7 @@ fn sum<T extends number> (iterator: Iterator<T>) : T {
     summation += num;
   }
 
-  return summation;
+  summation
 }
 ```
 
@@ -6318,7 +6337,7 @@ The `@condition` annotation indicates a condition that must be matched in order 
  * @condition 0 <= index <= arr.length
  */
 fn getValue (arr: int[], index: usize) : int {
-  return arr[index];
+  arr[index]
 }
 ```
 
@@ -6337,14 +6356,14 @@ Polymorph functions that does exactly the same actions but on different types ca
  * @condition 0 <= index <= arr.length
  */
 fn getValue (arr: int[], index: usize) : int {
-  return arr[index];
+  arr[index]
 }
 
 /**
  * @samedef
  */
 fn getValue (arr: string[], index: usize) : string {
-  return arr[index];
+  arr[index]
 }
 ```
 
@@ -6399,7 +6418,7 @@ class B<T> {
    */
   segment (T extends number) {
     double () : T {
-      return this.value * 2;
+      this.value * 2
     }
   }
 }
@@ -6451,7 +6470,7 @@ fn sum (...numbers: int[]) : int {
     summation += num;
   }
 
-  return summation;
+  summation
 }
 ```
 
@@ -6488,13 +6507,13 @@ virtual class A {
 
 class B extends A {
   create () : _real {
-    return new self();
+    new self()
   }
 }
 
 class C extends A {
   create () : _real {
-    return new self();
+    new self()
   }
 }
 ```
@@ -6516,7 +6535,7 @@ class B extends A {
    * @returns A new instance of B
    */
   create () : _real {
-    return new self();
+    new self()
   }
 }
 
@@ -6526,7 +6545,7 @@ class C extends A {
    * @returns A new instance of C
    */
   create () : _real {
-    return new self();
+    new self()
   }
 }
 ```
@@ -6639,7 +6658,7 @@ fn sum (...numbers: int[]) : int {
     summation += num;
   }
 
-  return summation;
+  summation
 }
 
 /**
@@ -6654,7 +6673,7 @@ fn sumDynamic<T extends Addable> (...values: T[]) : T {
     summation += num;
   }
 
-  return summation;
+  summation
 }
 ```
 
