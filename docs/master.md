@@ -4002,15 +4002,13 @@ fn getNilPoint (points: Point[]) : ?Point {
   // ...
 ```
 
-Also, the `Option.None` entity can be shortened as the `None` entity is an alias to it.
-
-Finally, instead of returning `Some(point)`, we can use an alternate syntax of the `return` instruction:
+Also, the `Option.None` entity can be shortened as the `None` entity is an alias to it:
 
 ```rave
 fn getNilPoint (points: Point[]) : ?Point {
   for point in points {
     if point.x == 0 && point.y == 0 {
-      return? point; // Converts to an Some(...)
+      return Some(point);
     }
   }
 
