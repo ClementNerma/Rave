@@ -4949,6 +4949,16 @@ for i in 0..10 {
 }
 ```
 
+Number ranges (`0..10` and `0..=10`) produce iterators, as well as character ranges (`'a'..'z'`). Iterators can be used in pattern matching too:
+
+```rave
+match c'H' {
+  'A'..'Z' -> println!('Uppercase latin letter'),
+  'a'..'z' -> println!('Lowercase latin letter'),
+  _        -> println!('Not a latin letter')
+}
+```
+
 ### Constrained types
 
 Considering we want to ensure a string is not empty, we can declare a constrain the `string` type by putting a callback on it that checks, when we try to assign a value using this type, if it is not empty. Here is how it goes:
