@@ -1476,15 +1476,10 @@ println!(i) for i in 0..=5;
 
 This code will print numbers from `0` to `5`.
 
-There is a block that only exists in inline version:
+There is also the _ternary block_, which allows more powerful inline conditions:
 
 ```rave
-val str = if age >= 18 then 'You are an adult' else 'You are a child';
-
-// Can be used on several lines, for more clarity
-val str = if age >= 18
-          then 'You are an adult'
-          else 'You are a child';
+val str = if age >= 18 { 'You are an adult' } else { 'You are a child' };
 ```
 
 ### Inline generation
