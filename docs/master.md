@@ -1409,13 +1409,13 @@ This code will print `0`, `1`, `3` and `4` - the `println!` call for `2` has bee
 The `match` keyword allow to run a set of instructions depending on a value. Let's consider we have a color taken from a `Color` enumeration and we want to print a message depending on it. A first idea could be to write:
 
 ```rave
-if color is Red {
+if color == Color.Red {
   println!('Color is red');
-} elif color is Green {
+} elif color == Color.Green {
   println!('Color is green');
-} elif color is Blue {
+} elif color == Color.Blue {
   println!('Color is blue');
-} elif color is Some(r, g, b) {
+} elif color == Color.Some(r, g, b) {
   println!('red = ${r}, green = ${g}, blue = ${b}');
 }
 ```
@@ -1456,8 +1456,6 @@ match red {
   Custom(r, g, b) -> println!('Color is custom (r = ${r}, g = ${g}, b = ${b})');
 }
 ```
-
-The `_` entity refers to the provided value.
 
 ### Inline blocks
 
