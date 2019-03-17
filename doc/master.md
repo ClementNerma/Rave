@@ -227,13 +227,13 @@ There are a few operators to perform calculus:
 let sum = 6 + 2; // 8
 
 // Substraction
-let sum = 6 - 2; // 4
+let sub = 6 - 2; // 4
 
 // Multiplication
-let sum = 6 * 2; // 12
+let mul = 6 * 2; // 12
 
-// Division
-let sum = 6 / 2; // 3
+// Floating-point division
+let div = 6 / 2; // 3.0
 
 // Remainer
 let remainder = 6 % 2; // 0
