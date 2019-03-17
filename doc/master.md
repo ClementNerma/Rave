@@ -511,3 +511,438 @@ loop {
 ```
 
 This code will print the counter's value forever, except `2`, because the `pass` instruction goes back to the beginning of the loop, ignoring all instructions below it.
+
+## Data structures
+
+### Arrays
+
+As we saw, primitive types are great to handle simple values, such as a number or a string, but sometimes we need more powerful data structures. For instance, let's imagine we want to represent a list of names. This would require to declare as many variables as names, which quickly become unhandy to use. Furthermore, if we want to process all these names, we will quickly be blocked.
+
+The more simple way to reprend a list of values is to use a _vector_. There are divided in two categories: _arrays_ and _lists_.
+
+The first ones represent a fixed-length suite of data, which means we won't be able to add or remove any value, only to read and write them. An array is declared this way:
+
+```rave
+let names = [ "Jack", "John", "Paolo" ];
+
+// Explicit type:
+let names: string[3] = [ "Jack", "John", "Paolo" ];
+```
+
+We can then read any of the names using an index:
+
+```rave
+let names = [ "Jack", "John", "Paolo" ];
+
+println(names[0]); // Prints: Jack
+println(names[1]); // Prints: John
+println(names[2]); // Prints: Paolo
+println(names[3]); // ERROR
+println(names[-1]); // ERROR
+```
+
+The number between brackets is called an _index_, and starts at `0`. As you can see, trying to access a non-existing element results in an error, but the downside is that sometimes this error can happen at runtime - for instance if the index is stored inside a variable.
+
+Note that an array's size is fixed in its type:
+
+```rave
+let mut names = [ "Jack", "John", "Paolo" ];
+
+names = [ "Paolo", "John", "Jack" ]; // Ok
+names = [ "Paolo", "John", "Jack", "Betty" ]; // ERROR (size mismatch)
+```
+
+A vector's (array's or list's) length can be got using its `.length` property:
+
+```rave
+let mut names = [ "Jack", "John", "Paolo" ];
+
+println(names.length); // Prints: 3
+```
+
+#### Iteration
+
+Arrays can be easily iterated:
+
+```rave
+let names = [ "Jack", "John", "Paolo" ];
+
+for name in names {
+  println(name);
+}
+```
+
+This will print `Jack`, `John` and then `Paolo`.
+
+#### Updating values
+
+We can also edit an array's values easily:
+
+```rave
+let names = [ "Jack", "John", "Paolo" ];
+
+names[0] = "Someone else";
+
+println(names[0]); // Prints: Someone else
+```
+
+### Enumerations
+
+Enumerations allow to create a type that only allows a pre-defined set of values. It's useful for describing many, here is an example with a person's gender:
+
+```rave
+enum Gender {
+  Man,
+  Woman,
+  Other
+}
+```
+
+We can then use this type in our entities:
+
+```rave
+let gender = Gender::Man;
+
+// Explicit type:
+let gender: Gender = Gender::Man;
+```
+
+Any value that is not in the enumeration is forbidden:
+
+```rave
+let gender: Gender = "Hello !"; // ERROR
+```
+
+Note that, by default, an enum's values are `u8` numbers, starting at `0`:
+
+```rave
+println(Gender::Man == 0); // Prints: true
+println(Gender::Woman == 1); // Prints: true
+println(Gender::Other == 2); // Prints: true
+```
+
+This behaviour can be overwritten by specifying manually the fields' values (must still be `u8` values):
+
+```rave
+enum Gender {
+  Man = 2,
+  Woman = 3,
+  Other = 5
+}
+
+println(Gender::Man == 2); // Prints: true
+println(Gender::Woman == 3); // Prints: true
+println(Gender::Other == 5); // Prints: true
+```
+
+#### Holding values
+
+An enum's values can also hold tuples:
+
+```rave
+enum Gender {
+  Man,
+  Woman,
+  Other(string)
+}
+```
+
+In this example, it allows persons of other genders to give more informations about it:
+
+```rave
+let gender = Gender::Other("multigender");
+```
+
+### Pattern matching
+
+Currently, if we want to run a set of instructions depending on an enum's value, we have to use the following code structure:
+
+```rave
+let gender = Gender::Man;
+
+if gender == Gender::Man {
+  println("You're a man");
+} elif gender == Gender::Woman {
+  println("You're a woman");
+} else {
+  println("You're neither a man nor a woman");
+}
+```
+
+Here, to handle the enum's tuple field, we can use a _conditional declaration_:
+
+```rave
+if gender == Gender::Man {
+  println("You're a man");
+} elif gender == Gender::Woman {
+  println("You're a woman");
+} elif let ::Other(other_gender) = gender {
+  println("Your genre is ${other_gender}");
+}
+```
+
+You may have noticed the `if let` blocks automatically guesses the enum's type so we don't have to prefix `Other` by `Gender`. But this still heavy, especially with big enums.
+
+#### The `match` block
+
+So instead, we can use the `match` block:
+
+```rave
+match gender {
+  ::Man -> println("You're a man"),
+  ::Woman -> println("You're a woman"),
+  ::Other(gender) -> println("You're a gender")
+}
+```
+
+That's a lot more readable. A good point is `match` guesses the enum's type just like `if let`, so we don't have to prefix all fields with `Gender`.
+
+Also, `match` gets a rid of a serious problem: forgetting to check some enum fields. If not all fields are tested, an error is thrown at build time:
+
+```rave
+match gender {
+  Man -> println("You're a man"),
+  Woman -> println("You're a woman")
+} // ERROR ('Other' field not checked)
+```
+
+If you really want to avoid checking a field, you can use the `_` keyword, which is a fallback in the case none other condition have been met:
+
+```rave
+match gender {
+  Woman -> println("You're a woman"),
+  _ -> println("You're not a woman")
+}
+```
+
+Note that `match` can also be used for any other type of conditions, by putting them between parenthesis:
+
+```rave
+let num = 2;
+
+match num {
+  (num > 0) -> println("Number is positive"),
+  (num < 0) -> println("Number is negative"),
+  _ -> println("Number is zero")
+}
+```
+
+It's also possible to run several instructions for a single match, by creating a child block:
+
+```rave
+let num = 2;
+
+match num {
+  (num > 0) -> println("Number is positive"),
+  (num < 0) -> println("Number is negative"),
+  _ -> {
+    println("Number is zero");
+    println("What a great day to check a number's sign!");
+  }
+}
+```
+
+Another interesting usage is for inline matches:
+
+```rave
+let stock = 0;
+
+let status = match stock {
+  (stock > 0) -> "Stock is positive",
+  (stock < 0) -> "Stock is negative",
+  _ -> "Stock is empty"
+}
+
+println(status); // Prints: "Stock is empty"
+```
+
+### Lists
+
+Lists act are dynamic suite of datas: it's possible to add new values and remove existing ones at anytime.
+
+```rave
+let names = new List("Jack", "John", "Paolo");
+
+// Add new values
+names.push("Betty");
+
+// Remove last value
+names.pop();
+```
+
+Writing is a simple as for arrays:
+
+```rave
+names[0] = "Someone else";
+```
+
+Because a list's size may change over time, there is no guarantee a given key exists. That's why, when retrieving a list's key, an optional value is returned. The concept is simple: if the key exists, it returns a `Some(T)` enum field holding the value with `T` being the list's data type, and `None` in the opposite case. It is simple to test with pattern matching:
+
+```rave
+if let Some(name) = names[2] {
+  println(name); // Prints: Paolo
+}
+
+// ====== or =====
+match names[2] {
+  Some(name) -> println(name),
+  _ -> {}
+}
+```
+
+Still, lists can be iterated easily:
+
+```rave
+for name in list {
+  println(name);
+}
+```
+
+This code works the same way as for an array.
+
+#### Inline generation
+
+There is a special syntax for quickly generating lists:
+
+```rave
+let cubes = (n * n * n for n in 1..=3);
+
+for cube in cubes {
+  println(cube);
+}
+```
+
+This will print `1`, `8` and `27`.
+
+### Statics
+
+Statics associate a list of _keys_ to _values_. They are especially useful for representing data with different types. For instance, let's imagine we want to describe a person with a name, an age, and a gender. We have three different types (`string`, `u8` and `Gender`), so we cannot use an array. Instead, we will use a static:
+
+```rave
+let person = {
+  name: "John",
+  age: 28 as u8,
+  gender: Gender::Man
+};
+
+println(person.name); // Prints: John
+println(person.age); // Prints: 28
+println(person.gender == Gender::Man); // Prints: true
+```
+
+In this example, the type of the `person` entity is inferred. If we want to specify it explicitly - which can be very handy if we want to re-use the same data structure in several entities -, we can use a _structure_:
+
+```rave
+struct Person {
+  name: string;
+  age: u8;
+  gender: Gender;
+}
+
+let person = Person {
+  name: "John",
+  age: 28,
+  gender: Gender::Man
+};
+```
+
+You may have noticed we put the type's name before our static's beginning instead of putting it on the entity. This last writing is perfectly fine, but the syntax we used here is generally better because it directly applies typechecking to the static, which means we do not have to perform an explicit numeric typecasting on `28`, for instance.
+
+Besides, this syntax can be used even when we do not directly assign the value to an entity, as we will see soon.
+
+#### Fields mutability
+
+By default, a static's fields are immutable. To make them mutable, their name must be prefixed with the `mut` keyword:
+
+```rave
+struct Person {
+  name: string;
+  mut age: u8;
+  gender: Gender;
+}
+
+let person = Person {
+  name: "John",
+  age: 28,
+  gender: Gender::Man
+};
+
+// ===== or =====
+
+let person = {
+  name: "John",
+  mut age: 28 as u8,
+  gender: Gender::Man
+};
+```
+
+Another advantage of writing the structure's name just before the static is that its fields' mutability is inferred too. We can then update these fields' value:
+
+```rave
+person.name = "Someone else";
+
+println(person.name); // Prints: Someone else
+```
+
+### Tuples
+
+Tuples are a fixed-length suite of data, in which each member can be of a different type:
+
+```rave
+let tuple = ("John", 28 as u8, Gender::Man);
+```
+
+Tuple types are declared using the `struct` keyword:
+
+```rave
+struct Person (string, u8, Gender);
+
+let person = ("John", 28, ::Man);
+```
+
+### Dictionaries
+
+Dictionaries are a mix between lists and statics: they allow to use a dynamic list of key-value pairs, which can be added or removed at anytime. They most common type of dictionary is maps, represented by the `Map<K, V>` type, with `K` being the type of keys and `V` the one for values:
+
+```rave
+// Create a map that links 'string' keys to 'u8' values
+let numbers = new Map<string, u8>;
+```
+
+Writing goes like this:
+
+```rave
+// Assign '0' to the 'zero' key
+numbers["zero"] = 0;
+```
+
+Because there is no guarantee a given dictionary's key exists, accessing one will either return a `Some(T)` or a `None` value, like lists do:
+
+```rave
+match numbers["zero"] {
+  Some(num) -> println("zero = ${num}"),
+  _ -> {}
+}
+```
+
+#### Iteration methods
+
+There are three ways to iterate dictionaries. By default, iteration is performed on `(K, V)` (key-value pair) tuples:
+
+```rave
+for (key, value) in numbers {
+  println("${key} = ${value}");
+}
+```
+
+But it's also possible to only iterate on keys or values:
+
+```rave
+for key in numbers.keys() {
+  println(key);
+}
+
+for value in numbers.values() {
+  println(value);
+}
+```
