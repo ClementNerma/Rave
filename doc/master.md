@@ -299,3 +299,167 @@ let name = "Jack";
 
 println("Hello ${world}!"); // Prints: "Hello Jack!"
 ```
+
+## Conditions and loops
+
+### Comparison operators
+
+Storing datas in entities is great, but we also want to run some instructions when we match a given condition.
+
+First, let's introduce the concept of **nil values**. Values `null`, `false`, `""` (empty string) or `0` (in any number type) are nil values, all other are not. That's as simple as that.
+
+Given that, we can use the _comparison operators_, which take two operands `a` and `b`, to perform comparisons:
+
+|  Symbol |           Name           |            Returns `true` if...          |
+|---------|--------------------------|------------------------------------------|
+|  `&&`   | and                      | `a` and `b` are not nil values           |
+|  `||`   | or                       | `a`, `b` or both are not nil values      |
+|  `==`   | equal to                 | `a` is equal to `b`                      |
+|  `!=`   | different than           | `a` is different than `b`                |
+|  `>`    | greater than             |  `a` is greater than `b`                 |
+|  `<`    | lower than               | `a` is lower than `b`                    |
+|  `>=`   | greater than or equal to | `a` is greater than or equal to `b`      |
+|  `<=`   | lower than or equal to   | `a` is lower than or equal to `b`        |
+| `nand`  | not and                  | `a`, `b` or both are nil values          |
+| `nor`   | not or                   | `a` and `b` are both nil value           |
+| `xor`   | exclusive or             | `a` or `b` is a nil value (but not both) |
+
+The last operator, `!`, takes a single operand and returns `true` if it's **not** a nil value. Showcase:
+
+```rave
+let a = 0;
+let b = 3;
+
+a == b; // false
+a != b; // true
+
+a > b; // false
+a < b; // true
+
+!a; // true
+!b; // false
+```
+
+### Conditions
+
+Now we have operators to perform comparisons, let's see _conditional blocks_. The most common one goes like this:
+
+```rave
+let stock = 20;
+
+if stock > 0 {
+  println('We still have stocks :)');
+}
+```
+
+This program will print `We still have stocks :)`. Indeed, the `if` blocks runs its _body_ (every instruction between its braces) if the provided _condition_ (here, `stock > 0`) is not a nil value. This means that, if the condition returns `true` for instance, its body will be evaluated.
+
+We can also evaluate another set of instructions if the condition isn't met:
+
+```rave
+let stock = 20;
+
+if stock > 0 {
+  println('We still have stocks :)');
+} else {
+  println('Stock is empty :(');
+}
+```
+
+Or even chain conditions:
+
+```rave
+let stock = 20;
+
+if stock > 0 {
+  println('We still have stocks :)');
+} elif stock == 0 {
+  println('Stock is empty :(');
+} else {
+  println('Wow, stock is negative!');
+}
+```
+
+### Loops
+
+_Loop blocks_ allow to repeat a set of instructions depending on a specific condition. The most common type is the `for` loop:
+
+```rave
+for i in 0..5 {
+  println(i);
+}
+```
+
+This will print successively `0`, `1`, `2`, `3` and `4`. To repeat up to the second number:
+
+```rave
+for i in 0..=5 {
+  println(i);
+}
+```
+
+This program will print the same numbers as the previous one, plus `5`.
+
+While `for` loops are handy to repeat instructions given a specific range, we sometimes want to perform the repetition until a specific condition is met:
+
+```rave
+let mut stock = 5;
+
+while stock > 0 {
+  println(-- stock);
+}
+```
+
+This will print `5`, `4`, `3`, `2`, `1` and then `0`. Basically, the `while` loop checks the condition, runs its body if it's not nil, check again the condition, run its body if it's not nil, etc.
+
+Sometimes, it's more handy to evaluate the condition at the end of the loop, so for that we can use the `do..while` block:
+
+```rave
+let mut stock = 0;
+
+do {
+  println(-- stock);
+} while stock > 0;
+```
+
+This code will print `-1`, because the body is ran **before** the condition is evaluated. This ensures the block's body will be ran at least once.
+
+In some scenarios, we can want to run forever the same set of instructions (like in a game engine or so on). For that, instead of using a `while true` loop, it's better to use this one:
+
+```rave
+loop {
+  // Do some stuff here
+}
+```
+
+The behaviour will be the same, but it explicits your intentions and allows the builder to perform further optimizations.
+
+Note that loops can be exited manually:
+
+```rave
+let mut counter = 0;
+
+loop {
+  if ++ counter == 5 {
+    break ;
+  }
+
+  println(counter);
+}
+```
+
+This code will print values up to `4`, then the loop will break. Loops can also be iterated:
+
+```rave
+let mut counter = 0;
+
+loop {
+  if ++ counter == 2 {
+    pass ;
+  }
+
+  println(counter);
+}
+```
+
+This code will print the counter's value forever, except `2`, because the `pass` instruction goes back to the beginning of the loop, ignoring all instructions below it.
