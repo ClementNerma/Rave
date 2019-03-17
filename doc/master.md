@@ -215,6 +215,7 @@ Implicit typecasting is allowed when the target number type can handle all value
 |     `u16`   | `i32`, `u32`, `i64`, `u64`               |
 |     `i32`   | `i64`, `u64`                             |
 |     `u32`   | `i64`, `u64`                             |
+|    `isize`  | `i64`                                    |
 |    `usize`  | `u64`                                    |
 |     `f32`   | `f64`                                    |
 
