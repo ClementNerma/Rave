@@ -401,6 +401,33 @@ if stock > 0 {
 println(positive_stock); // ERROR
 ```
 
+#### Inline conditions
+
+Conditional blocks can also be used inline to run a single instruction:
+
+```rave
+let mut num = 0;
+
+// Increase 'num' if it's negative
+num += 1 if num <= 0;
+```
+
+#### Values generation
+
+It's also possible to get value from inline conditions by using the following syntax:
+
+```rave
+let stock = 0;
+
+let status = if stock > 0 {
+  "We still have stocks"
+} else {
+  "We are out of stock"
+};
+
+println(status); // Prints: We are out of stock
+```
+
 ### Loops
 
 _Loop blocks_ allow to repeat a set of instructions depending on a specific condition. The most common type is the `for` loop:
