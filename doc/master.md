@@ -380,6 +380,27 @@ if stock > 0 {
 }
 ```
 
+#### Notion of scope
+
+Any entity declared inside a block belongs to its _scope_, which is everything between the block's beginning and end:
+
+```rave
+if /* scope begins */ stock > 0 {
+  println("We still have stocks :)");
+/* scope ends */ }
+```
+
+This means that, if we declare an entity in the block, it will only be available inside it:
+
+```rave
+if stock > 0 {
+  let positive_stock = true;
+  println(positive_stock); // Prints: true
+}
+
+println(positive_stock); // ERROR
+```
+
 ### Loops
 
 _Loop blocks_ allow to repeat a set of instructions depending on a specific condition. The most common type is the `for` loop:
