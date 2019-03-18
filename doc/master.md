@@ -974,3 +974,25 @@ for value in numbers.values() {
   println(value);
 }
 ```
+
+### Entities shadowing
+
+Entities _shadowing_ consists in declaring an entity several times. When this happens, the previous entity is deleted and replaced by its new version. This allows, for instance, to create an entity with a given type, then to switch it after a few operations:
+
+```rave
+let gender = "male"; // type: string
+
+// do some stuff
+
+enum Gender {
+  Man,
+  Woman,
+  Other(string)
+}
+
+let gender = match gender {
+  "male" -> Gender::Man,
+  "female" -> Gender::Woman,
+  _ -> Gender::Other(gender)
+}; // type: Gender
+```
