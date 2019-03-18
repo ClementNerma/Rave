@@ -702,8 +702,8 @@ Also, `match` gets a rid of a serious problem: forgetting to check some enum fie
 
 ```rave
 match gender {
-  Man -> println("You're a man"),
-  Woman -> println("You're a woman")
+  ::Man -> println("You're a man"),
+  ::Woman -> println("You're a woman")
 } // ERROR ('Other' field not checked)
 ```
 
@@ -711,7 +711,7 @@ If you really want to avoid checking a field, you can use the `_` keyword, which
 
 ```rave
 match gender {
-  Woman -> println("You're a woman"),
+  ::Woman -> println("You're a woman"),
   _ -> println("You're not a woman")
 }
 ```
