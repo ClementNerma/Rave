@@ -789,13 +789,19 @@ Also, fields or the `Option<T>` enum don't need to be prefixed by `Option<...>::
 Lists act are dynamic suite of datas: it's possible to add new values and remove existing ones at anytime.
 
 ```rave
-let names = new List("Jack", "John", "Paolo");
+let names = list! ["Jack", "John", "Paolo"];
 
 // Add new values
 names.push("Betty");
 
 // Remove last value
 names.pop();
+```
+
+Empty lists are created this way:
+
+```rave
+let names = list!(string);
 ```
 
 Writing is a simple as for arrays:
@@ -933,8 +939,14 @@ let person = ("John", 28, ::Man);
 Dictionaries are a mix between lists and statics: they allow to use a dynamic list of key-value pairs, which can be added or removed at anytime. They most common type of dictionary is maps, represented by the `Map<K, V>` type, with `K` being the type of keys and `V` the one for values:
 
 ```rave
-// Create a map that links 'string' keys to 'u8' values
-let numbers = new Map<string, u8>;
+let numbers = map! {
+  zero: 0,
+  one: 1,
+  two: 2
+};
+
+// Empty map:
+let numbers = map!(string, u8);
 ```
 
 Writing goes like this:
