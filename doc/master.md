@@ -757,6 +757,33 @@ let status = match stock {
 println(status); // Prints: "Stock is empty"
 ```
 
+#### Optional values
+
+A very common enumeration is `Option<T>`, which is defined this way:
+
+```rave
+enum Option<T> {
+  Some(T),
+  None
+}
+```
+
+It is used to represent _optional values_ of any `T` type: the value can either be _concrete_, so it will be represented by the `Some(T)` field, or _absent_, with `None`:
+
+```rave
+let gender = Gender::Man;
+
+let gender_other: string? =
+  match gender {
+    ::Other(description) -> Some(description),
+    _ -> None
+  };
+```
+
+The `?` symbol turns any type into its `Option` equivalent, so here it will turn `string` into `Option<string>`. Pretty handy, right?
+
+Also, fields or the `Option<T>` enum don't need to be prefixed by `Option<...>::`: you can simply write the fields' name to use them.
+
 ### Lists
 
 Lists act are dynamic suite of datas: it's possible to add new values and remove existing ones at anytime.
@@ -777,7 +804,7 @@ Writing is a simple as for arrays:
 names[0] = "Someone else";
 ```
 
-Because a list's size may change over time, there is no guarantee a given key exists. That's why, when retrieving a list's key, an optional value is returned. The concept is simple: if the key exists, it returns a `Some(T)` enum field holding the value with `T` being the list's data type, and `None` in the opposite case. It is simple to test with pattern matching:
+Because a list's size may change over time, there is no guarantee a given key exists. That's why, when retrieving a list's key, an optional value is returned:
 
 ```rave
 if let Some(name) = names[2] {
@@ -917,7 +944,7 @@ Writing goes like this:
 numbers["zero"] = 0;
 ```
 
-Because there is no guarantee a given dictionary's key exists, accessing one will either return a `Some(T)` or a `None` value, like lists do:
+Because there is no guarantee a given dictionary's key exists, accessing one will return an optional value, like lists do:
 
 ```rave
 match numbers["zero"] {
