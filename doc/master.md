@@ -171,7 +171,7 @@ Also, a specificity of all number types is _overflows_ and _underflows_. Here is
 let mut num: i8 = 127;
 num = num + 1;
 
-println(num); // Prints: -128
+println!(num); // Prints: -128
 ```
 
 We just performed an overflow: when we exceed the number type's maximum value, it goes back to its minimum value. This is a mechanism forced by processors, which is not specific to this language.
@@ -182,7 +182,7 @@ Underflows goes the other way:
 let mut num: i8 = -128;
 num = num - 3;
 
-println(num); // Prints: 125
+println!(num); // Prints: 125
 ```
 
 Keep this in mind when performing calculus on primitive number types.
@@ -290,7 +290,7 @@ There are also the pre and post-incrementation and decrementation operators, whi
 Let's conclude with strings: they can be _concatenated_ (put a string at the end of another) using the addition `+` operator:
 
 ```rave
-println("Hello" + ", " + "world" + "!"); // Prints: Hello, world!
+println!("Hello" + ", " + "world" + "!"); // Prints: Hello, world!
 ```
 
 There is also a special operator which allows to compute _string expressions_:
@@ -298,7 +298,7 @@ There is also a special operator which allows to compute _string expressions_:
 ```rave
 let name = "Jack";
 
-println("Hello ${world}!"); // Prints: "Hello Jack!"
+println!("Hello ${world}!"); // Prints: "Hello Jack!"
 ```
 
 ## Conditions and loops
@@ -349,7 +349,7 @@ Now we have operators to perform comparisons, let's see _conditional blocks_. Th
 let stock = 20;
 
 if stock > 0 {
-  println('We still have stocks :)');
+  println!('We still have stocks :)');
 }
 ```
 
@@ -361,9 +361,9 @@ We can also evaluate another set of instructions if the condition isn't met:
 let stock = 20;
 
 if stock > 0 {
-  println('We still have stocks :)');
+  println!('We still have stocks :)');
 } else {
-  println('Stock is empty :(');
+  println!('Stock is empty :(');
 }
 ```
 
@@ -373,11 +373,11 @@ Or even chain conditions:
 let stock = 20;
 
 if stock > 0 {
-  println('We still have stocks :)');
+  println!('We still have stocks :)');
 } elif stock == 0 {
-  println('Stock is empty :(');
+  println!('Stock is empty :(');
 } else {
-  println('Wow, stock is negative!');
+  println!('Wow, stock is negative!');
 }
 ```
 
@@ -387,7 +387,7 @@ Any entity declared inside a block belongs to its _scope_, which is everything b
 
 ```rave
 if /* scope begins */ stock > 0 {
-  println("We still have stocks :)");
+  println!("We still have stocks :)");
 /* scope ends */ }
 ```
 
@@ -396,10 +396,10 @@ This means that, if we declare an entity in the block, it will only be available
 ```rave
 if stock > 0 {
   let positive_stock = true;
-  println(positive_stock); // Prints: true
+  println!(positive_stock); // Prints: true
 }
 
-println(positive_stock); // ERROR
+println!(positive_stock); // ERROR
 ```
 
 #### Inline conditions
@@ -426,7 +426,7 @@ let status = if stock > 0 {
   "We are out of stock"
 };
 
-println(status); // Prints: We are out of stock
+println!(status); // Prints: We are out of stock
 ```
 
 ### Loops
@@ -435,7 +435,7 @@ _Loop blocks_ allow to repeat a set of instructions depending on a specific cond
 
 ```rave
 for i in 0..5 {
-  println(i);
+  println!(i);
 }
 ```
 
@@ -443,7 +443,7 @@ This will print successively `0`, `1`, `2`, `3` and `4`. To repeat up to the sec
 
 ```rave
 for i in 0..=5 {
-  println(i);
+  println!(i);
 }
 ```
 
@@ -455,7 +455,7 @@ While `for` loops are handy to repeat instructions given a specific range, we so
 let mut stock = 5;
 
 while stock > 0 {
-  println(-- stock);
+  println!(-- stock);
 }
 ```
 
@@ -467,7 +467,7 @@ Sometimes, it's more handy to evaluate the condition at the end of the loop, so 
 let mut stock = 0;
 
 do {
-  println(-- stock);
+  println!(-- stock);
 } while stock > 0;
 ```
 
@@ -493,7 +493,7 @@ loop {
     break ;
   }
 
-  println(counter);
+  println!(counter);
 }
 ```
 
@@ -507,7 +507,7 @@ loop {
     pass ;
   }
 
-  println(counter);
+  println!(counter);
 }
 ```
 
@@ -535,11 +535,11 @@ We can then read any of the names using an index:
 ```rave
 let names = [ "Jack", "John", "Paolo" ];
 
-println(names[0]); // Prints: Jack
-println(names[1]); // Prints: John
-println(names[2]); // Prints: Paolo
-println(names[3]); // ERROR
-println(names[-1]); // ERROR
+println!(names[0]); // Prints: Jack
+println!(names[1]); // Prints: John
+println!(names[2]); // Prints: Paolo
+println!(names[3]); // ERROR
+println!(names[-1]); // ERROR
 ```
 
 The number between brackets is called an _index_, and starts at `0`. As you can see, trying to access a non-existing element results in an error, but the downside is that sometimes this error can happen at runtime - for instance if the index is stored inside a variable.
@@ -558,7 +558,7 @@ A vector's (array's or list's) length can be got using its `.length` property:
 ```rave
 let mut names = [ "Jack", "John", "Paolo" ];
 
-println(names.length); // Prints: 3
+println!(names.length); // Prints: 3
 ```
 
 #### Iteration
@@ -569,7 +569,7 @@ Arrays can be easily iterated:
 let names = [ "Jack", "John", "Paolo" ];
 
 for name in names {
-  println(name);
+  println!(name);
 }
 ```
 
@@ -584,7 +584,7 @@ let names = [ "Jack", "John", "Paolo" ];
 
 names[0] = "Someone else";
 
-println(names[0]); // Prints: Someone else
+println!(names[0]); // Prints: Someone else
 ```
 
 ### Enumerations
@@ -617,9 +617,9 @@ let gender: Gender = "Hello !"; // ERROR
 Note that, by default, an enum's values are `u8` numbers, starting at `0`:
 
 ```rave
-println(Gender::Man == 0); // Prints: true
-println(Gender::Woman == 1); // Prints: true
-println(Gender::Other == 2); // Prints: true
+println!(Gender::Man == 0); // Prints: true
+println!(Gender::Woman == 1); // Prints: true
+println!(Gender::Other == 2); // Prints: true
 ```
 
 This behaviour can be overwritten by specifying manually the fields' values (must still be `u8` values):
@@ -631,9 +631,9 @@ enum Gender {
   Other = 5
 }
 
-println(Gender::Man == 2); // Prints: true
-println(Gender::Woman == 3); // Prints: true
-println(Gender::Other == 5); // Prints: true
+println!(Gender::Man == 2); // Prints: true
+println!(Gender::Woman == 3); // Prints: true
+println!(Gender::Other == 5); // Prints: true
 ```
 
 #### Holding values
@@ -662,11 +662,11 @@ Currently, if we want to run a set of instructions depending on an enum's value,
 let gender = Gender::Man;
 
 if gender == Gender::Man {
-  println("You're a man");
+  println!("You're a man");
 } elif gender == Gender::Woman {
-  println("You're a woman");
+  println!("You're a woman");
 } else {
-  println("You're neither a man nor a woman");
+  println!("You're neither a man nor a woman");
 }
 ```
 
@@ -674,11 +674,11 @@ Here, to handle the enum's tuple field, we can use a _conditional declaration_:
 
 ```rave
 if gender == Gender::Man {
-  println("You're a man");
+  println!("You're a man");
 } elif gender == Gender::Woman {
-  println("You're a woman");
+  println!("You're a woman");
 } elif let ::Other(other_gender) = gender {
-  println("Your genre is ${other_gender}");
+  println!("Your genre is ${other_gender}");
 }
 ```
 
@@ -690,9 +690,9 @@ So instead, we can use the `match` block:
 
 ```rave
 match gender {
-  ::Man -> println("You're a man"),
-  ::Woman -> println("You're a woman"),
-  ::Other(gender) -> println("You're a gender")
+  ::Man -> println!("You're a man"),
+  ::Woman -> println!("You're a woman"),
+  ::Other(gender) -> println!("You're a gender")
 }
 ```
 
@@ -702,8 +702,8 @@ Also, `match` gets a rid of a serious problem: forgetting to check some enum fie
 
 ```rave
 match gender {
-  ::Man -> println("You're a man"),
-  ::Woman -> println("You're a woman")
+  ::Man -> println!("You're a man"),
+  ::Woman -> println!("You're a woman")
 } // ERROR ('Other' field not checked)
 ```
 
@@ -711,8 +711,8 @@ If you really want to avoid checking a field, you can use the `_` keyword, which
 
 ```rave
 match gender {
-  ::Woman -> println("You're a woman"),
-  _ -> println("You're not a woman")
+  ::Woman -> println!("You're a woman"),
+  _ -> println!("You're not a woman")
 }
 ```
 
@@ -722,9 +722,9 @@ Note that `match` can also be used for any other type of conditions, by putting 
 let num = 2;
 
 match num {
-  (num > 0) -> println("Number is positive"),
-  (num < 0) -> println("Number is negative"),
-  _ -> println("Number is zero")
+  (num > 0) -> println!("Number is positive"),
+  (num < 0) -> println!("Number is negative"),
+  _ -> println!("Number is zero")
 }
 ```
 
@@ -734,11 +734,11 @@ It's also possible to run several instructions for a single match, by creating a
 let num = 2;
 
 match num {
-  (num > 0) -> println("Number is positive"),
-  (num < 0) -> println("Number is negative"),
+  (num > 0) -> println!("Number is positive"),
+  (num < 0) -> println!("Number is negative"),
   _ -> {
-    println("Number is zero");
-    println("What a great day to check a number's sign!");
+    println!("Number is zero");
+    println!("What a great day to check a number's sign!");
   }
 }
 ```
@@ -754,7 +754,7 @@ let status = match stock {
   _ -> "Stock is empty"
 }
 
-println(status); // Prints: "Stock is empty"
+println!(status); // Prints: "Stock is empty"
 ```
 
 #### Optional values
@@ -814,12 +814,12 @@ Because a list's size may change over time, there is no guarantee a given key ex
 
 ```rave
 if let Some(name) = names[2] {
-  println(name); // Prints: Paolo
+  println!(name); // Prints: Paolo
 }
 
 // ====== or =====
 match names[2] {
-  Some(name) -> println(name),
+  Some(name) -> println!(name),
   _ -> {}
 }
 ```
@@ -828,7 +828,7 @@ Still, lists can be iterated easily:
 
 ```rave
 for name in list {
-  println(name);
+  println!(name);
 }
 ```
 
@@ -842,7 +842,7 @@ There is a special syntax for quickly generating lists:
 let cubes = (n * n * n for n in 1..=3);
 
 for cube in cubes {
-  println(cube);
+  println!(cube);
 }
 ```
 
@@ -859,9 +859,9 @@ let person = {
   gender: Gender::Man
 };
 
-println(person.name); // Prints: John
-println(person.age); // Prints: 28
-println(person.gender == Gender::Man); // Prints: true
+println!(person.name); // Prints: John
+println!(person.age); // Prints: 28
+println!(person.gender == Gender::Man); // Prints: true
 ```
 
 In this example, the type of the `person` entity is inferred. If we want to specify it explicitly - which can be very handy if we want to re-use the same data structure in several entities -, we can use a _structure_:
@@ -915,7 +915,7 @@ Another advantage of writing the structure's name just before the static is that
 ```rave
 person.name = "Someone else";
 
-println(person.name); // Prints: Someone else
+println!(person.name); // Prints: Someone else
 ```
 
 ### Tuples
@@ -960,7 +960,7 @@ Because there is no guarantee a given dictionary's key exists, accessing one wil
 
 ```rave
 match numbers["zero"] {
-  Some(num) -> println("zero = ${num}"),
+  Some(num) -> println!("zero = ${num}"),
   _ -> {}
 }
 ```
@@ -971,7 +971,7 @@ There are three ways to iterate dictionaries. By default, iteration is performed
 
 ```rave
 for (key, value) in numbers {
-  println("${key} = ${value}");
+  println!("${key} = ${value}");
 }
 ```
 
@@ -979,11 +979,11 @@ But it's also possible to only iterate on keys or values:
 
 ```rave
 for key in numbers.keys() {
-  println(key);
+  println!(key);
 }
 
 for value in numbers.values() {
-  println(value);
+  println!(value);
 }
 ```
 
