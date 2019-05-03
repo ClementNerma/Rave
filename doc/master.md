@@ -1008,3 +1008,300 @@ let gender = match gender {
   _ -> Gender::Other(gender)
 }; // type: Gender
 ```
+
+## Functions
+
+Functions allow to run a set of instructions from different places, depending on arguments.
+
+### Concept
+
+Let's say we want to compute the total area of a list of triangles. This is simple and can be achieved this way:
+
+```rave
+struct Triangle {
+  base: f32;
+  top: f32;
+  base: f32;
+}
+
+let triangles = new List<Triangle>;
+
+// Compute the total area of all triangles
+let mut total_area = 0.0;
+
+for t in triangles {
+  total_area += (t.base + t.top) * t.height / 2;
+}
+
+println(total_area);
+```
+
+But, what if we perform this computation in different places of our code? We will have to duplicate this code, which is not very convenient. And if a bug happens, or simply if we want to improve what the function does, we'll have to make all these changes on all versions of this code.
+
+Instead, we can use a _function_ to perform this computation in a single instruction:
+
+```rave
+fn triangles_area(triangles: List<Triangle>) -> f32 {
+  let mut total_area = 0.0;
+
+  for t in triangles {
+    total_area += (t.base + t.top) * t.height / 2;
+  }
+
+  return total_area;
+}
+```
+
+So, let's see how this works. First, we declare an `triangles_area` function using the `fn` keyword. It takes a single _argument_, which is a value we give to the function when we call it. We also precise its _return type_, which is the type of values it will give at the very end.
+
+The function's body is simply made of our computation program, and ends with a return statement which indicates to return the computed total area.
+
+We can call the function this way:
+
+```rave
+let triangles = new List<Triangle>;
+
+let total_area = triangles_area(triangles);
+```
+
+The function call returns the function's return value, which is in our case its `total_area` entity's value. We can then assign it to an entity, perform operations on it, and so on.
+
+Note that single-instruction functions can be declared in a more lightweight way:
+
+```rave
+// Default way
+fn say_hello(name: string) -> string {
+  return "Hello, ${name}!";
+}
+
+// Inline way
+fn say_hello(name: string) = "Hello, ${name}!";
+```
+
+### Omitting `return`
+
+Our function can also be simplified a little: when a value is put at the end of the function, it is considered as a return value. So, we can simply write:
+
+```rave
+fn triangles_area(triangles: List<Triangle>) -> f32 {
+  let mut total_area = 0.0;
+
+  for t in triangles {
+    total_area += (t.base + t.top) * t.height / 2;
+  }
+
+  total_area
+}
+```
+
+This is also true for `if` block: we can chain `elif` and `else` blocks, but this requires the chain to be covering, meaning it must reach at least one of the return values:
+
+```rave
+enum NumberSign {
+  Positive,
+  Negative,
+  Zero
+}
+
+fn match_num(num: u8) -> NumberSign {
+  if num > 0 {
+    NumberSign::Positive
+  } elif num < 0 {
+    NumberSign::Negative
+  } else {
+    NumberSign::Zero
+  }
+}
+```
+
+The same applies for `match` blocks:
+
+```rave
+enum NumberSign {
+  Positive,
+  Negative,
+  Zero
+}
+
+fn match_num(num: u8) -> NumberSign {
+  match num {
+    (num > 0) -> NumberSign::Positive,
+    (num < 0) -> NumberSign::Negative,
+    _ -> NumberSign::Zero
+  }
+}
+```
+
+It's also possible to make a function that does not return anything. In this case, its return type can either be `void`, or be omitted:
+
+```rave
+fn do_nothing() -> void {} // Ok
+fn do_nothing() {} // Ok
+```
+
+### Arguments mutability
+
+A function's arguments are immutable by default. The `mut` keyword can be used to reverse this behaviour:
+
+```rave
+fn do_nothing(num: u8) {
+  num ++; // ERROR
+}
+
+fn do_nothing(mut num: u8) {
+  num ++; // Ok
+}
+```
+
+### Default values
+
+Arguments can get a default value so the caller can omit them:
+
+```rave
+fn say_hello(name: string, repeat: u32 = 1) {
+  for i in 0..repeat {
+    println("Hello, ${name}!");
+  }
+}
+
+say_hello("John"); // Prints: Hello, John!
+say_hello("John", 5); // Prints 5 time: Hello, John!
+```
+
+### Optional arguments
+
+Optional arguments are arguments that can be omitted. This mechanism is achieved by turning them into optional types ; if the argument is not given in the function's call, it is replaced by a `None` value. Here is an example:
+
+```rave
+fn say_hello(lastName: string, firstName?: string) {
+  println("Hello, ${lastName} " + match firstName {
+    Some(firstName) -> firstName + "!",
+    None -> "!"
+  });
+}
+
+say_hello("Jack"); // Prints: Hello, Jack!
+say_hello("John", "Pop"); // Prints: Hello, John Pop!
+```
+
+### Explicit naming
+
+Explicit naming is useful when dealing with omittable arguments. Consider the following function:
+
+```rave
+fn write_file(path: string, content: string, encoding?: string, bufferSize?: u8, emitErrors?: bool) { /* ... */ }
+```
+
+What if we want to call it, let `encoding` and `bufferSize` empty, but give a value for `emitErrors`? A first idea would be to write this:
+
+```rave
+write_file("file.txt", "Hello world!", None, None, true); // ERROR
+```
+
+But this wouldn't work because `encoding` and `bufferSize` are both `u8` values: even if the function receives an `Option<u8>` value, we must give `u8` ones. So we simply use _explicit naming_:
+
+```rave
+write_file("file.txt", "Hello world!", emitErrors = false);
+```
+
+And this works as expected. It's also possible to specify several parameters using explicit naming.
+
+### Endless arguments
+
+Another type of arguments is _endless_ ones. This consists in accepting a dynamic number of arguments of the same type:
+
+```rave
+fn print_sum_of(...nums: u8[]) { /* ... */ }
+
+print_sum_of(); // Ok (nums == [])
+print_sum_of(1); // Ok (nums == [1])
+print_sum_of(1, 2); // Ok (nums == [1, 2])
+print_sum_of(1, 2, 3); // Ok (nums == [1, 2, 3])
+// and so on
+```
+
+Iterables, such as vectors, can also be _expanded_ to a list of arguments in such case:
+
+```rave
+let vec = [ 1, 4, 3 ];
+
+print_sum_of(...vec); // Ok (nums == [1, 4, 3])
+```
+
+### Lambdas
+
+_Lambdas_ are a handy way to shortly write unnamed functions:
+
+```rave
+let filter_positive_values = { value: i32 -> value > 0 };
+
+let array = [ 1, -2, 3 ];
+let filtered = array.filter(filter_positive_values);
+
+for num in filtered {
+  println!(num);
+}
+```
+
+This program prints `1` and `3`, but not `-2` as it has been filtered.
+
+When a lambda is used as a function argument (a _callback_), type inference can be performed on arguments:
+
+```rave
+let array = [ 1, -2, 3 ];
+let filtered = array.filter({ value -> value > 0 });
+```
+
+Besides, when a callback lambda takes a single argument, the argument's name can be omitted, so it will be replaced by `it`:
+
+```rave
+let array = [ 1, -2, 3 ];
+let filtered = array.filter({ it > 0 });
+```
+
+Which is a lot more convenient. This can be used with custom functions, too:
+
+```rave
+fn use_operator(a: i32, b: i32, operator: (a: i32, b: i32) -> i32) = operator(a, b);
+
+// Callbacks' arguments' name can be omitted in their type
+fn use_operator(a: i32, b: i32, operator: (i32, i32) -> i32) = operator(a, b);
+```
+
+### Template strings
+
+Sometimes getting a raw string, without `${...}` expressions being formatted can be very useful, such as when coming to translations. That's why _template strings_ exist:
+
+```rave
+raw!("You just ordered ${nb} products. They will be delivered on the ${deliverDate}.");
+```
+
+The `raw!` macro turns a string into a pair (tuple) of `string` arrays, the first one being `[ "You just ordered ", "products. They will be delivered on the ", "." ]` and the other one being `[ "nb", "deliverDate" ]`. As you can see, they alternate between simple text and string expressions.
+
+The important point here is that expressions are not evaluated, so no error will be thrown if `nb` or `deliverDate` don't exist.
+
+They can then be treated:
+
+```rave
+fn translate(pieces: (string, string), params: Map<string, Stringifyable>) -> string {
+  let out = list!(string);
+
+  for (i, piece) in pieces {
+    out[] = piece;
+
+    if i in params {
+      out[] = // TODO
+      // + TODO: Teach 'in' / 'of' / 'keyof' -> think to what keywords use!
+      // + TODO: Rework on 'list!' and 'map!'
+    }
+  }
+}
+
+println!(translate(
+  raw!("You just ordered ${nb} products. They will be delivered on the ${deliverDate}."),
+  map! {
+    nb: 3,
+    deliverDate: '03-21-2019'
+  }
+));
+```
